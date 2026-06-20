@@ -18,47 +18,68 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.edit.CustomerEditFactory;
 import com.echothree.control.user.customer.common.edit.CustomerTypeShippingMethodEdit;
-import com.echothree.control.user.customer.common.form.EditCustomerTypeShippingMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeShippingMethodResult;
 import com.echothree.control.user.customer.common.spec.CustomerTypeShippingMethodSpec;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerTypeShippingMethodCommand
         extends BaseAbstractEditCommand<CustomerTypeShippingMethodSpec, CustomerTypeShippingMethodEdit, EditCustomerTypeShippingMethodResult, CustomerTypeShippingMethod, CustomerType> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CustomerTypeShippingMethod.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultSelectionPriority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    ShippingMethodLogic shippingMethodLogic;
+
     /** Creates a new instance of EditCustomerTypeShippingMethodCommand */
     public EditCustomerTypeShippingMethodCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -73,31 +94,21 @@ public class EditCustomerTypeShippingMethodCommand
 
     @Override
     public CustomerTypeShippingMethod getEntity(EditCustomerTypeShippingMethodResult result) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypeShippingMethod customerTypeShippingMethod = null;
         var customerTypeName = spec.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
 
-        if(customerType != null) {
-            var shippingControl = Session.getModelController(ShippingControl.class);
+        if(!hasExecutionErrors()) {
             var shippingMethodName = spec.getShippingMethodName();
-            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
+            var shippingMethod = shippingMethodLogic.getShippingMethodByName(this, shippingMethodName);
 
-            if(shippingMethod != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType, shippingMethod);
-                } else { // EditMode.UPDATE
-                    customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethodForUpdate(customerType, shippingMethod);
-                }
+            if(!hasExecutionErrors()) {
+                customerTypeShippingMethod = customerControl.getCustomerTypeShippingMethod(customerType, shippingMethod, editModeToEntityPermission(editMode));
 
                 if(customerTypeShippingMethod == null) {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeShippingMethod.name(), customerTypeName, shippingMethodName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownShippingMethodName.name(), shippingMethodName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
 
         return customerTypeShippingMethod;
@@ -110,8 +121,6 @@ public class EditCustomerTypeShippingMethodCommand
 
     @Override
     public void fillInResult(EditCustomerTypeShippingMethodResult result, CustomerTypeShippingMethod customerTypeShippingMethod) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         result.setCustomerTypeShippingMethod(customerControl.getCustomerTypeShippingMethodTransfer(getUserVisit(), customerTypeShippingMethod));
     }
 
@@ -124,7 +133,6 @@ public class EditCustomerTypeShippingMethodCommand
 
     @Override
     public void doUpdate(CustomerTypeShippingMethod customerTypeShippingMethod) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypeShippingMethodValue = customerControl.getCustomerTypeShippingMethodValue(customerTypeShippingMethod);
         
         customerTypeShippingMethodValue.setDefaultSelectionPriority(Integer.valueOf(edit.getDefaultSelectionPriority()));
