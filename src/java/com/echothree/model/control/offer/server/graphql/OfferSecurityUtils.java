@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.control.user.offer.server.command.GetOfferChainTypeCommand;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferCustomerTypeCommand;
+import com.echothree.control.user.offer.server.command.GetOfferCustomerTypesCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemPriceCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemPricesCommand;
@@ -50,6 +51,10 @@ public interface OfferSecurityUtils {
 
     static boolean getHasOfferCustomerTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOfferCustomerTypeCommand.class);
+    }
+
+    static boolean getHasOfferCustomerTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOfferCustomerTypesCommand.class);
     }
 
     static boolean getHasOfferChainTypeAccess(final DataFetchingEnvironment env) {
