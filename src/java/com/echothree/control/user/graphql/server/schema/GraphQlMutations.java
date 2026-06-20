@@ -85,6 +85,7 @@ import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.result.CreateCustomerTypeResult;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
+import com.echothree.control.user.customer.common.result.EditCustomerTypeShippingMethodResult;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.CreateFilterResult;
@@ -13729,6 +13730,106 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(CustomerUtil.getHome().deleteCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createCustomerTypeShippingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("shippingMethodName") @GraphQLNonNull final String shippingMethodName,
+            @GraphQLName("defaultSelectionPriority") @GraphQLNonNull final String defaultSelectionPriority,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CustomerUtil.getHome().getCreateCustomerTypeShippingMethodForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.setDefaultSelectionPriority(defaultSelectionPriority);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = CustomerUtil.getHome().createCustomerTypeShippingMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteCustomerTypeShippingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("shippingMethodName") @GraphQLNonNull final String shippingMethodName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CustomerUtil.getHome().getDeleteCustomerTypeShippingMethodForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setShippingMethodName(shippingMethodName);
+
+            var commandResult = CustomerUtil.getHome().deleteCustomerTypeShippingMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editCustomerTypeShippingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("shippingMethodName") @GraphQLNonNull final String shippingMethodName,
+            @GraphQLName("defaultSelectionPriority") final String defaultSelectionPriority,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CustomerUtil.getHome().getCustomerTypeShippingMethodSpec();
+
+            spec.setCustomerTypeName(customerTypeName);
+            spec.setShippingMethodName(shippingMethodName);
+
+            var commandForm = CustomerUtil.getHome().getEditCustomerTypeShippingMethodForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CustomerUtil.getHome().editCustomerTypeShippingMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditCustomerTypeShippingMethodResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("defaultSelectionPriority"))
+                    edit.setDefaultSelectionPriority(defaultSelectionPriority);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CustomerUtil.getHome().editCustomerTypeShippingMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
