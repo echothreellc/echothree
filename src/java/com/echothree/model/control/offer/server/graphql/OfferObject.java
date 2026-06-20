@@ -35,6 +35,7 @@ import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.offer.common.OfferCustomerTypeConstants;
 import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.model.data.offer.common.OfferUseConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
@@ -181,6 +182,26 @@ public class OfferObject
                 var offerItems = entities.stream().map(OfferItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, offerItems);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("offer customer types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferCustomerTypeObject> getOfferCustomerTypes(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getHasOfferCustomerTypesAccess(env)) {
+            var offerCustomerTypeControl = Session.getModelController(OfferControl.class);
+            var totalCount = offerCustomerTypeControl.countOfferCustomerTypesByOffer(offer);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferCustomerTypeConstants.COMPONENT_VENDOR_NAME, OfferCustomerTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerCustomerTypeControl.getOfferCustomerTypesByOffer(offer);
+                var offerCustomerTypes = entities.stream().map(OfferCustomerTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerCustomerTypes);
             }
         } else {
             return Connections.emptyConnection();
