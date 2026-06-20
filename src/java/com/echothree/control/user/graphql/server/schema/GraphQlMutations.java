@@ -26,13 +26,13 @@ import com.echothree.control.user.accounting.common.result.EditTransactionTimeTy
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.campaign.common.result.CreateCampaignContentResult;
-import com.echothree.control.user.campaign.common.result.CreateCampaignResult;
 import com.echothree.control.user.campaign.common.result.CreateCampaignMediumResult;
+import com.echothree.control.user.campaign.common.result.CreateCampaignResult;
 import com.echothree.control.user.campaign.common.result.CreateCampaignSourceResult;
 import com.echothree.control.user.campaign.common.result.CreateCampaignTermResult;
 import com.echothree.control.user.campaign.common.result.EditCampaignContentResult;
-import com.echothree.control.user.campaign.common.result.EditCampaignResult;
 import com.echothree.control.user.campaign.common.result.EditCampaignMediumResult;
+import com.echothree.control.user.campaign.common.result.EditCampaignResult;
 import com.echothree.control.user.campaign.common.result.EditCampaignSourceResult;
 import com.echothree.control.user.campaign.common.result.EditCampaignTermResult;
 import com.echothree.control.user.content.common.ContentUtil;
@@ -150,6 +150,7 @@ import com.echothree.control.user.offer.common.result.CreateOfferUseResult;
 import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
 import com.echothree.control.user.offer.common.result.CreateUseResult;
 import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
+import com.echothree.control.user.offer.common.result.EditOfferCustomerTypeResult;
 import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
 import com.echothree.control.user.offer.common.result.EditOfferResult;
@@ -266,8 +267,8 @@ import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceRes
 import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignContentResultObject;
-import com.echothree.model.control.campaign.server.graphql.CreateCampaignResultObject;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignMediumResultObject;
+import com.echothree.model.control.campaign.server.graphql.CreateCampaignResultObject;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignSourceResultObject;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignTermResultObject;
 import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
@@ -2713,6 +2714,101 @@ public interface GraphQlMutations {
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = OfferUtil.getHome().editOfferItemPrice(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createOfferCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getCreateOfferCustomerTypeForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = OfferUtil.getHome().createOfferCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteOfferCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getDeleteOfferCustomerTypeForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setCustomerTypeName(customerTypeName);
+
+            var commandResult = OfferUtil.getHome().deleteOfferCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editOfferCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = OfferUtil.getHome().getOfferCustomerTypeSpec();
+
+            spec.setOfferName(offerName);
+            spec.setCustomerTypeName(customerTypeName);
+
+            var commandForm = OfferUtil.getHome().getEditOfferCustomerTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OfferUtil.getHome().editOfferCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditOfferCustomerTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OfferUtil.getHome().editOfferCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);
