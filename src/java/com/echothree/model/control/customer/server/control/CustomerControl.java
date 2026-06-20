@@ -976,7 +976,7 @@ public class CustomerControl
         getCustomerTypePaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CustomerTypePaymentMethod getCustomerTypePaymentMethod(CustomerType customerType, PaymentMethod paymentMethod,
+    public CustomerTypePaymentMethod getCustomerTypePaymentMethod(CustomerType customerType, PaymentMethod paymentMethod,
             EntityPermission entityPermission) {
         return CustomerTypePaymentMethodFactory.getInstance().getEntityFromQuery(entityPermission, getCustomerTypePaymentMethodQueries,
                 customerType, paymentMethod, Session.MAX_TIME);
