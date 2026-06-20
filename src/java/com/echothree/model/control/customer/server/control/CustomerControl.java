@@ -1269,7 +1269,7 @@ public class CustomerControl
         getCustomerTypeShippingMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CustomerTypeShippingMethod getCustomerTypeShippingMethod(CustomerType customerType, ShippingMethod shippingMethod,
+    public CustomerTypeShippingMethod getCustomerTypeShippingMethod(CustomerType customerType, ShippingMethod shippingMethod,
             EntityPermission entityPermission) {
         return CustomerTypeShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, getCustomerTypeShippingMethodQueries,
                 customerType, shippingMethod, Session.MAX_TIME);
