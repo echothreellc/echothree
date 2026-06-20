@@ -84,6 +84,7 @@ import com.echothree.control.user.core.common.result.EditEntityTimeDefaultResult
 import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.result.CreateCustomerTypeResult;
+import com.echothree.control.user.customer.common.result.EditCustomerTypePaymentMethodResult;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeShippingMethodResult;
 import com.echothree.control.user.filter.common.FilterUtil;
@@ -13730,6 +13731,106 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(CustomerUtil.getHome().deleteCustomerType(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createCustomerTypePaymentMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("paymentMethodName") @GraphQLNonNull final String paymentMethodName,
+            @GraphQLName("defaultSelectionPriority") @GraphQLNonNull final String defaultSelectionPriority,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CustomerUtil.getHome().getCreateCustomerTypePaymentMethodForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setPaymentMethodName(paymentMethodName);
+            commandForm.setDefaultSelectionPriority(defaultSelectionPriority);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = CustomerUtil.getHome().createCustomerTypePaymentMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteCustomerTypePaymentMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("paymentMethodName") @GraphQLNonNull final String paymentMethodName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CustomerUtil.getHome().getDeleteCustomerTypePaymentMethodForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setPaymentMethodName(paymentMethodName);
+
+            var commandResult = CustomerUtil.getHome().deleteCustomerTypePaymentMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editCustomerTypePaymentMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("paymentMethodName") @GraphQLNonNull final String paymentMethodName,
+            @GraphQLName("defaultSelectionPriority") final String defaultSelectionPriority,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CustomerUtil.getHome().getCustomerTypePaymentMethodSpec();
+
+            spec.setCustomerTypeName(customerTypeName);
+            spec.setPaymentMethodName(paymentMethodName);
+
+            var commandForm = CustomerUtil.getHome().getEditCustomerTypePaymentMethodForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CustomerUtil.getHome().editCustomerTypePaymentMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditCustomerTypePaymentMethodResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("defaultSelectionPriority"))
+                    edit.setDefaultSelectionPriority(defaultSelectionPriority);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CustomerUtil.getHome().editCustomerTypePaymentMethod(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
