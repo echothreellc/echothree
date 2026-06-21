@@ -37,12 +37,12 @@ import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class SalesOrderControl
@@ -67,18 +67,20 @@ public class SalesOrderControl
     }
 
     public long countSalesOrdersByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM salesorders " +
-                "WHERE salord_ofruse_offeruseid = ? AND salord_thrutime = ?",
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM salesorders
+                        WHERE salord_ofruse_offeruseid = ? AND salord_thrutime = ?
+                        """,
                 offerUse, Session.MAX_TIME);
     }
 
     public long countSalesOrdersByAssociateReferral(final AssociateReferral associateReferral) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM salesorders " +
-                "WHERE salord_ascrfr_associatereferralid = ? AND salord_thrutime = ?",
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM salesorders
+                        WHERE salord_ascrfr_associatereferralid = ? AND salord_thrutime = ?
+                        """,
                 associateReferral, Session.MAX_TIME);
     }
 
@@ -89,14 +91,18 @@ public class SalesOrderControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM salesorders " +
-                        "WHERE salord_ord_orderid = ? AND salord_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM salesorders
+                        WHERE salord_ord_orderid = ? AND salord_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM salesorders " +
-                        "WHERE salord_ord_orderid = ? AND salord_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM salesorders
+                        WHERE salord_ord_orderid = ? AND salord_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SalesOrderFactory.getInstance().prepareStatement(query);
@@ -168,18 +174,20 @@ public class SalesOrderControl
     }
 
     public long countSalesOrderLinesByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM salesorderlines " +
-                        "WHERE salordl_ofruse_offeruseid = ? AND salordl_thrutime = ?",
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM salesorderlines
+                        WHERE salordl_ofruse_offeruseid = ? AND salordl_thrutime = ?
+                        """,
                 offerUse, Session.MAX_TIME);
     }
 
     public long countSalesOrderLinesByAssociateReferral(final AssociateReferral associateReferral) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM salesorderlines " +
-                        "WHERE salordl_ascrfr_associatereferralid = ? AND salordl_thrutime = ?",
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM salesorderlines
+                        WHERE salordl_ascrfr_associatereferralid = ? AND salordl_thrutime = ?
+                        """,
                 associateReferral, Session.MAX_TIME);
     }
 
@@ -190,14 +198,18 @@ public class SalesOrderControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM salesorderlines " +
-                        "WHERE salordl_ordl_orderlineid = ? AND salordl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM salesorderlines
+                        WHERE salordl_ordl_orderlineid = ? AND salordl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM salesorderlines " +
-                        "WHERE salordl_ordl_orderlineid = ? AND salordl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM salesorderlines
+                        WHERE salordl_ordl_orderlineid = ? AND salordl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SalesOrderLineFactory.getInstance().prepareStatement(query);
@@ -268,12 +280,13 @@ public class SalesOrderControl
 
         try {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+            var ps = SearchResultFactory.getInstance().prepareStatement("""
+                            SELECT eni_entityuniqueid
+                            FROM searchresults, entityinstances
+                            WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                            ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                            _LIMIT_
+                            """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 

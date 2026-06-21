@@ -17,12 +17,19 @@
 package com.echothree.control.user.sales.common.result;
 
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
+import com.echothree.model.control.order.common.transfer.OrderTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetSalesOrderTimesResult
         extends BaseResult {
     
+    OrderTransfer getOrder();
+    void setOrder(OrderTransfer order);
+
+    Long getOrderTimeCount();
+    void setOrderTimeCount(Long orderTimeCount);
+
     List<OrderTimeTransfer> getOrderTimes();
     void setOrderTimes(List<OrderTimeTransfer> orderTimes);
     
