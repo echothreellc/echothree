@@ -175,17 +175,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaletypes, scaletypedetails " +
-                "WHERE scltyp_activedetailid = scltypdt_scaletypedetailid " +
-                "AND scltypdt_scaletypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaletypes, scaletypedetails " +
-                "WHERE scltyp_activedetailid = scltypdt_scaletypedetailid " +
-                "AND scltypdt_scaletypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaletypes, scaletypedetails
+                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
+                        AND scltypdt_scaletypename = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaletypes, scaletypedetails
+                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
+                        AND scltypdt_scaletypename = ?
+                        FOR UPDATE
+                        """);
         getScaleTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -214,17 +216,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaletypes, scaletypedetails " +
-                "WHERE scltyp_activedetailid = scltypdt_scaletypedetailid " +
-                "AND scltypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaletypes, scaletypedetails " +
-                "WHERE scltyp_activedetailid = scltypdt_scaletypedetailid " +
-                "AND scltypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaletypes, scaletypedetails
+                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
+                        AND scltypdt_isdefault = 1
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaletypes, scaletypedetails
+                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
+                        AND scltypdt_isdefault = 1
+                        FOR UPDATE
+                        """);
         getDefaultScaleTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -249,17 +253,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaletypes, scaletypedetails " +
-                "WHERE scltyp_activedetailid = scltypdt_scaletypedetailid " +
-                "ORDER BY scltypdt_sortorder, scltypdt_scaletypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaletypes, scaletypedetails " +
-                "WHERE scltyp_activedetailid = scltypdt_scaletypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaletypes, scaletypedetails
+                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
+                        ORDER BY scltypdt_sortorder, scltypdt_scaletypename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaletypes, scaletypedetails
+                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
+                        FOR UPDATE
+                        """);
         getScaleTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -420,15 +426,17 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaletypedescriptions " +
-                "WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_lang_languageid = ? AND scltypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaletypedescriptions " +
-                "WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_lang_languageid = ? AND scltypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaletypedescriptions
+                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_lang_languageid = ? AND scltypd_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaletypedescriptions
+                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_lang_languageid = ? AND scltypd_thrutime = ?
+                        FOR UPDATE
+                        """);
         getScaleTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -459,17 +467,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaletypedescriptions, languages " +
-                "WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_thrutime = ? AND scltypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaletypedescriptions " +
-                "WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaletypedescriptions, languages
+                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_thrutime = ? AND scltypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaletypedescriptions
+                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_thrutime = ?
+                        FOR UPDATE
+                        """);
         getScaleTypeDescriptionsByScaleTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -609,22 +619,42 @@ public class ScaleControl
                         """);
     }
 
+    public long countScalesByScaleType(final ScaleType scaleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM scales
+                        JOIN scaledetails ON scldt_scaledetailid = scl_activedetailid
+                        WHERE scldt_scltyp_scaletypeid = ?
+                        """, scaleType);
+    }
+
+    public long countScalesByServerService(final ServerService serverService) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM scales
+                        JOIN scaledetails ON scldt_scaledetailid = scl_activedetailid
+                        WHERE scldt_servsrv_serverserviceid = ?
+                        """, serverService);
+    }
+
     private static final Map<EntityPermission, String> getScaleByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_scalename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_scalename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_scalename = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_scalename = ?
+                        FOR UPDATE
+                        """);
         getScaleByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -653,17 +683,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_isdefault = 1
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_isdefault = 1
+                        FOR UPDATE
+                        """);
         getDefaultScaleQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -688,17 +720,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "ORDER BY scldt_sortorder, scldt_scalename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        ORDER BY scldt_sortorder, scldt_scalename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        FOR UPDATE
+                        """);
         getScalesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -719,19 +753,21 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_scltyp_scaletypeid = ? " +
-                "ORDER BY scldt_sortorder, scldt_scalename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_scltyp_scaletypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_scltyp_scaletypeid = ?
+                        ORDER BY scldt_sortorder, scldt_scalename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_scltyp_scaletypeid = ?
+                        FOR UPDATE
+                        """);
         getScalesByScaleTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -753,19 +789,21 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_servsrv_serverserviceid = ? " +
-                "ORDER BY scldt_sortorder, scldt_scalename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scales, scaledetails " +
-                "WHERE scl_activedetailid = scldt_scaledetailid " +
-                "AND scldt_servsrv_serverserviceid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_servsrv_serverserviceid = ?
+                        ORDER BY scldt_sortorder, scldt_scalename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scales, scaledetails
+                        WHERE scl_activedetailid = scldt_scaledetailid
+                        AND scldt_servsrv_serverserviceid = ?
+                        FOR UPDATE
+                        """);
         getScalesByServerServiceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -953,15 +991,17 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaledescriptions " +
-                "WHERE scld_scl_scaleid = ? AND scld_lang_languageid = ? AND scld_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaledescriptions " +
-                "WHERE scld_scl_scaleid = ? AND scld_lang_languageid = ? AND scld_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaledescriptions
+                        WHERE scld_scl_scaleid = ? AND scld_lang_languageid = ? AND scld_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaledescriptions
+                        WHERE scld_scl_scaleid = ? AND scld_lang_languageid = ? AND scld_thrutime = ?
+                        FOR UPDATE
+                        """);
         getScaleDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -992,17 +1032,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaledescriptions, languages " +
-                "WHERE scld_scl_scaleid = ? AND scld_thrutime = ? AND scld_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaledescriptions " +
-                "WHERE scld_scl_scaleid = ? AND scld_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaledescriptions, languages
+                        WHERE scld_scl_scaleid = ? AND scld_thrutime = ? AND scld_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaledescriptions
+                        WHERE scld_scl_scaleid = ? AND scld_thrutime = ?
+                        FOR UPDATE
+                        """);
         getScaleDescriptionsByScaleQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1147,17 +1189,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypes, scaleusetypedetails " +
-                "WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid " +
-                "AND sclusetypdt_scaleusetypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypes, scaleusetypedetails " +
-                "WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid " +
-                "AND sclusetypdt_scaleusetypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaleusetypes, scaleusetypedetails
+                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
+                        AND sclusetypdt_scaleusetypename = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaleusetypes, scaleusetypedetails
+                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
+                        AND sclusetypdt_scaleusetypename = ?
+                        FOR UPDATE
+                        """);
         getScaleUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1186,17 +1230,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypes, scaleusetypedetails " +
-                "WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid " +
-                "AND sclusetypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypes, scaleusetypedetails " +
-                "WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid " +
-                "AND sclusetypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaleusetypes, scaleusetypedetails
+                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
+                        AND sclusetypdt_isdefault = 1
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaleusetypes, scaleusetypedetails
+                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
+                        AND sclusetypdt_isdefault = 1
+                        FOR UPDATE
+                        """);
         getDefaultScaleUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1221,17 +1267,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypes, scaleusetypedetails " +
-                "WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid " +
-                "ORDER BY sclusetypdt_sortorder, sclusetypdt_scaleusetypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypes, scaleusetypedetails " +
-                "WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaleusetypes, scaleusetypedetails
+                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
+                        ORDER BY sclusetypdt_sortorder, sclusetypdt_scaleusetypename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaleusetypes, scaleusetypedetails
+                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
+                        FOR UPDATE
+                        """);
         getScaleUseTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1392,15 +1440,17 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypedescriptions " +
-                "WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_lang_languageid = ? AND sclusetypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypedescriptions " +
-                "WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_lang_languageid = ? AND sclusetypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaleusetypedescriptions
+                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_lang_languageid = ? AND sclusetypd_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaleusetypedescriptions
+                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_lang_languageid = ? AND sclusetypd_thrutime = ?
+                        FOR UPDATE
+                        """);
         getScaleUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1431,17 +1481,19 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypedescriptions, languages " +
-                "WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_thrutime = ? AND sclusetypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM scaleusetypedescriptions " +
-                "WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM scaleusetypedescriptions, languages
+                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_thrutime = ? AND sclusetypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM scaleusetypedescriptions
+                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_thrutime = ?
+                        FOR UPDATE
+                        """);
         getScaleUseTypeDescriptionsByScaleUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1537,24 +1589,48 @@ public class ScaleControl
         
         return partyScaleUse;
     }
-    
+
+    public long countPartyScaleUsesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyscaleuses
+                        WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyScaleUsesByScaleUseType(final ScaleUseType scaleUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyscaleuses
+                        WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
+                        """, scaleUseType, Session.MAX_TIME);
+    }
+
+    public long countPartyScaleUsesByScale(final Scale scale) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyscaleuses
+                        WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ?
+                        """, scale, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyScaleUseQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses " +
-                "WHERE parscluse_par_partyid = ? AND parscluse_sclusetyp_scaleusetypeid = ? " +
-                "AND parscluse_thrutime = ?" +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses " +
-                "WHERE parscluse_par_partyid = ? AND parscluse_sclusetyp_scaleusetypeid = ? " +
-                "AND parscluse_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM partyscaleuses
+                        WHERE parscluse_par_partyid = ? AND parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM partyscaleuses
+                        WHERE parscluse_par_partyid = ? AND parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
+                        FOR UPDATE
+                        """);
         getPartyScaleUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1587,18 +1663,20 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses, scaleusetypes, scaleusetypedetails " +
-                "WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ? " +
-                "AND parscluse_sclusetyp_scaleusetypeid = sclusetyp_scaleusetypeid AND sclusetyp_lastdetailid = sclusetypdt_scaleusetypedetailid " +
-                "ORDER BY sclusetypdt_sortorder, sclusetypdt_scaleusetypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses " +
-                "WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM partyscaleuses, scaleusetypes, scaleusetypedetails
+                        WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ?
+                        AND parscluse_sclusetyp_scaleusetypeid = sclusetyp_scaleusetypeid AND sclusetyp_lastdetailid = sclusetypdt_scaleusetypedetailid
+                        ORDER BY sclusetypdt_sortorder, sclusetypdt_scaleusetypename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM partyscaleuses
+                        WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ?
+                        FOR UPDATE
+                        """);
         getPartyScaleUsesByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1620,18 +1698,20 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses, parties, partydetails " +
-                "WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ? " +
-                "AND parscluse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses " +
-                "WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM partyscaleuses, parties, partydetails
+                        WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ?
+                        AND parscluse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM partyscaleuses
+                        WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ?
+                        FOR UPDATE
+                        """);
         getPartyScaleUsesByScaleQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1653,18 +1733,20 @@ public class ScaleControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses, parties, partydetails " +
-                "WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ? " +
-                "AND parscluse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyscaleuses " +
-                "WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM partyscaleuses, parties, partydetails
+                        WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
+                        AND parscluse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM partyscaleuses
+                        WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
+                        FOR UPDATE
+                        """);
         getPartyScaleUsesByScaleUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

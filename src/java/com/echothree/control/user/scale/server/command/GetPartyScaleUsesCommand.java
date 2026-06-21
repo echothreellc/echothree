@@ -20,26 +20,28 @@ import com.echothree.control.user.scale.common.form.GetPartyScaleUsesForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.scale.server.entity.PartyScaleUse;
+import com.echothree.model.data.scale.server.factory.PartyScaleUseFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyScaleUsesCommand
-        extends BaseSimpleCommand<GetPartyScaleUsesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyScaleUse, GetPartyScaleUsesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -49,44 +51,68 @@ public class GetPartyScaleUsesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyScaleUse.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    PartyLogic partyLogic;
 
     /** Creates a new instance of GetPartyScaleUsesCommand */
     public GetPartyScaleUsesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private Party party;
+
     @Override
-    protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var result = ScaleResultFactory.getGetPartyScaleUsesResult();
+    protected void handleForm() {
         var partyName = form.getPartyName();
-        Party party;
 
         if(partyName != null) {
-            party = partyControl.getPartyByName(partyName);
-            
-            if(party == null) {
-                addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-            }
+            party = partyLogic.getPartyByName(this, partyName);
         } else {
             party = getParty();
         }
+    }
 
-        if(!hasExecutionErrors()) {
-            var scaleControl = Session.getModelController(ScaleControl.class);
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : scaleControl.countPartyScaleUsesByParty(party);
+    }
 
-            result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
-            result.setPartyScaleUses(scaleControl.getPartyScaleUseTransfersByParty(getUserVisit(), party));
+    @Override
+    protected Collection<PartyScaleUse> getEntities() {
+        return hasExecutionErrors() ? null : scaleControl.getPartyScaleUsesByParty(party);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyScaleUse> entities) {
+        var result = ScaleResultFactory.getGetPartyScaleUsesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setParty(partyControl.getPartyTransfer(userVisit, party));
+
+            if(session.hasLimit(PartyScaleUseFactory.class)) {
+                result.setPartyScaleUseCount(getTotalEntities());
+            }
+
+            result.setPartyScaleUses(scaleControl.getPartyScaleUseTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
-    
+
 }
