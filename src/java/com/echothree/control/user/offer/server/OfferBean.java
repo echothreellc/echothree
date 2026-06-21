@@ -22,6 +22,7 @@ import com.echothree.control.user.offer.common.result.*;
 import com.echothree.control.user.offer.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class OfferBean
     }
 
     @Override
-    public CommandResult<?> setDefaultOffer(UserVisitPK userVisitPK, SetDefaultOfferForm form) {
+    public CommandResult<VoidResult> setDefaultOffer(UserVisitPK userVisitPK, SetDefaultOfferForm form) {
         return CDI.current().select(SetDefaultOfferCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOffer(UserVisitPK userVisitPK, DeleteOfferForm form) {
+    public CommandResult<VoidResult> deleteOffer(UserVisitPK userVisitPK, DeleteOfferForm form) {
         return CDI.current().select(DeleteOfferCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferDescription(UserVisitPK userVisitPK, CreateOfferDescriptionForm form) {
+    public CommandResult<VoidResult> createOfferDescription(UserVisitPK userVisitPK, CreateOfferDescriptionForm form) {
         return CDI.current().select(CreateOfferDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -98,7 +99,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferDescription(UserVisitPK userVisitPK, DeleteOfferDescriptionForm form) {
+    public CommandResult<VoidResult> deleteOfferDescription(UserVisitPK userVisitPK, DeleteOfferDescriptionForm form) {
         return CDI.current().select(DeleteOfferDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -107,7 +108,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferCustomerType(UserVisitPK userVisitPK, CreateOfferCustomerTypeForm form) {
+    public CommandResult<VoidResult> createOfferCustomerType(UserVisitPK userVisitPK, CreateOfferCustomerTypeForm form) {
         return CDI.current().select(CreateOfferCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -122,7 +123,7 @@ public class OfferBean
     }
 
     @Override
-    public CommandResult<?> setDefaultOfferCustomerType(UserVisitPK userVisitPK, SetDefaultOfferCustomerTypeForm form) {
+    public CommandResult<VoidResult> setDefaultOfferCustomerType(UserVisitPK userVisitPK, SetDefaultOfferCustomerTypeForm form) {
         return CDI.current().select(SetDefaultOfferCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -132,7 +133,7 @@ public class OfferBean
     }
 
     @Override
-    public CommandResult<?> deleteOfferCustomerType(UserVisitPK userVisitPK, DeleteOfferCustomerTypeForm form) {
+    public CommandResult<VoidResult> deleteOfferCustomerType(UserVisitPK userVisitPK, DeleteOfferCustomerTypeForm form) {
         return CDI.current().select(DeleteOfferCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -141,7 +142,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferChainType(UserVisitPK userVisitPK, CreateOfferChainTypeForm form) {
+    public CommandResult<VoidResult> createOfferChainType(UserVisitPK userVisitPK, CreateOfferChainTypeForm form) {
         return CDI.current().select(CreateOfferChainTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -161,7 +162,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferChainType(UserVisitPK userVisitPK, DeleteOfferChainTypeForm form) {
+    public CommandResult<VoidResult> deleteOfferChainType(UserVisitPK userVisitPK, DeleteOfferChainTypeForm form) {
         return CDI.current().select(DeleteOfferChainTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -190,7 +191,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferUse(UserVisitPK userVisitPK, DeleteOfferUseForm form) {
+    public CommandResult<VoidResult> deleteOfferUse(UserVisitPK userVisitPK, DeleteOfferUseForm form) {
         return CDI.current().select(DeleteOfferUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -219,7 +220,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSource(UserVisitPK userVisitPK, SetDefaultSourceForm form) {
+    public CommandResult<VoidResult> setDefaultSource(UserVisitPK userVisitPK, SetDefaultSourceForm form) {
         return CDI.current().select(SetDefaultSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -229,7 +230,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteSource(UserVisitPK userVisitPK, DeleteSourceForm form) {
+    public CommandResult<VoidResult> deleteSource(UserVisitPK userVisitPK, DeleteSourceForm form) {
         return CDI.current().select(DeleteSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -253,7 +254,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferItem(UserVisitPK userVisitPK, DeleteOfferItemForm form) {
+    public CommandResult<VoidResult> deleteOfferItem(UserVisitPK userVisitPK, DeleteOfferItemForm form) {
         return CDI.current().select(DeleteOfferItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -262,7 +263,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferItemPrice(UserVisitPK userVisitPK, CreateOfferItemPriceForm form) {
+    public CommandResult<VoidResult> createOfferItemPrice(UserVisitPK userVisitPK, CreateOfferItemPriceForm form) {
         return CDI.current().select(CreateOfferItemPriceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -282,7 +283,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferItemPrice(UserVisitPK userVisitPK, DeleteOfferItemPriceForm form) {
+    public CommandResult<VoidResult> deleteOfferItemPrice(UserVisitPK userVisitPK, DeleteOfferItemPriceForm form) {
         return CDI.current().select(DeleteOfferItemPriceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -311,7 +312,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> setDefaultUseType(UserVisitPK userVisitPK, SetDefaultUseTypeForm form) {
+    public CommandResult<VoidResult> setDefaultUseType(UserVisitPK userVisitPK, SetDefaultUseTypeForm form) {
         return CDI.current().select(SetDefaultUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -321,7 +322,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteUseType(UserVisitPK userVisitPK, DeleteUseTypeForm form) {
+    public CommandResult<VoidResult> deleteUseType(UserVisitPK userVisitPK, DeleteUseTypeForm form) {
         return CDI.current().select(DeleteUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -330,7 +331,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUseTypeDescription(UserVisitPK userVisitPK, CreateUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createUseTypeDescription(UserVisitPK userVisitPK, CreateUseTypeDescriptionForm form) {
         return CDI.current().select(CreateUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -350,7 +351,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteUseTypeDescription(UserVisitPK userVisitPK, DeleteUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteUseTypeDescription(UserVisitPK userVisitPK, DeleteUseTypeDescriptionForm form) {
         return CDI.current().select(DeleteUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -379,7 +380,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteUseNameElement(UserVisitPK userVisitPK, DeleteUseNameElementForm form) {
+    public CommandResult<VoidResult> deleteUseNameElement(UserVisitPK userVisitPK, DeleteUseNameElementForm form) {
         return CDI.current().select(DeleteUseNameElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -388,7 +389,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUseNameElementDescription(UserVisitPK userVisitPK, CreateUseNameElementDescriptionForm form) {
+    public CommandResult<VoidResult> createUseNameElementDescription(UserVisitPK userVisitPK, CreateUseNameElementDescriptionForm form) {
         return CDI.current().select(CreateUseNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -408,7 +409,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteUseNameElementDescription(UserVisitPK userVisitPK, DeleteUseNameElementDescriptionForm form) {
+    public CommandResult<VoidResult> deleteUseNameElementDescription(UserVisitPK userVisitPK, DeleteUseNameElementDescriptionForm form) {
         return CDI.current().select(DeleteUseNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -437,7 +438,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> setDefaultUse(UserVisitPK userVisitPK, SetDefaultUseForm form) {
+    public CommandResult<VoidResult> setDefaultUse(UserVisitPK userVisitPK, SetDefaultUseForm form) {
         return CDI.current().select(SetDefaultUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -447,7 +448,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteUse(UserVisitPK userVisitPK, DeleteUseForm form) {
+    public CommandResult<VoidResult> deleteUse(UserVisitPK userVisitPK, DeleteUseForm form) {
         return CDI.current().select(DeleteUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -456,7 +457,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUseDescription(UserVisitPK userVisitPK, CreateUseDescriptionForm form) {
+    public CommandResult<VoidResult> createUseDescription(UserVisitPK userVisitPK, CreateUseDescriptionForm form) {
         return CDI.current().select(CreateUseDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -471,7 +472,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteUseDescription(UserVisitPK userVisitPK, DeleteUseDescriptionForm form) {
+    public CommandResult<VoidResult> deleteUseDescription(UserVisitPK userVisitPK, DeleteUseDescriptionForm form) {
         return CDI.current().select(DeleteUseDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -500,7 +501,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferNameElement(UserVisitPK userVisitPK, DeleteOfferNameElementForm form) {
+    public CommandResult<VoidResult> deleteOfferNameElement(UserVisitPK userVisitPK, DeleteOfferNameElementForm form) {
         return CDI.current().select(DeleteOfferNameElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -509,7 +510,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferNameElementDescription(UserVisitPK userVisitPK, CreateOfferNameElementDescriptionForm form) {
+    public CommandResult<VoidResult> createOfferNameElementDescription(UserVisitPK userVisitPK, CreateOfferNameElementDescriptionForm form) {
         return CDI.current().select(CreateOfferNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -529,7 +530,7 @@ public class OfferBean
     }
     
     @Override
-    public CommandResult<?> deleteOfferNameElementDescription(UserVisitPK userVisitPK, DeleteOfferNameElementDescriptionForm form) {
+    public CommandResult<VoidResult> deleteOfferNameElementDescription(UserVisitPK userVisitPK, DeleteOfferNameElementDescriptionForm form) {
         return CDI.current().select(DeleteOfferNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

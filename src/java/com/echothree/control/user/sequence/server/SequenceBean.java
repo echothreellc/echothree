@@ -22,6 +22,7 @@ import com.echothree.control.user.sequence.common.result.*;
 import com.echothree.control.user.sequence.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class SequenceBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSequenceType(UserVisitPK userVisitPK, SetDefaultSequenceTypeForm form) {
+    public CommandResult<VoidResult> setDefaultSequenceType(UserVisitPK userVisitPK, SetDefaultSequenceTypeForm form) {
         return CDI.current().select(SetDefaultSequenceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class SequenceBean
     }
     
     @Override
-    public CommandResult<?> deleteSequenceType(UserVisitPK userVisitPK, DeleteSequenceTypeForm form) {
+    public CommandResult<VoidResult> deleteSequenceType(UserVisitPK userVisitPK, DeleteSequenceTypeForm form) {
         return CDI.current().select(DeleteSequenceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceTypeDescription(UserVisitPK userVisitPK, CreateSequenceTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSequenceTypeDescription(UserVisitPK userVisitPK, CreateSequenceTypeDescriptionForm form) {
         return CDI.current().select(CreateSequenceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -98,7 +99,7 @@ public class SequenceBean
     }
     
     @Override
-    public CommandResult<?> deleteSequenceTypeDescription(UserVisitPK userVisitPK, DeleteSequenceTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSequenceTypeDescription(UserVisitPK userVisitPK, DeleteSequenceTypeDescriptionForm form) {
         return CDI.current().select(DeleteSequenceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -107,7 +108,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceChecksumType(UserVisitPK userVisitPK, CreateSequenceChecksumTypeForm form) {
+    public CommandResult<VoidResult> createSequenceChecksumType(UserVisitPK userVisitPK, CreateSequenceChecksumTypeForm form) {
         return CDI.current().select(CreateSequenceChecksumTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -131,7 +132,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceChecksumTypeDescription(UserVisitPK userVisitPK, CreateSequenceChecksumTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSequenceChecksumTypeDescription(UserVisitPK userVisitPK, CreateSequenceChecksumTypeDescriptionForm form) {
         return CDI.current().select(CreateSequenceChecksumTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -140,7 +141,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceEncoderType(UserVisitPK userVisitPK, CreateSequenceEncoderTypeForm form) {
+    public CommandResult<VoidResult> createSequenceEncoderType(UserVisitPK userVisitPK, CreateSequenceEncoderTypeForm form) {
         return CDI.current().select(CreateSequenceEncoderTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -164,7 +165,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceEncoderTypeDescription(UserVisitPK userVisitPK, CreateSequenceEncoderTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSequenceEncoderTypeDescription(UserVisitPK userVisitPK, CreateSequenceEncoderTypeDescriptionForm form) {
         return CDI.current().select(CreateSequenceEncoderTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -188,7 +189,7 @@ public class SequenceBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSequence(UserVisitPK userVisitPK, SetDefaultSequenceForm form) {
+    public CommandResult<VoidResult> setDefaultSequence(UserVisitPK userVisitPK, SetDefaultSequenceForm form) {
         return CDI.current().select(SetDefaultSequenceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -203,7 +204,7 @@ public class SequenceBean
     }
     
     @Override
-    public CommandResult<?> deleteSequence(UserVisitPK userVisitPK, DeleteSequenceForm form) {
+    public CommandResult<VoidResult> deleteSequence(UserVisitPK userVisitPK, DeleteSequenceForm form) {
         return CDI.current().select(DeleteSequenceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -212,7 +213,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceDescription(UserVisitPK userVisitPK, CreateSequenceDescriptionForm form) {
+    public CommandResult<VoidResult> createSequenceDescription(UserVisitPK userVisitPK, CreateSequenceDescriptionForm form) {
         return CDI.current().select(CreateSequenceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -227,7 +228,7 @@ public class SequenceBean
     }
     
     @Override
-    public CommandResult<?> deleteSequenceDescription(UserVisitPK userVisitPK, DeleteSequenceDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSequenceDescription(UserVisitPK userVisitPK, DeleteSequenceDescriptionForm form) {
         return CDI.current().select(DeleteSequenceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -236,7 +237,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form) {
+    public CommandResult<VoidResult> setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form) {
         return CDI.current().select(SetSequenceValueCommand.class).get().run(userVisitPK, form);
     }
 

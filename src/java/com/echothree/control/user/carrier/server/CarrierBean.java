@@ -22,6 +22,7 @@ import com.echothree.control.user.carrier.common.result.*;
 import com.echothree.control.user.carrier.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form) {
+    public CommandResult<VoidResult> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form) {
         return CDI.current().select(CreateCarrierTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -63,7 +64,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierTypeDescription(UserVisitPK userVisitPK, CreateCarrierTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createCarrierTypeDescription(UserVisitPK userVisitPK, CreateCarrierTypeDescriptionForm form) {
         return CDI.current().select(CreateCarrierTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -92,12 +93,12 @@ public class CarrierBean
     }
 
     @Override
-    public CommandResult<?> setDefaultCarrier(UserVisitPK userVisitPK, SetDefaultCarrierForm form) {
+    public CommandResult<VoidResult> setDefaultCarrier(UserVisitPK userVisitPK, SetDefaultCarrierForm form) {
         return CDI.current().select(SetDefaultCarrierCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deleteCarrier(UserVisitPK userVisitPK, DeleteCarrierForm form) {
+    public CommandResult<VoidResult> deleteCarrier(UserVisitPK userVisitPK, DeleteCarrierForm form) {
         return CDI.current().select(DeleteCarrierCommand.class).get().run(userVisitPK, form);
     }
     
@@ -106,7 +107,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form) {
+    public CommandResult<VoidResult> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form) {
         return CDI.current().select(CreateCarrierServiceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -126,7 +127,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> setDefaultCarrierService(UserVisitPK userVisitPK, SetDefaultCarrierServiceForm form) {
+    public CommandResult<VoidResult> setDefaultCarrierService(UserVisitPK userVisitPK, SetDefaultCarrierServiceForm form) {
         return CDI.current().select(SetDefaultCarrierServiceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -136,7 +137,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> deleteCarrierService(UserVisitPK userVisitPK, DeleteCarrierServiceForm form) {
+    public CommandResult<VoidResult> deleteCarrierService(UserVisitPK userVisitPK, DeleteCarrierServiceForm form) {
         return CDI.current().select(DeleteCarrierServiceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -145,7 +146,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierServiceDescription(UserVisitPK userVisitPK, CreateCarrierServiceDescriptionForm form) {
+    public CommandResult<VoidResult> createCarrierServiceDescription(UserVisitPK userVisitPK, CreateCarrierServiceDescriptionForm form) {
         return CDI.current().select(CreateCarrierServiceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -165,7 +166,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> deleteCarrierServiceDescription(UserVisitPK userVisitPK, DeleteCarrierServiceDescriptionForm form) {
+    public CommandResult<VoidResult> deleteCarrierServiceDescription(UserVisitPK userVisitPK, DeleteCarrierServiceDescriptionForm form) {
         return CDI.current().select(DeleteCarrierServiceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -174,7 +175,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form) {
+    public CommandResult<VoidResult> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form) {
         return CDI.current().select(CreateCarrierOptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -194,7 +195,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> setDefaultCarrierOption(UserVisitPK userVisitPK, SetDefaultCarrierOptionForm form) {
+    public CommandResult<VoidResult> setDefaultCarrierOption(UserVisitPK userVisitPK, SetDefaultCarrierOptionForm form) {
         return CDI.current().select(SetDefaultCarrierOptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -204,7 +205,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> deleteCarrierOption(UserVisitPK userVisitPK, DeleteCarrierOptionForm form) {
+    public CommandResult<VoidResult> deleteCarrierOption(UserVisitPK userVisitPK, DeleteCarrierOptionForm form) {
         return CDI.current().select(DeleteCarrierOptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -213,7 +214,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierOptionDescription(UserVisitPK userVisitPK, CreateCarrierOptionDescriptionForm form) {
+    public CommandResult<VoidResult> createCarrierOptionDescription(UserVisitPK userVisitPK, CreateCarrierOptionDescriptionForm form) {
         return CDI.current().select(CreateCarrierOptionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -233,7 +234,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> deleteCarrierOptionDescription(UserVisitPK userVisitPK, DeleteCarrierOptionDescriptionForm form) {
+    public CommandResult<VoidResult> deleteCarrierOptionDescription(UserVisitPK userVisitPK, DeleteCarrierOptionDescriptionForm form) {
         return CDI.current().select(DeleteCarrierOptionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -242,7 +243,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrierServiceOption(UserVisitPK userVisitPK, CreateCarrierServiceOptionForm form) {
+    public CommandResult<VoidResult> createCarrierServiceOption(UserVisitPK userVisitPK, CreateCarrierServiceOptionForm form) {
         return CDI.current().select(CreateCarrierServiceOptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -262,7 +263,7 @@ public class CarrierBean
     }
     
     @Override
-    public CommandResult<?> deleteCarrierServiceOption(UserVisitPK userVisitPK, DeleteCarrierServiceOptionForm form) {
+    public CommandResult<VoidResult> deleteCarrierServiceOption(UserVisitPK userVisitPK, DeleteCarrierServiceOptionForm form) {
         return CDI.current().select(DeleteCarrierServiceOptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -271,7 +272,7 @@ public class CarrierBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyCarrier(UserVisitPK userVisitPK, CreatePartyCarrierForm form) {
+    public CommandResult<VoidResult> createPartyCarrier(UserVisitPK userVisitPK, CreatePartyCarrierForm form) {
         return CDI.current().select(CreatePartyCarrierCommand.class).get().run(userVisitPK, form);
     }
 
@@ -286,7 +287,7 @@ public class CarrierBean
     }
 
     @Override
-    public CommandResult<?> deletePartyCarrier(UserVisitPK userVisitPK, DeletePartyCarrierForm form) {
+    public CommandResult<VoidResult> deletePartyCarrier(UserVisitPK userVisitPK, DeletePartyCarrierForm form) {
         return CDI.current().select(DeletePartyCarrierCommand.class).get().run(userVisitPK, form);
     }
 
@@ -295,7 +296,7 @@ public class CarrierBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyCarrierAccount(UserVisitPK userVisitPK, CreatePartyCarrierAccountForm form) {
+    public CommandResult<VoidResult> createPartyCarrierAccount(UserVisitPK userVisitPK, CreatePartyCarrierAccountForm form) {
         return CDI.current().select(CreatePartyCarrierAccountCommand.class).get().run(userVisitPK, form);
     }
 
@@ -315,7 +316,7 @@ public class CarrierBean
     }
 
     @Override
-    public CommandResult<?> deletePartyCarrierAccount(UserVisitPK userVisitPK, DeletePartyCarrierAccountForm form) {
+    public CommandResult<VoidResult> deletePartyCarrierAccount(UserVisitPK userVisitPK, DeletePartyCarrierAccountForm form) {
         return CDI.current().select(DeletePartyCarrierAccountCommand.class).get().run(userVisitPK, form);
     }
 

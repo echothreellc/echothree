@@ -20,6 +20,7 @@ import com.echothree.control.user.index.common.form.*;
 import com.echothree.control.user.index.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface IndexService
         extends IndexForms {
@@ -34,7 +35,7 @@ public interface IndexService
     //   Index Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form);
+    CommandResult<VoidResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form);
     
     CommandResult<GetIndexTypeChoicesResult> getIndexTypeChoices(UserVisitPK userVisitPK, GetIndexTypeChoicesForm form);
     
@@ -42,17 +43,17 @@ public interface IndexService
     
     CommandResult<GetIndexTypesResult> getIndexTypes(UserVisitPK userVisitPK, GetIndexTypesForm form);
     
-    CommandResult<?> setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form);
+    CommandResult<VoidResult> setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form);
     
     CommandResult<EditIndexTypeResult> editIndexType(UserVisitPK userVisitPK, EditIndexTypeForm form);
     
-    CommandResult<?> deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form);
+    CommandResult<VoidResult> deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form);
+    CommandResult<VoidResult> createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form);
     
     CommandResult<GetIndexTypeDescriptionResult> getIndexTypeDescription(UserVisitPK userVisitPK, GetIndexTypeDescriptionForm form);
     
@@ -60,13 +61,13 @@ public interface IndexService
     
     CommandResult<EditIndexTypeDescriptionResult> editIndexTypeDescription(UserVisitPK userVisitPK, EditIndexTypeDescriptionForm form);
     
-    CommandResult<?> deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Fields
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form);
+    CommandResult<VoidResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form);
     
     CommandResult<GetIndexFieldChoicesResult> getIndexFieldChoices(UserVisitPK userVisitPK, GetIndexFieldChoicesForm form);
     
@@ -74,17 +75,17 @@ public interface IndexService
     
     CommandResult<GetIndexFieldsResult> getIndexFields(UserVisitPK userVisitPK, GetIndexFieldsForm form);
     
-    CommandResult<?> setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form);
+    CommandResult<VoidResult> setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form);
     
     CommandResult<EditIndexFieldResult> editIndexField(UserVisitPK userVisitPK, EditIndexFieldForm form);
     
-    CommandResult<?> deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form);
+    CommandResult<VoidResult> deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Field Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form);
+    CommandResult<VoidResult> createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form);
     
     CommandResult<GetIndexFieldDescriptionResult> getIndexFieldDescription(UserVisitPK userVisitPK, GetIndexFieldDescriptionForm form);
     
@@ -92,13 +93,13 @@ public interface IndexService
     
     CommandResult<EditIndexFieldDescriptionResult> editIndexFieldDescription(UserVisitPK userVisitPK, EditIndexFieldDescriptionForm form);
     
-    CommandResult<?> deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form);
+    CommandResult<VoidResult> deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Indexes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createIndex(UserVisitPK userVisitPK, CreateIndexForm form);
+    CommandResult<VoidResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form);
     
     CommandResult<GetIndexChoicesResult> getIndexChoices(UserVisitPK userVisitPK, GetIndexChoicesForm form);
     
@@ -106,17 +107,17 @@ public interface IndexService
     
     CommandResult<GetIndexesResult> getIndexes(UserVisitPK userVisitPK, GetIndexesForm form);
     
-    CommandResult<?> setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form);
+    CommandResult<VoidResult> setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form);
     
     CommandResult<EditIndexResult> editIndex(UserVisitPK userVisitPK, EditIndexForm form);
     
-    CommandResult<?> deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form);
+    CommandResult<VoidResult> deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form);
+    CommandResult<VoidResult> createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form);
     
     CommandResult<GetIndexDescriptionResult> getIndexDescription(UserVisitPK userVisitPK, GetIndexDescriptionForm form);
     
@@ -124,7 +125,7 @@ public interface IndexService
     
     CommandResult<EditIndexDescriptionResult> editIndexDescription(UserVisitPK userVisitPK, EditIndexDescriptionForm form);
     
-    CommandResult<?> deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form);
+    CommandResult<VoidResult> deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Utilities
@@ -132,6 +133,6 @@ public interface IndexService
     
     CommandResult<UpdateIndexesResult> updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form);
     
-    CommandResult<?> forceReindex(UserVisitPK userVisitPK, ForceReindexForm form);
+    CommandResult<VoidResult> forceReindex(UserVisitPK userVisitPK, ForceReindexForm form);
     
 }

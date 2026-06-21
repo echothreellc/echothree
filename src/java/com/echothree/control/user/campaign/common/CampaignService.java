@@ -20,6 +20,7 @@ import com.echothree.control.user.campaign.common.form.*;
 import com.echothree.control.user.campaign.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface CampaignService
         extends CampaignForms {
@@ -42,21 +43,21 @@ public interface CampaignService
     
     CommandResult<GetCampaignsResult> getCampaigns(UserVisitPK userVisitPK, GetCampaignsForm form);
     
-    CommandResult<?> setDefaultCampaign(UserVisitPK userVisitPK, SetDefaultCampaignForm form);
+    CommandResult<VoidResult> setDefaultCampaign(UserVisitPK userVisitPK, SetDefaultCampaignForm form);
     
     CommandResult<GetCampaignStatusChoicesResult> getCampaignStatusChoices(UserVisitPK userVisitPK, GetCampaignStatusChoicesForm form);
     
-    CommandResult<?> setCampaignStatus(UserVisitPK userVisitPK, SetCampaignStatusForm form);
+    CommandResult<VoidResult> setCampaignStatus(UserVisitPK userVisitPK, SetCampaignStatusForm form);
     
     CommandResult<EditCampaignResult> editCampaign(UserVisitPK userVisitPK, EditCampaignForm form);
     
-    CommandResult<?> deleteCampaign(UserVisitPK userVisitPK, DeleteCampaignForm form);
+    CommandResult<VoidResult> deleteCampaign(UserVisitPK userVisitPK, DeleteCampaignForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignDescription(UserVisitPK userVisitPK, CreateCampaignDescriptionForm form);
+    CommandResult<VoidResult> createCampaignDescription(UserVisitPK userVisitPK, CreateCampaignDescriptionForm form);
     
     CommandResult<GetCampaignDescriptionResult> getCampaignDescription(UserVisitPK userVisitPK, GetCampaignDescriptionForm form);
     
@@ -64,7 +65,7 @@ public interface CampaignService
     
     CommandResult<EditCampaignDescriptionResult> editCampaignDescription(UserVisitPK userVisitPK, EditCampaignDescriptionForm form);
     
-    CommandResult<?> deleteCampaignDescription(UserVisitPK userVisitPK, DeleteCampaignDescriptionForm form);
+    CommandResult<VoidResult> deleteCampaignDescription(UserVisitPK userVisitPK, DeleteCampaignDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Sources
@@ -78,21 +79,21 @@ public interface CampaignService
     
     CommandResult<GetCampaignSourcesResult> getCampaignSources(UserVisitPK userVisitPK, GetCampaignSourcesForm form);
     
-    CommandResult<?> setDefaultCampaignSource(UserVisitPK userVisitPK, SetDefaultCampaignSourceForm form);
+    CommandResult<VoidResult> setDefaultCampaignSource(UserVisitPK userVisitPK, SetDefaultCampaignSourceForm form);
     
     CommandResult<GetCampaignSourceStatusChoicesResult> getCampaignSourceStatusChoices(UserVisitPK userVisitPK, GetCampaignSourceStatusChoicesForm form);
     
-    CommandResult<?> setCampaignSourceStatus(UserVisitPK userVisitPK, SetCampaignSourceStatusForm form);
+    CommandResult<VoidResult> setCampaignSourceStatus(UserVisitPK userVisitPK, SetCampaignSourceStatusForm form);
     
     CommandResult<EditCampaignSourceResult> editCampaignSource(UserVisitPK userVisitPK, EditCampaignSourceForm form);
     
-    CommandResult<?> deleteCampaignSource(UserVisitPK userVisitPK, DeleteCampaignSourceForm form);
+    CommandResult<VoidResult> deleteCampaignSource(UserVisitPK userVisitPK, DeleteCampaignSourceForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Source Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignSourceDescription(UserVisitPK userVisitPK, CreateCampaignSourceDescriptionForm form);
+    CommandResult<VoidResult> createCampaignSourceDescription(UserVisitPK userVisitPK, CreateCampaignSourceDescriptionForm form);
     
     CommandResult<GetCampaignSourceDescriptionResult> getCampaignSourceDescription(UserVisitPK userVisitPK, GetCampaignSourceDescriptionForm form);
     
@@ -100,7 +101,7 @@ public interface CampaignService
     
     CommandResult<EditCampaignSourceDescriptionResult> editCampaignSourceDescription(UserVisitPK userVisitPK, EditCampaignSourceDescriptionForm form);
     
-    CommandResult<?> deleteCampaignSourceDescription(UserVisitPK userVisitPK, DeleteCampaignSourceDescriptionForm form);
+    CommandResult<VoidResult> deleteCampaignSourceDescription(UserVisitPK userVisitPK, DeleteCampaignSourceDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Mediums
@@ -114,21 +115,21 @@ public interface CampaignService
     
     CommandResult<GetCampaignMediumsResult> getCampaignMediums(UserVisitPK userVisitPK, GetCampaignMediumsForm form);
     
-    CommandResult<?> setDefaultCampaignMedium(UserVisitPK userVisitPK, SetDefaultCampaignMediumForm form);
+    CommandResult<VoidResult> setDefaultCampaignMedium(UserVisitPK userVisitPK, SetDefaultCampaignMediumForm form);
     
     CommandResult<GetCampaignMediumStatusChoicesResult> getCampaignMediumStatusChoices(UserVisitPK userVisitPK, GetCampaignMediumStatusChoicesForm form);
     
-    CommandResult<?> setCampaignMediumStatus(UserVisitPK userVisitPK, SetCampaignMediumStatusForm form);
+    CommandResult<VoidResult> setCampaignMediumStatus(UserVisitPK userVisitPK, SetCampaignMediumStatusForm form);
     
     CommandResult<EditCampaignMediumResult> editCampaignMedium(UserVisitPK userVisitPK, EditCampaignMediumForm form);
     
-    CommandResult<?> deleteCampaignMedium(UserVisitPK userVisitPK, DeleteCampaignMediumForm form);
+    CommandResult<VoidResult> deleteCampaignMedium(UserVisitPK userVisitPK, DeleteCampaignMediumForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Medium Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignMediumDescription(UserVisitPK userVisitPK, CreateCampaignMediumDescriptionForm form);
+    CommandResult<VoidResult> createCampaignMediumDescription(UserVisitPK userVisitPK, CreateCampaignMediumDescriptionForm form);
     
     CommandResult<GetCampaignMediumDescriptionResult> getCampaignMediumDescription(UserVisitPK userVisitPK, GetCampaignMediumDescriptionForm form);
     
@@ -136,7 +137,7 @@ public interface CampaignService
     
     CommandResult<EditCampaignMediumDescriptionResult> editCampaignMediumDescription(UserVisitPK userVisitPK, EditCampaignMediumDescriptionForm form);
     
-    CommandResult<?> deleteCampaignMediumDescription(UserVisitPK userVisitPK, DeleteCampaignMediumDescriptionForm form);
+    CommandResult<VoidResult> deleteCampaignMediumDescription(UserVisitPK userVisitPK, DeleteCampaignMediumDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Terms
@@ -150,21 +151,21 @@ public interface CampaignService
     
     CommandResult<GetCampaignTermsResult> getCampaignTerms(UserVisitPK userVisitPK, GetCampaignTermsForm form);
     
-    CommandResult<?> setDefaultCampaignTerm(UserVisitPK userVisitPK, SetDefaultCampaignTermForm form);
+    CommandResult<VoidResult> setDefaultCampaignTerm(UserVisitPK userVisitPK, SetDefaultCampaignTermForm form);
     
     CommandResult<GetCampaignTermStatusChoicesResult> getCampaignTermStatusChoices(UserVisitPK userVisitPK, GetCampaignTermStatusChoicesForm form);
     
-    CommandResult<?> setCampaignTermStatus(UserVisitPK userVisitPK, SetCampaignTermStatusForm form);
+    CommandResult<VoidResult> setCampaignTermStatus(UserVisitPK userVisitPK, SetCampaignTermStatusForm form);
     
     CommandResult<EditCampaignTermResult> editCampaignTerm(UserVisitPK userVisitPK, EditCampaignTermForm form);
     
-    CommandResult<?> deleteCampaignTerm(UserVisitPK userVisitPK, DeleteCampaignTermForm form);
+    CommandResult<VoidResult> deleteCampaignTerm(UserVisitPK userVisitPK, DeleteCampaignTermForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Term Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignTermDescription(UserVisitPK userVisitPK, CreateCampaignTermDescriptionForm form);
+    CommandResult<VoidResult> createCampaignTermDescription(UserVisitPK userVisitPK, CreateCampaignTermDescriptionForm form);
     
     CommandResult<GetCampaignTermDescriptionResult> getCampaignTermDescription(UserVisitPK userVisitPK, GetCampaignTermDescriptionForm form);
     
@@ -172,7 +173,7 @@ public interface CampaignService
     
     CommandResult<EditCampaignTermDescriptionResult> editCampaignTermDescription(UserVisitPK userVisitPK, EditCampaignTermDescriptionForm form);
     
-    CommandResult<?> deleteCampaignTermDescription(UserVisitPK userVisitPK, DeleteCampaignTermDescriptionForm form);
+    CommandResult<VoidResult> deleteCampaignTermDescription(UserVisitPK userVisitPK, DeleteCampaignTermDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Contents
@@ -186,21 +187,21 @@ public interface CampaignService
     
     CommandResult<GetCampaignContentsResult> getCampaignContents(UserVisitPK userVisitPK, GetCampaignContentsForm form);
     
-    CommandResult<?> setDefaultCampaignContent(UserVisitPK userVisitPK, SetDefaultCampaignContentForm form);
+    CommandResult<VoidResult> setDefaultCampaignContent(UserVisitPK userVisitPK, SetDefaultCampaignContentForm form);
     
     CommandResult<GetCampaignContentStatusChoicesResult> getCampaignContentStatusChoices(UserVisitPK userVisitPK, GetCampaignContentStatusChoicesForm form);
     
-    CommandResult<?> setCampaignContentStatus(UserVisitPK userVisitPK, SetCampaignContentStatusForm form);
+    CommandResult<VoidResult> setCampaignContentStatus(UserVisitPK userVisitPK, SetCampaignContentStatusForm form);
     
     CommandResult<EditCampaignContentResult> editCampaignContent(UserVisitPK userVisitPK, EditCampaignContentForm form);
     
-    CommandResult<?> deleteCampaignContent(UserVisitPK userVisitPK, DeleteCampaignContentForm form);
+    CommandResult<VoidResult> deleteCampaignContent(UserVisitPK userVisitPK, DeleteCampaignContentForm form);
     
     // --------------------------------------------------------------------------------
     //   Campaign Content Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignContentDescription(UserVisitPK userVisitPK, CreateCampaignContentDescriptionForm form);
+    CommandResult<VoidResult> createCampaignContentDescription(UserVisitPK userVisitPK, CreateCampaignContentDescriptionForm form);
     
     CommandResult<GetCampaignContentDescriptionResult> getCampaignContentDescription(UserVisitPK userVisitPK, GetCampaignContentDescriptionForm form);
     
@@ -208,12 +209,12 @@ public interface CampaignService
     
     CommandResult<EditCampaignContentDescriptionResult> editCampaignContentDescription(UserVisitPK userVisitPK, EditCampaignContentDescriptionForm form);
     
-    CommandResult<?> deleteCampaignContentDescription(UserVisitPK userVisitPK, DeleteCampaignContentDescriptionForm form);
+    CommandResult<VoidResult> deleteCampaignContentDescription(UserVisitPK userVisitPK, DeleteCampaignContentDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   User Visit Tracks
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createUserVisitCampaign(UserVisitPK userVisitPK, CreateUserVisitCampaignForm form);
+    CommandResult<VoidResult> createUserVisitCampaign(UserVisitPK userVisitPK, CreateUserVisitCampaignForm form);
     
 }

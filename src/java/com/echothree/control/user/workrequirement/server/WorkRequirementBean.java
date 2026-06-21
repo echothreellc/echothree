@@ -22,6 +22,7 @@ import com.echothree.control.user.workrequirement.common.result.*;
 import com.echothree.control.user.workrequirement.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class WorkRequirementBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form) {
+    public CommandResult<VoidResult> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form) {
         return CDI.current().select(CreateWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -59,7 +60,7 @@ public class WorkRequirementBean
     }
     
     @Override
-    public CommandResult<?> deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form) {
+    public CommandResult<VoidResult> deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form) {
         return CDI.current().select(DeleteWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class WorkRequirementBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form) {
         return CDI.current().select(CreateWorkRequirementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class WorkRequirementBean
     }
     
     @Override
-    public CommandResult<?> deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form) {
         return CDI.current().select(DeleteWorkRequirementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

@@ -22,6 +22,7 @@ import com.echothree.control.user.warehouse.common.result.*;
 import com.echothree.control.user.warehouse.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form) {
+    public CommandResult<VoidResult> createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form) {
         return CDI.current().select(CreateLocationUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -68,7 +69,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationUseTypeDescription(UserVisitPK userVisitPK, CreateLocationUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createLocationUseTypeDescription(UserVisitPK userVisitPK, CreateLocationUseTypeDescriptionForm form) {
         return CDI.current().select(CreateLocationUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -97,7 +98,7 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> setDefaultWarehouseType(UserVisitPK userVisitPK, SetDefaultWarehouseTypeForm form) {
+    public CommandResult<VoidResult> setDefaultWarehouseType(UserVisitPK userVisitPK, SetDefaultWarehouseTypeForm form) {
         return CDI.current().select(SetDefaultWarehouseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -107,7 +108,7 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> deleteWarehouseType(UserVisitPK userVisitPK, DeleteWarehouseTypeForm form) {
+    public CommandResult<VoidResult> deleteWarehouseType(UserVisitPK userVisitPK, DeleteWarehouseTypeForm form) {
         return CDI.current().select(DeleteWarehouseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -116,7 +117,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createWarehouseTypeDescription(UserVisitPK userVisitPK, CreateWarehouseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createWarehouseTypeDescription(UserVisitPK userVisitPK, CreateWarehouseTypeDescriptionForm form) {
         return CDI.current().select(CreateWarehouseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> deleteWarehouseTypeDescription(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteWarehouseTypeDescription(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form) {
         return CDI.current().select(DeleteWarehouseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -165,7 +166,7 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> setDefaultWarehouse(UserVisitPK userVisitPK, SetDefaultWarehouseForm form) {
+    public CommandResult<VoidResult> setDefaultWarehouse(UserVisitPK userVisitPK, SetDefaultWarehouseForm form) {
         return CDI.current().select(SetDefaultWarehouseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -175,7 +176,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteWarehouse(UserVisitPK userVisitPK, DeleteWarehouseForm form) {
+    public CommandResult<VoidResult> deleteWarehouse(UserVisitPK userVisitPK, DeleteWarehouseForm form) {
         return CDI.current().select(DeleteWarehouseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -204,7 +205,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> setDefaultLocationType(UserVisitPK userVisitPK, SetDefaultLocationTypeForm form) {
+    public CommandResult<VoidResult> setDefaultLocationType(UserVisitPK userVisitPK, SetDefaultLocationTypeForm form) {
         return CDI.current().select(SetDefaultLocationTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -214,7 +215,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationType(UserVisitPK userVisitPK, DeleteLocationTypeForm form) {
+    public CommandResult<VoidResult> deleteLocationType(UserVisitPK userVisitPK, DeleteLocationTypeForm form) {
         return CDI.current().select(DeleteLocationTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -223,7 +224,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationTypeDescription(UserVisitPK userVisitPK, CreateLocationTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createLocationTypeDescription(UserVisitPK userVisitPK, CreateLocationTypeDescriptionForm form) {
         return CDI.current().select(CreateLocationTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -238,7 +239,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationTypeDescription(UserVisitPK userVisitPK, DeleteLocationTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteLocationTypeDescription(UserVisitPK userVisitPK, DeleteLocationTypeDescriptionForm form) {
         return CDI.current().select(DeleteLocationTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -267,7 +268,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationNameElement(UserVisitPK userVisitPK, DeleteLocationNameElementForm form) {
+    public CommandResult<VoidResult> deleteLocationNameElement(UserVisitPK userVisitPK, DeleteLocationNameElementForm form) {
         return CDI.current().select(DeleteLocationNameElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -276,7 +277,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationNameElementDescription(UserVisitPK userVisitPK, CreateLocationNameElementDescriptionForm form) {
+    public CommandResult<VoidResult> createLocationNameElementDescription(UserVisitPK userVisitPK, CreateLocationNameElementDescriptionForm form) {
         return CDI.current().select(CreateLocationNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -291,7 +292,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationNameElementDescription(UserVisitPK userVisitPK, DeleteLocationNameElementDescriptionForm form) {
+    public CommandResult<VoidResult> deleteLocationNameElementDescription(UserVisitPK userVisitPK, DeleteLocationNameElementDescriptionForm form) {
         return CDI.current().select(DeleteLocationNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -325,7 +326,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> setLocationStatus(UserVisitPK userVisitPK, SetLocationStatusForm form) {
+    public CommandResult<VoidResult> setLocationStatus(UserVisitPK userVisitPK, SetLocationStatusForm form) {
         return CDI.current().select(SetLocationStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -335,7 +336,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocation(UserVisitPK userVisitPK, DeleteLocationForm form) {
+    public CommandResult<VoidResult> deleteLocation(UserVisitPK userVisitPK, DeleteLocationForm form) {
         return CDI.current().select(DeleteLocationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -344,7 +345,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationDescription(UserVisitPK userVisitPK, CreateLocationDescriptionForm form) {
+    public CommandResult<VoidResult> createLocationDescription(UserVisitPK userVisitPK, CreateLocationDescriptionForm form) {
         return CDI.current().select(CreateLocationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -359,7 +360,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationDescription(UserVisitPK userVisitPK, DeleteLocationDescriptionForm form) {
+    public CommandResult<VoidResult> deleteLocationDescription(UserVisitPK userVisitPK, DeleteLocationDescriptionForm form) {
         return CDI.current().select(DeleteLocationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -368,7 +369,7 @@ public class WarehouseBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationCapacity(UserVisitPK userVisitPK, CreateLocationCapacityForm form) {
+    public CommandResult<VoidResult> createLocationCapacity(UserVisitPK userVisitPK, CreateLocationCapacityForm form) {
         return CDI.current().select(CreateLocationCapacityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -383,7 +384,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationCapacity(UserVisitPK userVisitPK, DeleteLocationCapacityForm form) {
+    public CommandResult<VoidResult> deleteLocationCapacity(UserVisitPK userVisitPK, DeleteLocationCapacityForm form) {
         return CDI.current().select(DeleteLocationCapacityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -392,7 +393,7 @@ public class WarehouseBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationVolume(UserVisitPK userVisitPK, CreateLocationVolumeForm form) {
+    public CommandResult<VoidResult> createLocationVolume(UserVisitPK userVisitPK, CreateLocationVolumeForm form) {
         return CDI.current().select(CreateLocationVolumeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -402,7 +403,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> deleteLocationVolume(UserVisitPK userVisitPK, DeleteLocationVolumeForm form) {
+    public CommandResult<VoidResult> deleteLocationVolume(UserVisitPK userVisitPK, DeleteLocationVolumeForm form) {
         return CDI.current().select(DeleteLocationVolumeCommand.class).get().run(userVisitPK, form);
     }
     

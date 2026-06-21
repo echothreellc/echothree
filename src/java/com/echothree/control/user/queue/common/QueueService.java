@@ -20,6 +20,7 @@ import com.echothree.control.user.queue.common.form.*;
 import com.echothree.control.user.queue.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface QueueService
         extends QueueForms {
@@ -34,7 +35,7 @@ public interface QueueService
     //   Queue Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form);
+    CommandResult<VoidResult> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form);
     
     CommandResult<GetQueueTypeChoicesResult> getQueueTypeChoices(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form);
     
@@ -42,17 +43,17 @@ public interface QueueService
     
     CommandResult<GetQueueTypesResult> getQueueTypes(UserVisitPK userVisitPK, GetQueueTypesForm form);
     
-    CommandResult<?> setDefaultQueueType(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form);
+    CommandResult<VoidResult> setDefaultQueueType(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form);
     
     CommandResult<EditQueueTypeResult> editQueueType(UserVisitPK userVisitPK, EditQueueTypeForm form);
     
-    CommandResult<?> deleteQueueType(UserVisitPK userVisitPK, DeleteQueueTypeForm form);
+    CommandResult<VoidResult> deleteQueueType(UserVisitPK userVisitPK, DeleteQueueTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Queue Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createQueueTypeDescription(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form);
+    CommandResult<VoidResult> createQueueTypeDescription(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form);
     
     CommandResult<GetQueueTypeDescriptionResult> getQueueTypeDescription(UserVisitPK userVisitPK, GetQueueTypeDescriptionForm form);
     
@@ -60,6 +61,6 @@ public interface QueueService
     
     CommandResult<EditQueueTypeDescriptionResult> editQueueTypeDescription(UserVisitPK userVisitPK, EditQueueTypeDescriptionForm form);
     
-    CommandResult<?> deleteQueueTypeDescription(UserVisitPK userVisitPK, DeleteQueueTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteQueueTypeDescription(UserVisitPK userVisitPK, DeleteQueueTypeDescriptionForm form);
     
 }

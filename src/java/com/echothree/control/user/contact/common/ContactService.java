@@ -20,6 +20,7 @@ import com.echothree.control.user.contact.common.form.*;
 import com.echothree.control.user.contact.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface ContactService
         extends ContactForms {
@@ -34,7 +35,7 @@ public interface ContactService
     //   Contact Mechanism Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismType(UserVisitPK userVisitPK, CreateContactMechanismTypeForm form);
+    CommandResult<VoidResult> createContactMechanismType(UserVisitPK userVisitPK, CreateContactMechanismTypeForm form);
     
     CommandResult<GetContactMechanismTypesResult> getContactMechanismTypes(UserVisitPK userVisitPK, GetContactMechanismTypesForm form);
     
@@ -44,13 +45,13 @@ public interface ContactService
     //   Contact Mechanism Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismTypeDescriptionForm form);
+    CommandResult<VoidResult> createContactMechanismTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Alias Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form);
+    CommandResult<VoidResult> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form);
     
     CommandResult<GetContactMechanismAliasTypesResult> getContactMechanismAliasTypes(UserVisitPK userVisitPK, GetContactMechanismAliasTypesForm form);
     
@@ -60,13 +61,13 @@ public interface ContactService
     //   Contact Mechanism Alias Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismAliasTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> createContactMechanismAliasTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form);
+    CommandResult<VoidResult> createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form);
 
     CommandResult<GetContactMechanismPurposeResult> getContactMechanismPurpose(UserVisitPK userVisitPK, GetContactMechanismPurposeForm form);
 
@@ -78,7 +79,7 @@ public interface ContactService
     //   Contact Mechanism Purpose Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismPurposeDescription(UserVisitPK userVisitPK, CreateContactMechanismPurposeDescriptionForm form);
+    CommandResult<VoidResult> createContactMechanismPurposeDescription(UserVisitPK userVisitPK, CreateContactMechanismPurposeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Contact Mechanisms
@@ -88,43 +89,43 @@ public interface ContactService
     
     CommandResult<GetEmailAddressStatusChoicesResult> getEmailAddressStatusChoices(UserVisitPK userVisitPK, GetEmailAddressStatusChoicesForm form);
     
-    CommandResult<?> setEmailAddressStatus(UserVisitPK userVisitPK, SetEmailAddressStatusForm form);
+    CommandResult<VoidResult> setEmailAddressStatus(UserVisitPK userVisitPK, SetEmailAddressStatusForm form);
 
     CommandResult<GetEmailAddressVerificationChoicesResult> getEmailAddressVerificationChoices(UserVisitPK userVisitPK, GetEmailAddressVerificationChoicesForm form);
     
-    CommandResult<?> setEmailAddressVerification(UserVisitPK userVisitPK, SetEmailAddressVerificationForm form);
+    CommandResult<VoidResult> setEmailAddressVerification(UserVisitPK userVisitPK, SetEmailAddressVerificationForm form);
 
     CommandResult<GetPostalAddressStatusChoicesResult> getPostalAddressStatusChoices(UserVisitPK userVisitPK, GetPostalAddressStatusChoicesForm form);
     
-    CommandResult<?> setPostalAddressStatus(UserVisitPK userVisitPK, SetPostalAddressStatusForm form);
+    CommandResult<VoidResult> setPostalAddressStatus(UserVisitPK userVisitPK, SetPostalAddressStatusForm form);
 
     CommandResult<GetTelephoneStatusChoicesResult> getTelephoneStatusChoices(UserVisitPK userVisitPK, GetTelephoneStatusChoicesForm form);
 
-    CommandResult<?> setTelephoneStatus(UserVisitPK userVisitPK, SetTelephoneStatusForm form);
+    CommandResult<VoidResult> setTelephoneStatus(UserVisitPK userVisitPK, SetTelephoneStatusForm form);
 
     CommandResult<GetWebAddressStatusChoicesResult> getWebAddressStatusChoices(UserVisitPK userVisitPK, GetWebAddressStatusChoicesForm form);
 
-    CommandResult<?> setWebAddressStatus(UserVisitPK userVisitPK, SetWebAddressStatusForm form);
+    CommandResult<VoidResult> setWebAddressStatus(UserVisitPK userVisitPK, SetWebAddressStatusForm form);
 
     CommandResult<GetContactMechanismResult> getContactMechanism(UserVisitPK userVisitPK, GetContactMechanismForm form);
 
-    CommandResult<?> deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form);
+    CommandResult<VoidResult> deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form);
     
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Aliases
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form);
+    CommandResult<VoidResult> createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form);
     
-    CommandResult<?> deleteContactMechanismAlias(UserVisitPK userVisitPK, DeleteContactMechanismAliasForm form);
+    CommandResult<VoidResult> deleteContactMechanismAlias(UserVisitPK userVisitPK, DeleteContactMechanismAliasForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Contact Mechanism Aliases
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyContactMechanismAlias(UserVisitPK userVisitPK, CreatePartyContactMechanismAliasForm form);
+    CommandResult<VoidResult> createPartyContactMechanismAlias(UserVisitPK userVisitPK, CreatePartyContactMechanismAliasForm form);
     
-    CommandResult<?> deletePartyContactMechanismAlias(UserVisitPK userVisitPK, DeletePartyContactMechanismAliasForm form);
+    CommandResult<VoidResult> deletePartyContactMechanismAlias(UserVisitPK userVisitPK, DeletePartyContactMechanismAliasForm form);
     
     // --------------------------------------------------------------------------------
     //   Contact Email Addresses
@@ -162,25 +163,25 @@ public interface ContactService
     //   Party Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyContactMechanismPurpose(UserVisitPK userVisitPK, CreatePartyContactMechanismPurposeForm form);
+    CommandResult<VoidResult> createPartyContactMechanismPurpose(UserVisitPK userVisitPK, CreatePartyContactMechanismPurposeForm form);
     
-    CommandResult<?> setDefaultPartyContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultPartyContactMechanismPurposeForm form);
+    CommandResult<VoidResult> setDefaultPartyContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultPartyContactMechanismPurposeForm form);
     
-    CommandResult<?> deletePartyContactMechanismPurpose(UserVisitPK userVisitPK, DeletePartyContactMechanismPurposeForm form);
+    CommandResult<VoidResult> deletePartyContactMechanismPurpose(UserVisitPK userVisitPK, DeletePartyContactMechanismPurposeForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Contact Mechanism Relationships
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyContactMechanismRelationship(UserVisitPK userVisitPK, CreatePartyContactMechanismRelationshipForm form);
+    CommandResult<VoidResult> createPartyContactMechanismRelationship(UserVisitPK userVisitPK, CreatePartyContactMechanismRelationshipForm form);
     
-    CommandResult<?> deletePartyContactMechanismRelationship(UserVisitPK userVisitPK, DeletePartyContactMechanismRelationshipForm form);
+    CommandResult<VoidResult> deletePartyContactMechanismRelationship(UserVisitPK userVisitPK, DeletePartyContactMechanismRelationshipForm form);
     
     // --------------------------------------------------------------------------------
     //   Postal Address Element Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPostalAddressElementType(UserVisitPK userVisitPK, CreatePostalAddressElementTypeForm form);
+    CommandResult<VoidResult> createPostalAddressElementType(UserVisitPK userVisitPK, CreatePostalAddressElementTypeForm form);
     
     CommandResult<GetPostalAddressElementTypeChoicesResult> getPostalAddressElementTypeChoices(UserVisitPK userVisitPK, GetPostalAddressElementTypeChoicesForm form);
     
@@ -188,13 +189,13 @@ public interface ContactService
     //   Postal Address Element Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPostalAddressElementTypeDescription(UserVisitPK userVisitPK, CreatePostalAddressElementTypeDescriptionForm form);
+    CommandResult<VoidResult> createPostalAddressElementTypeDescription(UserVisitPK userVisitPK, CreatePostalAddressElementTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Postal Address Formats
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form);
+    CommandResult<VoidResult> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form);
     
     CommandResult<GetPostalAddressFormatResult> getPostalAddressFormat(UserVisitPK userVisitPK, GetPostalAddressFormatForm form);
     
@@ -202,46 +203,46 @@ public interface ContactService
     
     CommandResult<GetPostalAddressFormatChoicesResult> getPostalAddressFormatChoices(UserVisitPK userVisitPK, GetPostalAddressFormatChoicesForm form);
     
-    CommandResult<?> setDefaultPostalAddressFormat(UserVisitPK userVisitPK, SetDefaultPostalAddressFormatForm form);
+    CommandResult<VoidResult> setDefaultPostalAddressFormat(UserVisitPK userVisitPK, SetDefaultPostalAddressFormatForm form);
     
     CommandResult<EditPostalAddressFormatResult> editPostalAddressFormat(UserVisitPK userVisitPK, EditPostalAddressFormatForm form);
     
-    CommandResult<?> deletePostalAddressFormat(UserVisitPK userVisitPK, DeletePostalAddressFormatForm form);
+    CommandResult<VoidResult> deletePostalAddressFormat(UserVisitPK userVisitPK, DeletePostalAddressFormatForm form);
     
     // -------------------------------------------------------------------------
     //   Postal Address Format Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPostalAddressFormatDescription(UserVisitPK userVisitPK, CreatePostalAddressFormatDescriptionForm form);
+    CommandResult<VoidResult> createPostalAddressFormatDescription(UserVisitPK userVisitPK, CreatePostalAddressFormatDescriptionForm form);
     
     CommandResult<GetPostalAddressFormatDescriptionsResult> getPostalAddressFormatDescriptions(UserVisitPK userVisitPK, GetPostalAddressFormatDescriptionsForm form);
     
     CommandResult<EditPostalAddressFormatDescriptionResult> editPostalAddressFormatDescription(UserVisitPK userVisitPK, EditPostalAddressFormatDescriptionForm form);
     
-    CommandResult<?> deletePostalAddressFormatDescription(UserVisitPK userVisitPK, DeletePostalAddressFormatDescriptionForm form);
+    CommandResult<VoidResult> deletePostalAddressFormatDescription(UserVisitPK userVisitPK, DeletePostalAddressFormatDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Postal Address Lines
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPostalAddressLine(UserVisitPK userVisitPK, CreatePostalAddressLineForm form);
+    CommandResult<VoidResult> createPostalAddressLine(UserVisitPK userVisitPK, CreatePostalAddressLineForm form);
     
     CommandResult<GetPostalAddressLinesResult> getPostalAddressLines(UserVisitPK userVisitPK, GetPostalAddressLinesForm form);
     
     CommandResult<EditPostalAddressLineResult> editPostalAddressLine(UserVisitPK userVisitPK, EditPostalAddressLineForm form);
     
-    CommandResult<?> deletePostalAddressLine(UserVisitPK userVisitPK, DeletePostalAddressLineForm form);
+    CommandResult<VoidResult> deletePostalAddressLine(UserVisitPK userVisitPK, DeletePostalAddressLineForm form);
     
     // --------------------------------------------------------------------------------
     //   Postal Address Line Elements
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPostalAddressLineElement(UserVisitPK userVisitPK, CreatePostalAddressLineElementForm form);
+    CommandResult<VoidResult> createPostalAddressLineElement(UserVisitPK userVisitPK, CreatePostalAddressLineElementForm form);
     
     CommandResult<GetPostalAddressLineElementsResult> getPostalAddressLineElements(UserVisitPK userVisitPK, GetPostalAddressLineElementsForm form);
     
     CommandResult<EditPostalAddressLineElementResult> editPostalAddressLineElement(UserVisitPK userVisitPK, EditPostalAddressLineElementForm form);
     
-    CommandResult<?> deletePostalAddressLineElement(UserVisitPK userVisitPK, DeletePostalAddressLineElementForm form);
+    CommandResult<VoidResult> deletePostalAddressLineElement(UserVisitPK userVisitPK, DeletePostalAddressLineElementForm form);
     
 }

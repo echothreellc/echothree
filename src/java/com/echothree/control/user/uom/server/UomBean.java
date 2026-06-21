@@ -22,6 +22,7 @@ import com.echothree.control.user.uom.common.result.*;
 import com.echothree.control.user.uom.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form) {
         return CDI.current().select(CreateUnitOfMeasureKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -65,7 +66,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> setDefaultUnitOfMeasureKind(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindForm form) {
+    public CommandResult<VoidResult> setDefaultUnitOfMeasureKind(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindForm form) {
         return CDI.current().select(SetDefaultUnitOfMeasureKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -75,7 +76,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureKind(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureKind(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindForm form) {
         return CDI.current().select(DeleteUnitOfMeasureKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -84,7 +85,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureKindDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureKindDescriptionForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureKindDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureKindDescriptionForm form) {
         return CDI.current().select(CreateUnitOfMeasureKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -99,7 +100,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureKindDescription(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindDescriptionForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureKindDescription(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindDescriptionForm form) {
         return CDI.current().select(DeleteUnitOfMeasureKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -108,7 +109,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form) {
         return CDI.current().select(CreateUnitOfMeasureTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -133,7 +134,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> setDefaultUnitOfMeasureType(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureTypeForm form) {
+    public CommandResult<VoidResult> setDefaultUnitOfMeasureType(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureTypeForm form) {
         return CDI.current().select(SetDefaultUnitOfMeasureTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -143,7 +144,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureType(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureType(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeForm form) {
         return CDI.current().select(DeleteUnitOfMeasureTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -152,7 +153,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeDescriptionForm form) {
         return CDI.current().select(CreateUnitOfMeasureTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -167,7 +168,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeDescriptionForm form) {
         return CDI.current().select(DeleteUnitOfMeasureTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -176,7 +177,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeVolumeForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeVolumeForm form) {
         return CDI.current().select(CreateUnitOfMeasureTypeVolumeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -186,7 +187,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeVolumeForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeVolumeForm form) {
         return CDI.current().select(DeleteUnitOfMeasureTypeVolumeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -195,7 +196,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeWeightForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeWeightForm form) {
         return CDI.current().select(CreateUnitOfMeasureTypeWeightCommand.class).get().run(userVisitPK, form);
     }
     
@@ -205,7 +206,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeWeightForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeWeightForm form) {
         return CDI.current().select(DeleteUnitOfMeasureTypeWeightCommand.class).get().run(userVisitPK, form);
     }
     
@@ -214,7 +215,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureEquivalent(UserVisitPK userVisitPK, CreateUnitOfMeasureEquivalentForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureEquivalent(UserVisitPK userVisitPK, CreateUnitOfMeasureEquivalentForm form) {
         return CDI.current().select(CreateUnitOfMeasureEquivalentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -229,7 +230,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureEquivalent(UserVisitPK userVisitPK, DeleteUnitOfMeasureEquivalentForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureEquivalent(UserVisitPK userVisitPK, DeleteUnitOfMeasureEquivalentForm form) {
         return CDI.current().select(DeleteUnitOfMeasureEquivalentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -238,7 +239,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureKindUseType(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseTypeForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureKindUseType(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseTypeForm form) {
         return CDI.current().select(CreateUnitOfMeasureKindUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -262,7 +263,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureKindUseTypeDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureKindUseTypeDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseTypeDescriptionForm form) {
         return CDI.current().select(CreateUnitOfMeasureKindUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -271,7 +272,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUnitOfMeasureKindUse(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseForm form) {
+    public CommandResult<VoidResult> createUnitOfMeasureKindUse(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseForm form) {
         return CDI.current().select(CreateUnitOfMeasureKindUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -286,7 +287,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> setDefaultUnitOfMeasureKindUse(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindUseForm form) {
+    public CommandResult<VoidResult> setDefaultUnitOfMeasureKindUse(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindUseForm form) {
         return CDI.current().select(SetDefaultUnitOfMeasureKindUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -296,7 +297,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> deleteUnitOfMeasureKindUse(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindUseForm form) {
+    public CommandResult<VoidResult> deleteUnitOfMeasureKindUse(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindUseForm form) {
         return CDI.current().select(DeleteUnitOfMeasureKindUseCommand.class).get().run(userVisitPK, form);
     }
     

@@ -20,6 +20,7 @@ import com.echothree.control.user.track.common.form.*;
 import com.echothree.control.user.track.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface TrackService
         extends TrackForms {
@@ -42,21 +43,21 @@ public interface TrackService
     
     CommandResult<GetTracksResult> getTracks(UserVisitPK userVisitPK, GetTracksForm form);
     
-    CommandResult<?> setDefaultTrack(UserVisitPK userVisitPK, SetDefaultTrackForm form);
+    CommandResult<VoidResult> setDefaultTrack(UserVisitPK userVisitPK, SetDefaultTrackForm form);
     
     CommandResult<GetTrackStatusChoicesResult> getTrackStatusChoices(UserVisitPK userVisitPK, GetTrackStatusChoicesForm form);
     
-    CommandResult<?> setTrackStatus(UserVisitPK userVisitPK, SetTrackStatusForm form);
+    CommandResult<VoidResult> setTrackStatus(UserVisitPK userVisitPK, SetTrackStatusForm form);
     
     CommandResult<EditTrackResult> editTrack(UserVisitPK userVisitPK, EditTrackForm form);
     
-    CommandResult<?> deleteTrack(UserVisitPK userVisitPK, DeleteTrackForm form);
+    CommandResult<VoidResult> deleteTrack(UserVisitPK userVisitPK, DeleteTrackForm form);
     
     // --------------------------------------------------------------------------------
     //   Track Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTrackDescription(UserVisitPK userVisitPK, CreateTrackDescriptionForm form);
+    CommandResult<VoidResult> createTrackDescription(UserVisitPK userVisitPK, CreateTrackDescriptionForm form);
     
     CommandResult<GetTrackDescriptionResult> getTrackDescription(UserVisitPK userVisitPK, GetTrackDescriptionForm form);
     
@@ -64,12 +65,12 @@ public interface TrackService
     
     CommandResult<EditTrackDescriptionResult> editTrackDescription(UserVisitPK userVisitPK, EditTrackDescriptionForm form);
     
-    CommandResult<?> deleteTrackDescription(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form);
+    CommandResult<VoidResult> deleteTrackDescription(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   User Visit Tracks
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createUserVisitTrack(UserVisitPK userVisitPK, CreateUserVisitTrackForm form);
+    CommandResult<VoidResult> createUserVisitTrack(UserVisitPK userVisitPK, CreateUserVisitTrackForm form);
     
 }

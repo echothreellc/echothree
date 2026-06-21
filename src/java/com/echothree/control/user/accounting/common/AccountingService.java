@@ -20,6 +20,7 @@ import com.echothree.control.user.accounting.common.form.*;
 import com.echothree.control.user.accounting.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface AccountingService
         extends AccountingForms {
@@ -34,9 +35,9 @@ public interface AccountingService
     //   Currencies
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCurrency(UserVisitPK userVisitPK, CreateCurrencyForm form);
+    CommandResult<VoidResult> createCurrency(UserVisitPK userVisitPK, CreateCurrencyForm form);
     
-    CommandResult<?> setDefaultCurrency(UserVisitPK userVisitPK, SetDefaultCurrencyForm form);
+    CommandResult<VoidResult> setDefaultCurrency(UserVisitPK userVisitPK, SetDefaultCurrencyForm form);
     
     CommandResult<GetCurrencyChoicesResult> getCurrencyChoices(UserVisitPK userVisitPK, GetCurrencyChoicesForm form);
     
@@ -50,7 +51,7 @@ public interface AccountingService
     //   Currency Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCurrencyDescription(UserVisitPK userVisitPK, CreateCurrencyDescriptionForm form);
+    CommandResult<VoidResult> createCurrencyDescription(UserVisitPK userVisitPK, CreateCurrencyDescriptionForm form);
     
     CommandResult<GetCurrencyDescriptionsResult> getCurrencyDescriptions(UserVisitPK userVisitPK, GetCurrencyDescriptionsForm form);
     
@@ -66,17 +67,17 @@ public interface AccountingService
     
     CommandResult<GetItemAccountingCategoriesResult> getItemAccountingCategories(UserVisitPK userVisitPK, GetItemAccountingCategoriesForm form);
     
-    CommandResult<?> setDefaultItemAccountingCategory(UserVisitPK userVisitPK, SetDefaultItemAccountingCategoryForm form);
+    CommandResult<VoidResult> setDefaultItemAccountingCategory(UserVisitPK userVisitPK, SetDefaultItemAccountingCategoryForm form);
     
     CommandResult<EditItemAccountingCategoryResult> editItemAccountingCategory(UserVisitPK userVisitPK, EditItemAccountingCategoryForm form);
     
-    CommandResult<?> deleteItemAccountingCategory(UserVisitPK userVisitPK, DeleteItemAccountingCategoryForm form);
+    CommandResult<VoidResult> deleteItemAccountingCategory(UserVisitPK userVisitPK, DeleteItemAccountingCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Accounting Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItemAccountingCategoryDescription(UserVisitPK userVisitPK, CreateItemAccountingCategoryDescriptionForm form);
+    CommandResult<VoidResult> createItemAccountingCategoryDescription(UserVisitPK userVisitPK, CreateItemAccountingCategoryDescriptionForm form);
     
     CommandResult<GetItemAccountingCategoryDescriptionResult> getItemAccountingCategoryDescription(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionForm form);
     
@@ -84,13 +85,13 @@ public interface AccountingService
     
     CommandResult<EditItemAccountingCategoryDescriptionResult> editItemAccountingCategoryDescription(UserVisitPK userVisitPK, EditItemAccountingCategoryDescriptionForm form);
     
-    CommandResult<?> deleteItemAccountingCategoryDescription(UserVisitPK userVisitPK, DeleteItemAccountingCategoryDescriptionForm form);
+    CommandResult<VoidResult> deleteItemAccountingCategoryDescription(UserVisitPK userVisitPK, DeleteItemAccountingCategoryDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountType(UserVisitPK userVisitPK, CreateGlAccountTypeForm form);
+    CommandResult<VoidResult> createGlAccountType(UserVisitPK userVisitPK, CreateGlAccountTypeForm form);
     
     CommandResult<GetGlAccountTypeResult> getGlAccountType(UserVisitPK userVisitPK, GetGlAccountTypeForm form);
     
@@ -102,13 +103,13 @@ public interface AccountingService
     //   Gl Account Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountTypeDescription(UserVisitPK userVisitPK, CreateGlAccountTypeDescriptionForm form);
+    CommandResult<VoidResult> createGlAccountTypeDescription(UserVisitPK userVisitPK, CreateGlAccountTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Classes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form);
+    CommandResult<VoidResult> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form);
     
     CommandResult<GetGlAccountClassChoicesResult> getGlAccountClassChoices(UserVisitPK userVisitPK, GetGlAccountClassChoicesForm form);
     
@@ -116,17 +117,17 @@ public interface AccountingService
     
     CommandResult<GetGlAccountClassesResult> getGlAccountClasses(UserVisitPK userVisitPK, GetGlAccountClassesForm form);
     
-    CommandResult<?> setDefaultGlAccountClass(UserVisitPK userVisitPK, SetDefaultGlAccountClassForm form);
+    CommandResult<VoidResult> setDefaultGlAccountClass(UserVisitPK userVisitPK, SetDefaultGlAccountClassForm form);
     
     CommandResult<EditGlAccountClassResult> editGlAccountClass(UserVisitPK userVisitPK, EditGlAccountClassForm form);
     
-    CommandResult<?> deleteGlAccountClass(UserVisitPK userVisitPK, DeleteGlAccountClassForm form);
+    CommandResult<VoidResult> deleteGlAccountClass(UserVisitPK userVisitPK, DeleteGlAccountClassForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Class Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountClassDescription(UserVisitPK userVisitPK, CreateGlAccountClassDescriptionForm form);
+    CommandResult<VoidResult> createGlAccountClassDescription(UserVisitPK userVisitPK, CreateGlAccountClassDescriptionForm form);
     
     CommandResult<GetGlAccountClassDescriptionResult> getGlAccountClassDescription(UserVisitPK userVisitPK, GetGlAccountClassDescriptionForm form);
     
@@ -134,13 +135,13 @@ public interface AccountingService
     
     CommandResult<EditGlAccountClassDescriptionResult> editGlAccountClassDescription(UserVisitPK userVisitPK, EditGlAccountClassDescriptionForm form);
     
-    CommandResult<?> deleteGlAccountClassDescription(UserVisitPK userVisitPK, DeleteGlAccountClassDescriptionForm form);
+    CommandResult<VoidResult> deleteGlAccountClassDescription(UserVisitPK userVisitPK, DeleteGlAccountClassDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form);
+    CommandResult<VoidResult> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form);
     
     CommandResult<GetGlAccountCategoryChoicesResult> getGlAccountCategoryChoices(UserVisitPK userVisitPK, GetGlAccountCategoryChoicesForm form);
     
@@ -148,17 +149,17 @@ public interface AccountingService
     
     CommandResult<GetGlAccountCategoriesResult> getGlAccountCategories(UserVisitPK userVisitPK, GetGlAccountCategoriesForm form);
     
-    CommandResult<?> setDefaultGlAccountCategory(UserVisitPK userVisitPK, SetDefaultGlAccountCategoryForm form);
+    CommandResult<VoidResult> setDefaultGlAccountCategory(UserVisitPK userVisitPK, SetDefaultGlAccountCategoryForm form);
     
     CommandResult<EditGlAccountCategoryResult> editGlAccountCategory(UserVisitPK userVisitPK, EditGlAccountCategoryForm form);
     
-    CommandResult<?> deleteGlAccountCategory(UserVisitPK userVisitPK, DeleteGlAccountCategoryForm form);
+    CommandResult<VoidResult> deleteGlAccountCategory(UserVisitPK userVisitPK, DeleteGlAccountCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateGlAccountCategoryDescriptionForm form);
+    CommandResult<VoidResult> createGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateGlAccountCategoryDescriptionForm form);
     
     CommandResult<GetGlAccountCategoryDescriptionResult> getGlAccountCategoryDescription(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionForm form);
     
@@ -166,13 +167,13 @@ public interface AccountingService
     
     CommandResult<EditGlAccountCategoryDescriptionResult> editGlAccountCategoryDescription(UserVisitPK userVisitPK, EditGlAccountCategoryDescriptionForm form);
     
-    CommandResult<?> deleteGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteGlAccountCategoryDescriptionForm form);
+    CommandResult<VoidResult> deleteGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteGlAccountCategoryDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Resource Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form);
+    CommandResult<VoidResult> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form);
     
     CommandResult<GetGlResourceTypeChoicesResult> getGlResourceTypeChoices(UserVisitPK userVisitPK, GetGlResourceTypeChoicesForm form);
     
@@ -180,17 +181,17 @@ public interface AccountingService
     
     CommandResult<GetGlResourceTypesResult> getGlResourceTypes(UserVisitPK userVisitPK, GetGlResourceTypesForm form);
     
-    CommandResult<?> setDefaultGlResourceType(UserVisitPK userVisitPK, SetDefaultGlResourceTypeForm form);
+    CommandResult<VoidResult> setDefaultGlResourceType(UserVisitPK userVisitPK, SetDefaultGlResourceTypeForm form);
     
     CommandResult<EditGlResourceTypeResult> editGlResourceType(UserVisitPK userVisitPK, EditGlResourceTypeForm form);
     
-    CommandResult<?> deleteGlResourceType(UserVisitPK userVisitPK, DeleteGlResourceTypeForm form);
+    CommandResult<VoidResult> deleteGlResourceType(UserVisitPK userVisitPK, DeleteGlResourceTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Resource Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlResourceTypeDescription(UserVisitPK userVisitPK, CreateGlResourceTypeDescriptionForm form);
+    CommandResult<VoidResult> createGlResourceTypeDescription(UserVisitPK userVisitPK, CreateGlResourceTypeDescriptionForm form);
     
     CommandResult<GetGlResourceTypeDescriptionResult> getGlResourceTypeDescription(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionForm form);
     
@@ -198,7 +199,7 @@ public interface AccountingService
     
     CommandResult<EditGlResourceTypeDescriptionResult> editGlResourceTypeDescription(UserVisitPK userVisitPK, EditGlResourceTypeDescriptionForm form);
     
-    CommandResult<?> deleteGlResourceTypeDescription(UserVisitPK userVisitPK, DeleteGlResourceTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteGlResourceTypeDescription(UserVisitPK userVisitPK, DeleteGlResourceTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Accounts
@@ -214,13 +215,13 @@ public interface AccountingService
     
     CommandResult<EditGlAccountResult> editGlAccount(UserVisitPK userVisitPK, EditGlAccountForm form);
     
-    CommandResult<?> deleteGlAccount(UserVisitPK userVisitPK, DeleteGlAccountForm form);
+    CommandResult<VoidResult> deleteGlAccount(UserVisitPK userVisitPK, DeleteGlAccountForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccountDescription(UserVisitPK userVisitPK, CreateGlAccountDescriptionForm form);
+    CommandResult<VoidResult> createGlAccountDescription(UserVisitPK userVisitPK, CreateGlAccountDescriptionForm form);
     
     CommandResult<GetGlAccountDescriptionResult> getGlAccountDescription(UserVisitPK userVisitPK, GetGlAccountDescriptionForm form);
     
@@ -228,7 +229,7 @@ public interface AccountingService
     
     CommandResult<EditGlAccountDescriptionResult> editGlAccountDescription(UserVisitPK userVisitPK, EditGlAccountDescriptionForm form);
     
-    CommandResult<?> deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form);
+    CommandResult<VoidResult> deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Transaction Time Types
@@ -242,17 +243,17 @@ public interface AccountingService
 
     CommandResult<GetTransactionTimeTypesResult> getTransactionTimeTypes(UserVisitPK userVisitPK, GetTransactionTimeTypesForm form);
 
-    CommandResult<?> setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form);
+    CommandResult<VoidResult> setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form);
 
     CommandResult<EditTransactionTimeTypeResult> editTransactionTimeType(UserVisitPK userVisitPK, EditTransactionTimeTypeForm form);
 
-    CommandResult<?> deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form);
+    CommandResult<VoidResult> deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Transaction Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form);
 
     CommandResult<GetTransactionTimeTypeDescriptionResult> getTransactionTimeTypeDescription(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionForm form);
 
@@ -260,13 +261,13 @@ public interface AccountingService
 
     CommandResult<EditTransactionTimeTypeDescriptionResult> editTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form);
 
-    CommandResult<?> deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Transaction Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form);
+    CommandResult<VoidResult> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form);
     
     CommandResult<GetTransactionTypeResult> getTransactionType(UserVisitPK userVisitPK, GetTransactionTypeForm form);
     
@@ -274,13 +275,13 @@ public interface AccountingService
     
     CommandResult<EditTransactionTypeResult> editTransactionType(UserVisitPK userVisitPK, EditTransactionTypeForm form);
     
-    CommandResult<?> deleteTransactionType(UserVisitPK userVisitPK, DeleteTransactionTypeForm form);
+    CommandResult<VoidResult> deleteTransactionType(UserVisitPK userVisitPK, DeleteTransactionTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTransactionTypeDescription(UserVisitPK userVisitPK, CreateTransactionTypeDescriptionForm form);
+    CommandResult<VoidResult> createTransactionTypeDescription(UserVisitPK userVisitPK, CreateTransactionTypeDescriptionForm form);
     
     CommandResult<GetTransactionTypeDescriptionResult> getTransactionTypeDescription(UserVisitPK userVisitPK, GetTransactionTypeDescriptionForm form);
     
@@ -288,13 +289,13 @@ public interface AccountingService
     
     CommandResult<EditTransactionTypeDescriptionResult> editTransactionTypeDescription(UserVisitPK userVisitPK, EditTransactionTypeDescriptionForm form);
     
-    CommandResult<?> deleteTransactionTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteTransactionTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form);
+    CommandResult<VoidResult> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form);
     
     CommandResult<GetTransactionGlAccountCategoryResult> getTransactionGlAccountCategory(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryForm form);
     
@@ -302,13 +303,13 @@ public interface AccountingService
     
     CommandResult<EditTransactionGlAccountCategoryResult> editTransactionGlAccountCategory(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryForm form);
     
-    CommandResult<?> deleteTransactionGlAccountCategory(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryForm form);
+    CommandResult<VoidResult> deleteTransactionGlAccountCategory(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryDescriptionForm form);
+    CommandResult<VoidResult> createTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryDescriptionForm form);
     
     CommandResult<GetTransactionGlAccountCategoryDescriptionResult> getTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionForm form);
     
@@ -316,13 +317,13 @@ public interface AccountingService
     
     CommandResult<EditTransactionGlAccountCategoryDescriptionResult> editTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryDescriptionForm form);
     
-    CommandResult<?> deleteTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryDescriptionForm form);
+    CommandResult<VoidResult> deleteTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Entity Role Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form);
+    CommandResult<VoidResult> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form);
     
     CommandResult<GetTransactionEntityRoleTypeResult> getTransactionEntityRoleType(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeForm form);
     
@@ -330,13 +331,13 @@ public interface AccountingService
     
     CommandResult<EditTransactionEntityRoleTypeResult> editTransactionEntityRoleType(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeForm form);
     
-    CommandResult<?> deleteTransactionEntityRoleType(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeForm form);
+    CommandResult<VoidResult> deleteTransactionEntityRoleType(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Entity Role Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeDescriptionForm form);
+    CommandResult<VoidResult> createTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeDescriptionForm form);
     
     CommandResult<GetTransactionEntityRoleTypeDescriptionResult> getTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionForm form);
     
@@ -344,7 +345,7 @@ public interface AccountingService
     
     CommandResult<EditTransactionEntityRoleTypeDescriptionResult> editTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeDescriptionForm form);
     
-    CommandResult<?> deleteTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Groups
@@ -356,7 +357,7 @@ public interface AccountingService
     
     CommandResult<GetTransactionGroupStatusChoicesResult> getTransactionGroupStatusChoices(UserVisitPK userVisitPK, GetTransactionGroupStatusChoicesForm form);
     
-    CommandResult<?> setTransactionGroupStatus(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form);
+    CommandResult<VoidResult> setTransactionGroupStatus(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Transactions
@@ -370,7 +371,7 @@ public interface AccountingService
     //   Symbol Positions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form);
+    CommandResult<VoidResult> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form);
     
     CommandResult<GetSymbolPositionChoicesResult> getSymbolPositionChoices(UserVisitPK userVisitPK, GetSymbolPositionChoicesForm form);
     
@@ -378,17 +379,17 @@ public interface AccountingService
     
     CommandResult<GetSymbolPositionsResult> getSymbolPositions(UserVisitPK userVisitPK, GetSymbolPositionsForm form);
     
-    CommandResult<?> setDefaultSymbolPosition(UserVisitPK userVisitPK, SetDefaultSymbolPositionForm form);
+    CommandResult<VoidResult> setDefaultSymbolPosition(UserVisitPK userVisitPK, SetDefaultSymbolPositionForm form);
     
     CommandResult<EditSymbolPositionResult> editSymbolPosition(UserVisitPK userVisitPK, EditSymbolPositionForm form);
     
-    CommandResult<?> deleteSymbolPosition(UserVisitPK userVisitPK, DeleteSymbolPositionForm form);
+    CommandResult<VoidResult> deleteSymbolPosition(UserVisitPK userVisitPK, DeleteSymbolPositionForm form);
     
     // --------------------------------------------------------------------------------
     //   Symbol Position Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSymbolPositionDescription(UserVisitPK userVisitPK, CreateSymbolPositionDescriptionForm form);
+    CommandResult<VoidResult> createSymbolPositionDescription(UserVisitPK userVisitPK, CreateSymbolPositionDescriptionForm form);
     
     CommandResult<GetSymbolPositionDescriptionResult> getSymbolPositionDescription(UserVisitPK userVisitPK, GetSymbolPositionDescriptionForm form);
     
@@ -396,6 +397,6 @@ public interface AccountingService
     
     CommandResult<EditSymbolPositionDescriptionResult> editSymbolPositionDescription(UserVisitPK userVisitPK, EditSymbolPositionDescriptionForm form);
     
-    CommandResult<?> deleteSymbolPositionDescription(UserVisitPK userVisitPK, DeleteSymbolPositionDescriptionForm form);
+    CommandResult<VoidResult> deleteSymbolPositionDescription(UserVisitPK userVisitPK, DeleteSymbolPositionDescriptionForm form);
     
 }

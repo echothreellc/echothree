@@ -20,6 +20,7 @@ import com.echothree.control.user.batch.common.form.*;
 import com.echothree.control.user.batch.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface BatchService
         extends BatchForms {
@@ -34,7 +35,7 @@ public interface BatchService
     //   Batch Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form);
+    CommandResult<VoidResult> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form);
     
     CommandResult<GetBatchTypeChoicesResult> getBatchTypeChoices(UserVisitPK userVisitPK, GetBatchTypeChoicesForm form);
     
@@ -42,17 +43,17 @@ public interface BatchService
     
     CommandResult<GetBatchTypesResult> getBatchTypes(UserVisitPK userVisitPK, GetBatchTypesForm form);
     
-    CommandResult<?> setDefaultBatchType(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form);
+    CommandResult<VoidResult> setDefaultBatchType(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form);
     
     CommandResult<EditBatchTypeResult> editBatchType(UserVisitPK userVisitPK, EditBatchTypeForm form);
     
-    CommandResult<?> deleteBatchType(UserVisitPK userVisitPK, DeleteBatchTypeForm form);
+    CommandResult<VoidResult> deleteBatchType(UserVisitPK userVisitPK, DeleteBatchTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Batch Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBatchTypeDescription(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form);
+    CommandResult<VoidResult> createBatchTypeDescription(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form);
 
     CommandResult<GetBatchTypeDescriptionResult> getBatchTypeDescription(UserVisitPK userVisitPK, GetBatchTypeDescriptionForm form);
 
@@ -60,25 +61,25 @@ public interface BatchService
 
     CommandResult<EditBatchTypeDescriptionResult> editBatchTypeDescription(UserVisitPK userVisitPK, EditBatchTypeDescriptionForm form);
 
-    CommandResult<?> deleteBatchTypeDescription(UserVisitPK userVisitPK, DeleteBatchTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteBatchTypeDescription(UserVisitPK userVisitPK, DeleteBatchTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Type Entity Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBatchTypeEntityType(UserVisitPK userVisitPK, CreateBatchTypeEntityTypeForm form);
+    CommandResult<VoidResult> createBatchTypeEntityType(UserVisitPK userVisitPK, CreateBatchTypeEntityTypeForm form);
 
     CommandResult<GetBatchTypeEntityTypeResult> getBatchTypeEntityType(UserVisitPK userVisitPK, GetBatchTypeEntityTypeForm form);
 
     CommandResult<GetBatchTypeEntityTypesResult> getBatchTypeEntityTypes(UserVisitPK userVisitPK, GetBatchTypeEntityTypesForm form);
 
-    CommandResult<?> deleteBatchTypeEntityType(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form);
+    CommandResult<VoidResult> deleteBatchTypeEntityType(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form);
+    CommandResult<VoidResult> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form);
 
     CommandResult<GetBatchAliasTypeChoicesResult> getBatchAliasTypeChoices(UserVisitPK userVisitPK, GetBatchAliasTypeChoicesForm form);
 
@@ -86,17 +87,17 @@ public interface BatchService
 
     CommandResult<GetBatchAliasTypesResult> getBatchAliasTypes(UserVisitPK userVisitPK, GetBatchAliasTypesForm form);
 
-    CommandResult<?> setDefaultBatchAliasType(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form);
+    CommandResult<VoidResult> setDefaultBatchAliasType(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form);
 
     CommandResult<EditBatchAliasTypeResult> editBatchAliasType(UserVisitPK userVisitPK, EditBatchAliasTypeForm form);
 
-    CommandResult<?> deleteBatchAliasType(UserVisitPK userVisitPK, DeleteBatchAliasTypeForm form);
+    CommandResult<VoidResult> deleteBatchAliasType(UserVisitPK userVisitPK, DeleteBatchAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBatchAliasTypeDescription(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> createBatchAliasTypeDescription(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form);
 
     CommandResult<GetBatchAliasTypeDescriptionResult> getBatchAliasTypeDescription(UserVisitPK userVisitPK, GetBatchAliasTypeDescriptionForm form);
 
@@ -104,13 +105,13 @@ public interface BatchService
 
     CommandResult<EditBatchAliasTypeDescriptionResult> editBatchAliasTypeDescription(UserVisitPK userVisitPK, EditBatchAliasTypeDescriptionForm form);
 
-    CommandResult<?> deleteBatchAliasTypeDescription(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteBatchAliasTypeDescription(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBatchAlias(UserVisitPK userVisitPK, CreateBatchAliasForm form);
+    CommandResult<VoidResult> createBatchAlias(UserVisitPK userVisitPK, CreateBatchAliasForm form);
 
     CommandResult<GetBatchAliasResult> getBatchAlias(UserVisitPK userVisitPK, GetBatchAliasForm form);
 
@@ -118,6 +119,6 @@ public interface BatchService
 
     CommandResult<EditBatchAliasResult> editBatchAlias(UserVisitPK userVisitPK, EditBatchAliasForm form);
 
-    CommandResult<?> deleteBatchAlias(UserVisitPK userVisitPK, DeleteBatchAliasForm form);
+    CommandResult<VoidResult> deleteBatchAlias(UserVisitPK userVisitPK, DeleteBatchAliasForm form);
 
 }

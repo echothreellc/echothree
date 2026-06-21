@@ -22,6 +22,7 @@ import com.echothree.control.user.wishlist.common.result.*;
 import com.echothree.control.user.wishlist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form) {
+    public CommandResult<VoidResult> setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form) {
         return CDI.current().select(SetDefaultWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form) {
+    public CommandResult<VoidResult> deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form) {
         return CDI.current().select(DeleteWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form) {
         return CDI.current().select(CreateWishlistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -98,7 +99,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form) {
         return CDI.current().select(DeleteWishlistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -127,7 +128,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
+    public CommandResult<VoidResult> setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
         return CDI.current().select(SetDefaultWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -137,7 +138,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form) {
+    public CommandResult<VoidResult> deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form) {
         return CDI.current().select(DeleteWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -146,7 +147,7 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form) {
+    public CommandResult<VoidResult> createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form) {
         return CDI.current().select(CreateWishlistPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -161,7 +162,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
+    public CommandResult<VoidResult> deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
         return CDI.current().select(DeleteWishlistPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -170,7 +171,7 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form) {
+    public CommandResult<VoidResult> createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form) {
         return CDI.current().select(CreateWishlistLineCommand.class).get().run(userVisitPK, form);
     }
     

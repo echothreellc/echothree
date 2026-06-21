@@ -22,6 +22,7 @@ import com.echothree.control.user.job.common.result.*;
 import com.echothree.control.user.job.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class JobBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createJob(UserVisitPK userVisitPK, CreateJobForm form) {
+    public CommandResult<VoidResult> createJob(UserVisitPK userVisitPK, CreateJobForm form) {
         return CDI.current().select(CreateJobCommand.class).get().run(userVisitPK, form);
     }
     
@@ -64,7 +65,7 @@ public class JobBean
     }
     
     @Override
-    public CommandResult<?> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form) {
+    public CommandResult<VoidResult> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form) {
         return CDI.current().select(SetJobStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,17 +75,17 @@ public class JobBean
     }
     
     @Override
-    public CommandResult<?> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form) {
+    public CommandResult<VoidResult> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form) {
         return CDI.current().select(DeleteJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> startJob(UserVisitPK userVisitPK, StartJobForm form) {
+    public CommandResult<VoidResult> startJob(UserVisitPK userVisitPK, StartJobForm form) {
         return CDI.current().select(StartJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> endJob(UserVisitPK userVisitPK, EndJobForm form) {
+    public CommandResult<VoidResult> endJob(UserVisitPK userVisitPK, EndJobForm form) {
         return CDI.current().select(EndJobCommand.class).get().run(userVisitPK, form);
     }
     
@@ -93,7 +94,7 @@ public class JobBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
+    public CommandResult<VoidResult> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
         return CDI.current().select(CreateJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -108,7 +109,7 @@ public class JobBean
     }
     
     @Override
-    public CommandResult<?> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form) {
+    public CommandResult<VoidResult> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form) {
         return CDI.current().select(DeleteJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

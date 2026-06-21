@@ -20,6 +20,7 @@ import com.echothree.control.user.workflow.common.form.*;
 import com.echothree.control.user.workflow.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface WorkflowService
         extends WorkflowForms {
@@ -34,7 +35,7 @@ public interface WorkflowService
     //   Workflow Step Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowStepType(UserVisitPK userVisitPK, CreateWorkflowStepTypeForm form);
+    CommandResult<VoidResult> createWorkflowStepType(UserVisitPK userVisitPK, CreateWorkflowStepTypeForm form);
 
     CommandResult<GetWorkflowStepTypeResult> getWorkflowStepType(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form);
 
@@ -46,7 +47,7 @@ public interface WorkflowService
     //   Workflow Step Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowStepTypeDescription(UserVisitPK userVisitPK, CreateWorkflowStepTypeDescriptionForm form);
+    CommandResult<VoidResult> createWorkflowStepTypeDescription(UserVisitPK userVisitPK, CreateWorkflowStepTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflows
@@ -62,13 +63,13 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowResult> editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form);
     
-    CommandResult<?> deleteWorkflow(UserVisitPK userVisitPK, DeleteWorkflowForm form);
+    CommandResult<VoidResult> deleteWorkflow(UserVisitPK userVisitPK, DeleteWorkflowForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDescription(UserVisitPK userVisitPK, CreateWorkflowDescriptionForm form);
+    CommandResult<VoidResult> createWorkflowDescription(UserVisitPK userVisitPK, CreateWorkflowDescriptionForm form);
     
     CommandResult<GetWorkflowDescriptionResult> getWorkflowDescription(UserVisitPK userVisitPK, GetWorkflowDescriptionForm form);
     
@@ -76,7 +77,7 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowDescriptionResult> editWorkflowDescription(UserVisitPK userVisitPK, EditWorkflowDescriptionForm form);
     
-    CommandResult<?> deleteWorkflowDescription(UserVisitPK userVisitPK, DeleteWorkflowDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkflowDescription(UserVisitPK userVisitPK, DeleteWorkflowDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Steps
@@ -92,15 +93,15 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowStepResult> editWorkflowStep(UserVisitPK userVisitPK, EditWorkflowStepForm form);
     
-    CommandResult<?> setDefaultWorkflowStep(UserVisitPK userVisitPK, SetDefaultWorkflowStepForm form);
+    CommandResult<VoidResult> setDefaultWorkflowStep(UserVisitPK userVisitPK, SetDefaultWorkflowStepForm form);
     
-    CommandResult<?> deleteWorkflowStep(UserVisitPK userVisitPK, DeleteWorkflowStepForm form);
+    CommandResult<VoidResult> deleteWorkflowStep(UserVisitPK userVisitPK, DeleteWorkflowStepForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Step Description
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowStepDescription(UserVisitPK userVisitPK, CreateWorkflowStepDescriptionForm form);
+    CommandResult<VoidResult> createWorkflowStepDescription(UserVisitPK userVisitPK, CreateWorkflowStepDescriptionForm form);
     
     CommandResult<GetWorkflowStepDescriptionResult> getWorkflowStepDescription(UserVisitPK userVisitPK, GetWorkflowStepDescriptionForm form);
     
@@ -108,7 +109,7 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowStepDescriptionResult> editWorkflowStepDescription(UserVisitPK userVisitPK, EditWorkflowStepDescriptionForm form);
     
-    CommandResult<?> deleteWorkflowStepDescription(UserVisitPK userVisitPK, DeleteWorkflowStepDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkflowStepDescription(UserVisitPK userVisitPK, DeleteWorkflowStepDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Destinations
@@ -122,15 +123,15 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowDestinationResult> editWorkflowDestination(UserVisitPK userVisitPK, EditWorkflowDestinationForm form);
     
-    CommandResult<?> setDefaultWorkflowDestination(UserVisitPK userVisitPK, SetDefaultWorkflowDestinationForm form);
+    CommandResult<VoidResult> setDefaultWorkflowDestination(UserVisitPK userVisitPK, SetDefaultWorkflowDestinationForm form);
     
-    CommandResult<?> deleteWorkflowDestination(UserVisitPK userVisitPK, DeleteWorkflowDestinationForm form);
+    CommandResult<VoidResult> deleteWorkflowDestination(UserVisitPK userVisitPK, DeleteWorkflowDestinationForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Destination Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDestinationDescription(UserVisitPK userVisitPK, CreateWorkflowDestinationDescriptionForm form);
+    CommandResult<VoidResult> createWorkflowDestinationDescription(UserVisitPK userVisitPK, CreateWorkflowDestinationDescriptionForm form);
     
     CommandResult<GetWorkflowDestinationDescriptionResult> getWorkflowDestinationDescription(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionForm form);
     
@@ -138,67 +139,67 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowDestinationDescriptionResult> editWorkflowDestinationDescription(UserVisitPK userVisitPK, EditWorkflowDestinationDescriptionForm form);
     
-    CommandResult<?> deleteWorkflowDestinationDescription(UserVisitPK userVisitPK, DeleteWorkflowDestinationDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkflowDestinationDescription(UserVisitPK userVisitPK, DeleteWorkflowDestinationDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Destination Steps
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDestinationStep(UserVisitPK userVisitPK, CreateWorkflowDestinationStepForm form);
+    CommandResult<VoidResult> createWorkflowDestinationStep(UserVisitPK userVisitPK, CreateWorkflowDestinationStepForm form);
     
     CommandResult<GetWorkflowDestinationStepResult> getWorkflowDestinationStep(UserVisitPK userVisitPK, GetWorkflowDestinationStepForm form);
     
     CommandResult<GetWorkflowDestinationStepsResult> getWorkflowDestinationSteps(UserVisitPK userVisitPK, GetWorkflowDestinationStepsForm form);
     
-    CommandResult<?> deleteWorkflowDestinationStep(UserVisitPK userVisitPK, DeleteWorkflowDestinationStepForm form);
+    CommandResult<VoidResult> deleteWorkflowDestinationStep(UserVisitPK userVisitPK, DeleteWorkflowDestinationStepForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Destination Selectors
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDestinationSelector(UserVisitPK userVisitPK, CreateWorkflowDestinationSelectorForm form);
+    CommandResult<VoidResult> createWorkflowDestinationSelector(UserVisitPK userVisitPK, CreateWorkflowDestinationSelectorForm form);
     
     CommandResult<GetWorkflowDestinationSelectorResult> getWorkflowDestinationSelector(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorForm form);
     
     CommandResult<GetWorkflowDestinationSelectorsResult> getWorkflowDestinationSelectors(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorsForm form);
     
-    CommandResult<?> deleteWorkflowDestinationSelector(UserVisitPK userVisitPK, DeleteWorkflowDestinationSelectorForm form);
+    CommandResult<VoidResult> deleteWorkflowDestinationSelector(UserVisitPK userVisitPK, DeleteWorkflowDestinationSelectorForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Destination Party Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDestinationPartyType(UserVisitPK userVisitPK, CreateWorkflowDestinationPartyTypeForm form);
+    CommandResult<VoidResult> createWorkflowDestinationPartyType(UserVisitPK userVisitPK, CreateWorkflowDestinationPartyTypeForm form);
     
     CommandResult<GetWorkflowDestinationPartyTypeResult> getWorkflowDestinationPartyType(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypeForm form);
     
     CommandResult<GetWorkflowDestinationPartyTypesResult> getWorkflowDestinationPartyTypes(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypesForm form);
     
-    CommandResult<?> deleteWorkflowDestinationPartyType(UserVisitPK userVisitPK, DeleteWorkflowDestinationPartyTypeForm form);
+    CommandResult<VoidResult> deleteWorkflowDestinationPartyType(UserVisitPK userVisitPK, DeleteWorkflowDestinationPartyTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Destination Security Roles
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, CreateWorkflowDestinationSecurityRoleForm form);
+    CommandResult<VoidResult> createWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, CreateWorkflowDestinationSecurityRoleForm form);
     
     CommandResult<GetWorkflowDestinationSecurityRoleResult> getWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRoleForm form);
     
     CommandResult<GetWorkflowDestinationSecurityRolesResult> getWorkflowDestinationSecurityRoles(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRolesForm form);
     
-    CommandResult<?> deleteWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, DeleteWorkflowDestinationSecurityRoleForm form);
+    CommandResult<VoidResult> deleteWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, DeleteWorkflowDestinationSecurityRoleForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entity Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntityType(UserVisitPK userVisitPK, CreateWorkflowEntityTypeForm form);
+    CommandResult<VoidResult> createWorkflowEntityType(UserVisitPK userVisitPK, CreateWorkflowEntityTypeForm form);
 
     CommandResult<GetWorkflowEntityTypeResult> getWorkflowEntityType(UserVisitPK userVisitPK, GetWorkflowEntityTypeForm form);
 
     CommandResult<GetWorkflowEntityTypesResult> getWorkflowEntityTypes(UserVisitPK userVisitPK, GetWorkflowEntityTypesForm form);
     
-    CommandResult<?> deleteWorkflowEntityType(UserVisitPK userVisitPK, DeleteWorkflowEntityTypeForm form);
+    CommandResult<VoidResult> deleteWorkflowEntityType(UserVisitPK userVisitPK, DeleteWorkflowEntityTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Workflow Entrances
@@ -212,15 +213,15 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowEntranceResult> editWorkflowEntrance(UserVisitPK userVisitPK, EditWorkflowEntranceForm form);
     
-    CommandResult<?> setDefaultWorkflowEntrance(UserVisitPK userVisitPK, SetDefaultWorkflowEntranceForm form);
+    CommandResult<VoidResult> setDefaultWorkflowEntrance(UserVisitPK userVisitPK, SetDefaultWorkflowEntranceForm form);
     
-    CommandResult<?> deleteWorkflowEntrance(UserVisitPK userVisitPK, DeleteWorkflowEntranceForm form);
+    CommandResult<VoidResult> deleteWorkflowEntrance(UserVisitPK userVisitPK, DeleteWorkflowEntranceForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entrance Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntranceDescription(UserVisitPK userVisitPK, CreateWorkflowEntranceDescriptionForm form);
+    CommandResult<VoidResult> createWorkflowEntranceDescription(UserVisitPK userVisitPK, CreateWorkflowEntranceDescriptionForm form);
     
     CommandResult<GetWorkflowEntranceDescriptionResult> getWorkflowEntranceDescription(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionForm form);
     
@@ -228,67 +229,67 @@ public interface WorkflowService
     
     CommandResult<EditWorkflowEntranceDescriptionResult> editWorkflowEntranceDescription(UserVisitPK userVisitPK, EditWorkflowEntranceDescriptionForm form);
     
-    CommandResult<?> deleteWorkflowEntranceDescription(UserVisitPK userVisitPK, DeleteWorkflowEntranceDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkflowEntranceDescription(UserVisitPK userVisitPK, DeleteWorkflowEntranceDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entrance Steps
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntranceStep(UserVisitPK userVisitPK, CreateWorkflowEntranceStepForm form);
+    CommandResult<VoidResult> createWorkflowEntranceStep(UserVisitPK userVisitPK, CreateWorkflowEntranceStepForm form);
     
     CommandResult<GetWorkflowEntranceStepResult> getWorkflowEntranceStep(UserVisitPK userVisitPK, GetWorkflowEntranceStepForm form);
     
     CommandResult<GetWorkflowEntranceStepsResult> getWorkflowEntranceSteps(UserVisitPK userVisitPK, GetWorkflowEntranceStepsForm form);
     
-    CommandResult<?> deleteWorkflowEntranceStep(UserVisitPK userVisitPK, DeleteWorkflowEntranceStepForm form);
+    CommandResult<VoidResult> deleteWorkflowEntranceStep(UserVisitPK userVisitPK, DeleteWorkflowEntranceStepForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entrance Selectors
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntranceSelector(UserVisitPK userVisitPK, CreateWorkflowEntranceSelectorForm form);
+    CommandResult<VoidResult> createWorkflowEntranceSelector(UserVisitPK userVisitPK, CreateWorkflowEntranceSelectorForm form);
     
     CommandResult<GetWorkflowEntranceSelectorResult> getWorkflowEntranceSelector(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorForm form);
     
     CommandResult<GetWorkflowEntranceSelectorsResult> getWorkflowEntranceSelectors(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorsForm form);
     
-    CommandResult<?> deleteWorkflowEntranceSelector(UserVisitPK userVisitPK, DeleteWorkflowEntranceSelectorForm form);
+    CommandResult<VoidResult> deleteWorkflowEntranceSelector(UserVisitPK userVisitPK, DeleteWorkflowEntranceSelectorForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entrance Party Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntrancePartyType(UserVisitPK userVisitPK, CreateWorkflowEntrancePartyTypeForm form);
+    CommandResult<VoidResult> createWorkflowEntrancePartyType(UserVisitPK userVisitPK, CreateWorkflowEntrancePartyTypeForm form);
     
     CommandResult<GetWorkflowEntrancePartyTypeResult> getWorkflowEntrancePartyType(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypeForm form);
     
     CommandResult<GetWorkflowEntrancePartyTypesResult> getWorkflowEntrancePartyTypes(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypesForm form);
     
-    CommandResult<?> deleteWorkflowEntrancePartyType(UserVisitPK userVisitPK, DeleteWorkflowEntrancePartyTypeForm form);
+    CommandResult<VoidResult> deleteWorkflowEntrancePartyType(UserVisitPK userVisitPK, DeleteWorkflowEntrancePartyTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entrance Security Roles
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, CreateWorkflowEntranceSecurityRoleForm form);
+    CommandResult<VoidResult> createWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, CreateWorkflowEntranceSecurityRoleForm form);
     
     CommandResult<GetWorkflowEntranceSecurityRoleResult> getWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRoleForm form);
     
     CommandResult<GetWorkflowEntranceSecurityRolesResult> getWorkflowEntranceSecurityRoles(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRolesForm form);
     
-    CommandResult<?> deleteWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, DeleteWorkflowEntranceSecurityRoleForm form);
+    CommandResult<VoidResult> deleteWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, DeleteWorkflowEntranceSecurityRoleForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Selector Kinds
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowSelectorKind(UserVisitPK userVisitPK, CreateWorkflowSelectorKindForm form);
+    CommandResult<VoidResult> createWorkflowSelectorKind(UserVisitPK userVisitPK, CreateWorkflowSelectorKindForm form);
     
     CommandResult<GetWorkflowSelectorKindResult> getWorkflowSelectorKind(UserVisitPK userVisitPK, GetWorkflowSelectorKindForm form);
     
     CommandResult<GetWorkflowSelectorKindsResult> getWorkflowSelectorKinds(UserVisitPK userVisitPK, GetWorkflowSelectorKindsForm form);
     
-    CommandResult<?> deleteWorkflowSelectorKind(UserVisitPK userVisitPK, DeleteWorkflowSelectorKindForm form);
+    CommandResult<VoidResult> deleteWorkflowSelectorKind(UserVisitPK userVisitPK, DeleteWorkflowSelectorKindForm form);
     
     // --------------------------------------------------------------------------------
     //   Workflow Entity Statuses
@@ -300,6 +301,6 @@ public interface WorkflowService
     //   Workflow Triggers
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> processWorkflowTriggers(UserVisitPK userVisitPK);
+    CommandResult<VoidResult> processWorkflowTriggers(UserVisitPK userVisitPK);
     
 }

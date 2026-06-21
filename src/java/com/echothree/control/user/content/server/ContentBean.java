@@ -22,6 +22,7 @@ import com.echothree.control.user.content.common.result.*;
 import com.echothree.control.user.content.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageAreaType(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form) {
+    public CommandResult<VoidResult> createContentPageAreaType(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form) {
         return CDI.current().select(CreateContentPageAreaTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -53,7 +54,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageAreaTypeDescription(UserVisitPK userVisitPK, CreateContentPageAreaTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createContentPageAreaTypeDescription(UserVisitPK userVisitPK, CreateContentPageAreaTypeDescriptionForm form) {
         return CDI.current().select(CreateContentPageAreaTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -97,7 +98,7 @@ public class ContentBean
     }
 
     @Override
-    public CommandResult<?> setDefaultContentPageLayout(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form) {
+    public CommandResult<VoidResult> setDefaultContentPageLayout(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form) {
         return CDI.current().select(SetDefaultContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
 
@@ -107,7 +108,7 @@ public class ContentBean
     }
 
     @Override
-    public CommandResult<?> deleteContentPageLayout(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form) {
+    public CommandResult<VoidResult> deleteContentPageLayout(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form) {
         return CDI.current().select(DeleteContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
     
@@ -116,7 +117,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageLayoutDescription(UserVisitPK userVisitPK, CreateContentPageLayoutDescriptionForm form) {
+    public CommandResult<VoidResult> createContentPageLayoutDescription(UserVisitPK userVisitPK, CreateContentPageLayoutDescriptionForm form) {
         return CDI.current().select(CreateContentPageLayoutDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class ContentBean
     }
 
     @Override
-    public CommandResult<?> deleteContentPageLayoutDescription(UserVisitPK userVisitPK, DeleteContentPageLayoutDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentPageLayoutDescription(UserVisitPK userVisitPK, DeleteContentPageLayoutDescriptionForm form) {
         return CDI.current().select(DeleteContentPageLayoutDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -145,7 +146,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageLayoutArea(UserVisitPK userVisitPK, CreateContentPageLayoutAreaForm form) {
+    public CommandResult<VoidResult> createContentPageLayoutArea(UserVisitPK userVisitPK, CreateContentPageLayoutAreaForm form) {
         return CDI.current().select(CreateContentPageLayoutAreaCommand.class).get().run(userVisitPK, form);
     }
     
@@ -164,7 +165,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageLayoutAreaDescription(UserVisitPK userVisitPK, CreateContentPageLayoutAreaDescriptionForm form) {
+    public CommandResult<VoidResult> createContentPageLayoutAreaDescription(UserVisitPK userVisitPK, CreateContentPageLayoutAreaDescriptionForm form) {
         return CDI.current().select(CreateContentPageLayoutAreaDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -193,7 +194,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentCollection(UserVisitPK userVisitPK, DeleteContentCollectionForm form) {
+    public CommandResult<VoidResult> deleteContentCollection(UserVisitPK userVisitPK, DeleteContentCollectionForm form) {
         return CDI.current().select(DeleteContentCollectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -207,7 +208,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCollectionDescription(UserVisitPK userVisitPK, CreateContentCollectionDescriptionForm form) {
+    public CommandResult<VoidResult> createContentCollectionDescription(UserVisitPK userVisitPK, CreateContentCollectionDescriptionForm form) {
         return CDI.current().select(CreateContentCollectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -228,7 +229,7 @@ public class ContentBean
     
     
     @Override
-    public CommandResult<?> deleteContentCollectionDescription(UserVisitPK userVisitPK, DeleteContentCollectionDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentCollectionDescription(UserVisitPK userVisitPK, DeleteContentCollectionDescriptionForm form) {
         return CDI.current().select(DeleteContentCollectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -237,7 +238,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form) {
+    public CommandResult<VoidResult> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form) {
         return CDI.current().select(CreateContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -252,7 +253,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> setDefaultContentSection(UserVisitPK userVisitPK, SetDefaultContentSectionForm form) {
+    public CommandResult<VoidResult> setDefaultContentSection(UserVisitPK userVisitPK, SetDefaultContentSectionForm form) {
         return CDI.current().select(SetDefaultContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -262,7 +263,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentSection(UserVisitPK userVisitPK, DeleteContentSectionForm form) {
+    public CommandResult<VoidResult> deleteContentSection(UserVisitPK userVisitPK, DeleteContentSectionForm form) {
         return CDI.current().select(DeleteContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -276,7 +277,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentSectionDescription(UserVisitPK userVisitPK, CreateContentSectionDescriptionForm form) {
+    public CommandResult<VoidResult> createContentSectionDescription(UserVisitPK userVisitPK, CreateContentSectionDescriptionForm form) {
         return CDI.current().select(CreateContentSectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -296,7 +297,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentSectionDescription(UserVisitPK userVisitPK, DeleteContentSectionDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentSectionDescription(UserVisitPK userVisitPK, DeleteContentSectionDescriptionForm form) {
         return CDI.current().select(DeleteContentSectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -305,7 +306,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form) {
+    public CommandResult<VoidResult> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form) {
         return CDI.current().select(CreateContentPageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -320,7 +321,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> setDefaultContentPage(UserVisitPK userVisitPK, SetDefaultContentPageForm form) {
+    public CommandResult<VoidResult> setDefaultContentPage(UserVisitPK userVisitPK, SetDefaultContentPageForm form) {
         return CDI.current().select(SetDefaultContentPageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -330,7 +331,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentPage(UserVisitPK userVisitPK, DeleteContentPageForm form) {
+    public CommandResult<VoidResult> deleteContentPage(UserVisitPK userVisitPK, DeleteContentPageForm form) {
         return CDI.current().select(DeleteContentPageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -339,7 +340,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageDescription(UserVisitPK userVisitPK, CreateContentPageDescriptionForm form) {
+    public CommandResult<VoidResult> createContentPageDescription(UserVisitPK userVisitPK, CreateContentPageDescriptionForm form) {
         return CDI.current().select(CreateContentPageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -359,7 +360,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentPageDescription(UserVisitPK userVisitPK, DeleteContentPageDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentPageDescription(UserVisitPK userVisitPK, DeleteContentPageDescriptionForm form) {
         return CDI.current().select(DeleteContentPageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -383,7 +384,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> setDefaultContentCatalog(UserVisitPK userVisitPK, SetDefaultContentCatalogForm form) {
+    public CommandResult<VoidResult> setDefaultContentCatalog(UserVisitPK userVisitPK, SetDefaultContentCatalogForm form) {
         return CDI.current().select(SetDefaultContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
@@ -393,7 +394,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentCatalog(UserVisitPK userVisitPK, DeleteContentCatalogForm form) {
+    public CommandResult<VoidResult> deleteContentCatalog(UserVisitPK userVisitPK, DeleteContentCatalogForm form) {
         return CDI.current().select(DeleteContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
@@ -402,7 +403,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCatalogDescription(UserVisitPK userVisitPK, CreateContentCatalogDescriptionForm form) {
+    public CommandResult<VoidResult> createContentCatalogDescription(UserVisitPK userVisitPK, CreateContentCatalogDescriptionForm form) {
         return CDI.current().select(CreateContentCatalogDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -422,7 +423,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentCatalogDescription(UserVisitPK userVisitPK, DeleteContentCatalogDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentCatalogDescription(UserVisitPK userVisitPK, DeleteContentCatalogDescriptionForm form) {
         return CDI.current().select(DeleteContentCatalogDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -460,7 +461,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> setDefaultContentCategory(UserVisitPK userVisitPK, SetDefaultContentCategoryForm form) {
+    public CommandResult<VoidResult> setDefaultContentCategory(UserVisitPK userVisitPK, SetDefaultContentCategoryForm form) {
         return CDI.current().select(SetDefaultContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -470,7 +471,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentCategory(UserVisitPK userVisitPK, DeleteContentCategoryForm form) {
+    public CommandResult<VoidResult> deleteContentCategory(UserVisitPK userVisitPK, DeleteContentCategoryForm form) {
         return CDI.current().select(DeleteContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -484,7 +485,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCategoryDescription(UserVisitPK userVisitPK, CreateContentCategoryDescriptionForm form) {
+    public CommandResult<VoidResult> createContentCategoryDescription(UserVisitPK userVisitPK, CreateContentCategoryDescriptionForm form) {
         return CDI.current().select(CreateContentCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -504,7 +505,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentCategoryDescription(UserVisitPK userVisitPK, DeleteContentCategoryDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentCategoryDescription(UserVisitPK userVisitPK, DeleteContentCategoryDescriptionForm form) {
         return CDI.current().select(DeleteContentCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -513,7 +514,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCategoryItem(UserVisitPK userVisitPK, CreateContentCategoryItemForm form) {
+    public CommandResult<VoidResult> createContentCategoryItem(UserVisitPK userVisitPK, CreateContentCategoryItemForm form) {
         return CDI.current().select(CreateContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -528,7 +529,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> setDefaultContentCategoryItem(UserVisitPK userVisitPK, SetDefaultContentCategoryItemForm form) {
+    public CommandResult<VoidResult> setDefaultContentCategoryItem(UserVisitPK userVisitPK, SetDefaultContentCategoryItemForm form) {
         return CDI.current().select(SetDefaultContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -538,7 +539,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentCategoryItem(UserVisitPK userVisitPK, DeleteContentCategoryItemForm form) {
+    public CommandResult<VoidResult> deleteContentCategoryItem(UserVisitPK userVisitPK, DeleteContentCategoryItemForm form) {
         return CDI.current().select(DeleteContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -547,7 +548,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form) {
+    public CommandResult<VoidResult> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form) {
         return CDI.current().select(CreateContentForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -562,12 +563,12 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> setDefaultContentForum(UserVisitPK userVisitPK, SetDefaultContentForumForm form) {
+    public CommandResult<VoidResult> setDefaultContentForum(UserVisitPK userVisitPK, SetDefaultContentForumForm form) {
         return CDI.current().select(SetDefaultContentForumCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deleteContentForum(UserVisitPK userVisitPK, DeleteContentForumForm form) {
+    public CommandResult<VoidResult> deleteContentForum(UserVisitPK userVisitPK, DeleteContentForumForm form) {
         return CDI.current().select(DeleteContentForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -596,7 +597,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentWebAddress(UserVisitPK userVisitPK, DeleteContentWebAddressForm form) {
+    public CommandResult<VoidResult> deleteContentWebAddress(UserVisitPK userVisitPK, DeleteContentWebAddressForm form) {
         return CDI.current().select(DeleteContentWebAddressCommand.class).get().run(userVisitPK, form);
     }
     
@@ -605,7 +606,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentWebAddressDescription(UserVisitPK userVisitPK, CreateContentWebAddressDescriptionForm form) {
+    public CommandResult<VoidResult> createContentWebAddressDescription(UserVisitPK userVisitPK, CreateContentWebAddressDescriptionForm form) {
         return CDI.current().select(CreateContentWebAddressDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -625,7 +626,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentWebAddressDescription(UserVisitPK userVisitPK, DeleteContentWebAddressDescriptionForm form) {
+    public CommandResult<VoidResult> deleteContentWebAddressDescription(UserVisitPK userVisitPK, DeleteContentWebAddressDescriptionForm form) {
         return CDI.current().select(DeleteContentWebAddressDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -634,7 +635,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentWebAddressServer(UserVisitPK userVisitPK, CreateContentWebAddressServerForm form) {
+    public CommandResult<VoidResult> createContentWebAddressServer(UserVisitPK userVisitPK, CreateContentWebAddressServerForm form) {
         return CDI.current().select(CreateContentWebAddressServerCommand.class).get().run(userVisitPK, form);
     }
     
@@ -643,7 +644,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageArea(UserVisitPK userVisitPK, CreateContentPageAreaForm form) {
+    public CommandResult<VoidResult> createContentPageArea(UserVisitPK userVisitPK, CreateContentPageAreaForm form) {
         return CDI.current().select(CreateContentPageAreaCommand.class).get().run(userVisitPK, form);
     }
     
@@ -663,7 +664,7 @@ public class ContentBean
     }
     
     @Override
-    public CommandResult<?> deleteContentPageArea(UserVisitPK userVisitPK, DeleteContentPageAreaForm form) {
+    public CommandResult<VoidResult> deleteContentPageArea(UserVisitPK userVisitPK, DeleteContentPageAreaForm form) {
         return CDI.current().select(DeleteContentPageAreaCommand.class).get().run(userVisitPK, form);
     }
     

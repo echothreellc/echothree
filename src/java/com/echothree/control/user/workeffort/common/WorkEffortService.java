@@ -20,6 +20,7 @@ import com.echothree.control.user.workeffort.common.form.*;
 import com.echothree.control.user.workeffort.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface WorkEffortService
         extends WorkEffortForms {
@@ -28,31 +29,31 @@ public interface WorkEffortService
     //   Work Effort Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
+    CommandResult<VoidResult> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
     
     CommandResult<GetWorkEffortTypesResult> getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form);
     
     CommandResult<GetWorkEffortTypeResult> getWorkEffortType(UserVisitPK userVisitPK, GetWorkEffortTypeForm form);
     
-    CommandResult<?> deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form);
+    CommandResult<VoidResult> deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Effort Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form);
+    CommandResult<VoidResult> createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form);
 
     CommandResult<GetWorkEffortTypeDescriptionsResult> getWorkEffortTypeDescriptions(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form);
 
     CommandResult<EditWorkEffortTypeDescriptionResult> editWorkEffortTypeDescription(UserVisitPK userVisitPK, EditWorkEffortTypeDescriptionForm form);
 
-    CommandResult<?> deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Work Effort Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
+    CommandResult<VoidResult> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
     
     CommandResult<GetWorkEffortScopesResult> getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form);
     
@@ -60,17 +61,17 @@ public interface WorkEffortService
     
     CommandResult<GetWorkEffortScopeChoicesResult> getWorkEffortScopeChoices(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form);
     
-    CommandResult<?> setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form);
+    CommandResult<VoidResult> setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form);
     
     CommandResult<EditWorkEffortScopeResult> editWorkEffortScope(UserVisitPK userVisitPK, EditWorkEffortScopeForm form);
 
-    CommandResult<?> deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form);
+    CommandResult<VoidResult> deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form);
 
     // -------------------------------------------------------------------------
     //   Work Effort Scope Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form);
+    CommandResult<VoidResult> createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form);
     
     CommandResult<GetWorkEffortScopeDescriptionResult> getWorkEffortScopeDescription(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionForm form);
 
@@ -78,7 +79,7 @@ public interface WorkEffortService
 
     CommandResult<EditWorkEffortScopeDescriptionResult> editWorkEffortScopeDescription(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form);
     
-    CommandResult<?> deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Work Effort

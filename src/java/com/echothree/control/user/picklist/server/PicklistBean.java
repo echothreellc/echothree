@@ -22,6 +22,7 @@ import com.echothree.control.user.picklist.common.result.*;
 import com.echothree.control.user.picklist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form) {
+    public CommandResult<VoidResult> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form) {
         return CDI.current().select(CreatePicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -64,7 +65,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPicklistType(UserVisitPK userVisitPK, SetDefaultPicklistTypeForm form) {
+    public CommandResult<VoidResult> setDefaultPicklistType(UserVisitPK userVisitPK, SetDefaultPicklistTypeForm form) {
         return CDI.current().select(SetDefaultPicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistType(UserVisitPK userVisitPK, DeletePicklistTypeForm form) {
+    public CommandResult<VoidResult> deletePicklistType(UserVisitPK userVisitPK, DeletePicklistTypeForm form) {
         return CDI.current().select(DeletePicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistTypeDescription(UserVisitPK userVisitPK, CreatePicklistTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createPicklistTypeDescription(UserVisitPK userVisitPK, CreatePicklistTypeDescriptionForm form) {
         return CDI.current().select(CreatePicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistTypeDescription(UserVisitPK userVisitPK, DeletePicklistTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deletePicklistTypeDescription(UserVisitPK userVisitPK, DeletePicklistTypeDescriptionForm form) {
         return CDI.current().select(DeletePicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +113,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form) {
+    public CommandResult<VoidResult> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form) {
         return CDI.current().select(CreatePicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -132,7 +133,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPicklistTimeType(UserVisitPK userVisitPK, SetDefaultPicklistTimeTypeForm form) {
+    public CommandResult<VoidResult> setDefaultPicklistTimeType(UserVisitPK userVisitPK, SetDefaultPicklistTimeTypeForm form) {
         return CDI.current().select(SetDefaultPicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -142,7 +143,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistTimeType(UserVisitPK userVisitPK, DeletePicklistTimeTypeForm form) {
+    public CommandResult<VoidResult> deletePicklistTimeType(UserVisitPK userVisitPK, DeletePicklistTimeTypeForm form) {
         return CDI.current().select(DeletePicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -151,7 +152,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistTimeTypeDescription(UserVisitPK userVisitPK, CreatePicklistTimeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createPicklistTimeTypeDescription(UserVisitPK userVisitPK, CreatePicklistTimeTypeDescriptionForm form) {
         return CDI.current().select(CreatePicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -171,7 +172,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistTimeTypeDescription(UserVisitPK userVisitPK, DeletePicklistTimeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deletePicklistTimeTypeDescription(UserVisitPK userVisitPK, DeletePicklistTimeTypeDescriptionForm form) {
         return CDI.current().select(DeletePicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -180,7 +181,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form) {
+    public CommandResult<VoidResult> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form) {
         return CDI.current().select(CreatePicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -200,7 +201,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPicklistAliasType(UserVisitPK userVisitPK, SetDefaultPicklistAliasTypeForm form) {
+    public CommandResult<VoidResult> setDefaultPicklistAliasType(UserVisitPK userVisitPK, SetDefaultPicklistAliasTypeForm form) {
         return CDI.current().select(SetDefaultPicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -210,7 +211,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistAliasType(UserVisitPK userVisitPK, DeletePicklistAliasTypeForm form) {
+    public CommandResult<VoidResult> deletePicklistAliasType(UserVisitPK userVisitPK, DeletePicklistAliasTypeForm form) {
         return CDI.current().select(DeletePicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -219,7 +220,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistAliasTypeDescription(UserVisitPK userVisitPK, CreatePicklistAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createPicklistAliasTypeDescription(UserVisitPK userVisitPK, CreatePicklistAliasTypeDescriptionForm form) {
         return CDI.current().select(CreatePicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -239,7 +240,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistAliasTypeDescription(UserVisitPK userVisitPK, DeletePicklistAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deletePicklistAliasTypeDescription(UserVisitPK userVisitPK, DeletePicklistAliasTypeDescriptionForm form) {
         return CDI.current().select(DeletePicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -248,7 +249,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPicklistAlias(UserVisitPK userVisitPK, CreatePicklistAliasForm form) {
+    public CommandResult<VoidResult> createPicklistAlias(UserVisitPK userVisitPK, CreatePicklistAliasForm form) {
         return CDI.current().select(CreatePicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -268,7 +269,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> deletePicklistAlias(UserVisitPK userVisitPK, DeletePicklistAliasForm form) {
+    public CommandResult<VoidResult> deletePicklistAlias(UserVisitPK userVisitPK, DeletePicklistAliasForm form) {
         return CDI.current().select(DeletePicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 

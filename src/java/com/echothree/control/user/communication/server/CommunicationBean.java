@@ -22,6 +22,7 @@ import com.echothree.control.user.communication.common.result.*;
 import com.echothree.control.user.communication.server.server.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEventRoleType(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeForm form) {
+    public CommandResult<VoidResult> createCommunicationEventRoleType(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeForm form) {
         return CDI.current().select(CreateCommunicationEventRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -53,7 +54,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEventRoleTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createCommunicationEventRoleTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeDescriptionForm form) {
         return CDI.current().select(CreateCommunicationEventRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -62,7 +63,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEventType(UserVisitPK userVisitPK, CreateCommunicationEventTypeForm form) {
+    public CommandResult<VoidResult> createCommunicationEventType(UserVisitPK userVisitPK, CreateCommunicationEventTypeForm form) {
         return CDI.current().select(CreateCommunicationEventTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -71,7 +72,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEventTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createCommunicationEventTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventTypeDescriptionForm form) {
         return CDI.current().select(CreateCommunicationEventTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -80,7 +81,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form) {
+    public CommandResult<VoidResult> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form) {
         return CDI.current().select(CreateCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -100,7 +101,7 @@ public class CommunicationBean
     }
     
     @Override
-    public CommandResult<?> setDefaultCommunicationEventPurpose(UserVisitPK userVisitPK, SetDefaultCommunicationEventPurposeForm form) {
+    public CommandResult<VoidResult> setDefaultCommunicationEventPurpose(UserVisitPK userVisitPK, SetDefaultCommunicationEventPurposeForm form) {
         return CDI.current().select(SetDefaultCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -110,7 +111,7 @@ public class CommunicationBean
     }
     
     @Override
-    public CommandResult<?> deleteCommunicationEventPurpose(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeForm form) {
+    public CommandResult<VoidResult> deleteCommunicationEventPurpose(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeForm form) {
         return CDI.current().select(DeleteCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -119,7 +120,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEventPurposeDescription(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form) {
+    public CommandResult<VoidResult> createCommunicationEventPurposeDescription(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form) {
         return CDI.current().select(CreateCommunicationEventPurposeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -134,7 +135,7 @@ public class CommunicationBean
     }
     
     @Override
-    public CommandResult<?> deleteCommunicationEventPurposeDescription(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteCommunicationEventPurposeDescription(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form) {
         return CDI.current().select(DeleteCommunicationEventPurposeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -143,7 +144,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationSourceType(UserVisitPK userVisitPK, CreateCommunicationSourceTypeForm form) {
+    public CommandResult<VoidResult> createCommunicationSourceType(UserVisitPK userVisitPK, CreateCommunicationSourceTypeForm form) {
         return CDI.current().select(CreateCommunicationSourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -152,7 +153,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationSourceTypeDescription(UserVisitPK userVisitPK, CreateCommunicationSourceTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createCommunicationSourceTypeDescription(UserVisitPK userVisitPK, CreateCommunicationSourceTypeDescriptionForm form) {
         return CDI.current().select(CreateCommunicationSourceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -161,7 +162,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form) {
+    public CommandResult<VoidResult> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form) {
         return CDI.current().select(CreateCommunicationSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -176,7 +177,7 @@ public class CommunicationBean
     }
     
     @Override
-    public CommandResult<?> deleteCommunicationSource(UserVisitPK userVisitPK, DeleteCommunicationSourceForm form) {
+    public CommandResult<VoidResult> deleteCommunicationSource(UserVisitPK userVisitPK, DeleteCommunicationSourceForm form) {
         return CDI.current().select(DeleteCommunicationSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -185,7 +186,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationSourceDescription(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form) {
+    public CommandResult<VoidResult> createCommunicationSourceDescription(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form) {
         return CDI.current().select(CreateCommunicationSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -200,7 +201,7 @@ public class CommunicationBean
     }
     
     @Override
-    public CommandResult<?> deleteCommunicationSourceDescription(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form) {
+    public CommandResult<VoidResult> deleteCommunicationSourceDescription(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form) {
         return CDI.current().select(DeleteCommunicationSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -209,7 +210,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form) {
+    public CommandResult<VoidResult> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form) {
         return CDI.current().select(CreateCommunicationEventCommand.class).get().run(userVisitPK, form);
     }
     

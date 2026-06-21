@@ -20,6 +20,7 @@ import com.echothree.control.user.customer.common.form.*;
 import com.echothree.control.user.customer.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface CustomerService
         extends CustomerForms {
@@ -42,11 +43,11 @@ public interface CustomerService
     
     CommandResult<GetCustomerStatusChoicesResult> getCustomerStatusChoices(UserVisitPK userVisitPK, GetCustomerStatusChoicesForm form);
     
-    CommandResult<?> setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form);
+    CommandResult<VoidResult> setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form);
     
     CommandResult<GetCustomerCreditStatusChoicesResult> getCustomerCreditStatusChoices(UserVisitPK userVisitPK, GetCustomerCreditStatusChoicesForm form);
     
-    CommandResult<?> setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form);
+    CommandResult<VoidResult> setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form);
     
     // -------------------------------------------------------------------------
     //   Customer Types
@@ -60,54 +61,54 @@ public interface CustomerService
     
     CommandResult<GetCustomerTypeChoicesResult> getCustomerTypeChoices(UserVisitPK userVisitPK, GetCustomerTypeChoicesForm form);
     
-    CommandResult<?> setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form);
+    CommandResult<VoidResult> setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form);
     
     CommandResult<EditCustomerTypeResult> editCustomerType(UserVisitPK userVisitPK, EditCustomerTypeForm form);
     
-    CommandResult<?> deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form);
+    CommandResult<VoidResult> deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Customer Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form);
+    CommandResult<VoidResult> createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form);
     
     CommandResult<GetCustomerTypeDescriptionsResult> getCustomerTypeDescriptions(UserVisitPK userVisitPK, GetCustomerTypeDescriptionsForm form);
     
     CommandResult<EditCustomerTypeDescriptionResult> editCustomerTypeDescription(UserVisitPK userVisitPK, EditCustomerTypeDescriptionForm form);
     
-    CommandResult<?> deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Customer Type Payment Methods
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form);
+    CommandResult<VoidResult> createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form);
     
     CommandResult<GetCustomerTypePaymentMethodResult> getCustomerTypePaymentMethod(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodForm form);
     
     CommandResult<GetCustomerTypePaymentMethodsResult> getCustomerTypePaymentMethods(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodsForm form);
     
-    CommandResult<?> setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form);
+    CommandResult<VoidResult> setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form);
     
     CommandResult<EditCustomerTypePaymentMethodResult> editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form);
     
-    CommandResult<?> deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form);
+    CommandResult<VoidResult> deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form);
     
     // -------------------------------------------------------------------------
     //   Customer Type Shipping Methods
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form);
+    CommandResult<VoidResult> createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form);
     
     CommandResult<GetCustomerTypeShippingMethodResult> getCustomerTypeShippingMethod(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodForm form);
     
     CommandResult<GetCustomerTypeShippingMethodsResult> getCustomerTypeShippingMethods(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodsForm form);
     
-    CommandResult<?> setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form);
+    CommandResult<VoidResult> setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form);
     
     CommandResult<EditCustomerTypeShippingMethodResult> editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form);
     
-    CommandResult<?> deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form);
+    CommandResult<VoidResult> deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form);
     
 }

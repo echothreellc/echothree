@@ -20,6 +20,7 @@ import com.echothree.control.user.training.common.form.*;
 import com.echothree.control.user.training.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface TrainingService
         extends TrainingForms {
@@ -28,7 +29,7 @@ public interface TrainingService
     //   Training Classes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form);
+    CommandResult<VoidResult> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form);
     
     CommandResult<GetTrainingClassesResult> getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form);
     
@@ -36,17 +37,17 @@ public interface TrainingService
     
     CommandResult<GetTrainingClassChoicesResult> getTrainingClassChoices(UserVisitPK userVisitPK, GetTrainingClassChoicesForm form);
     
-    CommandResult<?> setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form);
+    CommandResult<VoidResult> setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form);
     
     CommandResult<EditTrainingClassResult> editTrainingClass(UserVisitPK userVisitPK, EditTrainingClassForm form);
     
-    CommandResult<?> deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form);
+    CommandResult<VoidResult> deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form);
+    CommandResult<VoidResult> createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form);
     
     CommandResult<GetTrainingClassTranslationResult> getTrainingClassTranslation(UserVisitPK userVisitPK, GetTrainingClassTranslationForm form);
     
@@ -54,13 +55,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassTranslationResult> editTrainingClassTranslation(UserVisitPK userVisitPK, EditTrainingClassTranslationForm form);
     
-    CommandResult<?> deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form);
+    CommandResult<VoidResult> deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Sections
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form);
+    CommandResult<VoidResult> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form);
     
     CommandResult<GetTrainingClassSectionsResult> getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form);
     
@@ -68,13 +69,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassSectionResult> editTrainingClassSection(UserVisitPK userVisitPK, EditTrainingClassSectionForm form);
     
-    CommandResult<?> deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form);
+    CommandResult<VoidResult> deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Section Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form);
+    CommandResult<VoidResult> createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form);
     
     CommandResult<GetTrainingClassSectionTranslationResult> getTrainingClassSectionTranslation(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationForm form);
     
@@ -82,13 +83,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassSectionTranslationResult> editTrainingClassSectionTranslation(UserVisitPK userVisitPK, EditTrainingClassSectionTranslationForm form);
     
-    CommandResult<?> deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form);
+    CommandResult<VoidResult> deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Pages
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form);
+    CommandResult<VoidResult> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form);
     
     CommandResult<GetTrainingClassPagesResult> getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form);
     
@@ -96,13 +97,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassPageResult> editTrainingClassPage(UserVisitPK userVisitPK, EditTrainingClassPageForm form);
     
-    CommandResult<?> deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form);
+    CommandResult<VoidResult> deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Page Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form);
+    CommandResult<VoidResult> createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form);
     
     CommandResult<GetTrainingClassPageTranslationResult> getTrainingClassPageTranslation(UserVisitPK userVisitPK, GetTrainingClassPageTranslationForm form);
     
@@ -110,13 +111,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassPageTranslationResult> editTrainingClassPageTranslation(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form);
     
-    CommandResult<?> deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form);
+    CommandResult<VoidResult> deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Questions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form);
+    CommandResult<VoidResult> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form);
     
     CommandResult<GetTrainingClassQuestionsResult> getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form);
     
@@ -124,13 +125,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassQuestionResult> editTrainingClassQuestion(UserVisitPK userVisitPK, EditTrainingClassQuestionForm form);
     
-    CommandResult<?> deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form);
+    CommandResult<VoidResult> deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Question Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form);
+    CommandResult<VoidResult> createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form);
     
     CommandResult<GetTrainingClassQuestionTranslationResult> getTrainingClassQuestionTranslation(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationForm form);
     
@@ -138,13 +139,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassQuestionTranslationResult> editTrainingClassQuestionTranslation(UserVisitPK userVisitPK, EditTrainingClassQuestionTranslationForm form);
     
-    CommandResult<?> deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form);
+    CommandResult<VoidResult> deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Answers
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form);
+    CommandResult<VoidResult> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form);
     
     CommandResult<GetTrainingClassAnswersResult> getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form);
     
@@ -152,13 +153,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassAnswerResult> editTrainingClassAnswer(UserVisitPK userVisitPK, EditTrainingClassAnswerForm form);
     
-    CommandResult<?> deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form);
+    CommandResult<VoidResult> deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Answer Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form);
+    CommandResult<VoidResult> createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form);
     
     CommandResult<GetTrainingClassAnswerTranslationResult> getTrainingClassAnswerTranslation(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form);
     
@@ -166,13 +167,13 @@ public interface TrainingService
     
     CommandResult<EditTrainingClassAnswerTranslationResult> editTrainingClassAnswerTranslation(UserVisitPK userVisitPK, EditTrainingClassAnswerTranslationForm form);
     
-    CommandResult<?> deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form);
+    CommandResult<VoidResult> deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Party Training Classes
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form);
+    CommandResult<VoidResult> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form);
 
     CommandResult<GetPartyTrainingClassStatusChoicesResult> getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form);
 
@@ -184,7 +185,7 @@ public interface TrainingService
 
     CommandResult<EditPartyTrainingClassResult> editPartyTrainingClass(UserVisitPK userVisitPK, EditPartyTrainingClassForm form);
 
-    CommandResult<?> deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form);
+    CommandResult<VoidResult> deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form);
 
     // -------------------------------------------------------------------------
     //   Party Training Class Sessions
@@ -194,7 +195,7 @@ public interface TrainingService
 
     CommandResult<GetPartyTrainingClassSessionsResult> getPartyTrainingClassSessions(UserVisitPK userVisitPK, GetPartyTrainingClassSessionsForm form);
 
-    CommandResult<?> deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form);
+    CommandResult<VoidResult> deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form);
 
     // -------------------------------------------------------------------------
     //   Party Training Class Session Pages

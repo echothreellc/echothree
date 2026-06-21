@@ -22,6 +22,7 @@ import com.echothree.control.user.filter.common.result.*;
 import com.echothree.control.user.filter.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> setDefaultFilterKind(UserVisitPK userVisitPK, SetDefaultFilterKindForm form) {
+    public CommandResult<VoidResult> setDefaultFilterKind(UserVisitPK userVisitPK, SetDefaultFilterKindForm form) {
         return CDI.current().select(SetDefaultFilterKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> deleteFilterKind(UserVisitPK userVisitPK, DeleteFilterKindForm form) {
+    public CommandResult<VoidResult> deleteFilterKind(UserVisitPK userVisitPK, DeleteFilterKindForm form) {
         return CDI.current().select(DeleteFilterKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createFilterKindDescription(UserVisitPK userVisitPK, CreateFilterKindDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterKindDescription(UserVisitPK userVisitPK, CreateFilterKindDescriptionForm form) {
         return CDI.current().select(CreateFilterKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> deleteFilterKindDescription(UserVisitPK userVisitPK, DeleteFilterKindDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFilterKindDescription(UserVisitPK userVisitPK, DeleteFilterKindDescriptionForm form) {
         return CDI.current().select(DeleteFilterKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -132,7 +133,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> setDefaultFilterType(UserVisitPK userVisitPK, SetDefaultFilterTypeForm form) {
+    public CommandResult<VoidResult> setDefaultFilterType(UserVisitPK userVisitPK, SetDefaultFilterTypeForm form) {
         return CDI.current().select(SetDefaultFilterTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -142,7 +143,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> deleteFilterType(UserVisitPK userVisitPK, DeleteFilterTypeForm form) {
+    public CommandResult<VoidResult> deleteFilterType(UserVisitPK userVisitPK, DeleteFilterTypeForm form) {
         return CDI.current().select(DeleteFilterTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -151,7 +152,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createFilterTypeDescription(UserVisitPK userVisitPK, CreateFilterTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterTypeDescription(UserVisitPK userVisitPK, CreateFilterTypeDescriptionForm form) {
         return CDI.current().select(CreateFilterTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -171,7 +172,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> deleteFilterTypeDescription(UserVisitPK userVisitPK, DeleteFilterTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFilterTypeDescription(UserVisitPK userVisitPK, DeleteFilterTypeDescriptionForm form) {
         return CDI.current().select(DeleteFilterTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -180,7 +181,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentSource(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentSource(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceForm form) {
         return CDI.current().select(CreateFilterAdjustmentSourceCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentSourceDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentSourceDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceDescriptionForm form) {
         return CDI.current().select(CreateFilterAdjustmentSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -213,7 +214,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentType(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentType(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeForm form) {
         return CDI.current().select(CreateFilterAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -237,7 +238,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(CreateFilterAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -266,7 +267,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> setDefaultFilterAdjustment(UserVisitPK userVisitPK, SetDefaultFilterAdjustmentForm form) {
+    public CommandResult<VoidResult> setDefaultFilterAdjustment(UserVisitPK userVisitPK, SetDefaultFilterAdjustmentForm form) {
         return CDI.current().select(SetDefaultFilterAdjustmentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -276,7 +277,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterAdjustment(UserVisitPK userVisitPK, DeleteFilterAdjustmentForm form) {
+    public CommandResult<VoidResult> deleteFilterAdjustment(UserVisitPK userVisitPK, DeleteFilterAdjustmentForm form) {
         return CDI.current().select(DeleteFilterAdjustmentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -285,7 +286,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentDescriptionForm form) {
         return CDI.current().select(CreateFilterAdjustmentDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -300,7 +301,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterAdjustmentDescription(UserVisitPK userVisitPK, DeleteFilterAdjustmentDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFilterAdjustmentDescription(UserVisitPK userVisitPK, DeleteFilterAdjustmentDescriptionForm form) {
         return CDI.current().select(DeleteFilterAdjustmentDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -309,7 +310,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentAmountForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentAmountForm form) {
         return CDI.current().select(CreateFilterAdjustmentAmountCommand.class).get().run(userVisitPK, form);
     }
 
@@ -329,7 +330,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterAdjustmentAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentAmountForm form) {
+    public CommandResult<VoidResult> deleteFilterAdjustmentAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentAmountForm form) {
         return CDI.current().select(DeleteFilterAdjustmentAmountCommand.class).get().run(userVisitPK, form);
     }
     
@@ -338,7 +339,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentFixedAmountForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentFixedAmountForm form) {
         return CDI.current().select(CreateFilterAdjustmentFixedAmountCommand.class).get().run(userVisitPK, form);
     }
 
@@ -358,7 +359,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentFixedAmountForm form) {
+    public CommandResult<VoidResult> deleteFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentFixedAmountForm form) {
         return CDI.current().select(DeleteFilterAdjustmentFixedAmountCommand.class).get().run(userVisitPK, form);
     }
     
@@ -367,7 +368,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustmentPercent(UserVisitPK userVisitPK, CreateFilterAdjustmentPercentForm form) {
+    public CommandResult<VoidResult> createFilterAdjustmentPercent(UserVisitPK userVisitPK, CreateFilterAdjustmentPercentForm form) {
         return CDI.current().select(CreateFilterAdjustmentPercentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -387,7 +388,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterAdjustmentPercent(UserVisitPK userVisitPK, DeleteFilterAdjustmentPercentForm form) {
+    public CommandResult<VoidResult> deleteFilterAdjustmentPercent(UserVisitPK userVisitPK, DeleteFilterAdjustmentPercentForm form) {
         return CDI.current().select(DeleteFilterAdjustmentPercentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -416,7 +417,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> setDefaultFilter(UserVisitPK userVisitPK, SetDefaultFilterForm form) {
+    public CommandResult<VoidResult> setDefaultFilter(UserVisitPK userVisitPK, SetDefaultFilterForm form) {
         return CDI.current().select(SetDefaultFilterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -426,7 +427,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilter(UserVisitPK userVisitPK, DeleteFilterForm form) {
+    public CommandResult<VoidResult> deleteFilter(UserVisitPK userVisitPK, DeleteFilterForm form) {
         return CDI.current().select(DeleteFilterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -435,7 +436,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterDescription(UserVisitPK userVisitPK, CreateFilterDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterDescription(UserVisitPK userVisitPK, CreateFilterDescriptionForm form) {
         return CDI.current().select(CreateFilterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -450,7 +451,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterDescription(UserVisitPK userVisitPK, DeleteFilterDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFilterDescription(UserVisitPK userVisitPK, DeleteFilterDescriptionForm form) {
         return CDI.current().select(DeleteFilterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -484,7 +485,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterStep(UserVisitPK userVisitPK, DeleteFilterStepForm form) {
+    public CommandResult<VoidResult> deleteFilterStep(UserVisitPK userVisitPK, DeleteFilterStepForm form) {
         return CDI.current().select(DeleteFilterStepCommand.class).get().run(userVisitPK, form);
     }
     
@@ -493,7 +494,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterStepDescription(UserVisitPK userVisitPK, CreateFilterStepDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterStepDescription(UserVisitPK userVisitPK, CreateFilterStepDescriptionForm form) {
         return CDI.current().select(CreateFilterStepDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -508,7 +509,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterStepDescription(UserVisitPK userVisitPK, DeleteFilterStepDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFilterStepDescription(UserVisitPK userVisitPK, DeleteFilterStepDescriptionForm form) {
         return CDI.current().select(DeleteFilterStepDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -537,7 +538,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterStepElement(UserVisitPK userVisitPK, DeleteFilterStepElementForm form) {
+    public CommandResult<VoidResult> deleteFilterStepElement(UserVisitPK userVisitPK, DeleteFilterStepElementForm form) {
         return CDI.current().select(DeleteFilterStepElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -546,7 +547,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterStepElementDescription(UserVisitPK userVisitPK, CreateFilterStepElementDescriptionForm form) {
+    public CommandResult<VoidResult> createFilterStepElementDescription(UserVisitPK userVisitPK, CreateFilterStepElementDescriptionForm form) {
         return CDI.current().select(CreateFilterStepElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -561,7 +562,7 @@ public class FilterBean
     }
     
     @Override
-    public CommandResult<?> deleteFilterStepElementDescription(UserVisitPK userVisitPK, DeleteFilterStepElementDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFilterStepElementDescription(UserVisitPK userVisitPK, DeleteFilterStepElementDescriptionForm form) {
         return CDI.current().select(DeleteFilterStepElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -570,7 +571,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterEntranceStep(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form) {
+    public CommandResult<VoidResult> createFilterEntranceStep(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form) {
         return CDI.current().select(CreateFilterEntranceStepCommand.class).get().run(userVisitPK, form);
     }
 
@@ -585,7 +586,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> deleteFilterEntranceStep(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form) {
+    public CommandResult<VoidResult> deleteFilterEntranceStep(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form) {
         return CDI.current().select(DeleteFilterEntranceStepCommand.class).get().run(userVisitPK, form);
     }
     
@@ -594,7 +595,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form) {
+    public CommandResult<VoidResult> createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form) {
         return CDI.current().select(CreateFilterStepDestinationCommand.class).get().run(userVisitPK, form);
     }
 
@@ -609,7 +610,7 @@ public class FilterBean
     }
 
     @Override
-    public CommandResult<?> deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form) {
+    public CommandResult<VoidResult> deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form) {
         return CDI.current().select(DeleteFilterStepDestinationCommand.class).get().run(userVisitPK, form);
     }
     

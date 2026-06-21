@@ -20,6 +20,7 @@ import com.echothree.control.user.authentication.common.form.*;
 import com.echothree.control.user.authentication.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface AuthenticationService
         extends AuthenticationForms {
@@ -34,21 +35,21 @@ public interface AuthenticationService
     //   User Visits and Sessions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getJobUserVisit(GetJobUserVisitForm form);
+    CommandResult<VoidResult> getJobUserVisit(GetJobUserVisitForm form);
     
     UserVisitPK getDataLoaderUserVisit();
     
-    CommandResult<?> getUserVisit(GetUserVisitForm form);
+    CommandResult<VoidResult> getUserVisit(GetUserVisitForm form);
 
     void invalidateUserSession(UserVisitPK userVisitPK);
     
     void invalidateUserVisit(UserVisitPK userVisitPK);
     
-    CommandResult<?> invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form);
+    CommandResult<VoidResult> invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form);
     
-    CommandResult<?> removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form);
+    CommandResult<VoidResult> removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form);
     
-    CommandResult<?> removeInvalidatedUserVisits(UserVisitPK userVisitPK);
+    CommandResult<VoidResult> removeInvalidatedUserVisits(UserVisitPK userVisitPK);
     
     // -------------------------------------------------------------------------
     //   Logins
@@ -56,22 +57,22 @@ public interface AuthenticationService
     
     CommandResult<GetCustomerLoginDefaultsResult> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form);
     
-    CommandResult<?> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form);
+    CommandResult<VoidResult> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form);
     
     CommandResult<GetEmployeeLoginDefaultsResult> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form);
     
-    CommandResult<?> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form);
+    CommandResult<VoidResult> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form);
     
     CommandResult<GetVendorLoginDefaultsResult> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form);
     
-    CommandResult<?> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form);
+    CommandResult<VoidResult> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form);
     
-    CommandResult<?> setPassword(UserVisitPK userVisitPK, SetPasswordForm form);
+    CommandResult<VoidResult> setPassword(UserVisitPK userVisitPK, SetPasswordForm form);
     
-    CommandResult<?> recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form);
+    CommandResult<VoidResult> recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form);
     
-    CommandResult<?> idle(UserVisitPK userVisitPK);
+    CommandResult<VoidResult> idle(UserVisitPK userVisitPK);
     
-    CommandResult<?> logout(UserVisitPK userVisitPK);
+    CommandResult<VoidResult> logout(UserVisitPK userVisitPK);
     
 }

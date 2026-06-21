@@ -22,6 +22,7 @@ import com.echothree.control.user.printer.common.result.*;
 import com.echothree.control.user.printer.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form) {
+    public CommandResult<VoidResult> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form) {
         return CDI.current().select(CreatePrinterGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -64,7 +65,7 @@ public class PrinterBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPrinterGroup(UserVisitPK userVisitPK, SetDefaultPrinterGroupForm form) {
+    public CommandResult<VoidResult> setDefaultPrinterGroup(UserVisitPK userVisitPK, SetDefaultPrinterGroupForm form) {
         return CDI.current().select(SetDefaultPrinterGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -79,12 +80,12 @@ public class PrinterBean
     }
     
     @Override
-    public CommandResult<?> setPrinterGroupStatus(UserVisitPK userVisitPK, SetPrinterGroupStatusForm form) {
+    public CommandResult<VoidResult> setPrinterGroupStatus(UserVisitPK userVisitPK, SetPrinterGroupStatusForm form) {
         return CDI.current().select(SetPrinterGroupStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deletePrinterGroup(UserVisitPK userVisitPK, DeletePrinterGroupForm form) {
+    public CommandResult<VoidResult> deletePrinterGroup(UserVisitPK userVisitPK, DeletePrinterGroupForm form) {
         return CDI.current().select(DeletePrinterGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -93,7 +94,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPrinterGroupDescription(UserVisitPK userVisitPK, CreatePrinterGroupDescriptionForm form) {
+    public CommandResult<VoidResult> createPrinterGroupDescription(UserVisitPK userVisitPK, CreatePrinterGroupDescriptionForm form) {
         return CDI.current().select(CreatePrinterGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -113,7 +114,7 @@ public class PrinterBean
     }
     
     @Override
-    public CommandResult<?> deletePrinterGroupDescription(UserVisitPK userVisitPK, DeletePrinterGroupDescriptionForm form) {
+    public CommandResult<VoidResult> deletePrinterGroupDescription(UserVisitPK userVisitPK, DeletePrinterGroupDescriptionForm form) {
         return CDI.current().select(DeletePrinterGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -122,7 +123,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form) {
+    public CommandResult<VoidResult> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form) {
         return CDI.current().select(CreatePrinterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -147,12 +148,12 @@ public class PrinterBean
     }
     
     @Override
-    public CommandResult<?> setPrinterStatus(UserVisitPK userVisitPK, SetPrinterStatusForm form) {
+    public CommandResult<VoidResult> setPrinterStatus(UserVisitPK userVisitPK, SetPrinterStatusForm form) {
         return CDI.current().select(SetPrinterStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deletePrinter(UserVisitPK userVisitPK, DeletePrinterForm form) {
+    public CommandResult<VoidResult> deletePrinter(UserVisitPK userVisitPK, DeletePrinterForm form) {
         return CDI.current().select(DeletePrinterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -161,7 +162,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPrinterDescription(UserVisitPK userVisitPK, CreatePrinterDescriptionForm form) {
+    public CommandResult<VoidResult> createPrinterDescription(UserVisitPK userVisitPK, CreatePrinterDescriptionForm form) {
         return CDI.current().select(CreatePrinterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -181,7 +182,7 @@ public class PrinterBean
     }
     
     @Override
-    public CommandResult<?> deletePrinterDescription(UserVisitPK userVisitPK, DeletePrinterDescriptionForm form) {
+    public CommandResult<VoidResult> deletePrinterDescription(UserVisitPK userVisitPK, DeletePrinterDescriptionForm form) {
         return CDI.current().select(DeletePrinterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -210,12 +211,12 @@ public class PrinterBean
     }
 
     @Override
-    public CommandResult<?> setPrinterGroupJobStatus(UserVisitPK userVisitPK, SetPrinterGroupJobStatusForm form) {
+    public CommandResult<VoidResult> setPrinterGroupJobStatus(UserVisitPK userVisitPK, SetPrinterGroupJobStatusForm form) {
         return CDI.current().select(SetPrinterGroupJobStatusCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> deletePrinterGroupJob(UserVisitPK userVisitPK, DeletePrinterGroupJobForm form) {
+    public CommandResult<VoidResult> deletePrinterGroupJob(UserVisitPK userVisitPK, DeletePrinterGroupJobForm form) {
         return CDI.current().select(DeletePrinterGroupJobCommand.class).get().run(userVisitPK, form);
     }
 
@@ -224,7 +225,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form) {
+    public CommandResult<VoidResult> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form) {
         return CDI.current().select(CreatePrinterGroupUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -244,7 +245,7 @@ public class PrinterBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPrinterGroupUseType(UserVisitPK userVisitPK, SetDefaultPrinterGroupUseTypeForm form) {
+    public CommandResult<VoidResult> setDefaultPrinterGroupUseType(UserVisitPK userVisitPK, SetDefaultPrinterGroupUseTypeForm form) {
         return CDI.current().select(SetDefaultPrinterGroupUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -254,7 +255,7 @@ public class PrinterBean
     }
 
     @Override
-    public CommandResult<?> deletePrinterGroupUseType(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeForm form) {
+    public CommandResult<VoidResult> deletePrinterGroupUseType(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeForm form) {
         return CDI.current().select(DeletePrinterGroupUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -263,7 +264,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeDescriptionForm form) {
         return CDI.current().select(CreatePrinterGroupUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -283,7 +284,7 @@ public class PrinterBean
     }
 
     @Override
-    public CommandResult<?> deletePrinterGroupUseTypeDescription(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deletePrinterGroupUseTypeDescription(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeDescriptionForm form) {
         return CDI.current().select(DeletePrinterGroupUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -292,7 +293,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyPrinterGroupUse(UserVisitPK userVisitPK, CreatePartyPrinterGroupUseForm form) {
+    public CommandResult<VoidResult> createPartyPrinterGroupUse(UserVisitPK userVisitPK, CreatePartyPrinterGroupUseForm form) {
         return CDI.current().select(CreatePartyPrinterGroupUseCommand.class).get().run(userVisitPK, form);
     }
 
@@ -312,7 +313,7 @@ public class PrinterBean
     }
 
     @Override
-    public CommandResult<?> deletePartyPrinterGroupUse(UserVisitPK userVisitPK, DeletePartyPrinterGroupUseForm form) {
+    public CommandResult<VoidResult> deletePartyPrinterGroupUse(UserVisitPK userVisitPK, DeletePartyPrinterGroupUseForm form) {
         return CDI.current().select(DeletePartyPrinterGroupUseCommand.class).get().run(userVisitPK, form);
     }
 

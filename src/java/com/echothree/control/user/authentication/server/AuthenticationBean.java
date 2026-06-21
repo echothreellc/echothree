@@ -27,6 +27,7 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import com.echothree.util.server.cdi.CommandScopeExtension;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
@@ -51,7 +52,7 @@ public class AuthenticationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getJobUserVisit(GetJobUserVisitForm form) {
+    public CommandResult<VoidResult> getJobUserVisit(GetJobUserVisitForm form) {
         return CDI.current().select(GetJobUserVisitCommand.class).get().run(null, form);
     }
 
@@ -99,7 +100,7 @@ public class AuthenticationBean
     }
     
     @Override
-    public CommandResult<?> getUserVisit(GetUserVisitForm form) {
+    public CommandResult<VoidResult> getUserVisit(GetUserVisitForm form) {
         return CDI.current().select(GetUserVisitCommand.class).get().run(null, form);
     }
     
@@ -114,17 +115,17 @@ public class AuthenticationBean
     }
     
     @Override
-    public CommandResult<?> invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
+    public CommandResult<VoidResult> invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
         return CDI.current().select(InvalidateAbandonedUserVisitsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
+    public CommandResult<VoidResult> removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
         return CDI.current().select(RemoveInactiveUserKeysCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> removeInvalidatedUserVisits(UserVisitPK userVisitPK) {
+    public CommandResult<VoidResult> removeInvalidatedUserVisits(UserVisitPK userVisitPK) {
         return CDI.current().select(RemoveInvalidatedUserVisitsCommand.class).get().run(userVisitPK);
     }
     
@@ -138,7 +139,7 @@ public class AuthenticationBean
     }
 
     @Override
-    public CommandResult<?> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
+    public CommandResult<VoidResult> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
         return CDI.current().select(CustomerLoginCommand.class).get().run(userVisitPK, form);
     }
 
@@ -148,7 +149,7 @@ public class AuthenticationBean
     }
 
     @Override
-    public CommandResult<?> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
+    public CommandResult<VoidResult> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
         return CDI.current().select(EmployeeLoginCommand.class).get().run(userVisitPK, form);
     }
 
@@ -158,27 +159,27 @@ public class AuthenticationBean
     }
 
     @Override
-    public CommandResult<?> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
+    public CommandResult<VoidResult> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
         return CDI.current().select(VendorLoginCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
+    public CommandResult<VoidResult> setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
         return CDI.current().select(SetPasswordCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
+    public CommandResult<VoidResult> recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
         return CDI.current().select(RecoverPasswordCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> idle(UserVisitPK userVisitPK) {
+    public CommandResult<VoidResult> idle(UserVisitPK userVisitPK) {
         return CDI.current().select(IdleCommand.class).get().run(userVisitPK);
     }
 
     @Override
-    public CommandResult<?> logout(UserVisitPK userVisitPK) {
+    public CommandResult<VoidResult> logout(UserVisitPK userVisitPK) {
         return CDI.current().select(LogoutCommand.class).get().run(userVisitPK);
     }
     

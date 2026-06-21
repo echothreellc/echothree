@@ -22,6 +22,7 @@ import com.echothree.control.user.customer.common.result.*;
 import com.echothree.control.user.customer.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form) {
+    public CommandResult<VoidResult> setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form) {
         return CDI.current().select(SetCustomerStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form) {
+    public CommandResult<VoidResult> setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form) {
         return CDI.current().select(SetCustomerCreditStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -103,7 +104,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form) {
+    public CommandResult<VoidResult> setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form) {
         return CDI.current().select(SetDefaultCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -113,7 +114,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form) {
+    public CommandResult<VoidResult> deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form) {
         return CDI.current().select(DeleteCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -122,7 +123,7 @@ public class CustomerBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form) {
         return CDI.current().select(CreateCustomerTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -137,7 +138,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form) {
         return CDI.current().select(DeleteCustomerTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -146,7 +147,7 @@ public class CustomerBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form) {
+    public CommandResult<VoidResult> createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form) {
         return CDI.current().select(CreateCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -161,7 +162,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form) {
+    public CommandResult<VoidResult> setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form) {
         return CDI.current().select(SetDefaultCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -171,7 +172,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form) {
+    public CommandResult<VoidResult> deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form) {
         return CDI.current().select(DeleteCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -180,7 +181,7 @@ public class CustomerBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form) {
+    public CommandResult<VoidResult> createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form) {
         return CDI.current().select(CreateCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -195,7 +196,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form) {
+    public CommandResult<VoidResult> setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form) {
         return CDI.current().select(SetDefaultCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -205,7 +206,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult<?> deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form) {
+    public CommandResult<VoidResult> deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form) {
         return CDI.current().select(DeleteCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     

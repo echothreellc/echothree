@@ -22,6 +22,7 @@ import com.echothree.control.user.term.common.result.*;
 import com.echothree.control.user.term.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form) {
+    public CommandResult<VoidResult> createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form) {
         return CDI.current().select(CreateTermTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form) {
         return CDI.current().select(CreateTermTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -97,12 +98,12 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form) {
+    public CommandResult<VoidResult> setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form) {
         return CDI.current().select(SetDefaultTermCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form) {
+    public CommandResult<VoidResult> deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form) {
         return CDI.current().select(DeleteTermCommand.class).get().run(userVisitPK, form);
     }
     
@@ -111,7 +112,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form) {
+    public CommandResult<VoidResult> createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form) {
         return CDI.current().select(CreateTermDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -126,7 +127,7 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form) {
+    public CommandResult<VoidResult> deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form) {
         return CDI.current().select(DeleteTermDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -135,7 +136,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form) {
+    public CommandResult<VoidResult> createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form) {
         return CDI.current().select(CreateCustomerTypeCreditLimitCommand.class).get().run(userVisitPK, form);
     }
     
@@ -150,7 +151,7 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form) {
+    public CommandResult<VoidResult> deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form) {
         return CDI.current().select(DeleteCustomerTypeCreditLimitCommand.class).get().run(userVisitPK, form);
     }
     
@@ -159,7 +160,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form) {
+    public CommandResult<VoidResult> createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form) {
         return CDI.current().select(CreatePartyCreditLimitCommand.class).get().run(userVisitPK, form);
     }
     
@@ -174,7 +175,7 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form) {
+    public CommandResult<VoidResult> deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form) {
         return CDI.current().select(DeletePartyCreditLimitCommand.class).get().run(userVisitPK, form);
     }
     

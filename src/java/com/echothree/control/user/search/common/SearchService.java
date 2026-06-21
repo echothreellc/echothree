@@ -20,6 +20,7 @@ import com.echothree.control.user.search.common.form.*;
 import com.echothree.control.user.search.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface SearchService
         extends SearchForms {
@@ -34,7 +35,7 @@ public interface SearchService
     //   Search Default Operators
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form);
+    CommandResult<VoidResult> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form);
     
     CommandResult<GetSearchDefaultOperatorChoicesResult> getSearchDefaultOperatorChoices(UserVisitPK userVisitPK, GetSearchDefaultOperatorChoicesForm form);
     
@@ -42,17 +43,17 @@ public interface SearchService
     
     CommandResult<GetSearchDefaultOperatorsResult> getSearchDefaultOperators(UserVisitPK userVisitPK, GetSearchDefaultOperatorsForm form);
     
-    CommandResult<?> setDefaultSearchDefaultOperator(UserVisitPK userVisitPK, SetDefaultSearchDefaultOperatorForm form);
+    CommandResult<VoidResult> setDefaultSearchDefaultOperator(UserVisitPK userVisitPK, SetDefaultSearchDefaultOperatorForm form);
     
     CommandResult<EditSearchDefaultOperatorResult> editSearchDefaultOperator(UserVisitPK userVisitPK, EditSearchDefaultOperatorForm form);
     
-    CommandResult<?> deleteSearchDefaultOperator(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorForm form);
+    CommandResult<VoidResult> deleteSearchDefaultOperator(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorForm form);
     
     // --------------------------------------------------------------------------------
     //   Search Default Operator Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSearchDefaultOperatorDescription(UserVisitPK userVisitPK, CreateSearchDefaultOperatorDescriptionForm form);
+    CommandResult<VoidResult> createSearchDefaultOperatorDescription(UserVisitPK userVisitPK, CreateSearchDefaultOperatorDescriptionForm form);
     
     CommandResult<GetSearchDefaultOperatorDescriptionResult> getSearchDefaultOperatorDescription(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionForm form);
     
@@ -60,13 +61,13 @@ public interface SearchService
     
     CommandResult<EditSearchDefaultOperatorDescriptionResult> editSearchDefaultOperatorDescription(UserVisitPK userVisitPK, EditSearchDefaultOperatorDescriptionForm form);
     
-    CommandResult<?> deleteSearchDefaultOperatorDescription(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchDefaultOperatorDescription(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Search Sort Directions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form);
+    CommandResult<VoidResult> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form);
     
     CommandResult<GetSearchSortDirectionChoicesResult> getSearchSortDirectionChoices(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form);
     
@@ -74,17 +75,17 @@ public interface SearchService
     
     CommandResult<GetSearchSortDirectionsResult> getSearchSortDirections(UserVisitPK userVisitPK, GetSearchSortDirectionsForm form);
     
-    CommandResult<?> setDefaultSearchSortDirection(UserVisitPK userVisitPK, SetDefaultSearchSortDirectionForm form);
+    CommandResult<VoidResult> setDefaultSearchSortDirection(UserVisitPK userVisitPK, SetDefaultSearchSortDirectionForm form);
     
     CommandResult<EditSearchSortDirectionResult> editSearchSortDirection(UserVisitPK userVisitPK, EditSearchSortDirectionForm form);
     
-    CommandResult<?> deleteSearchSortDirection(UserVisitPK userVisitPK, DeleteSearchSortDirectionForm form);
+    CommandResult<VoidResult> deleteSearchSortDirection(UserVisitPK userVisitPK, DeleteSearchSortDirectionForm form);
     
     // --------------------------------------------------------------------------------
     //   Search Sort Direction Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSearchSortDirectionDescription(UserVisitPK userVisitPK, CreateSearchSortDirectionDescriptionForm form);
+    CommandResult<VoidResult> createSearchSortDirectionDescription(UserVisitPK userVisitPK, CreateSearchSortDirectionDescriptionForm form);
     
     CommandResult<GetSearchSortDirectionDescriptionResult> getSearchSortDirectionDescription(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionForm form);
     
@@ -92,13 +93,13 @@ public interface SearchService
     
     CommandResult<EditSearchSortDirectionDescriptionResult> editSearchSortDirectionDescription(UserVisitPK userVisitPK, EditSearchSortDirectionDescriptionForm form);
     
-    CommandResult<?> deleteSearchSortDirectionDescription(UserVisitPK userVisitPK, DeleteSearchSortDirectionDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchSortDirectionDescription(UserVisitPK userVisitPK, DeleteSearchSortDirectionDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Search Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form);
+    CommandResult<VoidResult> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form);
 
     CommandResult<GetSearchKindsResult> getSearchKinds(UserVisitPK userVisitPK, GetSearchKindsForm form);
 
@@ -106,17 +107,17 @@ public interface SearchService
 
     CommandResult<GetSearchKindChoicesResult> getSearchKindChoices(UserVisitPK userVisitPK, GetSearchKindChoicesForm form);
 
-    CommandResult<?> setDefaultSearchKind(UserVisitPK userVisitPK, SetDefaultSearchKindForm form);
+    CommandResult<VoidResult> setDefaultSearchKind(UserVisitPK userVisitPK, SetDefaultSearchKindForm form);
 
     CommandResult<EditSearchKindResult> editSearchKind(UserVisitPK userVisitPK, EditSearchKindForm form);
 
-    CommandResult<?> deleteSearchKind(UserVisitPK userVisitPK, DeleteSearchKindForm form);
+    CommandResult<VoidResult> deleteSearchKind(UserVisitPK userVisitPK, DeleteSearchKindForm form);
 
     // -------------------------------------------------------------------------
     //   Search Kind Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchKindDescription(UserVisitPK userVisitPK, CreateSearchKindDescriptionForm form);
+    CommandResult<VoidResult> createSearchKindDescription(UserVisitPK userVisitPK, CreateSearchKindDescriptionForm form);
 
     CommandResult<GetSearchKindDescriptionsResult> getSearchKindDescriptions(UserVisitPK userVisitPK, GetSearchKindDescriptionsForm form);
 
@@ -124,13 +125,13 @@ public interface SearchService
 
     CommandResult<EditSearchKindDescriptionResult> editSearchKindDescription(UserVisitPK userVisitPK, EditSearchKindDescriptionForm form);
 
-    CommandResult<?> deleteSearchKindDescription(UserVisitPK userVisitPK, DeleteSearchKindDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchKindDescription(UserVisitPK userVisitPK, DeleteSearchKindDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Search Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form);
+    CommandResult<VoidResult> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form);
 
     CommandResult<GetSearchTypesResult> getSearchTypes(UserVisitPK userVisitPK, GetSearchTypesForm form);
 
@@ -138,17 +139,17 @@ public interface SearchService
 
     CommandResult<GetSearchTypeChoicesResult> getSearchTypeChoices(UserVisitPK userVisitPK, GetSearchTypeChoicesForm form);
 
-    CommandResult<?> setDefaultSearchType(UserVisitPK userVisitPK, SetDefaultSearchTypeForm form);
+    CommandResult<VoidResult> setDefaultSearchType(UserVisitPK userVisitPK, SetDefaultSearchTypeForm form);
 
     CommandResult<EditSearchTypeResult> editSearchType(UserVisitPK userVisitPK, EditSearchTypeForm form);
 
-    CommandResult<?> deleteSearchType(UserVisitPK userVisitPK, DeleteSearchTypeForm form);
+    CommandResult<VoidResult> deleteSearchType(UserVisitPK userVisitPK, DeleteSearchTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Search Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchTypeDescription(UserVisitPK userVisitPK, CreateSearchTypeDescriptionForm form);
+    CommandResult<VoidResult> createSearchTypeDescription(UserVisitPK userVisitPK, CreateSearchTypeDescriptionForm form);
 
     CommandResult<GetSearchTypeDescriptionsResult> getSearchTypeDescriptions(UserVisitPK userVisitPK, GetSearchTypeDescriptionsForm form);
 
@@ -156,13 +157,13 @@ public interface SearchService
 
     CommandResult<EditSearchTypeDescriptionResult> editSearchTypeDescription(UserVisitPK userVisitPK, EditSearchTypeDescriptionForm form);
 
-    CommandResult<?> deleteSearchTypeDescription(UserVisitPK userVisitPK, DeleteSearchTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchTypeDescription(UserVisitPK userVisitPK, DeleteSearchTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Search Sort Orders
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form);
+    CommandResult<VoidResult> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form);
 
     CommandResult<GetSearchSortOrdersResult> getSearchSortOrders(UserVisitPK userVisitPK, GetSearchSortOrdersForm form);
 
@@ -170,17 +171,17 @@ public interface SearchService
 
     CommandResult<GetSearchSortOrderChoicesResult> getSearchSortOrderChoices(UserVisitPK userVisitPK, GetSearchSortOrderChoicesForm form);
 
-    CommandResult<?> setDefaultSearchSortOrder(UserVisitPK userVisitPK, SetDefaultSearchSortOrderForm form);
+    CommandResult<VoidResult> setDefaultSearchSortOrder(UserVisitPK userVisitPK, SetDefaultSearchSortOrderForm form);
 
     CommandResult<EditSearchSortOrderResult> editSearchSortOrder(UserVisitPK userVisitPK, EditSearchSortOrderForm form);
 
-    CommandResult<?> deleteSearchSortOrder(UserVisitPK userVisitPK, DeleteSearchSortOrderForm form);
+    CommandResult<VoidResult> deleteSearchSortOrder(UserVisitPK userVisitPK, DeleteSearchSortOrderForm form);
 
     // -------------------------------------------------------------------------
     //   Search Sort Order Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchSortOrderDescription(UserVisitPK userVisitPK, CreateSearchSortOrderDescriptionForm form);
+    CommandResult<VoidResult> createSearchSortOrderDescription(UserVisitPK userVisitPK, CreateSearchSortOrderDescriptionForm form);
 
     CommandResult<GetSearchSortOrderDescriptionsResult> getSearchSortOrderDescriptions(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionsForm form);
 
@@ -188,13 +189,13 @@ public interface SearchService
 
     CommandResult<EditSearchSortOrderDescriptionResult> editSearchSortOrderDescription(UserVisitPK userVisitPK, EditSearchSortOrderDescriptionForm form);
 
-    CommandResult<?> deleteSearchSortOrderDescription(UserVisitPK userVisitPK, DeleteSearchSortOrderDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchSortOrderDescription(UserVisitPK userVisitPK, DeleteSearchSortOrderDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Search Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form);
+    CommandResult<VoidResult> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form);
 
     CommandResult<GetSearchUseTypesResult> getSearchUseTypes(UserVisitPK userVisitPK, GetSearchUseTypesForm form);
 
@@ -202,17 +203,17 @@ public interface SearchService
 
     CommandResult<GetSearchUseTypeChoicesResult> getSearchUseTypeChoices(UserVisitPK userVisitPK, GetSearchUseTypeChoicesForm form);
 
-    CommandResult<?> setDefaultSearchUseType(UserVisitPK userVisitPK, SetDefaultSearchUseTypeForm form);
+    CommandResult<VoidResult> setDefaultSearchUseType(UserVisitPK userVisitPK, SetDefaultSearchUseTypeForm form);
 
     CommandResult<EditSearchUseTypeResult> editSearchUseType(UserVisitPK userVisitPK, EditSearchUseTypeForm form);
 
-    CommandResult<?> deleteSearchUseType(UserVisitPK userVisitPK, DeleteSearchUseTypeForm form);
+    CommandResult<VoidResult> deleteSearchUseType(UserVisitPK userVisitPK, DeleteSearchUseTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Search Use Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchUseTypeDescription(UserVisitPK userVisitPK, CreateSearchUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createSearchUseTypeDescription(UserVisitPK userVisitPK, CreateSearchUseTypeDescriptionForm form);
 
     CommandResult<GetSearchUseTypeDescriptionsResult> getSearchUseTypeDescriptions(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionsForm form);
 
@@ -220,7 +221,7 @@ public interface SearchService
 
     CommandResult<EditSearchUseTypeDescriptionResult> editSearchUseTypeDescription(UserVisitPK userVisitPK, EditSearchUseTypeDescriptionForm form);
 
-    CommandResult<?> deleteSearchUseTypeDescription(UserVisitPK userVisitPK, DeleteSearchUseTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchUseTypeDescription(UserVisitPK userVisitPK, DeleteSearchUseTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Search Result Action Types
@@ -234,17 +235,17 @@ public interface SearchService
 
     CommandResult<GetSearchResultActionTypeChoicesResult> getSearchResultActionTypeChoices(UserVisitPK userVisitPK, GetSearchResultActionTypeChoicesForm form);
 
-    CommandResult<?> setDefaultSearchResultActionType(UserVisitPK userVisitPK, SetDefaultSearchResultActionTypeForm form);
+    CommandResult<VoidResult> setDefaultSearchResultActionType(UserVisitPK userVisitPK, SetDefaultSearchResultActionTypeForm form);
 
     CommandResult<EditSearchResultActionTypeResult> editSearchResultActionType(UserVisitPK userVisitPK, EditSearchResultActionTypeForm form);
 
-    CommandResult<?> deleteSearchResultActionType(UserVisitPK userVisitPK, DeleteSearchResultActionTypeForm form);
+    CommandResult<VoidResult> deleteSearchResultActionType(UserVisitPK userVisitPK, DeleteSearchResultActionTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Search Result Action Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchResultActionTypeDescription(UserVisitPK userVisitPK, CreateSearchResultActionTypeDescriptionForm form);
+    CommandResult<VoidResult> createSearchResultActionTypeDescription(UserVisitPK userVisitPK, CreateSearchResultActionTypeDescriptionForm form);
 
     CommandResult<GetSearchResultActionTypeDescriptionsResult> getSearchResultActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionsForm form);
 
@@ -252,13 +253,13 @@ public interface SearchService
 
     CommandResult<EditSearchResultActionTypeDescriptionResult> editSearchResultActionTypeDescription(UserVisitPK userVisitPK, EditSearchResultActionTypeDescriptionForm form);
 
-    CommandResult<?> deleteSearchResultActionTypeDescription(UserVisitPK userVisitPK, DeleteSearchResultActionTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchResultActionTypeDescription(UserVisitPK userVisitPK, DeleteSearchResultActionTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Search Check Spelling Action Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form);
+    CommandResult<VoidResult> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form);
 
     CommandResult<GetSearchCheckSpellingActionTypesResult> getSearchCheckSpellingActionTypes(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form);
 
@@ -266,17 +267,17 @@ public interface SearchService
 
     CommandResult<GetSearchCheckSpellingActionTypeChoicesResult> getSearchCheckSpellingActionTypeChoices(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeChoicesForm form);
 
-    CommandResult<?> setDefaultSearchCheckSpellingActionType(UserVisitPK userVisitPK, SetDefaultSearchCheckSpellingActionTypeForm form);
+    CommandResult<VoidResult> setDefaultSearchCheckSpellingActionType(UserVisitPK userVisitPK, SetDefaultSearchCheckSpellingActionTypeForm form);
 
     CommandResult<EditSearchCheckSpellingActionTypeResult> editSearchCheckSpellingActionType(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeForm form);
 
-    CommandResult<?> deleteSearchCheckSpellingActionType(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeForm form);
+    CommandResult<VoidResult> deleteSearchCheckSpellingActionType(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Search Check Spelling Action Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeDescriptionForm form);
+    CommandResult<VoidResult> createSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeDescriptionForm form);
 
     CommandResult<GetSearchCheckSpellingActionTypeDescriptionsResult> getSearchCheckSpellingActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionsForm form);
 
@@ -284,7 +285,7 @@ public interface SearchService
 
     CommandResult<EditSearchCheckSpellingActionTypeDescriptionResult> editSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeDescriptionForm form);
 
-    CommandResult<?> deleteSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Customer Search
@@ -300,7 +301,7 @@ public interface SearchService
 
     CommandResult<CountCustomerResultsResult> countCustomerResults(UserVisitPK userVisitPK, CountCustomerResultsForm form);
     
-    CommandResult<?> clearCustomerResults(UserVisitPK userVisitPK, ClearCustomerResultsForm form);
+    CommandResult<VoidResult> clearCustomerResults(UserVisitPK userVisitPK, ClearCustomerResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Item Search
@@ -316,9 +317,9 @@ public interface SearchService
     
     CommandResult<CountItemResultsResult> countItemResults(UserVisitPK userVisitPK, CountItemResultsForm form);
     
-    CommandResult<?> clearItemResults(UserVisitPK userVisitPK, ClearItemResultsForm form);
+    CommandResult<VoidResult> clearItemResults(UserVisitPK userVisitPK, ClearItemResultsForm form);
     
-    CommandResult<?> createItemSearchResultAction(UserVisitPK userVisitPK, CreateItemSearchResultActionForm form);
+    CommandResult<VoidResult> createItemSearchResultAction(UserVisitPK userVisitPK, CreateItemSearchResultActionForm form);
     
     CommandResult<CheckItemSpellingResult> checkItemSpelling(UserVisitPK userVisitPK, CheckItemSpellingForm form);
     
@@ -332,7 +333,7 @@ public interface SearchService
 
     CommandResult<CountVendorResultsResult> countVendorResults(UserVisitPK userVisitPK, CountVendorResultsForm form);
 
-    CommandResult<?> clearVendorResults(UserVisitPK userVisitPK, ClearVendorResultsForm form);
+    CommandResult<VoidResult> clearVendorResults(UserVisitPK userVisitPK, ClearVendorResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Forum Message Search
@@ -344,7 +345,7 @@ public interface SearchService
 
     CommandResult<CountForumMessageResultsResult> countForumMessageResults(UserVisitPK userVisitPK, CountForumMessageResultsForm form);
 
-    CommandResult<?> clearForumMessageResults(UserVisitPK userVisitPK, ClearForumMessageResultsForm form);
+    CommandResult<VoidResult> clearForumMessageResults(UserVisitPK userVisitPK, ClearForumMessageResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Employee Search
@@ -360,7 +361,7 @@ public interface SearchService
 
     CommandResult<CountEmployeeResultsResult> countEmployeeResults(UserVisitPK userVisitPK, CountEmployeeResultsForm form);
 
-    CommandResult<?> clearEmployeeResults(UserVisitPK userVisitPK, ClearEmployeeResultsForm form);
+    CommandResult<VoidResult> clearEmployeeResults(UserVisitPK userVisitPK, ClearEmployeeResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Leave Search
@@ -372,7 +373,7 @@ public interface SearchService
 
     CommandResult<CountLeaveResultsResult> countLeaveResults(UserVisitPK userVisitPK, CountLeaveResultsForm form);
 
-    CommandResult<?> clearLeaveResults(UserVisitPK userVisitPK, ClearLeaveResultsForm form);
+    CommandResult<VoidResult> clearLeaveResults(UserVisitPK userVisitPK, ClearLeaveResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Batch Search
@@ -384,7 +385,7 @@ public interface SearchService
 
     CommandResult<CountSalesOrderBatchResultsResult> countSalesOrderBatchResults(UserVisitPK userVisitPK, CountSalesOrderBatchResultsForm form);
 
-    CommandResult<?> clearSalesOrderBatchResults(UserVisitPK userVisitPK, ClearSalesOrderBatchResultsForm form);
+    CommandResult<VoidResult> clearSalesOrderBatchResults(UserVisitPK userVisitPK, ClearSalesOrderBatchResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Search
@@ -396,7 +397,7 @@ public interface SearchService
 
     CommandResult<CountSalesOrderResultsResult> countSalesOrderResults(UserVisitPK userVisitPK, CountSalesOrderResultsForm form);
 
-    CommandResult<?> clearSalesOrderResults(UserVisitPK userVisitPK, ClearSalesOrderResultsForm form);
+    CommandResult<VoidResult> clearSalesOrderResults(UserVisitPK userVisitPK, ClearSalesOrderResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Component Vendor Search
@@ -408,7 +409,7 @@ public interface SearchService
 
     CommandResult<CountComponentVendorResultsResult> countComponentVendorResults(UserVisitPK userVisitPK, CountComponentVendorResultsForm form);
 
-    CommandResult<?> clearComponentVendorResults(UserVisitPK userVisitPK, ClearComponentVendorResultsForm form);
+    CommandResult<VoidResult> clearComponentVendorResults(UserVisitPK userVisitPK, ClearComponentVendorResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Entity Type Search
@@ -424,7 +425,7 @@ public interface SearchService
 
     CommandResult<CountEntityTypeResultsResult> countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form);
 
-    CommandResult<?> clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
+    CommandResult<VoidResult> clearEntityTypeResults(UserVisitPK userVisitPK, ClearEntityTypeResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Entity Alias Type Search
@@ -436,7 +437,7 @@ public interface SearchService
 
     CommandResult<CountEntityAliasTypeResultsResult> countEntityAliasTypeResults(UserVisitPK userVisitPK, CountEntityAliasTypeResultsForm form);
 
-    CommandResult<?> clearEntityAliasTypeResults(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form);
+    CommandResult<VoidResult> clearEntityAliasTypeResults(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Entity Attribute Search
@@ -448,7 +449,7 @@ public interface SearchService
 
     CommandResult<CountEntityAttributeResultsResult> countEntityAttributeResults(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form);
 
-    CommandResult<?> clearEntityAttributeResults(UserVisitPK userVisitPK, ClearEntityAttributeResultsForm form);
+    CommandResult<VoidResult> clearEntityAttributeResults(UserVisitPK userVisitPK, ClearEntityAttributeResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Entity Attribute Group Search
@@ -460,7 +461,7 @@ public interface SearchService
 
     CommandResult<CountEntityAttributeGroupResultsResult> countEntityAttributeGroupResults(UserVisitPK userVisitPK, CountEntityAttributeGroupResultsForm form);
 
-    CommandResult<?> clearEntityAttributeGroupResults(UserVisitPK userVisitPK, ClearEntityAttributeGroupResultsForm form);
+    CommandResult<VoidResult> clearEntityAttributeGroupResults(UserVisitPK userVisitPK, ClearEntityAttributeGroupResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Entity List Item Search
@@ -472,7 +473,7 @@ public interface SearchService
 
     CommandResult<CountEntityListItemResultsResult> countEntityListItemResults(UserVisitPK userVisitPK, CountEntityListItemResultsForm form);
 
-    CommandResult<?> clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form);
+    CommandResult<VoidResult> clearEntityListItemResults(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Content Catalog Search
@@ -484,7 +485,7 @@ public interface SearchService
 
     CommandResult<CountContentCatalogResultsResult> countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form);
 
-    CommandResult<?> clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form);
+    CommandResult<VoidResult> clearContentCatalogResults(UserVisitPK userVisitPK, ClearContentCatalogResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Content Catalog Item Search
@@ -500,7 +501,7 @@ public interface SearchService
 
     CommandResult<CountContentCatalogItemResultsResult> countContentCatalogItemResults(UserVisitPK userVisitPK, CountContentCatalogItemResultsForm form);
 
-    CommandResult<?> clearContentCatalogItemResults(UserVisitPK userVisitPK, ClearContentCatalogItemResultsForm form);
+    CommandResult<VoidResult> clearContentCatalogItemResults(UserVisitPK userVisitPK, ClearContentCatalogItemResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Content Category Search
@@ -516,7 +517,7 @@ public interface SearchService
 
     CommandResult<CountContentCategoryResultsResult> countContentCategoryResults(UserVisitPK userVisitPK, CountContentCategoryResultsForm form);
 
-    CommandResult<?> clearContentCategoryResults(UserVisitPK userVisitPK, ClearContentCategoryResultsForm form);
+    CommandResult<VoidResult> clearContentCategoryResults(UserVisitPK userVisitPK, ClearContentCategoryResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Security Role Group Search
@@ -532,7 +533,7 @@ public interface SearchService
     
     CommandResult<CountSecurityRoleGroupResultsResult> countSecurityRoleGroupResults(UserVisitPK userVisitPK, CountSecurityRoleGroupResultsForm form);
     
-    CommandResult<?> clearSecurityRoleGroupResults(UserVisitPK userVisitPK, ClearSecurityRoleGroupResultsForm form);
+    CommandResult<VoidResult> clearSecurityRoleGroupResults(UserVisitPK userVisitPK, ClearSecurityRoleGroupResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Security Role Search
@@ -548,7 +549,7 @@ public interface SearchService
     
     CommandResult<CountSecurityRoleResultsResult> countSecurityRoleResults(UserVisitPK userVisitPK, CountSecurityRoleResultsForm form);
     
-    CommandResult<?> clearSecurityRoleResults(UserVisitPK userVisitPK, ClearSecurityRoleResultsForm form);
+    CommandResult<VoidResult> clearSecurityRoleResults(UserVisitPK userVisitPK, ClearSecurityRoleResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Harmonized Tariff Schedule Code Search
@@ -564,7 +565,7 @@ public interface SearchService
     
     CommandResult<CountHarmonizedTariffScheduleCodeResultsResult> countHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, CountHarmonizedTariffScheduleCodeResultsForm form);
     
-    CommandResult<?> clearHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, ClearHarmonizedTariffScheduleCodeResultsForm form);
+    CommandResult<VoidResult> clearHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, ClearHarmonizedTariffScheduleCodeResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Contact Mechanism Search
@@ -580,7 +581,7 @@ public interface SearchService
     
     CommandResult<CountContactMechanismResultsResult> countContactMechanismResults(UserVisitPK userVisitPK, CountContactMechanismResultsForm form);
     
-    CommandResult<?> clearContactMechanismResults(UserVisitPK userVisitPK, ClearContactMechanismResultsForm form);
+    CommandResult<VoidResult> clearContactMechanismResults(UserVisitPK userVisitPK, ClearContactMechanismResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Search
@@ -596,7 +597,7 @@ public interface SearchService
     
     CommandResult<CountOfferResultsResult> countOfferResults(UserVisitPK userVisitPK, CountOfferResultsForm form);
     
-    CommandResult<?> clearOfferResults(UserVisitPK userVisitPK, ClearOfferResultsForm form);
+    CommandResult<VoidResult> clearOfferResults(UserVisitPK userVisitPK, ClearOfferResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Use Search
@@ -612,7 +613,7 @@ public interface SearchService
     
     CommandResult<CountUseResultsResult> countUseResults(UserVisitPK userVisitPK, CountUseResultsForm form);
     
-    CommandResult<?> clearUseResults(UserVisitPK userVisitPK, ClearUseResultsForm form);
+    CommandResult<VoidResult> clearUseResults(UserVisitPK userVisitPK, ClearUseResultsForm form);
     
     // -------------------------------------------------------------------------
     //   Use Type Search
@@ -628,7 +629,7 @@ public interface SearchService
     
     CommandResult<CountUseTypeResultsResult> countUseTypeResults(UserVisitPK userVisitPK, CountUseTypeResultsForm form);
     
-    CommandResult<?> clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
+    CommandResult<VoidResult> clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Shipping Method Search
@@ -640,7 +641,7 @@ public interface SearchService
 
     CommandResult<CountShippingMethodResultsResult> countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form);
 
-    CommandResult<?> clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form);
+    CommandResult<VoidResult> clearShippingMethodResults(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Warehouse Search
@@ -656,7 +657,7 @@ public interface SearchService
 
     CommandResult<CountWarehouseResultsResult> countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form);
 
-    CommandResult<?> clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form);
+    CommandResult<VoidResult> clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form);
 
     // -------------------------------------------------------------------------
     //   Identify

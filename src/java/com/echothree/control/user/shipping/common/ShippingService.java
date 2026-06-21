@@ -20,6 +20,7 @@ import com.echothree.control.user.shipping.common.form.*;
 import com.echothree.control.user.shipping.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface ShippingService
         extends ShippingForms {
@@ -34,7 +35,7 @@ public interface ShippingService
     //   Shipping Methods
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form);
+    CommandResult<VoidResult> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form);
     
     CommandResult<GetShippingMethodResult> getShippingMethod(UserVisitPK userVisitPK, GetShippingMethodForm form);
     
@@ -44,13 +45,13 @@ public interface ShippingService
     
     CommandResult<EditShippingMethodResult> editShippingMethod(UserVisitPK userVisitPK, EditShippingMethodForm form);
     
-    CommandResult<?> deleteShippingMethod(UserVisitPK userVisitPK, DeleteShippingMethodForm form);
+    CommandResult<VoidResult> deleteShippingMethod(UserVisitPK userVisitPK, DeleteShippingMethodForm form);
     
     // -------------------------------------------------------------------------
     //   Shipping Method Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createShippingMethodDescription(UserVisitPK userVisitPK, CreateShippingMethodDescriptionForm form);
+    CommandResult<VoidResult> createShippingMethodDescription(UserVisitPK userVisitPK, CreateShippingMethodDescriptionForm form);
     
     CommandResult<GetShippingMethodDescriptionResult> getShippingMethodDescription(UserVisitPK userVisitPK, GetShippingMethodDescriptionForm form);
 
@@ -58,18 +59,18 @@ public interface ShippingService
 
     CommandResult<EditShippingMethodDescriptionResult> editShippingMethodDescription(UserVisitPK userVisitPK, EditShippingMethodDescriptionForm form);
     
-    CommandResult<?> deleteShippingMethodDescription(UserVisitPK userVisitPK, DeleteShippingMethodDescriptionForm form);
+    CommandResult<VoidResult> deleteShippingMethodDescription(UserVisitPK userVisitPK, DeleteShippingMethodDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Shipping Method Carrier Services
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createShippingMethodCarrierService(UserVisitPK userVisitPK, CreateShippingMethodCarrierServiceForm form);
+    CommandResult<VoidResult> createShippingMethodCarrierService(UserVisitPK userVisitPK, CreateShippingMethodCarrierServiceForm form);
     
     CommandResult<GetShippingMethodCarrierServiceResult> getShippingMethodCarrierService(UserVisitPK userVisitPK, GetShippingMethodCarrierServiceForm form);
 
     CommandResult<GetShippingMethodCarrierServicesResult> getShippingMethodCarrierServices(UserVisitPK userVisitPK, GetShippingMethodCarrierServicesForm form);
 
-    CommandResult<?> deleteShippingMethodCarrierService(UserVisitPK userVisitPK, DeleteShippingMethodCarrierServiceForm form);
+    CommandResult<VoidResult> deleteShippingMethodCarrierService(UserVisitPK userVisitPK, DeleteShippingMethodCarrierServiceForm form);
     
 }

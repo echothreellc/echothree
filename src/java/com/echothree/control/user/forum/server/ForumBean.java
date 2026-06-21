@@ -22,6 +22,7 @@ import com.echothree.control.user.forum.common.result.*;
 import com.echothree.control.user.forum.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumGroup(UserVisitPK userVisitPK, CreateForumGroupForm form) {
+    public CommandResult<VoidResult> createForumGroup(UserVisitPK userVisitPK, CreateForumGroupForm form) {
         return CDI.current().select(CreateForumGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -69,7 +70,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumGroup(UserVisitPK userVisitPK, DeleteForumGroupForm form) {
+    public CommandResult<VoidResult> deleteForumGroup(UserVisitPK userVisitPK, DeleteForumGroupForm form) {
         return CDI.current().select(DeleteForumGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -78,7 +79,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumGroupDescription(UserVisitPK userVisitPK, CreateForumGroupDescriptionForm form) {
+    public CommandResult<VoidResult> createForumGroupDescription(UserVisitPK userVisitPK, CreateForumGroupDescriptionForm form) {
         return CDI.current().select(CreateForumGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -93,7 +94,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumGroupDescription(UserVisitPK userVisitPK, DeleteForumGroupDescriptionForm form) {
+    public CommandResult<VoidResult> deleteForumGroupDescription(UserVisitPK userVisitPK, DeleteForumGroupDescriptionForm form) {
         return CDI.current().select(DeleteForumGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -102,7 +103,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForum(UserVisitPK userVisitPK, CreateForumForm form) {
+    public CommandResult<VoidResult> createForum(UserVisitPK userVisitPK, CreateForumForm form) {
         return CDI.current().select(CreateForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -127,7 +128,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForum(UserVisitPK userVisitPK, DeleteForumForm form) {
+    public CommandResult<VoidResult> deleteForum(UserVisitPK userVisitPK, DeleteForumForm form) {
         return CDI.current().select(DeleteForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -136,7 +137,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumDescription(UserVisitPK userVisitPK, CreateForumDescriptionForm form) {
+    public CommandResult<VoidResult> createForumDescription(UserVisitPK userVisitPK, CreateForumDescriptionForm form) {
         return CDI.current().select(CreateForumDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -151,7 +152,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumDescription(UserVisitPK userVisitPK, DeleteForumDescriptionForm form) {
+    public CommandResult<VoidResult> deleteForumDescription(UserVisitPK userVisitPK, DeleteForumDescriptionForm form) {
         return CDI.current().select(DeleteForumDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -160,7 +161,7 @@ public class ForumBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumGroupForum(UserVisitPK userVisitPK, CreateForumGroupForumForm form) {
+    public CommandResult<VoidResult> createForumGroupForum(UserVisitPK userVisitPK, CreateForumGroupForumForm form) {
         return CDI.current().select(CreateForumGroupForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -170,7 +171,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> setDefaultForumGroupForum(UserVisitPK userVisitPK, SetDefaultForumGroupForumForm form) {
+    public CommandResult<VoidResult> setDefaultForumGroupForum(UserVisitPK userVisitPK, SetDefaultForumGroupForumForm form) {
         return CDI.current().select(SetDefaultForumGroupForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -180,7 +181,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumGroupForum(UserVisitPK userVisitPK, DeleteForumGroupForumForm form) {
+    public CommandResult<VoidResult> deleteForumGroupForum(UserVisitPK userVisitPK, DeleteForumGroupForumForm form) {
         return CDI.current().select(DeleteForumGroupForumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -189,7 +190,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumRoleType(UserVisitPK userVisitPK, CreateForumRoleTypeForm form) {
+    public CommandResult<VoidResult> createForumRoleType(UserVisitPK userVisitPK, CreateForumRoleTypeForm form) {
         return CDI.current().select(CreateForumRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -203,7 +204,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumRoleTypeDescription(UserVisitPK userVisitPK, CreateForumRoleTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createForumRoleTypeDescription(UserVisitPK userVisitPK, CreateForumRoleTypeDescriptionForm form) {
         return CDI.current().select(CreateForumRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -212,7 +213,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumType(UserVisitPK userVisitPK, CreateForumTypeForm form) {
+    public CommandResult<VoidResult> createForumType(UserVisitPK userVisitPK, CreateForumTypeForm form) {
         return CDI.current().select(CreateForumTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -226,7 +227,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumTypeDescription(UserVisitPK userVisitPK, CreateForumTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createForumTypeDescription(UserVisitPK userVisitPK, CreateForumTypeDescriptionForm form) {
         return CDI.current().select(CreateForumTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -235,7 +236,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumMimeType(UserVisitPK userVisitPK, CreateForumMimeTypeForm form) {
+    public CommandResult<VoidResult> createForumMimeType(UserVisitPK userVisitPK, CreateForumMimeTypeForm form) {
         return CDI.current().select(CreateForumMimeTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -245,7 +246,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> setDefaultForumMimeType(UserVisitPK userVisitPK, SetDefaultForumMimeTypeForm form) {
+    public CommandResult<VoidResult> setDefaultForumMimeType(UserVisitPK userVisitPK, SetDefaultForumMimeTypeForm form) {
         return CDI.current().select(SetDefaultForumMimeTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -255,7 +256,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumMimeType(UserVisitPK userVisitPK, DeleteForumMimeTypeForm form) {
+    public CommandResult<VoidResult> deleteForumMimeType(UserVisitPK userVisitPK, DeleteForumMimeTypeForm form) {
         return CDI.current().select(DeleteForumMimeTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -264,7 +265,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumPartyRole(UserVisitPK userVisitPK, CreateForumPartyRoleForm form) {
+    public CommandResult<VoidResult> createForumPartyRole(UserVisitPK userVisitPK, CreateForumPartyRoleForm form) {
         return CDI.current().select(CreateForumPartyRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -274,7 +275,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumPartyRole(UserVisitPK userVisitPK, DeleteForumPartyRoleForm form) {
+    public CommandResult<VoidResult> deleteForumPartyRole(UserVisitPK userVisitPK, DeleteForumPartyRoleForm form) {
         return CDI.current().select(DeleteForumPartyRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -283,7 +284,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumPartyTypeRole(UserVisitPK userVisitPK, CreateForumPartyTypeRoleForm form) {
+    public CommandResult<VoidResult> createForumPartyTypeRole(UserVisitPK userVisitPK, CreateForumPartyTypeRoleForm form) {
         return CDI.current().select(CreateForumPartyTypeRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -293,7 +294,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumPartyTypeRole(UserVisitPK userVisitPK, DeleteForumPartyTypeRoleForm form) {
+    public CommandResult<VoidResult> deleteForumPartyTypeRole(UserVisitPK userVisitPK, DeleteForumPartyTypeRoleForm form) {
         return CDI.current().select(DeleteForumPartyTypeRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -302,7 +303,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumTypeMessageType(UserVisitPK userVisitPK, CreateForumTypeMessageTypeForm form) {
+    public CommandResult<VoidResult> createForumTypeMessageType(UserVisitPK userVisitPK, CreateForumTypeMessageTypeForm form) {
         return CDI.current().select(CreateForumTypeMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -311,7 +312,7 @@ public class ForumBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumForumThread(UserVisitPK userVisitPK, CreateForumForumThreadForm form) {
+    public CommandResult<VoidResult> createForumForumThread(UserVisitPK userVisitPK, CreateForumForumThreadForm form) {
         return CDI.current().select(CreateForumForumThreadCommand.class).get().run(userVisitPK, form);
     }
     
@@ -321,7 +322,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> setDefaultForumForumThread(UserVisitPK userVisitPK, SetDefaultForumForumThreadForm form) {
+    public CommandResult<VoidResult> setDefaultForumForumThread(UserVisitPK userVisitPK, SetDefaultForumForumThreadForm form) {
         return CDI.current().select(SetDefaultForumForumThreadCommand.class).get().run(userVisitPK, form);
     }
     
@@ -331,7 +332,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumForumThread(UserVisitPK userVisitPK, DeleteForumForumThreadForm form) {
+    public CommandResult<VoidResult> deleteForumForumThread(UserVisitPK userVisitPK, DeleteForumForumThreadForm form) {
         return CDI.current().select(DeleteForumForumThreadCommand.class).get().run(userVisitPK, form);
     }
     
@@ -350,7 +351,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumThread(UserVisitPK userVisitPK, DeleteForumThreadForm form) {
+    public CommandResult<VoidResult> deleteForumThread(UserVisitPK userVisitPK, DeleteForumThreadForm form) {
         return CDI.current().select(DeleteForumThreadCommand.class).get().run(userVisitPK, form);
     }
     
@@ -369,7 +370,7 @@ public class ForumBean
     }
     
     @Override
-    public CommandResult<?> deleteForumMessage(UserVisitPK userVisitPK, DeleteForumMessageForm form) {
+    public CommandResult<VoidResult> deleteForumMessage(UserVisitPK userVisitPK, DeleteForumMessageForm form) {
         return CDI.current().select(DeleteForumMessageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -378,7 +379,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createForumMessageAttachment(UserVisitPK userVisitPK, CreateForumMessageAttachmentForm form) {
+    public CommandResult<VoidResult> createForumMessageAttachment(UserVisitPK userVisitPK, CreateForumMessageAttachmentForm form) {
         return CDI.current().select(CreateForumMessageAttachmentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -398,7 +399,7 @@ public class ForumBean
     }
 
     @Override
-    public CommandResult<?> deleteForumMessageAttachment(UserVisitPK userVisitPK, DeleteForumMessageAttachmentForm form) {
+    public CommandResult<VoidResult> deleteForumMessageAttachment(UserVisitPK userVisitPK, DeleteForumMessageAttachmentForm form) {
         return CDI.current().select(DeleteForumMessageAttachmentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -407,7 +408,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createForumMessageAttachmentDescription(UserVisitPK userVisitPK, CreateForumMessageAttachmentDescriptionForm form) {
+    public CommandResult<VoidResult> createForumMessageAttachmentDescription(UserVisitPK userVisitPK, CreateForumMessageAttachmentDescriptionForm form) {
         return CDI.current().select(CreateForumMessageAttachmentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -427,7 +428,7 @@ public class ForumBean
     }
 
     @Override
-    public CommandResult<?> deleteForumMessageAttachmentDescription(UserVisitPK userVisitPK, DeleteForumMessageAttachmentDescriptionForm form) {
+    public CommandResult<VoidResult> deleteForumMessageAttachmentDescription(UserVisitPK userVisitPK, DeleteForumMessageAttachmentDescriptionForm form) {
         return CDI.current().select(DeleteForumMessageAttachmentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -436,7 +437,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumMessagePartType(UserVisitPK userVisitPK, CreateForumMessagePartTypeForm form) {
+    public CommandResult<VoidResult> createForumMessagePartType(UserVisitPK userVisitPK, CreateForumMessagePartTypeForm form) {
         return CDI.current().select(CreateForumMessagePartTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -445,7 +446,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumMessagePartTypeDescription(UserVisitPK userVisitPK, CreateForumMessagePartTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createForumMessagePartTypeDescription(UserVisitPK userVisitPK, CreateForumMessagePartTypeDescriptionForm form) {
         return CDI.current().select(CreateForumMessagePartTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -454,7 +455,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumMessageType(UserVisitPK userVisitPK, CreateForumMessageTypeForm form) {
+    public CommandResult<VoidResult> createForumMessageType(UserVisitPK userVisitPK, CreateForumMessageTypeForm form) {
         return CDI.current().select(CreateForumMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -468,7 +469,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumMessageTypeDescription(UserVisitPK userVisitPK, CreateForumMessageTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createForumMessageTypeDescription(UserVisitPK userVisitPK, CreateForumMessageTypeDescriptionForm form) {
         return CDI.current().select(CreateForumMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -477,7 +478,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createForumMessageTypePartType(UserVisitPK userVisitPK, CreateForumMessageTypePartTypeForm form) {
+    public CommandResult<VoidResult> createForumMessageTypePartType(UserVisitPK userVisitPK, CreateForumMessageTypePartTypeForm form) {
         return CDI.current().select(CreateForumMessageTypePartTypeCommand.class).get().run(userVisitPK, form);
     }
     

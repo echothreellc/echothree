@@ -22,6 +22,7 @@ import com.echothree.control.user.vendor.common.result.*;
 import com.echothree.control.user.vendor.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> setDefaultVendorType(UserVisitPK userVisitPK, SetDefaultVendorTypeForm form) {
+    public CommandResult<VoidResult> setDefaultVendorType(UserVisitPK userVisitPK, SetDefaultVendorTypeForm form) {
         return CDI.current().select(SetDefaultVendorTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> deleteVendorType(UserVisitPK userVisitPK, DeleteVendorTypeForm form) {
+    public CommandResult<VoidResult> deleteVendorType(UserVisitPK userVisitPK, DeleteVendorTypeForm form) {
         return CDI.current().select(DeleteVendorTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class VendorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createVendorTypeDescription(UserVisitPK userVisitPK, CreateVendorTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createVendorTypeDescription(UserVisitPK userVisitPK, CreateVendorTypeDescriptionForm form) {
         return CDI.current().select(CreateVendorTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -103,7 +104,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> deleteVendorTypeDescription(UserVisitPK userVisitPK, DeleteVendorTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteVendorTypeDescription(UserVisitPK userVisitPK, DeleteVendorTypeDescriptionForm form) {
         return CDI.current().select(DeleteVendorTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -151,7 +152,7 @@ public class VendorBean
     }
 
     @Override
-    public CommandResult<?> setVendorItemStatus(UserVisitPK userVisitPK, SetVendorItemStatusForm form) {
+    public CommandResult<VoidResult> setVendorItemStatus(UserVisitPK userVisitPK, SetVendorItemStatusForm form) {
         return CDI.current().select(SetVendorItemStatusCommand.class).get().run(userVisitPK, form);
     }
 
@@ -161,7 +162,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> deleteVendorItem(UserVisitPK userVisitPK, DeleteVendorItemForm form) {
+    public CommandResult<VoidResult> deleteVendorItem(UserVisitPK userVisitPK, DeleteVendorItemForm form) {
         return CDI.current().select(DeleteVendorItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -170,7 +171,7 @@ public class VendorBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createVendorItemCost(UserVisitPK userVisitPK, CreateVendorItemCostForm form) {
+    public CommandResult<VoidResult> createVendorItemCost(UserVisitPK userVisitPK, CreateVendorItemCostForm form) {
         return CDI.current().select(CreateVendorItemCostCommand.class).get().run(userVisitPK, form);
     }
     
@@ -190,7 +191,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> deleteVendorItemCost(UserVisitPK userVisitPK, DeleteVendorItemCostForm form) {
+    public CommandResult<VoidResult> deleteVendorItemCost(UserVisitPK userVisitPK, DeleteVendorItemCostForm form) {
         return CDI.current().select(DeleteVendorItemCostCommand.class).get().run(userVisitPK, form);
     }
     
@@ -219,7 +220,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> setDefaultItemPurchasingCategory(UserVisitPK userVisitPK, SetDefaultItemPurchasingCategoryForm form) {
+    public CommandResult<VoidResult> setDefaultItemPurchasingCategory(UserVisitPK userVisitPK, SetDefaultItemPurchasingCategoryForm form) {
         return CDI.current().select(SetDefaultItemPurchasingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -229,7 +230,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> deleteItemPurchasingCategory(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryForm form) {
+    public CommandResult<VoidResult> deleteItemPurchasingCategory(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryForm form) {
         return CDI.current().select(DeleteItemPurchasingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -238,7 +239,7 @@ public class VendorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItemPurchasingCategoryDescription(UserVisitPK userVisitPK, CreateItemPurchasingCategoryDescriptionForm form) {
+    public CommandResult<VoidResult> createItemPurchasingCategoryDescription(UserVisitPK userVisitPK, CreateItemPurchasingCategoryDescriptionForm form) {
         return CDI.current().select(CreateItemPurchasingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -258,7 +259,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> deleteItemPurchasingCategoryDescription(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryDescriptionForm form) {
+    public CommandResult<VoidResult> deleteItemPurchasingCategoryDescription(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryDescriptionForm form) {
         return CDI.current().select(DeleteItemPurchasingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

@@ -20,6 +20,7 @@ import com.echothree.control.user.sales.common.form.*;
 import com.echothree.control.user.sales.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface SalesService
         extends SalesForms {
@@ -42,11 +43,11 @@ public interface SalesService
     
     CommandResult<GetSalesOrderBatchStatusChoicesResult> getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form);
     
-    CommandResult<?> setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form);
+    CommandResult<VoidResult> setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form);
     
     CommandResult<EditSalesOrderBatchResult> editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form);
 
-    CommandResult<?> deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form);
+    CommandResult<VoidResult> deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Orders
@@ -56,7 +57,7 @@ public interface SalesService
     
     CommandResult<GetSalesOrderStatusChoicesResult> getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form);
     
-    CommandResult<?> setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form);
+    CommandResult<VoidResult> setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Payment Preferences
@@ -68,7 +69,7 @@ public interface SalesService
     //   Sales Order Times
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form);
+    CommandResult<VoidResult> createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form);
     
     CommandResult<GetSalesOrderTimeResult> getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form);
 
@@ -76,7 +77,7 @@ public interface SalesService
     
     CommandResult<EditSalesOrderTimeResult> editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form);
 
-    CommandResult<?> deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
+    CommandResult<VoidResult> deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Shipment Groups
@@ -94,7 +95,7 @@ public interface SalesService
     //   Sales Order Line Times
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form);
+    CommandResult<VoidResult> createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form);
     
     CommandResult<GetSalesOrderLineTimeResult> getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form);
 
@@ -102,6 +103,6 @@ public interface SalesService
     
     CommandResult<EditSalesOrderLineTimeResult> editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form);
 
-    CommandResult<?> deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form);
+    CommandResult<VoidResult> deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form);
 
 }

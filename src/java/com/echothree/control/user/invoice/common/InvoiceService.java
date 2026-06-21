@@ -20,6 +20,7 @@ import com.echothree.control.user.invoice.common.form.*;
 import com.echothree.control.user.invoice.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface InvoiceService
         extends InvoiceForms {
@@ -34,31 +35,31 @@ public interface InvoiceService
     //   Invoice Line Use Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceLineUseType(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeForm form);
+    CommandResult<VoidResult> createInvoiceLineUseType(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Line Use Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceLineUseTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createInvoiceLineUseTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Role Type Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceRoleType(UserVisitPK userVisitPK, CreateInvoiceRoleTypeForm form);
+    CommandResult<VoidResult> createInvoiceRoleType(UserVisitPK userVisitPK, CreateInvoiceRoleTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Role Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceRoleTypeDescription(UserVisitPK userVisitPK, CreateInvoiceRoleTypeDescriptionForm form);
+    CommandResult<VoidResult> createInvoiceRoleTypeDescription(UserVisitPK userVisitPK, CreateInvoiceRoleTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form);
+    CommandResult<VoidResult> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form);
     
     CommandResult<GetInvoiceTypeChoicesResult> getInvoiceTypeChoices(UserVisitPK userVisitPK, GetInvoiceTypeChoicesForm form);
     
@@ -66,29 +67,29 @@ public interface InvoiceService
     
     CommandResult<GetInvoiceTypesResult> getInvoiceTypes(UserVisitPK userVisitPK, GetInvoiceTypesForm form);
     
-    CommandResult<?> setDefaultInvoiceType(UserVisitPK userVisitPK, SetDefaultInvoiceTypeForm form);
+    CommandResult<VoidResult> setDefaultInvoiceType(UserVisitPK userVisitPK, SetDefaultInvoiceTypeForm form);
     
     CommandResult<EditInvoiceTypeResult> editInvoiceType(UserVisitPK userVisitPK, EditInvoiceTypeForm form);
     
-    CommandResult<?> deleteInvoiceType(UserVisitPK userVisitPK, DeleteInvoiceTypeForm form);
+    CommandResult<VoidResult> deleteInvoiceType(UserVisitPK userVisitPK, DeleteInvoiceTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTypeDescriptionForm form);
+    CommandResult<VoidResult> createInvoiceTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTypeDescriptionForm form);
     
     CommandResult<GetInvoiceTypeDescriptionsResult> getInvoiceTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceTypeDescriptionsForm form);
     
     CommandResult<EditInvoiceTypeDescriptionResult> editInvoiceTypeDescription(UserVisitPK userVisitPK, EditInvoiceTypeDescriptionForm form);
     
-    CommandResult<?> deleteInvoiceTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteInvoiceTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form);
+    CommandResult<VoidResult> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form);
 
     CommandResult<GetInvoiceTimeTypeChoicesResult> getInvoiceTimeTypeChoices(UserVisitPK userVisitPK, GetInvoiceTimeTypeChoicesForm form);
 
@@ -96,17 +97,17 @@ public interface InvoiceService
 
     CommandResult<GetInvoiceTimeTypesResult> getInvoiceTimeTypes(UserVisitPK userVisitPK, GetInvoiceTimeTypesForm form);
 
-    CommandResult<?> setDefaultInvoiceTimeType(UserVisitPK userVisitPK, SetDefaultInvoiceTimeTypeForm form);
+    CommandResult<VoidResult> setDefaultInvoiceTimeType(UserVisitPK userVisitPK, SetDefaultInvoiceTimeTypeForm form);
 
     CommandResult<EditInvoiceTimeTypeResult> editInvoiceTimeType(UserVisitPK userVisitPK, EditInvoiceTimeTypeForm form);
 
-    CommandResult<?> deleteInvoiceTimeType(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeForm form);
+    CommandResult<VoidResult> deleteInvoiceTimeType(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Invoice Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createInvoiceTimeTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> createInvoiceTimeTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTimeTypeDescriptionForm form);
 
     CommandResult<GetInvoiceTimeTypeDescriptionResult> getInvoiceTimeTypeDescription(UserVisitPK userVisitPK, GetInvoiceTimeTypeDescriptionForm form);
 
@@ -114,13 +115,13 @@ public interface InvoiceService
 
     CommandResult<EditInvoiceTimeTypeDescriptionResult> editInvoiceTimeTypeDescription(UserVisitPK userVisitPK, EditInvoiceTimeTypeDescriptionForm form);
 
-    CommandResult<?> deleteInvoiceTimeTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteInvoiceTimeTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Invoice Line Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form);
+    CommandResult<VoidResult> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form);
     
     CommandResult<GetInvoiceLineTypeChoicesResult> getInvoiceLineTypeChoices(UserVisitPK userVisitPK, GetInvoiceLineTypeChoicesForm form);
     
@@ -128,22 +129,22 @@ public interface InvoiceService
     
     CommandResult<GetInvoiceLineTypesResult> getInvoiceLineTypes(UserVisitPK userVisitPK, GetInvoiceLineTypesForm form);
     
-    CommandResult<?> setDefaultInvoiceLineType(UserVisitPK userVisitPK, SetDefaultInvoiceLineTypeForm form);
+    CommandResult<VoidResult> setDefaultInvoiceLineType(UserVisitPK userVisitPK, SetDefaultInvoiceLineTypeForm form);
     
     CommandResult<EditInvoiceLineTypeResult> editInvoiceLineType(UserVisitPK userVisitPK, EditInvoiceLineTypeForm form);
     
-    CommandResult<?> deleteInvoiceLineType(UserVisitPK userVisitPK, DeleteInvoiceLineTypeForm form);
+    CommandResult<VoidResult> deleteInvoiceLineType(UserVisitPK userVisitPK, DeleteInvoiceLineTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Invoice Line Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInvoiceLineTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineTypeDescriptionForm form);
+    CommandResult<VoidResult> createInvoiceLineTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineTypeDescriptionForm form);
     
     CommandResult<GetInvoiceLineTypeDescriptionsResult> getInvoiceLineTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceLineTypeDescriptionsForm form);
     
     CommandResult<EditInvoiceLineTypeDescriptionResult> editInvoiceLineTypeDescription(UserVisitPK userVisitPK, EditInvoiceLineTypeDescriptionForm form);
     
-    CommandResult<?> deleteInvoiceLineTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceLineTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteInvoiceLineTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceLineTypeDescriptionForm form);
     
 }

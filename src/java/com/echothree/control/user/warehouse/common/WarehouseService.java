@@ -20,6 +20,7 @@ import com.echothree.control.user.warehouse.common.form.*;
 import com.echothree.control.user.warehouse.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface WarehouseService
         extends WarehouseForms {
@@ -34,7 +35,7 @@ public interface WarehouseService
     //   Location Use Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form);
+    CommandResult<VoidResult> createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form);
 
     CommandResult<GetLocationUseTypesResult> getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form);
 
@@ -46,7 +47,7 @@ public interface WarehouseService
     //   Location Use Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationUseTypeDescription(UserVisitPK userVisitPK, CreateLocationUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createLocationUseTypeDescription(UserVisitPK userVisitPK, CreateLocationUseTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   WarehouseT ypes
@@ -60,17 +61,17 @@ public interface WarehouseService
 
     CommandResult<GetWarehouseTypeChoicesResult> getWarehouseTypeChoices(UserVisitPK userVisitPK, GetWarehouseTypeChoicesForm form);
 
-    CommandResult<?> setDefaultWarehouseType(UserVisitPK userVisitPK, SetDefaultWarehouseTypeForm form);
+    CommandResult<VoidResult> setDefaultWarehouseType(UserVisitPK userVisitPK, SetDefaultWarehouseTypeForm form);
 
     CommandResult<EditWarehouseTypeResult> editWarehouseType(UserVisitPK userVisitPK, EditWarehouseTypeForm form);
 
-    CommandResult<?> deleteWarehouseType(UserVisitPK userVisitPK, DeleteWarehouseTypeForm form);
+    CommandResult<VoidResult> deleteWarehouseType(UserVisitPK userVisitPK, DeleteWarehouseTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Warehouse Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createWarehouseTypeDescription(UserVisitPK userVisitPK, CreateWarehouseTypeDescriptionForm form);
+    CommandResult<VoidResult> createWarehouseTypeDescription(UserVisitPK userVisitPK, CreateWarehouseTypeDescriptionForm form);
 
     CommandResult<GetWarehouseTypeDescriptionsResult> getWarehouseTypeDescriptions(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionsForm form);
 
@@ -78,7 +79,7 @@ public interface WarehouseService
 
     CommandResult<EditWarehouseTypeDescriptionResult> editWarehouseTypeDescription(UserVisitPK userVisitPK, EditWarehouseTypeDescriptionForm form);
 
-    CommandResult<?> deleteWarehouseTypeDescription(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteWarehouseTypeDescription(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Warehouses
@@ -92,11 +93,11 @@ public interface WarehouseService
     
     CommandResult<GetWarehouseChoicesResult> getWarehouseChoices(UserVisitPK userVisitPK, GetWarehouseChoicesForm form);
     
-    CommandResult<?> setDefaultWarehouse(UserVisitPK userVisitPK, SetDefaultWarehouseForm form);
+    CommandResult<VoidResult> setDefaultWarehouse(UserVisitPK userVisitPK, SetDefaultWarehouseForm form);
     
     CommandResult<EditWarehouseResult> editWarehouse(UserVisitPK userVisitPK, EditWarehouseForm form);
     
-    CommandResult<?> deleteWarehouse(UserVisitPK userVisitPK, DeleteWarehouseForm form);
+    CommandResult<VoidResult> deleteWarehouse(UserVisitPK userVisitPK, DeleteWarehouseForm form);
     
     // -------------------------------------------------------------------------
     //   Location Types
@@ -110,23 +111,23 @@ public interface WarehouseService
     
     CommandResult<GetLocationTypeChoicesResult> getLocationTypeChoices(UserVisitPK userVisitPK, GetLocationTypeChoicesForm form);
     
-    CommandResult<?> setDefaultLocationType(UserVisitPK userVisitPK, SetDefaultLocationTypeForm form);
+    CommandResult<VoidResult> setDefaultLocationType(UserVisitPK userVisitPK, SetDefaultLocationTypeForm form);
     
     CommandResult<EditLocationTypeResult> editLocationType(UserVisitPK userVisitPK, EditLocationTypeForm form);
     
-    CommandResult<?> deleteLocationType(UserVisitPK userVisitPK, DeleteLocationTypeForm form);
+    CommandResult<VoidResult> deleteLocationType(UserVisitPK userVisitPK, DeleteLocationTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Location Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationTypeDescription(UserVisitPK userVisitPK, CreateLocationTypeDescriptionForm form);
+    CommandResult<VoidResult> createLocationTypeDescription(UserVisitPK userVisitPK, CreateLocationTypeDescriptionForm form);
     
     CommandResult<GetLocationTypeDescriptionsResult> getLocationTypeDescriptions(UserVisitPK userVisitPK, GetLocationTypeDescriptionsForm form);
     
     CommandResult<EditLocationTypeDescriptionResult> editLocationTypeDescription(UserVisitPK userVisitPK, EditLocationTypeDescriptionForm form);
     
-    CommandResult<?> deleteLocationTypeDescription(UserVisitPK userVisitPK, DeleteLocationTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteLocationTypeDescription(UserVisitPK userVisitPK, DeleteLocationTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Location Name Elements
@@ -140,19 +141,19 @@ public interface WarehouseService
 
     CommandResult<EditLocationNameElementResult> editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form);
     
-    CommandResult<?> deleteLocationNameElement(UserVisitPK userVisitPK, DeleteLocationNameElementForm form);
+    CommandResult<VoidResult> deleteLocationNameElement(UserVisitPK userVisitPK, DeleteLocationNameElementForm form);
     
     // -------------------------------------------------------------------------
     //   Location Name Element Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationNameElementDescription(UserVisitPK userVisitPK, CreateLocationNameElementDescriptionForm form);
+    CommandResult<VoidResult> createLocationNameElementDescription(UserVisitPK userVisitPK, CreateLocationNameElementDescriptionForm form);
     
     CommandResult<GetLocationNameElementDescriptionsResult> getLocationNameElementDescriptions(UserVisitPK userVisitPK, GetLocationNameElementDescriptionsForm form);
     
     CommandResult<EditLocationNameElementDescriptionResult> editLocationNameElementDescription(UserVisitPK userVisitPK, EditLocationNameElementDescriptionForm form);
     
-    CommandResult<?> deleteLocationNameElementDescription(UserVisitPK userVisitPK, DeleteLocationNameElementDescriptionForm form);
+    CommandResult<VoidResult> deleteLocationNameElementDescription(UserVisitPK userVisitPK, DeleteLocationNameElementDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Locations
@@ -168,44 +169,44 @@ public interface WarehouseService
     
     CommandResult<GetLocationStatusChoicesResult> getLocationStatusChoices(UserVisitPK userVisitPK, GetLocationStatusChoicesForm form);
     
-    CommandResult<?> setLocationStatus(UserVisitPK userVisitPK, SetLocationStatusForm form);
+    CommandResult<VoidResult> setLocationStatus(UserVisitPK userVisitPK, SetLocationStatusForm form);
     
     CommandResult<EditLocationResult> editLocation(UserVisitPK userVisitPK, EditLocationForm form);
     
-    CommandResult<?> deleteLocation(UserVisitPK userVisitPK, DeleteLocationForm form);
+    CommandResult<VoidResult> deleteLocation(UserVisitPK userVisitPK, DeleteLocationForm form);
     
     // -------------------------------------------------------------------------
     //   Location Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationDescription(UserVisitPK userVisitPK, CreateLocationDescriptionForm form);
+    CommandResult<VoidResult> createLocationDescription(UserVisitPK userVisitPK, CreateLocationDescriptionForm form);
     
     CommandResult<GetLocationDescriptionsResult> getLocationDescriptions(UserVisitPK userVisitPK, GetLocationDescriptionsForm form);
     
     CommandResult<EditLocationDescriptionResult> editLocationDescription(UserVisitPK userVisitPK, EditLocationDescriptionForm form);
     
-    CommandResult<?> deleteLocationDescription(UserVisitPK userVisitPK, DeleteLocationDescriptionForm form);
+    CommandResult<VoidResult> deleteLocationDescription(UserVisitPK userVisitPK, DeleteLocationDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Location Capacities
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createLocationCapacity(UserVisitPK userVisitPK, CreateLocationCapacityForm form);
+    CommandResult<VoidResult> createLocationCapacity(UserVisitPK userVisitPK, CreateLocationCapacityForm form);
     
     CommandResult<GetLocationCapacitiesResult> getLocationCapacities(UserVisitPK userVisitPK, GetLocationCapacitiesForm form);
     
     CommandResult<EditLocationCapacityResult> editLocationCapacity(UserVisitPK userVisitPK, EditLocationCapacityForm form);
     
-    CommandResult<?> deleteLocationCapacity(UserVisitPK userVisitPK, DeleteLocationCapacityForm form);
+    CommandResult<VoidResult> deleteLocationCapacity(UserVisitPK userVisitPK, DeleteLocationCapacityForm form);
     
     // --------------------------------------------------------------------------------
     //   Location Volumes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createLocationVolume(UserVisitPK userVisitPK, CreateLocationVolumeForm form);
+    CommandResult<VoidResult> createLocationVolume(UserVisitPK userVisitPK, CreateLocationVolumeForm form);
     
     CommandResult<EditLocationVolumeResult> editLocationVolume(UserVisitPK userVisitPK, EditLocationVolumeForm form);
     
-    CommandResult<?> deleteLocationVolume(UserVisitPK userVisitPK, DeleteLocationVolumeForm form);
+    CommandResult<VoidResult> deleteLocationVolume(UserVisitPK userVisitPK, DeleteLocationVolumeForm form);
     
 }

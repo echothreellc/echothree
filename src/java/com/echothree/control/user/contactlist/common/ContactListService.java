@@ -20,6 +20,7 @@ import com.echothree.control.user.contactlist.common.form.*;
 import com.echothree.control.user.contactlist.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface ContactListService
         extends ContactListForms {
@@ -34,7 +35,7 @@ public interface ContactListService
     //   Contact List Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form);
+    CommandResult<VoidResult> createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form);
 
     CommandResult<GetContactListTypesResult> getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form);
 
@@ -42,17 +43,17 @@ public interface ContactListService
 
     CommandResult<GetContactListTypeChoicesResult> getContactListTypeChoices(UserVisitPK userVisitPK, GetContactListTypeChoicesForm form);
 
-    CommandResult<?> setDefaultContactListType(UserVisitPK userVisitPK, SetDefaultContactListTypeForm form);
+    CommandResult<VoidResult> setDefaultContactListType(UserVisitPK userVisitPK, SetDefaultContactListTypeForm form);
 
     CommandResult<EditContactListTypeResult> editContactListType(UserVisitPK userVisitPK, EditContactListTypeForm form);
 
-    CommandResult<?> deleteContactListType(UserVisitPK userVisitPK, DeleteContactListTypeForm form);
+    CommandResult<VoidResult> deleteContactListType(UserVisitPK userVisitPK, DeleteContactListTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Contact List Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createContactListTypeDescription(UserVisitPK userVisitPK, CreateContactListTypeDescriptionForm form);
+    CommandResult<VoidResult> createContactListTypeDescription(UserVisitPK userVisitPK, CreateContactListTypeDescriptionForm form);
 
     CommandResult<GetContactListTypeDescriptionsResult> getContactListTypeDescriptions(UserVisitPK userVisitPK, GetContactListTypeDescriptionsForm form);
 
@@ -60,13 +61,13 @@ public interface ContactListService
 
     CommandResult<EditContactListTypeDescriptionResult> editContactListTypeDescription(UserVisitPK userVisitPK, EditContactListTypeDescriptionForm form);
 
-    CommandResult<?> deleteContactListTypeDescription(UserVisitPK userVisitPK, DeleteContactListTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListTypeDescription(UserVisitPK userVisitPK, DeleteContactListTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Groups
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form);
+    CommandResult<VoidResult> createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form);
 
     CommandResult<GetContactListGroupsResult> getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form);
 
@@ -74,17 +75,17 @@ public interface ContactListService
 
     CommandResult<GetContactListGroupChoicesResult> getContactListGroupChoices(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form);
 
-    CommandResult<?> setDefaultContactListGroup(UserVisitPK userVisitPK, SetDefaultContactListGroupForm form);
+    CommandResult<VoidResult> setDefaultContactListGroup(UserVisitPK userVisitPK, SetDefaultContactListGroupForm form);
 
     CommandResult<EditContactListGroupResult> editContactListGroup(UserVisitPK userVisitPK, EditContactListGroupForm form);
 
-    CommandResult<?> deleteContactListGroup(UserVisitPK userVisitPK, DeleteContactListGroupForm form);
+    CommandResult<VoidResult> deleteContactListGroup(UserVisitPK userVisitPK, DeleteContactListGroupForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Group Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContactListGroupDescription(UserVisitPK userVisitPK, CreateContactListGroupDescriptionForm form);
+    CommandResult<VoidResult> createContactListGroupDescription(UserVisitPK userVisitPK, CreateContactListGroupDescriptionForm form);
 
     CommandResult<GetContactListGroupDescriptionsResult> getContactListGroupDescriptions(UserVisitPK userVisitPK, GetContactListGroupDescriptionsForm form);
 
@@ -92,13 +93,13 @@ public interface ContactListService
 
     CommandResult<EditContactListGroupDescriptionResult> editContactListGroupDescription(UserVisitPK userVisitPK, EditContactListGroupDescriptionForm form);
 
-    CommandResult<?> deleteContactListGroupDescription(UserVisitPK userVisitPK, DeleteContactListGroupDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListGroupDescription(UserVisitPK userVisitPK, DeleteContactListGroupDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Frequencies
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form);
+    CommandResult<VoidResult> createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form);
 
     CommandResult<GetContactListFrequenciesResult> getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form);
 
@@ -106,17 +107,17 @@ public interface ContactListService
 
     CommandResult<GetContactListFrequencyChoicesResult> getContactListFrequencyChoices(UserVisitPK userVisitPK, GetContactListFrequencyChoicesForm form);
 
-    CommandResult<?> setDefaultContactListFrequency(UserVisitPK userVisitPK, SetDefaultContactListFrequencyForm form);
+    CommandResult<VoidResult> setDefaultContactListFrequency(UserVisitPK userVisitPK, SetDefaultContactListFrequencyForm form);
 
     CommandResult<EditContactListFrequencyResult> editContactListFrequency(UserVisitPK userVisitPK, EditContactListFrequencyForm form);
 
-    CommandResult<?> deleteContactListFrequency(UserVisitPK userVisitPK, DeleteContactListFrequencyForm form);
+    CommandResult<VoidResult> deleteContactListFrequency(UserVisitPK userVisitPK, DeleteContactListFrequencyForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Frequency Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContactListFrequencyDescription(UserVisitPK userVisitPK, CreateContactListFrequencyDescriptionForm form);
+    CommandResult<VoidResult> createContactListFrequencyDescription(UserVisitPK userVisitPK, CreateContactListFrequencyDescriptionForm form);
 
     CommandResult<GetContactListFrequencyDescriptionsResult> getContactListFrequencyDescriptions(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionsForm form);
 
@@ -124,13 +125,13 @@ public interface ContactListService
 
     CommandResult<EditContactListFrequencyDescriptionResult> editContactListFrequencyDescription(UserVisitPK userVisitPK, EditContactListFrequencyDescriptionForm form);
 
-    CommandResult<?> deleteContactListFrequencyDescription(UserVisitPK userVisitPK, DeleteContactListFrequencyDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListFrequencyDescription(UserVisitPK userVisitPK, DeleteContactListFrequencyDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact Lists
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContactList(UserVisitPK userVisitPK, CreateContactListForm form);
+    CommandResult<VoidResult> createContactList(UserVisitPK userVisitPK, CreateContactListForm form);
 
     CommandResult<GetContactListsResult> getContactLists(UserVisitPK userVisitPK, GetContactListsForm form);
 
@@ -138,17 +139,17 @@ public interface ContactListService
 
     CommandResult<GetContactListChoicesResult> getContactListChoices(UserVisitPK userVisitPK, GetContactListChoicesForm form);
 
-    CommandResult<?> setDefaultContactList(UserVisitPK userVisitPK, SetDefaultContactListForm form);
+    CommandResult<VoidResult> setDefaultContactList(UserVisitPK userVisitPK, SetDefaultContactListForm form);
 
     CommandResult<EditContactListResult> editContactList(UserVisitPK userVisitPK, EditContactListForm form);
 
-    CommandResult<?> deleteContactList(UserVisitPK userVisitPK, DeleteContactListForm form);
+    CommandResult<VoidResult> deleteContactList(UserVisitPK userVisitPK, DeleteContactListForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContactListDescription(UserVisitPK userVisitPK, CreateContactListDescriptionForm form);
+    CommandResult<VoidResult> createContactListDescription(UserVisitPK userVisitPK, CreateContactListDescriptionForm form);
 
     CommandResult<GetContactListDescriptionsResult> getContactListDescriptions(UserVisitPK userVisitPK, GetContactListDescriptionsForm form);
 
@@ -156,13 +157,13 @@ public interface ContactListService
 
     CommandResult<EditContactListDescriptionResult> editContactListDescription(UserVisitPK userVisitPK, EditContactListDescriptionForm form);
 
-    CommandResult<?> deleteContactListDescription(UserVisitPK userVisitPK, DeleteContactListDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListDescription(UserVisitPK userVisitPK, DeleteContactListDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Type Contact Lists
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeContactList(UserVisitPK userVisitPK, CreatePartyTypeContactListForm form);
+    CommandResult<VoidResult> createPartyTypeContactList(UserVisitPK userVisitPK, CreatePartyTypeContactListForm form);
     
     CommandResult<GetPartyTypeContactListsResult> getPartyTypeContactLists(UserVisitPK userVisitPK, GetPartyTypeContactListsForm form);
 
@@ -170,13 +171,13 @@ public interface ContactListService
 
     CommandResult<EditPartyTypeContactListResult> editPartyTypeContactList(UserVisitPK userVisitPK, EditPartyTypeContactListForm form);
     
-    CommandResult<?> deletePartyTypeContactList(UserVisitPK userVisitPK, DeletePartyTypeContactListForm form);
+    CommandResult<VoidResult> deletePartyTypeContactList(UserVisitPK userVisitPK, DeletePartyTypeContactListForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Type Contact List Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeContactListGroup(UserVisitPK userVisitPK, CreatePartyTypeContactListGroupForm form);
+    CommandResult<VoidResult> createPartyTypeContactListGroup(UserVisitPK userVisitPK, CreatePartyTypeContactListGroupForm form);
     
     CommandResult<GetPartyTypeContactListGroupsResult> getPartyTypeContactListGroups(UserVisitPK userVisitPK, GetPartyTypeContactListGroupsForm form);
 
@@ -184,13 +185,13 @@ public interface ContactListService
 
     CommandResult<EditPartyTypeContactListGroupResult> editPartyTypeContactListGroup(UserVisitPK userVisitPK, EditPartyTypeContactListGroupForm form);
     
-    CommandResult<?> deletePartyTypeContactListGroup(UserVisitPK userVisitPK, DeletePartyTypeContactListGroupForm form);
+    CommandResult<VoidResult> deletePartyTypeContactListGroup(UserVisitPK userVisitPK, DeletePartyTypeContactListGroupForm form);
     
     // --------------------------------------------------------------------------------
     //   Customer Type Contact Lists
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createCustomerTypeContactList(UserVisitPK userVisitPK, CreateCustomerTypeContactListForm form);
+    CommandResult<VoidResult> createCustomerTypeContactList(UserVisitPK userVisitPK, CreateCustomerTypeContactListForm form);
 
     CommandResult<GetCustomerTypeContactListsResult> getCustomerTypeContactLists(UserVisitPK userVisitPK, GetCustomerTypeContactListsForm form);
 
@@ -198,13 +199,13 @@ public interface ContactListService
 
     CommandResult<EditCustomerTypeContactListResult> editCustomerTypeContactList(UserVisitPK userVisitPK, EditCustomerTypeContactListForm form);
 
-    CommandResult<?> deleteCustomerTypeContactList(UserVisitPK userVisitPK, DeleteCustomerTypeContactListForm form);
+    CommandResult<VoidResult> deleteCustomerTypeContactList(UserVisitPK userVisitPK, DeleteCustomerTypeContactListForm form);
 
     // --------------------------------------------------------------------------------
     //   Customer Type Contact List Groups
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createCustomerTypeContactListGroup(UserVisitPK userVisitPK, CreateCustomerTypeContactListGroupForm form);
+    CommandResult<VoidResult> createCustomerTypeContactListGroup(UserVisitPK userVisitPK, CreateCustomerTypeContactListGroupForm form);
 
     CommandResult<GetCustomerTypeContactListGroupsResult> getCustomerTypeContactListGroups(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupsForm form);
 
@@ -212,13 +213,13 @@ public interface ContactListService
 
     CommandResult<EditCustomerTypeContactListGroupResult> editCustomerTypeContactListGroup(UserVisitPK userVisitPK, EditCustomerTypeContactListGroupForm form);
 
-    CommandResult<?> deleteCustomerTypeContactListGroup(UserVisitPK userVisitPK, DeleteCustomerTypeContactListGroupForm form);
+    CommandResult<VoidResult> deleteCustomerTypeContactListGroup(UserVisitPK userVisitPK, DeleteCustomerTypeContactListGroupForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form);
+    CommandResult<VoidResult> createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form);
     
     CommandResult<GetContactListContactMechanismPurposeChoicesResult> getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form);
     
@@ -226,17 +227,17 @@ public interface ContactListService
     
     CommandResult<GetContactListContactMechanismPurposesResult> getContactListContactMechanismPurposes(UserVisitPK userVisitPK, GetContactListContactMechanismPurposesForm form);
     
-    CommandResult<?> setDefaultContactListContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultContactListContactMechanismPurposeForm form);
+    CommandResult<VoidResult> setDefaultContactListContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultContactListContactMechanismPurposeForm form);
     
     CommandResult<EditContactListContactMechanismPurposeResult> editContactListContactMechanismPurpose(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form);
     
-    CommandResult<?> deleteContactListContactMechanismPurpose(UserVisitPK userVisitPK, DeleteContactListContactMechanismPurposeForm form);
+    CommandResult<VoidResult> deleteContactListContactMechanismPurpose(UserVisitPK userVisitPK, DeleteContactListContactMechanismPurposeForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Contact Lists
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form);
+    CommandResult<VoidResult> createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form);
 
     CommandResult<GetPartyContactListsResult> getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form);
 
@@ -244,10 +245,10 @@ public interface ContactListService
 
     CommandResult<GetPartyContactListStatusChoicesResult> getPartyContactListStatusChoices(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form);
 
-    CommandResult<?> setPartyContactListStatus(UserVisitPK userVisitPK, SetPartyContactListStatusForm form);
+    CommandResult<VoidResult> setPartyContactListStatus(UserVisitPK userVisitPK, SetPartyContactListStatusForm form);
 
     CommandResult<EditPartyContactListResult> editPartyContactList(UserVisitPK userVisitPK, EditPartyContactListForm form);
     
-    CommandResult<?> deletePartyContactList(UserVisitPK userVisitPK, DeletePartyContactListForm form);
+    CommandResult<VoidResult> deletePartyContactList(UserVisitPK userVisitPK, DeletePartyContactListForm form);
     
 }

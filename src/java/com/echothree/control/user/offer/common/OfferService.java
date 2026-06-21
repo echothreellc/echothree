@@ -20,6 +20,7 @@ import com.echothree.control.user.offer.common.form.*;
 import com.echothree.control.user.offer.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface OfferService
         extends OfferForms {
@@ -42,45 +43,45 @@ public interface OfferService
     
     CommandResult<GetOfferChoicesResult> getOfferChoices(UserVisitPK userVisitPK, GetOfferChoicesForm form);
 
-    CommandResult<?> setDefaultOffer(UserVisitPK userVisitPK, SetDefaultOfferForm form);
+    CommandResult<VoidResult> setDefaultOffer(UserVisitPK userVisitPK, SetDefaultOfferForm form);
     
     CommandResult<EditOfferResult> editOffer(UserVisitPK userVisitPK, EditOfferForm form);
     
-    CommandResult<?> deleteOffer(UserVisitPK userVisitPK, DeleteOfferForm form);
+    CommandResult<VoidResult> deleteOffer(UserVisitPK userVisitPK, DeleteOfferForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferDescription(UserVisitPK userVisitPK, CreateOfferDescriptionForm form);
+    CommandResult<VoidResult> createOfferDescription(UserVisitPK userVisitPK, CreateOfferDescriptionForm form);
     
     CommandResult<GetOfferDescriptionsResult> getOfferDescriptions(UserVisitPK userVisitPK, GetOfferDescriptionsForm form);
     
     CommandResult<EditOfferDescriptionResult> editOfferDescription(UserVisitPK userVisitPK, EditOfferDescriptionForm form);
     
-    CommandResult<?> deleteOfferDescription(UserVisitPK userVisitPK, DeleteOfferDescriptionForm form);
+    CommandResult<VoidResult> deleteOfferDescription(UserVisitPK userVisitPK, DeleteOfferDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Customer Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferCustomerType(UserVisitPK userVisitPK, CreateOfferCustomerTypeForm form);
+    CommandResult<VoidResult> createOfferCustomerType(UserVisitPK userVisitPK, CreateOfferCustomerTypeForm form);
     
     CommandResult<GetOfferCustomerTypeResult> getOfferCustomerType(UserVisitPK userVisitPK, GetOfferCustomerTypeForm form);
 
     CommandResult<GetOfferCustomerTypesResult> getOfferCustomerTypes(UserVisitPK userVisitPK, GetOfferCustomerTypesForm form);
 
-    CommandResult<?> setDefaultOfferCustomerType(UserVisitPK userVisitPK, SetDefaultOfferCustomerTypeForm form);
+    CommandResult<VoidResult> setDefaultOfferCustomerType(UserVisitPK userVisitPK, SetDefaultOfferCustomerTypeForm form);
 
     CommandResult<EditOfferCustomerTypeResult> editOfferCustomerType(UserVisitPK userVisitPK, EditOfferCustomerTypeForm form);
     
-    CommandResult<?> deleteOfferCustomerType(UserVisitPK userVisitPK, DeleteOfferCustomerTypeForm form);
+    CommandResult<VoidResult> deleteOfferCustomerType(UserVisitPK userVisitPK, DeleteOfferCustomerTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Chain Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferChainType(UserVisitPK userVisitPK, CreateOfferChainTypeForm form);
+    CommandResult<VoidResult> createOfferChainType(UserVisitPK userVisitPK, CreateOfferChainTypeForm form);
 
     CommandResult<GetOfferChainTypesResult> getOfferChainTypes(UserVisitPK userVisitPK, GetOfferChainTypesForm form);
 
@@ -88,7 +89,7 @@ public interface OfferService
 
     CommandResult<EditOfferChainTypeResult> editOfferChainType(UserVisitPK userVisitPK, EditOfferChainTypeForm form);
     
-    CommandResult<?> deleteOfferChainType(UserVisitPK userVisitPK, DeleteOfferChainTypeForm form);
+    CommandResult<VoidResult> deleteOfferChainType(UserVisitPK userVisitPK, DeleteOfferChainTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Uses
@@ -102,7 +103,7 @@ public interface OfferService
     
     CommandResult<EditOfferUseResult> editOfferUse(UserVisitPK userVisitPK, EditOfferUseForm form);
     
-    CommandResult<?> deleteOfferUse(UserVisitPK userVisitPK, DeleteOfferUseForm form);
+    CommandResult<VoidResult> deleteOfferUse(UserVisitPK userVisitPK, DeleteOfferUseForm form);
     
     // -------------------------------------------------------------------------
     //   Sources
@@ -116,11 +117,11 @@ public interface OfferService
     
     CommandResult<GetSourceResult> getSource(UserVisitPK userVisitPK, GetSourceForm form);
     
-    CommandResult<?> setDefaultSource(UserVisitPK userVisitPK, SetDefaultSourceForm form);
+    CommandResult<VoidResult> setDefaultSource(UserVisitPK userVisitPK, SetDefaultSourceForm form);
     
     CommandResult<EditSourceResult> editSource(UserVisitPK userVisitPK, EditSourceForm form);
     
-    CommandResult<?> deleteSource(UserVisitPK userVisitPK, DeleteSourceForm form);
+    CommandResult<VoidResult> deleteSource(UserVisitPK userVisitPK, DeleteSourceForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Items
@@ -132,13 +133,13 @@ public interface OfferService
     
     CommandResult<GetOfferItemResult> getOfferItem(UserVisitPK userVisitPK, GetOfferItemForm form);
     
-    CommandResult<?> deleteOfferItem(UserVisitPK userVisitPK, DeleteOfferItemForm form);
+    CommandResult<VoidResult> deleteOfferItem(UserVisitPK userVisitPK, DeleteOfferItemForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Item Prices
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferItemPrice(UserVisitPK userVisitPK, CreateOfferItemPriceForm form);
+    CommandResult<VoidResult> createOfferItemPrice(UserVisitPK userVisitPK, CreateOfferItemPriceForm form);
     
     CommandResult<GetOfferItemPriceResult> getOfferItemPrice(UserVisitPK userVisitPK, GetOfferItemPriceForm form);
 
@@ -146,7 +147,7 @@ public interface OfferService
     
     CommandResult<EditOfferItemPriceResult> editOfferItemPrice(UserVisitPK userVisitPK, EditOfferItemPriceForm form);
     
-    CommandResult<?> deleteOfferItemPrice(UserVisitPK userVisitPK, DeleteOfferItemPriceForm form);
+    CommandResult<VoidResult> deleteOfferItemPrice(UserVisitPK userVisitPK, DeleteOfferItemPriceForm form);
     
     // -------------------------------------------------------------------------
     //   Use Types
@@ -160,17 +161,17 @@ public interface OfferService
     
     CommandResult<GetUseTypeChoicesResult> getUseTypeChoices(UserVisitPK userVisitPK, GetUseTypeChoicesForm form);
     
-    CommandResult<?> setDefaultUseType(UserVisitPK userVisitPK, SetDefaultUseTypeForm form);
+    CommandResult<VoidResult> setDefaultUseType(UserVisitPK userVisitPK, SetDefaultUseTypeForm form);
     
     CommandResult<EditUseTypeResult> editUseType(UserVisitPK userVisitPK, EditUseTypeForm form);
     
-    CommandResult<?> deleteUseType(UserVisitPK userVisitPK, DeleteUseTypeForm form);
+    CommandResult<VoidResult> deleteUseType(UserVisitPK userVisitPK, DeleteUseTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Use Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createUseTypeDescription(UserVisitPK userVisitPK, CreateUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createUseTypeDescription(UserVisitPK userVisitPK, CreateUseTypeDescriptionForm form);
 
     CommandResult<GetUseTypeDescriptionsResult> getUseTypeDescriptions(UserVisitPK userVisitPK, GetUseTypeDescriptionsForm form);
 
@@ -178,7 +179,7 @@ public interface OfferService
 
     CommandResult<EditUseTypeDescriptionResult> editUseTypeDescription(UserVisitPK userVisitPK, EditUseTypeDescriptionForm form);
     
-    CommandResult<?> deleteUseTypeDescription(UserVisitPK userVisitPK, DeleteUseTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteUseTypeDescription(UserVisitPK userVisitPK, DeleteUseTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Use Name Elements
@@ -192,13 +193,13 @@ public interface OfferService
 
     CommandResult<EditUseNameElementResult> editUseNameElement(UserVisitPK userVisitPK, EditUseNameElementForm form);
     
-    CommandResult<?> deleteUseNameElement(UserVisitPK userVisitPK, DeleteUseNameElementForm form);
+    CommandResult<VoidResult> deleteUseNameElement(UserVisitPK userVisitPK, DeleteUseNameElementForm form);
     
     // -------------------------------------------------------------------------
     //   Use Name Element Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createUseNameElementDescription(UserVisitPK userVisitPK, CreateUseNameElementDescriptionForm form);
+    CommandResult<VoidResult> createUseNameElementDescription(UserVisitPK userVisitPK, CreateUseNameElementDescriptionForm form);
 
     CommandResult<GetUseNameElementDescriptionsResult> getUseNameElementDescriptions(UserVisitPK userVisitPK, GetUseNameElementDescriptionsForm form);
 
@@ -206,7 +207,7 @@ public interface OfferService
 
     CommandResult<EditUseNameElementDescriptionResult> editUseNameElementDescription(UserVisitPK userVisitPK, EditUseNameElementDescriptionForm form);
     
-    CommandResult<?> deleteUseNameElementDescription(UserVisitPK userVisitPK, DeleteUseNameElementDescriptionForm form);
+    CommandResult<VoidResult> deleteUseNameElementDescription(UserVisitPK userVisitPK, DeleteUseNameElementDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Uses
@@ -220,23 +221,23 @@ public interface OfferService
     
     CommandResult<GetUseResult> getUse(UserVisitPK userVisitPK, GetUseForm form);
     
-    CommandResult<?> setDefaultUse(UserVisitPK userVisitPK, SetDefaultUseForm form);
+    CommandResult<VoidResult> setDefaultUse(UserVisitPK userVisitPK, SetDefaultUseForm form);
     
     CommandResult<EditUseResult> editUse(UserVisitPK userVisitPK, EditUseForm form);
     
-    CommandResult<?> deleteUse(UserVisitPK userVisitPK, DeleteUseForm form);
+    CommandResult<VoidResult> deleteUse(UserVisitPK userVisitPK, DeleteUseForm form);
     
     // -------------------------------------------------------------------------
     //   Use Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createUseDescription(UserVisitPK userVisitPK, CreateUseDescriptionForm form);
+    CommandResult<VoidResult> createUseDescription(UserVisitPK userVisitPK, CreateUseDescriptionForm form);
     
     CommandResult<GetUseDescriptionsResult> getUseDescriptions(UserVisitPK userVisitPK, GetUseDescriptionsForm form);
     
     CommandResult<EditUseDescriptionResult> editUseDescription(UserVisitPK userVisitPK, EditUseDescriptionForm form);
     
-    CommandResult<?> deleteUseDescription(UserVisitPK userVisitPK, DeleteUseDescriptionForm form);
+    CommandResult<VoidResult> deleteUseDescription(UserVisitPK userVisitPK, DeleteUseDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Name Elements
@@ -250,13 +251,13 @@ public interface OfferService
 
     CommandResult<EditOfferNameElementResult> editOfferNameElement(UserVisitPK userVisitPK, EditOfferNameElementForm form);
     
-    CommandResult<?> deleteOfferNameElement(UserVisitPK userVisitPK, DeleteOfferNameElementForm form);
+    CommandResult<VoidResult> deleteOfferNameElement(UserVisitPK userVisitPK, DeleteOfferNameElementForm form);
     
     // -------------------------------------------------------------------------
     //   Offer Name Element Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferNameElementDescription(UserVisitPK userVisitPK, CreateOfferNameElementDescriptionForm form);
+    CommandResult<VoidResult> createOfferNameElementDescription(UserVisitPK userVisitPK, CreateOfferNameElementDescriptionForm form);
 
     CommandResult<GetOfferNameElementDescriptionsResult> getOfferNameElementDescriptions(UserVisitPK userVisitPK, GetOfferNameElementDescriptionsForm form);
 
@@ -264,6 +265,6 @@ public interface OfferService
 
     CommandResult<EditOfferNameElementDescriptionResult> editOfferNameElementDescription(UserVisitPK userVisitPK, EditOfferNameElementDescriptionForm form);
     
-    CommandResult<?> deleteOfferNameElementDescription(UserVisitPK userVisitPK, DeleteOfferNameElementDescriptionForm form);
+    CommandResult<VoidResult> deleteOfferNameElementDescription(UserVisitPK userVisitPK, DeleteOfferNameElementDescriptionForm form);
     
 }

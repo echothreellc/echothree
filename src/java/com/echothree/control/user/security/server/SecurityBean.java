@@ -22,6 +22,7 @@ import com.echothree.control.user.security.common.result.*;
 import com.echothree.control.user.security.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSecurityRoleGroup(UserVisitPK userVisitPK, SetDefaultSecurityRoleGroupForm form) {
+    public CommandResult<VoidResult> setDefaultSecurityRoleGroup(UserVisitPK userVisitPK, SetDefaultSecurityRoleGroupForm form) {
         return CDI.current().select(SetDefaultSecurityRoleGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deleteSecurityRoleGroup(UserVisitPK userVisitPK, DeleteSecurityRoleGroupForm form) {
+    public CommandResult<VoidResult> deleteSecurityRoleGroup(UserVisitPK userVisitPK, DeleteSecurityRoleGroupForm form) {
         return CDI.current().select(DeleteSecurityRoleGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class SecurityBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSecurityRoleGroupDescription(UserVisitPK userVisitPK, CreateSecurityRoleGroupDescriptionForm form) {
+    public CommandResult<VoidResult> createSecurityRoleGroupDescription(UserVisitPK userVisitPK, CreateSecurityRoleGroupDescriptionForm form) {
         return CDI.current().select(CreateSecurityRoleGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -103,7 +104,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deleteSecurityRoleGroupDescription(UserVisitPK userVisitPK, DeleteSecurityRoleGroupDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSecurityRoleGroupDescription(UserVisitPK userVisitPK, DeleteSecurityRoleGroupDescriptionForm form) {
         return CDI.current().select(DeleteSecurityRoleGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -137,7 +138,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSecurityRole(UserVisitPK userVisitPK, SetDefaultSecurityRoleForm form) {
+    public CommandResult<VoidResult> setDefaultSecurityRole(UserVisitPK userVisitPK, SetDefaultSecurityRoleForm form) {
         return CDI.current().select(SetDefaultSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -147,7 +148,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deleteSecurityRole(UserVisitPK userVisitPK, DeleteSecurityRoleForm form) {
+    public CommandResult<VoidResult> deleteSecurityRole(UserVisitPK userVisitPK, DeleteSecurityRoleForm form) {
         return CDI.current().select(DeleteSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -156,7 +157,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSecurityRoleDescription(UserVisitPK userVisitPK, CreateSecurityRoleDescriptionForm form) {
+    public CommandResult<VoidResult> createSecurityRoleDescription(UserVisitPK userVisitPK, CreateSecurityRoleDescriptionForm form) {
         return CDI.current().select(CreateSecurityRoleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -176,7 +177,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deleteSecurityRoleDescription(UserVisitPK userVisitPK, DeleteSecurityRoleDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSecurityRoleDescription(UserVisitPK userVisitPK, DeleteSecurityRoleDescriptionForm form) {
         return CDI.current().select(DeleteSecurityRoleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -185,7 +186,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSecurityRolePartyType(UserVisitPK userVisitPK, CreateSecurityRolePartyTypeForm form) {
+    public CommandResult<VoidResult> createSecurityRolePartyType(UserVisitPK userVisitPK, CreateSecurityRolePartyTypeForm form) {
         return CDI.current().select(CreateSecurityRolePartyTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -205,7 +206,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deleteSecurityRolePartyType(UserVisitPK userVisitPK, DeleteSecurityRolePartyTypeForm form) {
+    public CommandResult<VoidResult> deleteSecurityRolePartyType(UserVisitPK userVisitPK, DeleteSecurityRolePartyTypeForm form) {
         return CDI.current().select(DeleteSecurityRolePartyTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -214,7 +215,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form) {
+    public CommandResult<VoidResult> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form) {
         return CDI.current().select(CreatePartySecurityRoleTemplateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -234,7 +235,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> setDefaultPartySecurityRoleTemplate(UserVisitPK userVisitPK, SetDefaultPartySecurityRoleTemplateForm form) {
+    public CommandResult<VoidResult> setDefaultPartySecurityRoleTemplate(UserVisitPK userVisitPK, SetDefaultPartySecurityRoleTemplateForm form) {
         return CDI.current().select(SetDefaultPartySecurityRoleTemplateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -244,7 +245,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deletePartySecurityRoleTemplate(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateForm form) {
+    public CommandResult<VoidResult> deletePartySecurityRoleTemplate(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateForm form) {
         return CDI.current().select(DeletePartySecurityRoleTemplateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -253,7 +254,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateDescriptionForm form) {
+    public CommandResult<VoidResult> createPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateDescriptionForm form) {
         return CDI.current().select(CreatePartySecurityRoleTemplateDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -273,7 +274,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deletePartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateDescriptionForm form) {
+    public CommandResult<VoidResult> deletePartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateDescriptionForm form) {
         return CDI.current().select(DeletePartySecurityRoleTemplateDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -282,7 +283,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateRoleForm form) {
+    public CommandResult<VoidResult> createPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateRoleForm form) {
         return CDI.current().select(CreatePartySecurityRoleTemplateRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -297,7 +298,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deletePartySecurityRoleTemplateRole(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateRoleForm form) {
+    public CommandResult<VoidResult> deletePartySecurityRoleTemplateRole(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateRoleForm form) {
         return CDI.current().select(DeletePartySecurityRoleTemplateRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -306,7 +307,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateTrainingClassForm form) {
+    public CommandResult<VoidResult> createPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateTrainingClassForm form) {
         return CDI.current().select(CreatePartySecurityRoleTemplateTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
@@ -321,7 +322,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> deletePartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateTrainingClassForm form) {
+    public CommandResult<VoidResult> deletePartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateTrainingClassForm form) {
         return CDI.current().select(DeletePartySecurityRoleTemplateTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     

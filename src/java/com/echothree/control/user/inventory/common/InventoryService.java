@@ -20,6 +20,7 @@ import com.echothree.control.user.inventory.common.form.*;
 import com.echothree.control.user.inventory.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface InventoryService
         extends InventoryForms {
@@ -42,29 +43,29 @@ public interface InventoryService
     
     CommandResult<GetInventoryConditionChoicesResult> getInventoryConditionChoices(UserVisitPK userVisitPK, GetInventoryConditionChoicesForm form);
     
-    CommandResult<?> setDefaultInventoryCondition(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form);
+    CommandResult<VoidResult> setDefaultInventoryCondition(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form);
     
     CommandResult<EditInventoryConditionResult> editInventoryCondition(UserVisitPK userVisitPK, EditInventoryConditionForm form);
     
-    CommandResult<?> deleteInventoryCondition(UserVisitPK userVisitPK, DeleteInventoryConditionForm form);
+    CommandResult<VoidResult> deleteInventoryCondition(UserVisitPK userVisitPK, DeleteInventoryConditionForm form);
     
     // -------------------------------------------------------------------------
     //   Inventory Condition Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryConditionDescription(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form);
+    CommandResult<VoidResult> createInventoryConditionDescription(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form);
     
     CommandResult<GetInventoryConditionDescriptionsResult> getInventoryConditionDescriptions(UserVisitPK userVisitPK, GetInventoryConditionDescriptionsForm form);
     
     CommandResult<EditInventoryConditionDescriptionResult> editInventoryConditionDescription(UserVisitPK userVisitPK, EditInventoryConditionDescriptionForm form);
     
-    CommandResult<?> deleteInventoryConditionDescription(UserVisitPK userVisitPK, DeleteInventoryConditionDescriptionForm form);
+    CommandResult<VoidResult> deleteInventoryConditionDescription(UserVisitPK userVisitPK, DeleteInventoryConditionDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryConditionUseType(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeForm form);
+    CommandResult<VoidResult> createInventoryConditionUseType(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeForm form);
     
     CommandResult<GetInventoryConditionUseTypeChoicesResult> getInventoryConditionUseTypeChoices(UserVisitPK userVisitPK, GetInventoryConditionUseTypeChoicesForm form);
     
@@ -74,19 +75,19 @@ public interface InventoryService
     //   Inventory Condition Use Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryConditionUseTypeDescription(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createInventoryConditionUseTypeDescription(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Inventory Condition Uses
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryConditionUse(UserVisitPK userVisitPK, CreateInventoryConditionUseForm form);
+    CommandResult<VoidResult> createInventoryConditionUse(UserVisitPK userVisitPK, CreateInventoryConditionUseForm form);
     
     CommandResult<GetInventoryConditionUsesResult> getInventoryConditionUses(UserVisitPK userVisitPK, GetInventoryConditionUsesForm form);
     
-    CommandResult<?> setDefaultInventoryConditionUse(UserVisitPK userVisitPK, SetDefaultInventoryConditionUseForm form);
+    CommandResult<VoidResult> setDefaultInventoryConditionUse(UserVisitPK userVisitPK, SetDefaultInventoryConditionUseForm form);
     
-    CommandResult<?> deleteInventoryConditionUse(UserVisitPK userVisitPK, DeleteInventoryConditionUseForm form);
+    CommandResult<VoidResult> deleteInventoryConditionUse(UserVisitPK userVisitPK, DeleteInventoryConditionUseForm form);
     
     // -------------------------------------------------------------------------
     //   Inventory Location Groups
@@ -100,49 +101,49 @@ public interface InventoryService
     
     CommandResult<GetInventoryLocationGroupChoicesResult> getInventoryLocationGroupChoices(UserVisitPK userVisitPK, GetInventoryLocationGroupChoicesForm form);
     
-    CommandResult<?> setDefaultInventoryLocationGroup(UserVisitPK userVisitPK, SetDefaultInventoryLocationGroupForm form);
+    CommandResult<VoidResult> setDefaultInventoryLocationGroup(UserVisitPK userVisitPK, SetDefaultInventoryLocationGroupForm form);
     
     CommandResult<GetInventoryLocationGroupStatusChoicesResult> getInventoryLocationGroupStatusChoices(UserVisitPK userVisitPK, GetInventoryLocationGroupStatusChoicesForm form);
     
-    CommandResult<?> setInventoryLocationGroupStatus(UserVisitPK userVisitPK, SetInventoryLocationGroupStatusForm form);
+    CommandResult<VoidResult> setInventoryLocationGroupStatus(UserVisitPK userVisitPK, SetInventoryLocationGroupStatusForm form);
     
     CommandResult<EditInventoryLocationGroupResult> editInventoryLocationGroup(UserVisitPK userVisitPK, EditInventoryLocationGroupForm form);
     
-    CommandResult<?> deleteInventoryLocationGroup(UserVisitPK userVisitPK, DeleteInventoryLocationGroupForm form);
+    CommandResult<VoidResult> deleteInventoryLocationGroup(UserVisitPK userVisitPK, DeleteInventoryLocationGroupForm form);
     
     // -------------------------------------------------------------------------
     //   Inventory Location Group Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryLocationGroupDescription(UserVisitPK userVisitPK, CreateInventoryLocationGroupDescriptionForm form);
+    CommandResult<VoidResult> createInventoryLocationGroupDescription(UserVisitPK userVisitPK, CreateInventoryLocationGroupDescriptionForm form);
     
     CommandResult<GetInventoryLocationGroupDescriptionsResult> getInventoryLocationGroupDescriptions(UserVisitPK userVisitPK, GetInventoryLocationGroupDescriptionsForm form);
     
     CommandResult<EditInventoryLocationGroupDescriptionResult> editInventoryLocationGroupDescription(UserVisitPK userVisitPK, EditInventoryLocationGroupDescriptionForm form);
     
-    CommandResult<?> deleteInventoryLocationGroupDescription(UserVisitPK userVisitPK, DeleteInventoryLocationGroupDescriptionForm form);
+    CommandResult<VoidResult> deleteInventoryLocationGroupDescription(UserVisitPK userVisitPK, DeleteInventoryLocationGroupDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Inventory Location Group Capacities
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryLocationGroupCapacity(UserVisitPK userVisitPK, CreateInventoryLocationGroupCapacityForm form);
+    CommandResult<VoidResult> createInventoryLocationGroupCapacity(UserVisitPK userVisitPK, CreateInventoryLocationGroupCapacityForm form);
     
     CommandResult<GetInventoryLocationGroupCapacitiesResult> getInventoryLocationGroupCapacities(UserVisitPK userVisitPK, GetInventoryLocationGroupCapacitiesForm form);
     
     CommandResult<EditInventoryLocationGroupCapacityResult> editInventoryLocationGroupCapacity(UserVisitPK userVisitPK, EditInventoryLocationGroupCapacityForm form);
     
-    CommandResult<?> deleteInventoryLocationGroupCapacity(UserVisitPK userVisitPK, DeleteInventoryLocationGroupCapacityForm form);
+    CommandResult<VoidResult> deleteInventoryLocationGroupCapacity(UserVisitPK userVisitPK, DeleteInventoryLocationGroupCapacityForm form);
     
     // --------------------------------------------------------------------------------
     //   Inventory Location Group Volumes
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryLocationGroupVolume(UserVisitPK userVisitPK, CreateInventoryLocationGroupVolumeForm form);
+    CommandResult<VoidResult> createInventoryLocationGroupVolume(UserVisitPK userVisitPK, CreateInventoryLocationGroupVolumeForm form);
     
     CommandResult<EditInventoryLocationGroupVolumeResult> editInventoryLocationGroupVolume(UserVisitPK userVisitPK, EditInventoryLocationGroupVolumeForm form);
     
-    CommandResult<?> deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form);
+    CommandResult<VoidResult> deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form);
 
     // -------------------------------------------------------------------------
     //   Lots
@@ -156,7 +157,7 @@ public interface InventoryService
     //   Lot Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form);
+    CommandResult<VoidResult> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form);
 
     CommandResult<GetLotTimeTypeChoicesResult> getLotTimeTypeChoices(UserVisitPK userVisitPK, GetLotTimeTypeChoicesForm form);
 
@@ -164,17 +165,17 @@ public interface InventoryService
 
     CommandResult<GetLotTimeTypesResult> getLotTimeTypes(UserVisitPK userVisitPK, GetLotTimeTypesForm form);
 
-    CommandResult<?> setDefaultLotTimeType(UserVisitPK userVisitPK, SetDefaultLotTimeTypeForm form);
+    CommandResult<VoidResult> setDefaultLotTimeType(UserVisitPK userVisitPK, SetDefaultLotTimeTypeForm form);
 
     CommandResult<EditLotTimeTypeResult> editLotTimeType(UserVisitPK userVisitPK, EditLotTimeTypeForm form);
 
-    CommandResult<?> deleteLotTimeType(UserVisitPK userVisitPK, DeleteLotTimeTypeForm form);
+    CommandResult<VoidResult> deleteLotTimeType(UserVisitPK userVisitPK, DeleteLotTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Lot Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createLotTimeTypeDescription(UserVisitPK userVisitPK, CreateLotTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> createLotTimeTypeDescription(UserVisitPK userVisitPK, CreateLotTimeTypeDescriptionForm form);
 
     CommandResult<GetLotTimeTypeDescriptionResult> getLotTimeTypeDescription(UserVisitPK userVisitPK, GetLotTimeTypeDescriptionForm form);
 
@@ -182,13 +183,13 @@ public interface InventoryService
 
     CommandResult<EditLotTimeTypeDescriptionResult> editLotTimeTypeDescription(UserVisitPK userVisitPK, EditLotTimeTypeDescriptionForm form);
 
-    CommandResult<?> deleteLotTimeTypeDescription(UserVisitPK userVisitPK, DeleteLotTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteLotTimeTypeDescription(UserVisitPK userVisitPK, DeleteLotTimeTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Lot Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form);
+    CommandResult<VoidResult> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form);
 
     CommandResult<GetLotAliasTypeChoicesResult> getLotAliasTypeChoices(UserVisitPK userVisitPK, GetLotAliasTypeChoicesForm form);
 
@@ -196,17 +197,17 @@ public interface InventoryService
 
     CommandResult<GetLotAliasTypesResult> getLotAliasTypes(UserVisitPK userVisitPK, GetLotAliasTypesForm form);
 
-    CommandResult<?> setDefaultLotAliasType(UserVisitPK userVisitPK, SetDefaultLotAliasTypeForm form);
+    CommandResult<VoidResult> setDefaultLotAliasType(UserVisitPK userVisitPK, SetDefaultLotAliasTypeForm form);
 
     CommandResult<EditLotAliasTypeResult> editLotAliasType(UserVisitPK userVisitPK, EditLotAliasTypeForm form);
 
-    CommandResult<?> deleteLotAliasType(UserVisitPK userVisitPK, DeleteLotAliasTypeForm form);
+    CommandResult<VoidResult> deleteLotAliasType(UserVisitPK userVisitPK, DeleteLotAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Lot Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createLotAliasTypeDescription(UserVisitPK userVisitPK, CreateLotAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> createLotAliasTypeDescription(UserVisitPK userVisitPK, CreateLotAliasTypeDescriptionForm form);
 
     CommandResult<GetLotAliasTypeDescriptionResult> getLotAliasTypeDescription(UserVisitPK userVisitPK, GetLotAliasTypeDescriptionForm form);
 
@@ -214,13 +215,13 @@ public interface InventoryService
 
     CommandResult<EditLotAliasTypeDescriptionResult> editLotAliasTypeDescription(UserVisitPK userVisitPK, EditLotAliasTypeDescriptionForm form);
 
-    CommandResult<?> deleteLotAliasTypeDescription(UserVisitPK userVisitPK, DeleteLotAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteLotAliasTypeDescription(UserVisitPK userVisitPK, DeleteLotAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Lot Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createLotAlias(UserVisitPK userVisitPK, CreateLotAliasForm form);
+    CommandResult<VoidResult> createLotAlias(UserVisitPK userVisitPK, CreateLotAliasForm form);
 
     CommandResult<GetLotAliasResult> getLotAlias(UserVisitPK userVisitPK, GetLotAliasForm form);
 
@@ -228,13 +229,13 @@ public interface InventoryService
 
     CommandResult<EditLotAliasResult> editLotAlias(UserVisitPK userVisitPK, EditLotAliasForm form);
 
-    CommandResult<?> deleteLotAlias(UserVisitPK userVisitPK, DeleteLotAliasForm form);
+    CommandResult<VoidResult> deleteLotAlias(UserVisitPK userVisitPK, DeleteLotAliasForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Inventory Levels
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyInventoryLevel(UserVisitPK userVisitPK, CreatePartyInventoryLevelForm form);
+    CommandResult<VoidResult> createPartyInventoryLevel(UserVisitPK userVisitPK, CreatePartyInventoryLevelForm form);
     
     CommandResult<GetPartyInventoryLevelResult> getPartyInventoryLevel(UserVisitPK userVisitPK, GetPartyInventoryLevelForm form);
     
@@ -242,7 +243,7 @@ public interface InventoryService
     
     CommandResult<EditPartyInventoryLevelResult> editPartyInventoryLevel(UserVisitPK userVisitPK, EditPartyInventoryLevelForm form);
     
-    CommandResult<?> deletePartyInventoryLevel(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form);
+    CommandResult<VoidResult> deletePartyInventoryLevel(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form);
     
     // --------------------------------------------------------------------------------
     //   Allocation Priorities
@@ -256,17 +257,17 @@ public interface InventoryService
 
     CommandResult<GetAllocationPrioritiesResult> getAllocationPriorities(UserVisitPK userVisitPK, GetAllocationPrioritiesForm form);
 
-    CommandResult<?> setDefaultAllocationPriority(UserVisitPK userVisitPK, SetDefaultAllocationPriorityForm form);
+    CommandResult<VoidResult> setDefaultAllocationPriority(UserVisitPK userVisitPK, SetDefaultAllocationPriorityForm form);
 
     CommandResult<EditAllocationPriorityResult> editAllocationPriority(UserVisitPK userVisitPK, EditAllocationPriorityForm form);
 
-    CommandResult<?> deleteAllocationPriority(UserVisitPK userVisitPK, DeleteAllocationPriorityForm form);
+    CommandResult<VoidResult> deleteAllocationPriority(UserVisitPK userVisitPK, DeleteAllocationPriorityForm form);
 
     // --------------------------------------------------------------------------------
     //   Allocation Priority Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createAllocationPriorityDescription(UserVisitPK userVisitPK, CreateAllocationPriorityDescriptionForm form);
+    CommandResult<VoidResult> createAllocationPriorityDescription(UserVisitPK userVisitPK, CreateAllocationPriorityDescriptionForm form);
 
     CommandResult<GetAllocationPriorityDescriptionResult> getAllocationPriorityDescription(UserVisitPK userVisitPK, GetAllocationPriorityDescriptionForm form);
 
@@ -274,7 +275,7 @@ public interface InventoryService
 
     CommandResult<EditAllocationPriorityDescriptionResult> editAllocationPriorityDescription(UserVisitPK userVisitPK, EditAllocationPriorityDescriptionForm form);
 
-    CommandResult<?> deleteAllocationPriorityDescription(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form);
+    CommandResult<VoidResult> deleteAllocationPriorityDescription(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Inventory Adjustment Types
@@ -288,23 +289,23 @@ public interface InventoryService
 
     CommandResult<GetInventoryAdjustmentTypeChoicesResult> getInventoryAdjustmentTypeChoices(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeChoicesForm form);
 
-    CommandResult<?> setDefaultInventoryAdjustmentType(UserVisitPK userVisitPK, SetDefaultInventoryAdjustmentTypeForm form);
+    CommandResult<VoidResult> setDefaultInventoryAdjustmentType(UserVisitPK userVisitPK, SetDefaultInventoryAdjustmentTypeForm form);
 
     CommandResult<EditInventoryAdjustmentTypeResult> editInventoryAdjustmentType(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeForm form);
 
-    CommandResult<?> deleteInventoryAdjustmentType(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeForm form);
+    CommandResult<VoidResult> deleteInventoryAdjustmentType(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Inventory Adjustment Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> createInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeDescriptionForm form);
 
     CommandResult<GetInventoryAdjustmentTypeDescriptionsResult> getInventoryAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeDescriptionsForm form);
 
     CommandResult<EditInventoryAdjustmentTypeDescriptionResult> editInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeDescriptionForm form);
 
-    CommandResult<?> deleteInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Inventory Transaction Types
@@ -318,22 +319,22 @@ public interface InventoryService
 
     CommandResult<GetInventoryTransactionTypeChoicesResult> getInventoryTransactionTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionTypeChoicesForm form);
 
-    CommandResult<?> setDefaultInventoryTransactionType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTypeForm form);
+    CommandResult<VoidResult> setDefaultInventoryTransactionType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTypeForm form);
 
     CommandResult<EditInventoryTransactionTypeResult> editInventoryTransactionType(UserVisitPK userVisitPK, EditInventoryTransactionTypeForm form);
 
-    CommandResult<?> deleteInventoryTransactionType(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeForm form);
+    CommandResult<VoidResult> deleteInventoryTransactionType(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Inventory Transaction Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createInventoryTransactionTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTypeDescriptionForm form);
+    CommandResult<VoidResult> createInventoryTransactionTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTypeDescriptionForm form);
 
     CommandResult<GetInventoryTransactionTypeDescriptionsResult> getInventoryTransactionTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTypeDescriptionsForm form);
 
     CommandResult<EditInventoryTransactionTypeDescriptionResult> editInventoryTransactionTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTypeDescriptionForm form);
 
-    CommandResult<?> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form);
 
 }

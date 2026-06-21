@@ -20,6 +20,7 @@ import com.echothree.control.user.rating.common.form.*;
 import com.echothree.control.user.rating.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface RatingService
         extends RatingForms {
@@ -42,13 +43,13 @@ public interface RatingService
     
     CommandResult<EditRatingTypeResult> editRatingType(UserVisitPK userVisitPK, EditRatingTypeForm form);
     
-    CommandResult<?> deleteRatingType(UserVisitPK userVisitPK, DeleteRatingTypeForm form);
+    CommandResult<VoidResult> deleteRatingType(UserVisitPK userVisitPK, DeleteRatingTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Rating Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createRatingTypeDescription(UserVisitPK userVisitPK, CreateRatingTypeDescriptionForm form);
+    CommandResult<VoidResult> createRatingTypeDescription(UserVisitPK userVisitPK, CreateRatingTypeDescriptionForm form);
     
     CommandResult<GetRatingTypeDescriptionResult> getRatingTypeDescription(UserVisitPK userVisitPK, GetRatingTypeDescriptionForm form);
     
@@ -56,13 +57,13 @@ public interface RatingService
     
     CommandResult<EditRatingTypeDescriptionResult> editRatingTypeDescription(UserVisitPK userVisitPK, EditRatingTypeDescriptionForm form);
     
-    CommandResult<?> deleteRatingTypeDescription(UserVisitPK userVisitPK, DeleteRatingTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteRatingTypeDescription(UserVisitPK userVisitPK, DeleteRatingTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Rating Type List Items
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createRatingTypeListItem(UserVisitPK userVisitPK, CreateRatingTypeListItemForm form);
+    CommandResult<VoidResult> createRatingTypeListItem(UserVisitPK userVisitPK, CreateRatingTypeListItemForm form);
     
     CommandResult<GetRatingTypeListItemResult> getRatingTypeListItem(UserVisitPK userVisitPK, GetRatingTypeListItemForm form);
     
@@ -70,17 +71,17 @@ public interface RatingService
     
     CommandResult<GetRatingTypeListItemChoicesResult> getRatingTypeListItemChoices(UserVisitPK userVisitPK, GetRatingTypeListItemChoicesForm form);
     
-    CommandResult<?> setDefaultRatingTypeListItem(UserVisitPK userVisitPK, SetDefaultRatingTypeListItemForm form);
+    CommandResult<VoidResult> setDefaultRatingTypeListItem(UserVisitPK userVisitPK, SetDefaultRatingTypeListItemForm form);
     
     CommandResult<EditRatingTypeListItemResult> editRatingTypeListItem(UserVisitPK userVisitPK, EditRatingTypeListItemForm form);
     
-    CommandResult<?> deleteRatingTypeListItem(UserVisitPK userVisitPK, DeleteRatingTypeListItemForm form);
+    CommandResult<VoidResult> deleteRatingTypeListItem(UserVisitPK userVisitPK, DeleteRatingTypeListItemForm form);
     
     // -------------------------------------------------------------------------
     //   Rating Type List Item Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createRatingTypeListItemDescription(UserVisitPK userVisitPK, CreateRatingTypeListItemDescriptionForm form);
+    CommandResult<VoidResult> createRatingTypeListItemDescription(UserVisitPK userVisitPK, CreateRatingTypeListItemDescriptionForm form);
     
     CommandResult<GetRatingTypeListItemDescriptionResult> getRatingTypeListItemDescription(UserVisitPK userVisitPK, GetRatingTypeListItemDescriptionForm form);
     
@@ -88,7 +89,7 @@ public interface RatingService
     
     CommandResult<EditRatingTypeListItemDescriptionResult> editRatingTypeListItemDescription(UserVisitPK userVisitPK, EditRatingTypeListItemDescriptionForm form);
     
-    CommandResult<?> deleteRatingTypeListItemDescription(UserVisitPK userVisitPK, DeleteRatingTypeListItemDescriptionForm form);
+    CommandResult<VoidResult> deleteRatingTypeListItemDescription(UserVisitPK userVisitPK, DeleteRatingTypeListItemDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Ratings
@@ -100,6 +101,6 @@ public interface RatingService
     
     CommandResult<EditRatingResult> editRating(UserVisitPK userVisitPK, EditRatingForm form);
     
-    CommandResult<?> deleteRating(UserVisitPK userVisitPK, DeleteRatingForm form);
+    CommandResult<VoidResult> deleteRating(UserVisitPK userVisitPK, DeleteRatingForm form);
     
 }

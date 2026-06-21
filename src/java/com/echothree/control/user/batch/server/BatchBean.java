@@ -22,6 +22,7 @@ import com.echothree.control.user.batch.common.result.*;
 import com.echothree.control.user.batch.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form) {
+    public CommandResult<VoidResult> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form) {
         return CDI.current().select(CreateBatchTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -64,7 +65,7 @@ public class BatchBean
     }
     
     @Override
-    public CommandResult<?> setDefaultBatchType(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form) {
+    public CommandResult<VoidResult> setDefaultBatchType(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form) {
         return CDI.current().select(SetDefaultBatchTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class BatchBean
     }
     
     @Override
-    public CommandResult<?> deleteBatchType(UserVisitPK userVisitPK, DeleteBatchTypeForm form) {
+    public CommandResult<VoidResult> deleteBatchType(UserVisitPK userVisitPK, DeleteBatchTypeForm form) {
         return CDI.current().select(DeleteBatchTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createBatchTypeDescription(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createBatchTypeDescription(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form) {
         return CDI.current().select(CreateBatchTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class BatchBean
     }
 
     @Override
-    public CommandResult<?> deleteBatchTypeDescription(UserVisitPK userVisitPK, DeleteBatchTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteBatchTypeDescription(UserVisitPK userVisitPK, DeleteBatchTypeDescriptionForm form) {
         return CDI.current().select(DeleteBatchTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +113,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createBatchTypeEntityType(UserVisitPK userVisitPK, CreateBatchTypeEntityTypeForm form) {
+    public CommandResult<VoidResult> createBatchTypeEntityType(UserVisitPK userVisitPK, CreateBatchTypeEntityTypeForm form) {
         return CDI.current().select(CreateBatchTypeEntityTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -127,7 +128,7 @@ public class BatchBean
     }
 
     @Override
-    public CommandResult<?> deleteBatchTypeEntityType(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form) {
+    public CommandResult<VoidResult> deleteBatchTypeEntityType(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form) {
         return CDI.current().select(DeleteBatchTypeEntityTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form) {
+    public CommandResult<VoidResult> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form) {
         return CDI.current().select(CreateBatchAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -156,7 +157,7 @@ public class BatchBean
     }
 
     @Override
-    public CommandResult<?> setDefaultBatchAliasType(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form) {
+    public CommandResult<VoidResult> setDefaultBatchAliasType(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form) {
         return CDI.current().select(SetDefaultBatchAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -166,7 +167,7 @@ public class BatchBean
     }
 
     @Override
-    public CommandResult<?> deleteBatchAliasType(UserVisitPK userVisitPK, DeleteBatchAliasTypeForm form) {
+    public CommandResult<VoidResult> deleteBatchAliasType(UserVisitPK userVisitPK, DeleteBatchAliasTypeForm form) {
         return CDI.current().select(DeleteBatchAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -175,7 +176,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createBatchAliasTypeDescription(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createBatchAliasTypeDescription(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form) {
         return CDI.current().select(CreateBatchAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -195,7 +196,7 @@ public class BatchBean
     }
 
     @Override
-    public CommandResult<?> deleteBatchAliasTypeDescription(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteBatchAliasTypeDescription(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form) {
         return CDI.current().select(DeleteBatchAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createBatchAlias(UserVisitPK userVisitPK, CreateBatchAliasForm form) {
+    public CommandResult<VoidResult> createBatchAlias(UserVisitPK userVisitPK, CreateBatchAliasForm form) {
         return CDI.current().select(CreateBatchAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -224,7 +225,7 @@ public class BatchBean
     }
 
     @Override
-    public CommandResult<?> deleteBatchAlias(UserVisitPK userVisitPK, DeleteBatchAliasForm form) {
+    public CommandResult<VoidResult> deleteBatchAlias(UserVisitPK userVisitPK, DeleteBatchAliasForm form) {
         return CDI.current().select(DeleteBatchAliasCommand.class).get().run(userVisitPK, form);
     }
 

@@ -22,6 +22,7 @@ import com.echothree.control.user.contact.common.result.*;
 import com.echothree.control.user.contact.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createContactMechanismType(UserVisitPK userVisitPK, CreateContactMechanismTypeForm form) {
+    public CommandResult<VoidResult> createContactMechanismType(UserVisitPK userVisitPK, CreateContactMechanismTypeForm form) {
         return CDI.current().select(CreateContactMechanismTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -63,7 +64,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactMechanismTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createContactMechanismTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismTypeDescriptionForm form) {
         return CDI.current().select(CreateContactMechanismTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -72,7 +73,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form) {
+    public CommandResult<VoidResult> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form) {
         return CDI.current().select(CreateContactMechanismAliasTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -91,7 +92,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactMechanismAliasTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createContactMechanismAliasTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeDescriptionForm form) {
         return CDI.current().select(CreateContactMechanismAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -100,7 +101,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form) {
+    public CommandResult<VoidResult> createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form) {
         return CDI.current().select(CreateContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -124,7 +125,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactMechanismPurposeDescription(UserVisitPK userVisitPK, CreateContactMechanismPurposeDescriptionForm form) {
+    public CommandResult<VoidResult> createContactMechanismPurposeDescription(UserVisitPK userVisitPK, CreateContactMechanismPurposeDescriptionForm form) {
         return CDI.current().select(CreateContactMechanismPurposeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -143,7 +144,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> setEmailAddressStatus(UserVisitPK userVisitPK, SetEmailAddressStatusForm form) {
+    public CommandResult<VoidResult> setEmailAddressStatus(UserVisitPK userVisitPK, SetEmailAddressStatusForm form) {
         return CDI.current().select(SetEmailAddressStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -153,7 +154,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> setEmailAddressVerification(UserVisitPK userVisitPK, SetEmailAddressVerificationForm form) {
+    public CommandResult<VoidResult> setEmailAddressVerification(UserVisitPK userVisitPK, SetEmailAddressVerificationForm form) {
         return CDI.current().select(SetEmailAddressVerificationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -163,7 +164,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> setPostalAddressStatus(UserVisitPK userVisitPK, SetPostalAddressStatusForm form) {
+    public CommandResult<VoidResult> setPostalAddressStatus(UserVisitPK userVisitPK, SetPostalAddressStatusForm form) {
         return CDI.current().select(SetPostalAddressStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -173,7 +174,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> setTelephoneStatus(UserVisitPK userVisitPK, SetTelephoneStatusForm form) {
+    public CommandResult<VoidResult> setTelephoneStatus(UserVisitPK userVisitPK, SetTelephoneStatusForm form) {
         return CDI.current().select(SetTelephoneStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -184,7 +185,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> setWebAddressStatus(UserVisitPK userVisitPK, SetWebAddressStatusForm form) {
+    public CommandResult<VoidResult> setWebAddressStatus(UserVisitPK userVisitPK, SetWebAddressStatusForm form) {
         return CDI.current().select(SetWebAddressStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -194,7 +195,7 @@ public class ContactBean
     }
 
     @Override
-    public CommandResult<?> deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form) {
+    public CommandResult<VoidResult> deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form) {
         return CDI.current().select(DeleteContactMechanismCommand.class).get().run(userVisitPK, form);
     }
     
@@ -203,12 +204,12 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form) {
+    public CommandResult<VoidResult> createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form) {
         return CDI.current().select(CreateContactMechanismAliasCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deleteContactMechanismAlias(UserVisitPK userVisitPK, DeleteContactMechanismAliasForm form) {
+    public CommandResult<VoidResult> deleteContactMechanismAlias(UserVisitPK userVisitPK, DeleteContactMechanismAliasForm form) {
         return CDI.current().select(DeleteContactMechanismAliasCommand.class).get().run(userVisitPK, form);
     }
     
@@ -217,12 +218,12 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartyContactMechanismAlias(UserVisitPK userVisitPK, CreatePartyContactMechanismAliasForm form) {
+    public CommandResult<VoidResult> createPartyContactMechanismAlias(UserVisitPK userVisitPK, CreatePartyContactMechanismAliasForm form) {
         return CDI.current().select(CreatePartyContactMechanismAliasCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deletePartyContactMechanismAlias(UserVisitPK userVisitPK, DeletePartyContactMechanismAliasForm form) {
+    public CommandResult<VoidResult> deletePartyContactMechanismAlias(UserVisitPK userVisitPK, DeletePartyContactMechanismAliasForm form) {
         return CDI.current().select(DeletePartyContactMechanismAliasCommand.class).get().run(userVisitPK, form);
     }
     
@@ -287,17 +288,17 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartyContactMechanismPurpose(UserVisitPK userVisitPK, CreatePartyContactMechanismPurposeForm form) {
+    public CommandResult<VoidResult> createPartyContactMechanismPurpose(UserVisitPK userVisitPK, CreatePartyContactMechanismPurposeForm form) {
         return CDI.current().select(CreatePartyContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> setDefaultPartyContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultPartyContactMechanismPurposeForm form) {
+    public CommandResult<VoidResult> setDefaultPartyContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultPartyContactMechanismPurposeForm form) {
         return CDI.current().select(SetDefaultPartyContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deletePartyContactMechanismPurpose(UserVisitPK userVisitPK, DeletePartyContactMechanismPurposeForm form) {
+    public CommandResult<VoidResult> deletePartyContactMechanismPurpose(UserVisitPK userVisitPK, DeletePartyContactMechanismPurposeForm form) {
         return CDI.current().select(DeletePartyContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -306,12 +307,12 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartyContactMechanismRelationship(UserVisitPK userVisitPK, CreatePartyContactMechanismRelationshipForm form) {
+    public CommandResult<VoidResult> createPartyContactMechanismRelationship(UserVisitPK userVisitPK, CreatePartyContactMechanismRelationshipForm form) {
         return CDI.current().select(CreatePartyContactMechanismRelationshipCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deletePartyContactMechanismRelationship(UserVisitPK userVisitPK, DeletePartyContactMechanismRelationshipForm form) {
+    public CommandResult<VoidResult> deletePartyContactMechanismRelationship(UserVisitPK userVisitPK, DeletePartyContactMechanismRelationshipForm form) {
         return CDI.current().select(DeletePartyContactMechanismRelationshipCommand.class).get().run(userVisitPK, form);
     }
     
@@ -320,7 +321,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPostalAddressElementType(UserVisitPK userVisitPK, CreatePostalAddressElementTypeForm form) {
+    public CommandResult<VoidResult> createPostalAddressElementType(UserVisitPK userVisitPK, CreatePostalAddressElementTypeForm form) {
         return CDI.current().select(CreatePostalAddressElementTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -334,7 +335,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPostalAddressElementTypeDescription(UserVisitPK userVisitPK, CreatePostalAddressElementTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createPostalAddressElementTypeDescription(UserVisitPK userVisitPK, CreatePostalAddressElementTypeDescriptionForm form) {
         return CDI.current().select(CreatePostalAddressElementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -343,7 +344,7 @@ public class ContactBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form) {
+    public CommandResult<VoidResult> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form) {
         return CDI.current().select(CreatePostalAddressFormatCommand.class).get().run(userVisitPK, form);
     }
     
@@ -363,7 +364,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> setDefaultPostalAddressFormat(UserVisitPK userVisitPK, SetDefaultPostalAddressFormatForm form) {
+    public CommandResult<VoidResult> setDefaultPostalAddressFormat(UserVisitPK userVisitPK, SetDefaultPostalAddressFormatForm form) {
         return CDI.current().select(SetDefaultPostalAddressFormatCommand.class).get().run(userVisitPK, form);
     }
     
@@ -373,7 +374,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> deletePostalAddressFormat(UserVisitPK userVisitPK, DeletePostalAddressFormatForm form) {
+    public CommandResult<VoidResult> deletePostalAddressFormat(UserVisitPK userVisitPK, DeletePostalAddressFormatForm form) {
         return CDI.current().select(DeletePostalAddressFormatCommand.class).get().run(userVisitPK, form);
     }
     
@@ -382,7 +383,7 @@ public class ContactBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPostalAddressFormatDescription(UserVisitPK userVisitPK, CreatePostalAddressFormatDescriptionForm form) {
+    public CommandResult<VoidResult> createPostalAddressFormatDescription(UserVisitPK userVisitPK, CreatePostalAddressFormatDescriptionForm form) {
         return CDI.current().select(CreatePostalAddressFormatDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -397,7 +398,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> deletePostalAddressFormatDescription(UserVisitPK userVisitPK, DeletePostalAddressFormatDescriptionForm form) {
+    public CommandResult<VoidResult> deletePostalAddressFormatDescription(UserVisitPK userVisitPK, DeletePostalAddressFormatDescriptionForm form) {
         return CDI.current().select(DeletePostalAddressFormatDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -406,7 +407,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPostalAddressLine(UserVisitPK userVisitPK, CreatePostalAddressLineForm form) {
+    public CommandResult<VoidResult> createPostalAddressLine(UserVisitPK userVisitPK, CreatePostalAddressLineForm form) {
         return CDI.current().select(CreatePostalAddressLineCommand.class).get().run(userVisitPK, form);
     }
     
@@ -421,7 +422,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> deletePostalAddressLine(UserVisitPK userVisitPK, DeletePostalAddressLineForm form) {
+    public CommandResult<VoidResult> deletePostalAddressLine(UserVisitPK userVisitPK, DeletePostalAddressLineForm form) {
         return CDI.current().select(DeletePostalAddressLineCommand.class).get().run(userVisitPK, form);
     }
     
@@ -430,7 +431,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPostalAddressLineElement(UserVisitPK userVisitPK, CreatePostalAddressLineElementForm form) {
+    public CommandResult<VoidResult> createPostalAddressLineElement(UserVisitPK userVisitPK, CreatePostalAddressLineElementForm form) {
         return CDI.current().select(CreatePostalAddressLineElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -445,7 +446,7 @@ public class ContactBean
     }
     
     @Override
-    public CommandResult<?> deletePostalAddressLineElement(UserVisitPK userVisitPK, DeletePostalAddressLineElementForm form) {
+    public CommandResult<VoidResult> deletePostalAddressLineElement(UserVisitPK userVisitPK, DeletePostalAddressLineElementForm form) {
         return CDI.current().select(DeletePostalAddressLineElementCommand.class).get().run(userVisitPK, form);
     }
     

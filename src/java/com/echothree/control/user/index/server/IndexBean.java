@@ -22,6 +22,7 @@ import com.echothree.control.user.index.common.result.*;
 import com.echothree.control.user.index.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form) {
+    public CommandResult<VoidResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form) {
         return CDI.current().select(CreateIndexTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -64,7 +65,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form) {
+    public CommandResult<VoidResult> setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form) {
         return CDI.current().select(SetDefaultIndexTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form) {
+    public CommandResult<VoidResult> deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form) {
         return CDI.current().select(DeleteIndexTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form) {
         return CDI.current().select(CreateIndexTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -103,7 +104,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form) {
         return CDI.current().select(DeleteIndexTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -112,7 +113,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form) {
+    public CommandResult<VoidResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form) {
         return CDI.current().select(CreateIndexFieldCommand.class).get().run(userVisitPK, form);
     }
     
@@ -132,7 +133,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form) {
+    public CommandResult<VoidResult> setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form) {
         return CDI.current().select(SetDefaultIndexFieldCommand.class).get().run(userVisitPK, form);
     }
     
@@ -142,7 +143,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form) {
+    public CommandResult<VoidResult> deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form) {
         return CDI.current().select(DeleteIndexFieldCommand.class).get().run(userVisitPK, form);
     }
     
@@ -151,7 +152,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form) {
+    public CommandResult<VoidResult> createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form) {
         return CDI.current().select(CreateIndexFieldDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -171,7 +172,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form) {
+    public CommandResult<VoidResult> deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form) {
         return CDI.current().select(DeleteIndexFieldDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -180,7 +181,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createIndex(UserVisitPK userVisitPK, CreateIndexForm form) {
+    public CommandResult<VoidResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form) {
         return CDI.current().select(CreateIndexCommand.class).get().run(userVisitPK, form);
     }
     
@@ -200,7 +201,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form) {
+    public CommandResult<VoidResult> setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form) {
         return CDI.current().select(SetDefaultIndexCommand.class).get().run(userVisitPK, form);
     }
     
@@ -210,7 +211,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form) {
+    public CommandResult<VoidResult> deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form) {
         return CDI.current().select(DeleteIndexCommand.class).get().run(userVisitPK, form);
     }
     
@@ -219,7 +220,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form) {
+    public CommandResult<VoidResult> createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form) {
         return CDI.current().select(CreateIndexDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -239,7 +240,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form) {
+    public CommandResult<VoidResult> deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form) {
         return CDI.current().select(DeleteIndexDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -253,7 +254,7 @@ public class IndexBean
     }
     
     @Override
-    public CommandResult<?> forceReindex(UserVisitPK userVisitPK, ForceReindexForm form) {
+    public CommandResult<VoidResult> forceReindex(UserVisitPK userVisitPK, ForceReindexForm form) {
         return CDI.current().select(ForceReindexCommand.class).get().run(userVisitPK, form);
     }
     

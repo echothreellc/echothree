@@ -20,6 +20,7 @@ import com.echothree.control.user.tag.common.form.*;
 import com.echothree.control.user.tag.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface TagService
         extends TagForms {
@@ -42,17 +43,17 @@ public interface TagService
     
     CommandResult<GetTagScopeChoicesResult> getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form);
     
-    CommandResult<?> setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form);
+    CommandResult<VoidResult> setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form);
     
     CommandResult<EditTagScopeResult> editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form);
     
-    CommandResult<?> deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form);
+    CommandResult<VoidResult> deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form);
     
     // -------------------------------------------------------------------------
     //   Tag Scope Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form);
+    CommandResult<VoidResult> createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form);
     
     CommandResult<GetTagScopeDescriptionResult> getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form);
     
@@ -60,19 +61,19 @@ public interface TagService
     
     CommandResult<EditTagScopeDescriptionResult> editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form);
     
-    CommandResult<?> deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form);
+    CommandResult<VoidResult> deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Tag Scope Entity Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form);
+    CommandResult<VoidResult> createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form);
     
     CommandResult<GetTagScopeEntityTypeResult> getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form);
     
     CommandResult<GetTagScopeEntityTypesResult> getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form);
     
-    CommandResult<?> deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form);
+    CommandResult<VoidResult> deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Tags
@@ -88,18 +89,18 @@ public interface TagService
     
     CommandResult<EditTagResult> editTag(UserVisitPK userVisitPK, EditTagForm form);
     
-    CommandResult<?> deleteTag(UserVisitPK userVisitPK, DeleteTagForm form);
+    CommandResult<VoidResult> deleteTag(UserVisitPK userVisitPK, DeleteTagForm form);
     
     // -------------------------------------------------------------------------
     //   Entity Tags
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form);
+    CommandResult<VoidResult> createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form);
     
     CommandResult<GetEntityTagResult> getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form);
     
     CommandResult<GetEntityTagsResult> getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form);
     
-    CommandResult<?> deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form);
+    CommandResult<VoidResult> deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form);
     
 }

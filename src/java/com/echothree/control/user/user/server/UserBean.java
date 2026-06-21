@@ -22,6 +22,7 @@ import com.echothree.control.user.user.common.result.*;
 import com.echothree.control.user.user.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form) {
+    public CommandResult<VoidResult> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form) {
         return CDI.current().select(CreateRecoveryQuestionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -64,7 +65,7 @@ public class UserBean
     }
     
     @Override
-    public CommandResult<?> setDefaultRecoveryQuestion(UserVisitPK userVisitPK, SetDefaultRecoveryQuestionForm form) {
+    public CommandResult<VoidResult> setDefaultRecoveryQuestion(UserVisitPK userVisitPK, SetDefaultRecoveryQuestionForm form) {
         return CDI.current().select(SetDefaultRecoveryQuestionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class UserBean
     }
     
     @Override
-    public CommandResult<?> deleteRecoveryQuestion(UserVisitPK userVisitPK, DeleteRecoveryQuestionForm form) {
+    public CommandResult<VoidResult> deleteRecoveryQuestion(UserVisitPK userVisitPK, DeleteRecoveryQuestionForm form) {
         return CDI.current().select(DeleteRecoveryQuestionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createRecoveryQuestionDescription(UserVisitPK userVisitPK, CreateRecoveryQuestionDescriptionForm form) {
+    public CommandResult<VoidResult> createRecoveryQuestionDescription(UserVisitPK userVisitPK, CreateRecoveryQuestionDescriptionForm form) {
         return CDI.current().select(CreateRecoveryQuestionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -98,7 +99,7 @@ public class UserBean
     }
     
     @Override
-    public CommandResult<?> deleteRecoveryQuestionDescription(UserVisitPK userVisitPK, DeleteRecoveryQuestionDescriptionForm form) {
+    public CommandResult<VoidResult> deleteRecoveryQuestionDescription(UserVisitPK userVisitPK, DeleteRecoveryQuestionDescriptionForm form) {
         return CDI.current().select(DeleteRecoveryQuestionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -121,7 +122,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUserLoginPasswordEncoderType(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeForm form) {
+    public CommandResult<VoidResult> createUserLoginPasswordEncoderType(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeForm form) {
         return CDI.current().select(CreateUserLoginPasswordEncoderTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -130,7 +131,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUserLoginPasswordEncoderTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createUserLoginPasswordEncoderTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeDescriptionForm form) {
         return CDI.current().select(CreateUserLoginPasswordEncoderTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -139,7 +140,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUserLoginPasswordType(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeForm form) {
+    public CommandResult<VoidResult> createUserLoginPasswordType(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeForm form) {
         return CDI.current().select(CreateUserLoginPasswordTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -148,7 +149,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUserLoginPasswordTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createUserLoginPasswordTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeDescriptionForm form) {
         return CDI.current().select(CreateUserLoginPasswordTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -157,7 +158,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUserLogin(UserVisitPK userVisitPK, CreateUserLoginForm form) {
+    public CommandResult<VoidResult> createUserLogin(UserVisitPK userVisitPK, CreateUserLoginForm form) {
         return CDI.current().select(CreateUserLoginCommand.class).get().run(userVisitPK, form);
     }
     
@@ -172,7 +173,7 @@ public class UserBean
     }
     
     @Override
-    public CommandResult<?> deleteUserLogin(UserVisitPK userVisitPK, DeleteUserLoginForm form) {
+    public CommandResult<VoidResult> deleteUserLogin(UserVisitPK userVisitPK, DeleteUserLoginForm form) {
         return CDI.current().select(DeleteUserLoginCommand.class).get().run(userVisitPK, form);
     }
     
@@ -181,7 +182,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> resetLockout(UserVisitPK userVisitPK, ResetLockoutForm form) {
+    public CommandResult<VoidResult> resetLockout(UserVisitPK userVisitPK, ResetLockoutForm form) {
         return CDI.current().select(ResetLockoutCommand.class).get().run(userVisitPK, form);
     }
     
@@ -205,7 +206,7 @@ public class UserBean
     }
     
     @Override
-    public CommandResult<?> setUserVisitGroupStatus(UserVisitPK userVisitPK, SetUserVisitGroupStatusForm form) {
+    public CommandResult<VoidResult> setUserVisitGroupStatus(UserVisitPK userVisitPK, SetUserVisitGroupStatusForm form) {
         return CDI.current().select(SetUserVisitGroupStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -214,22 +215,22 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> setUserVisitPreferredLanguage(UserVisitPK userVisitPK, SetUserVisitPreferredLanguageForm form) {
+    public CommandResult<VoidResult> setUserVisitPreferredLanguage(UserVisitPK userVisitPK, SetUserVisitPreferredLanguageForm form) {
         return CDI.current().select(SetUserVisitPreferredLanguageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> setUserVisitPreferredCurrency(UserVisitPK userVisitPK, SetUserVisitPreferredCurrencyForm form) {
+    public CommandResult<VoidResult> setUserVisitPreferredCurrency(UserVisitPK userVisitPK, SetUserVisitPreferredCurrencyForm form) {
         return CDI.current().select(SetUserVisitPreferredCurrencyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> setUserVisitPreferredTimeZone(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form) {
+    public CommandResult<VoidResult> setUserVisitPreferredTimeZone(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form) {
         return CDI.current().select(SetUserVisitPreferredTimeZoneCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> setUserVisitPreferredDateTimeFormat(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form) {
+    public CommandResult<VoidResult> setUserVisitPreferredDateTimeFormat(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form) {
         return CDI.current().select(SetUserVisitPreferredDateTimeFormatCommand.class).get().run(userVisitPK, form);
     }
     

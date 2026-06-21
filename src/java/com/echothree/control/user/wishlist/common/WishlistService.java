@@ -20,6 +20,7 @@ import com.echothree.control.user.wishlist.common.form.*;
 import com.echothree.control.user.wishlist.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface WishlistService
         extends WishlistForms {
@@ -42,23 +43,23 @@ public interface WishlistService
     
     CommandResult<GetWishlistTypeChoicesResult> getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form);
     
-    CommandResult<?> setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form);
+    CommandResult<VoidResult> setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form);
     
     CommandResult<EditWishlistTypeResult> editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form);
     
-    CommandResult<?> deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form);
+    CommandResult<VoidResult> deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form);
+    CommandResult<VoidResult> createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form);
     
     CommandResult<GetWishlistTypeDescriptionsResult> getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form);
     
     CommandResult<EditWishlistTypeDescriptionResult> editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form);
     
-    CommandResult<?> deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Priorities
@@ -72,29 +73,29 @@ public interface WishlistService
     
     CommandResult<GetWishlistPriorityChoicesResult> getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form);
     
-    CommandResult<?> setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form);
+    CommandResult<VoidResult> setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form);
     
     CommandResult<EditWishlistPriorityResult> editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form);
     
-    CommandResult<?> deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form);
+    CommandResult<VoidResult> deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Priority Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form);
+    CommandResult<VoidResult> createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form);
     
     CommandResult<GetWishlistPriorityDescriptionsResult> getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form);
     
     CommandResult<EditWishlistPriorityDescriptionResult> editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form);
     
-    CommandResult<?> deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form);
+    CommandResult<VoidResult> deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Lines
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form);
+    CommandResult<VoidResult> createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form);
     
     CommandResult<GetWishlistLinesResult> getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form);
     

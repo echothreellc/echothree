@@ -20,6 +20,7 @@ import com.echothree.control.user.party.common.form.*;
 import com.echothree.control.user.party.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface PartyService
         extends PartyForms {
@@ -34,7 +35,7 @@ public interface PartyService
     //   Languages
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLanguage(UserVisitPK userVisitPK, CreateLanguageForm form);
+    CommandResult<VoidResult> createLanguage(UserVisitPK userVisitPK, CreateLanguageForm form);
     
     CommandResult<GetLanguageChoicesResult> getLanguageChoices(UserVisitPK userVisitPK, GetLanguageChoicesForm form);
     
@@ -48,13 +49,13 @@ public interface PartyService
     //   Language Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLanguageDescription(UserVisitPK userVisitPK, CreateLanguageDescriptionForm form);
+    CommandResult<VoidResult> createLanguageDescription(UserVisitPK userVisitPK, CreateLanguageDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Party Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyType(UserVisitPK userVisitPK, CreatePartyTypeForm form);
+    CommandResult<VoidResult> createPartyType(UserVisitPK userVisitPK, CreatePartyTypeForm form);
     
     CommandResult<GetPartyTypeResult> getPartyType(UserVisitPK userVisitPK, GetPartyTypeForm form);
     
@@ -66,55 +67,55 @@ public interface PartyService
     //   Party Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeDescription(UserVisitPK userVisitPK, CreatePartyTypeDescriptionForm form);
+    CommandResult<VoidResult> createPartyTypeDescription(UserVisitPK userVisitPK, CreatePartyTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Party Type Use Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeUseType(UserVisitPK userVisitPK, CreatePartyTypeUseTypeForm form);
+    CommandResult<VoidResult> createPartyTypeUseType(UserVisitPK userVisitPK, CreatePartyTypeUseTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Party Type Use Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeUseTypeDescription(UserVisitPK userVisitPK, CreatePartyTypeUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createPartyTypeUseTypeDescription(UserVisitPK userVisitPK, CreatePartyTypeUseTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Party Type Uses
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeUse(UserVisitPK userVisitPK, CreatePartyTypeUseForm form);
+    CommandResult<VoidResult> createPartyTypeUse(UserVisitPK userVisitPK, CreatePartyTypeUseForm form);
     
     // -------------------------------------------------------------------------
     //   Party Type Password String Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form);
+    CommandResult<VoidResult> createPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form);
     
     CommandResult<EditPartyTypePasswordStringPolicyResult> editPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, EditPartyTypePasswordStringPolicyForm form);
     
-    CommandResult<?> deletePartyTypePasswordStringPolicy(UserVisitPK userVisitPK, DeletePartyTypePasswordStringPolicyForm form);
+    CommandResult<VoidResult> deletePartyTypePasswordStringPolicy(UserVisitPK userVisitPK, DeletePartyTypePasswordStringPolicyForm form);
     
     // -------------------------------------------------------------------------
     //   Party Type Lockout Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeLockoutPolicy(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form);
+    CommandResult<VoidResult> createPartyTypeLockoutPolicy(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form);
     
     CommandResult<EditPartyTypeLockoutPolicyResult> editPartyTypeLockoutPolicy(UserVisitPK userVisitPK, EditPartyTypeLockoutPolicyForm form);
     
-    CommandResult<?> deletePartyTypeLockoutPolicy(UserVisitPK userVisitPK, DeletePartyTypeLockoutPolicyForm form);
+    CommandResult<VoidResult> deletePartyTypeLockoutPolicy(UserVisitPK userVisitPK, DeletePartyTypeLockoutPolicyForm form);
     
     // -------------------------------------------------------------------------
     //   Party Type Audit Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyTypeAuditPolicy(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form);
+    CommandResult<VoidResult> createPartyTypeAuditPolicy(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form);
     
     CommandResult<EditPartyTypeAuditPolicyResult> editPartyTypeAuditPolicy(UserVisitPK userVisitPK, EditPartyTypeAuditPolicyForm form);
     
-    CommandResult<?> deletePartyTypeAuditPolicy(UserVisitPK userVisitPK, DeletePartyTypeAuditPolicyForm form);
+    CommandResult<VoidResult> deletePartyTypeAuditPolicy(UserVisitPK userVisitPK, DeletePartyTypeAuditPolicyForm form);
     
     // -------------------------------------------------------------------------
     //   Personal Titles
@@ -126,11 +127,11 @@ public interface PartyService
     
     CommandResult<GetPersonalTitlesResult> getPersonalTitles(UserVisitPK userVisitPK, GetPersonalTitlesForm form);
     
-    CommandResult<?> setDefaultPersonalTitle(UserVisitPK userVisitPK, SetDefaultPersonalTitleForm form);
+    CommandResult<VoidResult> setDefaultPersonalTitle(UserVisitPK userVisitPK, SetDefaultPersonalTitleForm form);
     
     CommandResult<EditPersonalTitleResult> editPersonalTitle(UserVisitPK userVisitPK, EditPersonalTitleForm form);
     
-    CommandResult<?> deletePersonalTitle(UserVisitPK userVisitPK, DeletePersonalTitleForm form);
+    CommandResult<VoidResult> deletePersonalTitle(UserVisitPK userVisitPK, DeletePersonalTitleForm form);
     
     // -------------------------------------------------------------------------
     //   Name Suffixes
@@ -142,19 +143,19 @@ public interface PartyService
     
     CommandResult<GetNameSuffixesResult> getNameSuffixes(UserVisitPK userVisitPK, GetNameSuffixesForm form);
     
-    CommandResult<?> setDefaultNameSuffix(UserVisitPK userVisitPK, SetDefaultNameSuffixForm form);
+    CommandResult<VoidResult> setDefaultNameSuffix(UserVisitPK userVisitPK, SetDefaultNameSuffixForm form);
     
     CommandResult<EditNameSuffixResult> editNameSuffix(UserVisitPK userVisitPK, EditNameSuffixForm form);
     
-    CommandResult<?> deleteNameSuffix(UserVisitPK userVisitPK, DeleteNameSuffixForm form);
+    CommandResult<VoidResult> deleteNameSuffix(UserVisitPK userVisitPK, DeleteNameSuffixForm form);
     
     // -------------------------------------------------------------------------
     //   Date Time Formats
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createDateTimeFormat(UserVisitPK userVisitPK, CreateDateTimeFormatForm form);
+    CommandResult<VoidResult> createDateTimeFormat(UserVisitPK userVisitPK, CreateDateTimeFormatForm form);
     
-    CommandResult<?> getDateTimeFormatChoices(UserVisitPK userVisitPK, GetDateTimeFormatChoicesForm getDateTimeFormatChoicesForm);
+    CommandResult<GetDateTimeFormatChoicesResult> getDateTimeFormatChoices(UserVisitPK userVisitPK, GetDateTimeFormatChoicesForm getDateTimeFormatChoicesForm);
     
     CommandResult<GetDateTimeFormatResult> getDateTimeFormat(UserVisitPK userVisitPK, GetDateTimeFormatForm form);
 
@@ -166,19 +167,19 @@ public interface PartyService
     //   Date Time Format Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createDateTimeFormatDescription(UserVisitPK userVisitPK, CreateDateTimeFormatDescriptionForm form);
+    CommandResult<VoidResult> createDateTimeFormatDescription(UserVisitPK userVisitPK, CreateDateTimeFormatDescriptionForm form);
     
     CommandResult<GetDateTimeFormatDescriptionsResult> getDateTimeFormatDescriptions(UserVisitPK userVisitPK, GetDateTimeFormatDescriptionsForm form);
     
     CommandResult<EditDateTimeFormatDescriptionResult> editDateTimeFormatDescription(UserVisitPK userVisitPK, EditDateTimeFormatDescriptionForm form);
     
-    CommandResult<?> deleteDateTimeFormatDescription(UserVisitPK userVisitPK, DeleteDateTimeFormatDescriptionForm form);
+    CommandResult<VoidResult> deleteDateTimeFormatDescription(UserVisitPK userVisitPK, DeleteDateTimeFormatDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Time Zones
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTimeZone(UserVisitPK userVisitPK, CreateTimeZoneForm form);
+    CommandResult<VoidResult> createTimeZone(UserVisitPK userVisitPK, CreateTimeZoneForm form);
     
     CommandResult<GetTimeZoneChoicesResult> getTimeZoneChoices(UserVisitPK userVisitPK, GetTimeZoneChoicesForm form);
     
@@ -192,13 +193,13 @@ public interface PartyService
     //   Time Zone Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTimeZoneDescription(UserVisitPK userVisitPK, CreateTimeZoneDescriptionForm form);
+    CommandResult<VoidResult> createTimeZoneDescription(UserVisitPK userVisitPK, CreateTimeZoneDescriptionForm form);
     
     CommandResult<GetTimeZoneDescriptionsResult> getTimeZoneDescriptions(UserVisitPK userVisitPK, GetTimeZoneDescriptionsForm form);
     
     CommandResult<EditTimeZoneDescriptionResult> editTimeZoneDescription(UserVisitPK userVisitPK, EditTimeZoneDescriptionForm form);
     
-    CommandResult<?> deleteTimeZoneDescription(UserVisitPK userVisitPK, DeleteTimeZoneDescriptionForm form);
+    CommandResult<VoidResult> deleteTimeZoneDescription(UserVisitPK userVisitPK, DeleteTimeZoneDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Companies
@@ -212,11 +213,11 @@ public interface PartyService
     
     CommandResult<GetCompanyResult> getCompany(UserVisitPK userVisitPK, GetCompanyForm form);
     
-    CommandResult<?> setDefaultCompany(UserVisitPK userVisitPK, SetDefaultCompanyForm form);
+    CommandResult<VoidResult> setDefaultCompany(UserVisitPK userVisitPK, SetDefaultCompanyForm form);
     
     CommandResult<EditCompanyResult> editCompany(UserVisitPK userVisitPK, EditCompanyForm form);
     
-    CommandResult<?> deleteCompany(UserVisitPK userVisitPK, DeleteCompanyForm form);
+    CommandResult<VoidResult> deleteCompany(UserVisitPK userVisitPK, DeleteCompanyForm form);
     
     // -------------------------------------------------------------------------
     //   Divisions
@@ -230,11 +231,11 @@ public interface PartyService
     
     CommandResult<GetDivisionResult> getDivision(UserVisitPK userVisitPK, GetDivisionForm form);
     
-    CommandResult<?> setDefaultDivision(UserVisitPK userVisitPK, SetDefaultDivisionForm form);
+    CommandResult<VoidResult> setDefaultDivision(UserVisitPK userVisitPK, SetDefaultDivisionForm form);
     
     CommandResult<EditDivisionResult> editDivision(UserVisitPK userVisitPK, EditDivisionForm form);
     
-    CommandResult<?> deleteDivision(UserVisitPK userVisitPK, DeleteDivisionForm form);
+    CommandResult<VoidResult> deleteDivision(UserVisitPK userVisitPK, DeleteDivisionForm form);
     
     // -------------------------------------------------------------------------
     //   Departments
@@ -248,11 +249,11 @@ public interface PartyService
     
     CommandResult<GetDepartmentResult> getDepartment(UserVisitPK userVisitPK, GetDepartmentForm form);
     
-    CommandResult<?> setDefaultDepartment(UserVisitPK userVisitPK, SetDefaultDepartmentForm form);
+    CommandResult<VoidResult> setDefaultDepartment(UserVisitPK userVisitPK, SetDefaultDepartmentForm form);
     
     CommandResult<EditDepartmentResult> editDepartment(UserVisitPK userVisitPK, EditDepartmentForm form);
     
-    CommandResult<?> deleteDepartment(UserVisitPK userVisitPK, DeleteDepartmentForm form);
+    CommandResult<VoidResult> deleteDepartment(UserVisitPK userVisitPK, DeleteDepartmentForm form);
     
     // -------------------------------------------------------------------------
     //   Customers
@@ -268,25 +269,25 @@ public interface PartyService
     
     CommandResult<CreateEmployeeResult> createEmployee(UserVisitPK userVisitPK, CreateEmployeeForm form);
     
-    CommandResult<?> addEmployeeToCompany(UserVisitPK userVisitPK, AddEmployeeToCompanyForm form);
+    CommandResult<VoidResult> addEmployeeToCompany(UserVisitPK userVisitPK, AddEmployeeToCompanyForm form);
 
-    CommandResult<?> addEmployeeToDivision(UserVisitPK userVisitPK, AddEmployeeToDivisionForm form);
+    CommandResult<VoidResult> addEmployeeToDivision(UserVisitPK userVisitPK, AddEmployeeToDivisionForm form);
 
-    CommandResult<?> addEmployeeToDepartment(UserVisitPK userVisitPK, AddEmployeeToDepartmentForm form);
+    CommandResult<VoidResult> addEmployeeToDepartment(UserVisitPK userVisitPK, AddEmployeeToDepartmentForm form);
 
-    CommandResult<?> removeEmployeeFromCompany(UserVisitPK userVisitPK, RemoveEmployeeFromCompanyForm form);
+    CommandResult<VoidResult> removeEmployeeFromCompany(UserVisitPK userVisitPK, RemoveEmployeeFromCompanyForm form);
 
-    CommandResult<?> removeEmployeeFromDivision(UserVisitPK userVisitPK, RemoveEmployeeFromDivisionForm form);
+    CommandResult<VoidResult> removeEmployeeFromDivision(UserVisitPK userVisitPK, RemoveEmployeeFromDivisionForm form);
 
-    CommandResult<?> removeEmployeeFromDepartment(UserVisitPK userVisitPK, RemoveEmployeeFromDepartmentForm form);
+    CommandResult<VoidResult> removeEmployeeFromDepartment(UserVisitPK userVisitPK, RemoveEmployeeFromDepartmentForm form);
 
     CommandResult<GetEmployeeStatusChoicesResult> getEmployeeStatusChoices(UserVisitPK userVisitPK, GetEmployeeStatusChoicesForm form);
     
-    CommandResult<?> setEmployeeStatus(UserVisitPK userVisitPK, SetEmployeeStatusForm form);
+    CommandResult<VoidResult> setEmployeeStatus(UserVisitPK userVisitPK, SetEmployeeStatusForm form);
     
     CommandResult<GetEmployeeAvailabilityChoicesResult> getEmployeeAvailabilityChoices(UserVisitPK userVisitPK, GetEmployeeAvailabilityChoicesForm form);
     
-    CommandResult<?> setEmployeeAvailability(UserVisitPK userVisitPK, SetEmployeeAvailabilityForm form);
+    CommandResult<VoidResult> setEmployeeAvailability(UserVisitPK userVisitPK, SetEmployeeAvailabilityForm form);
     
     CommandResult<EditEmployeeResult> editEmployee(UserVisitPK userVisitPK, EditEmployeeForm form);
     
@@ -294,13 +295,13 @@ public interface PartyService
     //   Party Relationship Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyRelationshipType(UserVisitPK userVisitPK, CreatePartyRelationshipTypeForm form);
+    CommandResult<VoidResult> createPartyRelationshipType(UserVisitPK userVisitPK, CreatePartyRelationshipTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Relationship Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPartyRelationshipTypeDescription(UserVisitPK userVisitPK, CreatePartyRelationshipTypeDescriptionForm form);
+    CommandResult<VoidResult> createPartyRelationshipTypeDescription(UserVisitPK userVisitPK, CreatePartyRelationshipTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Relationships
@@ -314,7 +315,7 @@ public interface PartyService
     //   Role Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createRoleType(UserVisitPK userVisitPK, CreateRoleTypeForm form);
+    CommandResult<VoidResult> createRoleType(UserVisitPK userVisitPK, CreateRoleTypeForm form);
 
     CommandResult<GetRoleTypeResult> getRoleType(UserVisitPK userVisitPK, GetRoleTypeForm form);
 
@@ -324,7 +325,7 @@ public interface PartyService
     //   Role Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createRoleTypeDescription(UserVisitPK userVisitPK, CreateRoleTypeDescriptionForm form);
+    CommandResult<VoidResult> createRoleTypeDescription(UserVisitPK userVisitPK, CreateRoleTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Vendors
@@ -334,13 +335,13 @@ public interface PartyService
     
     CommandResult<GetVendorStatusChoicesResult> getVendorStatusChoices(UserVisitPK userVisitPK, GetVendorStatusChoicesForm form);
 
-    CommandResult<?> setVendorStatus(UserVisitPK userVisitPK, SetVendorStatusForm form);
+    CommandResult<VoidResult> setVendorStatus(UserVisitPK userVisitPK, SetVendorStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Genders
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGender(UserVisitPK userVisitPK, CreateGenderForm form);
+    CommandResult<VoidResult> createGender(UserVisitPK userVisitPK, CreateGenderForm form);
     
     CommandResult<GetGenderChoicesResult> getGenderChoices(UserVisitPK userVisitPK, GetGenderChoicesForm form);
     
@@ -348,29 +349,29 @@ public interface PartyService
     
     CommandResult<GetGendersResult> getGenders(UserVisitPK userVisitPK, GetGendersForm form);
     
-    CommandResult<?> setDefaultGender(UserVisitPK userVisitPK, SetDefaultGenderForm form);
+    CommandResult<VoidResult> setDefaultGender(UserVisitPK userVisitPK, SetDefaultGenderForm form);
     
     CommandResult<EditGenderResult> editGender(UserVisitPK userVisitPK, EditGenderForm form);
     
-    CommandResult<?> deleteGender(UserVisitPK userVisitPK, DeleteGenderForm form);
+    CommandResult<VoidResult> deleteGender(UserVisitPK userVisitPK, DeleteGenderForm form);
     
     // --------------------------------------------------------------------------------
     //   Gender Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGenderDescription(UserVisitPK userVisitPK, CreateGenderDescriptionForm form);
+    CommandResult<VoidResult> createGenderDescription(UserVisitPK userVisitPK, CreateGenderDescriptionForm form);
     
     CommandResult<GetGenderDescriptionsResult> getGenderDescriptions(UserVisitPK userVisitPK, GetGenderDescriptionsForm form);
     
     CommandResult<EditGenderDescriptionResult> editGenderDescription(UserVisitPK userVisitPK, EditGenderDescriptionForm form);
     
-    CommandResult<?> deleteGenderDescription(UserVisitPK userVisitPK, DeleteGenderDescriptionForm form);
+    CommandResult<VoidResult> deleteGenderDescription(UserVisitPK userVisitPK, DeleteGenderDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Birthday Formats
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBirthdayFormat(UserVisitPK userVisitPK, CreateBirthdayFormatForm form);
+    CommandResult<VoidResult> createBirthdayFormat(UserVisitPK userVisitPK, CreateBirthdayFormatForm form);
 
     CommandResult<GetBirthdayFormatChoicesResult> getBirthdayFormatChoices(UserVisitPK userVisitPK, GetBirthdayFormatChoicesForm form);
 
@@ -378,17 +379,17 @@ public interface PartyService
 
     CommandResult<GetBirthdayFormatsResult> getBirthdayFormats(UserVisitPK userVisitPK, GetBirthdayFormatsForm form);
 
-    CommandResult<?> setDefaultBirthdayFormat(UserVisitPK userVisitPK, SetDefaultBirthdayFormatForm form);
+    CommandResult<VoidResult> setDefaultBirthdayFormat(UserVisitPK userVisitPK, SetDefaultBirthdayFormatForm form);
 
     CommandResult<EditBirthdayFormatResult> editBirthdayFormat(UserVisitPK userVisitPK, EditBirthdayFormatForm form);
 
-    CommandResult<?> deleteBirthdayFormat(UserVisitPK userVisitPK, DeleteBirthdayFormatForm form);
+    CommandResult<VoidResult> deleteBirthdayFormat(UserVisitPK userVisitPK, DeleteBirthdayFormatForm form);
 
     // --------------------------------------------------------------------------------
     //   Birthday Format Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createBirthdayFormatDescription(UserVisitPK userVisitPK, CreateBirthdayFormatDescriptionForm form);
+    CommandResult<VoidResult> createBirthdayFormatDescription(UserVisitPK userVisitPK, CreateBirthdayFormatDescriptionForm form);
 
     CommandResult<GetBirthdayFormatDescriptionResult> getBirthdayFormatDescription(UserVisitPK userVisitPK, GetBirthdayFormatDescriptionForm form);
 
@@ -396,13 +397,13 @@ public interface PartyService
 
     CommandResult<EditBirthdayFormatDescriptionResult> editBirthdayFormatDescription(UserVisitPK userVisitPK, EditBirthdayFormatDescriptionForm form);
 
-    CommandResult<?> deleteBirthdayFormatDescription(UserVisitPK userVisitPK, DeleteBirthdayFormatDescriptionForm form);
+    CommandResult<VoidResult> deleteBirthdayFormatDescription(UserVisitPK userVisitPK, DeleteBirthdayFormatDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Profiles
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createProfile(UserVisitPK userVisitPK, CreateProfileForm form);
+    CommandResult<VoidResult> createProfile(UserVisitPK userVisitPK, CreateProfileForm form);
     
     CommandResult<EditProfileResult> editProfile(UserVisitPK userVisitPK, EditProfileForm form);
     
@@ -418,17 +419,17 @@ public interface PartyService
 
     CommandResult<GetPartyAliasTypesResult> getPartyAliasTypes(UserVisitPK userVisitPK, GetPartyAliasTypesForm form);
 
-    CommandResult<?> setDefaultPartyAliasType(UserVisitPK userVisitPK, SetDefaultPartyAliasTypeForm form);
+    CommandResult<VoidResult> setDefaultPartyAliasType(UserVisitPK userVisitPK, SetDefaultPartyAliasTypeForm form);
 
     CommandResult<EditPartyAliasTypeResult> editPartyAliasType(UserVisitPK userVisitPK, EditPartyAliasTypeForm form);
 
-    CommandResult<?> deletePartyAliasType(UserVisitPK userVisitPK, DeletePartyAliasTypeForm form);
+    CommandResult<VoidResult> deletePartyAliasType(UserVisitPK userVisitPK, DeletePartyAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPartyAliasTypeDescription(UserVisitPK userVisitPK, CreatePartyAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> createPartyAliasTypeDescription(UserVisitPK userVisitPK, CreatePartyAliasTypeDescriptionForm form);
 
     CommandResult<GetPartyAliasTypeDescriptionResult> getPartyAliasTypeDescription(UserVisitPK userVisitPK, GetPartyAliasTypeDescriptionForm form);
 
@@ -436,13 +437,13 @@ public interface PartyService
 
     CommandResult<EditPartyAliasTypeDescriptionResult> editPartyAliasTypeDescription(UserVisitPK userVisitPK, EditPartyAliasTypeDescriptionForm form);
 
-    CommandResult<?> deletePartyAliasTypeDescription(UserVisitPK userVisitPK, DeletePartyAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> deletePartyAliasTypeDescription(UserVisitPK userVisitPK, DeletePartyAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPartyAlias(UserVisitPK userVisitPK, CreatePartyAliasForm form);
+    CommandResult<VoidResult> createPartyAlias(UserVisitPK userVisitPK, CreatePartyAliasForm form);
 
     CommandResult<GetPartyAliasResult> getPartyAlias(UserVisitPK userVisitPK, GetPartyAliasForm form);
 
@@ -450,7 +451,7 @@ public interface PartyService
 
     CommandResult<EditPartyAliasResult> editPartyAlias(UserVisitPK userVisitPK, EditPartyAliasForm form);
 
-    CommandResult<?> deletePartyAlias(UserVisitPK userVisitPK, DeletePartyAliasForm form);
+    CommandResult<VoidResult> deletePartyAlias(UserVisitPK userVisitPK, DeletePartyAliasForm form);
 
     // -------------------------------------------------------------------------
     //   Parties
@@ -464,7 +465,7 @@ public interface PartyService
     //   Party Entity Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPartyEntityType(UserVisitPK userVisitPK, CreatePartyEntityTypeForm form);
+    CommandResult<VoidResult> createPartyEntityType(UserVisitPK userVisitPK, CreatePartyEntityTypeForm form);
 
     CommandResult<EditPartyEntityTypeResult> editPartyEntityType(UserVisitPK userVisitPK, EditPartyEntityTypeForm form);
 
@@ -472,13 +473,13 @@ public interface PartyService
 
     CommandResult<GetPartyEntityTypesResult> getPartyEntityTypes(UserVisitPK userVisitPK, GetPartyEntityTypesForm form);
 
-    CommandResult<?> deletePartyEntityType(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form);
+    CommandResult<VoidResult> deletePartyEntityType(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Application Editor Uses
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
+    CommandResult<VoidResult> createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
 
     CommandResult<GetPartyApplicationEditorUseResult> getPartyApplicationEditorUse(UserVisitPK userVisitPK, GetPartyApplicationEditorUseForm form);
 
@@ -486,6 +487,6 @@ public interface PartyService
 
     CommandResult<EditPartyApplicationEditorUseResult> editPartyApplicationEditorUse(UserVisitPK userVisitPK, EditPartyApplicationEditorUseForm form);
 
-    CommandResult<?> deletePartyApplicationEditorUse(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form);
+    CommandResult<VoidResult> deletePartyApplicationEditorUse(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form);
 
 }

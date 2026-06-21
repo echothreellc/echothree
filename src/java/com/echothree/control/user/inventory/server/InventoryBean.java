@@ -22,6 +22,7 @@ import com.echothree.control.user.inventory.common.result.*;
 import com.echothree.control.user.inventory.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> setDefaultInventoryCondition(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form) {
+    public CommandResult<VoidResult> setDefaultInventoryCondition(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form) {
         return CDI.current().select(SetDefaultInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deleteInventoryCondition(UserVisitPK userVisitPK, DeleteInventoryConditionForm form) {
+    public CommandResult<VoidResult> deleteInventoryCondition(UserVisitPK userVisitPK, DeleteInventoryConditionForm form) {
         return CDI.current().select(DeleteInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryConditionDescription(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form) {
+    public CommandResult<VoidResult> createInventoryConditionDescription(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form) {
         return CDI.current().select(CreateInventoryConditionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -98,7 +99,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deleteInventoryConditionDescription(UserVisitPK userVisitPK, DeleteInventoryConditionDescriptionForm form) {
+    public CommandResult<VoidResult> deleteInventoryConditionDescription(UserVisitPK userVisitPK, DeleteInventoryConditionDescriptionForm form) {
         return CDI.current().select(DeleteInventoryConditionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -107,7 +108,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryConditionUseType(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeForm form) {
+    public CommandResult<VoidResult> createInventoryConditionUseType(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeForm form) {
         return CDI.current().select(CreateInventoryConditionUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -126,7 +127,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryConditionUseTypeDescription(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createInventoryConditionUseTypeDescription(UserVisitPK userVisitPK, CreateInventoryConditionUseTypeDescriptionForm form) {
         return CDI.current().select(CreateInventoryConditionUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -135,7 +136,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryConditionUse(UserVisitPK userVisitPK, CreateInventoryConditionUseForm form) {
+    public CommandResult<VoidResult> createInventoryConditionUse(UserVisitPK userVisitPK, CreateInventoryConditionUseForm form) {
         return CDI.current().select(CreateInventoryConditionUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -145,12 +146,12 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> setDefaultInventoryConditionUse(UserVisitPK userVisitPK, SetDefaultInventoryConditionUseForm form) {
+    public CommandResult<VoidResult> setDefaultInventoryConditionUse(UserVisitPK userVisitPK, SetDefaultInventoryConditionUseForm form) {
         return CDI.current().select(SetDefaultInventoryConditionUseCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deleteInventoryConditionUse(UserVisitPK userVisitPK, DeleteInventoryConditionUseForm form) {
+    public CommandResult<VoidResult> deleteInventoryConditionUse(UserVisitPK userVisitPK, DeleteInventoryConditionUseForm form) {
         return CDI.current().select(DeleteInventoryConditionUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -179,7 +180,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> setDefaultInventoryLocationGroup(UserVisitPK userVisitPK, SetDefaultInventoryLocationGroupForm form) {
+    public CommandResult<VoidResult> setDefaultInventoryLocationGroup(UserVisitPK userVisitPK, SetDefaultInventoryLocationGroupForm form) {
         return CDI.current().select(SetDefaultInventoryLocationGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -189,7 +190,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> setInventoryLocationGroupStatus(UserVisitPK userVisitPK, SetInventoryLocationGroupStatusForm form) {
+    public CommandResult<VoidResult> setInventoryLocationGroupStatus(UserVisitPK userVisitPK, SetInventoryLocationGroupStatusForm form) {
         return CDI.current().select(SetInventoryLocationGroupStatusCommand.class).get().run(userVisitPK, form);
     }
     
@@ -199,7 +200,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deleteInventoryLocationGroup(UserVisitPK userVisitPK, DeleteInventoryLocationGroupForm form) {
+    public CommandResult<VoidResult> deleteInventoryLocationGroup(UserVisitPK userVisitPK, DeleteInventoryLocationGroupForm form) {
         return CDI.current().select(DeleteInventoryLocationGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -208,7 +209,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryLocationGroupDescription(UserVisitPK userVisitPK, CreateInventoryLocationGroupDescriptionForm form) {
+    public CommandResult<VoidResult> createInventoryLocationGroupDescription(UserVisitPK userVisitPK, CreateInventoryLocationGroupDescriptionForm form) {
         return CDI.current().select(CreateInventoryLocationGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -223,7 +224,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deleteInventoryLocationGroupDescription(UserVisitPK userVisitPK, DeleteInventoryLocationGroupDescriptionForm form) {
+    public CommandResult<VoidResult> deleteInventoryLocationGroupDescription(UserVisitPK userVisitPK, DeleteInventoryLocationGroupDescriptionForm form) {
         return CDI.current().select(DeleteInventoryLocationGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -232,7 +233,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryLocationGroupCapacity(UserVisitPK userVisitPK, CreateInventoryLocationGroupCapacityForm form) {
+    public CommandResult<VoidResult> createInventoryLocationGroupCapacity(UserVisitPK userVisitPK, CreateInventoryLocationGroupCapacityForm form) {
         return CDI.current().select(CreateInventoryLocationGroupCapacityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -247,7 +248,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deleteInventoryLocationGroupCapacity(UserVisitPK userVisitPK, DeleteInventoryLocationGroupCapacityForm form) {
+    public CommandResult<VoidResult> deleteInventoryLocationGroupCapacity(UserVisitPK userVisitPK, DeleteInventoryLocationGroupCapacityForm form) {
         return CDI.current().select(DeleteInventoryLocationGroupCapacityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -256,7 +257,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryLocationGroupVolume(UserVisitPK userVisitPK, CreateInventoryLocationGroupVolumeForm form) {
+    public CommandResult<VoidResult> createInventoryLocationGroupVolume(UserVisitPK userVisitPK, CreateInventoryLocationGroupVolumeForm form) {
         return CDI.current().select(CreateInventoryLocationGroupVolumeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -266,7 +267,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form) {
+    public CommandResult<VoidResult> deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form) {
         return CDI.current().select(DeleteInventoryLocationGroupVolumeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -289,7 +290,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form) {
+    public CommandResult<VoidResult> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form) {
         return CDI.current().select(CreateLotTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -309,7 +310,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> setDefaultLotTimeType(UserVisitPK userVisitPK, SetDefaultLotTimeTypeForm form) {
+    public CommandResult<VoidResult> setDefaultLotTimeType(UserVisitPK userVisitPK, SetDefaultLotTimeTypeForm form) {
         return CDI.current().select(SetDefaultLotTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -319,7 +320,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteLotTimeType(UserVisitPK userVisitPK, DeleteLotTimeTypeForm form) {
+    public CommandResult<VoidResult> deleteLotTimeType(UserVisitPK userVisitPK, DeleteLotTimeTypeForm form) {
         return CDI.current().select(DeleteLotTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -328,7 +329,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createLotTimeTypeDescription(UserVisitPK userVisitPK, CreateLotTimeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createLotTimeTypeDescription(UserVisitPK userVisitPK, CreateLotTimeTypeDescriptionForm form) {
         return CDI.current().select(CreateLotTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -348,7 +349,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteLotTimeTypeDescription(UserVisitPK userVisitPK, DeleteLotTimeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteLotTimeTypeDescription(UserVisitPK userVisitPK, DeleteLotTimeTypeDescriptionForm form) {
         return CDI.current().select(DeleteLotTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -357,7 +358,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form) {
+    public CommandResult<VoidResult> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form) {
         return CDI.current().select(CreateLotAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -377,7 +378,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> setDefaultLotAliasType(UserVisitPK userVisitPK, SetDefaultLotAliasTypeForm form) {
+    public CommandResult<VoidResult> setDefaultLotAliasType(UserVisitPK userVisitPK, SetDefaultLotAliasTypeForm form) {
         return CDI.current().select(SetDefaultLotAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -387,7 +388,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteLotAliasType(UserVisitPK userVisitPK, DeleteLotAliasTypeForm form) {
+    public CommandResult<VoidResult> deleteLotAliasType(UserVisitPK userVisitPK, DeleteLotAliasTypeForm form) {
         return CDI.current().select(DeleteLotAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -396,7 +397,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createLotAliasTypeDescription(UserVisitPK userVisitPK, CreateLotAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createLotAliasTypeDescription(UserVisitPK userVisitPK, CreateLotAliasTypeDescriptionForm form) {
         return CDI.current().select(CreateLotAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -416,7 +417,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteLotAliasTypeDescription(UserVisitPK userVisitPK, DeleteLotAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteLotAliasTypeDescription(UserVisitPK userVisitPK, DeleteLotAliasTypeDescriptionForm form) {
         return CDI.current().select(DeleteLotAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -425,7 +426,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createLotAlias(UserVisitPK userVisitPK, CreateLotAliasForm form) {
+    public CommandResult<VoidResult> createLotAlias(UserVisitPK userVisitPK, CreateLotAliasForm form) {
         return CDI.current().select(CreateLotAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -445,7 +446,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteLotAlias(UserVisitPK userVisitPK, DeleteLotAliasForm form) {
+    public CommandResult<VoidResult> deleteLotAlias(UserVisitPK userVisitPK, DeleteLotAliasForm form) {
         return CDI.current().select(DeleteLotAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -454,7 +455,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartyInventoryLevel(UserVisitPK userVisitPK, CreatePartyInventoryLevelForm form) {
+    public CommandResult<VoidResult> createPartyInventoryLevel(UserVisitPK userVisitPK, CreatePartyInventoryLevelForm form) {
         return CDI.current().select(CreatePartyInventoryLevelCommand.class).get().run(userVisitPK, form);
     }
     
@@ -474,7 +475,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> deletePartyInventoryLevel(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form) {
+    public CommandResult<VoidResult> deletePartyInventoryLevel(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form) {
         return CDI.current().select(DeletePartyInventoryLevelCommand.class).get().run(userVisitPK, form);
     }
     
@@ -503,7 +504,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> setDefaultAllocationPriority(UserVisitPK userVisitPK, SetDefaultAllocationPriorityForm form) {
+    public CommandResult<VoidResult> setDefaultAllocationPriority(UserVisitPK userVisitPK, SetDefaultAllocationPriorityForm form) {
         return CDI.current().select(SetDefaultAllocationPriorityCommand.class).get().run(userVisitPK, form);
     }
 
@@ -513,7 +514,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteAllocationPriority(UserVisitPK userVisitPK, DeleteAllocationPriorityForm form) {
+    public CommandResult<VoidResult> deleteAllocationPriority(UserVisitPK userVisitPK, DeleteAllocationPriorityForm form) {
         return CDI.current().select(DeleteAllocationPriorityCommand.class).get().run(userVisitPK, form);
     }
 
@@ -522,7 +523,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createAllocationPriorityDescription(UserVisitPK userVisitPK, CreateAllocationPriorityDescriptionForm form) {
+    public CommandResult<VoidResult> createAllocationPriorityDescription(UserVisitPK userVisitPK, CreateAllocationPriorityDescriptionForm form) {
         return CDI.current().select(CreateAllocationPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -542,7 +543,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteAllocationPriorityDescription(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form) {
+    public CommandResult<VoidResult> deleteAllocationPriorityDescription(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form) {
         return CDI.current().select(DeleteAllocationPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -571,7 +572,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> setDefaultInventoryAdjustmentType(UserVisitPK userVisitPK, SetDefaultInventoryAdjustmentTypeForm form) {
+    public CommandResult<VoidResult> setDefaultInventoryAdjustmentType(UserVisitPK userVisitPK, SetDefaultInventoryAdjustmentTypeForm form) {
         return CDI.current().select(SetDefaultInventoryAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -581,7 +582,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteInventoryAdjustmentType(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeForm form) {
+    public CommandResult<VoidResult> deleteInventoryAdjustmentType(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeForm form) {
         return CDI.current().select(DeleteInventoryAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -590,7 +591,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(CreateInventoryAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -605,7 +606,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(DeleteInventoryAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -634,7 +635,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> setDefaultInventoryTransactionType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTypeForm form) {
+    public CommandResult<VoidResult> setDefaultInventoryTransactionType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTypeForm form) {
         return CDI.current().select(SetDefaultInventoryTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -644,7 +645,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteInventoryTransactionType(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeForm form) {
+    public CommandResult<VoidResult> deleteInventoryTransactionType(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeForm form) {
         return CDI.current().select(DeleteInventoryTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -653,7 +654,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createInventoryTransactionTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createInventoryTransactionTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTypeDescriptionForm form) {
         return CDI.current().select(CreateInventoryTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -668,7 +669,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form) {
         return CDI.current().select(DeleteInventoryTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 

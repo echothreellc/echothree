@@ -20,6 +20,7 @@ import com.echothree.control.user.sequence.common.form.*;
 import com.echothree.control.user.sequence.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface SequenceService
         extends SequenceForms {
@@ -42,29 +43,29 @@ public interface SequenceService
     
     CommandResult<GetSequenceTypeChoicesResult> getSequenceTypeChoices(UserVisitPK userVisitPK, GetSequenceTypeChoicesForm form);
     
-    CommandResult<?> setDefaultSequenceType(UserVisitPK userVisitPK, SetDefaultSequenceTypeForm form);
+    CommandResult<VoidResult> setDefaultSequenceType(UserVisitPK userVisitPK, SetDefaultSequenceTypeForm form);
     
     CommandResult<EditSequenceTypeResult> editSequenceType(UserVisitPK userVisitPK, EditSequenceTypeForm form);
     
-    CommandResult<?> deleteSequenceType(UserVisitPK userVisitPK, DeleteSequenceTypeForm form);
+    CommandResult<VoidResult> deleteSequenceType(UserVisitPK userVisitPK, DeleteSequenceTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Sequence Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceTypeDescription(UserVisitPK userVisitPK, CreateSequenceTypeDescriptionForm form);
+    CommandResult<VoidResult> createSequenceTypeDescription(UserVisitPK userVisitPK, CreateSequenceTypeDescriptionForm form);
     
     CommandResult<GetSequenceTypeDescriptionsResult> getSequenceTypeDescriptions(UserVisitPK userVisitPK, GetSequenceTypeDescriptionsForm form);
     
     CommandResult<EditSequenceTypeDescriptionResult> editSequenceTypeDescription(UserVisitPK userVisitPK, EditSequenceTypeDescriptionForm form);
     
-    CommandResult<?> deleteSequenceTypeDescription(UserVisitPK userVisitPK, DeleteSequenceTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteSequenceTypeDescription(UserVisitPK userVisitPK, DeleteSequenceTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Sequence Checksum Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceChecksumType(UserVisitPK userVisitPK, CreateSequenceChecksumTypeForm form);
+    CommandResult<VoidResult> createSequenceChecksumType(UserVisitPK userVisitPK, CreateSequenceChecksumTypeForm form);
 
     CommandResult<GetSequenceChecksumTypesResult> getSequenceChecksumTypes(UserVisitPK userVisitPK, GetSequenceChecksumTypesForm form);
 
@@ -76,13 +77,13 @@ public interface SequenceService
     //   Sequence Checksum Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceChecksumTypeDescription(UserVisitPK userVisitPK, CreateSequenceChecksumTypeDescriptionForm form);
+    CommandResult<VoidResult> createSequenceChecksumTypeDescription(UserVisitPK userVisitPK, CreateSequenceChecksumTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Sequence Encoder Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceEncoderType(UserVisitPK userVisitPK, CreateSequenceEncoderTypeForm form);
+    CommandResult<VoidResult> createSequenceEncoderType(UserVisitPK userVisitPK, CreateSequenceEncoderTypeForm form);
 
     CommandResult<GetSequenceEncoderTypesResult> getSequenceEncoderTypes(UserVisitPK userVisitPK, GetSequenceEncoderTypesForm form);
 
@@ -94,7 +95,7 @@ public interface SequenceService
     //   Sequence Encoder Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceEncoderTypeDescription(UserVisitPK userVisitPK, CreateSequenceEncoderTypeDescriptionForm form);
+    CommandResult<VoidResult> createSequenceEncoderTypeDescription(UserVisitPK userVisitPK, CreateSequenceEncoderTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Sequences
@@ -106,31 +107,31 @@ public interface SequenceService
     
     CommandResult<GetSequenceResult> getSequence(UserVisitPK userVisitPK, GetSequenceForm form);
     
-    CommandResult<?> setDefaultSequence(UserVisitPK userVisitPK, SetDefaultSequenceForm form);
+    CommandResult<VoidResult> setDefaultSequence(UserVisitPK userVisitPK, SetDefaultSequenceForm form);
     
     CommandResult<GetSequenceChoicesResult> getSequenceChoices(UserVisitPK userVisitPK, GetSequenceChoicesForm form);
     
     CommandResult<EditSequenceResult> editSequence(UserVisitPK userVisitPK, EditSequenceForm form);
     
-    CommandResult<?> deleteSequence(UserVisitPK userVisitPK, DeleteSequenceForm form);
+    CommandResult<VoidResult> deleteSequence(UserVisitPK userVisitPK, DeleteSequenceForm form);
     
     // -------------------------------------------------------------------------
     //   Sequence Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceDescription(UserVisitPK userVisitPK, CreateSequenceDescriptionForm form);
+    CommandResult<VoidResult> createSequenceDescription(UserVisitPK userVisitPK, CreateSequenceDescriptionForm form);
     
     CommandResult<GetSequenceDescriptionsResult> getSequenceDescriptions(UserVisitPK userVisitPK, GetSequenceDescriptionsForm form);
     
     CommandResult<EditSequenceDescriptionResult> editSequenceDescription(UserVisitPK userVisitPK, EditSequenceDescriptionForm form);
     
-    CommandResult<?> deleteSequenceDescription(UserVisitPK userVisitPK, DeleteSequenceDescriptionForm form);
+    CommandResult<VoidResult> deleteSequenceDescription(UserVisitPK userVisitPK, DeleteSequenceDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //    Sequence Values
     // -------------------------------------------------------------------------
     
-    CommandResult<?> setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form);
+    CommandResult<VoidResult> setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form);
 
     CommandResult<GetSequenceValueResult> getSequenceValue(UserVisitPK userVisitPK, GetSequenceValueForm form);
 

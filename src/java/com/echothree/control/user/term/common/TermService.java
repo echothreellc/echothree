@@ -20,6 +20,7 @@ import com.echothree.control.user.term.common.form.*;
 import com.echothree.control.user.term.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface TermService
         extends TermForms {
@@ -34,7 +35,7 @@ public interface TermService
     //   Term Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form);
+    CommandResult<VoidResult> createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form);
     
     CommandResult<GetTermTypesResult> getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form);
     
@@ -46,7 +47,7 @@ public interface TermService
     //   Term Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form);
+    CommandResult<VoidResult> createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Terms
@@ -60,45 +61,45 @@ public interface TermService
     
     CommandResult<GetTermChoicesResult> getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form);
     
-    CommandResult<?> setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form);
+    CommandResult<VoidResult> setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form);
     
-    CommandResult<?> deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form);
+    CommandResult<VoidResult> deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form);
     
     // -------------------------------------------------------------------------
     //   Term Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form);
+    CommandResult<VoidResult> createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form);
     
     CommandResult<GetTermDescriptionsResult> getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form);
     
     CommandResult<EditTermDescriptionResult> editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form);
     
-    CommandResult<?> deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form);
+    CommandResult<VoidResult> deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Customer Type Credit Limits
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form);
+    CommandResult<VoidResult> createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form);
     
     CommandResult<EditCustomerTypeCreditLimitResult> editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form);
     
     CommandResult<GetCustomerTypeCreditLimitsResult> getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form);
     
-    CommandResult<?> deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form);
+    CommandResult<VoidResult> deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form);
     
     // -------------------------------------------------------------------------
     //   Party Credit Limits
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form);
+    CommandResult<VoidResult> createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form);
     
     CommandResult<EditPartyCreditLimitResult> editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form);
     
     CommandResult<GetPartyCreditLimitsResult> getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form);
     
-    CommandResult<?> deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form);
+    CommandResult<VoidResult> deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form);
     
     // -------------------------------------------------------------------------
     //   Party Terms

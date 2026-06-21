@@ -20,6 +20,7 @@ import com.echothree.control.user.job.common.form.*;
 import com.echothree.control.user.job.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface JobService
         extends JobForms {
@@ -34,7 +35,7 @@ public interface JobService
     //   Jobs
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createJob(UserVisitPK userVisitPK, CreateJobForm form);
+    CommandResult<VoidResult> createJob(UserVisitPK userVisitPK, CreateJobForm form);
     
     CommandResult<GetJobResult> getJob(UserVisitPK userVisitPK, GetJobForm form);
     
@@ -42,26 +43,26 @@ public interface JobService
     
     CommandResult<GetJobStatusChoicesResult> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form);
     
-    CommandResult<?> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form);
+    CommandResult<VoidResult> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form);
     
     CommandResult<EditJobResult> editJob(UserVisitPK userVisitPK, EditJobForm form);
     
-    CommandResult<?> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form);
+    CommandResult<VoidResult> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form);
     
-    CommandResult<?> startJob(UserVisitPK userVisitPK, StartJobForm form);
+    CommandResult<VoidResult> startJob(UserVisitPK userVisitPK, StartJobForm form);
     
-    CommandResult<?> endJob(UserVisitPK userVisitPK, EndJobForm form);
+    CommandResult<VoidResult> endJob(UserVisitPK userVisitPK, EndJobForm form);
     
     // --------------------------------------------------------------------------------
     //   Job Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form);
+    CommandResult<VoidResult> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form);
     
     CommandResult<GetJobDescriptionsResult> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form);
     
     CommandResult<EditJobDescriptionResult> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form);
     
-    CommandResult<?> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form);
+    CommandResult<VoidResult> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form);
     
 }

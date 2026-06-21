@@ -22,6 +22,7 @@ import com.echothree.control.user.selector.common.result.*;
 import com.echothree.control.user.selector.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class SelectorBean
     }
 
     @Override
-    public CommandResult<?> setDefaultSelectorKind(UserVisitPK userVisitPK, SetDefaultSelectorKindForm form) {
+    public CommandResult<VoidResult> setDefaultSelectorKind(UserVisitPK userVisitPK, SetDefaultSelectorKindForm form) {
         return CDI.current().select(SetDefaultSelectorKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class SelectorBean
     }
 
     @Override
-    public CommandResult<?> deleteSelectorKind(UserVisitPK userVisitPK, DeleteSelectorKindForm form) {
+    public CommandResult<VoidResult> deleteSelectorKind(UserVisitPK userVisitPK, DeleteSelectorKindForm form) {
         return CDI.current().select(DeleteSelectorKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSelectorKindDescription(UserVisitPK userVisitPK, CreateSelectorKindDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorKindDescription(UserVisitPK userVisitPK, CreateSelectorKindDescriptionForm form) {
         return CDI.current().select(CreateSelectorKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class SelectorBean
     }
 
     @Override
-    public CommandResult<?> deleteSelectorKindDescription(UserVisitPK userVisitPK, DeleteSelectorKindDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSelectorKindDescription(UserVisitPK userVisitPK, DeleteSelectorKindDescriptionForm form) {
         return CDI.current().select(DeleteSelectorKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -132,7 +133,7 @@ public class SelectorBean
     }
 
     @Override
-    public CommandResult<?> setDefaultSelectorType(UserVisitPK userVisitPK, SetDefaultSelectorTypeForm form) {
+    public CommandResult<VoidResult> setDefaultSelectorType(UserVisitPK userVisitPK, SetDefaultSelectorTypeForm form) {
         return CDI.current().select(SetDefaultSelectorTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -142,7 +143,7 @@ public class SelectorBean
     }
 
     @Override
-    public CommandResult<?> deleteSelectorType(UserVisitPK userVisitPK, DeleteSelectorTypeForm form) {
+    public CommandResult<VoidResult> deleteSelectorType(UserVisitPK userVisitPK, DeleteSelectorTypeForm form) {
         return CDI.current().select(DeleteSelectorTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -151,7 +152,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSelectorTypeDescription(UserVisitPK userVisitPK, CreateSelectorTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorTypeDescription(UserVisitPK userVisitPK, CreateSelectorTypeDescriptionForm form) {
         return CDI.current().select(CreateSelectorTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -171,7 +172,7 @@ public class SelectorBean
     }
 
     @Override
-    public CommandResult<?> deleteSelectorTypeDescription(UserVisitPK userVisitPK, DeleteSelectorTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSelectorTypeDescription(UserVisitPK userVisitPK, DeleteSelectorTypeDescriptionForm form) {
         return CDI.current().select(DeleteSelectorTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -180,7 +181,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorBooleanType(UserVisitPK userVisitPK, CreateSelectorBooleanTypeForm form) {
+    public CommandResult<VoidResult> createSelectorBooleanType(UserVisitPK userVisitPK, CreateSelectorBooleanTypeForm form) {
         return CDI.current().select(CreateSelectorBooleanTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -194,7 +195,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorBooleanTypeDescription(UserVisitPK userVisitPK, CreateSelectorBooleanTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorBooleanTypeDescription(UserVisitPK userVisitPK, CreateSelectorBooleanTypeDescriptionForm form) {
         return CDI.current().select(CreateSelectorBooleanTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -203,7 +204,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorComparisonType(UserVisitPK userVisitPK, CreateSelectorComparisonTypeForm form) {
+    public CommandResult<VoidResult> createSelectorComparisonType(UserVisitPK userVisitPK, CreateSelectorComparisonTypeForm form) {
         return CDI.current().select(CreateSelectorComparisonTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -217,7 +218,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorComparisonTypeDescription(UserVisitPK userVisitPK, CreateSelectorComparisonTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorComparisonTypeDescription(UserVisitPK userVisitPK, CreateSelectorComparisonTypeDescriptionForm form) {
         return CDI.current().select(CreateSelectorComparisonTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -226,7 +227,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorNodeType(UserVisitPK userVisitPK, CreateSelectorNodeTypeForm form) {
+    public CommandResult<VoidResult> createSelectorNodeType(UserVisitPK userVisitPK, CreateSelectorNodeTypeForm form) {
         return CDI.current().select(CreateSelectorNodeTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -245,7 +246,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorNodeTypeUse(UserVisitPK userVisitPK, CreateSelectorNodeTypeUseForm form) {
+    public CommandResult<VoidResult> createSelectorNodeTypeUse(UserVisitPK userVisitPK, CreateSelectorNodeTypeUseForm form) {
         return CDI.current().select(CreateSelectorNodeTypeUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -254,7 +255,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorNodeTypeDescription(UserVisitPK userVisitPK, CreateSelectorNodeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorNodeTypeDescription(UserVisitPK userVisitPK, CreateSelectorNodeTypeDescriptionForm form) {
         return CDI.current().select(CreateSelectorNodeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -263,7 +264,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorTextSearchType(UserVisitPK userVisitPK, CreateSelectorTextSearchTypeForm form) {
+    public CommandResult<VoidResult> createSelectorTextSearchType(UserVisitPK userVisitPK, CreateSelectorTextSearchTypeForm form) {
         return CDI.current().select(CreateSelectorTextSearchTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -277,7 +278,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorTextSearchTypeDescription(UserVisitPK userVisitPK, CreateSelectorTextSearchTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorTextSearchTypeDescription(UserVisitPK userVisitPK, CreateSelectorTextSearchTypeDescriptionForm form) {
         return CDI.current().select(CreateSelectorTextSearchTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -306,7 +307,7 @@ public class SelectorBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSelector(UserVisitPK userVisitPK, SetDefaultSelectorForm form) {
+    public CommandResult<VoidResult> setDefaultSelector(UserVisitPK userVisitPK, SetDefaultSelectorForm form) {
         return CDI.current().select(SetDefaultSelectorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -316,7 +317,7 @@ public class SelectorBean
     }
     
     @Override
-    public CommandResult<?> deleteSelector(UserVisitPK userVisitPK, DeleteSelectorForm form) {
+    public CommandResult<VoidResult> deleteSelector(UserVisitPK userVisitPK, DeleteSelectorForm form) {
         return CDI.current().select(DeleteSelectorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -325,7 +326,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorDescription(UserVisitPK userVisitPK, CreateSelectorDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorDescription(UserVisitPK userVisitPK, CreateSelectorDescriptionForm form) {
         return CDI.current().select(CreateSelectorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -340,7 +341,7 @@ public class SelectorBean
     }
     
     @Override
-    public CommandResult<?> deleteSelectorDescription(UserVisitPK userVisitPK, DeleteSelectorDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSelectorDescription(UserVisitPK userVisitPK, DeleteSelectorDescriptionForm form) {
         return CDI.current().select(DeleteSelectorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -349,7 +350,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorNode(UserVisitPK userVisitPK, CreateSelectorNodeForm form) {
+    public CommandResult<VoidResult> createSelectorNode(UserVisitPK userVisitPK, CreateSelectorNodeForm form) {
         return CDI.current().select(CreateSelectorNodeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -369,12 +370,12 @@ public class SelectorBean
     }
     
     @Override
-    public CommandResult<?> setRootSelectorNode(UserVisitPK userVisitPK, SetRootSelectorNodeForm form) {
+    public CommandResult<VoidResult> setRootSelectorNode(UserVisitPK userVisitPK, SetRootSelectorNodeForm form) {
         return CDI.current().select(SetRootSelectorNodeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> deleteSelectorNode(UserVisitPK userVisitPK, DeleteSelectorNodeForm form) {
+    public CommandResult<VoidResult> deleteSelectorNode(UserVisitPK userVisitPK, DeleteSelectorNodeForm form) {
         return CDI.current().select(DeleteSelectorNodeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -383,7 +384,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelectorNodeDescription(UserVisitPK userVisitPK, CreateSelectorNodeDescriptionForm form) {
+    public CommandResult<VoidResult> createSelectorNodeDescription(UserVisitPK userVisitPK, CreateSelectorNodeDescriptionForm form) {
         return CDI.current().select(CreateSelectorNodeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -398,7 +399,7 @@ public class SelectorBean
     }
     
     @Override
-    public CommandResult<?> deleteSelectorNodeDescription(UserVisitPK userVisitPK, DeleteSelectorNodeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSelectorNodeDescription(UserVisitPK userVisitPK, DeleteSelectorNodeDescriptionForm form) {
         return CDI.current().select(DeleteSelectorNodeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

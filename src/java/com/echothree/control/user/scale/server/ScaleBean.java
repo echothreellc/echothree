@@ -22,6 +22,7 @@ import com.echothree.control.user.scale.common.result.*;
 import com.echothree.control.user.scale.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form) {
+    public CommandResult<VoidResult> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form) {
         return CDI.current().select(CreateScaleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -64,7 +65,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> setDefaultScaleType(UserVisitPK userVisitPK, SetDefaultScaleTypeForm form) {
+    public CommandResult<VoidResult> setDefaultScaleType(UserVisitPK userVisitPK, SetDefaultScaleTypeForm form) {
         return CDI.current().select(SetDefaultScaleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> deleteScaleType(UserVisitPK userVisitPK, DeleteScaleTypeForm form) {
+    public CommandResult<VoidResult> deleteScaleType(UserVisitPK userVisitPK, DeleteScaleTypeForm form) {
         return CDI.current().select(DeleteScaleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createScaleTypeDescription(UserVisitPK userVisitPK, CreateScaleTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createScaleTypeDescription(UserVisitPK userVisitPK, CreateScaleTypeDescriptionForm form) {
         return CDI.current().select(CreateScaleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> deleteScaleTypeDescription(UserVisitPK userVisitPK, DeleteScaleTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteScaleTypeDescription(UserVisitPK userVisitPK, DeleteScaleTypeDescriptionForm form) {
         return CDI.current().select(DeleteScaleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +113,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createScale(UserVisitPK userVisitPK, CreateScaleForm form) {
+    public CommandResult<VoidResult> createScale(UserVisitPK userVisitPK, CreateScaleForm form) {
         return CDI.current().select(CreateScaleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -132,7 +133,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> setDefaultScale(UserVisitPK userVisitPK, SetDefaultScaleForm form) {
+    public CommandResult<VoidResult> setDefaultScale(UserVisitPK userVisitPK, SetDefaultScaleForm form) {
         return CDI.current().select(SetDefaultScaleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -142,7 +143,7 @@ public class ScaleBean
     }
     
     @Override
-    public CommandResult<?> deleteScale(UserVisitPK userVisitPK, DeleteScaleForm form) {
+    public CommandResult<VoidResult> deleteScale(UserVisitPK userVisitPK, DeleteScaleForm form) {
         return CDI.current().select(DeleteScaleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -151,7 +152,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createScaleDescription(UserVisitPK userVisitPK, CreateScaleDescriptionForm form) {
+    public CommandResult<VoidResult> createScaleDescription(UserVisitPK userVisitPK, CreateScaleDescriptionForm form) {
         return CDI.current().select(CreateScaleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -171,7 +172,7 @@ public class ScaleBean
     }
     
     @Override
-    public CommandResult<?> deleteScaleDescription(UserVisitPK userVisitPK, DeleteScaleDescriptionForm form) {
+    public CommandResult<VoidResult> deleteScaleDescription(UserVisitPK userVisitPK, DeleteScaleDescriptionForm form) {
         return CDI.current().select(DeleteScaleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -180,7 +181,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form) {
+    public CommandResult<VoidResult> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form) {
         return CDI.current().select(CreateScaleUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -200,7 +201,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> setDefaultScaleUseType(UserVisitPK userVisitPK, SetDefaultScaleUseTypeForm form) {
+    public CommandResult<VoidResult> setDefaultScaleUseType(UserVisitPK userVisitPK, SetDefaultScaleUseTypeForm form) {
         return CDI.current().select(SetDefaultScaleUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -210,7 +211,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> deleteScaleUseType(UserVisitPK userVisitPK, DeleteScaleUseTypeForm form) {
+    public CommandResult<VoidResult> deleteScaleUseType(UserVisitPK userVisitPK, DeleteScaleUseTypeForm form) {
         return CDI.current().select(DeleteScaleUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -219,7 +220,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createScaleUseTypeDescription(UserVisitPK userVisitPK, CreateScaleUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createScaleUseTypeDescription(UserVisitPK userVisitPK, CreateScaleUseTypeDescriptionForm form) {
         return CDI.current().select(CreateScaleUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -239,7 +240,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> deleteScaleUseTypeDescription(UserVisitPK userVisitPK, DeleteScaleUseTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteScaleUseTypeDescription(UserVisitPK userVisitPK, DeleteScaleUseTypeDescriptionForm form) {
         return CDI.current().select(DeleteScaleUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -248,7 +249,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyScaleUse(UserVisitPK userVisitPK, CreatePartyScaleUseForm form) {
+    public CommandResult<VoidResult> createPartyScaleUse(UserVisitPK userVisitPK, CreatePartyScaleUseForm form) {
         return CDI.current().select(CreatePartyScaleUseCommand.class).get().run(userVisitPK, form);
     }
 
@@ -268,7 +269,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> deletePartyScaleUse(UserVisitPK userVisitPK, DeletePartyScaleUseForm form) {
+    public CommandResult<VoidResult> deletePartyScaleUse(UserVisitPK userVisitPK, DeletePartyScaleUseForm form) {
         return CDI.current().select(DeletePartyScaleUseCommand.class).get().run(userVisitPK, form);
     }
 

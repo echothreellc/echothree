@@ -20,6 +20,7 @@ import com.echothree.control.user.scale.common.form.*;
 import com.echothree.control.user.scale.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface ScaleService
         extends ScaleForms {
@@ -34,7 +35,7 @@ public interface ScaleService
     //   Scale Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form);
+    CommandResult<VoidResult> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form);
 
     CommandResult<GetScaleTypeChoicesResult> getScaleTypeChoices(UserVisitPK userVisitPK, GetScaleTypeChoicesForm form);
 
@@ -42,17 +43,17 @@ public interface ScaleService
 
     CommandResult<GetScaleTypesResult> getScaleTypes(UserVisitPK userVisitPK, GetScaleTypesForm form);
 
-    CommandResult<?> setDefaultScaleType(UserVisitPK userVisitPK, SetDefaultScaleTypeForm form);
+    CommandResult<VoidResult> setDefaultScaleType(UserVisitPK userVisitPK, SetDefaultScaleTypeForm form);
 
     CommandResult<EditScaleTypeResult> editScaleType(UserVisitPK userVisitPK, EditScaleTypeForm form);
 
-    CommandResult<?> deleteScaleType(UserVisitPK userVisitPK, DeleteScaleTypeForm form);
+    CommandResult<VoidResult> deleteScaleType(UserVisitPK userVisitPK, DeleteScaleTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Scale Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createScaleTypeDescription(UserVisitPK userVisitPK, CreateScaleTypeDescriptionForm form);
+    CommandResult<VoidResult> createScaleTypeDescription(UserVisitPK userVisitPK, CreateScaleTypeDescriptionForm form);
 
     CommandResult<GetScaleTypeDescriptionResult> getScaleTypeDescription(UserVisitPK userVisitPK, GetScaleTypeDescriptionForm form);
 
@@ -60,13 +61,13 @@ public interface ScaleService
 
     CommandResult<EditScaleTypeDescriptionResult> editScaleTypeDescription(UserVisitPK userVisitPK, EditScaleTypeDescriptionForm form);
 
-    CommandResult<?> deleteScaleTypeDescription(UserVisitPK userVisitPK, DeleteScaleTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteScaleTypeDescription(UserVisitPK userVisitPK, DeleteScaleTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Scales
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createScale(UserVisitPK userVisitPK, CreateScaleForm form);
+    CommandResult<VoidResult> createScale(UserVisitPK userVisitPK, CreateScaleForm form);
     
     CommandResult<GetScaleChoicesResult> getScaleChoices(UserVisitPK userVisitPK, GetScaleChoicesForm form);
 
@@ -74,17 +75,17 @@ public interface ScaleService
 
     CommandResult<GetScalesResult> getScales(UserVisitPK userVisitPK, GetScalesForm form);
     
-    CommandResult<?> setDefaultScale(UserVisitPK userVisitPK, SetDefaultScaleForm form);
+    CommandResult<VoidResult> setDefaultScale(UserVisitPK userVisitPK, SetDefaultScaleForm form);
     
     CommandResult<EditScaleResult> editScale(UserVisitPK userVisitPK, EditScaleForm form);
     
-    CommandResult<?> deleteScale(UserVisitPK userVisitPK, DeleteScaleForm form);
+    CommandResult<VoidResult> deleteScale(UserVisitPK userVisitPK, DeleteScaleForm form);
     
     // -------------------------------------------------------------------------
     //   Scale Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createScaleDescription(UserVisitPK userVisitPK, CreateScaleDescriptionForm form);
+    CommandResult<VoidResult> createScaleDescription(UserVisitPK userVisitPK, CreateScaleDescriptionForm form);
     
     CommandResult<GetScaleDescriptionResult> getScaleDescription(UserVisitPK userVisitPK, GetScaleDescriptionForm form);
 
@@ -92,13 +93,13 @@ public interface ScaleService
 
     CommandResult<EditScaleDescriptionResult> editScaleDescription(UserVisitPK userVisitPK, EditScaleDescriptionForm form);
     
-    CommandResult<?> deleteScaleDescription(UserVisitPK userVisitPK, DeleteScaleDescriptionForm form);
+    CommandResult<VoidResult> deleteScaleDescription(UserVisitPK userVisitPK, DeleteScaleDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Scale Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form);
+    CommandResult<VoidResult> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form);
 
     CommandResult<GetScaleUseTypeChoicesResult> getScaleUseTypeChoices(UserVisitPK userVisitPK, GetScaleUseTypeChoicesForm form);
 
@@ -106,17 +107,17 @@ public interface ScaleService
 
     CommandResult<GetScaleUseTypesResult> getScaleUseTypes(UserVisitPK userVisitPK, GetScaleUseTypesForm form);
 
-    CommandResult<?> setDefaultScaleUseType(UserVisitPK userVisitPK, SetDefaultScaleUseTypeForm form);
+    CommandResult<VoidResult> setDefaultScaleUseType(UserVisitPK userVisitPK, SetDefaultScaleUseTypeForm form);
 
     CommandResult<EditScaleUseTypeResult> editScaleUseType(UserVisitPK userVisitPK, EditScaleUseTypeForm form);
 
-    CommandResult<?> deleteScaleUseType(UserVisitPK userVisitPK, DeleteScaleUseTypeForm form);
+    CommandResult<VoidResult> deleteScaleUseType(UserVisitPK userVisitPK, DeleteScaleUseTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Scale Use Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createScaleUseTypeDescription(UserVisitPK userVisitPK, CreateScaleUseTypeDescriptionForm form);
+    CommandResult<VoidResult> createScaleUseTypeDescription(UserVisitPK userVisitPK, CreateScaleUseTypeDescriptionForm form);
 
     CommandResult<GetScaleUseTypeDescriptionResult> getScaleUseTypeDescription(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionForm form);
 
@@ -124,13 +125,13 @@ public interface ScaleService
 
     CommandResult<EditScaleUseTypeDescriptionResult> editScaleUseTypeDescription(UserVisitPK userVisitPK, EditScaleUseTypeDescriptionForm form);
 
-    CommandResult<?> deleteScaleUseTypeDescription(UserVisitPK userVisitPK, DeleteScaleUseTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteScaleUseTypeDescription(UserVisitPK userVisitPK, DeleteScaleUseTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Party Scale Uses
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPartyScaleUse(UserVisitPK userVisitPK, CreatePartyScaleUseForm form);
+    CommandResult<VoidResult> createPartyScaleUse(UserVisitPK userVisitPK, CreatePartyScaleUseForm form);
 
     CommandResult<GetPartyScaleUseResult> getPartyScaleUse(UserVisitPK userVisitPK, GetPartyScaleUseForm form);
 
@@ -138,6 +139,6 @@ public interface ScaleService
 
     CommandResult<EditPartyScaleUseResult> editPartyScaleUse(UserVisitPK userVisitPK, EditPartyScaleUseForm form);
 
-    CommandResult<?> deletePartyScaleUse(UserVisitPK userVisitPK, DeletePartyScaleUseForm form);
+    CommandResult<VoidResult> deletePartyScaleUse(UserVisitPK userVisitPK, DeletePartyScaleUseForm form);
 
 }

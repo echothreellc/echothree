@@ -22,6 +22,7 @@ import com.echothree.control.user.chain.common.result.*;
 import com.echothree.control.user.chain.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form) {
+    public CommandResult<VoidResult> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form) {
         return CDI.current().select(CreateChainActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -64,7 +65,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> setDefaultChainActionType(UserVisitPK userVisitPK, SetDefaultChainActionTypeForm form) {
+    public CommandResult<VoidResult> setDefaultChainActionType(UserVisitPK userVisitPK, SetDefaultChainActionTypeForm form) {
         return CDI.current().select(SetDefaultChainActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainActionType(UserVisitPK userVisitPK, DeleteChainActionTypeForm form) {
+    public CommandResult<VoidResult> deleteChainActionType(UserVisitPK userVisitPK, DeleteChainActionTypeForm form) {
         return CDI.current().select(DeleteChainActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainActionTypeDescription(UserVisitPK userVisitPK, CreateChainActionTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createChainActionTypeDescription(UserVisitPK userVisitPK, CreateChainActionTypeDescriptionForm form) {
         return CDI.current().select(CreateChainActionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainActionTypeDescription(UserVisitPK userVisitPK, DeleteChainActionTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainActionTypeDescription(UserVisitPK userVisitPK, DeleteChainActionTypeDescriptionForm form) {
         return CDI.current().select(DeleteChainActionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +113,7 @@ public class ChainBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createChainActionTypeUse(UserVisitPK userVisitPK, CreateChainActionTypeUseForm form) {
+    public CommandResult<VoidResult> createChainActionTypeUse(UserVisitPK userVisitPK, CreateChainActionTypeUseForm form) {
         return CDI.current().select(CreateChainActionTypeUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -121,7 +122,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form) {
+    public CommandResult<VoidResult> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form) {
         return CDI.current().select(CreateChainKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -141,7 +142,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> setDefaultChainKind(UserVisitPK userVisitPK, SetDefaultChainKindForm form) {
+    public CommandResult<VoidResult> setDefaultChainKind(UserVisitPK userVisitPK, SetDefaultChainKindForm form) {
         return CDI.current().select(SetDefaultChainKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -151,7 +152,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainKind(UserVisitPK userVisitPK, DeleteChainKindForm form) {
+    public CommandResult<VoidResult> deleteChainKind(UserVisitPK userVisitPK, DeleteChainKindForm form) {
         return CDI.current().select(DeleteChainKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -160,7 +161,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainKindDescription(UserVisitPK userVisitPK, CreateChainKindDescriptionForm form) {
+    public CommandResult<VoidResult> createChainKindDescription(UserVisitPK userVisitPK, CreateChainKindDescriptionForm form) {
         return CDI.current().select(CreateChainKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -180,7 +181,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainKindDescription(UserVisitPK userVisitPK, DeleteChainKindDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainKindDescription(UserVisitPK userVisitPK, DeleteChainKindDescriptionForm form) {
         return CDI.current().select(DeleteChainKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -189,7 +190,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form) {
+    public CommandResult<VoidResult> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form) {
         return CDI.current().select(CreateChainTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -209,7 +210,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> setDefaultChainType(UserVisitPK userVisitPK, SetDefaultChainTypeForm form) {
+    public CommandResult<VoidResult> setDefaultChainType(UserVisitPK userVisitPK, SetDefaultChainTypeForm form) {
         return CDI.current().select(SetDefaultChainTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -219,7 +220,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainType(UserVisitPK userVisitPK, DeleteChainTypeForm form) {
+    public CommandResult<VoidResult> deleteChainType(UserVisitPK userVisitPK, DeleteChainTypeForm form) {
         return CDI.current().select(DeleteChainTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -228,7 +229,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainTypeDescription(UserVisitPK userVisitPK, CreateChainTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createChainTypeDescription(UserVisitPK userVisitPK, CreateChainTypeDescriptionForm form) {
         return CDI.current().select(CreateChainTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -248,7 +249,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainTypeDescription(UserVisitPK userVisitPK, DeleteChainTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainTypeDescription(UserVisitPK userVisitPK, DeleteChainTypeDescriptionForm form) {
         return CDI.current().select(DeleteChainTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -257,7 +258,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form) {
+    public CommandResult<VoidResult> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form) {
         return CDI.current().select(CreateChainEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -277,7 +278,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainEntityRoleType(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeForm form) {
+    public CommandResult<VoidResult> deleteChainEntityRoleType(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeForm form) {
         return CDI.current().select(DeleteChainEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -286,7 +287,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateChainEntityRoleTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createChainEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateChainEntityRoleTypeDescriptionForm form) {
         return CDI.current().select(CreateChainEntityRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -306,7 +307,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeDescriptionForm form) {
         return CDI.current().select(DeleteChainEntityRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -315,7 +316,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChain(UserVisitPK userVisitPK, CreateChainForm form) {
+    public CommandResult<VoidResult> createChain(UserVisitPK userVisitPK, CreateChainForm form) {
         return CDI.current().select(CreateChainCommand.class).get().run(userVisitPK, form);
     }
 
@@ -335,7 +336,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> setDefaultChain(UserVisitPK userVisitPK, SetDefaultChainForm form) {
+    public CommandResult<VoidResult> setDefaultChain(UserVisitPK userVisitPK, SetDefaultChainForm form) {
         return CDI.current().select(SetDefaultChainCommand.class).get().run(userVisitPK, form);
     }
 
@@ -345,7 +346,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChain(UserVisitPK userVisitPK, DeleteChainForm form) {
+    public CommandResult<VoidResult> deleteChain(UserVisitPK userVisitPK, DeleteChainForm form) {
         return CDI.current().select(DeleteChainCommand.class).get().run(userVisitPK, form);
     }
 
@@ -354,7 +355,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainDescription(UserVisitPK userVisitPK, CreateChainDescriptionForm form) {
+    public CommandResult<VoidResult> createChainDescription(UserVisitPK userVisitPK, CreateChainDescriptionForm form) {
         return CDI.current().select(CreateChainDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -374,7 +375,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainDescription(UserVisitPK userVisitPK, DeleteChainDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainDescription(UserVisitPK userVisitPK, DeleteChainDescriptionForm form) {
         return CDI.current().select(DeleteChainDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -383,7 +384,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form) {
+    public CommandResult<VoidResult> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form) {
         return CDI.current().select(CreateChainActionSetCommand.class).get().run(userVisitPK, form);
     }
 
@@ -403,7 +404,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> setDefaultChainActionSet(UserVisitPK userVisitPK, SetDefaultChainActionSetForm form) {
+    public CommandResult<VoidResult> setDefaultChainActionSet(UserVisitPK userVisitPK, SetDefaultChainActionSetForm form) {
         return CDI.current().select(SetDefaultChainActionSetCommand.class).get().run(userVisitPK, form);
     }
 
@@ -413,7 +414,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainActionSet(UserVisitPK userVisitPK, DeleteChainActionSetForm form) {
+    public CommandResult<VoidResult> deleteChainActionSet(UserVisitPK userVisitPK, DeleteChainActionSetForm form) {
         return CDI.current().select(DeleteChainActionSetCommand.class).get().run(userVisitPK, form);
     }
 
@@ -422,7 +423,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainActionSetDescription(UserVisitPK userVisitPK, CreateChainActionSetDescriptionForm form) {
+    public CommandResult<VoidResult> createChainActionSetDescription(UserVisitPK userVisitPK, CreateChainActionSetDescriptionForm form) {
         return CDI.current().select(CreateChainActionSetDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -442,7 +443,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainActionSetDescription(UserVisitPK userVisitPK, DeleteChainActionSetDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainActionSetDescription(UserVisitPK userVisitPK, DeleteChainActionSetDescriptionForm form) {
         return CDI.current().select(DeleteChainActionSetDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -451,7 +452,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form) {
+    public CommandResult<VoidResult> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form) {
         return CDI.current().select(CreateChainActionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -471,7 +472,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainAction(UserVisitPK userVisitPK, DeleteChainActionForm form) {
+    public CommandResult<VoidResult> deleteChainAction(UserVisitPK userVisitPK, DeleteChainActionForm form) {
         return CDI.current().select(DeleteChainActionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -480,7 +481,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createChainActionDescription(UserVisitPK userVisitPK, CreateChainActionDescriptionForm form) {
+    public CommandResult<VoidResult> createChainActionDescription(UserVisitPK userVisitPK, CreateChainActionDescriptionForm form) {
         return CDI.current().select(CreateChainActionDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -500,7 +501,7 @@ public class ChainBean
     }
 
     @Override
-    public CommandResult<?> deleteChainActionDescription(UserVisitPK userVisitPK, DeleteChainActionDescriptionForm form) {
+    public CommandResult<VoidResult> deleteChainActionDescription(UserVisitPK userVisitPK, DeleteChainActionDescriptionForm form) {
         return CDI.current().select(DeleteChainActionDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -523,7 +524,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> processChainInstanceStatuses(UserVisitPK userVisitPK) {
+    public CommandResult<VoidResult> processChainInstanceStatuses(UserVisitPK userVisitPK) {
         return CDI.current().select(ProcessChainInstanceStatusesCommand.class).get().run(userVisitPK);
     }
     

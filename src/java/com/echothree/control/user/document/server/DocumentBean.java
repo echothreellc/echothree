@@ -22,6 +22,7 @@ import com.echothree.control.user.document.common.result.*;
 import com.echothree.control.user.document.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
+    public CommandResult<VoidResult> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
         return CDI.current().select(CreateDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -64,7 +65,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> setDefaultDocumentType(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form) {
+    public CommandResult<VoidResult> setDefaultDocumentType(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form) {
         return CDI.current().select(SetDefaultDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deleteDocumentType(UserVisitPK userVisitPK, DeleteDocumentTypeForm form) {
+    public CommandResult<VoidResult> deleteDocumentType(UserVisitPK userVisitPK, DeleteDocumentTypeForm form) {
         return CDI.current().select(DeleteDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createDocumentTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createDocumentTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeDescriptionForm form) {
         return CDI.current().select(CreateDocumentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deleteDocumentTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteDocumentTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeDescriptionForm form) {
         return CDI.current().select(DeleteDocumentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +113,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
+    public CommandResult<VoidResult> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
         return CDI.current().select(CreateDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -132,7 +133,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> setDefaultDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageTypeForm form) {
+    public CommandResult<VoidResult> setDefaultDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageTypeForm form) {
         return CDI.current().select(SetDefaultDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -142,7 +143,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deleteDocumentTypeUsageType(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeForm form) {
+    public CommandResult<VoidResult> deleteDocumentTypeUsageType(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeForm form) {
         return CDI.current().select(DeleteDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -151,7 +152,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeDescriptionForm form) {
         return CDI.current().select(CreateDocumentTypeUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -171,7 +172,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deleteDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form) {
         return CDI.current().select(DeleteDocumentTypeUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -180,7 +181,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createDocumentTypeUsage(UserVisitPK userVisitPK, CreateDocumentTypeUsageForm form) {
+    public CommandResult<VoidResult> createDocumentTypeUsage(UserVisitPK userVisitPK, CreateDocumentTypeUsageForm form) {
         return CDI.current().select(CreateDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -195,7 +196,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> setDefaultDocumentTypeUsage(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageForm form) {
+    public CommandResult<VoidResult> setDefaultDocumentTypeUsage(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageForm form) {
         return CDI.current().select(SetDefaultDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -205,7 +206,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deleteDocumentTypeUsage(UserVisitPK userVisitPK, DeleteDocumentTypeUsageForm form) {
+    public CommandResult<VoidResult> deleteDocumentTypeUsage(UserVisitPK userVisitPK, DeleteDocumentTypeUsageForm form) {
         return CDI.current().select(DeleteDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -214,7 +215,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<VoidResult> createPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(CreatePartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -229,7 +230,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<VoidResult> setDefaultPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(SetDefaultPartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -239,7 +240,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deletePartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<VoidResult> deletePartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(DeletePartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -263,7 +264,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> setDefaultPartyDocument(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form) {
+    public CommandResult<VoidResult> setDefaultPartyDocument(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form) {
         return CDI.current().select(SetDefaultPartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -273,7 +274,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deletePartyDocument(UserVisitPK userVisitPK, DeletePartyDocumentForm form) {
+    public CommandResult<VoidResult> deletePartyDocument(UserVisitPK userVisitPK, DeletePartyDocumentForm form) {
         return CDI.current().select(DeletePartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -282,7 +283,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createDocumentDescription(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form) {
+    public CommandResult<VoidResult> createDocumentDescription(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form) {
         return CDI.current().select(CreateDocumentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -302,7 +303,7 @@ public class DocumentBean
     }
 
     @Override
-    public CommandResult<?> deleteDocumentDescription(UserVisitPK userVisitPK, DeleteDocumentDescriptionForm form) {
+    public CommandResult<VoidResult> deleteDocumentDescription(UserVisitPK userVisitPK, DeleteDocumentDescriptionForm form) {
         return CDI.current().select(DeleteDocumentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 

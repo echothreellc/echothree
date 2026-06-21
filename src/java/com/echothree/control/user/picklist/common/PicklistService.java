@@ -20,6 +20,7 @@ import com.echothree.control.user.picklist.common.form.*;
 import com.echothree.control.user.picklist.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface PicklistService
         extends PicklistForms {
@@ -34,7 +35,7 @@ public interface PicklistService
     //   Picklist Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form);
+    CommandResult<VoidResult> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form);
 
     CommandResult<GetPicklistTypeChoicesResult> getPicklistTypeChoices(UserVisitPK userVisitPK, GetPicklistTypeChoicesForm form);
 
@@ -42,17 +43,17 @@ public interface PicklistService
 
     CommandResult<GetPicklistTypesResult> getPicklistTypes(UserVisitPK userVisitPK, GetPicklistTypesForm form);
 
-    CommandResult<?> setDefaultPicklistType(UserVisitPK userVisitPK, SetDefaultPicklistTypeForm form);
+    CommandResult<VoidResult> setDefaultPicklistType(UserVisitPK userVisitPK, SetDefaultPicklistTypeForm form);
 
     CommandResult<EditPicklistTypeResult> editPicklistType(UserVisitPK userVisitPK, EditPicklistTypeForm form);
 
-    CommandResult<?> deletePicklistType(UserVisitPK userVisitPK, DeletePicklistTypeForm form);
+    CommandResult<VoidResult> deletePicklistType(UserVisitPK userVisitPK, DeletePicklistTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Picklist Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistTypeDescription(UserVisitPK userVisitPK, CreatePicklistTypeDescriptionForm form);
+    CommandResult<VoidResult> createPicklistTypeDescription(UserVisitPK userVisitPK, CreatePicklistTypeDescriptionForm form);
 
     CommandResult<GetPicklistTypeDescriptionResult> getPicklistTypeDescription(UserVisitPK userVisitPK, GetPicklistTypeDescriptionForm form);
 
@@ -60,13 +61,13 @@ public interface PicklistService
 
     CommandResult<EditPicklistTypeDescriptionResult> editPicklistTypeDescription(UserVisitPK userVisitPK, EditPicklistTypeDescriptionForm form);
 
-    CommandResult<?> deletePicklistTypeDescription(UserVisitPK userVisitPK, DeletePicklistTypeDescriptionForm form);
+    CommandResult<VoidResult> deletePicklistTypeDescription(UserVisitPK userVisitPK, DeletePicklistTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Picklist Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form);
+    CommandResult<VoidResult> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form);
 
     CommandResult<GetPicklistTimeTypeChoicesResult> getPicklistTimeTypeChoices(UserVisitPK userVisitPK, GetPicklistTimeTypeChoicesForm form);
 
@@ -74,17 +75,17 @@ public interface PicklistService
 
     CommandResult<GetPicklistTimeTypesResult> getPicklistTimeTypes(UserVisitPK userVisitPK, GetPicklistTimeTypesForm form);
 
-    CommandResult<?> setDefaultPicklistTimeType(UserVisitPK userVisitPK, SetDefaultPicklistTimeTypeForm form);
+    CommandResult<VoidResult> setDefaultPicklistTimeType(UserVisitPK userVisitPK, SetDefaultPicklistTimeTypeForm form);
 
     CommandResult<EditPicklistTimeTypeResult> editPicklistTimeType(UserVisitPK userVisitPK, EditPicklistTimeTypeForm form);
 
-    CommandResult<?> deletePicklistTimeType(UserVisitPK userVisitPK, DeletePicklistTimeTypeForm form);
+    CommandResult<VoidResult> deletePicklistTimeType(UserVisitPK userVisitPK, DeletePicklistTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Picklist Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistTimeTypeDescription(UserVisitPK userVisitPK, CreatePicklistTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> createPicklistTimeTypeDescription(UserVisitPK userVisitPK, CreatePicklistTimeTypeDescriptionForm form);
 
     CommandResult<GetPicklistTimeTypeDescriptionResult> getPicklistTimeTypeDescription(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionForm form);
 
@@ -92,13 +93,13 @@ public interface PicklistService
 
     CommandResult<EditPicklistTimeTypeDescriptionResult> editPicklistTimeTypeDescription(UserVisitPK userVisitPK, EditPicklistTimeTypeDescriptionForm form);
 
-    CommandResult<?> deletePicklistTimeTypeDescription(UserVisitPK userVisitPK, DeletePicklistTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> deletePicklistTimeTypeDescription(UserVisitPK userVisitPK, DeletePicklistTimeTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Picklist Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form);
+    CommandResult<VoidResult> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form);
 
     CommandResult<GetPicklistAliasTypeChoicesResult> getPicklistAliasTypeChoices(UserVisitPK userVisitPK, GetPicklistAliasTypeChoicesForm form);
 
@@ -106,17 +107,17 @@ public interface PicklistService
 
     CommandResult<GetPicklistAliasTypesResult> getPicklistAliasTypes(UserVisitPK userVisitPK, GetPicklistAliasTypesForm form);
 
-    CommandResult<?> setDefaultPicklistAliasType(UserVisitPK userVisitPK, SetDefaultPicklistAliasTypeForm form);
+    CommandResult<VoidResult> setDefaultPicklistAliasType(UserVisitPK userVisitPK, SetDefaultPicklistAliasTypeForm form);
 
     CommandResult<EditPicklistAliasTypeResult> editPicklistAliasType(UserVisitPK userVisitPK, EditPicklistAliasTypeForm form);
 
-    CommandResult<?> deletePicklistAliasType(UserVisitPK userVisitPK, DeletePicklistAliasTypeForm form);
+    CommandResult<VoidResult> deletePicklistAliasType(UserVisitPK userVisitPK, DeletePicklistAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Picklist Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistAliasTypeDescription(UserVisitPK userVisitPK, CreatePicklistAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> createPicklistAliasTypeDescription(UserVisitPK userVisitPK, CreatePicklistAliasTypeDescriptionForm form);
 
     CommandResult<GetPicklistAliasTypeDescriptionResult> getPicklistAliasTypeDescription(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionForm form);
 
@@ -124,13 +125,13 @@ public interface PicklistService
 
     CommandResult<EditPicklistAliasTypeDescriptionResult> editPicklistAliasTypeDescription(UserVisitPK userVisitPK, EditPicklistAliasTypeDescriptionForm form);
 
-    CommandResult<?> deletePicklistAliasTypeDescription(UserVisitPK userVisitPK, DeletePicklistAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> deletePicklistAliasTypeDescription(UserVisitPK userVisitPK, DeletePicklistAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Picklist Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPicklistAlias(UserVisitPK userVisitPK, CreatePicklistAliasForm form);
+    CommandResult<VoidResult> createPicklistAlias(UserVisitPK userVisitPK, CreatePicklistAliasForm form);
 
     CommandResult<GetPicklistAliasResult> getPicklistAlias(UserVisitPK userVisitPK, GetPicklistAliasForm form);
 
@@ -138,6 +139,6 @@ public interface PicklistService
 
     CommandResult<EditPicklistAliasResult> editPicklistAlias(UserVisitPK userVisitPK, EditPicklistAliasForm form);
 
-    CommandResult<?> deletePicklistAlias(UserVisitPK userVisitPK, DeletePicklistAliasForm form);
+    CommandResult<VoidResult> deletePicklistAlias(UserVisitPK userVisitPK, DeletePicklistAliasForm form);
 
 }

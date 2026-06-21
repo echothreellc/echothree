@@ -20,6 +20,7 @@ import com.echothree.control.user.order.common.form.*;
 import com.echothree.control.user.order.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface OrderService
         extends OrderForms {
@@ -34,13 +35,13 @@ public interface OrderService
     //   Order Role Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOrderRoleType(UserVisitPK userVisitPK, CreateOrderRoleTypeForm form);
+    CommandResult<VoidResult> createOrderRoleType(UserVisitPK userVisitPK, CreateOrderRoleTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Order Role Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOrderRoleTypeDescription(UserVisitPK userVisitPK, CreateOrderRoleTypeDescriptionForm form);
+    CommandResult<VoidResult> createOrderRoleTypeDescription(UserVisitPK userVisitPK, CreateOrderRoleTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Order Types
@@ -54,17 +55,17 @@ public interface OrderService
 
     CommandResult<GetOrderTypesResult> getOrderTypes(UserVisitPK userVisitPK, GetOrderTypesForm form);
 
-    CommandResult<?> setDefaultOrderType(UserVisitPK userVisitPK, SetDefaultOrderTypeForm form);
+    CommandResult<VoidResult> setDefaultOrderType(UserVisitPK userVisitPK, SetDefaultOrderTypeForm form);
 
     CommandResult<EditOrderTypeResult> editOrderType(UserVisitPK userVisitPK, EditOrderTypeForm form);
 
-    CommandResult<?> deleteOrderType(UserVisitPK userVisitPK, DeleteOrderTypeForm form);
+    CommandResult<VoidResult> deleteOrderType(UserVisitPK userVisitPK, DeleteOrderTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderTypeDescription(UserVisitPK userVisitPK, CreateOrderTypeDescriptionForm form);
+    CommandResult<VoidResult> createOrderTypeDescription(UserVisitPK userVisitPK, CreateOrderTypeDescriptionForm form);
 
     CommandResult<GetOrderTypeDescriptionResult> getOrderTypeDescription(UserVisitPK userVisitPK, GetOrderTypeDescriptionForm form);
 
@@ -72,7 +73,7 @@ public interface OrderService
 
     CommandResult<EditOrderTypeDescriptionResult> editOrderTypeDescription(UserVisitPK userVisitPK, EditOrderTypeDescriptionForm form);
 
-    CommandResult<?> deleteOrderTypeDescription(UserVisitPK userVisitPK, DeleteOrderTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteOrderTypeDescription(UserVisitPK userVisitPK, DeleteOrderTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Time Types
@@ -86,17 +87,17 @@ public interface OrderService
 
     CommandResult<GetOrderTimeTypesResult> getOrderTimeTypes(UserVisitPK userVisitPK, GetOrderTimeTypesForm form);
 
-    CommandResult<?> setDefaultOrderTimeType(UserVisitPK userVisitPK, SetDefaultOrderTimeTypeForm form);
+    CommandResult<VoidResult> setDefaultOrderTimeType(UserVisitPK userVisitPK, SetDefaultOrderTimeTypeForm form);
 
     CommandResult<EditOrderTimeTypeResult> editOrderTimeType(UserVisitPK userVisitPK, EditOrderTimeTypeForm form);
 
-    CommandResult<?> deleteOrderTimeType(UserVisitPK userVisitPK, DeleteOrderTimeTypeForm form);
+    CommandResult<VoidResult> deleteOrderTimeType(UserVisitPK userVisitPK, DeleteOrderTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderTimeTypeDescription(UserVisitPK userVisitPK, CreateOrderTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> createOrderTimeTypeDescription(UserVisitPK userVisitPK, CreateOrderTimeTypeDescriptionForm form);
 
     CommandResult<GetOrderTimeTypeDescriptionResult> getOrderTimeTypeDescription(UserVisitPK userVisitPK, GetOrderTimeTypeDescriptionForm form);
 
@@ -104,13 +105,13 @@ public interface OrderService
 
     CommandResult<EditOrderTimeTypeDescriptionResult> editOrderTimeTypeDescription(UserVisitPK userVisitPK, EditOrderTimeTypeDescriptionForm form);
 
-    CommandResult<?> deleteOrderTimeTypeDescription(UserVisitPK userVisitPK, DeleteOrderTimeTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteOrderTimeTypeDescription(UserVisitPK userVisitPK, DeleteOrderTimeTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderAliasType(UserVisitPK userVisitPK, CreateOrderAliasTypeForm form);
+    CommandResult<VoidResult> createOrderAliasType(UserVisitPK userVisitPK, CreateOrderAliasTypeForm form);
 
     CommandResult<GetOrderAliasTypeChoicesResult> getOrderAliasTypeChoices(UserVisitPK userVisitPK, GetOrderAliasTypeChoicesForm form);
 
@@ -118,17 +119,17 @@ public interface OrderService
 
     CommandResult<GetOrderAliasTypesResult> getOrderAliasTypes(UserVisitPK userVisitPK, GetOrderAliasTypesForm form);
 
-    CommandResult<?> setDefaultOrderAliasType(UserVisitPK userVisitPK, SetDefaultOrderAliasTypeForm form);
+    CommandResult<VoidResult> setDefaultOrderAliasType(UserVisitPK userVisitPK, SetDefaultOrderAliasTypeForm form);
 
     CommandResult<EditOrderAliasTypeResult> editOrderAliasType(UserVisitPK userVisitPK, EditOrderAliasTypeForm form);
 
-    CommandResult<?> deleteOrderAliasType(UserVisitPK userVisitPK, DeleteOrderAliasTypeForm form);
+    CommandResult<VoidResult> deleteOrderAliasType(UserVisitPK userVisitPK, DeleteOrderAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderAliasTypeDescription(UserVisitPK userVisitPK, CreateOrderAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> createOrderAliasTypeDescription(UserVisitPK userVisitPK, CreateOrderAliasTypeDescriptionForm form);
 
     CommandResult<GetOrderAliasTypeDescriptionResult> getOrderAliasTypeDescription(UserVisitPK userVisitPK, GetOrderAliasTypeDescriptionForm form);
 
@@ -136,13 +137,13 @@ public interface OrderService
 
     CommandResult<EditOrderAliasTypeDescriptionResult> editOrderAliasTypeDescription(UserVisitPK userVisitPK, EditOrderAliasTypeDescriptionForm form);
 
-    CommandResult<?> deleteOrderAliasTypeDescription(UserVisitPK userVisitPK, DeleteOrderAliasTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteOrderAliasTypeDescription(UserVisitPK userVisitPK, DeleteOrderAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderAlias(UserVisitPK userVisitPK, CreateOrderAliasForm form);
+    CommandResult<VoidResult> createOrderAlias(UserVisitPK userVisitPK, CreateOrderAliasForm form);
 
     CommandResult<GetOrderAliasResult> getOrderAlias(UserVisitPK userVisitPK, GetOrderAliasForm form);
 
@@ -150,7 +151,7 @@ public interface OrderService
 
     CommandResult<EditOrderAliasResult> editOrderAlias(UserVisitPK userVisitPK, EditOrderAliasForm form);
 
-    CommandResult<?> deleteOrderAlias(UserVisitPK userVisitPK, DeleteOrderAliasForm form);
+    CommandResult<VoidResult> deleteOrderAlias(UserVisitPK userVisitPK, DeleteOrderAliasForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Priorities
@@ -164,17 +165,17 @@ public interface OrderService
 
     CommandResult<GetOrderPrioritiesResult> getOrderPriorities(UserVisitPK userVisitPK, GetOrderPrioritiesForm form);
 
-    CommandResult<?> setDefaultOrderPriority(UserVisitPK userVisitPK, SetDefaultOrderPriorityForm form);
+    CommandResult<VoidResult> setDefaultOrderPriority(UserVisitPK userVisitPK, SetDefaultOrderPriorityForm form);
 
     CommandResult<EditOrderPriorityResult> editOrderPriority(UserVisitPK userVisitPK, EditOrderPriorityForm form);
 
-    CommandResult<?> deleteOrderPriority(UserVisitPK userVisitPK, DeleteOrderPriorityForm form);
+    CommandResult<VoidResult> deleteOrderPriority(UserVisitPK userVisitPK, DeleteOrderPriorityForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Priority Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderPriorityDescription(UserVisitPK userVisitPK, CreateOrderPriorityDescriptionForm form);
+    CommandResult<VoidResult> createOrderPriorityDescription(UserVisitPK userVisitPK, CreateOrderPriorityDescriptionForm form);
 
     CommandResult<GetOrderPriorityDescriptionResult> getOrderPriorityDescription(UserVisitPK userVisitPK, GetOrderPriorityDescriptionForm form);
 
@@ -182,13 +183,13 @@ public interface OrderService
 
     CommandResult<EditOrderPriorityDescriptionResult> editOrderPriorityDescription(UserVisitPK userVisitPK, EditOrderPriorityDescriptionForm form);
 
-    CommandResult<?> deleteOrderPriorityDescription(UserVisitPK userVisitPK, DeleteOrderPriorityDescriptionForm form);
+    CommandResult<VoidResult> deleteOrderPriorityDescription(UserVisitPK userVisitPK, DeleteOrderPriorityDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Adjustment Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderAdjustmentType(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeForm form);
+    CommandResult<VoidResult> createOrderAdjustmentType(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeForm form);
 
     CommandResult<GetOrderAdjustmentTypeChoicesResult> getOrderAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderAdjustmentTypeChoicesForm form);
 
@@ -196,17 +197,17 @@ public interface OrderService
 
     CommandResult<GetOrderAdjustmentTypesResult> getOrderAdjustmentTypes(UserVisitPK userVisitPK, GetOrderAdjustmentTypesForm form);
 
-    CommandResult<?> setDefaultOrderAdjustmentType(UserVisitPK userVisitPK, SetDefaultOrderAdjustmentTypeForm form);
+    CommandResult<VoidResult> setDefaultOrderAdjustmentType(UserVisitPK userVisitPK, SetDefaultOrderAdjustmentTypeForm form);
 
     CommandResult<EditOrderAdjustmentTypeResult> editOrderAdjustmentType(UserVisitPK userVisitPK, EditOrderAdjustmentTypeForm form);
 
-    CommandResult<?> deleteOrderAdjustmentType(UserVisitPK userVisitPK, DeleteOrderAdjustmentTypeForm form);
+    CommandResult<VoidResult> deleteOrderAdjustmentType(UserVisitPK userVisitPK, DeleteOrderAdjustmentTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Adjustment Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> createOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeDescriptionForm form);
 
     CommandResult<GetOrderAdjustmentTypeDescriptionResult> getOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, GetOrderAdjustmentTypeDescriptionForm form);
 
@@ -214,13 +215,13 @@ public interface OrderService
 
     CommandResult<EditOrderAdjustmentTypeDescriptionResult> editOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, EditOrderAdjustmentTypeDescriptionForm form);
 
-    CommandResult<?> deleteOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteOrderAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteOrderAdjustmentTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Line Adjustment Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderLineAdjustmentType(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeForm form);
+    CommandResult<VoidResult> createOrderLineAdjustmentType(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeForm form);
 
     CommandResult<GetOrderLineAdjustmentTypeChoicesResult> getOrderLineAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeChoicesForm form);
 
@@ -228,17 +229,17 @@ public interface OrderService
 
     CommandResult<GetOrderLineAdjustmentTypesResult> getOrderLineAdjustmentTypes(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypesForm form);
 
-    CommandResult<?> setDefaultOrderLineAdjustmentType(UserVisitPK userVisitPK, SetDefaultOrderLineAdjustmentTypeForm form);
+    CommandResult<VoidResult> setDefaultOrderLineAdjustmentType(UserVisitPK userVisitPK, SetDefaultOrderLineAdjustmentTypeForm form);
 
     CommandResult<EditOrderLineAdjustmentTypeResult> editOrderLineAdjustmentType(UserVisitPK userVisitPK, EditOrderLineAdjustmentTypeForm form);
 
-    CommandResult<?> deleteOrderLineAdjustmentType(UserVisitPK userVisitPK, DeleteOrderLineAdjustmentTypeForm form);
+    CommandResult<VoidResult> deleteOrderLineAdjustmentType(UserVisitPK userVisitPK, DeleteOrderLineAdjustmentTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Order Line Adjustment Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> createOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeDescriptionForm form);
 
     CommandResult<GetOrderLineAdjustmentTypeDescriptionResult> getOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeDescriptionForm form);
 
@@ -246,6 +247,6 @@ public interface OrderService
 
     CommandResult<EditOrderLineAdjustmentTypeDescriptionResult> editOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, EditOrderLineAdjustmentTypeDescriptionForm form);
 
-    CommandResult<?> deleteOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteOrderLineAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteOrderLineAdjustmentTypeDescriptionForm form);
 
 }

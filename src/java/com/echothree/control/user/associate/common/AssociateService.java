@@ -20,6 +20,7 @@ import com.echothree.control.user.associate.common.form.*;
 import com.echothree.control.user.associate.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface AssociateService
         extends AssociateForms {
@@ -34,7 +35,7 @@ public interface AssociateService
     //   Associate Programs
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form);
+    CommandResult<VoidResult> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form);
     
     CommandResult<GetAssociateProgramResult> getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form);
     
@@ -42,29 +43,29 @@ public interface AssociateService
     
     CommandResult<GetAssociateProgramChoicesResult> getAssociateProgramChoices(UserVisitPK userVisitPK, GetAssociateProgramChoicesForm form);
     
-    CommandResult<?> setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form);
+    CommandResult<VoidResult> setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form);
     
     CommandResult<EditAssociateProgramResult> editAssociateProgram(UserVisitPK userVisitPK, EditAssociateProgramForm form);
     
-    CommandResult<?> deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form);
+    CommandResult<VoidResult> deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form);
     
     // -------------------------------------------------------------------------
     //   Associate Program Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form);
+    CommandResult<VoidResult> createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form);
     
     CommandResult<GetAssociateProgramDescriptionsResult> getAssociateProgramDescriptions(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form);
     
     CommandResult<EditAssociateProgramDescriptionResult> editAssociateProgramDescription(UserVisitPK userVisitPK, EditAssociateProgramDescriptionForm form);
     
-    CommandResult<?> deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form);
+    CommandResult<VoidResult> deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Associates
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form);
+    CommandResult<VoidResult> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form);
     
     CommandResult<GetAssociateResult> getAssociate(UserVisitPK userVisitPK, GetAssociateForm form);
     
@@ -72,13 +73,13 @@ public interface AssociateService
     
     CommandResult<GetAssociateChoicesResult> getAssociateChoices(UserVisitPK userVisitPK, GetAssociateChoicesForm form);
     
-    CommandResult<?> deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form);
+    CommandResult<VoidResult> deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form);
     
     // -------------------------------------------------------------------------
     //   Associate Contact Mechanisms
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form);
+    CommandResult<VoidResult> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form);
     
     CommandResult<GetAssociatePartyContactMechanismResult> getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form);
     
@@ -86,9 +87,9 @@ public interface AssociateService
     
     CommandResult<GetAssociatePartyContactMechanismChoicesResult> getAssociatePartyContactMechanismChoices(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismChoicesForm form);
     
-    CommandResult<?> setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form);
+    CommandResult<VoidResult> setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form);
     
-    CommandResult<?> deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form);
+    CommandResult<VoidResult> deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form);
     
     // -------------------------------------------------------------------------
     //   Associate Referrals
@@ -98,6 +99,6 @@ public interface AssociateService
     
     CommandResult<GetAssociateReferralsResult> getAssociateReferrals(UserVisitPK userVisitPK, GetAssociateReferralsForm form);
     
-    CommandResult<?> deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form);
+    CommandResult<VoidResult> deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form);
     
 }

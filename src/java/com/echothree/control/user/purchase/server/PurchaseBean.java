@@ -22,6 +22,7 @@ import com.echothree.control.user.purchase.common.result.*;
 import com.echothree.control.user.purchase.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -54,7 +55,7 @@ public class PurchaseBean
     }
 
     @Override
-    public CommandResult<?> setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
+    public CommandResult<VoidResult> setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
         return CDI.current().select(SetPurchaseOrderStatusCommand.class).get().run(userVisitPK, form);
     }
 
@@ -73,7 +74,7 @@ public class PurchaseBean
     }
 
     @Override
-    public CommandResult<?> setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
+    public CommandResult<VoidResult> setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
         return CDI.current().select(SetPurchaseInvoiceStatusCommand.class).get().run(userVisitPK, form);
     }
 

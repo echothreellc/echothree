@@ -22,6 +22,7 @@ import com.echothree.control.user.subscription.common.result.*;
 import com.echothree.control.user.subscription.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -44,7 +45,7 @@ public class SubscriptionBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form) {
+    public CommandResult<VoidResult> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form) {
         return CDI.current().select(CreateSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -64,7 +65,7 @@ public class SubscriptionBean
     }
 
     @Override
-    public CommandResult<?> setDefaultSubscriptionKind(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form) {
+    public CommandResult<VoidResult> setDefaultSubscriptionKind(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form) {
         return CDI.current().select(SetDefaultSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -74,7 +75,7 @@ public class SubscriptionBean
     }
 
     @Override
-    public CommandResult<?> deleteSubscriptionKind(UserVisitPK userVisitPK, DeleteSubscriptionKindForm form) {
+    public CommandResult<VoidResult> deleteSubscriptionKind(UserVisitPK userVisitPK, DeleteSubscriptionKindForm form) {
         return CDI.current().select(DeleteSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -83,7 +84,7 @@ public class SubscriptionBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSubscriptionKindDescription(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form) {
+    public CommandResult<VoidResult> createSubscriptionKindDescription(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form) {
         return CDI.current().select(CreateSubscriptionKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -103,7 +104,7 @@ public class SubscriptionBean
     }
 
     @Override
-    public CommandResult<?> deleteSubscriptionKindDescription(UserVisitPK userVisitPK, DeleteSubscriptionKindDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSubscriptionKindDescription(UserVisitPK userVisitPK, DeleteSubscriptionKindDescriptionForm form) {
         return CDI.current().select(DeleteSubscriptionKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +113,7 @@ public class SubscriptionBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form) {
+    public CommandResult<VoidResult> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form) {
         return CDI.current().select(CreateSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -132,7 +133,7 @@ public class SubscriptionBean
     }
     
     @Override
-    public CommandResult<?> setDefaultSubscriptionType(UserVisitPK userVisitPK, SetDefaultSubscriptionTypeForm form) {
+    public CommandResult<VoidResult> setDefaultSubscriptionType(UserVisitPK userVisitPK, SetDefaultSubscriptionTypeForm form) {
         return CDI.current().select(SetDefaultSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -142,7 +143,7 @@ public class SubscriptionBean
     }
     
     @Override
-    public CommandResult<?> deleteSubscriptionType(UserVisitPK userVisitPK, DeleteSubscriptionTypeForm form) {
+    public CommandResult<VoidResult> deleteSubscriptionType(UserVisitPK userVisitPK, DeleteSubscriptionTypeForm form) {
         return CDI.current().select(DeleteSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -151,7 +152,7 @@ public class SubscriptionBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSubscriptionTypeDescription(UserVisitPK userVisitPK, CreateSubscriptionTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createSubscriptionTypeDescription(UserVisitPK userVisitPK, CreateSubscriptionTypeDescriptionForm form) {
         return CDI.current().select(CreateSubscriptionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -166,7 +167,7 @@ public class SubscriptionBean
     }
     
     @Override
-    public CommandResult<?> deleteSubscriptionTypeDescription(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteSubscriptionTypeDescription(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form) {
         return CDI.current().select(DeleteSubscriptionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -175,7 +176,7 @@ public class SubscriptionBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSubscriptionTypeChain(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form) {
+    public CommandResult<VoidResult> createSubscriptionTypeChain(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form) {
         return CDI.current().select(CreateSubscriptionTypeChainCommand.class).get().run(userVisitPK, form);
     }
     
@@ -185,7 +186,7 @@ public class SubscriptionBean
     }
     
     @Override
-    public CommandResult<?> deleteSubscriptionTypeChain(UserVisitPK userVisitPK, DeleteSubscriptionTypeChainForm form) {
+    public CommandResult<VoidResult> deleteSubscriptionTypeChain(UserVisitPK userVisitPK, DeleteSubscriptionTypeChainForm form) {
         return CDI.current().select(DeleteSubscriptionTypeChainCommand.class).get().run(userVisitPK, form);
     }
     
@@ -194,7 +195,7 @@ public class SubscriptionBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form) {
+    public CommandResult<VoidResult> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form) {
         return CDI.current().select(CreateSubscriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -209,7 +210,7 @@ public class SubscriptionBean
     }
     
     @Override
-    public CommandResult<?> deleteSubscription(UserVisitPK userVisitPK, DeleteSubscriptionForm form) {
+    public CommandResult<VoidResult> deleteSubscription(UserVisitPK userVisitPK, DeleteSubscriptionForm form) {
         return CDI.current().select(DeleteSubscriptionCommand.class).get().run(userVisitPK, form);
     }
     

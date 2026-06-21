@@ -22,6 +22,7 @@ import com.echothree.control.user.tag.common.result.*;
 import com.echothree.control.user.tag.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -64,7 +65,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form) {
+    public CommandResult<VoidResult> setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form) {
         return CDI.current().select(SetDefaultTagScopeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -74,7 +75,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form) {
+    public CommandResult<VoidResult> deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form) {
         return CDI.current().select(DeleteTagScopeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +84,7 @@ public class TagBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form) {
+    public CommandResult<VoidResult> createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form) {
         return CDI.current().select(CreateTagScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -103,7 +104,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form) {
         return CDI.current().select(DeleteTagScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -112,7 +113,7 @@ public class TagBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form) {
+    public CommandResult<VoidResult> createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form) {
         return CDI.current().select(CreateTagScopeEntityTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -127,7 +128,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form) {
+    public CommandResult<VoidResult> deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form) {
         return CDI.current().select(DeleteTagScopeEntityTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -161,7 +162,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> deleteTag(UserVisitPK userVisitPK, DeleteTagForm form) {
+    public CommandResult<VoidResult> deleteTag(UserVisitPK userVisitPK, DeleteTagForm form) {
         return CDI.current().select(DeleteTagCommand.class).get().run(userVisitPK, form);
     }
     
@@ -170,7 +171,7 @@ public class TagBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form) {
+    public CommandResult<VoidResult> createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form) {
         return CDI.current().select(CreateEntityTagCommand.class).get().run(userVisitPK, form);
     }
     
@@ -185,7 +186,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form) {
+    public CommandResult<VoidResult> deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form) {
         return CDI.current().select(DeleteEntityTagCommand.class).get().run(userVisitPK, form);
     }
     

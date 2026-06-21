@@ -20,6 +20,7 @@ import com.echothree.control.user.comment.common.form.*;
 import com.echothree.control.user.comment.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface CommentService
         extends CommentForms {
@@ -42,25 +43,25 @@ public interface CommentService
     
     CommandResult<EditCommentTypeResult> editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form);
     
-    CommandResult<?> deleteCommentType(UserVisitPK userVisitPK, DeleteCommentTypeForm form);
+    CommandResult<VoidResult> deleteCommentType(UserVisitPK userVisitPK, DeleteCommentTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCommentTypeDescription(UserVisitPK userVisitPK, CreateCommentTypeDescriptionForm form);
+    CommandResult<VoidResult> createCommentTypeDescription(UserVisitPK userVisitPK, CreateCommentTypeDescriptionForm form);
     
     CommandResult<GetCommentTypeDescriptionsResult> getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form);
     
     CommandResult<EditCommentTypeDescriptionResult> editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form);
     
-    CommandResult<?> deleteCommentTypeDescription(UserVisitPK userVisitPK, DeleteCommentTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteCommentTypeDescription(UserVisitPK userVisitPK, DeleteCommentTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Usage Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
+    CommandResult<VoidResult> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
     
     CommandResult<GetCommentUsageTypeResult> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form);
     
@@ -68,19 +69,19 @@ public interface CommentService
     
     CommandResult<EditCommentUsageTypeResult> editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form);
     
-    CommandResult<?> deleteCommentUsageType(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form);
+    CommandResult<VoidResult> deleteCommentUsageType(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Usage Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCommentUsageTypeDescription(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form);
+    CommandResult<VoidResult> createCommentUsageTypeDescription(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form);
     
     CommandResult<GetCommentUsageTypeDescriptionsResult> getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form);
     
     CommandResult<EditCommentUsageTypeDescriptionResult> editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form);
     
-    CommandResult<?> deleteCommentUsageTypeDescription(UserVisitPK userVisitPK, DeleteCommentUsageTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteCommentUsageTypeDescription(UserVisitPK userVisitPK, DeleteCommentUsageTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Comments
@@ -94,16 +95,16 @@ public interface CommentService
     
     CommandResult<GetCommentStatusChoicesResult> getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form);
     
-    CommandResult<?> setCommentStatus(UserVisitPK userVisitPK, SetCommentStatusForm form);
+    CommandResult<VoidResult> setCommentStatus(UserVisitPK userVisitPK, SetCommentStatusForm form);
     
-    CommandResult<?> deleteComment(UserVisitPK userVisitPK, DeleteCommentForm form);
+    CommandResult<VoidResult> deleteComment(UserVisitPK userVisitPK, DeleteCommentForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Usages
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCommentUsage(UserVisitPK userVisitPK, CreateCommentUsageForm form);
+    CommandResult<VoidResult> createCommentUsage(UserVisitPK userVisitPK, CreateCommentUsageForm form);
     
-    CommandResult<?> deleteCommentUsage(UserVisitPK userVisitPK, DeleteCommentUsageForm form);
+    CommandResult<VoidResult> deleteCommentUsage(UserVisitPK userVisitPK, DeleteCommentUsageForm form);
     
 }
