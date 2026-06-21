@@ -43,6 +43,7 @@ import com.echothree.model.data.order.server.value.OrderTimeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class OrderTimeControl
@@ -130,17 +130,19 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypes, ordertimetypedetails " +
-                "WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                "AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_ordertimetypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypes, ordertimetypedetails " +
-                "WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                "AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_ordertimetypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimetypes, ordertimetypedetails
+                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_ordertimetypename = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimetypes, ordertimetypedetails
+                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_ordertimetypename = ?
+                        FOR UPDATE
+                        """);
         getOrderTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -170,17 +172,19 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypes, ordertimetypedetails " +
-                "WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                "AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypes, ordertimetypedetails " +
-                "WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                "AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimetypes, ordertimetypedetails
+                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_isdefault = 1
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimetypes, ordertimetypedetails
+                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_isdefault = 1
+                        FOR UPDATE
+                        """);
         getDefaultOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -206,18 +210,21 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypes, ordertimetypedetails " +
-                "WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                "AND ordtimtypdt_ordtyp_ordertypeid = ? " +
-                "ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypes, ordertimetypedetails " +
-                "WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                "AND ordtimtypdt_ordtyp_ordertypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimetypes, ordertimetypedetails
+                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        AND ordtimtypdt_ordtyp_ordertypeid = ?
+                        ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimetypes, ordertimetypedetails
+                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        AND ordtimtypdt_ordtyp_ordertypeid = ?
+                        FOR UPDATE
+                        """);
         getOrderTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -382,15 +389,17 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypedescriptions " +
-                "WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_lang_languageid = ? AND ordtimtypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypedescriptions " +
-                "WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_lang_languageid = ? AND ordtimtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimetypedescriptions
+                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_lang_languageid = ? AND ordtimtypd_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimetypedescriptions
+                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_lang_languageid = ? AND ordtimtypd_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -420,16 +429,19 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypedescriptions, languages " +
-                "WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_thrutime = ? AND ordtimtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertimetypedescriptions " +
-                "WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimetypedescriptions, languages
+                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_thrutime = ? AND ordtimtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimetypedescriptions
+                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderTimeTypeDescriptionsByOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -525,27 +537,27 @@ public class OrderTimeControl
     }
 
     public long countOrderTimesByOrder(Order order) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?",
-                order, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ordertimes
+                        WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?
+                        """, order, Session.MAX_TIME);
     }
 
     public long countOrderTimesByOrderTimeType(OrderTimeType orderTimeType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?",
-                orderTimeType, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ordertimes
+                        WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
+                        """, orderTimeType, Session.MAX_TIME);
     }
 
     public boolean orderTimeExists(Order order, OrderTimeType orderTimeType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?",
-                order, orderTimeType, Session.MAX_TIME) == 1;
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ordertimes
+                        WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
+                        """, order, orderTimeType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getOrderTimeQueries;
@@ -553,15 +565,17 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimes
+                        WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimes
+                        WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderTimeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -590,17 +604,20 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM ordertimes, ordertimetypes, ordertimetypedetails " +
-                        "WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ? " +
-                        "AND ordtim_ordtimtyp_ordertimetypeid = ordtimtyp_ordertimetypeid AND ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                        "ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimes, ordertimetypes, ordertimetypedetails
+                        WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?
+                        AND ordtim_ordtimtyp_ordertimetypeid = ordtimtyp_ordertimetypeid AND ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimes
+                        WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderTimesByOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -621,17 +638,20 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM ordertimes, orders, orderdetails " +
-                        "WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ? " +
-                        "AND ordtim_ord_orderid = ordtim_ord_orderid AND ord_activedetailid = orddt_orderdetailid " +
-                        "ORDER BY orddt_ordername");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM ordertimes " +
-                        "WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordertimes, orders, orderdetails
+                        WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
+                        AND ordtim_ord_orderid = ordtim_ord_orderid AND ord_activedetailid = orddt_orderdetailid
+                        ORDER BY orddt_ordername
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordertimes
+                        WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderTimesByOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -721,27 +741,27 @@ public class OrderTimeControl
     }
 
     public long countOrderLineTimesByOrderLine(OrderLine orderLine) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?",
-                orderLine, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderlinetimes
+                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?
+                        """, orderLine, Session.MAX_TIME);
     }
 
     public long countOrderLineTimesByOrderTimeType(OrderTimeType orderTimeType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?",
-                orderTimeType, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderlinetimes
+                        WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
+                        """, orderTimeType, Session.MAX_TIME);
     }
 
     public boolean orderLineTimeExists(OrderLine orderLine, OrderTimeType orderTimeType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?",
-                orderLine, orderTimeType, Session.MAX_TIME) == 1;
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderlinetimes
+                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
+                        """, orderLine, orderTimeType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getOrderLineTimeQueries;
@@ -749,15 +769,17 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM orderlinetimes
+                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM orderlinetimes
+                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderLineTimeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -787,17 +809,20 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM orderlinetimes, ordertimetypes, ordertimetypedetails " +
-                        "WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ? " +
-                        "AND ordltim_ordtimtyp_ordertimetypeid = ordtimtyp_ordertimetypeid AND ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid " +
-                        "ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM orderlinetimes, ordertimetypes, ordertimetypedetails
+                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?
+                        AND ordltim_ordtimtyp_ordertimetypeid = ordtimtyp_ordertimetypeid AND ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                        ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM orderlinetimes
+                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderLineTimesByOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -819,17 +844,20 @@ public class OrderTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM orderlinetimes, orders, orderdetails " +
-                        "WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ? " +
-                        "AND ordltim_ordl_orderlineid = ordltim_ordl_orderlineid AND ord_activedetailid = orddt_orderdetailid " +
-                        "ORDER BY orddt_ordername");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM orderlinetimes " +
-                        "WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM orderlinetimes, orders, orderdetails
+                        WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
+                        AND ordltim_ordl_orderlineid = ordltim_ordl_orderlineid AND ord_activedetailid = orddt_orderdetailid
+                        ORDER BY orddt_ordername
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM orderlinetimes
+                        WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
+                        FOR UPDATE
+                        """);
         getOrderLineTimesByOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
