@@ -17,6 +17,7 @@
 package com.echothree.control.user.icon.common;
 
 import com.echothree.control.user.icon.common.form.*;
+import com.echothree.control.user.icon.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -45,6 +46,6 @@ public interface IconService
     //   Icons
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form);
+    CommandResult<GetIconChoicesResult> getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form);
     
 }

@@ -18,6 +18,7 @@ package com.echothree.control.user.club.server;
 
 import com.echothree.control.user.club.common.ClubRemote;
 import com.echothree.control.user.club.common.form.*;
+import com.echothree.control.user.club.common.result.*;
 import com.echothree.control.user.club.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,12 +49,12 @@ public class ClubBean
     }
     
     @Override
-    public CommandResult<?> getClubs(UserVisitPK userVisitPK, GetClubsForm form) {
+    public CommandResult<GetClubsResult> getClubs(UserVisitPK userVisitPK, GetClubsForm form) {
         return CDI.current().select(GetClubsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getClub(UserVisitPK userVisitPK, GetClubForm form) {
+    public CommandResult<GetClubResult> getClub(UserVisitPK userVisitPK, GetClubForm form) {
         return CDI.current().select(GetClubCommand.class).get().run(userVisitPK, form);
     }
     
@@ -77,12 +78,12 @@ public class ClubBean
     }
     
     @Override
-    public CommandResult<?> getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form) {
+    public CommandResult<GetClubDescriptionsResult> getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form) {
         return CDI.current().select(GetClubDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form) {
+    public CommandResult<EditClubDescriptionResult> editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form) {
         return CDI.current().select(EditClubDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -101,7 +102,7 @@ public class ClubBean
     }
     
     @Override
-    public CommandResult<?> getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form) {
+    public CommandResult<GetClubItemTypeChoicesResult> getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form) {
         return CDI.current().select(GetClubItemTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -124,12 +125,12 @@ public class ClubBean
     }
     
     @Override
-    public CommandResult<?> getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form) {
+    public CommandResult<GetClubItemsResult> getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form) {
         return CDI.current().select(GetClubItemsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editClub(UserVisitPK userVisitPK, EditClubForm form) {
+    public CommandResult<EditClubResult> editClub(UserVisitPK userVisitPK, EditClubForm form) {
         return CDI.current().select(EditClubCommand.class).get().run(userVisitPK, form);
     }
     

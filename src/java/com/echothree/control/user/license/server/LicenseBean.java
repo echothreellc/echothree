@@ -18,6 +18,7 @@ package com.echothree.control.user.license.server;
 
 import com.echothree.control.user.license.common.LicenseRemote;
 import com.echothree.control.user.license.common.form.*;
+import com.echothree.control.user.license.common.result.*;
 import com.echothree.control.user.license.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class LicenseBean
     }
     
     @Override
-    public CommandResult<?> getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form) {
+    public CommandResult<GetLicenseTypeChoicesResult> getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form) {
         return CDI.current().select(GetLicenseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLicenseType(UserVisitPK userVisitPK, GetLicenseTypeForm form) {
+    public CommandResult<GetLicenseTypeResult> getLicenseType(UserVisitPK userVisitPK, GetLicenseTypeForm form) {
         return CDI.current().select(GetLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLicenseTypes(UserVisitPK userVisitPK, GetLicenseTypesForm form) {
+    public CommandResult<GetLicenseTypesResult> getLicenseTypes(UserVisitPK userVisitPK, GetLicenseTypesForm form) {
         return CDI.current().select(GetLicenseTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class LicenseBean
     }
     
     @Override
-    public CommandResult<?> editLicenseType(UserVisitPK userVisitPK, EditLicenseTypeForm form) {
+    public CommandResult<EditLicenseTypeResult> editLicenseType(UserVisitPK userVisitPK, EditLicenseTypeForm form) {
         return CDI.current().select(EditLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,17 +88,17 @@ public class LicenseBean
     }
     
     @Override
-    public CommandResult<?> getLicenseTypeDescription(UserVisitPK userVisitPK, GetLicenseTypeDescriptionForm form) {
+    public CommandResult<GetLicenseTypeDescriptionResult> getLicenseTypeDescription(UserVisitPK userVisitPK, GetLicenseTypeDescriptionForm form) {
         return CDI.current().select(GetLicenseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLicenseTypeDescriptions(UserVisitPK userVisitPK, GetLicenseTypeDescriptionsForm form) {
+    public CommandResult<GetLicenseTypeDescriptionsResult> getLicenseTypeDescriptions(UserVisitPK userVisitPK, GetLicenseTypeDescriptionsForm form) {
         return CDI.current().select(GetLicenseTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editLicenseTypeDescription(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form) {
+    public CommandResult<EditLicenseTypeDescriptionResult> editLicenseTypeDescription(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form) {
         return CDI.current().select(EditLicenseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

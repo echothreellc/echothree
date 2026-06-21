@@ -17,6 +17,7 @@
 package com.echothree.control.user.item.common;
 
 import com.echothree.control.user.item.common.form.*;
+import com.echothree.control.user.item.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,11 +36,11 @@ public interface ItemService
     
     CommandResult<?> createItemType(UserVisitPK userVisitPK, CreateItemTypeForm form);
     
-    CommandResult<?> getItemType(UserVisitPK userVisitPK, GetItemTypeForm form);
+    CommandResult<GetItemTypeResult> getItemType(UserVisitPK userVisitPK, GetItemTypeForm form);
     
-    CommandResult<?> getItemTypes(UserVisitPK userVisitPK, GetItemTypesForm form);
+    CommandResult<GetItemTypesResult> getItemTypes(UserVisitPK userVisitPK, GetItemTypesForm form);
     
-    CommandResult<?> getItemTypeChoices(UserVisitPK userVisitPK, GetItemTypeChoicesForm form);
+    CommandResult<GetItemTypeChoicesResult> getItemTypeChoices(UserVisitPK userVisitPK, GetItemTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Type Descriptions
@@ -53,11 +54,11 @@ public interface ItemService
     
     CommandResult<?> createItemDeliveryType(UserVisitPK userVisitPK, CreateItemDeliveryTypeForm form);
     
-    CommandResult<?> getItemDeliveryType(UserVisitPK userVisitPK, GetItemDeliveryTypeForm form);
+    CommandResult<GetItemDeliveryTypeResult> getItemDeliveryType(UserVisitPK userVisitPK, GetItemDeliveryTypeForm form);
     
-    CommandResult<?> getItemDeliveryTypes(UserVisitPK userVisitPK, GetItemDeliveryTypesForm form);
+    CommandResult<GetItemDeliveryTypesResult> getItemDeliveryTypes(UserVisitPK userVisitPK, GetItemDeliveryTypesForm form);
     
-    CommandResult<?> getItemDeliveryTypeChoices(UserVisitPK userVisitPK, GetItemDeliveryTypeChoicesForm form);
+    CommandResult<GetItemDeliveryTypeChoicesResult> getItemDeliveryTypeChoices(UserVisitPK userVisitPK, GetItemDeliveryTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Delivery Type Descriptions
@@ -71,11 +72,11 @@ public interface ItemService
     
     CommandResult<?> createItemInventoryType(UserVisitPK userVisitPK, CreateItemInventoryTypeForm form);
     
-    CommandResult<?> getItemInventoryType(UserVisitPK userVisitPK, GetItemInventoryTypeForm form);
+    CommandResult<GetItemInventoryTypeResult> getItemInventoryType(UserVisitPK userVisitPK, GetItemInventoryTypeForm form);
     
-    CommandResult<?> getItemInventoryTypes(UserVisitPK userVisitPK, GetItemInventoryTypesForm form);
+    CommandResult<GetItemInventoryTypesResult> getItemInventoryTypes(UserVisitPK userVisitPK, GetItemInventoryTypesForm form);
     
-    CommandResult<?> getItemInventoryTypeChoices(UserVisitPK userVisitPK, GetItemInventoryTypeChoicesForm form);
+    CommandResult<GetItemInventoryTypeChoicesResult> getItemInventoryTypeChoices(UserVisitPK userVisitPK, GetItemInventoryTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Inventory Type Descriptions
@@ -89,11 +90,11 @@ public interface ItemService
     
     CommandResult<?> createItemUseType(UserVisitPK userVisitPK, CreateItemUseTypeForm form);
     
-    CommandResult<?> getItemUseType(UserVisitPK userVisitPK, GetItemUseTypeForm form);
+    CommandResult<GetItemUseTypeResult> getItemUseType(UserVisitPK userVisitPK, GetItemUseTypeForm form);
     
-    CommandResult<?> getItemUseTypes(UserVisitPK userVisitPK, GetItemUseTypesForm form);
+    CommandResult<GetItemUseTypesResult> getItemUseTypes(UserVisitPK userVisitPK, GetItemUseTypesForm form);
     
-    CommandResult<?> getItemUseTypeChoices(UserVisitPK userVisitPK, GetItemUseTypeChoicesForm form);
+    CommandResult<GetItemUseTypeChoicesResult> getItemUseTypeChoices(UserVisitPK userVisitPK, GetItemUseTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Use Type Descriptions
@@ -107,15 +108,15 @@ public interface ItemService
     
     CommandResult<?> createItemCategory(UserVisitPK userVisitPK, CreateItemCategoryForm form);
 
-    CommandResult<?> getItemCategoryChoices(UserVisitPK userVisitPK, GetItemCategoryChoicesForm form);
+    CommandResult<GetItemCategoryChoicesResult> getItemCategoryChoices(UserVisitPK userVisitPK, GetItemCategoryChoicesForm form);
 
-    CommandResult<?> getItemCategory(UserVisitPK userVisitPK, GetItemCategoryForm form);
+    CommandResult<GetItemCategoryResult> getItemCategory(UserVisitPK userVisitPK, GetItemCategoryForm form);
 
-    CommandResult<?> getItemCategories(UserVisitPK userVisitPK, GetItemCategoriesForm form);
+    CommandResult<GetItemCategoriesResult> getItemCategories(UserVisitPK userVisitPK, GetItemCategoriesForm form);
 
     CommandResult<?> setDefaultItemCategory(UserVisitPK userVisitPK, SetDefaultItemCategoryForm form);
 
-    CommandResult<?> editItemCategory(UserVisitPK userVisitPK, EditItemCategoryForm form);
+    CommandResult<EditItemCategoryResult> editItemCategory(UserVisitPK userVisitPK, EditItemCategoryForm form);
 
     CommandResult<?> deleteItemCategory(UserVisitPK userVisitPK, DeleteItemCategoryForm form);
     
@@ -125,11 +126,11 @@ public interface ItemService
     
     CommandResult<?> createItemCategoryDescription(UserVisitPK userVisitPK, CreateItemCategoryDescriptionForm form);
 
-    CommandResult<?> getItemCategoryDescription(UserVisitPK userVisitPK, GetItemCategoryDescriptionForm form);
+    CommandResult<GetItemCategoryDescriptionResult> getItemCategoryDescription(UserVisitPK userVisitPK, GetItemCategoryDescriptionForm form);
 
-    CommandResult<?> getItemCategoryDescriptions(UserVisitPK userVisitPK, GetItemCategoryDescriptionsForm form);
+    CommandResult<GetItemCategoryDescriptionsResult> getItemCategoryDescriptions(UserVisitPK userVisitPK, GetItemCategoryDescriptionsForm form);
 
-    CommandResult<?> editItemCategoryDescription(UserVisitPK userVisitPK, EditItemCategoryDescriptionForm form);
+    CommandResult<EditItemCategoryDescriptionResult> editItemCategoryDescription(UserVisitPK userVisitPK, EditItemCategoryDescriptionForm form);
 
     CommandResult<?> deleteItemCategoryDescription(UserVisitPK userVisitPK, DeleteItemCategoryDescriptionForm form);
     
@@ -139,11 +140,11 @@ public interface ItemService
 
     CommandResult<?> createItemAliasChecksumType(UserVisitPK userVisitPK, CreateItemAliasChecksumTypeForm form);
 
-    CommandResult<?> getItemAliasChecksumTypes(UserVisitPK userVisitPK, GetItemAliasChecksumTypesForm form);
+    CommandResult<GetItemAliasChecksumTypesResult> getItemAliasChecksumTypes(UserVisitPK userVisitPK, GetItemAliasChecksumTypesForm form);
 
-    CommandResult<?> getItemAliasChecksumType(UserVisitPK userVisitPK, GetItemAliasChecksumTypeForm form);
+    CommandResult<GetItemAliasChecksumTypeResult> getItemAliasChecksumType(UserVisitPK userVisitPK, GetItemAliasChecksumTypeForm form);
 
-    CommandResult<?> getItemAliasChecksumTypeChoices(UserVisitPK userVisitPK, GetItemAliasChecksumTypeChoicesForm form);
+    CommandResult<GetItemAliasChecksumTypeChoicesResult> getItemAliasChecksumTypeChoices(UserVisitPK userVisitPK, GetItemAliasChecksumTypeChoicesForm form);
 
     // -------------------------------------------------------------------------
     //   Item Alias Checksum Type Descriptions
@@ -157,15 +158,15 @@ public interface ItemService
     
     CommandResult<?> createItemAliasType(UserVisitPK userVisitPK, CreateItemAliasTypeForm form);
 
-    CommandResult<?> getItemAliasTypeChoices(UserVisitPK userVisitPK, GetItemAliasTypeChoicesForm form);
+    CommandResult<GetItemAliasTypeChoicesResult> getItemAliasTypeChoices(UserVisitPK userVisitPK, GetItemAliasTypeChoicesForm form);
 
-    CommandResult<?> getItemAliasType(UserVisitPK userVisitPK, GetItemAliasTypeForm form);
+    CommandResult<GetItemAliasTypeResult> getItemAliasType(UserVisitPK userVisitPK, GetItemAliasTypeForm form);
 
-    CommandResult<?> getItemAliasTypes(UserVisitPK userVisitPK, GetItemAliasTypesForm form);
+    CommandResult<GetItemAliasTypesResult> getItemAliasTypes(UserVisitPK userVisitPK, GetItemAliasTypesForm form);
 
     CommandResult<?> setDefaultItemAliasType(UserVisitPK userVisitPK, SetDefaultItemAliasTypeForm form);
 
-    CommandResult<?> editItemAliasType(UserVisitPK userVisitPK, EditItemAliasTypeForm form);
+    CommandResult<EditItemAliasTypeResult> editItemAliasType(UserVisitPK userVisitPK, EditItemAliasTypeForm form);
 
     CommandResult<?> deleteItemAliasType(UserVisitPK userVisitPK, DeleteItemAliasTypeForm form);
     
@@ -175,11 +176,11 @@ public interface ItemService
     
     CommandResult<?> createItemAliasTypeDescription(UserVisitPK userVisitPK, CreateItemAliasTypeDescriptionForm form);
 
-    CommandResult<?> getItemAliasTypeDescription(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionForm form);
+    CommandResult<GetItemAliasTypeDescriptionResult> getItemAliasTypeDescription(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionForm form);
 
-    CommandResult<?> getItemAliasTypeDescriptions(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionsForm form);
+    CommandResult<GetItemAliasTypeDescriptionsResult> getItemAliasTypeDescriptions(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionsForm form);
 
-    CommandResult<?> editItemAliasTypeDescription(UserVisitPK userVisitPK, EditItemAliasTypeDescriptionForm form);
+    CommandResult<EditItemAliasTypeDescriptionResult> editItemAliasTypeDescription(UserVisitPK userVisitPK, EditItemAliasTypeDescriptionForm form);
 
     CommandResult<?> deleteItemAliasTypeDescription(UserVisitPK userVisitPK, DeleteItemAliasTypeDescriptionForm form);
     
@@ -189,15 +190,15 @@ public interface ItemService
 
     CommandResult<?> createItemDescriptionType(UserVisitPK userVisitPK, CreateItemDescriptionTypeForm form);
 
-    CommandResult<?> getItemDescriptionTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeChoicesForm form);
+    CommandResult<GetItemDescriptionTypeChoicesResult> getItemDescriptionTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeChoicesForm form);
 
-    CommandResult<?> getItemDescriptionType(UserVisitPK userVisitPK, GetItemDescriptionTypeForm form);
+    CommandResult<GetItemDescriptionTypeResult> getItemDescriptionType(UserVisitPK userVisitPK, GetItemDescriptionTypeForm form);
 
-    CommandResult<?> getItemDescriptionTypes(UserVisitPK userVisitPK, GetItemDescriptionTypesForm form);
+    CommandResult<GetItemDescriptionTypesResult> getItemDescriptionTypes(UserVisitPK userVisitPK, GetItemDescriptionTypesForm form);
 
     CommandResult<?> setDefaultItemDescriptionType(UserVisitPK userVisitPK, SetDefaultItemDescriptionTypeForm form);
 
-    CommandResult<?> editItemDescriptionType(UserVisitPK userVisitPK, EditItemDescriptionTypeForm form);
+    CommandResult<EditItemDescriptionTypeResult> editItemDescriptionType(UserVisitPK userVisitPK, EditItemDescriptionTypeForm form);
 
     CommandResult<?> deleteItemDescriptionType(UserVisitPK userVisitPK, DeleteItemDescriptionTypeForm form);
 
@@ -207,11 +208,11 @@ public interface ItemService
 
     CommandResult<?> createItemDescriptionTypeDescription(UserVisitPK userVisitPK, CreateItemDescriptionTypeDescriptionForm form);
 
-    CommandResult<?> getItemDescriptionTypeDescription(UserVisitPK userVisitPK, GetItemDescriptionTypeDescriptionForm form);
+    CommandResult<GetItemDescriptionTypeDescriptionResult> getItemDescriptionTypeDescription(UserVisitPK userVisitPK, GetItemDescriptionTypeDescriptionForm form);
 
-    CommandResult<?> getItemDescriptionTypeDescriptions(UserVisitPK userVisitPK, GetItemDescriptionTypeDescriptionsForm form);
+    CommandResult<GetItemDescriptionTypeDescriptionsResult> getItemDescriptionTypeDescriptions(UserVisitPK userVisitPK, GetItemDescriptionTypeDescriptionsForm form);
 
-    CommandResult<?> editItemDescriptionTypeDescription(UserVisitPK userVisitPK, EditItemDescriptionTypeDescriptionForm form);
+    CommandResult<EditItemDescriptionTypeDescriptionResult> editItemDescriptionTypeDescription(UserVisitPK userVisitPK, EditItemDescriptionTypeDescriptionForm form);
 
     CommandResult<?> deleteItemDescriptionTypeDescription(UserVisitPK userVisitPK, DeleteItemDescriptionTypeDescriptionForm form);
 
@@ -221,15 +222,15 @@ public interface ItemService
 
     CommandResult<?> createItemDescriptionTypeUseType(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeForm form);
 
-    CommandResult<?> getItemDescriptionTypeUseTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeChoicesForm form);
+    CommandResult<GetItemDescriptionTypeUseTypeChoicesResult> getItemDescriptionTypeUseTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeChoicesForm form);
 
-    CommandResult<?> getItemDescriptionTypeUseType(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeForm form);
+    CommandResult<GetItemDescriptionTypeUseTypeResult> getItemDescriptionTypeUseType(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeForm form);
 
-    CommandResult<?> getItemDescriptionTypeUseTypes(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypesForm form);
+    CommandResult<GetItemDescriptionTypeUseTypesResult> getItemDescriptionTypeUseTypes(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypesForm form);
 
     CommandResult<?> setDefaultItemDescriptionTypeUseType(UserVisitPK userVisitPK, SetDefaultItemDescriptionTypeUseTypeForm form);
 
-    CommandResult<?> editItemDescriptionTypeUseType(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeForm form);
+    CommandResult<EditItemDescriptionTypeUseTypeResult> editItemDescriptionTypeUseType(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeForm form);
 
     CommandResult<?> deleteItemDescriptionTypeUseType(UserVisitPK userVisitPK, DeleteItemDescriptionTypeUseTypeForm form);
 
@@ -239,11 +240,11 @@ public interface ItemService
 
     CommandResult<?> createItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeDescriptionForm form);
 
-    CommandResult<?> getItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeDescriptionForm form);
+    CommandResult<GetItemDescriptionTypeUseTypeDescriptionResult> getItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeDescriptionForm form);
 
-    CommandResult<?> getItemDescriptionTypeUseTypeDescriptions(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeDescriptionsForm form);
+    CommandResult<GetItemDescriptionTypeUseTypeDescriptionsResult> getItemDescriptionTypeUseTypeDescriptions(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeDescriptionsForm form);
 
-    CommandResult<?> editItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeDescriptionForm form);
+    CommandResult<EditItemDescriptionTypeUseTypeDescriptionResult> editItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeDescriptionForm form);
 
     CommandResult<?> deleteItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, DeleteItemDescriptionTypeUseTypeDescriptionForm form);
 
@@ -253,9 +254,9 @@ public interface ItemService
 
     public CommandResult<?> createItemDescriptionTypeUse(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseForm form);
 
-    public CommandResult<?> getItemDescriptionTypeUse(UserVisitPK userVisitPK, GetItemDescriptionTypeUseForm form);
+    public CommandResult<GetItemDescriptionTypeUseResult> getItemDescriptionTypeUse(UserVisitPK userVisitPK, GetItemDescriptionTypeUseForm form);
 
-    public CommandResult<?> getItemDescriptionTypeUses(UserVisitPK userVisitPK, GetItemDescriptionTypeUsesForm form);
+    public CommandResult<GetItemDescriptionTypeUsesResult> getItemDescriptionTypeUses(UserVisitPK userVisitPK, GetItemDescriptionTypeUsesForm form);
 
     public CommandResult<?> deleteItemDescriptionTypeUse(UserVisitPK userVisitPK, DeleteItemDescriptionTypeUseForm form);
 
@@ -265,15 +266,15 @@ public interface ItemService
 
     CommandResult<?> createItemImageType(UserVisitPK userVisitPK, CreateItemImageTypeForm form);
 
-    CommandResult<?> getItemImageTypeChoices(UserVisitPK userVisitPK, GetItemImageTypeChoicesForm form);
+    CommandResult<GetItemImageTypeChoicesResult> getItemImageTypeChoices(UserVisitPK userVisitPK, GetItemImageTypeChoicesForm form);
 
-    CommandResult<?> getItemImageType(UserVisitPK userVisitPK, GetItemImageTypeForm form);
+    CommandResult<GetItemImageTypeResult> getItemImageType(UserVisitPK userVisitPK, GetItemImageTypeForm form);
 
-    CommandResult<?> getItemImageTypes(UserVisitPK userVisitPK, GetItemImageTypesForm form);
+    CommandResult<GetItemImageTypesResult> getItemImageTypes(UserVisitPK userVisitPK, GetItemImageTypesForm form);
 
     CommandResult<?> setDefaultItemImageType(UserVisitPK userVisitPK, SetDefaultItemImageTypeForm form);
 
-    CommandResult<?> editItemImageType(UserVisitPK userVisitPK, EditItemImageTypeForm form);
+    CommandResult<EditItemImageTypeResult> editItemImageType(UserVisitPK userVisitPK, EditItemImageTypeForm form);
 
     CommandResult<?> deleteItemImageType(UserVisitPK userVisitPK, DeleteItemImageTypeForm form);
 
@@ -283,11 +284,11 @@ public interface ItemService
 
     CommandResult<?> createItemImageTypeDescription(UserVisitPK userVisitPK, CreateItemImageTypeDescriptionForm form);
 
-    CommandResult<?> getItemImageTypeDescription(UserVisitPK userVisitPK, GetItemImageTypeDescriptionForm form);
+    CommandResult<GetItemImageTypeDescriptionResult> getItemImageTypeDescription(UserVisitPK userVisitPK, GetItemImageTypeDescriptionForm form);
 
-    CommandResult<?> getItemImageTypeDescriptions(UserVisitPK userVisitPK, GetItemImageTypeDescriptionsForm form);
+    CommandResult<GetItemImageTypeDescriptionsResult> getItemImageTypeDescriptions(UserVisitPK userVisitPK, GetItemImageTypeDescriptionsForm form);
 
-    CommandResult<?> editItemImageTypeDescription(UserVisitPK userVisitPK, EditItemImageTypeDescriptionForm form);
+    CommandResult<EditItemImageTypeDescriptionResult> editItemImageTypeDescription(UserVisitPK userVisitPK, EditItemImageTypeDescriptionForm form);
 
     CommandResult<?> deleteItemImageTypeDescription(UserVisitPK userVisitPK, DeleteItemImageTypeDescriptionForm form);
 
@@ -297,15 +298,15 @@ public interface ItemService
     
     CommandResult<?> createItem(UserVisitPK userVisitPK, CreateItemForm form);
     
-    CommandResult<?> getItemStatusChoices(UserVisitPK userVisitPK, GetItemStatusChoicesForm form);
+    CommandResult<GetItemStatusChoicesResult> getItemStatusChoices(UserVisitPK userVisitPK, GetItemStatusChoicesForm form);
     
     CommandResult<?> setItemStatus(UserVisitPK userVisitPK, SetItemStatusForm form);
 
-    CommandResult<?> getItem(UserVisitPK userVisitPK, GetItemForm form);
+    CommandResult<GetItemResult> getItem(UserVisitPK userVisitPK, GetItemForm form);
 
-    CommandResult<?> getItems(UserVisitPK userVisitPK, GetItemsForm form);
+    CommandResult<GetItemsResult> getItems(UserVisitPK userVisitPK, GetItemsForm form);
 
-    CommandResult<?> editItem(UserVisitPK userVisitPK, EditItemForm form);
+    CommandResult<EditItemResult> editItem(UserVisitPK userVisitPK, EditItemForm form);
     
     // -------------------------------------------------------------------------
     //   Item Unit Of Measure Types
@@ -313,13 +314,13 @@ public interface ItemService
     
     CommandResult<?> createItemUnitOfMeasureType(UserVisitPK userVisitPK, CreateItemUnitOfMeasureTypeForm form);
     
-    CommandResult<?> getItemUnitOfMeasureType(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypeForm form);
+    CommandResult<GetItemUnitOfMeasureTypeResult> getItemUnitOfMeasureType(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypeForm form);
 
-    CommandResult<?> getItemUnitOfMeasureTypes(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypesForm form);
+    CommandResult<GetItemUnitOfMeasureTypesResult> getItemUnitOfMeasureTypes(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypesForm form);
     
     CommandResult<?> setDefaultItemUnitOfMeasureType(UserVisitPK userVisitPK, SetDefaultItemUnitOfMeasureTypeForm form);
     
-    CommandResult<?> editItemUnitOfMeasureType(UserVisitPK userVisitPK, EditItemUnitOfMeasureTypeForm form);
+    CommandResult<EditItemUnitOfMeasureTypeResult> editItemUnitOfMeasureType(UserVisitPK userVisitPK, EditItemUnitOfMeasureTypeForm form);
     
     CommandResult<?> deleteItemUnitOfMeasureType(UserVisitPK userVisitPK, DeleteItemUnitOfMeasureTypeForm form);
     
@@ -329,11 +330,11 @@ public interface ItemService
     
     CommandResult<?> createItemAlias(UserVisitPK userVisitPK, CreateItemAliasForm form);
     
-    CommandResult<?> getItemAlias(UserVisitPK userVisitPK, GetItemAliasForm form);
+    CommandResult<GetItemAliasResult> getItemAlias(UserVisitPK userVisitPK, GetItemAliasForm form);
 
-    CommandResult<?> getItemAliases(UserVisitPK userVisitPK, GetItemAliasesForm form);
+    CommandResult<GetItemAliasesResult> getItemAliases(UserVisitPK userVisitPK, GetItemAliasesForm form);
     
-    CommandResult<?> editItemAlias(UserVisitPK userVisitPK, EditItemAliasForm form);
+    CommandResult<EditItemAliasResult> editItemAlias(UserVisitPK userVisitPK, EditItemAliasForm form);
     
     CommandResult<?> deleteItemAlias(UserVisitPK userVisitPK, DeleteItemAliasForm form);
     
@@ -343,11 +344,11 @@ public interface ItemService
     
     CommandResult<?> createItemDescription(UserVisitPK userVisitPK, CreateItemDescriptionForm form);
     
-    CommandResult<?> getItemDescription(UserVisitPK userVisitPK, GetItemDescriptionForm form);
+    CommandResult<GetItemDescriptionResult> getItemDescription(UserVisitPK userVisitPK, GetItemDescriptionForm form);
     
-    CommandResult<?> getItemDescriptions(UserVisitPK userVisitPK, GetItemDescriptionsForm form);
+    CommandResult<GetItemDescriptionsResult> getItemDescriptions(UserVisitPK userVisitPK, GetItemDescriptionsForm form);
     
-    CommandResult<?> editItemDescription(UserVisitPK userVisitPK, EditItemDescriptionForm form);
+    CommandResult<EditItemDescriptionResult> editItemDescription(UserVisitPK userVisitPK, EditItemDescriptionForm form);
     
     CommandResult<?> deleteItemDescription(UserVisitPK userVisitPK, DeleteItemDescriptionForm form);
     
@@ -357,11 +358,11 @@ public interface ItemService
     
     CommandResult<?> createItemPriceType(UserVisitPK userVisitPK, CreateItemPriceTypeForm form);
     
-    CommandResult<?> getItemPriceType(UserVisitPK userVisitPK, GetItemPriceTypeForm form);
+    CommandResult<GetItemPriceTypeResult> getItemPriceType(UserVisitPK userVisitPK, GetItemPriceTypeForm form);
     
-    CommandResult<?> getItemPriceTypes(UserVisitPK userVisitPK, GetItemPriceTypesForm form);
+    CommandResult<GetItemPriceTypesResult> getItemPriceTypes(UserVisitPK userVisitPK, GetItemPriceTypesForm form);
     
-    CommandResult<?> getItemPriceTypeChoices(UserVisitPK userVisitPK, GetItemPriceTypeChoicesForm form);
+    CommandResult<GetItemPriceTypeChoicesResult> getItemPriceTypeChoices(UserVisitPK userVisitPK, GetItemPriceTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Price Type Descriptions
@@ -375,11 +376,11 @@ public interface ItemService
     
     CommandResult<?> createItemPrice(UserVisitPK userVisitPK, CreateItemPriceForm form);
     
-    CommandResult<?> getItemPrice(UserVisitPK userVisitPK, GetItemPriceForm form);
+    CommandResult<GetItemPriceResult> getItemPrice(UserVisitPK userVisitPK, GetItemPriceForm form);
 
-    CommandResult<?> getItemPrices(UserVisitPK userVisitPK, GetItemPricesForm form);
+    CommandResult<GetItemPricesResult> getItemPrices(UserVisitPK userVisitPK, GetItemPricesForm form);
     
-    CommandResult<?> editItemPrice(UserVisitPK userVisitPK, EditItemPriceForm form);
+    CommandResult<EditItemPriceResult> editItemPrice(UserVisitPK userVisitPK, EditItemPriceForm form);
     
     CommandResult<?> deleteItemPrice(UserVisitPK userVisitPK, DeleteItemPriceForm form);
 
@@ -389,15 +390,15 @@ public interface ItemService
 
     CommandResult<?> createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form);
 
-    CommandResult<?> getItemVolumeTypeChoices(UserVisitPK userVisitPK, GetItemVolumeTypeChoicesForm form);
+    CommandResult<GetItemVolumeTypeChoicesResult> getItemVolumeTypeChoices(UserVisitPK userVisitPK, GetItemVolumeTypeChoicesForm form);
 
-    CommandResult<?> getItemVolumeType(UserVisitPK userVisitPK, GetItemVolumeTypeForm form);
+    CommandResult<GetItemVolumeTypeResult> getItemVolumeType(UserVisitPK userVisitPK, GetItemVolumeTypeForm form);
 
-    CommandResult<?> getItemVolumeTypes(UserVisitPK userVisitPK, GetItemVolumeTypesForm form);
+    CommandResult<GetItemVolumeTypesResult> getItemVolumeTypes(UserVisitPK userVisitPK, GetItemVolumeTypesForm form);
 
     CommandResult<?> setDefaultItemVolumeType(UserVisitPK userVisitPK, SetDefaultItemVolumeTypeForm form);
 
-    CommandResult<?> editItemVolumeType(UserVisitPK userVisitPK, EditItemVolumeTypeForm form);
+    CommandResult<EditItemVolumeTypeResult> editItemVolumeType(UserVisitPK userVisitPK, EditItemVolumeTypeForm form);
 
     CommandResult<?> deleteItemVolumeType(UserVisitPK userVisitPK, DeleteItemVolumeTypeForm form);
 
@@ -407,11 +408,11 @@ public interface ItemService
 
     CommandResult<?> createItemVolumeTypeDescription(UserVisitPK userVisitPK, CreateItemVolumeTypeDescriptionForm form);
 
-    CommandResult<?> getItemVolumeTypeDescription(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionForm form);
+    CommandResult<GetItemVolumeTypeDescriptionResult> getItemVolumeTypeDescription(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionForm form);
 
-    CommandResult<?> getItemVolumeTypeDescriptions(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionsForm form);
+    CommandResult<GetItemVolumeTypeDescriptionsResult> getItemVolumeTypeDescriptions(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionsForm form);
 
-    CommandResult<?> editItemVolumeTypeDescription(UserVisitPK userVisitPK, EditItemVolumeTypeDescriptionForm form);
+    CommandResult<EditItemVolumeTypeDescriptionResult> editItemVolumeTypeDescription(UserVisitPK userVisitPK, EditItemVolumeTypeDescriptionForm form);
 
     CommandResult<?> deleteItemVolumeTypeDescription(UserVisitPK userVisitPK, DeleteItemVolumeTypeDescriptionForm form);
 
@@ -421,11 +422,11 @@ public interface ItemService
     
     CommandResult<?> createItemVolume(UserVisitPK userVisitPK, CreateItemVolumeForm form);
     
-    CommandResult<?> getItemVolume(UserVisitPK userVisitPK, GetItemVolumeForm form);
+    CommandResult<GetItemVolumeResult> getItemVolume(UserVisitPK userVisitPK, GetItemVolumeForm form);
 
-    CommandResult<?> getItemVolumes(UserVisitPK userVisitPK, GetItemVolumesForm form);
+    CommandResult<GetItemVolumesResult> getItemVolumes(UserVisitPK userVisitPK, GetItemVolumesForm form);
 
-    CommandResult<?> editItemVolume(UserVisitPK userVisitPK, EditItemVolumeForm form);
+    CommandResult<EditItemVolumeResult> editItemVolume(UserVisitPK userVisitPK, EditItemVolumeForm form);
     
     CommandResult<?> deleteItemVolume(UserVisitPK userVisitPK, DeleteItemVolumeForm form);
 
@@ -435,15 +436,15 @@ public interface ItemService
 
     CommandResult<?> createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form);
 
-    CommandResult<?> getItemWeightTypeChoices(UserVisitPK userVisitPK, GetItemWeightTypeChoicesForm form);
+    CommandResult<GetItemWeightTypeChoicesResult> getItemWeightTypeChoices(UserVisitPK userVisitPK, GetItemWeightTypeChoicesForm form);
 
-    CommandResult<?> getItemWeightType(UserVisitPK userVisitPK, GetItemWeightTypeForm form);
+    CommandResult<GetItemWeightTypeResult> getItemWeightType(UserVisitPK userVisitPK, GetItemWeightTypeForm form);
 
-    CommandResult<?> getItemWeightTypes(UserVisitPK userVisitPK, GetItemWeightTypesForm form);
+    CommandResult<GetItemWeightTypesResult> getItemWeightTypes(UserVisitPK userVisitPK, GetItemWeightTypesForm form);
 
     CommandResult<?> setDefaultItemWeightType(UserVisitPK userVisitPK, SetDefaultItemWeightTypeForm form);
 
-    CommandResult<?> editItemWeightType(UserVisitPK userVisitPK, EditItemWeightTypeForm form);
+    CommandResult<EditItemWeightTypeResult> editItemWeightType(UserVisitPK userVisitPK, EditItemWeightTypeForm form);
 
     CommandResult<?> deleteItemWeightType(UserVisitPK userVisitPK, DeleteItemWeightTypeForm form);
 
@@ -453,11 +454,11 @@ public interface ItemService
 
     CommandResult<?> createItemWeightTypeDescription(UserVisitPK userVisitPK, CreateItemWeightTypeDescriptionForm form);
 
-    CommandResult<?> getItemWeightTypeDescription(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionForm form);
+    CommandResult<GetItemWeightTypeDescriptionResult> getItemWeightTypeDescription(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionForm form);
 
-    CommandResult<?> getItemWeightTypeDescriptions(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionsForm form);
+    CommandResult<GetItemWeightTypeDescriptionsResult> getItemWeightTypeDescriptions(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionsForm form);
 
-    CommandResult<?> editItemWeightTypeDescription(UserVisitPK userVisitPK, EditItemWeightTypeDescriptionForm form);
+    CommandResult<EditItemWeightTypeDescriptionResult> editItemWeightTypeDescription(UserVisitPK userVisitPK, EditItemWeightTypeDescriptionForm form);
 
     CommandResult<?> deleteItemWeightTypeDescription(UserVisitPK userVisitPK, DeleteItemWeightTypeDescriptionForm form);
 
@@ -467,11 +468,11 @@ public interface ItemService
     
     CommandResult<?> createItemWeight(UserVisitPK userVisitPK, CreateItemWeightForm form);
     
-    CommandResult<?> getItemWeight(UserVisitPK userVisitPK, GetItemWeightForm form);
+    CommandResult<GetItemWeightResult> getItemWeight(UserVisitPK userVisitPK, GetItemWeightForm form);
 
-    CommandResult<?> getItemWeights(UserVisitPK userVisitPK, GetItemWeightsForm form);
+    CommandResult<GetItemWeightsResult> getItemWeights(UserVisitPK userVisitPK, GetItemWeightsForm form);
 
-    CommandResult<?> editItemWeight(UserVisitPK userVisitPK, EditItemWeightForm form);
+    CommandResult<EditItemWeightResult> editItemWeight(UserVisitPK userVisitPK, EditItemWeightForm form);
     
     CommandResult<?> deleteItemWeight(UserVisitPK userVisitPK, DeleteItemWeightForm form);
     
@@ -481,11 +482,11 @@ public interface ItemService
     
     CommandResult<?> createItemCountryOfOrigin(UserVisitPK userVisitPK, CreateItemCountryOfOriginForm form);
     
-    CommandResult<?> getItemCountryOfOrigin(UserVisitPK userVisitPK, GetItemCountryOfOriginForm form);
+    CommandResult<GetItemCountryOfOriginResult> getItemCountryOfOrigin(UserVisitPK userVisitPK, GetItemCountryOfOriginForm form);
 
-    CommandResult<?> getItemCountryOfOrigins(UserVisitPK userVisitPK, GetItemCountryOfOriginsForm form);
+    CommandResult<GetItemCountryOfOriginsResult> getItemCountryOfOrigins(UserVisitPK userVisitPK, GetItemCountryOfOriginsForm form);
 
-    CommandResult<?> editItemCountryOfOrigin(UserVisitPK userVisitPK, EditItemCountryOfOriginForm form);
+    CommandResult<EditItemCountryOfOriginResult> editItemCountryOfOrigin(UserVisitPK userVisitPK, EditItemCountryOfOriginForm form);
     
     CommandResult<?> deleteItemCountryOfOrigin(UserVisitPK userVisitPK, DeleteItemCountryOfOriginForm form);
     
@@ -495,9 +496,9 @@ public interface ItemService
     
     CommandResult<?> createItemKitMember(UserVisitPK userVisitPK, CreateItemKitMemberForm form);
     
-    CommandResult<?> getItemKitMember(UserVisitPK userVisitPK, GetItemKitMemberForm form);
+    CommandResult<GetItemKitMemberResult> getItemKitMember(UserVisitPK userVisitPK, GetItemKitMemberForm form);
 
-    CommandResult<?> getItemKitMembers(UserVisitPK userVisitPK, GetItemKitMembersForm form);
+    CommandResult<GetItemKitMembersResult> getItemKitMembers(UserVisitPK userVisitPK, GetItemKitMembersForm form);
 
     CommandResult<?> deleteItemKitMember(UserVisitPK userVisitPK, DeleteItemKitMemberForm form);
     
@@ -507,11 +508,11 @@ public interface ItemService
     
     CommandResult<?> createItemPackCheckRequirement(UserVisitPK userVisitPK, CreateItemPackCheckRequirementForm form);
     
-    CommandResult<?> getItemPackCheckRequirement(UserVisitPK userVisitPK, GetItemPackCheckRequirementForm form);
+    CommandResult<GetItemPackCheckRequirementResult> getItemPackCheckRequirement(UserVisitPK userVisitPK, GetItemPackCheckRequirementForm form);
     
-    CommandResult<?> getItemPackCheckRequirements(UserVisitPK userVisitPK, GetItemPackCheckRequirementsForm form);
+    CommandResult<GetItemPackCheckRequirementsResult> getItemPackCheckRequirements(UserVisitPK userVisitPK, GetItemPackCheckRequirementsForm form);
     
-    CommandResult<?> editItemPackCheckRequirement(UserVisitPK userVisitPK, EditItemPackCheckRequirementForm form);
+    CommandResult<EditItemPackCheckRequirementResult> editItemPackCheckRequirement(UserVisitPK userVisitPK, EditItemPackCheckRequirementForm form);
 
     CommandResult<?> deleteItemPackCheckRequirement(UserVisitPK userVisitPK, DeleteItemPackCheckRequirementForm form);
     
@@ -519,11 +520,11 @@ public interface ItemService
     //   Item Shipping Times
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> getItemShippingTime(UserVisitPK userVisitPK, GetItemShippingTimeForm form);
+    CommandResult<GetItemShippingTimeResult> getItemShippingTime(UserVisitPK userVisitPK, GetItemShippingTimeForm form);
 
-    CommandResult<?> getItemShippingTimes(UserVisitPK userVisitPK, GetItemShippingTimesForm form);
+    CommandResult<GetItemShippingTimesResult> getItemShippingTimes(UserVisitPK userVisitPK, GetItemShippingTimesForm form);
 
-    CommandResult<?> editItemShippingTime(UserVisitPK userVisitPK, EditItemShippingTimeForm form);
+    CommandResult<EditItemShippingTimeResult> editItemShippingTime(UserVisitPK userVisitPK, EditItemShippingTimeForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Unit Customer Type Limits
@@ -531,11 +532,11 @@ public interface ItemService
     
     CommandResult<?> createItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, CreateItemUnitCustomerTypeLimitForm form);
     
-    CommandResult<?> getItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitForm form);
+    CommandResult<GetItemUnitCustomerTypeLimitResult> getItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitForm form);
 
-    CommandResult<?> getItemUnitCustomerTypeLimits(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitsForm form);
+    CommandResult<GetItemUnitCustomerTypeLimitsResult> getItemUnitCustomerTypeLimits(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitsForm form);
 
-    CommandResult<?> editItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, EditItemUnitCustomerTypeLimitForm form);
+    CommandResult<EditItemUnitCustomerTypeLimitResult> editItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, EditItemUnitCustomerTypeLimitForm form);
 
     CommandResult<?> deleteItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, DeleteItemUnitCustomerTypeLimitForm form);
     
@@ -545,11 +546,11 @@ public interface ItemService
     
     CommandResult<?> createItemUnitLimit(UserVisitPK userVisitPK, CreateItemUnitLimitForm form);
     
-    CommandResult<?> getItemUnitLimit(UserVisitPK userVisitPK, GetItemUnitLimitForm form);
+    CommandResult<GetItemUnitLimitResult> getItemUnitLimit(UserVisitPK userVisitPK, GetItemUnitLimitForm form);
 
-    CommandResult<?> getItemUnitLimits(UserVisitPK userVisitPK, GetItemUnitLimitsForm form);
+    CommandResult<GetItemUnitLimitsResult> getItemUnitLimits(UserVisitPK userVisitPK, GetItemUnitLimitsForm form);
 
-    CommandResult<?> editItemUnitLimit(UserVisitPK userVisitPK, EditItemUnitLimitForm form);
+    CommandResult<EditItemUnitLimitResult> editItemUnitLimit(UserVisitPK userVisitPK, EditItemUnitLimitForm form);
     
     CommandResult<?> deleteItemUnitLimit(UserVisitPK userVisitPK, DeleteItemUnitLimitForm form);
     
@@ -559,11 +560,11 @@ public interface ItemService
     
     CommandResult<?> createItemUnitPriceLimit(UserVisitPK userVisitPK, CreateItemUnitPriceLimitForm form);
 
-    CommandResult<?> getItemUnitPriceLimit(UserVisitPK userVisitPK, GetItemUnitPriceLimitForm form);
+    CommandResult<GetItemUnitPriceLimitResult> getItemUnitPriceLimit(UserVisitPK userVisitPK, GetItemUnitPriceLimitForm form);
     
-    CommandResult<?> getItemUnitPriceLimits(UserVisitPK userVisitPK, GetItemUnitPriceLimitsForm form);
+    CommandResult<GetItemUnitPriceLimitsResult> getItemUnitPriceLimits(UserVisitPK userVisitPK, GetItemUnitPriceLimitsForm form);
 
-    CommandResult<?> editItemUnitPriceLimit(UserVisitPK userVisitPK, EditItemUnitPriceLimitForm form);
+    CommandResult<EditItemUnitPriceLimitResult> editItemUnitPriceLimit(UserVisitPK userVisitPK, EditItemUnitPriceLimitForm form);
     
     CommandResult<?> deleteItemUnitPriceLimit(UserVisitPK userVisitPK, DeleteItemUnitPriceLimitForm form);
     
@@ -573,15 +574,15 @@ public interface ItemService
 
     CommandResult<?> createRelatedItemType(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form);
 
-    CommandResult<?> getRelatedItemTypeChoices(UserVisitPK userVisitPK, GetRelatedItemTypeChoicesForm form);
+    CommandResult<GetRelatedItemTypeChoicesResult> getRelatedItemTypeChoices(UserVisitPK userVisitPK, GetRelatedItemTypeChoicesForm form);
 
-    CommandResult<?> getRelatedItemType(UserVisitPK userVisitPK, GetRelatedItemTypeForm form);
+    CommandResult<GetRelatedItemTypeResult> getRelatedItemType(UserVisitPK userVisitPK, GetRelatedItemTypeForm form);
 
-    CommandResult<?> getRelatedItemTypes(UserVisitPK userVisitPK, GetRelatedItemTypesForm form);
+    CommandResult<GetRelatedItemTypesResult> getRelatedItemTypes(UserVisitPK userVisitPK, GetRelatedItemTypesForm form);
 
     CommandResult<?> setDefaultRelatedItemType(UserVisitPK userVisitPK, SetDefaultRelatedItemTypeForm form);
 
-    CommandResult<?> editRelatedItemType(UserVisitPK userVisitPK, EditRelatedItemTypeForm form);
+    CommandResult<EditRelatedItemTypeResult> editRelatedItemType(UserVisitPK userVisitPK, EditRelatedItemTypeForm form);
 
     CommandResult<?> deleteRelatedItemType(UserVisitPK userVisitPK, DeleteRelatedItemTypeForm form);
 
@@ -591,11 +592,11 @@ public interface ItemService
 
     CommandResult<?> createRelatedItemTypeDescription(UserVisitPK userVisitPK, CreateRelatedItemTypeDescriptionForm form);
 
-    CommandResult<?> getRelatedItemTypeDescription(UserVisitPK userVisitPK, GetRelatedItemTypeDescriptionForm form);
+    CommandResult<GetRelatedItemTypeDescriptionResult> getRelatedItemTypeDescription(UserVisitPK userVisitPK, GetRelatedItemTypeDescriptionForm form);
 
-    CommandResult<?> getRelatedItemTypeDescriptions(UserVisitPK userVisitPK, GetRelatedItemTypeDescriptionsForm form);
+    CommandResult<GetRelatedItemTypeDescriptionsResult> getRelatedItemTypeDescriptions(UserVisitPK userVisitPK, GetRelatedItemTypeDescriptionsForm form);
 
-    CommandResult<?> editRelatedItemTypeDescription(UserVisitPK userVisitPK, EditRelatedItemTypeDescriptionForm form);
+    CommandResult<EditRelatedItemTypeDescriptionResult> editRelatedItemTypeDescription(UserVisitPK userVisitPK, EditRelatedItemTypeDescriptionForm form);
 
     CommandResult<?> deleteRelatedItemTypeDescription(UserVisitPK userVisitPK, DeleteRelatedItemTypeDescriptionForm form);
 
@@ -605,11 +606,11 @@ public interface ItemService
     
     CommandResult<?> createRelatedItem(UserVisitPK userVisitPK, CreateRelatedItemForm form);
     
-    CommandResult<?> getRelatedItem(UserVisitPK userVisitPK, GetRelatedItemForm form);
+    CommandResult<GetRelatedItemResult> getRelatedItem(UserVisitPK userVisitPK, GetRelatedItemForm form);
 
-    CommandResult<?> getRelatedItems(UserVisitPK userVisitPK, GetRelatedItemsForm form);
+    CommandResult<GetRelatedItemsResult> getRelatedItems(UserVisitPK userVisitPK, GetRelatedItemsForm form);
 
-    CommandResult<?> editRelatedItem(UserVisitPK userVisitPK, EditRelatedItemForm form);
+    CommandResult<EditRelatedItemResult> editRelatedItem(UserVisitPK userVisitPK, EditRelatedItemForm form);
 
     CommandResult<?> deleteRelatedItem(UserVisitPK userVisitPK, DeleteRelatedItemForm form);
     
@@ -619,15 +620,15 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodesForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodesResult> getHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodesForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeResult> getHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeChoicesForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeChoicesResult> getHarmonizedTariffScheduleCodeChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeChoicesForm form);
 
     CommandResult<?> setDefaultHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, SetDefaultHarmonizedTariffScheduleCodeForm form);
 
-    CommandResult<?> editHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeForm form);
+    CommandResult<EditHarmonizedTariffScheduleCodeResult> editHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeForm form);
 
@@ -637,11 +638,11 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeTranslationForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeTranslations(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeTranslationsForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeTranslationsResult> getHarmonizedTariffScheduleCodeTranslations(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeTranslationsForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeTranslationForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeTranslationResult> getHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeTranslationForm form);
 
-    CommandResult<?> editHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeTranslationForm form);
+    CommandResult<EditHarmonizedTariffScheduleCodeTranslationResult> editHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeTranslationForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeTranslationForm form);
     
@@ -651,15 +652,15 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUnits(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitsForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUnitsResult> getHarmonizedTariffScheduleCodeUnits(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitsForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUnitResult> getHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUnitChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitChoicesForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUnitChoicesResult> getHarmonizedTariffScheduleCodeUnitChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitChoicesForm form);
 
     CommandResult<?> setDefaultHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, SetDefaultHarmonizedTariffScheduleCodeUnitForm form);
 
-    CommandResult<?> editHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitForm form);
+    CommandResult<EditHarmonizedTariffScheduleCodeUnitResult> editHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUnitForm form);
 
@@ -669,11 +670,11 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitDescriptionForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUnitDescriptions(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitDescriptionsForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUnitDescriptionsResult> getHarmonizedTariffScheduleCodeUnitDescriptions(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitDescriptionsForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitDescriptionForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUnitDescriptionResult> getHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitDescriptionForm form);
 
-    CommandResult<?> editHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitDescriptionForm form);
+    CommandResult<EditHarmonizedTariffScheduleCodeUnitDescriptionResult> editHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitDescriptionForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUnitDescriptionForm form);
 
@@ -683,15 +684,15 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUseTypes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypesForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUseTypesResult> getHarmonizedTariffScheduleCodeUseTypes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypesForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUseTypeResult> getHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUseTypeChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUseTypeChoicesResult> getHarmonizedTariffScheduleCodeUseTypeChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form);
 
     CommandResult<?> setDefaultHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, SetDefaultHarmonizedTariffScheduleCodeUseTypeForm form);
 
-    CommandResult<?> editHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUseTypeForm form);
+    CommandResult<EditHarmonizedTariffScheduleCodeUseTypeResult> editHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUseTypeForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseTypeForm form);
 
@@ -701,11 +702,11 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeDescriptionForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUseTypeDescriptions(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeDescriptionsForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUseTypeDescriptionsResult> getHarmonizedTariffScheduleCodeUseTypeDescriptions(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeDescriptionsForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeDescriptionForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUseTypeDescriptionResult> getHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeDescriptionForm form);
 
-    CommandResult<?> editHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUseTypeDescriptionForm form);
+    CommandResult<EditHarmonizedTariffScheduleCodeUseTypeDescriptionResult> editHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUseTypeDescriptionForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionForm form);
 
@@ -715,9 +716,9 @@ public interface ItemService
 
     CommandResult<?> createHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUses(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUsesForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUsesResult> getHarmonizedTariffScheduleCodeUses(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUsesForm form);
 
-    CommandResult<?> getHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeUseResult> getHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseForm form);
 
     CommandResult<?> deleteHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseForm form);
 
@@ -727,11 +728,11 @@ public interface ItemService
 
     CommandResult<?> createItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateItemHarmonizedTariffScheduleCodeForm form);
 
-    CommandResult<?> getItemHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetItemHarmonizedTariffScheduleCodesForm form);
+    CommandResult<GetItemHarmonizedTariffScheduleCodesResult> getItemHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetItemHarmonizedTariffScheduleCodesForm form);
 
-    CommandResult<?> getItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, GetItemHarmonizedTariffScheduleCodeForm form);
+    CommandResult<GetItemHarmonizedTariffScheduleCodeResult> getItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, GetItemHarmonizedTariffScheduleCodeForm form);
 
-    CommandResult<?> editItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, EditItemHarmonizedTariffScheduleCodeForm form);
+    CommandResult<EditItemHarmonizedTariffScheduleCodeResult> editItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, EditItemHarmonizedTariffScheduleCodeForm form);
 
     CommandResult<?> deleteItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, DeleteItemHarmonizedTariffScheduleCodeForm form);
 

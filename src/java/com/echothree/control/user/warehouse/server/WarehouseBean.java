@@ -18,6 +18,7 @@ package com.echothree.control.user.warehouse.server;
 
 import com.echothree.control.user.warehouse.common.WarehouseRemote;
 import com.echothree.control.user.warehouse.common.form.*;
+import com.echothree.control.user.warehouse.common.result.*;
 import com.echothree.control.user.warehouse.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form) {
+    public CommandResult<GetLocationUseTypesResult> getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form) {
         return CDI.current().select(GetLocationUseTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLocationUseType(UserVisitPK userVisitPK, GetLocationUseTypeForm form) {
+    public CommandResult<GetLocationUseTypeResult> getLocationUseType(UserVisitPK userVisitPK, GetLocationUseTypeForm form) {
         return CDI.current().select(GetLocationUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLocationUseTypeChoices(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form) {
+    public CommandResult<GetLocationUseTypeChoicesResult> getLocationUseTypeChoices(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form) {
         return CDI.current().select(GetLocationUseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -81,17 +82,17 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> getWarehouseTypes(UserVisitPK userVisitPK, GetWarehouseTypesForm form) {
+    public CommandResult<GetWarehouseTypesResult> getWarehouseTypes(UserVisitPK userVisitPK, GetWarehouseTypesForm form) {
         return CDI.current().select(GetWarehouseTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWarehouseType(UserVisitPK userVisitPK, GetWarehouseTypeForm form) {
+    public CommandResult<GetWarehouseTypeResult> getWarehouseType(UserVisitPK userVisitPK, GetWarehouseTypeForm form) {
         return CDI.current().select(GetWarehouseTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWarehouseTypeChoices(UserVisitPK userVisitPK, GetWarehouseTypeChoicesForm form) {
+    public CommandResult<GetWarehouseTypeChoicesResult> getWarehouseTypeChoices(UserVisitPK userVisitPK, GetWarehouseTypeChoicesForm form) {
         return CDI.current().select(GetWarehouseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -101,7 +102,7 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> editWarehouseType(UserVisitPK userVisitPK, EditWarehouseTypeForm form) {
+    public CommandResult<EditWarehouseTypeResult> editWarehouseType(UserVisitPK userVisitPK, EditWarehouseTypeForm form) {
         return CDI.current().select(EditWarehouseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -120,17 +121,17 @@ public class WarehouseBean
     }
 
     @Override
-    public CommandResult<?> getWarehouseTypeDescriptions(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionsForm form) {
+    public CommandResult<GetWarehouseTypeDescriptionsResult> getWarehouseTypeDescriptions(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionsForm form) {
         return CDI.current().select(GetWarehouseTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWarehouseTypeDescription(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionForm form) {
+    public CommandResult<GetWarehouseTypeDescriptionResult> getWarehouseTypeDescription(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionForm form) {
         return CDI.current().select(GetWarehouseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editWarehouseTypeDescription(UserVisitPK userVisitPK, EditWarehouseTypeDescriptionForm form) {
+    public CommandResult<EditWarehouseTypeDescriptionResult> editWarehouseTypeDescription(UserVisitPK userVisitPK, EditWarehouseTypeDescriptionForm form) {
         return CDI.current().select(EditWarehouseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -149,17 +150,17 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getWarehouses(UserVisitPK userVisitPK, GetWarehousesForm form) {
+    public CommandResult<GetWarehousesResult> getWarehouses(UserVisitPK userVisitPK, GetWarehousesForm form) {
         return CDI.current().select(GetWarehousesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWarehouse(UserVisitPK userVisitPK, GetWarehouseForm form) {
+    public CommandResult<GetWarehouseResult> getWarehouse(UserVisitPK userVisitPK, GetWarehouseForm form) {
         return CDI.current().select(GetWarehouseCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWarehouseChoices(UserVisitPK userVisitPK, GetWarehouseChoicesForm form) {
+    public CommandResult<GetWarehouseChoicesResult> getWarehouseChoices(UserVisitPK userVisitPK, GetWarehouseChoicesForm form) {
         return CDI.current().select(GetWarehouseChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -169,7 +170,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> editWarehouse(UserVisitPK userVisitPK, EditWarehouseForm form) {
+    public CommandResult<EditWarehouseResult> editWarehouse(UserVisitPK userVisitPK, EditWarehouseForm form) {
         return CDI.current().select(EditWarehouseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -188,17 +189,17 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocationTypes(UserVisitPK userVisitPK, GetLocationTypesForm form) {
+    public CommandResult<GetLocationTypesResult> getLocationTypes(UserVisitPK userVisitPK, GetLocationTypesForm form) {
         return CDI.current().select(GetLocationTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLocationType(UserVisitPK userVisitPK, GetLocationTypeForm form) {
+    public CommandResult<GetLocationTypeResult> getLocationType(UserVisitPK userVisitPK, GetLocationTypeForm form) {
         return CDI.current().select(GetLocationTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLocationTypeChoices(UserVisitPK userVisitPK, GetLocationTypeChoicesForm form) {
+    public CommandResult<GetLocationTypeChoicesResult> getLocationTypeChoices(UserVisitPK userVisitPK, GetLocationTypeChoicesForm form) {
         return CDI.current().select(GetLocationTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -208,7 +209,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> editLocationType(UserVisitPK userVisitPK, EditLocationTypeForm form) {
+    public CommandResult<EditLocationTypeResult> editLocationType(UserVisitPK userVisitPK, EditLocationTypeForm form) {
         return CDI.current().select(EditLocationTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -227,12 +228,12 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocationTypeDescriptions(UserVisitPK userVisitPK, GetLocationTypeDescriptionsForm form) {
+    public CommandResult<GetLocationTypeDescriptionsResult> getLocationTypeDescriptions(UserVisitPK userVisitPK, GetLocationTypeDescriptionsForm form) {
         return CDI.current().select(GetLocationTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editLocationTypeDescription(UserVisitPK userVisitPK, EditLocationTypeDescriptionForm form) {
+    public CommandResult<EditLocationTypeDescriptionResult> editLocationTypeDescription(UserVisitPK userVisitPK, EditLocationTypeDescriptionForm form) {
         return CDI.current().select(EditLocationTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -251,17 +252,17 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form) {
+    public CommandResult<GetLocationNameElementsResult> getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form) {
         return CDI.current().select(GetLocationNameElementsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLocationNameElement(UserVisitPK userVisitPK, GetLocationNameElementForm form) {
+    public CommandResult<GetLocationNameElementResult> getLocationNameElement(UserVisitPK userVisitPK, GetLocationNameElementForm form) {
         return CDI.current().select(GetLocationNameElementCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form) {
+    public CommandResult<EditLocationNameElementResult> editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form) {
         return CDI.current().select(EditLocationNameElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -280,12 +281,12 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocationNameElementDescriptions(UserVisitPK userVisitPK, GetLocationNameElementDescriptionsForm form) {
+    public CommandResult<GetLocationNameElementDescriptionsResult> getLocationNameElementDescriptions(UserVisitPK userVisitPK, GetLocationNameElementDescriptionsForm form) {
         return CDI.current().select(GetLocationNameElementDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editLocationNameElementDescription(UserVisitPK userVisitPK, EditLocationNameElementDescriptionForm form) {
+    public CommandResult<EditLocationNameElementDescriptionResult> editLocationNameElementDescription(UserVisitPK userVisitPK, EditLocationNameElementDescriptionForm form) {
         return CDI.current().select(EditLocationNameElementDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -304,22 +305,22 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocations(UserVisitPK userVisitPK, GetLocationsForm form) {
+    public CommandResult<GetLocationsResult> getLocations(UserVisitPK userVisitPK, GetLocationsForm form) {
         return CDI.current().select(GetLocationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLocation(UserVisitPK userVisitPK, GetLocationForm form) {
+    public CommandResult<GetLocationResult> getLocation(UserVisitPK userVisitPK, GetLocationForm form) {
         return CDI.current().select(GetLocationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLocationChoices(UserVisitPK userVisitPK, GetLocationChoicesForm form) {
+    public CommandResult<GetLocationChoicesResult> getLocationChoices(UserVisitPK userVisitPK, GetLocationChoicesForm form) {
         return CDI.current().select(GetLocationChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getLocationStatusChoices(UserVisitPK userVisitPK, GetLocationStatusChoicesForm form) {
+    public CommandResult<GetLocationStatusChoicesResult> getLocationStatusChoices(UserVisitPK userVisitPK, GetLocationStatusChoicesForm form) {
         return CDI.current().select(GetLocationStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -329,7 +330,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> editLocation(UserVisitPK userVisitPK, EditLocationForm form) {
+    public CommandResult<EditLocationResult> editLocation(UserVisitPK userVisitPK, EditLocationForm form) {
         return CDI.current().select(EditLocationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -348,12 +349,12 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocationDescriptions(UserVisitPK userVisitPK, GetLocationDescriptionsForm form) {
+    public CommandResult<GetLocationDescriptionsResult> getLocationDescriptions(UserVisitPK userVisitPK, GetLocationDescriptionsForm form) {
         return CDI.current().select(GetLocationDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editLocationDescription(UserVisitPK userVisitPK, EditLocationDescriptionForm form) {
+    public CommandResult<EditLocationDescriptionResult> editLocationDescription(UserVisitPK userVisitPK, EditLocationDescriptionForm form) {
         return CDI.current().select(EditLocationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -372,12 +373,12 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> getLocationCapacities(UserVisitPK userVisitPK, GetLocationCapacitiesForm form) {
+    public CommandResult<GetLocationCapacitiesResult> getLocationCapacities(UserVisitPK userVisitPK, GetLocationCapacitiesForm form) {
         return CDI.current().select(GetLocationCapacitiesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editLocationCapacity(UserVisitPK userVisitPK, EditLocationCapacityForm form) {
+    public CommandResult<EditLocationCapacityResult> editLocationCapacity(UserVisitPK userVisitPK, EditLocationCapacityForm form) {
         return CDI.current().select(EditLocationCapacityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -396,7 +397,7 @@ public class WarehouseBean
     }
     
     @Override
-    public CommandResult<?> editLocationVolume(UserVisitPK userVisitPK, EditLocationVolumeForm form) {
+    public CommandResult<EditLocationVolumeResult> editLocationVolume(UserVisitPK userVisitPK, EditLocationVolumeForm form) {
         return CDI.current().select(EditLocationVolumeCommand.class).get().run(userVisitPK, form);
     }
     

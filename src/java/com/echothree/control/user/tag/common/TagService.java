@@ -17,6 +17,7 @@
 package com.echothree.control.user.tag.common;
 
 import com.echothree.control.user.tag.common.form.*;
+import com.echothree.control.user.tag.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface TagService
     
     CommandResult<?> createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form);
     
-    CommandResult<?> getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form);
+    CommandResult<GetTagScopeResult> getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form);
     
-    CommandResult<?> getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form);
+    CommandResult<GetTagScopesResult> getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form);
     
-    CommandResult<?> getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form);
+    CommandResult<GetTagScopeChoicesResult> getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form);
     
     CommandResult<?> setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form);
     
-    CommandResult<?> editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form);
+    CommandResult<EditTagScopeResult> editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form);
     
     CommandResult<?> deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form);
     
@@ -53,11 +54,11 @@ public interface TagService
     
     CommandResult<?> createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form);
     
-    CommandResult<?> getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form);
+    CommandResult<GetTagScopeDescriptionResult> getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form);
     
-    CommandResult<?> getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form);
+    CommandResult<GetTagScopeDescriptionsResult> getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form);
     
-    CommandResult<?> editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form);
+    CommandResult<EditTagScopeDescriptionResult> editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form);
     
     CommandResult<?> deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form);
     
@@ -67,9 +68,9 @@ public interface TagService
     
     CommandResult<?> createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form);
     
-    CommandResult<?> getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form);
+    CommandResult<GetTagScopeEntityTypeResult> getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form);
     
-    CommandResult<?> getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form);
+    CommandResult<GetTagScopeEntityTypesResult> getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form);
     
     CommandResult<?> deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form);
     
@@ -79,13 +80,13 @@ public interface TagService
     
     CommandResult<?> createTag(UserVisitPK userVisitPK, CreateTagForm form);
     
-    CommandResult<?> getTag(UserVisitPK userVisitPK, GetTagForm form);
+    CommandResult<GetTagResult> getTag(UserVisitPK userVisitPK, GetTagForm form);
     
-    CommandResult<?> getTags(UserVisitPK userVisitPK, GetTagsForm form);
+    CommandResult<GetTagsResult> getTags(UserVisitPK userVisitPK, GetTagsForm form);
     
-    CommandResult<?> getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form);
+    CommandResult<GetTagChoicesResult> getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form);
     
-    CommandResult<?> editTag(UserVisitPK userVisitPK, EditTagForm form);
+    CommandResult<EditTagResult> editTag(UserVisitPK userVisitPK, EditTagForm form);
     
     CommandResult<?> deleteTag(UserVisitPK userVisitPK, DeleteTagForm form);
     
@@ -95,9 +96,9 @@ public interface TagService
     
     CommandResult<?> createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form);
     
-    CommandResult<?> getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form);
+    CommandResult<GetEntityTagResult> getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form);
     
-    CommandResult<?> getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form);
+    CommandResult<GetEntityTagsResult> getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form);
     
     CommandResult<?> deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form);
     

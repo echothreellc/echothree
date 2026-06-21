@@ -18,6 +18,7 @@ package com.echothree.control.user.cancellationpolicy.server;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyRemote;
 import com.echothree.control.user.cancellationpolicy.common.form.*;
+import com.echothree.control.user.cancellationpolicy.common.result.*;
 import com.echothree.control.user.cancellationpolicy.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -43,17 +44,17 @@ public class CancellationPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getPartyCancellationPolicy(UserVisitPK userVisitPK, GetPartyCancellationPolicyForm form) {
+    public CommandResult<GetPartyCancellationPolicyResult> getPartyCancellationPolicy(UserVisitPK userVisitPK, GetPartyCancellationPolicyForm form) {
         return CDI.current().select(GetPartyCancellationPolicyCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyCancellationPolicies(UserVisitPK userVisitPK, GetPartyCancellationPoliciesForm form) {
+    public CommandResult<GetPartyCancellationPoliciesResult> getPartyCancellationPolicies(UserVisitPK userVisitPK, GetPartyCancellationPoliciesForm form) {
         return CDI.current().select(GetPartyCancellationPoliciesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyCancellationPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyCancellationPolicyStatusChoicesForm form) {
+    public CommandResult<GetPartyCancellationPolicyStatusChoicesResult> getPartyCancellationPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyCancellationPolicyStatusChoicesForm form) {
         return CDI.current().select(GetPartyCancellationPolicyStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -77,17 +78,17 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationKinds(UserVisitPK userVisitPK, GetCancellationKindsForm form) {
+    public CommandResult<GetCancellationKindsResult> getCancellationKinds(UserVisitPK userVisitPK, GetCancellationKindsForm form) {
         return CDI.current().select(GetCancellationKindsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationKind(UserVisitPK userVisitPK, GetCancellationKindForm form) {
+    public CommandResult<GetCancellationKindResult> getCancellationKind(UserVisitPK userVisitPK, GetCancellationKindForm form) {
         return CDI.current().select(GetCancellationKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationKindChoices(UserVisitPK userVisitPK, GetCancellationKindChoicesForm form) {
+    public CommandResult<GetCancellationKindChoicesResult> getCancellationKindChoices(UserVisitPK userVisitPK, GetCancellationKindChoicesForm form) {
         return CDI.current().select(GetCancellationKindChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -97,7 +98,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> editCancellationKind(UserVisitPK userVisitPK, EditCancellationKindForm form) {
+    public CommandResult<EditCancellationKindResult> editCancellationKind(UserVisitPK userVisitPK, EditCancellationKindForm form) {
         return CDI.current().select(EditCancellationKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -116,12 +117,12 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationKindDescriptions(UserVisitPK userVisitPK, GetCancellationKindDescriptionsForm form) {
+    public CommandResult<GetCancellationKindDescriptionsResult> getCancellationKindDescriptions(UserVisitPK userVisitPK, GetCancellationKindDescriptionsForm form) {
         return CDI.current().select(GetCancellationKindDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCancellationKindDescription(UserVisitPK userVisitPK, EditCancellationKindDescriptionForm form) {
+    public CommandResult<EditCancellationKindDescriptionResult> editCancellationKindDescription(UserVisitPK userVisitPK, EditCancellationKindDescriptionForm form) {
         return CDI.current().select(EditCancellationKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -140,17 +141,17 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationPolicies(UserVisitPK userVisitPK, GetCancellationPoliciesForm form) {
+    public CommandResult<GetCancellationPoliciesResult> getCancellationPolicies(UserVisitPK userVisitPK, GetCancellationPoliciesForm form) {
         return CDI.current().select(GetCancellationPoliciesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationPolicy(UserVisitPK userVisitPK, GetCancellationPolicyForm form) {
+    public CommandResult<GetCancellationPolicyResult> getCancellationPolicy(UserVisitPK userVisitPK, GetCancellationPolicyForm form) {
         return CDI.current().select(GetCancellationPolicyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationPolicyChoices(UserVisitPK userVisitPK, GetCancellationPolicyChoicesForm form) {
+    public CommandResult<GetCancellationPolicyChoicesResult> getCancellationPolicyChoices(UserVisitPK userVisitPK, GetCancellationPolicyChoicesForm form) {
         return CDI.current().select(GetCancellationPolicyChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -160,7 +161,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> editCancellationPolicy(UserVisitPK userVisitPK, EditCancellationPolicyForm form) {
+    public CommandResult<EditCancellationPolicyResult> editCancellationPolicy(UserVisitPK userVisitPK, EditCancellationPolicyForm form) {
         return CDI.current().select(EditCancellationPolicyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -179,17 +180,17 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationPolicyTranslation(UserVisitPK userVisitPK, GetCancellationPolicyTranslationForm form) {
+    public CommandResult<GetCancellationPolicyTranslationResult> getCancellationPolicyTranslation(UserVisitPK userVisitPK, GetCancellationPolicyTranslationForm form) {
         return CDI.current().select(GetCancellationPolicyTranslationCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCancellationPolicyTranslations(UserVisitPK userVisitPK, GetCancellationPolicyTranslationsForm form) {
+    public CommandResult<GetCancellationPolicyTranslationsResult> getCancellationPolicyTranslations(UserVisitPK userVisitPK, GetCancellationPolicyTranslationsForm form) {
         return CDI.current().select(GetCancellationPolicyTranslationsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editCancellationPolicyTranslation(UserVisitPK userVisitPK, EditCancellationPolicyTranslationForm form) {
+    public CommandResult<EditCancellationPolicyTranslationResult> editCancellationPolicyTranslation(UserVisitPK userVisitPK, EditCancellationPolicyTranslationForm form) {
         return CDI.current().select(EditCancellationPolicyTranslationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -208,7 +209,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationPolicyReasons(UserVisitPK userVisitPK, GetCancellationPolicyReasonsForm form) {
+    public CommandResult<GetCancellationPolicyReasonsResult> getCancellationPolicyReasons(UserVisitPK userVisitPK, GetCancellationPolicyReasonsForm form) {
         return CDI.current().select(GetCancellationPolicyReasonsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -218,7 +219,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> editCancellationPolicyReason(UserVisitPK userVisitPK, EditCancellationPolicyReasonForm form) {
+    public CommandResult<EditCancellationPolicyReasonResult> editCancellationPolicyReason(UserVisitPK userVisitPK, EditCancellationPolicyReasonForm form) {
         return CDI.current().select(EditCancellationPolicyReasonCommand.class).get().run(userVisitPK, form);
     }
     
@@ -237,17 +238,17 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationReasons(UserVisitPK userVisitPK, GetCancellationReasonsForm form) {
+    public CommandResult<GetCancellationReasonsResult> getCancellationReasons(UserVisitPK userVisitPK, GetCancellationReasonsForm form) {
         return CDI.current().select(GetCancellationReasonsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationReason(UserVisitPK userVisitPK, GetCancellationReasonForm form) {
+    public CommandResult<GetCancellationReasonResult> getCancellationReason(UserVisitPK userVisitPK, GetCancellationReasonForm form) {
         return CDI.current().select(GetCancellationReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationReasonChoices(UserVisitPK userVisitPK, GetCancellationReasonChoicesForm form) {
+    public CommandResult<GetCancellationReasonChoicesResult> getCancellationReasonChoices(UserVisitPK userVisitPK, GetCancellationReasonChoicesForm form) {
         return CDI.current().select(GetCancellationReasonChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -257,7 +258,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> editCancellationReason(UserVisitPK userVisitPK, EditCancellationReasonForm form) {
+    public CommandResult<EditCancellationReasonResult> editCancellationReason(UserVisitPK userVisitPK, EditCancellationReasonForm form) {
         return CDI.current().select(EditCancellationReasonCommand.class).get().run(userVisitPK, form);
     }
     
@@ -276,12 +277,12 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationReasonDescriptions(UserVisitPK userVisitPK, GetCancellationReasonDescriptionsForm form) {
+    public CommandResult<GetCancellationReasonDescriptionsResult> getCancellationReasonDescriptions(UserVisitPK userVisitPK, GetCancellationReasonDescriptionsForm form) {
         return CDI.current().select(GetCancellationReasonDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCancellationReasonDescription(UserVisitPK userVisitPK, EditCancellationReasonDescriptionForm form) {
+    public CommandResult<EditCancellationReasonDescriptionResult> editCancellationReasonDescription(UserVisitPK userVisitPK, EditCancellationReasonDescriptionForm form) {
         return CDI.current().select(EditCancellationReasonDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -300,7 +301,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationReasonTypes(UserVisitPK userVisitPK, GetCancellationReasonTypesForm form) {
+    public CommandResult<GetCancellationReasonTypesResult> getCancellationReasonTypes(UserVisitPK userVisitPK, GetCancellationReasonTypesForm form) {
         return CDI.current().select(GetCancellationReasonTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -310,7 +311,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> editCancellationReasonType(UserVisitPK userVisitPK, EditCancellationReasonTypeForm form) {
+    public CommandResult<EditCancellationReasonTypeResult> editCancellationReasonType(UserVisitPK userVisitPK, EditCancellationReasonTypeForm form) {
         return CDI.current().select(EditCancellationReasonTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -329,17 +330,17 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationTypes(UserVisitPK userVisitPK, GetCancellationTypesForm form) {
+    public CommandResult<GetCancellationTypesResult> getCancellationTypes(UserVisitPK userVisitPK, GetCancellationTypesForm form) {
         return CDI.current().select(GetCancellationTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationType(UserVisitPK userVisitPK, GetCancellationTypeForm form) {
+    public CommandResult<GetCancellationTypeResult> getCancellationType(UserVisitPK userVisitPK, GetCancellationTypeForm form) {
         return CDI.current().select(GetCancellationTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCancellationTypeChoices(UserVisitPK userVisitPK, GetCancellationTypeChoicesForm form) {
+    public CommandResult<GetCancellationTypeChoicesResult> getCancellationTypeChoices(UserVisitPK userVisitPK, GetCancellationTypeChoicesForm form) {
         return CDI.current().select(GetCancellationTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -349,7 +350,7 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> editCancellationType(UserVisitPK userVisitPK, EditCancellationTypeForm form) {
+    public CommandResult<EditCancellationTypeResult> editCancellationType(UserVisitPK userVisitPK, EditCancellationTypeForm form) {
         return CDI.current().select(EditCancellationTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -368,12 +369,12 @@ public class CancellationPolicyBean
     }
     
     @Override
-    public CommandResult<?> getCancellationTypeDescriptions(UserVisitPK userVisitPK, GetCancellationTypeDescriptionsForm form) {
+    public CommandResult<GetCancellationTypeDescriptionsResult> getCancellationTypeDescriptions(UserVisitPK userVisitPK, GetCancellationTypeDescriptionsForm form) {
         return CDI.current().select(GetCancellationTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCancellationTypeDescription(UserVisitPK userVisitPK, EditCancellationTypeDescriptionForm form) {
+    public CommandResult<EditCancellationTypeDescriptionResult> editCancellationTypeDescription(UserVisitPK userVisitPK, EditCancellationTypeDescriptionForm form) {
         return CDI.current().select(EditCancellationTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

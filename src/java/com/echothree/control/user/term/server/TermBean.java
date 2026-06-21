@@ -18,6 +18,7 @@ package com.echothree.control.user.term.server;
 
 import com.echothree.control.user.term.common.TermRemote;
 import com.echothree.control.user.term.common.form.*;
+import com.echothree.control.user.term.common.result.*;
 import com.echothree.control.user.term.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form) {
+    public CommandResult<GetTermTypesResult> getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form) {
         return CDI.current().select(GetTermTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTermType(UserVisitPK userVisitPK, GetTermTypeForm form) {
+    public CommandResult<GetTermTypeResult> getTermType(UserVisitPK userVisitPK, GetTermTypeForm form) {
         return CDI.current().select(GetTermTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form) {
+    public CommandResult<GetTermTypeChoicesResult> getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form) {
         return CDI.current().select(GetTermTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -81,17 +82,17 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> getTerms(UserVisitPK userVisitPK, GetTermsForm form) {
+    public CommandResult<GetTermsResult> getTerms(UserVisitPK userVisitPK, GetTermsForm form) {
         return CDI.current().select(GetTermsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTerm(UserVisitPK userVisitPK, GetTermForm form) {
+    public CommandResult<GetTermResult> getTerm(UserVisitPK userVisitPK, GetTermForm form) {
         return CDI.current().select(GetTermCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form) {
+    public CommandResult<GetTermChoicesResult> getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form) {
         return CDI.current().select(GetTermChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -115,12 +116,12 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form) {
+    public CommandResult<GetTermDescriptionsResult> getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form) {
         return CDI.current().select(GetTermDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form) {
+    public CommandResult<EditTermDescriptionResult> editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form) {
         return CDI.current().select(EditTermDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -139,12 +140,12 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form) {
+    public CommandResult<EditCustomerTypeCreditLimitResult> editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form) {
         return CDI.current().select(EditCustomerTypeCreditLimitCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form) {
+    public CommandResult<GetCustomerTypeCreditLimitsResult> getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form) {
         return CDI.current().select(GetCustomerTypeCreditLimitsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -163,12 +164,12 @@ public class TermBean
     }
     
     @Override
-    public CommandResult<?> editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form) {
+    public CommandResult<EditPartyCreditLimitResult> editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form) {
         return CDI.current().select(EditPartyCreditLimitCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form) {
+    public CommandResult<GetPartyCreditLimitsResult> getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form) {
         return CDI.current().select(GetPartyCreditLimitsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -182,7 +183,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form) {
+    public CommandResult<EditPartyTermResult> editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form) {
         return CDI.current().select(EditPartyTermCommand.class).get().run(userVisitPK, form);
     }
     

@@ -18,6 +18,7 @@ package com.echothree.control.user.campaign.server;
 
 import com.echothree.control.user.campaign.common.CampaignRemote;
 import com.echothree.control.user.campaign.common.form.*;
+import com.echothree.control.user.campaign.common.result.*;
 import com.echothree.control.user.campaign.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignChoices(UserVisitPK userVisitPK, GetCampaignChoicesForm form) {
+    public CommandResult<GetCampaignChoicesResult> getCampaignChoices(UserVisitPK userVisitPK, GetCampaignChoicesForm form) {
         return CDI.current().select(GetCampaignChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaign(UserVisitPK userVisitPK, GetCampaignForm form) {
+    public CommandResult<GetCampaignResult> getCampaign(UserVisitPK userVisitPK, GetCampaignForm form) {
         return CDI.current().select(GetCampaignCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaigns(UserVisitPK userVisitPK, GetCampaignsForm form) {
+    public CommandResult<GetCampaignsResult> getCampaigns(UserVisitPK userVisitPK, GetCampaignsForm form) {
         return CDI.current().select(GetCampaignsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignStatusChoices(UserVisitPK userVisitPK, GetCampaignStatusChoicesForm form) {
+    public CommandResult<GetCampaignStatusChoicesResult> getCampaignStatusChoices(UserVisitPK userVisitPK, GetCampaignStatusChoicesForm form) {
         return CDI.current().select(GetCampaignStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -78,7 +79,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> editCampaign(UserVisitPK userVisitPK, EditCampaignForm form) {
+    public CommandResult<EditCampaignResult> editCampaign(UserVisitPK userVisitPK, EditCampaignForm form) {
         return CDI.current().select(EditCampaignCommand.class).get().run(userVisitPK, form);
     }
     
@@ -97,17 +98,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignDescription(UserVisitPK userVisitPK, GetCampaignDescriptionForm form) {
+    public CommandResult<GetCampaignDescriptionResult> getCampaignDescription(UserVisitPK userVisitPK, GetCampaignDescriptionForm form) {
         return CDI.current().select(GetCampaignDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignDescriptions(UserVisitPK userVisitPK, GetCampaignDescriptionsForm form) {
+    public CommandResult<GetCampaignDescriptionsResult> getCampaignDescriptions(UserVisitPK userVisitPK, GetCampaignDescriptionsForm form) {
         return CDI.current().select(GetCampaignDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCampaignDescription(UserVisitPK userVisitPK, EditCampaignDescriptionForm form) {
+    public CommandResult<EditCampaignDescriptionResult> editCampaignDescription(UserVisitPK userVisitPK, EditCampaignDescriptionForm form) {
         return CDI.current().select(EditCampaignDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -126,17 +127,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignSourceChoices(UserVisitPK userVisitPK, GetCampaignSourceChoicesForm form) {
+    public CommandResult<GetCampaignSourceChoicesResult> getCampaignSourceChoices(UserVisitPK userVisitPK, GetCampaignSourceChoicesForm form) {
         return CDI.current().select(GetCampaignSourceChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignSource(UserVisitPK userVisitPK, GetCampaignSourceForm form) {
+    public CommandResult<GetCampaignSourceResult> getCampaignSource(UserVisitPK userVisitPK, GetCampaignSourceForm form) {
         return CDI.current().select(GetCampaignSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignSources(UserVisitPK userVisitPK, GetCampaignSourcesForm form) {
+    public CommandResult<GetCampaignSourcesResult> getCampaignSources(UserVisitPK userVisitPK, GetCampaignSourcesForm form) {
         return CDI.current().select(GetCampaignSourcesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -146,7 +147,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignSourceStatusChoices(UserVisitPK userVisitPK, GetCampaignSourceStatusChoicesForm form) {
+    public CommandResult<GetCampaignSourceStatusChoicesResult> getCampaignSourceStatusChoices(UserVisitPK userVisitPK, GetCampaignSourceStatusChoicesForm form) {
         return CDI.current().select(GetCampaignSourceStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -156,7 +157,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> editCampaignSource(UserVisitPK userVisitPK, EditCampaignSourceForm form) {
+    public CommandResult<EditCampaignSourceResult> editCampaignSource(UserVisitPK userVisitPK, EditCampaignSourceForm form) {
         return CDI.current().select(EditCampaignSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -175,17 +176,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignSourceDescription(UserVisitPK userVisitPK, GetCampaignSourceDescriptionForm form) {
+    public CommandResult<GetCampaignSourceDescriptionResult> getCampaignSourceDescription(UserVisitPK userVisitPK, GetCampaignSourceDescriptionForm form) {
         return CDI.current().select(GetCampaignSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignSourceDescriptions(UserVisitPK userVisitPK, GetCampaignSourceDescriptionsForm form) {
+    public CommandResult<GetCampaignSourceDescriptionsResult> getCampaignSourceDescriptions(UserVisitPK userVisitPK, GetCampaignSourceDescriptionsForm form) {
         return CDI.current().select(GetCampaignSourceDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCampaignSourceDescription(UserVisitPK userVisitPK, EditCampaignSourceDescriptionForm form) {
+    public CommandResult<EditCampaignSourceDescriptionResult> editCampaignSourceDescription(UserVisitPK userVisitPK, EditCampaignSourceDescriptionForm form) {
         return CDI.current().select(EditCampaignSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -204,17 +205,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignMediumChoices(UserVisitPK userVisitPK, GetCampaignMediumChoicesForm form) {
+    public CommandResult<GetCampaignMediumChoicesResult> getCampaignMediumChoices(UserVisitPK userVisitPK, GetCampaignMediumChoicesForm form) {
         return CDI.current().select(GetCampaignMediumChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignMedium(UserVisitPK userVisitPK, GetCampaignMediumForm form) {
+    public CommandResult<GetCampaignMediumResult> getCampaignMedium(UserVisitPK userVisitPK, GetCampaignMediumForm form) {
         return CDI.current().select(GetCampaignMediumCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignMediums(UserVisitPK userVisitPK, GetCampaignMediumsForm form) {
+    public CommandResult<GetCampaignMediumsResult> getCampaignMediums(UserVisitPK userVisitPK, GetCampaignMediumsForm form) {
         return CDI.current().select(GetCampaignMediumsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -224,7 +225,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignMediumStatusChoices(UserVisitPK userVisitPK, GetCampaignMediumStatusChoicesForm form) {
+    public CommandResult<GetCampaignMediumStatusChoicesResult> getCampaignMediumStatusChoices(UserVisitPK userVisitPK, GetCampaignMediumStatusChoicesForm form) {
         return CDI.current().select(GetCampaignMediumStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -234,7 +235,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> editCampaignMedium(UserVisitPK userVisitPK, EditCampaignMediumForm form) {
+    public CommandResult<EditCampaignMediumResult> editCampaignMedium(UserVisitPK userVisitPK, EditCampaignMediumForm form) {
         return CDI.current().select(EditCampaignMediumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -253,17 +254,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignMediumDescription(UserVisitPK userVisitPK, GetCampaignMediumDescriptionForm form) {
+    public CommandResult<GetCampaignMediumDescriptionResult> getCampaignMediumDescription(UserVisitPK userVisitPK, GetCampaignMediumDescriptionForm form) {
         return CDI.current().select(GetCampaignMediumDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignMediumDescriptions(UserVisitPK userVisitPK, GetCampaignMediumDescriptionsForm form) {
+    public CommandResult<GetCampaignMediumDescriptionsResult> getCampaignMediumDescriptions(UserVisitPK userVisitPK, GetCampaignMediumDescriptionsForm form) {
         return CDI.current().select(GetCampaignMediumDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCampaignMediumDescription(UserVisitPK userVisitPK, EditCampaignMediumDescriptionForm form) {
+    public CommandResult<EditCampaignMediumDescriptionResult> editCampaignMediumDescription(UserVisitPK userVisitPK, EditCampaignMediumDescriptionForm form) {
         return CDI.current().select(EditCampaignMediumDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -282,17 +283,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignTermChoices(UserVisitPK userVisitPK, GetCampaignTermChoicesForm form) {
+    public CommandResult<GetCampaignTermChoicesResult> getCampaignTermChoices(UserVisitPK userVisitPK, GetCampaignTermChoicesForm form) {
         return CDI.current().select(GetCampaignTermChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignTerm(UserVisitPK userVisitPK, GetCampaignTermForm form) {
+    public CommandResult<GetCampaignTermResult> getCampaignTerm(UserVisitPK userVisitPK, GetCampaignTermForm form) {
         return CDI.current().select(GetCampaignTermCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignTerms(UserVisitPK userVisitPK, GetCampaignTermsForm form) {
+    public CommandResult<GetCampaignTermsResult> getCampaignTerms(UserVisitPK userVisitPK, GetCampaignTermsForm form) {
         return CDI.current().select(GetCampaignTermsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -302,7 +303,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignTermStatusChoices(UserVisitPK userVisitPK, GetCampaignTermStatusChoicesForm form) {
+    public CommandResult<GetCampaignTermStatusChoicesResult> getCampaignTermStatusChoices(UserVisitPK userVisitPK, GetCampaignTermStatusChoicesForm form) {
         return CDI.current().select(GetCampaignTermStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -312,7 +313,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> editCampaignTerm(UserVisitPK userVisitPK, EditCampaignTermForm form) {
+    public CommandResult<EditCampaignTermResult> editCampaignTerm(UserVisitPK userVisitPK, EditCampaignTermForm form) {
         return CDI.current().select(EditCampaignTermCommand.class).get().run(userVisitPK, form);
     }
     
@@ -331,17 +332,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignTermDescription(UserVisitPK userVisitPK, GetCampaignTermDescriptionForm form) {
+    public CommandResult<GetCampaignTermDescriptionResult> getCampaignTermDescription(UserVisitPK userVisitPK, GetCampaignTermDescriptionForm form) {
         return CDI.current().select(GetCampaignTermDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignTermDescriptions(UserVisitPK userVisitPK, GetCampaignTermDescriptionsForm form) {
+    public CommandResult<GetCampaignTermDescriptionsResult> getCampaignTermDescriptions(UserVisitPK userVisitPK, GetCampaignTermDescriptionsForm form) {
         return CDI.current().select(GetCampaignTermDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCampaignTermDescription(UserVisitPK userVisitPK, EditCampaignTermDescriptionForm form) {
+    public CommandResult<EditCampaignTermDescriptionResult> editCampaignTermDescription(UserVisitPK userVisitPK, EditCampaignTermDescriptionForm form) {
         return CDI.current().select(EditCampaignTermDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -360,17 +361,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignContentChoices(UserVisitPK userVisitPK, GetCampaignContentChoicesForm form) {
+    public CommandResult<GetCampaignContentChoicesResult> getCampaignContentChoices(UserVisitPK userVisitPK, GetCampaignContentChoicesForm form) {
         return CDI.current().select(GetCampaignContentChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignContent(UserVisitPK userVisitPK, GetCampaignContentForm form) {
+    public CommandResult<GetCampaignContentResult> getCampaignContent(UserVisitPK userVisitPK, GetCampaignContentForm form) {
         return CDI.current().select(GetCampaignContentCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignContents(UserVisitPK userVisitPK, GetCampaignContentsForm form) {
+    public CommandResult<GetCampaignContentsResult> getCampaignContents(UserVisitPK userVisitPK, GetCampaignContentsForm form) {
         return CDI.current().select(GetCampaignContentsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -380,7 +381,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignContentStatusChoices(UserVisitPK userVisitPK, GetCampaignContentStatusChoicesForm form) {
+    public CommandResult<GetCampaignContentStatusChoicesResult> getCampaignContentStatusChoices(UserVisitPK userVisitPK, GetCampaignContentStatusChoicesForm form) {
         return CDI.current().select(GetCampaignContentStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -390,7 +391,7 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> editCampaignContent(UserVisitPK userVisitPK, EditCampaignContentForm form) {
+    public CommandResult<EditCampaignContentResult> editCampaignContent(UserVisitPK userVisitPK, EditCampaignContentForm form) {
         return CDI.current().select(EditCampaignContentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -409,17 +410,17 @@ public class CampaignBean
     }
     
     @Override
-    public CommandResult<?> getCampaignContentDescription(UserVisitPK userVisitPK, GetCampaignContentDescriptionForm form) {
+    public CommandResult<GetCampaignContentDescriptionResult> getCampaignContentDescription(UserVisitPK userVisitPK, GetCampaignContentDescriptionForm form) {
         return CDI.current().select(GetCampaignContentDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCampaignContentDescriptions(UserVisitPK userVisitPK, GetCampaignContentDescriptionsForm form) {
+    public CommandResult<GetCampaignContentDescriptionsResult> getCampaignContentDescriptions(UserVisitPK userVisitPK, GetCampaignContentDescriptionsForm form) {
         return CDI.current().select(GetCampaignContentDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCampaignContentDescription(UserVisitPK userVisitPK, EditCampaignContentDescriptionForm form) {
+    public CommandResult<EditCampaignContentDescriptionResult> editCampaignContentDescription(UserVisitPK userVisitPK, EditCampaignContentDescriptionForm form) {
         return CDI.current().select(EditCampaignContentDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

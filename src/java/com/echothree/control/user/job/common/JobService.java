@@ -17,6 +17,7 @@
 package com.echothree.control.user.job.common;
 
 import com.echothree.control.user.job.common.form.*;
+import com.echothree.control.user.job.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface JobService
     
     CommandResult<?> createJob(UserVisitPK userVisitPK, CreateJobForm form);
     
-    CommandResult<?> getJob(UserVisitPK userVisitPK, GetJobForm form);
+    CommandResult<GetJobResult> getJob(UserVisitPK userVisitPK, GetJobForm form);
     
-    CommandResult<?> getJobs(UserVisitPK userVisitPK, GetJobsForm form);
+    CommandResult<GetJobsResult> getJobs(UserVisitPK userVisitPK, GetJobsForm form);
     
-    CommandResult<?> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form);
+    CommandResult<GetJobStatusChoicesResult> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form);
     
     CommandResult<?> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form);
     
-    CommandResult<?> editJob(UserVisitPK userVisitPK, EditJobForm form);
+    CommandResult<EditJobResult> editJob(UserVisitPK userVisitPK, EditJobForm form);
     
     CommandResult<?> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form);
     
@@ -57,9 +58,9 @@ public interface JobService
     
     CommandResult<?> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form);
     
-    CommandResult<?> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form);
+    CommandResult<GetJobDescriptionsResult> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form);
     
-    CommandResult<?> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form);
+    CommandResult<EditJobDescriptionResult> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form);
     
     CommandResult<?> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form);
     

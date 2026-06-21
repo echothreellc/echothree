@@ -18,6 +18,7 @@ package com.echothree.control.user.geo.server;
 
 import com.echothree.control.user.geo.common.GeoRemote;
 import com.echothree.control.user.geo.common.form.*;
+import com.echothree.control.user.geo.common.result.*;
 import com.echothree.control.user.geo.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeTypeChoices(UserVisitPK userVisitPK, GetGeoCodeTypeChoicesForm form) {
+    public CommandResult<GetGeoCodeTypeChoicesResult> getGeoCodeTypeChoices(UserVisitPK userVisitPK, GetGeoCodeTypeChoicesForm form) {
         return CDI.current().select(GetGeoCodeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeType(UserVisitPK userVisitPK, GetGeoCodeTypeForm form) {
+    public CommandResult<GetGeoCodeTypeResult> getGeoCodeType(UserVisitPK userVisitPK, GetGeoCodeTypeForm form) {
         return CDI.current().select(GetGeoCodeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeTypes(UserVisitPK userVisitPK, GetGeoCodeTypesForm form) {
+    public CommandResult<GetGeoCodeTypesResult> getGeoCodeTypes(UserVisitPK userVisitPK, GetGeoCodeTypesForm form) {
         return CDI.current().select(GetGeoCodeTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -68,7 +69,7 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> editGeoCodeType(UserVisitPK userVisitPK, EditGeoCodeTypeForm form) {
+    public CommandResult<EditGeoCodeTypeResult> editGeoCodeType(UserVisitPK userVisitPK, EditGeoCodeTypeForm form) {
         return CDI.current().select(EditGeoCodeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -87,17 +88,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeTypeDescription(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionForm form) {
+    public CommandResult<GetGeoCodeTypeDescriptionResult> getGeoCodeTypeDescription(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionForm form) {
         return CDI.current().select(GetGeoCodeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionsForm form) {
+    public CommandResult<GetGeoCodeTypeDescriptionsResult> getGeoCodeTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionsForm form) {
         return CDI.current().select(GetGeoCodeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editGeoCodeTypeDescription(UserVisitPK userVisitPK, EditGeoCodeTypeDescriptionForm form) {
+    public CommandResult<EditGeoCodeTypeDescriptionResult> editGeoCodeTypeDescription(UserVisitPK userVisitPK, EditGeoCodeTypeDescriptionForm form) {
         return CDI.current().select(EditGeoCodeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -116,17 +117,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeScopeChoices(UserVisitPK userVisitPK, GetGeoCodeScopeChoicesForm form) {
+    public CommandResult<GetGeoCodeScopeChoicesResult> getGeoCodeScopeChoices(UserVisitPK userVisitPK, GetGeoCodeScopeChoicesForm form) {
         return CDI.current().select(GetGeoCodeScopeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeScope(UserVisitPK userVisitPK, GetGeoCodeScopeForm form) {
+    public CommandResult<GetGeoCodeScopeResult> getGeoCodeScope(UserVisitPK userVisitPK, GetGeoCodeScopeForm form) {
         return CDI.current().select(GetGeoCodeScopeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeScopes(UserVisitPK userVisitPK, GetGeoCodeScopesForm form) {
+    public CommandResult<GetGeoCodeScopesResult> getGeoCodeScopes(UserVisitPK userVisitPK, GetGeoCodeScopesForm form) {
         return CDI.current().select(GetGeoCodeScopesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> editGeoCodeScope(UserVisitPK userVisitPK, EditGeoCodeScopeForm form) {
+    public CommandResult<EditGeoCodeScopeResult> editGeoCodeScope(UserVisitPK userVisitPK, EditGeoCodeScopeForm form) {
         return CDI.current().select(EditGeoCodeScopeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -155,17 +156,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeScopeDescription(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionForm form) {
+    public CommandResult<GetGeoCodeScopeDescriptionResult> getGeoCodeScopeDescription(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionForm form) {
         return CDI.current().select(GetGeoCodeScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeScopeDescriptions(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionsForm form) {
+    public CommandResult<GetGeoCodeScopeDescriptionsResult> getGeoCodeScopeDescriptions(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionsForm form) {
         return CDI.current().select(GetGeoCodeScopeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editGeoCodeScopeDescription(UserVisitPK userVisitPK, EditGeoCodeScopeDescriptionForm form) {
+    public CommandResult<EditGeoCodeScopeDescriptionResult> editGeoCodeScopeDescription(UserVisitPK userVisitPK, EditGeoCodeScopeDescriptionForm form) {
         return CDI.current().select(EditGeoCodeScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -184,17 +185,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAliasTypeChoices(UserVisitPK userVisitPK, GetGeoCodeAliasTypeChoicesForm form) {
+    public CommandResult<GetGeoCodeAliasTypeChoicesResult> getGeoCodeAliasTypeChoices(UserVisitPK userVisitPK, GetGeoCodeAliasTypeChoicesForm form) {
         return CDI.current().select(GetGeoCodeAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAliasType(UserVisitPK userVisitPK, GetGeoCodeAliasTypeForm form) {
+    public CommandResult<GetGeoCodeAliasTypeResult> getGeoCodeAliasType(UserVisitPK userVisitPK, GetGeoCodeAliasTypeForm form) {
         return CDI.current().select(GetGeoCodeAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAliasTypes(UserVisitPK userVisitPK, GetGeoCodeAliasTypesForm form) {
+    public CommandResult<GetGeoCodeAliasTypesResult> getGeoCodeAliasTypes(UserVisitPK userVisitPK, GetGeoCodeAliasTypesForm form) {
         return CDI.current().select(GetGeoCodeAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> editGeoCodeAliasType(UserVisitPK userVisitPK, EditGeoCodeAliasTypeForm form) {
+    public CommandResult<EditGeoCodeAliasTypeResult> editGeoCodeAliasType(UserVisitPK userVisitPK, EditGeoCodeAliasTypeForm form) {
         return CDI.current().select(EditGeoCodeAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -223,17 +224,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionForm form) {
+    public CommandResult<GetGeoCodeAliasTypeDescriptionResult> getGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionForm form) {
         return CDI.current().select(GetGeoCodeAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAliasTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionsForm form) {
+    public CommandResult<GetGeoCodeAliasTypeDescriptionsResult> getGeoCodeAliasTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionsForm form) {
         return CDI.current().select(GetGeoCodeAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, EditGeoCodeAliasTypeDescriptionForm form) {
+    public CommandResult<EditGeoCodeAliasTypeDescriptionResult> editGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, EditGeoCodeAliasTypeDescriptionForm form) {
         return CDI.current().select(EditGeoCodeAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -247,7 +248,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getGeoCode(UserVisitPK userVisitPK, GetGeoCodeForm form) {
+    public CommandResult<GetGeoCodeResult> getGeoCode(UserVisitPK userVisitPK, GetGeoCodeForm form) {
         return CDI.current().select(GetGeoCodeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -271,17 +272,17 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getGeoCodeDescription(UserVisitPK userVisitPK, GetGeoCodeDescriptionForm form) {
+    public CommandResult<GetGeoCodeDescriptionResult> getGeoCodeDescription(UserVisitPK userVisitPK, GetGeoCodeDescriptionForm form) {
         return CDI.current().select(GetGeoCodeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeDescriptions(UserVisitPK userVisitPK, GetGeoCodeDescriptionsForm form) {
+    public CommandResult<GetGeoCodeDescriptionsResult> getGeoCodeDescriptions(UserVisitPK userVisitPK, GetGeoCodeDescriptionsForm form) {
         return CDI.current().select(GetGeoCodeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editGeoCodeDescription(UserVisitPK userVisitPK, EditGeoCodeDescriptionForm form) {
+    public CommandResult<EditGeoCodeDescriptionResult> editGeoCodeDescription(UserVisitPK userVisitPK, EditGeoCodeDescriptionForm form) {
         return CDI.current().select(EditGeoCodeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -300,17 +301,17 @@ public class GeoBean
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAlias(UserVisitPK userVisitPK, GetGeoCodeAliasForm form) {
+    public CommandResult<GetGeoCodeAliasResult> getGeoCodeAlias(UserVisitPK userVisitPK, GetGeoCodeAliasForm form) {
         return CDI.current().select(GetGeoCodeAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeAliases(UserVisitPK userVisitPK, GetGeoCodeAliasesForm form) {
+    public CommandResult<GetGeoCodeAliasesResult> getGeoCodeAliases(UserVisitPK userVisitPK, GetGeoCodeAliasesForm form) {
         return CDI.current().select(GetGeoCodeAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editGeoCodeAlias(UserVisitPK userVisitPK, EditGeoCodeAliasForm form) {
+    public CommandResult<EditGeoCodeAliasResult> editGeoCodeAlias(UserVisitPK userVisitPK, EditGeoCodeAliasForm form) {
         return CDI.current().select(EditGeoCodeAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -329,12 +330,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getGeoCodeLanguage(UserVisitPK userVisitPK, GetGeoCodeLanguageForm form) {
+    public CommandResult<GetGeoCodeLanguageResult> getGeoCodeLanguage(UserVisitPK userVisitPK, GetGeoCodeLanguageForm form) {
         return CDI.current().select(GetGeoCodeLanguageCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeLanguages(UserVisitPK userVisitPK, GetGeoCodeLanguagesForm form) {
+    public CommandResult<GetGeoCodeLanguagesResult> getGeoCodeLanguages(UserVisitPK userVisitPK, GetGeoCodeLanguagesForm form) {
         return CDI.current().select(GetGeoCodeLanguagesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -344,7 +345,7 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> editGeoCodeLanguage(UserVisitPK userVisitPK, EditGeoCodeLanguageForm form) {
+    public CommandResult<EditGeoCodeLanguageResult> editGeoCodeLanguage(UserVisitPK userVisitPK, EditGeoCodeLanguageForm form) {
         return CDI.current().select(EditGeoCodeLanguageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -363,12 +364,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getGeoCodeCurrency(UserVisitPK userVisitPK, GetGeoCodeCurrencyForm form) {
+    public CommandResult<GetGeoCodeCurrencyResult> getGeoCodeCurrency(UserVisitPK userVisitPK, GetGeoCodeCurrencyForm form) {
         return CDI.current().select(GetGeoCodeCurrencyCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeCurrencies(UserVisitPK userVisitPK, GetGeoCodeCurrenciesForm form) {
+    public CommandResult<GetGeoCodeCurrenciesResult> getGeoCodeCurrencies(UserVisitPK userVisitPK, GetGeoCodeCurrenciesForm form) {
         return CDI.current().select(GetGeoCodeCurrenciesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -378,7 +379,7 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> editGeoCodeCurrency(UserVisitPK userVisitPK, EditGeoCodeCurrencyForm form) {
+    public CommandResult<EditGeoCodeCurrencyResult> editGeoCodeCurrency(UserVisitPK userVisitPK, EditGeoCodeCurrencyForm form) {
         return CDI.current().select(EditGeoCodeCurrencyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -397,12 +398,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getGeoCodeTimeZone(UserVisitPK userVisitPK, GetGeoCodeTimeZoneForm form) {
+    public CommandResult<GetGeoCodeTimeZoneResult> getGeoCodeTimeZone(UserVisitPK userVisitPK, GetGeoCodeTimeZoneForm form) {
         return CDI.current().select(GetGeoCodeTimeZoneCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeTimeZones(UserVisitPK userVisitPK, GetGeoCodeTimeZonesForm form) {
+    public CommandResult<GetGeoCodeTimeZonesResult> getGeoCodeTimeZones(UserVisitPK userVisitPK, GetGeoCodeTimeZonesForm form) {
         return CDI.current().select(GetGeoCodeTimeZonesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -412,7 +413,7 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> editGeoCodeTimeZone(UserVisitPK userVisitPK, EditGeoCodeTimeZoneForm form) {
+    public CommandResult<EditGeoCodeTimeZoneResult> editGeoCodeTimeZone(UserVisitPK userVisitPK, EditGeoCodeTimeZoneForm form) {
         return CDI.current().select(EditGeoCodeTimeZoneCommand.class).get().run(userVisitPK, form);
     }
     
@@ -431,12 +432,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getGeoCodeDateTimeFormat(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatForm form) {
+    public CommandResult<GetGeoCodeDateTimeFormatResult> getGeoCodeDateTimeFormat(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatForm form) {
         return CDI.current().select(GetGeoCodeDateTimeFormatCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getGeoCodeDateTimeFormats(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatsForm form) {
+    public CommandResult<GetGeoCodeDateTimeFormatsResult> getGeoCodeDateTimeFormats(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatsForm form) {
         return CDI.current().select(GetGeoCodeDateTimeFormatsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -446,7 +447,7 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> editGeoCodeDateTimeFormat(UserVisitPK userVisitPK, EditGeoCodeDateTimeFormatForm form) {
+    public CommandResult<EditGeoCodeDateTimeFormatResult> editGeoCodeDateTimeFormat(UserVisitPK userVisitPK, EditGeoCodeDateTimeFormatForm form) {
         return CDI.current().select(EditGeoCodeDateTimeFormatCommand.class).get().run(userVisitPK, form);
     }
     
@@ -465,22 +466,22 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getCountry(UserVisitPK userVisitPK, GetCountryForm form) {
+    public CommandResult<GetCountryResult> getCountry(UserVisitPK userVisitPK, GetCountryForm form) {
         return CDI.current().select(GetCountryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCountries(UserVisitPK userVisitPK, GetCountriesForm form) {
+    public CommandResult<GetCountriesResult> getCountries(UserVisitPK userVisitPK, GetCountriesForm form) {
         return CDI.current().select(GetCountriesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCountryChoices(UserVisitPK userVisitPK, GetCountryChoicesForm form) {
+    public CommandResult<GetCountryChoicesResult> getCountryChoices(UserVisitPK userVisitPK, GetCountryChoicesForm form) {
         return CDI.current().select(GetCountryChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCountry(UserVisitPK userVisitPK, EditCountryForm form) {
+    public CommandResult<EditCountryResult> editCountry(UserVisitPK userVisitPK, EditCountryForm form) {
         return CDI.current().select(EditCountryCommand.class).get().run(userVisitPK, form);
     }
 
@@ -494,12 +495,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getState(UserVisitPK userVisitPK, GetStateForm form) {
+    public CommandResult<GetStateResult> getState(UserVisitPK userVisitPK, GetStateForm form) {
         return CDI.current().select(GetStateCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getStates(UserVisitPK userVisitPK, GetStatesForm form) {
+    public CommandResult<GetStatesResult> getStates(UserVisitPK userVisitPK, GetStatesForm form) {
         return CDI.current().select(GetStatesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -513,12 +514,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getCounty(UserVisitPK userVisitPK, GetCountyForm form) {
+    public CommandResult<GetCountyResult> getCounty(UserVisitPK userVisitPK, GetCountyForm form) {
         return CDI.current().select(GetCountyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCounties(UserVisitPK userVisitPK, GetCountiesForm form) {
+    public CommandResult<GetCountiesResult> getCounties(UserVisitPK userVisitPK, GetCountiesForm form) {
         return CDI.current().select(GetCountiesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -542,12 +543,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getCity(UserVisitPK userVisitPK, GetCityForm form) {
+    public CommandResult<GetCityResult> getCity(UserVisitPK userVisitPK, GetCityForm form) {
         return CDI.current().select(GetCityCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCities(UserVisitPK userVisitPK, GetCitiesForm form) {
+    public CommandResult<GetCitiesResult> getCities(UserVisitPK userVisitPK, GetCitiesForm form) {
         return CDI.current().select(GetCitiesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -561,12 +562,12 @@ public class GeoBean
     }
     
     @Override
-    public CommandResult<?> getZipCode(UserVisitPK userVisitPK, GetZipCodeForm form) {
+    public CommandResult<GetZipCodeResult> getZipCode(UserVisitPK userVisitPK, GetZipCodeForm form) {
         return CDI.current().select(GetZipCodeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getZipCodes(UserVisitPK userVisitPK, GetZipCodesForm form) {
+    public CommandResult<GetZipCodesResult> getZipCodes(UserVisitPK userVisitPK, GetZipCodesForm form) {
         return CDI.current().select(GetZipCodesCommand.class).get().run(userVisitPK, form);
     }
     

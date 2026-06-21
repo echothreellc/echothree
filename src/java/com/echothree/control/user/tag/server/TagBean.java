@@ -18,6 +18,7 @@ package com.echothree.control.user.tag.server;
 
 import com.echothree.control.user.tag.common.TagRemote;
 import com.echothree.control.user.tag.common.form.*;
+import com.echothree.control.user.tag.common.result.*;
 import com.echothree.control.user.tag.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form) {
+    public CommandResult<GetTagScopeResult> getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form) {
         return CDI.current().select(GetTagScopeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form) {
+    public CommandResult<GetTagScopesResult> getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form) {
         return CDI.current().select(GetTagScopesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form) {
+    public CommandResult<GetTagScopeChoicesResult> getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form) {
         return CDI.current().select(GetTagScopeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form) {
+    public CommandResult<EditTagScopeResult> editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form) {
         return CDI.current().select(EditTagScopeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,17 +88,17 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form) {
+    public CommandResult<GetTagScopeDescriptionResult> getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form) {
         return CDI.current().select(GetTagScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form) {
+    public CommandResult<GetTagScopeDescriptionsResult> getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form) {
         return CDI.current().select(GetTagScopeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form) {
+    public CommandResult<EditTagScopeDescriptionResult> editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form) {
         return CDI.current().select(EditTagScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -116,12 +117,12 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form) {
+    public CommandResult<GetTagScopeEntityTypeResult> getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form) {
         return CDI.current().select(GetTagScopeEntityTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form) {
+    public CommandResult<GetTagScopeEntityTypesResult> getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form) {
         return CDI.current().select(GetTagScopeEntityTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -140,22 +141,22 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> getTag(UserVisitPK userVisitPK, GetTagForm form) {
+    public CommandResult<GetTagResult> getTag(UserVisitPK userVisitPK, GetTagForm form) {
         return CDI.current().select(GetTagCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTags(UserVisitPK userVisitPK, GetTagsForm form) {
+    public CommandResult<GetTagsResult> getTags(UserVisitPK userVisitPK, GetTagsForm form) {
         return CDI.current().select(GetTagsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form) {
+    public CommandResult<GetTagChoicesResult> getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form) {
         return CDI.current().select(GetTagChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editTag(UserVisitPK userVisitPK, EditTagForm form) {
+    public CommandResult<EditTagResult> editTag(UserVisitPK userVisitPK, EditTagForm form) {
         return CDI.current().select(EditTagCommand.class).get().run(userVisitPK, form);
     }
     
@@ -174,12 +175,12 @@ public class TagBean
     }
     
     @Override
-    public CommandResult<?> getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form) {
+    public CommandResult<GetEntityTagResult> getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form) {
         return CDI.current().select(GetEntityTagCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form) {
+    public CommandResult<GetEntityTagsResult> getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form) {
         return CDI.current().select(GetEntityTagsCommand.class).get().run(userVisitPK, form);
     }
     

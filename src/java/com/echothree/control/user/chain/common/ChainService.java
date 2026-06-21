@@ -17,6 +17,7 @@
 package com.echothree.control.user.chain.common;
 
 import com.echothree.control.user.chain.common.form.*;
+import com.echothree.control.user.chain.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface ChainService
 
     CommandResult<?> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form);
 
-    CommandResult<?> getChainActionTypes(UserVisitPK userVisitPK, GetChainActionTypesForm form);
+    CommandResult<GetChainActionTypesResult> getChainActionTypes(UserVisitPK userVisitPK, GetChainActionTypesForm form);
 
-    CommandResult<?> getChainActionType(UserVisitPK userVisitPK, GetChainActionTypeForm form);
+    CommandResult<GetChainActionTypeResult> getChainActionType(UserVisitPK userVisitPK, GetChainActionTypeForm form);
 
-    CommandResult<?> getChainActionTypeChoices(UserVisitPK userVisitPK, GetChainActionTypeChoicesForm form);
+    CommandResult<GetChainActionTypeChoicesResult> getChainActionTypeChoices(UserVisitPK userVisitPK, GetChainActionTypeChoicesForm form);
 
     CommandResult<?> setDefaultChainActionType(UserVisitPK userVisitPK, SetDefaultChainActionTypeForm form);
 
-    CommandResult<?> editChainActionType(UserVisitPK userVisitPK, EditChainActionTypeForm form);
+    CommandResult<EditChainActionTypeResult> editChainActionType(UserVisitPK userVisitPK, EditChainActionTypeForm form);
 
     CommandResult<?> deleteChainActionType(UserVisitPK userVisitPK, DeleteChainActionTypeForm form);
 
@@ -53,11 +54,11 @@ public interface ChainService
 
     CommandResult<?> createChainActionTypeDescription(UserVisitPK userVisitPK, CreateChainActionTypeDescriptionForm form);
 
-    CommandResult<?> getChainActionTypeDescriptions(UserVisitPK userVisitPK, GetChainActionTypeDescriptionsForm form);
+    CommandResult<GetChainActionTypeDescriptionsResult> getChainActionTypeDescriptions(UserVisitPK userVisitPK, GetChainActionTypeDescriptionsForm form);
 
-    CommandResult<?> getChainActionTypeDescription(UserVisitPK userVisitPK, GetChainActionTypeDescriptionForm form);
+    CommandResult<GetChainActionTypeDescriptionResult> getChainActionTypeDescription(UserVisitPK userVisitPK, GetChainActionTypeDescriptionForm form);
 
-    CommandResult<?> editChainActionTypeDescription(UserVisitPK userVisitPK, EditChainActionTypeDescriptionForm form);
+    CommandResult<EditChainActionTypeDescriptionResult> editChainActionTypeDescription(UserVisitPK userVisitPK, EditChainActionTypeDescriptionForm form);
 
     CommandResult<?> deleteChainActionTypeDescription(UserVisitPK userVisitPK, DeleteChainActionTypeDescriptionForm form);
 
@@ -73,15 +74,15 @@ public interface ChainService
 
     CommandResult<?> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form);
 
-    CommandResult<?> getChainKinds(UserVisitPK userVisitPK, GetChainKindsForm form);
+    CommandResult<GetChainKindsResult> getChainKinds(UserVisitPK userVisitPK, GetChainKindsForm form);
 
-    CommandResult<?> getChainKind(UserVisitPK userVisitPK, GetChainKindForm form);
+    CommandResult<GetChainKindResult> getChainKind(UserVisitPK userVisitPK, GetChainKindForm form);
 
-    CommandResult<?> getChainKindChoices(UserVisitPK userVisitPK, GetChainKindChoicesForm form);
+    CommandResult<GetChainKindChoicesResult> getChainKindChoices(UserVisitPK userVisitPK, GetChainKindChoicesForm form);
 
     CommandResult<?> setDefaultChainKind(UserVisitPK userVisitPK, SetDefaultChainKindForm form);
 
-    CommandResult<?> editChainKind(UserVisitPK userVisitPK, EditChainKindForm form);
+    CommandResult<EditChainKindResult> editChainKind(UserVisitPK userVisitPK, EditChainKindForm form);
 
     CommandResult<?> deleteChainKind(UserVisitPK userVisitPK, DeleteChainKindForm form);
 
@@ -91,11 +92,11 @@ public interface ChainService
 
     CommandResult<?> createChainKindDescription(UserVisitPK userVisitPK, CreateChainKindDescriptionForm form);
 
-    CommandResult<?> getChainKindDescriptions(UserVisitPK userVisitPK, GetChainKindDescriptionsForm form);
+    CommandResult<GetChainKindDescriptionsResult> getChainKindDescriptions(UserVisitPK userVisitPK, GetChainKindDescriptionsForm form);
 
-    CommandResult<?> getChainKindDescription(UserVisitPK userVisitPK, GetChainKindDescriptionForm form);
+    CommandResult<GetChainKindDescriptionResult> getChainKindDescription(UserVisitPK userVisitPK, GetChainKindDescriptionForm form);
 
-    CommandResult<?> editChainKindDescription(UserVisitPK userVisitPK, EditChainKindDescriptionForm form);
+    CommandResult<EditChainKindDescriptionResult> editChainKindDescription(UserVisitPK userVisitPK, EditChainKindDescriptionForm form);
 
     CommandResult<?> deleteChainKindDescription(UserVisitPK userVisitPK, DeleteChainKindDescriptionForm form);
 
@@ -105,15 +106,15 @@ public interface ChainService
 
     CommandResult<?> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form);
 
-    CommandResult<?> getChainTypes(UserVisitPK userVisitPK, GetChainTypesForm form);
+    CommandResult<GetChainTypesResult> getChainTypes(UserVisitPK userVisitPK, GetChainTypesForm form);
 
-    CommandResult<?> getChainType(UserVisitPK userVisitPK, GetChainTypeForm form);
+    CommandResult<GetChainTypeResult> getChainType(UserVisitPK userVisitPK, GetChainTypeForm form);
 
-    CommandResult<?> getChainTypeChoices(UserVisitPK userVisitPK, GetChainTypeChoicesForm form);
+    CommandResult<GetChainTypeChoicesResult> getChainTypeChoices(UserVisitPK userVisitPK, GetChainTypeChoicesForm form);
 
     CommandResult<?> setDefaultChainType(UserVisitPK userVisitPK, SetDefaultChainTypeForm form);
 
-    CommandResult<?> editChainType(UserVisitPK userVisitPK, EditChainTypeForm form);
+    CommandResult<EditChainTypeResult> editChainType(UserVisitPK userVisitPK, EditChainTypeForm form);
 
     CommandResult<?> deleteChainType(UserVisitPK userVisitPK, DeleteChainTypeForm form);
 
@@ -123,11 +124,11 @@ public interface ChainService
 
     CommandResult<?> createChainTypeDescription(UserVisitPK userVisitPK, CreateChainTypeDescriptionForm form);
 
-    CommandResult<?> getChainTypeDescriptions(UserVisitPK userVisitPK, GetChainTypeDescriptionsForm form);
+    CommandResult<GetChainTypeDescriptionsResult> getChainTypeDescriptions(UserVisitPK userVisitPK, GetChainTypeDescriptionsForm form);
 
-    CommandResult<?> getChainTypeDescription(UserVisitPK userVisitPK, GetChainTypeDescriptionForm form);
+    CommandResult<GetChainTypeDescriptionResult> getChainTypeDescription(UserVisitPK userVisitPK, GetChainTypeDescriptionForm form);
 
-    CommandResult<?> editChainTypeDescription(UserVisitPK userVisitPK, EditChainTypeDescriptionForm form);
+    CommandResult<EditChainTypeDescriptionResult> editChainTypeDescription(UserVisitPK userVisitPK, EditChainTypeDescriptionForm form);
 
     CommandResult<?> deleteChainTypeDescription(UserVisitPK userVisitPK, DeleteChainTypeDescriptionForm form);
 
@@ -137,11 +138,11 @@ public interface ChainService
 
     CommandResult<?> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form);
 
-    CommandResult<?> getChainEntityRoleTypes(UserVisitPK userVisitPK, GetChainEntityRoleTypesForm form);
+    CommandResult<GetChainEntityRoleTypesResult> getChainEntityRoleTypes(UserVisitPK userVisitPK, GetChainEntityRoleTypesForm form);
 
-    CommandResult<?> getChainEntityRoleType(UserVisitPK userVisitPK, GetChainEntityRoleTypeForm form);
+    CommandResult<GetChainEntityRoleTypeResult> getChainEntityRoleType(UserVisitPK userVisitPK, GetChainEntityRoleTypeForm form);
 
-    CommandResult<?> editChainEntityRoleType(UserVisitPK userVisitPK, EditChainEntityRoleTypeForm form);
+    CommandResult<EditChainEntityRoleTypeResult> editChainEntityRoleType(UserVisitPK userVisitPK, EditChainEntityRoleTypeForm form);
 
     CommandResult<?> deleteChainEntityRoleType(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeForm form);
 
@@ -151,11 +152,11 @@ public interface ChainService
 
     CommandResult<?> createChainEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateChainEntityRoleTypeDescriptionForm form);
 
-    CommandResult<?> getChainEntityRoleTypeDescriptions(UserVisitPK userVisitPK, GetChainEntityRoleTypeDescriptionsForm form);
+    CommandResult<GetChainEntityRoleTypeDescriptionsResult> getChainEntityRoleTypeDescriptions(UserVisitPK userVisitPK, GetChainEntityRoleTypeDescriptionsForm form);
 
-    CommandResult<?> getChainEntityRoleTypeDescription(UserVisitPK userVisitPK, GetChainEntityRoleTypeDescriptionForm form);
+    CommandResult<GetChainEntityRoleTypeDescriptionResult> getChainEntityRoleTypeDescription(UserVisitPK userVisitPK, GetChainEntityRoleTypeDescriptionForm form);
 
-    CommandResult<?> editChainEntityRoleTypeDescription(UserVisitPK userVisitPK, EditChainEntityRoleTypeDescriptionForm form);
+    CommandResult<EditChainEntityRoleTypeDescriptionResult> editChainEntityRoleTypeDescription(UserVisitPK userVisitPK, EditChainEntityRoleTypeDescriptionForm form);
 
     CommandResult<?> deleteChainEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeDescriptionForm form);
 
@@ -165,15 +166,15 @@ public interface ChainService
 
     CommandResult<?> createChain(UserVisitPK userVisitPK, CreateChainForm form);
 
-    CommandResult<?> getChains(UserVisitPK userVisitPK, GetChainsForm form);
+    CommandResult<GetChainsResult> getChains(UserVisitPK userVisitPK, GetChainsForm form);
 
-    CommandResult<?> getChain(UserVisitPK userVisitPK, GetChainForm form);
+    CommandResult<GetChainResult> getChain(UserVisitPK userVisitPK, GetChainForm form);
 
-    CommandResult<?> getChainChoices(UserVisitPK userVisitPK, GetChainChoicesForm form);
+    CommandResult<GetChainChoicesResult> getChainChoices(UserVisitPK userVisitPK, GetChainChoicesForm form);
 
     CommandResult<?> setDefaultChain(UserVisitPK userVisitPK, SetDefaultChainForm form);
 
-    CommandResult<?> editChain(UserVisitPK userVisitPK, EditChainForm form);
+    CommandResult<EditChainResult> editChain(UserVisitPK userVisitPK, EditChainForm form);
 
     CommandResult<?> deleteChain(UserVisitPK userVisitPK, DeleteChainForm form);
 
@@ -183,11 +184,11 @@ public interface ChainService
 
     CommandResult<?> createChainDescription(UserVisitPK userVisitPK, CreateChainDescriptionForm form);
 
-    CommandResult<?> getChainDescriptions(UserVisitPK userVisitPK, GetChainDescriptionsForm form);
+    CommandResult<GetChainDescriptionsResult> getChainDescriptions(UserVisitPK userVisitPK, GetChainDescriptionsForm form);
 
-    CommandResult<?> getChainDescription(UserVisitPK userVisitPK, GetChainDescriptionForm form);
+    CommandResult<GetChainDescriptionResult> getChainDescription(UserVisitPK userVisitPK, GetChainDescriptionForm form);
 
-    CommandResult<?> editChainDescription(UserVisitPK userVisitPK, EditChainDescriptionForm form);
+    CommandResult<EditChainDescriptionResult> editChainDescription(UserVisitPK userVisitPK, EditChainDescriptionForm form);
 
     CommandResult<?> deleteChainDescription(UserVisitPK userVisitPK, DeleteChainDescriptionForm form);
 
@@ -197,15 +198,15 @@ public interface ChainService
 
     CommandResult<?> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form);
 
-    CommandResult<?> getChainActionSets(UserVisitPK userVisitPK, GetChainActionSetsForm form);
+    CommandResult<GetChainActionSetsResult> getChainActionSets(UserVisitPK userVisitPK, GetChainActionSetsForm form);
 
-    CommandResult<?> getChainActionSet(UserVisitPK userVisitPK, GetChainActionSetForm form);
+    CommandResult<GetChainActionSetResult> getChainActionSet(UserVisitPK userVisitPK, GetChainActionSetForm form);
 
-    CommandResult<?> getChainActionSetChoices(UserVisitPK userVisitPK, GetChainActionSetChoicesForm form);
+    CommandResult<GetChainActionSetChoicesResult> getChainActionSetChoices(UserVisitPK userVisitPK, GetChainActionSetChoicesForm form);
 
     CommandResult<?> setDefaultChainActionSet(UserVisitPK userVisitPK, SetDefaultChainActionSetForm form);
 
-    CommandResult<?> editChainActionSet(UserVisitPK userVisitPK, EditChainActionSetForm form);
+    CommandResult<EditChainActionSetResult> editChainActionSet(UserVisitPK userVisitPK, EditChainActionSetForm form);
 
     CommandResult<?> deleteChainActionSet(UserVisitPK userVisitPK, DeleteChainActionSetForm form);
 
@@ -215,11 +216,11 @@ public interface ChainService
 
     CommandResult<?> createChainActionSetDescription(UserVisitPK userVisitPK, CreateChainActionSetDescriptionForm form);
 
-    CommandResult<?> getChainActionSetDescriptions(UserVisitPK userVisitPK, GetChainActionSetDescriptionsForm form);
+    CommandResult<GetChainActionSetDescriptionsResult> getChainActionSetDescriptions(UserVisitPK userVisitPK, GetChainActionSetDescriptionsForm form);
 
-    CommandResult<?> getChainActionSetDescription(UserVisitPK userVisitPK, GetChainActionSetDescriptionForm form);
+    CommandResult<GetChainActionSetDescriptionResult> getChainActionSetDescription(UserVisitPK userVisitPK, GetChainActionSetDescriptionForm form);
 
-    CommandResult<?> editChainActionSetDescription(UserVisitPK userVisitPK, EditChainActionSetDescriptionForm form);
+    CommandResult<EditChainActionSetDescriptionResult> editChainActionSetDescription(UserVisitPK userVisitPK, EditChainActionSetDescriptionForm form);
 
     CommandResult<?> deleteChainActionSetDescription(UserVisitPK userVisitPK, DeleteChainActionSetDescriptionForm form);
 
@@ -229,11 +230,11 @@ public interface ChainService
     
     CommandResult<?> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form);
     
-    CommandResult<?> getChainActions(UserVisitPK userVisitPK, GetChainActionsForm form);
+    CommandResult<GetChainActionsResult> getChainActions(UserVisitPK userVisitPK, GetChainActionsForm form);
     
-    CommandResult<?> getChainAction(UserVisitPK userVisitPK, GetChainActionForm form);
+    CommandResult<GetChainActionResult> getChainAction(UserVisitPK userVisitPK, GetChainActionForm form);
     
-    CommandResult<?> editChainAction(UserVisitPK userVisitPK, EditChainActionForm form);
+    CommandResult<EditChainActionResult> editChainAction(UserVisitPK userVisitPK, EditChainActionForm form);
     
     CommandResult<?> deleteChainAction(UserVisitPK userVisitPK, DeleteChainActionForm form);
     
@@ -243,11 +244,11 @@ public interface ChainService
     
     CommandResult<?> createChainActionDescription(UserVisitPK userVisitPK, CreateChainActionDescriptionForm form);
     
-    CommandResult<?> getChainActionDescriptions(UserVisitPK userVisitPK, GetChainActionDescriptionsForm form);
+    CommandResult<GetChainActionDescriptionsResult> getChainActionDescriptions(UserVisitPK userVisitPK, GetChainActionDescriptionsForm form);
     
-    CommandResult<?> getChainActionDescription(UserVisitPK userVisitPK, GetChainActionDescriptionForm form);
+    CommandResult<GetChainActionDescriptionResult> getChainActionDescription(UserVisitPK userVisitPK, GetChainActionDescriptionForm form);
     
-    CommandResult<?> editChainActionDescription(UserVisitPK userVisitPK, EditChainActionDescriptionForm form);
+    CommandResult<EditChainActionDescriptionResult> editChainActionDescription(UserVisitPK userVisitPK, EditChainActionDescriptionForm form);
     
     CommandResult<?> deleteChainActionDescription(UserVisitPK userVisitPK, DeleteChainActionDescriptionForm form);
     
@@ -255,9 +256,9 @@ public interface ChainService
     //   Chain Instances
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getChainInstance(UserVisitPK userVisitPK, GetChainInstanceForm form);
+    CommandResult<GetChainInstanceResult> getChainInstance(UserVisitPK userVisitPK, GetChainInstanceForm form);
     
-    CommandResult<?> getChainInstances(UserVisitPK userVisitPK, GetChainInstancesForm form);
+    CommandResult<GetChainInstancesResult> getChainInstances(UserVisitPK userVisitPK, GetChainInstancesForm form);
     
     // -------------------------------------------------------------------------
     //   Chain Instance Statuses

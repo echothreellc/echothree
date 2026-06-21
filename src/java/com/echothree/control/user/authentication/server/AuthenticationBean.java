@@ -18,6 +18,7 @@ package com.echothree.control.user.authentication.server;
 
 import com.echothree.control.user.authentication.common.AuthenticationRemote;
 import com.echothree.control.user.authentication.common.form.*;
+import com.echothree.control.user.authentication.common.result.*;
 import com.echothree.control.user.authentication.server.command.*;
 import com.echothree.model.control.party.common.PartyNames;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -132,7 +133,7 @@ public class AuthenticationBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
+    public CommandResult<GetCustomerLoginDefaultsResult> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
         return CDI.current().select(GetCustomerLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -142,7 +143,7 @@ public class AuthenticationBean
     }
 
     @Override
-    public CommandResult<?> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
+    public CommandResult<GetEmployeeLoginDefaultsResult> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
         return CDI.current().select(GetEmployeeLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -152,7 +153,7 @@ public class AuthenticationBean
     }
 
     @Override
-    public CommandResult<?> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
+    public CommandResult<GetVendorLoginDefaultsResult> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
         return CDI.current().select(GetVendorLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
 

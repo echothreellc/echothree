@@ -18,6 +18,7 @@ package com.echothree.control.user.workrequirement.server;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementRemote;
 import com.echothree.control.user.workrequirement.common.form.*;
+import com.echothree.control.user.workrequirement.common.result.*;
 import com.echothree.control.user.workrequirement.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,12 +49,12 @@ public class WorkRequirementBean
     }
     
     @Override
-    public CommandResult<?> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form) {
+    public CommandResult<GetWorkRequirementTypesResult> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form) {
         return CDI.current().select(GetWorkRequirementTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form) {
+    public CommandResult<GetWorkRequirementTypeResult> getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form) {
         return CDI.current().select(GetWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -72,12 +73,12 @@ public class WorkRequirementBean
     }
     
     @Override
-    public CommandResult<?> getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form) {
+    public CommandResult<GetWorkRequirementTypeDescriptionsResult> getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form) {
         return CDI.current().select(GetWorkRequirementTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form) {
+    public CommandResult<EditWorkRequirementTypeDescriptionResult> editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form) {
         return CDI.current().select(EditWorkRequirementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -91,12 +92,12 @@ public class WorkRequirementBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form) {
+    public CommandResult<GetWorkRequirementScopesResult> getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form) {
         return CDI.current().select(GetWorkRequirementScopesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form) {
+    public CommandResult<GetWorkRequirementScopeResult> getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form) {
         return CDI.current().select(GetWorkRequirementScopeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -105,7 +106,7 @@ public class WorkRequirementBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form) {
+    public CommandResult<GetWorkRequirementResult> getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form) {
         return CDI.current().select(GetWorkRequirementCommand.class).get().run(userVisitPK, form);
     }
 
@@ -114,7 +115,7 @@ public class WorkRequirementBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form) {
+    public CommandResult<GetWorkAssignmentsResult> getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form) {
         return CDI.current().select(GetWorkAssignmentsCommand.class).get().run(userVisitPK, form);
     }
 

@@ -17,6 +17,7 @@
 package com.echothree.control.user.track.common;
 
 import com.echothree.control.user.track.common.form.*;
+import com.echothree.control.user.track.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,19 +36,19 @@ public interface TrackService
     
     CommandResult<?> createTrack(UserVisitPK userVisitPK, CreateTrackForm form);
     
-    CommandResult<?> getTrackChoices(UserVisitPK userVisitPK, GetTrackChoicesForm form);
+    CommandResult<GetTrackChoicesResult> getTrackChoices(UserVisitPK userVisitPK, GetTrackChoicesForm form);
     
-    CommandResult<?> getTrack(UserVisitPK userVisitPK, GetTrackForm form);
+    CommandResult<GetTrackResult> getTrack(UserVisitPK userVisitPK, GetTrackForm form);
     
-    CommandResult<?> getTracks(UserVisitPK userVisitPK, GetTracksForm form);
+    CommandResult<GetTracksResult> getTracks(UserVisitPK userVisitPK, GetTracksForm form);
     
     CommandResult<?> setDefaultTrack(UserVisitPK userVisitPK, SetDefaultTrackForm form);
     
-    CommandResult<?> getTrackStatusChoices(UserVisitPK userVisitPK, GetTrackStatusChoicesForm form);
+    CommandResult<GetTrackStatusChoicesResult> getTrackStatusChoices(UserVisitPK userVisitPK, GetTrackStatusChoicesForm form);
     
     CommandResult<?> setTrackStatus(UserVisitPK userVisitPK, SetTrackStatusForm form);
     
-    CommandResult<?> editTrack(UserVisitPK userVisitPK, EditTrackForm form);
+    CommandResult<EditTrackResult> editTrack(UserVisitPK userVisitPK, EditTrackForm form);
     
     CommandResult<?> deleteTrack(UserVisitPK userVisitPK, DeleteTrackForm form);
     
@@ -57,11 +58,11 @@ public interface TrackService
     
     CommandResult<?> createTrackDescription(UserVisitPK userVisitPK, CreateTrackDescriptionForm form);
     
-    CommandResult<?> getTrackDescription(UserVisitPK userVisitPK, GetTrackDescriptionForm form);
+    CommandResult<GetTrackDescriptionResult> getTrackDescription(UserVisitPK userVisitPK, GetTrackDescriptionForm form);
     
-    CommandResult<?> getTrackDescriptions(UserVisitPK userVisitPK, GetTrackDescriptionsForm form);
+    CommandResult<GetTrackDescriptionsResult> getTrackDescriptions(UserVisitPK userVisitPK, GetTrackDescriptionsForm form);
     
-    CommandResult<?> editTrackDescription(UserVisitPK userVisitPK, EditTrackDescriptionForm form);
+    CommandResult<EditTrackDescriptionResult> editTrackDescription(UserVisitPK userVisitPK, EditTrackDescriptionForm form);
     
     CommandResult<?> deleteTrackDescription(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form);
     

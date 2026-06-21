@@ -17,6 +17,7 @@
 package com.echothree.control.user.geo.common;
 
 import com.echothree.control.user.geo.common.form.*;
+import com.echothree.control.user.geo.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeType(UserVisitPK userVisitPK, CreateGeoCodeTypeForm form);
 
-    CommandResult<?> getGeoCodeTypeChoices(UserVisitPK userVisitPK, GetGeoCodeTypeChoicesForm form);
+    CommandResult<GetGeoCodeTypeChoicesResult> getGeoCodeTypeChoices(UserVisitPK userVisitPK, GetGeoCodeTypeChoicesForm form);
 
-    CommandResult<?> getGeoCodeType(UserVisitPK userVisitPK, GetGeoCodeTypeForm form);
+    CommandResult<GetGeoCodeTypeResult> getGeoCodeType(UserVisitPK userVisitPK, GetGeoCodeTypeForm form);
 
-    CommandResult<?> getGeoCodeTypes(UserVisitPK userVisitPK, GetGeoCodeTypesForm form);
+    CommandResult<GetGeoCodeTypesResult> getGeoCodeTypes(UserVisitPK userVisitPK, GetGeoCodeTypesForm form);
 
     CommandResult<?> setDefaultGeoCodeType(UserVisitPK userVisitPK, SetDefaultGeoCodeTypeForm form);
 
-    CommandResult<?> editGeoCodeType(UserVisitPK userVisitPK, EditGeoCodeTypeForm form);
+    CommandResult<EditGeoCodeTypeResult> editGeoCodeType(UserVisitPK userVisitPK, EditGeoCodeTypeForm form);
 
     CommandResult<?> deleteGeoCodeType(UserVisitPK userVisitPK, DeleteGeoCodeTypeForm form);
     
@@ -53,11 +54,11 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeTypeDescription(UserVisitPK userVisitPK, CreateGeoCodeTypeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeTypeDescription(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionForm form);
+    CommandResult<GetGeoCodeTypeDescriptionResult> getGeoCodeTypeDescription(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionsForm form);
+    CommandResult<GetGeoCodeTypeDescriptionsResult> getGeoCodeTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeTypeDescriptionsForm form);
 
-    CommandResult<?> editGeoCodeTypeDescription(UserVisitPK userVisitPK, EditGeoCodeTypeDescriptionForm form);
+    CommandResult<EditGeoCodeTypeDescriptionResult> editGeoCodeTypeDescription(UserVisitPK userVisitPK, EditGeoCodeTypeDescriptionForm form);
 
     CommandResult<?> deleteGeoCodeTypeDescription(UserVisitPK userVisitPK, DeleteGeoCodeTypeDescriptionForm form);
     
@@ -67,15 +68,15 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeScope(UserVisitPK userVisitPK, CreateGeoCodeScopeForm form);
 
-    CommandResult<?> getGeoCodeScopeChoices(UserVisitPK userVisitPK, GetGeoCodeScopeChoicesForm form);
+    CommandResult<GetGeoCodeScopeChoicesResult> getGeoCodeScopeChoices(UserVisitPK userVisitPK, GetGeoCodeScopeChoicesForm form);
 
-    CommandResult<?> getGeoCodeScope(UserVisitPK userVisitPK, GetGeoCodeScopeForm form);
+    CommandResult<GetGeoCodeScopeResult> getGeoCodeScope(UserVisitPK userVisitPK, GetGeoCodeScopeForm form);
 
-    CommandResult<?> getGeoCodeScopes(UserVisitPK userVisitPK, GetGeoCodeScopesForm form);
+    CommandResult<GetGeoCodeScopesResult> getGeoCodeScopes(UserVisitPK userVisitPK, GetGeoCodeScopesForm form);
 
     CommandResult<?> setDefaultGeoCodeScope(UserVisitPK userVisitPK, SetDefaultGeoCodeScopeForm form);
 
-    CommandResult<?> editGeoCodeScope(UserVisitPK userVisitPK, EditGeoCodeScopeForm form);
+    CommandResult<EditGeoCodeScopeResult> editGeoCodeScope(UserVisitPK userVisitPK, EditGeoCodeScopeForm form);
 
     CommandResult<?> deleteGeoCodeScope(UserVisitPK userVisitPK, DeleteGeoCodeScopeForm form);
     
@@ -85,11 +86,11 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeScopeDescription(UserVisitPK userVisitPK, CreateGeoCodeScopeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeScopeDescription(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionForm form);
+    CommandResult<GetGeoCodeScopeDescriptionResult> getGeoCodeScopeDescription(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeScopeDescriptions(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionsForm form);
+    CommandResult<GetGeoCodeScopeDescriptionsResult> getGeoCodeScopeDescriptions(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionsForm form);
 
-    CommandResult<?> editGeoCodeScopeDescription(UserVisitPK userVisitPK, EditGeoCodeScopeDescriptionForm form);
+    CommandResult<EditGeoCodeScopeDescriptionResult> editGeoCodeScopeDescription(UserVisitPK userVisitPK, EditGeoCodeScopeDescriptionForm form);
 
     CommandResult<?> deleteGeoCodeScopeDescription(UserVisitPK userVisitPK, DeleteGeoCodeScopeDescriptionForm form);
     
@@ -99,15 +100,15 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeAliasType(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeForm form);
 
-    CommandResult<?> getGeoCodeAliasTypeChoices(UserVisitPK userVisitPK, GetGeoCodeAliasTypeChoicesForm form);
+    CommandResult<GetGeoCodeAliasTypeChoicesResult> getGeoCodeAliasTypeChoices(UserVisitPK userVisitPK, GetGeoCodeAliasTypeChoicesForm form);
 
-    CommandResult<?> getGeoCodeAliasType(UserVisitPK userVisitPK, GetGeoCodeAliasTypeForm form);
+    CommandResult<GetGeoCodeAliasTypeResult> getGeoCodeAliasType(UserVisitPK userVisitPK, GetGeoCodeAliasTypeForm form);
 
-    CommandResult<?> getGeoCodeAliasTypes(UserVisitPK userVisitPK, GetGeoCodeAliasTypesForm form);
+    CommandResult<GetGeoCodeAliasTypesResult> getGeoCodeAliasTypes(UserVisitPK userVisitPK, GetGeoCodeAliasTypesForm form);
 
     CommandResult<?> setDefaultGeoCodeAliasType(UserVisitPK userVisitPK, SetDefaultGeoCodeAliasTypeForm form);
 
-    CommandResult<?> editGeoCodeAliasType(UserVisitPK userVisitPK, EditGeoCodeAliasTypeForm form);
+    CommandResult<EditGeoCodeAliasTypeResult> editGeoCodeAliasType(UserVisitPK userVisitPK, EditGeoCodeAliasTypeForm form);
 
     CommandResult<?> deleteGeoCodeAliasType(UserVisitPK userVisitPK, DeleteGeoCodeAliasTypeForm form);
 
@@ -117,11 +118,11 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionForm form);
+    CommandResult<GetGeoCodeAliasTypeDescriptionResult> getGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeAliasTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionsForm form);
+    CommandResult<GetGeoCodeAliasTypeDescriptionsResult> getGeoCodeAliasTypeDescriptions(UserVisitPK userVisitPK, GetGeoCodeAliasTypeDescriptionsForm form);
 
-    CommandResult<?> editGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, EditGeoCodeAliasTypeDescriptionForm form);
+    CommandResult<EditGeoCodeAliasTypeDescriptionResult> editGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, EditGeoCodeAliasTypeDescriptionForm form);
 
     CommandResult<?> deleteGeoCodeAliasTypeDescription(UserVisitPK userVisitPK, DeleteGeoCodeAliasTypeDescriptionForm form);
     
@@ -129,7 +130,7 @@ public interface GeoService
     //   Geo Codes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getGeoCode(UserVisitPK userVisitPK, GetGeoCodeForm form);
+    CommandResult<GetGeoCodeResult> getGeoCode(UserVisitPK userVisitPK, GetGeoCodeForm form);
 
     CommandResult<?> setDefaultGeoCode(UserVisitPK userVisitPK, SetDefaultGeoCodeForm form);
 
@@ -141,11 +142,11 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeDescription(UserVisitPK userVisitPK, CreateGeoCodeDescriptionForm form);
     
-    CommandResult<?> getGeoCodeDescription(UserVisitPK userVisitPK, GetGeoCodeDescriptionForm form);
+    CommandResult<GetGeoCodeDescriptionResult> getGeoCodeDescription(UserVisitPK userVisitPK, GetGeoCodeDescriptionForm form);
 
-    CommandResult<?> getGeoCodeDescriptions(UserVisitPK userVisitPK, GetGeoCodeDescriptionsForm form);
+    CommandResult<GetGeoCodeDescriptionsResult> getGeoCodeDescriptions(UserVisitPK userVisitPK, GetGeoCodeDescriptionsForm form);
     
-    CommandResult<?> editGeoCodeDescription(UserVisitPK userVisitPK, EditGeoCodeDescriptionForm form);
+    CommandResult<EditGeoCodeDescriptionResult> editGeoCodeDescription(UserVisitPK userVisitPK, EditGeoCodeDescriptionForm form);
     
     CommandResult<?> deleteGeoCodeDescription(UserVisitPK userVisitPK, DeleteGeoCodeDescriptionForm form);
     
@@ -155,11 +156,11 @@ public interface GeoService
 
     CommandResult<?> createGeoCodeAlias(UserVisitPK userVisitPK, CreateGeoCodeAliasForm form);
 
-    CommandResult<?> getGeoCodeAlias(UserVisitPK userVisitPK, GetGeoCodeAliasForm form);
+    CommandResult<GetGeoCodeAliasResult> getGeoCodeAlias(UserVisitPK userVisitPK, GetGeoCodeAliasForm form);
 
-    CommandResult<?> getGeoCodeAliases(UserVisitPK userVisitPK, GetGeoCodeAliasesForm form);
+    CommandResult<GetGeoCodeAliasesResult> getGeoCodeAliases(UserVisitPK userVisitPK, GetGeoCodeAliasesForm form);
 
-    CommandResult<?> editGeoCodeAlias(UserVisitPK userVisitPK, EditGeoCodeAliasForm form);
+    CommandResult<EditGeoCodeAliasResult> editGeoCodeAlias(UserVisitPK userVisitPK, EditGeoCodeAliasForm form);
 
     CommandResult<?> deleteGeoCodeAlias(UserVisitPK userVisitPK, DeleteGeoCodeAliasForm form);
 
@@ -169,13 +170,13 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeLanguage(UserVisitPK userVisitPK, CreateGeoCodeLanguageForm form);
     
-    CommandResult<?> getGeoCodeLanguage(UserVisitPK userVisitPK, GetGeoCodeLanguageForm form);
+    CommandResult<GetGeoCodeLanguageResult> getGeoCodeLanguage(UserVisitPK userVisitPK, GetGeoCodeLanguageForm form);
 
-    CommandResult<?> getGeoCodeLanguages(UserVisitPK userVisitPK, GetGeoCodeLanguagesForm form);
+    CommandResult<GetGeoCodeLanguagesResult> getGeoCodeLanguages(UserVisitPK userVisitPK, GetGeoCodeLanguagesForm form);
 
     CommandResult<?> setDefaultGeoCodeLanguage(UserVisitPK userVisitPK, SetDefaultGeoCodeLanguageForm form);
     
-    CommandResult<?> editGeoCodeLanguage(UserVisitPK userVisitPK, EditGeoCodeLanguageForm form);
+    CommandResult<EditGeoCodeLanguageResult> editGeoCodeLanguage(UserVisitPK userVisitPK, EditGeoCodeLanguageForm form);
     
     CommandResult<?> deleteGeoCodeLanguage(UserVisitPK userVisitPK, DeleteGeoCodeLanguageForm form);
     
@@ -185,13 +186,13 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeCurrency(UserVisitPK userVisitPK, CreateGeoCodeCurrencyForm form);
     
-    CommandResult<?> getGeoCodeCurrency(UserVisitPK userVisitPK, GetGeoCodeCurrencyForm form);
+    CommandResult<GetGeoCodeCurrencyResult> getGeoCodeCurrency(UserVisitPK userVisitPK, GetGeoCodeCurrencyForm form);
 
-    CommandResult<?> getGeoCodeCurrencies(UserVisitPK userVisitPK, GetGeoCodeCurrenciesForm form);
+    CommandResult<GetGeoCodeCurrenciesResult> getGeoCodeCurrencies(UserVisitPK userVisitPK, GetGeoCodeCurrenciesForm form);
     
     CommandResult<?> setDefaultGeoCodeCurrency(UserVisitPK userVisitPK, SetDefaultGeoCodeCurrencyForm form);
     
-    CommandResult<?> editGeoCodeCurrency(UserVisitPK userVisitPK, EditGeoCodeCurrencyForm form);
+    CommandResult<EditGeoCodeCurrencyResult> editGeoCodeCurrency(UserVisitPK userVisitPK, EditGeoCodeCurrencyForm form);
     
     CommandResult<?> deleteGeoCodeCurrency(UserVisitPK userVisitPK, DeleteGeoCodeCurrencyForm form);
     
@@ -201,13 +202,13 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeTimeZone(UserVisitPK userVisitPK, CreateGeoCodeTimeZoneForm form);
 
-    CommandResult<?> getGeoCodeTimeZone(UserVisitPK userVisitPK, GetGeoCodeTimeZoneForm form);
+    CommandResult<GetGeoCodeTimeZoneResult> getGeoCodeTimeZone(UserVisitPK userVisitPK, GetGeoCodeTimeZoneForm form);
 
-    CommandResult<?> getGeoCodeTimeZones(UserVisitPK userVisitPK, GetGeoCodeTimeZonesForm form);
+    CommandResult<GetGeoCodeTimeZonesResult> getGeoCodeTimeZones(UserVisitPK userVisitPK, GetGeoCodeTimeZonesForm form);
     
     CommandResult<?> setDefaultGeoCodeTimeZone(UserVisitPK userVisitPK, SetDefaultGeoCodeTimeZoneForm form);
     
-    CommandResult<?> editGeoCodeTimeZone(UserVisitPK userVisitPK, EditGeoCodeTimeZoneForm form);
+    CommandResult<EditGeoCodeTimeZoneResult> editGeoCodeTimeZone(UserVisitPK userVisitPK, EditGeoCodeTimeZoneForm form);
     
     CommandResult<?> deleteGeoCodeTimeZone(UserVisitPK userVisitPK, DeleteGeoCodeTimeZoneForm form);
     
@@ -217,13 +218,13 @@ public interface GeoService
     
     CommandResult<?> createGeoCodeDateTimeFormat(UserVisitPK userVisitPK, CreateGeoCodeDateTimeFormatForm form);
 
-    CommandResult<?> getGeoCodeDateTimeFormat(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatForm form);
+    CommandResult<GetGeoCodeDateTimeFormatResult> getGeoCodeDateTimeFormat(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatForm form);
 
-    CommandResult<?> getGeoCodeDateTimeFormats(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatsForm form);
+    CommandResult<GetGeoCodeDateTimeFormatsResult> getGeoCodeDateTimeFormats(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatsForm form);
     
     CommandResult<?> setDefaultGeoCodeDateTimeFormat(UserVisitPK userVisitPK, SetDefaultGeoCodeDateTimeFormatForm form);
     
-    CommandResult<?> editGeoCodeDateTimeFormat(UserVisitPK userVisitPK, EditGeoCodeDateTimeFormatForm form);
+    CommandResult<EditGeoCodeDateTimeFormatResult> editGeoCodeDateTimeFormat(UserVisitPK userVisitPK, EditGeoCodeDateTimeFormatForm form);
     
     CommandResult<?> deleteGeoCodeDateTimeFormat(UserVisitPK userVisitPK, DeleteGeoCodeDateTimeFormatForm form);
     
@@ -233,13 +234,13 @@ public interface GeoService
     
     CommandResult<?> createCountry(UserVisitPK userVisitPK, CreateCountryForm form);
     
-    CommandResult<?> getCountry(UserVisitPK userVisitPK, GetCountryForm form);
+    CommandResult<GetCountryResult> getCountry(UserVisitPK userVisitPK, GetCountryForm form);
     
-    CommandResult<?> getCountries(UserVisitPK userVisitPK, GetCountriesForm form);
+    CommandResult<GetCountriesResult> getCountries(UserVisitPK userVisitPK, GetCountriesForm form);
     
-    CommandResult<?> getCountryChoices(UserVisitPK userVisitPK, GetCountryChoicesForm form);
+    CommandResult<GetCountryChoicesResult> getCountryChoices(UserVisitPK userVisitPK, GetCountryChoicesForm form);
     
-    CommandResult<?> editCountry(UserVisitPK userVisitPK, EditCountryForm form);
+    CommandResult<EditCountryResult> editCountry(UserVisitPK userVisitPK, EditCountryForm form);
 
     // -------------------------------------------------------------------------
     //   States
@@ -247,9 +248,9 @@ public interface GeoService
     
     CommandResult<?> createState(UserVisitPK userVisitPK, CreateStateForm form);
     
-    CommandResult<?> getState(UserVisitPK userVisitPK, GetStateForm form);
+    CommandResult<GetStateResult> getState(UserVisitPK userVisitPK, GetStateForm form);
     
-    CommandResult<?> getStates(UserVisitPK userVisitPK, GetStatesForm form);
+    CommandResult<GetStatesResult> getStates(UserVisitPK userVisitPK, GetStatesForm form);
     
     // -------------------------------------------------------------------------
     //   Counties
@@ -257,9 +258,9 @@ public interface GeoService
     
     CommandResult<?> createCounty(UserVisitPK userVisitPK, CreateCountyForm form);
     
-    CommandResult<?> getCounty(UserVisitPK userVisitPK, GetCountyForm form);
+    CommandResult<GetCountyResult> getCounty(UserVisitPK userVisitPK, GetCountyForm form);
     
-    CommandResult<?> getCounties(UserVisitPK userVisitPK, GetCountiesForm form);
+    CommandResult<GetCountiesResult> getCounties(UserVisitPK userVisitPK, GetCountiesForm form);
     
     // -------------------------------------------------------------------------
     //   Cities
@@ -271,9 +272,9 @@ public interface GeoService
     
     CommandResult<?> addZipCodeToCity(UserVisitPK userVisitPK, AddZipCodeToCityForm form);
     
-    CommandResult<?> getCity(UserVisitPK userVisitPK, GetCityForm form);
+    CommandResult<GetCityResult> getCity(UserVisitPK userVisitPK, GetCityForm form);
     
-    CommandResult<?> getCities(UserVisitPK userVisitPK, GetCitiesForm form);
+    CommandResult<GetCitiesResult> getCities(UserVisitPK userVisitPK, GetCitiesForm form);
     
     // -------------------------------------------------------------------------
     //   Zip Codes
@@ -281,8 +282,8 @@ public interface GeoService
     
     CommandResult<?> createZipCode(UserVisitPK userVisitPK, CreateZipCodeForm form);
     
-    CommandResult<?> getZipCode(UserVisitPK userVisitPK, GetZipCodeForm form);
+    CommandResult<GetZipCodeResult> getZipCode(UserVisitPK userVisitPK, GetZipCodeForm form);
     
-    CommandResult<?> getZipCodes(UserVisitPK userVisitPK, GetZipCodesForm form);
+    CommandResult<GetZipCodesResult> getZipCodes(UserVisitPK userVisitPK, GetZipCodesForm form);
     
 }

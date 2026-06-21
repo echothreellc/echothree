@@ -18,6 +18,7 @@ package com.echothree.control.user.job.server;
 
 import com.echothree.control.user.job.common.JobRemote;
 import com.echothree.control.user.job.common.form.*;
+import com.echothree.control.user.job.common.result.*;
 import com.echothree.control.user.job.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class JobBean
     }
     
     @Override
-    public CommandResult<?> getJob(UserVisitPK userVisitPK, GetJobForm form) {
+    public CommandResult<GetJobResult> getJob(UserVisitPK userVisitPK, GetJobForm form) {
         return CDI.current().select(GetJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getJobs(UserVisitPK userVisitPK, GetJobsForm form) {
+    public CommandResult<GetJobsResult> getJobs(UserVisitPK userVisitPK, GetJobsForm form) {
         return CDI.current().select(GetJobsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
+    public CommandResult<GetJobStatusChoicesResult> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
         return CDI.current().select(GetJobStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class JobBean
     }
     
     @Override
-    public CommandResult<?> editJob(UserVisitPK userVisitPK, EditJobForm form) {
+    public CommandResult<EditJobResult> editJob(UserVisitPK userVisitPK, EditJobForm form) {
         return CDI.current().select(EditJobCommand.class).get().run(userVisitPK, form);
     }
     
@@ -97,12 +98,12 @@ public class JobBean
     }
     
     @Override
-    public CommandResult<?> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form) {
+    public CommandResult<GetJobDescriptionsResult> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form) {
         return CDI.current().select(GetJobDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
+    public CommandResult<EditJobDescriptionResult> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
         return CDI.current().select(EditJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

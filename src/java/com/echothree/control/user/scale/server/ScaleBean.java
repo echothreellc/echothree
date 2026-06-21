@@ -18,6 +18,7 @@ package com.echothree.control.user.scale.server;
 
 import com.echothree.control.user.scale.common.ScaleRemote;
 import com.echothree.control.user.scale.common.form.*;
+import com.echothree.control.user.scale.common.result.*;
 import com.echothree.control.user.scale.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> getScaleTypeChoices(UserVisitPK userVisitPK, GetScaleTypeChoicesForm form) {
+    public CommandResult<GetScaleTypeChoicesResult> getScaleTypeChoices(UserVisitPK userVisitPK, GetScaleTypeChoicesForm form) {
         return CDI.current().select(GetScaleTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleType(UserVisitPK userVisitPK, GetScaleTypeForm form) {
+    public CommandResult<GetScaleTypeResult> getScaleType(UserVisitPK userVisitPK, GetScaleTypeForm form) {
         return CDI.current().select(GetScaleTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleTypes(UserVisitPK userVisitPK, GetScaleTypesForm form) {
+    public CommandResult<GetScaleTypesResult> getScaleTypes(UserVisitPK userVisitPK, GetScaleTypesForm form) {
         return CDI.current().select(GetScaleTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -68,7 +69,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> editScaleType(UserVisitPK userVisitPK, EditScaleTypeForm form) {
+    public CommandResult<EditScaleTypeResult> editScaleType(UserVisitPK userVisitPK, EditScaleTypeForm form) {
         return CDI.current().select(EditScaleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -87,17 +88,17 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> getScaleTypeDescription(UserVisitPK userVisitPK, GetScaleTypeDescriptionForm form) {
+    public CommandResult<GetScaleTypeDescriptionResult> getScaleTypeDescription(UserVisitPK userVisitPK, GetScaleTypeDescriptionForm form) {
         return CDI.current().select(GetScaleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleTypeDescriptions(UserVisitPK userVisitPK, GetScaleTypeDescriptionsForm form) {
+    public CommandResult<GetScaleTypeDescriptionsResult> getScaleTypeDescriptions(UserVisitPK userVisitPK, GetScaleTypeDescriptionsForm form) {
         return CDI.current().select(GetScaleTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editScaleTypeDescription(UserVisitPK userVisitPK, EditScaleTypeDescriptionForm form) {
+    public CommandResult<EditScaleTypeDescriptionResult> editScaleTypeDescription(UserVisitPK userVisitPK, EditScaleTypeDescriptionForm form) {
         return CDI.current().select(EditScaleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -116,17 +117,17 @@ public class ScaleBean
     }
     
     @Override
-    public CommandResult<?> getScaleChoices(UserVisitPK userVisitPK, GetScaleChoicesForm form) {
+    public CommandResult<GetScaleChoicesResult> getScaleChoices(UserVisitPK userVisitPK, GetScaleChoicesForm form) {
         return CDI.current().select(GetScaleChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getScale(UserVisitPK userVisitPK, GetScaleForm form) {
+    public CommandResult<GetScaleResult> getScale(UserVisitPK userVisitPK, GetScaleForm form) {
         return CDI.current().select(GetScaleCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScales(UserVisitPK userVisitPK, GetScalesForm form) {
+    public CommandResult<GetScalesResult> getScales(UserVisitPK userVisitPK, GetScalesForm form) {
         return CDI.current().select(GetScalesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class ScaleBean
     }
     
     @Override
-    public CommandResult<?> editScale(UserVisitPK userVisitPK, EditScaleForm form) {
+    public CommandResult<EditScaleResult> editScale(UserVisitPK userVisitPK, EditScaleForm form) {
         return CDI.current().select(EditScaleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -155,17 +156,17 @@ public class ScaleBean
     }
     
     @Override
-    public CommandResult<?> getScaleDescription(UserVisitPK userVisitPK, GetScaleDescriptionForm form) {
+    public CommandResult<GetScaleDescriptionResult> getScaleDescription(UserVisitPK userVisitPK, GetScaleDescriptionForm form) {
         return CDI.current().select(GetScaleDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleDescriptions(UserVisitPK userVisitPK, GetScaleDescriptionsForm form) {
+    public CommandResult<GetScaleDescriptionsResult> getScaleDescriptions(UserVisitPK userVisitPK, GetScaleDescriptionsForm form) {
         return CDI.current().select(GetScaleDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editScaleDescription(UserVisitPK userVisitPK, EditScaleDescriptionForm form) {
+    public CommandResult<EditScaleDescriptionResult> editScaleDescription(UserVisitPK userVisitPK, EditScaleDescriptionForm form) {
         return CDI.current().select(EditScaleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -184,17 +185,17 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> getScaleUseTypeChoices(UserVisitPK userVisitPK, GetScaleUseTypeChoicesForm form) {
+    public CommandResult<GetScaleUseTypeChoicesResult> getScaleUseTypeChoices(UserVisitPK userVisitPK, GetScaleUseTypeChoicesForm form) {
         return CDI.current().select(GetScaleUseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleUseType(UserVisitPK userVisitPK, GetScaleUseTypeForm form) {
+    public CommandResult<GetScaleUseTypeResult> getScaleUseType(UserVisitPK userVisitPK, GetScaleUseTypeForm form) {
         return CDI.current().select(GetScaleUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleUseTypes(UserVisitPK userVisitPK, GetScaleUseTypesForm form) {
+    public CommandResult<GetScaleUseTypesResult> getScaleUseTypes(UserVisitPK userVisitPK, GetScaleUseTypesForm form) {
         return CDI.current().select(GetScaleUseTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> editScaleUseType(UserVisitPK userVisitPK, EditScaleUseTypeForm form) {
+    public CommandResult<EditScaleUseTypeResult> editScaleUseType(UserVisitPK userVisitPK, EditScaleUseTypeForm form) {
         return CDI.current().select(EditScaleUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -223,17 +224,17 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> getScaleUseTypeDescription(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionForm form) {
+    public CommandResult<GetScaleUseTypeDescriptionResult> getScaleUseTypeDescription(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionForm form) {
         return CDI.current().select(GetScaleUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getScaleUseTypeDescriptions(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionsForm form) {
+    public CommandResult<GetScaleUseTypeDescriptionsResult> getScaleUseTypeDescriptions(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionsForm form) {
         return CDI.current().select(GetScaleUseTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editScaleUseTypeDescription(UserVisitPK userVisitPK, EditScaleUseTypeDescriptionForm form) {
+    public CommandResult<EditScaleUseTypeDescriptionResult> editScaleUseTypeDescription(UserVisitPK userVisitPK, EditScaleUseTypeDescriptionForm form) {
         return CDI.current().select(EditScaleUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -252,17 +253,17 @@ public class ScaleBean
     }
 
     @Override
-    public CommandResult<?> getPartyScaleUse(UserVisitPK userVisitPK, GetPartyScaleUseForm form) {
+    public CommandResult<GetPartyScaleUseResult> getPartyScaleUse(UserVisitPK userVisitPK, GetPartyScaleUseForm form) {
         return CDI.current().select(GetPartyScaleUseCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyScaleUses(UserVisitPK userVisitPK, GetPartyScaleUsesForm form) {
+    public CommandResult<GetPartyScaleUsesResult> getPartyScaleUses(UserVisitPK userVisitPK, GetPartyScaleUsesForm form) {
         return CDI.current().select(GetPartyScaleUsesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPartyScaleUse(UserVisitPK userVisitPK, EditPartyScaleUseForm form) {
+    public CommandResult<EditPartyScaleUseResult> editPartyScaleUse(UserVisitPK userVisitPK, EditPartyScaleUseForm form) {
         return CDI.current().select(EditPartyScaleUseCommand.class).get().run(userVisitPK, form);
     }
 

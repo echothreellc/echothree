@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.common;
 
 import com.echothree.control.user.core.common.form.*;
+import com.echothree.control.user.core.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -43,11 +44,11 @@ public interface CoreService
     //   Base Encryption Keys
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getBaseEncryptionKey(UserVisitPK userVisitPK, GetBaseEncryptionKeyForm form);
+    CommandResult<GetBaseEncryptionKeyResult> getBaseEncryptionKey(UserVisitPK userVisitPK, GetBaseEncryptionKeyForm form);
     
-    CommandResult<?> getBaseEncryptionKeys(UserVisitPK userVisitPK, GetBaseEncryptionKeysForm form);
+    CommandResult<GetBaseEncryptionKeysResult> getBaseEncryptionKeys(UserVisitPK userVisitPK, GetBaseEncryptionKeysForm form);
     
-    CommandResult<?> getBaseEncryptionKeyStatusChoices(UserVisitPK userVisitPK, GetBaseEncryptionKeyStatusChoicesForm form);
+    CommandResult<GetBaseEncryptionKeyStatusChoicesResult> getBaseEncryptionKeyStatusChoices(UserVisitPK userVisitPK, GetBaseEncryptionKeyStatusChoicesForm form);
     
     CommandResult<?> setBaseEncryptionKeyStatus(UserVisitPK userVisitPK, SetBaseEncryptionKeyStatusForm form);
     
@@ -67,11 +68,11 @@ public interface CoreService
     
     CommandResult<?> createComponentVendor(UserVisitPK userVisitPK, CreateComponentVendorForm form);
     
-    CommandResult<?> getComponentVendor(UserVisitPK userVisitPK, GetComponentVendorForm form);
+    CommandResult<GetComponentVendorResult> getComponentVendor(UserVisitPK userVisitPK, GetComponentVendorForm form);
     
-    CommandResult<?> getComponentVendors(UserVisitPK userVisitPK, GetComponentVendorsForm form);
+    CommandResult<GetComponentVendorsResult> getComponentVendors(UserVisitPK userVisitPK, GetComponentVendorsForm form);
     
-    CommandResult<?> editComponentVendor(UserVisitPK userVisitPK, EditComponentVendorForm form);
+    CommandResult<EditComponentVendorResult> editComponentVendor(UserVisitPK userVisitPK, EditComponentVendorForm form);
     
     CommandResult<?> deleteComponentVendor(UserVisitPK userVisitPK, DeleteComponentVendorForm form);
     
@@ -81,11 +82,11 @@ public interface CoreService
     
     CommandResult<?> createEntityType(UserVisitPK userVisitPK, CreateEntityTypeForm form);
     
-    CommandResult<?> getEntityType(UserVisitPK userVisitPK, GetEntityTypeForm form);
+    CommandResult<GetEntityTypeResult> getEntityType(UserVisitPK userVisitPK, GetEntityTypeForm form);
     
-    CommandResult<?> getEntityTypes(UserVisitPK userVisitPK, GetEntityTypesForm form);
+    CommandResult<GetEntityTypesResult> getEntityTypes(UserVisitPK userVisitPK, GetEntityTypesForm form);
     
-    CommandResult<?> editEntityType(UserVisitPK userVisitPK, EditEntityTypeForm form);
+    CommandResult<EditEntityTypeResult> editEntityType(UserVisitPK userVisitPK, EditEntityTypeForm form);
     
     CommandResult<?> deleteEntityType(UserVisitPK userVisitPK, DeleteEntityTypeForm form);
     
@@ -95,11 +96,11 @@ public interface CoreService
     
     CommandResult<?> createCommand(UserVisitPK userVisitPK, CreateCommandForm form);
     
-    CommandResult<?> getCommand(UserVisitPK userVisitPK, GetCommandForm form);
+    CommandResult<GetCommandResult> getCommand(UserVisitPK userVisitPK, GetCommandForm form);
     
-    CommandResult<?> getCommands(UserVisitPK userVisitPK, GetCommandsForm form);
+    CommandResult<GetCommandsResult> getCommands(UserVisitPK userVisitPK, GetCommandsForm form);
     
-    CommandResult<?> editCommand(UserVisitPK userVisitPK, EditCommandForm form);
+    CommandResult<EditCommandResult> editCommand(UserVisitPK userVisitPK, EditCommandForm form);
     
     CommandResult<?> deleteCommand(UserVisitPK userVisitPK, DeleteCommandForm form);
     
@@ -109,11 +110,11 @@ public interface CoreService
     
     CommandResult<?> createCommandDescription(UserVisitPK userVisitPK, CreateCommandDescriptionForm form);
     
-    CommandResult<?> getCommandDescription(UserVisitPK userVisitPK, GetCommandDescriptionForm form);
+    CommandResult<GetCommandDescriptionResult> getCommandDescription(UserVisitPK userVisitPK, GetCommandDescriptionForm form);
     
-    CommandResult<?> getCommandDescriptions(UserVisitPK userVisitPK, GetCommandDescriptionsForm form);
+    CommandResult<GetCommandDescriptionsResult> getCommandDescriptions(UserVisitPK userVisitPK, GetCommandDescriptionsForm form);
     
-    CommandResult<?> editCommandDescription(UserVisitPK userVisitPK, EditCommandDescriptionForm form);
+    CommandResult<EditCommandDescriptionResult> editCommandDescription(UserVisitPK userVisitPK, EditCommandDescriptionForm form);
     
     CommandResult<?> deleteCommandDescription(UserVisitPK userVisitPK, DeleteCommandDescriptionForm form);
     
@@ -123,15 +124,15 @@ public interface CoreService
     
     CommandResult<?> createCommandMessageType(UserVisitPK userVisitPK, CreateCommandMessageTypeForm form);
     
-    CommandResult<?> getCommandMessageTypeChoices(UserVisitPK userVisitPK, GetCommandMessageTypeChoicesForm form);
+    CommandResult<GetCommandMessageTypeChoicesResult> getCommandMessageTypeChoices(UserVisitPK userVisitPK, GetCommandMessageTypeChoicesForm form);
     
-    CommandResult<?> getCommandMessageType(UserVisitPK userVisitPK, GetCommandMessageTypeForm form);
+    CommandResult<GetCommandMessageTypeResult> getCommandMessageType(UserVisitPK userVisitPK, GetCommandMessageTypeForm form);
     
-    CommandResult<?> getCommandMessageTypes(UserVisitPK userVisitPK, GetCommandMessageTypesForm form);
+    CommandResult<GetCommandMessageTypesResult> getCommandMessageTypes(UserVisitPK userVisitPK, GetCommandMessageTypesForm form);
     
     CommandResult<?> setDefaultCommandMessageType(UserVisitPK userVisitPK, SetDefaultCommandMessageTypeForm form);
     
-    CommandResult<?> editCommandMessageType(UserVisitPK userVisitPK, EditCommandMessageTypeForm form);
+    CommandResult<EditCommandMessageTypeResult> editCommandMessageType(UserVisitPK userVisitPK, EditCommandMessageTypeForm form);
     
     CommandResult<?> deleteCommandMessageType(UserVisitPK userVisitPK, DeleteCommandMessageTypeForm form);
     
@@ -141,11 +142,11 @@ public interface CoreService
     
     CommandResult<?> createCommandMessageTypeDescription(UserVisitPK userVisitPK, CreateCommandMessageTypeDescriptionForm form);
     
-    CommandResult<?> getCommandMessageTypeDescription(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionForm form);
+    CommandResult<GetCommandMessageTypeDescriptionResult> getCommandMessageTypeDescription(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionForm form);
     
-    CommandResult<?> getCommandMessageTypeDescriptions(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionsForm form);
+    CommandResult<GetCommandMessageTypeDescriptionsResult> getCommandMessageTypeDescriptions(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionsForm form);
     
-    CommandResult<?> editCommandMessageTypeDescription(UserVisitPK userVisitPK, EditCommandMessageTypeDescriptionForm form);
+    CommandResult<EditCommandMessageTypeDescriptionResult> editCommandMessageTypeDescription(UserVisitPK userVisitPK, EditCommandMessageTypeDescriptionForm form);
     
     CommandResult<?> deleteCommandMessageTypeDescription(UserVisitPK userVisitPK, DeleteCommandMessageTypeDescriptionForm form);
     
@@ -155,11 +156,11 @@ public interface CoreService
     
     CommandResult<?> createCommandMessage(UserVisitPK userVisitPK, CreateCommandMessageForm form);
     
-    CommandResult<?> getCommandMessage(UserVisitPK userVisitPK, GetCommandMessageForm form);
+    CommandResult<GetCommandMessageResult> getCommandMessage(UserVisitPK userVisitPK, GetCommandMessageForm form);
 
-    CommandResult<?> getCommandMessages(UserVisitPK userVisitPK, GetCommandMessagesForm form);
+    CommandResult<GetCommandMessagesResult> getCommandMessages(UserVisitPK userVisitPK, GetCommandMessagesForm form);
 
-    CommandResult<?> editCommandMessage(UserVisitPK userVisitPK, EditCommandMessageForm form);
+    CommandResult<EditCommandMessageResult> editCommandMessage(UserVisitPK userVisitPK, EditCommandMessageForm form);
 
     CommandResult<?> deleteCommandMessage(UserVisitPK userVisitPK, DeleteCommandMessageForm form);
 
@@ -169,11 +170,11 @@ public interface CoreService
 
     CommandResult<?> createCommandMessageTranslation(UserVisitPK userVisitPK, CreateCommandMessageTranslationForm form);
 
-    CommandResult<?> getCommandMessageTranslation(UserVisitPK userVisitPK, GetCommandMessageTranslationForm form);
+    CommandResult<GetCommandMessageTranslationResult> getCommandMessageTranslation(UserVisitPK userVisitPK, GetCommandMessageTranslationForm form);
 
-    CommandResult<?> getCommandMessageTranslations(UserVisitPK userVisitPK, GetCommandMessageTranslationsForm form);
+    CommandResult<GetCommandMessageTranslationsResult> getCommandMessageTranslations(UserVisitPK userVisitPK, GetCommandMessageTranslationsForm form);
 
-    CommandResult<?> editCommandMessageTranslation(UserVisitPK userVisitPK, EditCommandMessageTranslationForm form);
+    CommandResult<EditCommandMessageTranslationResult> editCommandMessageTranslation(UserVisitPK userVisitPK, EditCommandMessageTranslationForm form);
 
     CommandResult<?> deleteCommandMessageTranslation(UserVisitPK userVisitPK, DeleteCommandMessageTranslationForm form);
 
@@ -183,9 +184,9 @@ public interface CoreService
 
     CommandResult<?> createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form);
 
-    CommandResult<?> getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form);
+    CommandResult<GetEntityInstanceResult> getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form);
 
-    CommandResult<?> getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form);
+    CommandResult<GetEntityInstancesResult> getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form);
 
     CommandResult<?> deleteEntityInstance(UserVisitPK userVisitPK, DeleteEntityInstanceForm form);
 
@@ -199,11 +200,11 @@ public interface CoreService
     
     CommandResult<?> createEventType(UserVisitPK userVisitPK, CreateEventTypeForm form);
 
-    CommandResult<?> getEventType(UserVisitPK userVisitPK, GetEventTypeForm form);
+    CommandResult<GetEventTypeResult> getEventType(UserVisitPK userVisitPK, GetEventTypeForm form);
 
-    CommandResult<?> getEventTypes(UserVisitPK userVisitPK, GetEventTypesForm form);
+    CommandResult<GetEventTypesResult> getEventTypes(UserVisitPK userVisitPK, GetEventTypesForm form);
 
-    CommandResult<?> getEventTypeChoices(UserVisitPK userVisitPK, GetEventTypeChoicesForm form);
+    CommandResult<GetEventTypeChoicesResult> getEventTypeChoices(UserVisitPK userVisitPK, GetEventTypeChoicesForm form);
 
     // -------------------------------------------------------------------------
     //   Event Type Descriptions
@@ -215,11 +216,11 @@ public interface CoreService
     //   Event Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> getEventGroup(UserVisitPK userVisitPK, GetEventGroupForm form);
+    CommandResult<GetEventGroupResult> getEventGroup(UserVisitPK userVisitPK, GetEventGroupForm form);
     
-    CommandResult<?> getEventGroups(UserVisitPK userVisitPK, GetEventGroupsForm form);
+    CommandResult<GetEventGroupsResult> getEventGroups(UserVisitPK userVisitPK, GetEventGroupsForm form);
     
-    CommandResult<?> getEventGroupStatusChoices(UserVisitPK userVisitPK, GetEventGroupStatusChoicesForm form);
+    CommandResult<GetEventGroupStatusChoicesResult> getEventGroupStatusChoices(UserVisitPK userVisitPK, GetEventGroupStatusChoicesForm form);
     
     CommandResult<?> setEventGroupStatus(UserVisitPK userVisitPK, SetEventGroupStatusForm form);
     
@@ -229,7 +230,7 @@ public interface CoreService
 
     CommandResult<?> sendEvent(UserVisitPK userVisitPK, SendEventForm form);
 
-    CommandResult<?> getEvents(UserVisitPK userVisitPK, GetEventsForm form);
+    CommandResult<GetEventsResult> getEvents(UserVisitPK userVisitPK, GetEventsForm form);
     
     // -------------------------------------------------------------------------
     //   Queued Events
@@ -261,15 +262,15 @@ public interface CoreService
 
     CommandResult<?> createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form);
 
-    CommandResult<?> getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form);
+    CommandResult<GetEntityAliasTypeResult> getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form);
 
-    CommandResult<?> getEntityAliasTypes(UserVisitPK userVisitPK, GetEntityAliasTypesForm form);
+    CommandResult<GetEntityAliasTypesResult> getEntityAliasTypes(UserVisitPK userVisitPK, GetEntityAliasTypesForm form);
 
-    CommandResult<?> getEntityAliasTypeChoices(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form);
+    CommandResult<GetEntityAliasTypeChoicesResult> getEntityAliasTypeChoices(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form);
 
     CommandResult<?> setDefaultEntityAliasType(UserVisitPK userVisitPK, SetDefaultEntityAliasTypeForm form);
 
-    CommandResult<?> editEntityAliasType(UserVisitPK userVisitPK, EditEntityAliasTypeForm form);
+    CommandResult<EditEntityAliasTypeResult> editEntityAliasType(UserVisitPK userVisitPK, EditEntityAliasTypeForm form);
 
     CommandResult<?> deleteEntityAliasType(UserVisitPK userVisitPK, DeleteEntityAliasTypeForm form);
 
@@ -279,11 +280,11 @@ public interface CoreService
 
     CommandResult<?> createEntityAliasTypeDescription(UserVisitPK userVisitPK, CreateEntityAliasTypeDescriptionForm form);
 
-    CommandResult<?> getEntityAliasTypeDescription(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionForm form);
+    CommandResult<GetEntityAliasTypeDescriptionResult> getEntityAliasTypeDescription(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionForm form);
 
-    CommandResult<?> getEntityAliasTypeDescriptions(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionsForm form);
+    CommandResult<GetEntityAliasTypeDescriptionsResult> getEntityAliasTypeDescriptions(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionsForm form);
 
-    CommandResult<?> editEntityAliasTypeDescription(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form);
+    CommandResult<EditEntityAliasTypeDescriptionResult> editEntityAliasTypeDescription(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form);
 
     CommandResult<?> deleteEntityAliasTypeDescription(UserVisitPK userVisitPK, DeleteEntityAliasTypeDescriptionForm form);
 
@@ -293,11 +294,11 @@ public interface CoreService
 
     CommandResult<?> createEntityAlias(UserVisitPK userVisitPK, CreateEntityAliasForm form);
 
-    CommandResult<?> getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form);
+    CommandResult<GetEntityAliasResult> getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form);
 
-    CommandResult<?> getEntityAliases(UserVisitPK userVisitPK, GetEntityAliasesForm form);
+    CommandResult<GetEntityAliasesResult> getEntityAliases(UserVisitPK userVisitPK, GetEntityAliasesForm form);
 
-    CommandResult<?> editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form);
+    CommandResult<EditEntityAliasResult> editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form);
 
     CommandResult<?> deleteEntityAlias(UserVisitPK userVisitPK, DeleteEntityAliasForm form);
 
@@ -307,15 +308,15 @@ public interface CoreService
     
     CommandResult<?> createEntityAttributeGroup(UserVisitPK userVisitPK, CreateEntityAttributeGroupForm form);
     
-    CommandResult<?> getEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeGroupForm form);
+    CommandResult<GetEntityAttributeGroupResult> getEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeGroupForm form);
     
-    CommandResult<?> getEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeGroupsForm form);
+    CommandResult<GetEntityAttributeGroupsResult> getEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeGroupsForm form);
     
-    CommandResult<?> getEntityAttributeGroupChoices(UserVisitPK userVisitPK, GetEntityAttributeGroupChoicesForm form);
+    CommandResult<GetEntityAttributeGroupChoicesResult> getEntityAttributeGroupChoices(UserVisitPK userVisitPK, GetEntityAttributeGroupChoicesForm form);
     
     CommandResult<?> setDefaultEntityAttributeGroup(UserVisitPK userVisitPK, SetDefaultEntityAttributeGroupForm form);
     
-    CommandResult<?> editEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeGroupForm form);
+    CommandResult<EditEntityAttributeGroupResult> editEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeGroupForm form);
     
     CommandResult<?> deleteEntityAttributeGroup(UserVisitPK userVisitPK, DeleteEntityAttributeGroupForm form);
     
@@ -325,11 +326,11 @@ public interface CoreService
     
     CommandResult<?> createEntityAttributeGroupDescription(UserVisitPK userVisitPK, CreateEntityAttributeGroupDescriptionForm form);
     
-    CommandResult<?> getEntityAttributeGroupDescription(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionForm form);
+    CommandResult<GetEntityAttributeGroupDescriptionResult> getEntityAttributeGroupDescription(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionForm form);
     
-    CommandResult<?> getEntityAttributeGroupDescriptions(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionsForm form);
+    CommandResult<GetEntityAttributeGroupDescriptionsResult> getEntityAttributeGroupDescriptions(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionsForm form);
     
-    CommandResult<?> editEntityAttributeGroupDescription(UserVisitPK userVisitPK, EditEntityAttributeGroupDescriptionForm form);
+    CommandResult<EditEntityAttributeGroupDescriptionResult> editEntityAttributeGroupDescription(UserVisitPK userVisitPK, EditEntityAttributeGroupDescriptionForm form);
     
     CommandResult<?> deleteEntityAttributeGroupDescription(UserVisitPK userVisitPK, DeleteEntityAttributeGroupDescriptionForm form);
     
@@ -339,11 +340,11 @@ public interface CoreService
     
     CommandResult<?> createEntityAttributeDescription(UserVisitPK userVisitPK, CreateEntityAttributeDescriptionForm form);
     
-    CommandResult<?> getEntityAttributeDescription(UserVisitPK userVisitPK, GetEntityAttributeDescriptionForm form);
+    CommandResult<GetEntityAttributeDescriptionResult> getEntityAttributeDescription(UserVisitPK userVisitPK, GetEntityAttributeDescriptionForm form);
     
-    CommandResult<?> getEntityAttributeDescriptions(UserVisitPK userVisitPK, GetEntityAttributeDescriptionsForm form);
+    CommandResult<GetEntityAttributeDescriptionsResult> getEntityAttributeDescriptions(UserVisitPK userVisitPK, GetEntityAttributeDescriptionsForm form);
     
-    CommandResult<?> editEntityAttributeDescription(UserVisitPK userVisitPK, EditEntityAttributeDescriptionForm form);
+    CommandResult<EditEntityAttributeDescriptionResult> editEntityAttributeDescription(UserVisitPK userVisitPK, EditEntityAttributeDescriptionForm form);
     
     CommandResult<?> deleteEntityAttributeDescription(UserVisitPK userVisitPK, DeleteEntityAttributeDescriptionForm form);
     
@@ -353,11 +354,11 @@ public interface CoreService
     
     CommandResult<?> createEntityAttribute(UserVisitPK userVisitPK, CreateEntityAttributeForm form);
     
-    CommandResult<?> getEntityAttribute(UserVisitPK userVisitPK, GetEntityAttributeForm form);
+    CommandResult<GetEntityAttributeResult> getEntityAttribute(UserVisitPK userVisitPK, GetEntityAttributeForm form);
     
-    CommandResult<?> getEntityAttributes(UserVisitPK userVisitPK, GetEntityAttributesForm form);
+    CommandResult<GetEntityAttributesResult> getEntityAttributes(UserVisitPK userVisitPK, GetEntityAttributesForm form);
     
-    CommandResult<?> editEntityAttribute(UserVisitPK userVisitPK, EditEntityAttributeForm form);
+    CommandResult<EditEntityAttributeResult> editEntityAttribute(UserVisitPK userVisitPK, EditEntityAttributeForm form);
     
     CommandResult<?> deleteEntityAttribute(UserVisitPK userVisitPK, DeleteEntityAttributeForm form);
     
@@ -367,11 +368,11 @@ public interface CoreService
     
     CommandResult<?> createEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, CreateEntityAttributeEntityAttributeGroupForm form);
     
-    CommandResult<?> getEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupForm form);
+    CommandResult<GetEntityAttributeEntityAttributeGroupResult> getEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupForm form);
     
-    CommandResult<?> getEntityAttributeEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupsForm form);
+    CommandResult<GetEntityAttributeEntityAttributeGroupsResult> getEntityAttributeEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupsForm form);
     
-    CommandResult<?> editEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeEntityAttributeGroupForm form);
+    CommandResult<EditEntityAttributeEntityAttributeGroupResult> editEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeEntityAttributeGroupForm form);
     
     CommandResult<?> deleteEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, DeleteEntityAttributeEntityAttributeGroupForm form);
     
@@ -387,11 +388,11 @@ public interface CoreService
     
     CommandResult<?> createEntityAttributeType(UserVisitPK userVisitPK, CreateEntityAttributeTypeForm form);
     
-    CommandResult<?> getEntityAttributeType(UserVisitPK userVisitPK, GetEntityAttributeTypeForm form);
+    CommandResult<GetEntityAttributeTypeResult> getEntityAttributeType(UserVisitPK userVisitPK, GetEntityAttributeTypeForm form);
     
-    CommandResult<?> getEntityAttributeTypes(UserVisitPK userVisitPK, GetEntityAttributeTypesForm form);
+    CommandResult<GetEntityAttributeTypesResult> getEntityAttributeTypes(UserVisitPK userVisitPK, GetEntityAttributeTypesForm form);
     
-    CommandResult<?> getEntityAttributeTypeChoices(UserVisitPK userVisitPK, GetEntityAttributeTypeChoicesForm form);
+    CommandResult<GetEntityAttributeTypeChoicesResult> getEntityAttributeTypeChoices(UserVisitPK userVisitPK, GetEntityAttributeTypeChoicesForm form);
     
     // -------------------------------------------------------------------------
     //   Entity List Item Descriptions
@@ -399,11 +400,11 @@ public interface CoreService
     
     CommandResult<?> createEntityListItemDescription(UserVisitPK userVisitPK, CreateEntityListItemDescriptionForm form);
     
-    CommandResult<?> getEntityListItemDescription(UserVisitPK userVisitPK, GetEntityListItemDescriptionForm form);
+    CommandResult<GetEntityListItemDescriptionResult> getEntityListItemDescription(UserVisitPK userVisitPK, GetEntityListItemDescriptionForm form);
     
-    CommandResult<?> getEntityListItemDescriptions(UserVisitPK userVisitPK, GetEntityListItemDescriptionsForm form);
+    CommandResult<GetEntityListItemDescriptionsResult> getEntityListItemDescriptions(UserVisitPK userVisitPK, GetEntityListItemDescriptionsForm form);
     
-    CommandResult<?> editEntityListItemDescription(UserVisitPK userVisitPK, EditEntityListItemDescriptionForm form);
+    CommandResult<EditEntityListItemDescriptionResult> editEntityListItemDescription(UserVisitPK userVisitPK, EditEntityListItemDescriptionForm form);
     
     CommandResult<?> deleteEntityListItemDescription(UserVisitPK userVisitPK, DeleteEntityListItemDescriptionForm form);
     
@@ -413,15 +414,15 @@ public interface CoreService
     
     CommandResult<?> createEntityListItem(UserVisitPK userVisitPK, CreateEntityListItemForm form);
     
-    CommandResult<?> getEntityListItem(UserVisitPK userVisitPK, GetEntityListItemForm form);
+    CommandResult<GetEntityListItemResult> getEntityListItem(UserVisitPK userVisitPK, GetEntityListItemForm form);
     
-    CommandResult<?> getEntityListItems(UserVisitPK userVisitPK, GetEntityListItemsForm form);
+    CommandResult<GetEntityListItemsResult> getEntityListItems(UserVisitPK userVisitPK, GetEntityListItemsForm form);
     
-    CommandResult<?> getEntityListItemChoices(UserVisitPK userVisitPK, GetEntityListItemChoicesForm form);
+    CommandResult<GetEntityListItemChoicesResult> getEntityListItemChoices(UserVisitPK userVisitPK, GetEntityListItemChoicesForm form);
     
     CommandResult<?> setDefaultEntityListItem(UserVisitPK userVisitPK, SetDefaultEntityListItemForm form);
     
-    CommandResult<?> editEntityListItem(UserVisitPK userVisitPK, EditEntityListItemForm form);
+    CommandResult<EditEntityListItemResult> editEntityListItem(UserVisitPK userVisitPK, EditEntityListItemForm form);
     
     CommandResult<?> deleteEntityListItem(UserVisitPK userVisitPK, DeleteEntityListItemForm form);
     
@@ -431,11 +432,11 @@ public interface CoreService
     
     CommandResult<?> createEntityIntegerRangeDescription(UserVisitPK userVisitPK, CreateEntityIntegerRangeDescriptionForm form);
     
-    CommandResult<?> getEntityIntegerRangeDescription(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionForm form);
+    CommandResult<GetEntityIntegerRangeDescriptionResult> getEntityIntegerRangeDescription(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionForm form);
     
-    CommandResult<?> getEntityIntegerRangeDescriptions(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionsForm form);
+    CommandResult<GetEntityIntegerRangeDescriptionsResult> getEntityIntegerRangeDescriptions(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionsForm form);
     
-    CommandResult<?> editEntityIntegerRangeDescription(UserVisitPK userVisitPK, EditEntityIntegerRangeDescriptionForm form);
+    CommandResult<EditEntityIntegerRangeDescriptionResult> editEntityIntegerRangeDescription(UserVisitPK userVisitPK, EditEntityIntegerRangeDescriptionForm form);
     
     CommandResult<?> deleteEntityIntegerRangeDescription(UserVisitPK userVisitPK, DeleteEntityIntegerRangeDescriptionForm form);
     
@@ -445,15 +446,15 @@ public interface CoreService
     
     CommandResult<?> createEntityIntegerRange(UserVisitPK userVisitPK, CreateEntityIntegerRangeForm form);
     
-    CommandResult<?> getEntityIntegerRange(UserVisitPK userVisitPK, GetEntityIntegerRangeForm form);
+    CommandResult<GetEntityIntegerRangeResult> getEntityIntegerRange(UserVisitPK userVisitPK, GetEntityIntegerRangeForm form);
     
-    CommandResult<?> getEntityIntegerRanges(UserVisitPK userVisitPK, GetEntityIntegerRangesForm form);
+    CommandResult<GetEntityIntegerRangesResult> getEntityIntegerRanges(UserVisitPK userVisitPK, GetEntityIntegerRangesForm form);
     
-    CommandResult<?> getEntityIntegerRangeChoices(UserVisitPK userVisitPK, GetEntityIntegerRangeChoicesForm form);
+    CommandResult<GetEntityIntegerRangeChoicesResult> getEntityIntegerRangeChoices(UserVisitPK userVisitPK, GetEntityIntegerRangeChoicesForm form);
     
     CommandResult<?> setDefaultEntityIntegerRange(UserVisitPK userVisitPK, SetDefaultEntityIntegerRangeForm form);
     
-    CommandResult<?> editEntityIntegerRange(UserVisitPK userVisitPK, EditEntityIntegerRangeForm form);
+    CommandResult<EditEntityIntegerRangeResult> editEntityIntegerRange(UserVisitPK userVisitPK, EditEntityIntegerRangeForm form);
     
     CommandResult<?> deleteEntityIntegerRange(UserVisitPK userVisitPK, DeleteEntityIntegerRangeForm form);
     
@@ -463,11 +464,11 @@ public interface CoreService
     
     CommandResult<?> createEntityLongRangeDescription(UserVisitPK userVisitPK, CreateEntityLongRangeDescriptionForm form);
     
-    CommandResult<?> getEntityLongRangeDescription(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionForm form);
+    CommandResult<GetEntityLongRangeDescriptionResult> getEntityLongRangeDescription(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionForm form);
     
-    CommandResult<?> getEntityLongRangeDescriptions(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionsForm form);
+    CommandResult<GetEntityLongRangeDescriptionsResult> getEntityLongRangeDescriptions(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionsForm form);
     
-    CommandResult<?> editEntityLongRangeDescription(UserVisitPK userVisitPK, EditEntityLongRangeDescriptionForm form);
+    CommandResult<EditEntityLongRangeDescriptionResult> editEntityLongRangeDescription(UserVisitPK userVisitPK, EditEntityLongRangeDescriptionForm form);
     
     CommandResult<?> deleteEntityLongRangeDescription(UserVisitPK userVisitPK, DeleteEntityLongRangeDescriptionForm form);
     
@@ -477,15 +478,15 @@ public interface CoreService
     
     CommandResult<?> createEntityLongRange(UserVisitPK userVisitPK, CreateEntityLongRangeForm form);
     
-    CommandResult<?> getEntityLongRange(UserVisitPK userVisitPK, GetEntityLongRangeForm form);
+    CommandResult<GetEntityLongRangeResult> getEntityLongRange(UserVisitPK userVisitPK, GetEntityLongRangeForm form);
     
-    CommandResult<?> getEntityLongRanges(UserVisitPK userVisitPK, GetEntityLongRangesForm form);
+    CommandResult<GetEntityLongRangesResult> getEntityLongRanges(UserVisitPK userVisitPK, GetEntityLongRangesForm form);
     
-    CommandResult<?> getEntityLongRangeChoices(UserVisitPK userVisitPK, GetEntityLongRangeChoicesForm form);
+    CommandResult<GetEntityLongRangeChoicesResult> getEntityLongRangeChoices(UserVisitPK userVisitPK, GetEntityLongRangeChoicesForm form);
     
     CommandResult<?> setDefaultEntityLongRange(UserVisitPK userVisitPK, SetDefaultEntityLongRangeForm form);
     
-    CommandResult<?> editEntityLongRange(UserVisitPK userVisitPK, EditEntityLongRangeForm form);
+    CommandResult<EditEntityLongRangeResult> editEntityLongRange(UserVisitPK userVisitPK, EditEntityLongRangeForm form);
     
     CommandResult<?> deleteEntityLongRange(UserVisitPK userVisitPK, DeleteEntityLongRangeForm form);
     
@@ -495,11 +496,11 @@ public interface CoreService
     
     CommandResult<?> createEntityTypeDescription(UserVisitPK userVisitPK, CreateEntityTypeDescriptionForm form);
     
-    CommandResult<?> getEntityTypeDescription(UserVisitPK userVisitPK, GetEntityTypeDescriptionForm form);
+    CommandResult<GetEntityTypeDescriptionResult> getEntityTypeDescription(UserVisitPK userVisitPK, GetEntityTypeDescriptionForm form);
     
-    CommandResult<?> getEntityTypeDescriptions(UserVisitPK userVisitPK, GetEntityTypeDescriptionsForm form);
+    CommandResult<GetEntityTypeDescriptionsResult> getEntityTypeDescriptions(UserVisitPK userVisitPK, GetEntityTypeDescriptionsForm form);
     
-    CommandResult<?> editEntityTypeDescription(UserVisitPK userVisitPK, EditEntityTypeDescriptionForm form);
+    CommandResult<EditEntityTypeDescriptionResult> editEntityTypeDescription(UserVisitPK userVisitPK, EditEntityTypeDescriptionForm form);
     
     CommandResult<?> deleteEntityTypeDescription(UserVisitPK userVisitPK, DeleteEntityTypeDescriptionForm form);
     
@@ -509,11 +510,11 @@ public interface CoreService
     
     CommandResult<?> createMimeTypeUsageType(UserVisitPK userVisitPK, CreateMimeTypeUsageTypeForm form);
     
-    CommandResult<?> getMimeTypeUsageType(UserVisitPK userVisitPK, GetMimeTypeUsageTypeForm form);
+    CommandResult<GetMimeTypeUsageTypeResult> getMimeTypeUsageType(UserVisitPK userVisitPK, GetMimeTypeUsageTypeForm form);
 
-    CommandResult<?> getMimeTypeUsageTypes(UserVisitPK userVisitPK, GetMimeTypeUsageTypesForm form);
+    CommandResult<GetMimeTypeUsageTypesResult> getMimeTypeUsageTypes(UserVisitPK userVisitPK, GetMimeTypeUsageTypesForm form);
 
-    CommandResult<?> getMimeTypeUsageTypeChoices(UserVisitPK userVisitPK, GetMimeTypeUsageTypeChoicesForm form);
+    CommandResult<GetMimeTypeUsageTypeChoicesResult> getMimeTypeUsageTypeChoices(UserVisitPK userVisitPK, GetMimeTypeUsageTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Mime Type Usage Type Descriptions
@@ -527,15 +528,15 @@ public interface CoreService
 
     CommandResult<?> createMimeType(UserVisitPK userVisitPK, CreateMimeTypeForm form);
 
-    CommandResult<?> getMimeTypes(UserVisitPK userVisitPK, GetMimeTypesForm form);
+    CommandResult<GetMimeTypesResult> getMimeTypes(UserVisitPK userVisitPK, GetMimeTypesForm form);
 
-    CommandResult<?> getMimeType(UserVisitPK userVisitPK, GetMimeTypeForm form);
+    CommandResult<GetMimeTypeResult> getMimeType(UserVisitPK userVisitPK, GetMimeTypeForm form);
 
-    CommandResult<?> getMimeTypeChoices(UserVisitPK userVisitPK, GetMimeTypeChoicesForm form);
+    CommandResult<GetMimeTypeChoicesResult> getMimeTypeChoices(UserVisitPK userVisitPK, GetMimeTypeChoicesForm form);
 
     CommandResult<?> setDefaultMimeType(UserVisitPK userVisitPK, SetDefaultMimeTypeForm form);
 
-    CommandResult<?> editMimeType(UserVisitPK userVisitPK, EditMimeTypeForm form);
+    CommandResult<EditMimeTypeResult> editMimeType(UserVisitPK userVisitPK, EditMimeTypeForm form);
 
     CommandResult<?> deleteMimeType(UserVisitPK userVisitPK, DeleteMimeTypeForm form);
 
@@ -545,11 +546,11 @@ public interface CoreService
 
     CommandResult<?> createMimeTypeDescription(UserVisitPK userVisitPK, CreateMimeTypeDescriptionForm form);
 
-    CommandResult<?> getMimeTypeDescription(UserVisitPK userVisitPK, GetMimeTypeDescriptionForm form);
+    CommandResult<GetMimeTypeDescriptionResult> getMimeTypeDescription(UserVisitPK userVisitPK, GetMimeTypeDescriptionForm form);
 
-    CommandResult<?> getMimeTypeDescriptions(UserVisitPK userVisitPK, GetMimeTypeDescriptionsForm form);
+    CommandResult<GetMimeTypeDescriptionsResult> getMimeTypeDescriptions(UserVisitPK userVisitPK, GetMimeTypeDescriptionsForm form);
 
-    CommandResult<?> editMimeTypeDescription(UserVisitPK userVisitPK, EditMimeTypeDescriptionForm form);
+    CommandResult<EditMimeTypeDescriptionResult> editMimeTypeDescription(UserVisitPK userVisitPK, EditMimeTypeDescriptionForm form);
 
     CommandResult<?> deleteMimeTypeDescription(UserVisitPK userVisitPK, DeleteMimeTypeDescriptionForm form);
 
@@ -559,7 +560,7 @@ public interface CoreService
     
     CommandResult<?> createMimeTypeUsage(UserVisitPK userVisitPK, CreateMimeTypeUsageForm form);
     
-    CommandResult<?> getMimeTypeUsages(UserVisitPK userVisitPK, GetMimeTypeUsagesForm form);
+    CommandResult<GetMimeTypeUsagesResult> getMimeTypeUsages(UserVisitPK userVisitPK, GetMimeTypeUsagesForm form);
     
     // --------------------------------------------------------------------------------
     //   Mime Type File Extensions
@@ -567,9 +568,9 @@ public interface CoreService
     
     CommandResult<?> createMimeTypeFileExtension(UserVisitPK userVisitPK, CreateMimeTypeFileExtensionForm form);
     
-    CommandResult<?> getMimeTypeFileExtension(UserVisitPK userVisitPK, GetMimeTypeFileExtensionForm form);
+    CommandResult<GetMimeTypeFileExtensionResult> getMimeTypeFileExtension(UserVisitPK userVisitPK, GetMimeTypeFileExtensionForm form);
     
-    CommandResult<?> getMimeTypeFileExtensions(UserVisitPK userVisitPK, GetMimeTypeFileExtensionsForm form);
+    CommandResult<GetMimeTypeFileExtensionsResult> getMimeTypeFileExtensions(UserVisitPK userVisitPK, GetMimeTypeFileExtensionsForm form);
     
     // --------------------------------------------------------------------------------
     //   Protocols
@@ -577,15 +578,15 @@ public interface CoreService
 
     CommandResult<?> createProtocol(UserVisitPK userVisitPK, CreateProtocolForm form);
 
-    CommandResult<?> getProtocolChoices(UserVisitPK userVisitPK, GetProtocolChoicesForm form);
+    CommandResult<GetProtocolChoicesResult> getProtocolChoices(UserVisitPK userVisitPK, GetProtocolChoicesForm form);
 
-    CommandResult<?> getProtocol(UserVisitPK userVisitPK, GetProtocolForm form);
+    CommandResult<GetProtocolResult> getProtocol(UserVisitPK userVisitPK, GetProtocolForm form);
 
-    CommandResult<?> getProtocols(UserVisitPK userVisitPK, GetProtocolsForm form);
+    CommandResult<GetProtocolsResult> getProtocols(UserVisitPK userVisitPK, GetProtocolsForm form);
 
     CommandResult<?> setDefaultProtocol(UserVisitPK userVisitPK, SetDefaultProtocolForm form);
 
-    CommandResult<?> editProtocol(UserVisitPK userVisitPK, EditProtocolForm form);
+    CommandResult<EditProtocolResult> editProtocol(UserVisitPK userVisitPK, EditProtocolForm form);
 
     CommandResult<?> deleteProtocol(UserVisitPK userVisitPK, DeleteProtocolForm form);
 
@@ -595,11 +596,11 @@ public interface CoreService
 
     CommandResult<?> createProtocolDescription(UserVisitPK userVisitPK, CreateProtocolDescriptionForm form);
 
-    CommandResult<?> getProtocolDescription(UserVisitPK userVisitPK, GetProtocolDescriptionForm form);
+    CommandResult<GetProtocolDescriptionResult> getProtocolDescription(UserVisitPK userVisitPK, GetProtocolDescriptionForm form);
 
-    CommandResult<?> getProtocolDescriptions(UserVisitPK userVisitPK, GetProtocolDescriptionsForm form);
+    CommandResult<GetProtocolDescriptionsResult> getProtocolDescriptions(UserVisitPK userVisitPK, GetProtocolDescriptionsForm form);
 
-    CommandResult<?> editProtocolDescription(UserVisitPK userVisitPK, EditProtocolDescriptionForm form);
+    CommandResult<EditProtocolDescriptionResult> editProtocolDescription(UserVisitPK userVisitPK, EditProtocolDescriptionForm form);
 
     CommandResult<?> deleteProtocolDescription(UserVisitPK userVisitPK, DeleteProtocolDescriptionForm form);
 
@@ -609,15 +610,15 @@ public interface CoreService
 
     CommandResult<?> createService(UserVisitPK userVisitPK, CreateServiceForm form);
 
-    CommandResult<?> getServiceChoices(UserVisitPK userVisitPK, GetServiceChoicesForm form);
+    CommandResult<GetServiceChoicesResult> getServiceChoices(UserVisitPK userVisitPK, GetServiceChoicesForm form);
 
-    CommandResult<?> getService(UserVisitPK userVisitPK, GetServiceForm form);
+    CommandResult<GetServiceResult> getService(UserVisitPK userVisitPK, GetServiceForm form);
 
-    CommandResult<?> getServices(UserVisitPK userVisitPK, GetServicesForm form);
+    CommandResult<GetServicesResult> getServices(UserVisitPK userVisitPK, GetServicesForm form);
 
     CommandResult<?> setDefaultService(UserVisitPK userVisitPK, SetDefaultServiceForm form);
 
-    CommandResult<?> editService(UserVisitPK userVisitPK, EditServiceForm form);
+    CommandResult<EditServiceResult> editService(UserVisitPK userVisitPK, EditServiceForm form);
 
     CommandResult<?> deleteService(UserVisitPK userVisitPK, DeleteServiceForm form);
 
@@ -627,11 +628,11 @@ public interface CoreService
 
     CommandResult<?> createServiceDescription(UserVisitPK userVisitPK, CreateServiceDescriptionForm form);
 
-    CommandResult<?> getServiceDescription(UserVisitPK userVisitPK, GetServiceDescriptionForm form);
+    CommandResult<GetServiceDescriptionResult> getServiceDescription(UserVisitPK userVisitPK, GetServiceDescriptionForm form);
 
-    CommandResult<?> getServiceDescriptions(UserVisitPK userVisitPK, GetServiceDescriptionsForm form);
+    CommandResult<GetServiceDescriptionsResult> getServiceDescriptions(UserVisitPK userVisitPK, GetServiceDescriptionsForm form);
 
-    CommandResult<?> editServiceDescription(UserVisitPK userVisitPK, EditServiceDescriptionForm form);
+    CommandResult<EditServiceDescriptionResult> editServiceDescription(UserVisitPK userVisitPK, EditServiceDescriptionForm form);
 
     CommandResult<?> deleteServiceDescription(UserVisitPK userVisitPK, DeleteServiceDescriptionForm form);
 
@@ -641,15 +642,15 @@ public interface CoreService
 
     CommandResult<?> createServer(UserVisitPK userVisitPK, CreateServerForm form);
 
-    CommandResult<?> getServerChoices(UserVisitPK userVisitPK, GetServerChoicesForm form);
+    CommandResult<GetServerChoicesResult> getServerChoices(UserVisitPK userVisitPK, GetServerChoicesForm form);
 
-    CommandResult<?> getServer(UserVisitPK userVisitPK, GetServerForm form);
+    CommandResult<GetServerResult> getServer(UserVisitPK userVisitPK, GetServerForm form);
 
-    CommandResult<?> getServers(UserVisitPK userVisitPK, GetServersForm form);
+    CommandResult<GetServersResult> getServers(UserVisitPK userVisitPK, GetServersForm form);
 
     CommandResult<?> setDefaultServer(UserVisitPK userVisitPK, SetDefaultServerForm form);
 
-    CommandResult<?> editServer(UserVisitPK userVisitPK, EditServerForm form);
+    CommandResult<EditServerResult> editServer(UserVisitPK userVisitPK, EditServerForm form);
 
     CommandResult<?> deleteServer(UserVisitPK userVisitPK, DeleteServerForm form);
 
@@ -659,11 +660,11 @@ public interface CoreService
 
     CommandResult<?> createServerDescription(UserVisitPK userVisitPK, CreateServerDescriptionForm form);
 
-    CommandResult<?> getServerDescription(UserVisitPK userVisitPK, GetServerDescriptionForm form);
+    CommandResult<GetServerDescriptionResult> getServerDescription(UserVisitPK userVisitPK, GetServerDescriptionForm form);
 
-    CommandResult<?> getServerDescriptions(UserVisitPK userVisitPK, GetServerDescriptionsForm form);
+    CommandResult<GetServerDescriptionsResult> getServerDescriptions(UserVisitPK userVisitPK, GetServerDescriptionsForm form);
 
-    CommandResult<?> editServerDescription(UserVisitPK userVisitPK, EditServerDescriptionForm form);
+    CommandResult<EditServerDescriptionResult> editServerDescription(UserVisitPK userVisitPK, EditServerDescriptionForm form);
 
     CommandResult<?> deleteServerDescription(UserVisitPK userVisitPK, DeleteServerDescriptionForm form);
 
@@ -673,9 +674,9 @@ public interface CoreService
 
     CommandResult<?> createServerService(UserVisitPK userVisitPK, CreateServerServiceForm form);
 
-    CommandResult<?> getServerService(UserVisitPK userVisitPK, GetServerServiceForm form);
+    CommandResult<GetServerServiceResult> getServerService(UserVisitPK userVisitPK, GetServerServiceForm form);
 
-    CommandResult<?> getServerServices(UserVisitPK userVisitPK, GetServerServicesForm form);
+    CommandResult<GetServerServicesResult> getServerServices(UserVisitPK userVisitPK, GetServerServicesForm form);
 
     CommandResult<?> deleteServerService(UserVisitPK userVisitPK, DeleteServerServiceForm form);
 
@@ -685,7 +686,7 @@ public interface CoreService
 
     CommandResult<?> createEntityBooleanDefault(UserVisitPK userVisitPK, CreateEntityBooleanDefaultForm form);
 
-    CommandResult<?> editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form);
+    CommandResult<EditEntityBooleanDefaultResult> editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form);
 
     CommandResult<?> deleteEntityBooleanDefault(UserVisitPK userVisitPK, DeleteEntityBooleanDefaultForm form);
 
@@ -695,7 +696,7 @@ public interface CoreService
 
     CommandResult<?> createEntityBooleanAttribute(UserVisitPK userVisitPK, CreateEntityBooleanAttributeForm form);
 
-    CommandResult<?> editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form);
+    CommandResult<EditEntityBooleanAttributeResult> editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form);
 
     CommandResult<?> deleteEntityBooleanAttribute(UserVisitPK userVisitPK, DeleteEntityBooleanAttributeForm form);
 
@@ -705,7 +706,7 @@ public interface CoreService
 
     CommandResult<?> createEntityIntegerDefault(UserVisitPK userVisitPK, CreateEntityIntegerDefaultForm form);
 
-    CommandResult<?> editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form);
+    CommandResult<EditEntityIntegerDefaultResult> editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form);
 
     CommandResult<?> deleteEntityIntegerDefault(UserVisitPK userVisitPK, DeleteEntityIntegerDefaultForm form);
 
@@ -715,7 +716,7 @@ public interface CoreService
     
     CommandResult<?> createEntityIntegerAttribute(UserVisitPK userVisitPK, CreateEntityIntegerAttributeForm form);
     
-    CommandResult<?> editEntityIntegerAttribute(UserVisitPK userVisitPK, EditEntityIntegerAttributeForm form);
+    CommandResult<EditEntityIntegerAttributeResult> editEntityIntegerAttribute(UserVisitPK userVisitPK, EditEntityIntegerAttributeForm form);
     
     CommandResult<?> deleteEntityIntegerAttribute(UserVisitPK userVisitPK, DeleteEntityIntegerAttributeForm form);
 
@@ -725,7 +726,7 @@ public interface CoreService
 
     CommandResult<?> createEntityListItemDefault(UserVisitPK userVisitPK, CreateEntityListItemDefaultForm form);
 
-    CommandResult<?> editEntityListItemDefault(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form);
+    CommandResult<EditEntityListItemDefaultResult> editEntityListItemDefault(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form);
 
     CommandResult<?> deleteEntityListItemDefault(UserVisitPK userVisitPK, DeleteEntityListItemDefaultForm form);
 
@@ -735,7 +736,7 @@ public interface CoreService
     
     CommandResult<?> createEntityListItemAttribute(UserVisitPK userVisitPK, CreateEntityListItemAttributeForm form);
     
-    CommandResult<?> editEntityListItemAttribute(UserVisitPK userVisitPK, EditEntityListItemAttributeForm form);
+    CommandResult<EditEntityListItemAttributeResult> editEntityListItemAttribute(UserVisitPK userVisitPK, EditEntityListItemAttributeForm form);
     
     CommandResult<?> deleteEntityListItemAttribute(UserVisitPK userVisitPK, DeleteEntityListItemAttributeForm form);
 
@@ -745,7 +746,7 @@ public interface CoreService
 
     CommandResult<?> createEntityLongDefault(UserVisitPK userVisitPK, CreateEntityLongDefaultForm form);
 
-    CommandResult<?> editEntityLongDefault(UserVisitPK userVisitPK, EditEntityLongDefaultForm form);
+    CommandResult<EditEntityLongDefaultResult> editEntityLongDefault(UserVisitPK userVisitPK, EditEntityLongDefaultForm form);
 
     CommandResult<?> deleteEntityLongDefault(UserVisitPK userVisitPK, DeleteEntityLongDefaultForm form);
 
@@ -755,7 +756,7 @@ public interface CoreService
     
     CommandResult<?> createEntityLongAttribute(UserVisitPK userVisitPK, CreateEntityLongAttributeForm form);
     
-    CommandResult<?> editEntityLongAttribute(UserVisitPK userVisitPK, EditEntityLongAttributeForm form);
+    CommandResult<EditEntityLongAttributeResult> editEntityLongAttribute(UserVisitPK userVisitPK, EditEntityLongAttributeForm form);
     
     CommandResult<?> deleteEntityLongAttribute(UserVisitPK userVisitPK, DeleteEntityLongAttributeForm form);
 
@@ -781,7 +782,7 @@ public interface CoreService
     
     CommandResult<?> createEntityNameAttribute(UserVisitPK userVisitPK, CreateEntityNameAttributeForm form);
     
-    CommandResult<?> editEntityNameAttribute(UserVisitPK userVisitPK, EditEntityNameAttributeForm form);
+    CommandResult<EditEntityNameAttributeResult> editEntityNameAttribute(UserVisitPK userVisitPK, EditEntityNameAttributeForm form);
     
     CommandResult<?> deleteEntityNameAttribute(UserVisitPK userVisitPK, DeleteEntityNameAttributeForm form);
 
@@ -791,7 +792,7 @@ public interface CoreService
 
     CommandResult<?> createEntityStringDefault(UserVisitPK userVisitPK, CreateEntityStringDefaultForm form);
 
-    CommandResult<?> editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form);
+    CommandResult<EditEntityStringDefaultResult> editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form);
 
     CommandResult<?> deleteEntityStringDefault(UserVisitPK userVisitPK, DeleteEntityStringDefaultForm form);
 
@@ -801,7 +802,7 @@ public interface CoreService
     
     CommandResult<?> createEntityStringAttribute(UserVisitPK userVisitPK, CreateEntityStringAttributeForm form);
     
-    CommandResult<?> editEntityStringAttribute(UserVisitPK userVisitPK, EditEntityStringAttributeForm form);
+    CommandResult<EditEntityStringAttributeResult> editEntityStringAttribute(UserVisitPK userVisitPK, EditEntityStringAttributeForm form);
     
     CommandResult<?> deleteEntityStringAttribute(UserVisitPK userVisitPK, DeleteEntityStringAttributeForm form);
 
@@ -811,7 +812,7 @@ public interface CoreService
 
     CommandResult<?> createEntityGeoPointDefault(UserVisitPK userVisitPK, CreateEntityGeoPointDefaultForm form);
 
-    CommandResult<?> editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form);
+    CommandResult<EditEntityGeoPointDefaultResult> editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form);
 
     CommandResult<?> deleteEntityGeoPointDefault(UserVisitPK userVisitPK, DeleteEntityGeoPointDefaultForm form);
 
@@ -821,7 +822,7 @@ public interface CoreService
 
     CommandResult<?> createEntityGeoPointAttribute(UserVisitPK userVisitPK, CreateEntityGeoPointAttributeForm form);
 
-    CommandResult<?> editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form);
+    CommandResult<EditEntityGeoPointAttributeResult> editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form);
 
     CommandResult<?> deleteEntityGeoPointAttribute(UserVisitPK userVisitPK, DeleteEntityGeoPointAttributeForm form);
 
@@ -831,9 +832,9 @@ public interface CoreService
     
     CommandResult<?> createEntityBlobAttribute(UserVisitPK userVisitPK, CreateEntityBlobAttributeForm form);
 
-    CommandResult<?> editEntityBlobAttribute(UserVisitPK userVisitPK, EditEntityBlobAttributeForm form);
+    CommandResult<EditEntityBlobAttributeResult> editEntityBlobAttribute(UserVisitPK userVisitPK, EditEntityBlobAttributeForm form);
 
-    CommandResult<?> getEntityBlobAttribute(UserVisitPK userVisitPK, GetEntityBlobAttributeForm form);
+    CommandResult<GetEntityBlobAttributeResult> getEntityBlobAttribute(UserVisitPK userVisitPK, GetEntityBlobAttributeForm form);
 
     CommandResult<?> deleteEntityBlobAttribute(UserVisitPK userVisitPK, DeleteEntityBlobAttributeForm form);
     
@@ -843,9 +844,9 @@ public interface CoreService
     
     CommandResult<?> createEntityClobAttribute(UserVisitPK userVisitPK, CreateEntityClobAttributeForm form);
 
-    CommandResult<?> editEntityClobAttribute(UserVisitPK userVisitPK, EditEntityClobAttributeForm form);
+    CommandResult<EditEntityClobAttributeResult> editEntityClobAttribute(UserVisitPK userVisitPK, EditEntityClobAttributeForm form);
 
-    CommandResult<?> getEntityClobAttribute(UserVisitPK userVisitPK, GetEntityClobAttributeForm form);
+    CommandResult<GetEntityClobAttributeResult> getEntityClobAttribute(UserVisitPK userVisitPK, GetEntityClobAttributeForm form);
 
     CommandResult<?> deleteEntityClobAttribute(UserVisitPK userVisitPK, DeleteEntityClobAttributeForm form);
 
@@ -855,7 +856,7 @@ public interface CoreService
 
     CommandResult<?> createEntityTimeDefault(UserVisitPK userVisitPK, CreateEntityTimeDefaultForm form);
 
-    CommandResult<?> editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form);
+    CommandResult<EditEntityTimeDefaultResult> editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form);
 
     CommandResult<?> deleteEntityTimeDefault(UserVisitPK userVisitPK, DeleteEntityTimeDefaultForm form);
 
@@ -865,7 +866,7 @@ public interface CoreService
 
     CommandResult<?> createEntityTimeAttribute(UserVisitPK userVisitPK, CreateEntityTimeAttributeForm form);
 
-    CommandResult<?> editEntityTimeAttribute(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form);
+    CommandResult<EditEntityTimeAttributeResult> editEntityTimeAttribute(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form);
 
     CommandResult<?> deleteEntityTimeAttribute(UserVisitPK userVisitPK, DeleteEntityTimeAttributeForm form);
 
@@ -875,7 +876,7 @@ public interface CoreService
 
     CommandResult<?> createEntityDateDefault(UserVisitPK userVisitPK, CreateEntityDateDefaultForm form);
 
-    CommandResult<?> editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form);
+    CommandResult<EditEntityDateDefaultResult> editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form);
 
     CommandResult<?> deleteEntityDateDefault(UserVisitPK userVisitPK, DeleteEntityDateDefaultForm form);
 
@@ -885,7 +886,7 @@ public interface CoreService
 
     CommandResult<?> createEntityDateAttribute(UserVisitPK userVisitPK, CreateEntityDateAttributeForm form);
 
-    CommandResult<?> editEntityDateAttribute(UserVisitPK userVisitPK, EditEntityDateAttributeForm form);
+    CommandResult<EditEntityDateAttributeResult> editEntityDateAttribute(UserVisitPK userVisitPK, EditEntityDateAttributeForm form);
 
     CommandResult<?> deleteEntityDateAttribute(UserVisitPK userVisitPK, DeleteEntityDateAttributeForm form);
 
@@ -895,9 +896,9 @@ public interface CoreService
     
     CommandResult<?> createEntityAttributeEntityType(UserVisitPK userVisitPK, CreateEntityAttributeEntityTypeForm form);
 
-    CommandResult<?> getEntityAttributeEntityType(UserVisitPK userVisitPK, GetEntityAttributeEntityTypeForm form);
+    CommandResult<GetEntityAttributeEntityTypeResult> getEntityAttributeEntityType(UserVisitPK userVisitPK, GetEntityAttributeEntityTypeForm form);
 
-    CommandResult<?> getEntityAttributeEntityTypes(UserVisitPK userVisitPK, GetEntityAttributeEntityTypesForm form);
+    CommandResult<GetEntityAttributeEntityTypesResult> getEntityAttributeEntityTypes(UserVisitPK userVisitPK, GetEntityAttributeEntityTypesForm form);
     
     CommandResult<?> deleteEntityAttributeEntityType(UserVisitPK userVisitPK, DeleteEntityAttributeEntityTypeForm form);
 
@@ -907,7 +908,7 @@ public interface CoreService
     
     CommandResult<?> createEntityEntityAttribute(UserVisitPK userVisitPK, CreateEntityEntityAttributeForm form);
     
-    CommandResult<?> editEntityEntityAttribute(UserVisitPK userVisitPK, EditEntityEntityAttributeForm form);
+    CommandResult<EditEntityEntityAttributeResult> editEntityEntityAttribute(UserVisitPK userVisitPK, EditEntityEntityAttributeForm form);
     
     CommandResult<?> deleteEntityEntityAttribute(UserVisitPK userVisitPK, DeleteEntityEntityAttributeForm form);
 
@@ -935,9 +936,9 @@ public interface CoreService
 
     CommandResult<?> createCacheEntry(UserVisitPK userVisitPK, CreateCacheEntryForm form);
 
-    CommandResult<?> getCacheEntry(UserVisitPK userVisitPK, GetCacheEntryForm form);
+    CommandResult<GetCacheEntryResult> getCacheEntry(UserVisitPK userVisitPK, GetCacheEntryForm form);
 
-    CommandResult<?> getCacheEntries(UserVisitPK userVisitPK, GetCacheEntriesForm form);
+    CommandResult<GetCacheEntriesResult> getCacheEntries(UserVisitPK userVisitPK, GetCacheEntriesForm form);
 
     CommandResult<?> removeCacheEntry(UserVisitPK userVisitPK, RemoveCacheEntryForm form);
 
@@ -945,7 +946,7 @@ public interface CoreService
     //   Cache Entry Dependencies
     // -------------------------------------------------------------------------
 
-    CommandResult<?> getCacheEntryDependencies(UserVisitPK userVisitPK, GetCacheEntryDependenciesForm form);
+    CommandResult<GetCacheEntryDependenciesResult> getCacheEntryDependencies(UserVisitPK userVisitPK, GetCacheEntryDependenciesForm form);
 
     // --------------------------------------------------------------------------------
     //   Applications
@@ -953,15 +954,15 @@ public interface CoreService
     
     CommandResult<?> createApplication(UserVisitPK userVisitPK, CreateApplicationForm form);
     
-    CommandResult<?> getApplicationChoices(UserVisitPK userVisitPK, GetApplicationChoicesForm form);
+    CommandResult<GetApplicationChoicesResult> getApplicationChoices(UserVisitPK userVisitPK, GetApplicationChoicesForm form);
     
-    CommandResult<?> getApplication(UserVisitPK userVisitPK, GetApplicationForm form);
+    CommandResult<GetApplicationResult> getApplication(UserVisitPK userVisitPK, GetApplicationForm form);
     
-    CommandResult<?> getApplications(UserVisitPK userVisitPK, GetApplicationsForm form);
+    CommandResult<GetApplicationsResult> getApplications(UserVisitPK userVisitPK, GetApplicationsForm form);
     
     CommandResult<?> setDefaultApplication(UserVisitPK userVisitPK, SetDefaultApplicationForm form);
     
-    CommandResult<?> editApplication(UserVisitPK userVisitPK, EditApplicationForm form);
+    CommandResult<EditApplicationResult> editApplication(UserVisitPK userVisitPK, EditApplicationForm form);
     
     CommandResult<?> deleteApplication(UserVisitPK userVisitPK, DeleteApplicationForm form);
     
@@ -971,11 +972,11 @@ public interface CoreService
     
     CommandResult<?> createApplicationDescription(UserVisitPK userVisitPK, CreateApplicationDescriptionForm form);
     
-    CommandResult<?> getApplicationDescription(UserVisitPK userVisitPK, GetApplicationDescriptionForm form);
+    CommandResult<GetApplicationDescriptionResult> getApplicationDescription(UserVisitPK userVisitPK, GetApplicationDescriptionForm form);
     
-    CommandResult<?> getApplicationDescriptions(UserVisitPK userVisitPK, GetApplicationDescriptionsForm form);
+    CommandResult<GetApplicationDescriptionsResult> getApplicationDescriptions(UserVisitPK userVisitPK, GetApplicationDescriptionsForm form);
     
-    CommandResult<?> editApplicationDescription(UserVisitPK userVisitPK, EditApplicationDescriptionForm form);
+    CommandResult<EditApplicationDescriptionResult> editApplicationDescription(UserVisitPK userVisitPK, EditApplicationDescriptionForm form);
     
     CommandResult<?> deleteApplicationDescription(UserVisitPK userVisitPK, DeleteApplicationDescriptionForm form);
     
@@ -985,15 +986,15 @@ public interface CoreService
     
     CommandResult<?> createEditor(UserVisitPK userVisitPK, CreateEditorForm form);
     
-    CommandResult<?> getEditorChoices(UserVisitPK userVisitPK, GetEditorChoicesForm form);
+    CommandResult<GetEditorChoicesResult> getEditorChoices(UserVisitPK userVisitPK, GetEditorChoicesForm form);
     
-    CommandResult<?> getEditor(UserVisitPK userVisitPK, GetEditorForm form);
+    CommandResult<GetEditorResult> getEditor(UserVisitPK userVisitPK, GetEditorForm form);
     
-    CommandResult<?> getEditors(UserVisitPK userVisitPK, GetEditorsForm form);
+    CommandResult<GetEditorsResult> getEditors(UserVisitPK userVisitPK, GetEditorsForm form);
     
     CommandResult<?> setDefaultEditor(UserVisitPK userVisitPK, SetDefaultEditorForm form);
     
-    CommandResult<?> editEditor(UserVisitPK userVisitPK, EditEditorForm form);
+    CommandResult<EditEditorResult> editEditor(UserVisitPK userVisitPK, EditEditorForm form);
     
     CommandResult<?> deleteEditor(UserVisitPK userVisitPK, DeleteEditorForm form);
     
@@ -1003,11 +1004,11 @@ public interface CoreService
     
     CommandResult<?> createEditorDescription(UserVisitPK userVisitPK, CreateEditorDescriptionForm form);
     
-    CommandResult<?> getEditorDescription(UserVisitPK userVisitPK, GetEditorDescriptionForm form);
+    CommandResult<GetEditorDescriptionResult> getEditorDescription(UserVisitPK userVisitPK, GetEditorDescriptionForm form);
     
-    CommandResult<?> getEditorDescriptions(UserVisitPK userVisitPK, GetEditorDescriptionsForm form);
+    CommandResult<GetEditorDescriptionsResult> getEditorDescriptions(UserVisitPK userVisitPK, GetEditorDescriptionsForm form);
     
-    CommandResult<?> editEditorDescription(UserVisitPK userVisitPK, EditEditorDescriptionForm form);
+    CommandResult<EditEditorDescriptionResult> editEditorDescription(UserVisitPK userVisitPK, EditEditorDescriptionForm form);
     
     CommandResult<?> deleteEditorDescription(UserVisitPK userVisitPK, DeleteEditorDescriptionForm form);
     
@@ -1017,15 +1018,15 @@ public interface CoreService
     
     CommandResult<?> createApplicationEditor(UserVisitPK userVisitPK, CreateApplicationEditorForm form);
     
-    CommandResult<?> getApplicationEditorChoices(UserVisitPK userVisitPK, GetApplicationEditorChoicesForm form);
+    CommandResult<GetApplicationEditorChoicesResult> getApplicationEditorChoices(UserVisitPK userVisitPK, GetApplicationEditorChoicesForm form);
     
-    CommandResult<?> getApplicationEditor(UserVisitPK userVisitPK, GetApplicationEditorForm form);
+    CommandResult<GetApplicationEditorResult> getApplicationEditor(UserVisitPK userVisitPK, GetApplicationEditorForm form);
     
-    CommandResult<?> getApplicationEditors(UserVisitPK userVisitPK, GetApplicationEditorsForm form);
+    CommandResult<GetApplicationEditorsResult> getApplicationEditors(UserVisitPK userVisitPK, GetApplicationEditorsForm form);
     
     CommandResult<?> setDefaultApplicationEditor(UserVisitPK userVisitPK, SetDefaultApplicationEditorForm form);
     
-    CommandResult<?> editApplicationEditor(UserVisitPK userVisitPK, EditApplicationEditorForm form);
+    CommandResult<EditApplicationEditorResult> editApplicationEditor(UserVisitPK userVisitPK, EditApplicationEditorForm form);
     
     CommandResult<?> deleteApplicationEditor(UserVisitPK userVisitPK, DeleteApplicationEditorForm form);
     
@@ -1035,15 +1036,15 @@ public interface CoreService
     
     CommandResult<?> createApplicationEditorUse(UserVisitPK userVisitPK, CreateApplicationEditorUseForm form);
     
-    CommandResult<?> getApplicationEditorUseChoices(UserVisitPK userVisitPK, GetApplicationEditorUseChoicesForm form);
+    CommandResult<GetApplicationEditorUseChoicesResult> getApplicationEditorUseChoices(UserVisitPK userVisitPK, GetApplicationEditorUseChoicesForm form);
     
-    CommandResult<?> getApplicationEditorUse(UserVisitPK userVisitPK, GetApplicationEditorUseForm form);
+    CommandResult<GetApplicationEditorUseResult> getApplicationEditorUse(UserVisitPK userVisitPK, GetApplicationEditorUseForm form);
     
-    CommandResult<?> getApplicationEditorUses(UserVisitPK userVisitPK, GetApplicationEditorUsesForm form);
+    CommandResult<GetApplicationEditorUsesResult> getApplicationEditorUses(UserVisitPK userVisitPK, GetApplicationEditorUsesForm form);
     
     CommandResult<?> setDefaultApplicationEditorUse(UserVisitPK userVisitPK, SetDefaultApplicationEditorUseForm form);
     
-    CommandResult<?> editApplicationEditorUse(UserVisitPK userVisitPK, EditApplicationEditorUseForm form);
+    CommandResult<EditApplicationEditorUseResult> editApplicationEditorUse(UserVisitPK userVisitPK, EditApplicationEditorUseForm form);
     
     CommandResult<?> deleteApplicationEditorUse(UserVisitPK userVisitPK, DeleteApplicationEditorUseForm form);
     
@@ -1053,11 +1054,11 @@ public interface CoreService
     
     CommandResult<?> createApplicationEditorUseDescription(UserVisitPK userVisitPK, CreateApplicationEditorUseDescriptionForm form);
     
-    CommandResult<?> getApplicationEditorUseDescription(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionForm form);
+    CommandResult<GetApplicationEditorUseDescriptionResult> getApplicationEditorUseDescription(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionForm form);
     
-    CommandResult<?> getApplicationEditorUseDescriptions(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionsForm form);
+    CommandResult<GetApplicationEditorUseDescriptionsResult> getApplicationEditorUseDescriptions(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionsForm form);
     
-    CommandResult<?> editApplicationEditorUseDescription(UserVisitPK userVisitPK, EditApplicationEditorUseDescriptionForm form);
+    CommandResult<EditApplicationEditorUseDescriptionResult> editApplicationEditorUseDescription(UserVisitPK userVisitPK, EditApplicationEditorUseDescriptionForm form);
     
     CommandResult<?> deleteApplicationEditorUseDescription(UserVisitPK userVisitPK, DeleteApplicationEditorUseDescriptionForm form);
     
@@ -1067,15 +1068,15 @@ public interface CoreService
     
     CommandResult<?> createAppearance(UserVisitPK userVisitPK, CreateAppearanceForm form);
     
-    CommandResult<?> getAppearanceChoices(UserVisitPK userVisitPK, GetAppearanceChoicesForm form);
+    CommandResult<GetAppearanceChoicesResult> getAppearanceChoices(UserVisitPK userVisitPK, GetAppearanceChoicesForm form);
     
-    CommandResult<?> getAppearance(UserVisitPK userVisitPK, GetAppearanceForm form);
+    CommandResult<GetAppearanceResult> getAppearance(UserVisitPK userVisitPK, GetAppearanceForm form);
     
-    CommandResult<?> getAppearances(UserVisitPK userVisitPK, GetAppearancesForm form);
+    CommandResult<GetAppearancesResult> getAppearances(UserVisitPK userVisitPK, GetAppearancesForm form);
     
     CommandResult<?> setDefaultAppearance(UserVisitPK userVisitPK, SetDefaultAppearanceForm form);
     
-    CommandResult<?> editAppearance(UserVisitPK userVisitPK, EditAppearanceForm form);
+    CommandResult<EditAppearanceResult> editAppearance(UserVisitPK userVisitPK, EditAppearanceForm form);
     
     CommandResult<?> deleteAppearance(UserVisitPK userVisitPK, DeleteAppearanceForm form);
     
@@ -1085,11 +1086,11 @@ public interface CoreService
     
     CommandResult<?> createAppearanceDescription(UserVisitPK userVisitPK, CreateAppearanceDescriptionForm form);
     
-    CommandResult<?> getAppearanceDescription(UserVisitPK userVisitPK, GetAppearanceDescriptionForm form);
+    CommandResult<GetAppearanceDescriptionResult> getAppearanceDescription(UserVisitPK userVisitPK, GetAppearanceDescriptionForm form);
     
-    CommandResult<?> getAppearanceDescriptions(UserVisitPK userVisitPK, GetAppearanceDescriptionsForm form);
+    CommandResult<GetAppearanceDescriptionsResult> getAppearanceDescriptions(UserVisitPK userVisitPK, GetAppearanceDescriptionsForm form);
     
-    CommandResult<?> editAppearanceDescription(UserVisitPK userVisitPK, EditAppearanceDescriptionForm form);
+    CommandResult<EditAppearanceDescriptionResult> editAppearanceDescription(UserVisitPK userVisitPK, EditAppearanceDescriptionForm form);
     
     CommandResult<?> deleteAppearanceDescription(UserVisitPK userVisitPK, DeleteAppearanceDescriptionForm form);
     
@@ -1099,9 +1100,9 @@ public interface CoreService
     
     CommandResult<?> createAppearanceTextDecoration(UserVisitPK userVisitPK, CreateAppearanceTextDecorationForm form);
     
-    CommandResult<?> getAppearanceTextDecoration(UserVisitPK userVisitPK, GetAppearanceTextDecorationForm form);
+    CommandResult<GetAppearanceTextDecorationResult> getAppearanceTextDecoration(UserVisitPK userVisitPK, GetAppearanceTextDecorationForm form);
     
-    CommandResult<?> getAppearanceTextDecorations(UserVisitPK userVisitPK, GetAppearanceTextDecorationsForm form);
+    CommandResult<GetAppearanceTextDecorationsResult> getAppearanceTextDecorations(UserVisitPK userVisitPK, GetAppearanceTextDecorationsForm form);
     
     CommandResult<?> deleteAppearanceTextDecoration(UserVisitPK userVisitPK, DeleteAppearanceTextDecorationForm form);
     
@@ -1111,9 +1112,9 @@ public interface CoreService
     
     CommandResult<?> createAppearanceTextTransformation(UserVisitPK userVisitPK, CreateAppearanceTextTransformationForm form);
     
-    CommandResult<?> getAppearanceTextTransformation(UserVisitPK userVisitPK, GetAppearanceTextTransformationForm form);
+    CommandResult<GetAppearanceTextTransformationResult> getAppearanceTextTransformation(UserVisitPK userVisitPK, GetAppearanceTextTransformationForm form);
     
-    CommandResult<?> getAppearanceTextTransformations(UserVisitPK userVisitPK, GetAppearanceTextTransformationsForm form);
+    CommandResult<GetAppearanceTextTransformationsResult> getAppearanceTextTransformations(UserVisitPK userVisitPK, GetAppearanceTextTransformationsForm form);
     
     CommandResult<?> deleteAppearanceTextTransformation(UserVisitPK userVisitPK, DeleteAppearanceTextTransformationForm form);
     
@@ -1123,15 +1124,15 @@ public interface CoreService
     
     CommandResult<?> createColor(UserVisitPK userVisitPK, CreateColorForm form);
     
-    CommandResult<?> getColorChoices(UserVisitPK userVisitPK, GetColorChoicesForm form);
+    CommandResult<GetColorChoicesResult> getColorChoices(UserVisitPK userVisitPK, GetColorChoicesForm form);
     
-    CommandResult<?> getColor(UserVisitPK userVisitPK, GetColorForm form);
+    CommandResult<GetColorResult> getColor(UserVisitPK userVisitPK, GetColorForm form);
     
-    CommandResult<?> getColors(UserVisitPK userVisitPK, GetColorsForm form);
+    CommandResult<GetColorsResult> getColors(UserVisitPK userVisitPK, GetColorsForm form);
     
     CommandResult<?> setDefaultColor(UserVisitPK userVisitPK, SetDefaultColorForm form);
     
-    CommandResult<?> editColor(UserVisitPK userVisitPK, EditColorForm form);
+    CommandResult<EditColorResult> editColor(UserVisitPK userVisitPK, EditColorForm form);
     
     CommandResult<?> deleteColor(UserVisitPK userVisitPK, DeleteColorForm form);
     
@@ -1141,11 +1142,11 @@ public interface CoreService
     
     CommandResult<?> createColorDescription(UserVisitPK userVisitPK, CreateColorDescriptionForm form);
     
-    CommandResult<?> getColorDescription(UserVisitPK userVisitPK, GetColorDescriptionForm form);
+    CommandResult<GetColorDescriptionResult> getColorDescription(UserVisitPK userVisitPK, GetColorDescriptionForm form);
     
-    CommandResult<?> getColorDescriptions(UserVisitPK userVisitPK, GetColorDescriptionsForm form);
+    CommandResult<GetColorDescriptionsResult> getColorDescriptions(UserVisitPK userVisitPK, GetColorDescriptionsForm form);
     
-    CommandResult<?> editColorDescription(UserVisitPK userVisitPK, EditColorDescriptionForm form);
+    CommandResult<EditColorDescriptionResult> editColorDescription(UserVisitPK userVisitPK, EditColorDescriptionForm form);
     
     CommandResult<?> deleteColorDescription(UserVisitPK userVisitPK, DeleteColorDescriptionForm form);
     
@@ -1155,15 +1156,15 @@ public interface CoreService
     
     CommandResult<?> createFontStyle(UserVisitPK userVisitPK, CreateFontStyleForm form);
     
-    CommandResult<?> getFontStyleChoices(UserVisitPK userVisitPK, GetFontStyleChoicesForm form);
+    CommandResult<GetFontStyleChoicesResult> getFontStyleChoices(UserVisitPK userVisitPK, GetFontStyleChoicesForm form);
     
-    CommandResult<?> getFontStyle(UserVisitPK userVisitPK, GetFontStyleForm form);
+    CommandResult<GetFontStyleResult> getFontStyle(UserVisitPK userVisitPK, GetFontStyleForm form);
     
-    CommandResult<?> getFontStyles(UserVisitPK userVisitPK, GetFontStylesForm form);
+    CommandResult<GetFontStylesResult> getFontStyles(UserVisitPK userVisitPK, GetFontStylesForm form);
     
     CommandResult<?> setDefaultFontStyle(UserVisitPK userVisitPK, SetDefaultFontStyleForm form);
     
-    CommandResult<?> editFontStyle(UserVisitPK userVisitPK, EditFontStyleForm form);
+    CommandResult<EditFontStyleResult> editFontStyle(UserVisitPK userVisitPK, EditFontStyleForm form);
     
     CommandResult<?> deleteFontStyle(UserVisitPK userVisitPK, DeleteFontStyleForm form);
     
@@ -1173,11 +1174,11 @@ public interface CoreService
     
     CommandResult<?> createFontStyleDescription(UserVisitPK userVisitPK, CreateFontStyleDescriptionForm form);
     
-    CommandResult<?> getFontStyleDescription(UserVisitPK userVisitPK, GetFontStyleDescriptionForm form);
+    CommandResult<GetFontStyleDescriptionResult> getFontStyleDescription(UserVisitPK userVisitPK, GetFontStyleDescriptionForm form);
     
-    CommandResult<?> getFontStyleDescriptions(UserVisitPK userVisitPK, GetFontStyleDescriptionsForm form);
+    CommandResult<GetFontStyleDescriptionsResult> getFontStyleDescriptions(UserVisitPK userVisitPK, GetFontStyleDescriptionsForm form);
     
-    CommandResult<?> editFontStyleDescription(UserVisitPK userVisitPK, EditFontStyleDescriptionForm form);
+    CommandResult<EditFontStyleDescriptionResult> editFontStyleDescription(UserVisitPK userVisitPK, EditFontStyleDescriptionForm form);
     
     CommandResult<?> deleteFontStyleDescription(UserVisitPK userVisitPK, DeleteFontStyleDescriptionForm form);
     
@@ -1187,15 +1188,15 @@ public interface CoreService
     
     CommandResult<?> createFontWeight(UserVisitPK userVisitPK, CreateFontWeightForm form);
     
-    CommandResult<?> getFontWeightChoices(UserVisitPK userVisitPK, GetFontWeightChoicesForm form);
+    CommandResult<GetFontWeightChoicesResult> getFontWeightChoices(UserVisitPK userVisitPK, GetFontWeightChoicesForm form);
     
-    CommandResult<?> getFontWeight(UserVisitPK userVisitPK, GetFontWeightForm form);
+    CommandResult<GetFontWeightResult> getFontWeight(UserVisitPK userVisitPK, GetFontWeightForm form);
     
-    CommandResult<?> getFontWeights(UserVisitPK userVisitPK, GetFontWeightsForm form);
+    CommandResult<GetFontWeightsResult> getFontWeights(UserVisitPK userVisitPK, GetFontWeightsForm form);
     
     CommandResult<?> setDefaultFontWeight(UserVisitPK userVisitPK, SetDefaultFontWeightForm form);
     
-    CommandResult<?> editFontWeight(UserVisitPK userVisitPK, EditFontWeightForm form);
+    CommandResult<EditFontWeightResult> editFontWeight(UserVisitPK userVisitPK, EditFontWeightForm form);
     
     CommandResult<?> deleteFontWeight(UserVisitPK userVisitPK, DeleteFontWeightForm form);
     
@@ -1205,11 +1206,11 @@ public interface CoreService
     
     CommandResult<?> createFontWeightDescription(UserVisitPK userVisitPK, CreateFontWeightDescriptionForm form);
     
-    CommandResult<?> getFontWeightDescription(UserVisitPK userVisitPK, GetFontWeightDescriptionForm form);
+    CommandResult<GetFontWeightDescriptionResult> getFontWeightDescription(UserVisitPK userVisitPK, GetFontWeightDescriptionForm form);
     
-    CommandResult<?> getFontWeightDescriptions(UserVisitPK userVisitPK, GetFontWeightDescriptionsForm form);
+    CommandResult<GetFontWeightDescriptionsResult> getFontWeightDescriptions(UserVisitPK userVisitPK, GetFontWeightDescriptionsForm form);
     
-    CommandResult<?> editFontWeightDescription(UserVisitPK userVisitPK, EditFontWeightDescriptionForm form);
+    CommandResult<EditFontWeightDescriptionResult> editFontWeightDescription(UserVisitPK userVisitPK, EditFontWeightDescriptionForm form);
     
     CommandResult<?> deleteFontWeightDescription(UserVisitPK userVisitPK, DeleteFontWeightDescriptionForm form);
     
@@ -1219,15 +1220,15 @@ public interface CoreService
     
     CommandResult<?> createTextDecoration(UserVisitPK userVisitPK, CreateTextDecorationForm form);
     
-    CommandResult<?> getTextDecorationChoices(UserVisitPK userVisitPK, GetTextDecorationChoicesForm form);
+    CommandResult<GetTextDecorationChoicesResult> getTextDecorationChoices(UserVisitPK userVisitPK, GetTextDecorationChoicesForm form);
     
-    CommandResult<?> getTextDecoration(UserVisitPK userVisitPK, GetTextDecorationForm form);
+    CommandResult<GetTextDecorationResult> getTextDecoration(UserVisitPK userVisitPK, GetTextDecorationForm form);
     
-    CommandResult<?> getTextDecorations(UserVisitPK userVisitPK, GetTextDecorationsForm form);
+    CommandResult<GetTextDecorationsResult> getTextDecorations(UserVisitPK userVisitPK, GetTextDecorationsForm form);
     
     CommandResult<?> setDefaultTextDecoration(UserVisitPK userVisitPK, SetDefaultTextDecorationForm form);
     
-    CommandResult<?> editTextDecoration(UserVisitPK userVisitPK, EditTextDecorationForm form);
+    CommandResult<EditTextDecorationResult> editTextDecoration(UserVisitPK userVisitPK, EditTextDecorationForm form);
     
     CommandResult<?> deleteTextDecoration(UserVisitPK userVisitPK, DeleteTextDecorationForm form);
     
@@ -1237,11 +1238,11 @@ public interface CoreService
     
     CommandResult<?> createTextDecorationDescription(UserVisitPK userVisitPK, CreateTextDecorationDescriptionForm form);
     
-    CommandResult<?> getTextDecorationDescription(UserVisitPK userVisitPK, GetTextDecorationDescriptionForm form);
+    CommandResult<GetTextDecorationDescriptionResult> getTextDecorationDescription(UserVisitPK userVisitPK, GetTextDecorationDescriptionForm form);
     
-    CommandResult<?> getTextDecorationDescriptions(UserVisitPK userVisitPK, GetTextDecorationDescriptionsForm form);
+    CommandResult<GetTextDecorationDescriptionsResult> getTextDecorationDescriptions(UserVisitPK userVisitPK, GetTextDecorationDescriptionsForm form);
     
-    CommandResult<?> editTextDecorationDescription(UserVisitPK userVisitPK, EditTextDecorationDescriptionForm form);
+    CommandResult<EditTextDecorationDescriptionResult> editTextDecorationDescription(UserVisitPK userVisitPK, EditTextDecorationDescriptionForm form);
     
     CommandResult<?> deleteTextDecorationDescription(UserVisitPK userVisitPK, DeleteTextDecorationDescriptionForm form);
     
@@ -1251,15 +1252,15 @@ public interface CoreService
     
     CommandResult<?> createTextTransformation(UserVisitPK userVisitPK, CreateTextTransformationForm form);
     
-    CommandResult<?> getTextTransformationChoices(UserVisitPK userVisitPK, GetTextTransformationChoicesForm form);
+    CommandResult<GetTextTransformationChoicesResult> getTextTransformationChoices(UserVisitPK userVisitPK, GetTextTransformationChoicesForm form);
     
-    CommandResult<?> getTextTransformation(UserVisitPK userVisitPK, GetTextTransformationForm form);
+    CommandResult<GetTextTransformationResult> getTextTransformation(UserVisitPK userVisitPK, GetTextTransformationForm form);
     
-    CommandResult<?> getTextTransformations(UserVisitPK userVisitPK, GetTextTransformationsForm form);
+    CommandResult<GetTextTransformationsResult> getTextTransformations(UserVisitPK userVisitPK, GetTextTransformationsForm form);
     
     CommandResult<?> setDefaultTextTransformation(UserVisitPK userVisitPK, SetDefaultTextTransformationForm form);
     
-    CommandResult<?> editTextTransformation(UserVisitPK userVisitPK, EditTextTransformationForm form);
+    CommandResult<EditTextTransformationResult> editTextTransformation(UserVisitPK userVisitPK, EditTextTransformationForm form);
     
     CommandResult<?> deleteTextTransformation(UserVisitPK userVisitPK, DeleteTextTransformationForm form);
     
@@ -1269,11 +1270,11 @@ public interface CoreService
     
     CommandResult<?> createTextTransformationDescription(UserVisitPK userVisitPK, CreateTextTransformationDescriptionForm form);
     
-    CommandResult<?> getTextTransformationDescription(UserVisitPK userVisitPK, GetTextTransformationDescriptionForm form);
+    CommandResult<GetTextTransformationDescriptionResult> getTextTransformationDescription(UserVisitPK userVisitPK, GetTextTransformationDescriptionForm form);
     
-    CommandResult<?> getTextTransformationDescriptions(UserVisitPK userVisitPK, GetTextTransformationDescriptionsForm form);
+    CommandResult<GetTextTransformationDescriptionsResult> getTextTransformationDescriptions(UserVisitPK userVisitPK, GetTextTransformationDescriptionsForm form);
     
-    CommandResult<?> editTextTransformationDescription(UserVisitPK userVisitPK, EditTextTransformationDescriptionForm form);
+    CommandResult<EditTextTransformationDescriptionResult> editTextTransformationDescription(UserVisitPK userVisitPK, EditTextTransformationDescriptionForm form);
     
     CommandResult<?> deleteTextTransformationDescription(UserVisitPK userVisitPK, DeleteTextTransformationDescriptionForm form);
     
@@ -1283,9 +1284,9 @@ public interface CoreService
     
     CommandResult<?> createEntityAppearance(UserVisitPK userVisitPK, CreateEntityAppearanceForm form);
     
-    CommandResult<?> getEntityAppearance(UserVisitPK userVisitPK, GetEntityAppearanceForm form);
+    CommandResult<GetEntityAppearanceResult> getEntityAppearance(UserVisitPK userVisitPK, GetEntityAppearanceForm form);
     
-    CommandResult<?> editEntityAppearance(UserVisitPK userVisitPK, EditEntityAppearanceForm form);
+    CommandResult<EditEntityAppearanceResult> editEntityAppearance(UserVisitPK userVisitPK, EditEntityAppearanceForm form);
     
     CommandResult<?> deleteEntityAppearance(UserVisitPK userVisitPK, DeleteEntityAppearanceForm form);
     

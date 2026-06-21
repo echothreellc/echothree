@@ -18,6 +18,7 @@ package com.echothree.control.user.security.server;
 
 import com.echothree.control.user.security.common.SecurityRemote;
 import com.echothree.control.user.security.common.form.*;
+import com.echothree.control.user.security.common.result.*;
 import com.echothree.control.user.security.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroupChoices(UserVisitPK userVisitPK, GetSecurityRoleGroupChoicesForm form) {
+    public CommandResult<GetSecurityRoleGroupChoicesResult> getSecurityRoleGroupChoices(UserVisitPK userVisitPK, GetSecurityRoleGroupChoicesForm form) {
         return CDI.current().select(GetSecurityRoleGroupChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroup(UserVisitPK userVisitPK, GetSecurityRoleGroupForm form) {
+    public CommandResult<GetSecurityRoleGroupResult> getSecurityRoleGroup(UserVisitPK userVisitPK, GetSecurityRoleGroupForm form) {
         return CDI.current().select(GetSecurityRoleGroupCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroups(UserVisitPK userVisitPK, GetSecurityRoleGroupsForm form) {
+    public CommandResult<GetSecurityRoleGroupsResult> getSecurityRoleGroups(UserVisitPK userVisitPK, GetSecurityRoleGroupsForm form) {
         return CDI.current().select(GetSecurityRoleGroupsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> editSecurityRoleGroup(UserVisitPK userVisitPK, EditSecurityRoleGroupForm form) {
+    public CommandResult<EditSecurityRoleGroupResult> editSecurityRoleGroup(UserVisitPK userVisitPK, EditSecurityRoleGroupForm form) {
         return CDI.current().select(EditSecurityRoleGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,17 +88,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroupDescription(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionForm form) {
+    public CommandResult<GetSecurityRoleGroupDescriptionResult> getSecurityRoleGroupDescription(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionForm form) {
         return CDI.current().select(GetSecurityRoleGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroupDescriptions(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionsForm form) {
+    public CommandResult<GetSecurityRoleGroupDescriptionsResult> getSecurityRoleGroupDescriptions(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionsForm form) {
         return CDI.current().select(GetSecurityRoleGroupDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSecurityRoleGroupDescription(UserVisitPK userVisitPK, EditSecurityRoleGroupDescriptionForm form) {
+    public CommandResult<EditSecurityRoleGroupDescriptionResult> editSecurityRoleGroupDescription(UserVisitPK userVisitPK, EditSecurityRoleGroupDescriptionForm form) {
         return CDI.current().select(EditSecurityRoleGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -121,17 +122,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRoles(UserVisitPK userVisitPK, GetSecurityRolesForm form) {
+    public CommandResult<GetSecurityRolesResult> getSecurityRoles(UserVisitPK userVisitPK, GetSecurityRolesForm form) {
         return CDI.current().select(GetSecurityRolesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRole(UserVisitPK userVisitPK, GetSecurityRoleForm form) {
+    public CommandResult<GetSecurityRoleResult> getSecurityRole(UserVisitPK userVisitPK, GetSecurityRoleForm form) {
         return CDI.current().select(GetSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleChoices(UserVisitPK userVisitPK, GetSecurityRoleChoicesForm form) {
+    public CommandResult<GetSecurityRoleChoicesResult> getSecurityRoleChoices(UserVisitPK userVisitPK, GetSecurityRoleChoicesForm form) {
         return CDI.current().select(GetSecurityRoleChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -141,7 +142,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> editSecurityRole(UserVisitPK userVisitPK, EditSecurityRoleForm form) {
+    public CommandResult<EditSecurityRoleResult> editSecurityRole(UserVisitPK userVisitPK, EditSecurityRoleForm form) {
         return CDI.current().select(EditSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -160,17 +161,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleDescription(UserVisitPK userVisitPK, GetSecurityRoleDescriptionForm form) {
+    public CommandResult<GetSecurityRoleDescriptionResult> getSecurityRoleDescription(UserVisitPK userVisitPK, GetSecurityRoleDescriptionForm form) {
         return CDI.current().select(GetSecurityRoleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleDescriptions(UserVisitPK userVisitPK, GetSecurityRoleDescriptionsForm form) {
+    public CommandResult<GetSecurityRoleDescriptionsResult> getSecurityRoleDescriptions(UserVisitPK userVisitPK, GetSecurityRoleDescriptionsForm form) {
         return CDI.current().select(GetSecurityRoleDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSecurityRoleDescription(UserVisitPK userVisitPK, EditSecurityRoleDescriptionForm form) {
+    public CommandResult<EditSecurityRoleDescriptionResult> editSecurityRoleDescription(UserVisitPK userVisitPK, EditSecurityRoleDescriptionForm form) {
         return CDI.current().select(EditSecurityRoleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -189,17 +190,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRolePartyTypes(UserVisitPK userVisitPK, GetSecurityRolePartyTypesForm form) {
+    public CommandResult<GetSecurityRolePartyTypesResult> getSecurityRolePartyTypes(UserVisitPK userVisitPK, GetSecurityRolePartyTypesForm form) {
         return CDI.current().select(GetSecurityRolePartyTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRolePartyType(UserVisitPK userVisitPK, GetSecurityRolePartyTypeForm form) {
+    public CommandResult<GetSecurityRolePartyTypeResult> getSecurityRolePartyType(UserVisitPK userVisitPK, GetSecurityRolePartyTypeForm form) {
         return CDI.current().select(GetSecurityRolePartyTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSecurityRolePartyType(UserVisitPK userVisitPK, EditSecurityRolePartyTypeForm form) {
+    public CommandResult<EditSecurityRolePartyTypeResult> editSecurityRolePartyType(UserVisitPK userVisitPK, EditSecurityRolePartyTypeForm form) {
         return CDI.current().select(EditSecurityRolePartyTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -218,17 +219,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplate(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateResult> getPartySecurityRoleTemplate(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplates(UserVisitPK userVisitPK, GetPartySecurityRoleTemplatesForm form) {
+    public CommandResult<GetPartySecurityRoleTemplatesResult> getPartySecurityRoleTemplates(UserVisitPK userVisitPK, GetPartySecurityRoleTemplatesForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplatesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateChoices(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateChoicesForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateChoicesResult> getPartySecurityRoleTemplateChoices(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateChoicesForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -238,7 +239,7 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> editPartySecurityRoleTemplate(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateForm form) {
+    public CommandResult<EditPartySecurityRoleTemplateResult> editPartySecurityRoleTemplate(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateForm form) {
         return CDI.current().select(EditPartySecurityRoleTemplateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -257,17 +258,17 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateDescriptionResult> getPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateDescriptions(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionsForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateDescriptionsResult> getPartySecurityRoleTemplateDescriptions(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionsForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateDescriptionForm form) {
+    public CommandResult<EditPartySecurityRoleTemplateDescriptionResult> editPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateDescriptionForm form) {
         return CDI.current().select(EditPartySecurityRoleTemplateDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -286,12 +287,12 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRoleForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateRoleResult> getPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRoleForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateRoleCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateRoles(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRolesForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateRolesResult> getPartySecurityRoleTemplateRoles(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRolesForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateRolesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -310,12 +311,12 @@ public class SecurityBean
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateTrainingClassResult> getPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartySecurityRoleTemplateTrainingClasses(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassesForm form) {
+    public CommandResult<GetPartySecurityRoleTemplateTrainingClassesResult> getPartySecurityRoleTemplateTrainingClasses(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassesForm form) {
         return CDI.current().select(GetPartySecurityRoleTemplateTrainingClassesCommand.class).get().run(userVisitPK, form);
     }
     

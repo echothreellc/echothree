@@ -18,6 +18,7 @@ package com.echothree.control.user.sales.server;
 
 import com.echothree.control.user.sales.common.SalesRemote;
 import com.echothree.control.user.sales.common.form.*;
+import com.echothree.control.user.sales.common.result.*;
 import com.echothree.control.user.sales.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class SalesBean
     }
     
     @Override
-    public CommandResult<?> getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form) {
+    public CommandResult<GetSalesOrderBatchResult> getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form) {
         return CDI.current().select(GetSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form) {
+    public CommandResult<GetSalesOrderBatchesResult> getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form) {
         return CDI.current().select(GetSalesOrderBatchesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form) {
+    public CommandResult<GetSalesOrderBatchStatusChoicesResult> getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form) {
         return CDI.current().select(GetSalesOrderBatchStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class SalesBean
     }
     
     @Override
-    public CommandResult<?> editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form) {
+    public CommandResult<EditSalesOrderBatchResult> editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form) {
         return CDI.current().select(EditSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
 
@@ -87,7 +88,7 @@ public class SalesBean
     }
     
     @Override
-    public CommandResult<?> getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form) {
+    public CommandResult<GetSalesOrderStatusChoicesResult> getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form) {
         return CDI.current().select(GetSalesOrderStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -115,17 +116,17 @@ public class SalesBean
     }
     
     @Override
-    public CommandResult<?> getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form) {
+    public CommandResult<GetSalesOrderTimeResult> getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form) {
         return CDI.current().select(GetSalesOrderTimeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form) {
+    public CommandResult<GetSalesOrderTimesResult> getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form) {
         return CDI.current().select(GetSalesOrderTimesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form) {
+    public CommandResult<EditSalesOrderTimeResult> editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form) {
         return CDI.current().select(EditSalesOrderTimeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -148,7 +149,7 @@ public class SalesBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form) {
+    public CommandResult<EditSalesOrderShipmentGroupResult> editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form) {
         return CDI.current().select(EditSalesOrderShipmentGroupCommand.class).get().run(userVisitPK, form);
     }
 
@@ -162,17 +163,17 @@ public class SalesBean
     }
     
     @Override
-    public CommandResult<?> getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form) {
+    public CommandResult<GetSalesOrderLineTimeResult> getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form) {
         return CDI.current().select(GetSalesOrderLineTimeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form) {
+    public CommandResult<GetSalesOrderLineTimesResult> getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form) {
         return CDI.current().select(GetSalesOrderLineTimesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form) {
+    public CommandResult<EditSalesOrderLineTimeResult> editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form) {
         return CDI.current().select(EditSalesOrderLineTimeCommand.class).get().run(userVisitPK, form);
     }
 

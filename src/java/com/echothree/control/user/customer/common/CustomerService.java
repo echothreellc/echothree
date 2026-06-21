@@ -34,17 +34,17 @@ public interface CustomerService
     //   Customers
     // -------------------------------------------------------------------------
 
-    CommandResult<?> getCustomers(UserVisitPK userVisitPK, GetCustomersForm form);
+    CommandResult<GetCustomersResult> getCustomers(UserVisitPK userVisitPK, GetCustomersForm form);
 
-    CommandResult<?> getCustomer(UserVisitPK userVisitPK, GetCustomerForm form);
+    CommandResult<GetCustomerResult> getCustomer(UserVisitPK userVisitPK, GetCustomerForm form);
 
-    CommandResult<?> editCustomer(UserVisitPK userVisitPK, EditCustomerForm form);
+    CommandResult<EditCustomerResult> editCustomer(UserVisitPK userVisitPK, EditCustomerForm form);
     
-    CommandResult<?> getCustomerStatusChoices(UserVisitPK userVisitPK, GetCustomerStatusChoicesForm form);
+    CommandResult<GetCustomerStatusChoicesResult> getCustomerStatusChoices(UserVisitPK userVisitPK, GetCustomerStatusChoicesForm form);
     
     CommandResult<?> setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form);
     
-    CommandResult<?> getCustomerCreditStatusChoices(UserVisitPK userVisitPK, GetCustomerCreditStatusChoicesForm form);
+    CommandResult<GetCustomerCreditStatusChoicesResult> getCustomerCreditStatusChoices(UserVisitPK userVisitPK, GetCustomerCreditStatusChoicesForm form);
     
     CommandResult<?> setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form);
     
@@ -54,15 +54,15 @@ public interface CustomerService
     
     CommandResult<?> createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form);
     
-    CommandResult<?> getCustomerTypes(UserVisitPK userVisitPK, GetCustomerTypesForm form);
+    CommandResult<GetCustomerTypesResult> getCustomerTypes(UserVisitPK userVisitPK, GetCustomerTypesForm form);
     
-    CommandResult<?> getCustomerType(UserVisitPK userVisitPK, GetCustomerTypeForm form);
+    CommandResult<GetCustomerTypeResult> getCustomerType(UserVisitPK userVisitPK, GetCustomerTypeForm form);
     
-    CommandResult<?> getCustomerTypeChoices(UserVisitPK userVisitPK, GetCustomerTypeChoicesForm form);
+    CommandResult<GetCustomerTypeChoicesResult> getCustomerTypeChoices(UserVisitPK userVisitPK, GetCustomerTypeChoicesForm form);
     
     CommandResult<?> setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form);
     
-    CommandResult<?> editCustomerType(UserVisitPK userVisitPK, EditCustomerTypeForm form);
+    CommandResult<EditCustomerTypeResult> editCustomerType(UserVisitPK userVisitPK, EditCustomerTypeForm form);
     
     CommandResult<?> deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form);
     
@@ -72,9 +72,9 @@ public interface CustomerService
     
     CommandResult<?> createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form);
     
-    CommandResult<?> getCustomerTypeDescriptions(UserVisitPK userVisitPK, GetCustomerTypeDescriptionsForm form);
+    CommandResult<GetCustomerTypeDescriptionsResult> getCustomerTypeDescriptions(UserVisitPK userVisitPK, GetCustomerTypeDescriptionsForm form);
     
-    CommandResult<?> editCustomerTypeDescription(UserVisitPK userVisitPK, EditCustomerTypeDescriptionForm form);
+    CommandResult<EditCustomerTypeDescriptionResult> editCustomerTypeDescription(UserVisitPK userVisitPK, EditCustomerTypeDescriptionForm form);
     
     CommandResult<?> deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form);
     
@@ -84,9 +84,9 @@ public interface CustomerService
     
     CommandResult<?> createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form);
     
-    CommandResult<?> getCustomerTypePaymentMethod(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodForm form);
+    CommandResult<GetCustomerTypePaymentMethodResult> getCustomerTypePaymentMethod(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodForm form);
     
-    CommandResult<?> getCustomerTypePaymentMethods(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodsForm form);
+    CommandResult<GetCustomerTypePaymentMethodsResult> getCustomerTypePaymentMethods(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodsForm form);
     
     CommandResult<?> setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form);
     
@@ -100,9 +100,9 @@ public interface CustomerService
     
     CommandResult<?> createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form);
     
-    CommandResult<?> getCustomerTypeShippingMethod(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodForm form);
+    CommandResult<GetCustomerTypeShippingMethodResult> getCustomerTypeShippingMethod(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodForm form);
     
-    CommandResult<?> getCustomerTypeShippingMethods(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodsForm form);
+    CommandResult<GetCustomerTypeShippingMethodsResult> getCustomerTypeShippingMethods(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodsForm form);
     
     CommandResult<?> setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form);
     

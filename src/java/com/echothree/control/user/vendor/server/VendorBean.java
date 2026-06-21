@@ -18,6 +18,7 @@ package com.echothree.control.user.vendor.server;
 
 import com.echothree.control.user.vendor.common.VendorRemote;
 import com.echothree.control.user.vendor.common.form.*;
+import com.echothree.control.user.vendor.common.result.*;
 import com.echothree.control.user.vendor.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> getVendorTypeChoices(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form) {
+    public CommandResult<GetVendorTypeChoicesResult> getVendorTypeChoices(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form) {
         return CDI.current().select(GetVendorTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getVendorType(UserVisitPK userVisitPK, GetVendorTypeForm form) {
+    public CommandResult<GetVendorTypeResult> getVendorType(UserVisitPK userVisitPK, GetVendorTypeForm form) {
         return CDI.current().select(GetVendorTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getVendorTypes(UserVisitPK userVisitPK, GetVendorTypesForm form) {
+    public CommandResult<GetVendorTypesResult> getVendorTypes(UserVisitPK userVisitPK, GetVendorTypesForm form) {
         return CDI.current().select(GetVendorTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> editVendorType(UserVisitPK userVisitPK, EditVendorTypeForm form) {
+    public CommandResult<EditVendorTypeResult> editVendorType(UserVisitPK userVisitPK, EditVendorTypeForm form) {
         return CDI.current().select(EditVendorTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,17 +88,17 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> getVendorTypeDescription(UserVisitPK userVisitPK, GetVendorTypeDescriptionForm form) {
+    public CommandResult<GetVendorTypeDescriptionResult> getVendorTypeDescription(UserVisitPK userVisitPK, GetVendorTypeDescriptionForm form) {
         return CDI.current().select(GetVendorTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getVendorTypeDescriptions(UserVisitPK userVisitPK, GetVendorTypeDescriptionsForm form) {
+    public CommandResult<GetVendorTypeDescriptionsResult> getVendorTypeDescriptions(UserVisitPK userVisitPK, GetVendorTypeDescriptionsForm form) {
         return CDI.current().select(GetVendorTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editVendorTypeDescription(UserVisitPK userVisitPK, EditVendorTypeDescriptionForm form) {
+    public CommandResult<EditVendorTypeDescriptionResult> editVendorTypeDescription(UserVisitPK userVisitPK, EditVendorTypeDescriptionForm form) {
         return CDI.current().select(EditVendorTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -111,17 +112,17 @@ public class VendorBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> getVendor(UserVisitPK userVisitPK, GetVendorForm form) {
+    public CommandResult<GetVendorResult> getVendor(UserVisitPK userVisitPK, GetVendorForm form) {
         return CDI.current().select(GetVendorCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getVendors(UserVisitPK userVisitPK, GetVendorsForm form) {
+    public CommandResult<GetVendorsResult> getVendors(UserVisitPK userVisitPK, GetVendorsForm form) {
         return CDI.current().select(GetVendorsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editVendor(UserVisitPK userVisitPK, EditVendorForm form) {
+    public CommandResult<EditVendorResult> editVendor(UserVisitPK userVisitPK, EditVendorForm form) {
         return CDI.current().select(EditVendorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -135,17 +136,17 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> getVendorItem(UserVisitPK userVisitPK, GetVendorItemForm form) {
+    public CommandResult<GetVendorItemResult> getVendorItem(UserVisitPK userVisitPK, GetVendorItemForm form) {
         return CDI.current().select(GetVendorItemCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getVendorItems(UserVisitPK userVisitPK, GetVendorItemsForm form) {
+    public CommandResult<GetVendorItemsResult> getVendorItems(UserVisitPK userVisitPK, GetVendorItemsForm form) {
         return CDI.current().select(GetVendorItemsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getVendorItemStatusChoices(UserVisitPK userVisitPK, GetVendorItemStatusChoicesForm form) {
+    public CommandResult<GetVendorItemStatusChoicesResult> getVendorItemStatusChoices(UserVisitPK userVisitPK, GetVendorItemStatusChoicesForm form) {
         return CDI.current().select(GetVendorItemStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -155,7 +156,7 @@ public class VendorBean
     }
 
     @Override
-    public CommandResult<?> editVendorItem(UserVisitPK userVisitPK, EditVendorItemForm form) {
+    public CommandResult<EditVendorItemResult> editVendorItem(UserVisitPK userVisitPK, EditVendorItemForm form) {
         return CDI.current().select(EditVendorItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -174,17 +175,17 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> getVendorItemCost(UserVisitPK userVisitPK, GetVendorItemCostForm form) {
+    public CommandResult<GetVendorItemCostResult> getVendorItemCost(UserVisitPK userVisitPK, GetVendorItemCostForm form) {
         return CDI.current().select(GetVendorItemCostCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getVendorItemCosts(UserVisitPK userVisitPK, GetVendorItemCostsForm form) {
+    public CommandResult<GetVendorItemCostsResult> getVendorItemCosts(UserVisitPK userVisitPK, GetVendorItemCostsForm form) {
         return CDI.current().select(GetVendorItemCostsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editVendorItemCost(UserVisitPK userVisitPK, EditVendorItemCostForm form) {
+    public CommandResult<EditVendorItemCostResult> editVendorItemCost(UserVisitPK userVisitPK, EditVendorItemCostForm form) {
         return CDI.current().select(EditVendorItemCostCommand.class).get().run(userVisitPK, form);
     }
     
@@ -203,17 +204,17 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> getItemPurchasingCategoryChoices(UserVisitPK userVisitPK, GetItemPurchasingCategoryChoicesForm form) {
+    public CommandResult<GetItemPurchasingCategoryChoicesResult> getItemPurchasingCategoryChoices(UserVisitPK userVisitPK, GetItemPurchasingCategoryChoicesForm form) {
         return CDI.current().select(GetItemPurchasingCategoryChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getItemPurchasingCategory(UserVisitPK userVisitPK, GetItemPurchasingCategoryForm form) {
+    public CommandResult<GetItemPurchasingCategoryResult> getItemPurchasingCategory(UserVisitPK userVisitPK, GetItemPurchasingCategoryForm form) {
         return CDI.current().select(GetItemPurchasingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getItemPurchasingCategories(UserVisitPK userVisitPK, GetItemPurchasingCategoriesForm form) {
+    public CommandResult<GetItemPurchasingCategoriesResult> getItemPurchasingCategories(UserVisitPK userVisitPK, GetItemPurchasingCategoriesForm form) {
         return CDI.current().select(GetItemPurchasingCategoriesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -223,7 +224,7 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> editItemPurchasingCategory(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form) {
+    public CommandResult<EditItemPurchasingCategoryResult> editItemPurchasingCategory(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form) {
         return CDI.current().select(EditItemPurchasingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -242,17 +243,17 @@ public class VendorBean
     }
     
     @Override
-    public CommandResult<?> getItemPurchasingCategoryDescription(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionForm form) {
+    public CommandResult<GetItemPurchasingCategoryDescriptionResult> getItemPurchasingCategoryDescription(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionForm form) {
         return CDI.current().select(GetItemPurchasingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getItemPurchasingCategoryDescriptions(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionsForm form) {
+    public CommandResult<GetItemPurchasingCategoryDescriptionsResult> getItemPurchasingCategoryDescriptions(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionsForm form) {
         return CDI.current().select(GetItemPurchasingCategoryDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editItemPurchasingCategoryDescription(UserVisitPK userVisitPK, EditItemPurchasingCategoryDescriptionForm form) {
+    public CommandResult<EditItemPurchasingCategoryDescriptionResult> editItemPurchasingCategoryDescription(UserVisitPK userVisitPK, EditItemPurchasingCategoryDescriptionForm form) {
         return CDI.current().select(EditItemPurchasingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

@@ -18,6 +18,7 @@ package com.echothree.control.user.picklist.server;
 
 import com.echothree.control.user.picklist.common.PicklistRemote;
 import com.echothree.control.user.picklist.common.form.*;
+import com.echothree.control.user.picklist.common.result.*;
 import com.echothree.control.user.picklist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistTypeChoices(UserVisitPK userVisitPK, GetPicklistTypeChoicesForm form) {
+    public CommandResult<GetPicklistTypeChoicesResult> getPicklistTypeChoices(UserVisitPK userVisitPK, GetPicklistTypeChoicesForm form) {
         return CDI.current().select(GetPicklistTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistType(UserVisitPK userVisitPK, GetPicklistTypeForm form) {
+    public CommandResult<GetPicklistTypeResult> getPicklistType(UserVisitPK userVisitPK, GetPicklistTypeForm form) {
         return CDI.current().select(GetPicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistTypes(UserVisitPK userVisitPK, GetPicklistTypesForm form) {
+    public CommandResult<GetPicklistTypesResult> getPicklistTypes(UserVisitPK userVisitPK, GetPicklistTypesForm form) {
         return CDI.current().select(GetPicklistTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -68,7 +69,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> editPicklistType(UserVisitPK userVisitPK, EditPicklistTypeForm form) {
+    public CommandResult<EditPicklistTypeResult> editPicklistType(UserVisitPK userVisitPK, EditPicklistTypeForm form) {
         return CDI.current().select(EditPicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -87,17 +88,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistTypeDescription(UserVisitPK userVisitPK, GetPicklistTypeDescriptionForm form) {
+    public CommandResult<GetPicklistTypeDescriptionResult> getPicklistTypeDescription(UserVisitPK userVisitPK, GetPicklistTypeDescriptionForm form) {
         return CDI.current().select(GetPicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistTypeDescriptions(UserVisitPK userVisitPK, GetPicklistTypeDescriptionsForm form) {
+    public CommandResult<GetPicklistTypeDescriptionsResult> getPicklistTypeDescriptions(UserVisitPK userVisitPK, GetPicklistTypeDescriptionsForm form) {
         return CDI.current().select(GetPicklistTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPicklistTypeDescription(UserVisitPK userVisitPK, EditPicklistTypeDescriptionForm form) {
+    public CommandResult<EditPicklistTypeDescriptionResult> editPicklistTypeDescription(UserVisitPK userVisitPK, EditPicklistTypeDescriptionForm form) {
         return CDI.current().select(EditPicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -116,17 +117,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistTimeTypeChoices(UserVisitPK userVisitPK, GetPicklistTimeTypeChoicesForm form) {
+    public CommandResult<GetPicklistTimeTypeChoicesResult> getPicklistTimeTypeChoices(UserVisitPK userVisitPK, GetPicklistTimeTypeChoicesForm form) {
         return CDI.current().select(GetPicklistTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistTimeType(UserVisitPK userVisitPK, GetPicklistTimeTypeForm form) {
+    public CommandResult<GetPicklistTimeTypeResult> getPicklistTimeType(UserVisitPK userVisitPK, GetPicklistTimeTypeForm form) {
         return CDI.current().select(GetPicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistTimeTypes(UserVisitPK userVisitPK, GetPicklistTimeTypesForm form) {
+    public CommandResult<GetPicklistTimeTypesResult> getPicklistTimeTypes(UserVisitPK userVisitPK, GetPicklistTimeTypesForm form) {
         return CDI.current().select(GetPicklistTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> editPicklistTimeType(UserVisitPK userVisitPK, EditPicklistTimeTypeForm form) {
+    public CommandResult<EditPicklistTimeTypeResult> editPicklistTimeType(UserVisitPK userVisitPK, EditPicklistTimeTypeForm form) {
         return CDI.current().select(EditPicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -155,17 +156,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistTimeTypeDescription(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionForm form) {
+    public CommandResult<GetPicklistTimeTypeDescriptionResult> getPicklistTimeTypeDescription(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionForm form) {
         return CDI.current().select(GetPicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistTimeTypeDescriptions(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionsForm form) {
+    public CommandResult<GetPicklistTimeTypeDescriptionsResult> getPicklistTimeTypeDescriptions(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionsForm form) {
         return CDI.current().select(GetPicklistTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPicklistTimeTypeDescription(UserVisitPK userVisitPK, EditPicklistTimeTypeDescriptionForm form) {
+    public CommandResult<EditPicklistTimeTypeDescriptionResult> editPicklistTimeTypeDescription(UserVisitPK userVisitPK, EditPicklistTimeTypeDescriptionForm form) {
         return CDI.current().select(EditPicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -184,17 +185,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistAliasTypeChoices(UserVisitPK userVisitPK, GetPicklistAliasTypeChoicesForm form) {
+    public CommandResult<GetPicklistAliasTypeChoicesResult> getPicklistAliasTypeChoices(UserVisitPK userVisitPK, GetPicklistAliasTypeChoicesForm form) {
         return CDI.current().select(GetPicklistAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistAliasType(UserVisitPK userVisitPK, GetPicklistAliasTypeForm form) {
+    public CommandResult<GetPicklistAliasTypeResult> getPicklistAliasType(UserVisitPK userVisitPK, GetPicklistAliasTypeForm form) {
         return CDI.current().select(GetPicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistAliasTypes(UserVisitPK userVisitPK, GetPicklistAliasTypesForm form) {
+    public CommandResult<GetPicklistAliasTypesResult> getPicklistAliasTypes(UserVisitPK userVisitPK, GetPicklistAliasTypesForm form) {
         return CDI.current().select(GetPicklistAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> editPicklistAliasType(UserVisitPK userVisitPK, EditPicklistAliasTypeForm form) {
+    public CommandResult<EditPicklistAliasTypeResult> editPicklistAliasType(UserVisitPK userVisitPK, EditPicklistAliasTypeForm form) {
         return CDI.current().select(EditPicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -223,17 +224,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistAliasTypeDescription(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionForm form) {
+    public CommandResult<GetPicklistAliasTypeDescriptionResult> getPicklistAliasTypeDescription(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionForm form) {
         return CDI.current().select(GetPicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistAliasTypeDescriptions(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionsForm form) {
+    public CommandResult<GetPicklistAliasTypeDescriptionsResult> getPicklistAliasTypeDescriptions(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionsForm form) {
         return CDI.current().select(GetPicklistAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPicklistAliasTypeDescription(UserVisitPK userVisitPK, EditPicklistAliasTypeDescriptionForm form) {
+    public CommandResult<EditPicklistAliasTypeDescriptionResult> editPicklistAliasTypeDescription(UserVisitPK userVisitPK, EditPicklistAliasTypeDescriptionForm form) {
         return CDI.current().select(EditPicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -252,17 +253,17 @@ public class PicklistBean
     }
 
     @Override
-    public CommandResult<?> getPicklistAlias(UserVisitPK userVisitPK, GetPicklistAliasForm form) {
+    public CommandResult<GetPicklistAliasResult> getPicklistAlias(UserVisitPK userVisitPK, GetPicklistAliasForm form) {
         return CDI.current().select(GetPicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPicklistAliases(UserVisitPK userVisitPK, GetPicklistAliasesForm form) {
+    public CommandResult<GetPicklistAliasesResult> getPicklistAliases(UserVisitPK userVisitPK, GetPicklistAliasesForm form) {
         return CDI.current().select(GetPicklistAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPicklistAlias(UserVisitPK userVisitPK, EditPicklistAliasForm form) {
+    public CommandResult<EditPicklistAliasResult> editPicklistAlias(UserVisitPK userVisitPK, EditPicklistAliasForm form) {
         return CDI.current().select(EditPicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 

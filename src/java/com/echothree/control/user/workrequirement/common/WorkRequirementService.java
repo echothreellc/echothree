@@ -17,6 +17,7 @@
 package com.echothree.control.user.workrequirement.common;
 
 import com.echothree.control.user.workrequirement.common.form.*;
+import com.echothree.control.user.workrequirement.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -29,9 +30,9 @@ public interface WorkRequirementService
     
     CommandResult<?> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
     
-    CommandResult<?> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
+    CommandResult<GetWorkRequirementTypesResult> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
     
-    CommandResult<?> getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form);
+    CommandResult<GetWorkRequirementTypeResult> getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form);
     
     CommandResult<?> deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form);
     
@@ -41,9 +42,9 @@ public interface WorkRequirementService
     
     CommandResult<?> createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form);
     
-    CommandResult<?> getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form);
+    CommandResult<GetWorkRequirementTypeDescriptionsResult> getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form);
     
-    CommandResult<?> editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form);
+    CommandResult<EditWorkRequirementTypeDescriptionResult> editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form);
     
     CommandResult<?> deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form);
     
@@ -51,21 +52,21 @@ public interface WorkRequirementService
     //   Work Requirement Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form);
+    CommandResult<GetWorkRequirementScopesResult> getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form);
     
-    CommandResult<?> getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form);
+    CommandResult<GetWorkRequirementScopeResult> getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirements
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form);
+    CommandResult<GetWorkRequirementResult> getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form);
     
     // -------------------------------------------------------------------------
     //   Work Assignments
     // -------------------------------------------------------------------------
 
-    public CommandResult<?> getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form);
+    public CommandResult<GetWorkAssignmentsResult> getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form);
 
     // -------------------------------------------------------------------------
     //   Testing

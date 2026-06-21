@@ -18,6 +18,7 @@ package com.echothree.control.user.order.server;
 
 import com.echothree.control.user.order.common.OrderRemote;
 import com.echothree.control.user.order.common.form.*;
+import com.echothree.control.user.order.common.result.*;
 import com.echothree.control.user.order.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -66,17 +67,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderTypeChoices(UserVisitPK userVisitPK, GetOrderTypeChoicesForm form) {
+    public CommandResult<GetOrderTypeChoicesResult> getOrderTypeChoices(UserVisitPK userVisitPK, GetOrderTypeChoicesForm form) {
         return CDI.current().select(GetOrderTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderType(UserVisitPK userVisitPK, GetOrderTypeForm form) {
+    public CommandResult<GetOrderTypeResult> getOrderType(UserVisitPK userVisitPK, GetOrderTypeForm form) {
         return CDI.current().select(GetOrderTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderTypes(UserVisitPK userVisitPK, GetOrderTypesForm form) {
+    public CommandResult<GetOrderTypesResult> getOrderTypes(UserVisitPK userVisitPK, GetOrderTypesForm form) {
         return CDI.current().select(GetOrderTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -86,7 +87,7 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> editOrderType(UserVisitPK userVisitPK, EditOrderTypeForm form) {
+    public CommandResult<EditOrderTypeResult> editOrderType(UserVisitPK userVisitPK, EditOrderTypeForm form) {
         return CDI.current().select(EditOrderTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -105,17 +106,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderTypeDescription(UserVisitPK userVisitPK, GetOrderTypeDescriptionForm form) {
+    public CommandResult<GetOrderTypeDescriptionResult> getOrderTypeDescription(UserVisitPK userVisitPK, GetOrderTypeDescriptionForm form) {
         return CDI.current().select(GetOrderTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderTypeDescriptions(UserVisitPK userVisitPK, GetOrderTypeDescriptionsForm form) {
+    public CommandResult<GetOrderTypeDescriptionsResult> getOrderTypeDescriptions(UserVisitPK userVisitPK, GetOrderTypeDescriptionsForm form) {
         return CDI.current().select(GetOrderTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderTypeDescription(UserVisitPK userVisitPK, EditOrderTypeDescriptionForm form) {
+    public CommandResult<EditOrderTypeDescriptionResult> editOrderTypeDescription(UserVisitPK userVisitPK, EditOrderTypeDescriptionForm form) {
         return CDI.current().select(EditOrderTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -134,17 +135,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderTimeTypeChoices(UserVisitPK userVisitPK, GetOrderTimeTypeChoicesForm form) {
+    public CommandResult<GetOrderTimeTypeChoicesResult> getOrderTimeTypeChoices(UserVisitPK userVisitPK, GetOrderTimeTypeChoicesForm form) {
         return CDI.current().select(GetOrderTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderTimeType(UserVisitPK userVisitPK, GetOrderTimeTypeForm form) {
+    public CommandResult<GetOrderTimeTypeResult> getOrderTimeType(UserVisitPK userVisitPK, GetOrderTimeTypeForm form) {
         return CDI.current().select(GetOrderTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderTimeTypes(UserVisitPK userVisitPK, GetOrderTimeTypesForm form) {
+    public CommandResult<GetOrderTimeTypesResult> getOrderTimeTypes(UserVisitPK userVisitPK, GetOrderTimeTypesForm form) {
         return CDI.current().select(GetOrderTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -154,7 +155,7 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> editOrderTimeType(UserVisitPK userVisitPK, EditOrderTimeTypeForm form) {
+    public CommandResult<EditOrderTimeTypeResult> editOrderTimeType(UserVisitPK userVisitPK, EditOrderTimeTypeForm form) {
         return CDI.current().select(EditOrderTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -173,17 +174,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderTimeTypeDescription(UserVisitPK userVisitPK, GetOrderTimeTypeDescriptionForm form) {
+    public CommandResult<GetOrderTimeTypeDescriptionResult> getOrderTimeTypeDescription(UserVisitPK userVisitPK, GetOrderTimeTypeDescriptionForm form) {
         return CDI.current().select(GetOrderTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderTimeTypeDescriptions(UserVisitPK userVisitPK, GetOrderTimeTypeDescriptionsForm form) {
+    public CommandResult<GetOrderTimeTypeDescriptionsResult> getOrderTimeTypeDescriptions(UserVisitPK userVisitPK, GetOrderTimeTypeDescriptionsForm form) {
         return CDI.current().select(GetOrderTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderTimeTypeDescription(UserVisitPK userVisitPK, EditOrderTimeTypeDescriptionForm form) {
+    public CommandResult<EditOrderTimeTypeDescriptionResult> editOrderTimeTypeDescription(UserVisitPK userVisitPK, EditOrderTimeTypeDescriptionForm form) {
         return CDI.current().select(EditOrderTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -202,17 +203,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderAliasTypeChoices(UserVisitPK userVisitPK, GetOrderAliasTypeChoicesForm form) {
+    public CommandResult<GetOrderAliasTypeChoicesResult> getOrderAliasTypeChoices(UserVisitPK userVisitPK, GetOrderAliasTypeChoicesForm form) {
         return CDI.current().select(GetOrderAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAliasType(UserVisitPK userVisitPK, GetOrderAliasTypeForm form) {
+    public CommandResult<GetOrderAliasTypeResult> getOrderAliasType(UserVisitPK userVisitPK, GetOrderAliasTypeForm form) {
         return CDI.current().select(GetOrderAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAliasTypes(UserVisitPK userVisitPK, GetOrderAliasTypesForm form) {
+    public CommandResult<GetOrderAliasTypesResult> getOrderAliasTypes(UserVisitPK userVisitPK, GetOrderAliasTypesForm form) {
         return CDI.current().select(GetOrderAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -222,7 +223,7 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> editOrderAliasType(UserVisitPK userVisitPK, EditOrderAliasTypeForm form) {
+    public CommandResult<EditOrderAliasTypeResult> editOrderAliasType(UserVisitPK userVisitPK, EditOrderAliasTypeForm form) {
         return CDI.current().select(EditOrderAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -241,17 +242,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderAliasTypeDescription(UserVisitPK userVisitPK, GetOrderAliasTypeDescriptionForm form) {
+    public CommandResult<GetOrderAliasTypeDescriptionResult> getOrderAliasTypeDescription(UserVisitPK userVisitPK, GetOrderAliasTypeDescriptionForm form) {
         return CDI.current().select(GetOrderAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAliasTypeDescriptions(UserVisitPK userVisitPK, GetOrderAliasTypeDescriptionsForm form) {
+    public CommandResult<GetOrderAliasTypeDescriptionsResult> getOrderAliasTypeDescriptions(UserVisitPK userVisitPK, GetOrderAliasTypeDescriptionsForm form) {
         return CDI.current().select(GetOrderAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderAliasTypeDescription(UserVisitPK userVisitPK, EditOrderAliasTypeDescriptionForm form) {
+    public CommandResult<EditOrderAliasTypeDescriptionResult> editOrderAliasTypeDescription(UserVisitPK userVisitPK, EditOrderAliasTypeDescriptionForm form) {
         return CDI.current().select(EditOrderAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -270,17 +271,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderAlias(UserVisitPK userVisitPK, GetOrderAliasForm form) {
+    public CommandResult<GetOrderAliasResult> getOrderAlias(UserVisitPK userVisitPK, GetOrderAliasForm form) {
         return CDI.current().select(GetOrderAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAliases(UserVisitPK userVisitPK, GetOrderAliasesForm form) {
+    public CommandResult<GetOrderAliasesResult> getOrderAliases(UserVisitPK userVisitPK, GetOrderAliasesForm form) {
         return CDI.current().select(GetOrderAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderAlias(UserVisitPK userVisitPK, EditOrderAliasForm form) {
+    public CommandResult<EditOrderAliasResult> editOrderAlias(UserVisitPK userVisitPK, EditOrderAliasForm form) {
         return CDI.current().select(EditOrderAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -299,17 +300,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderPriorityChoices(UserVisitPK userVisitPK, GetOrderPriorityChoicesForm form) {
+    public CommandResult<GetOrderPriorityChoicesResult> getOrderPriorityChoices(UserVisitPK userVisitPK, GetOrderPriorityChoicesForm form) {
         return CDI.current().select(GetOrderPriorityChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderPriority(UserVisitPK userVisitPK, GetOrderPriorityForm form) {
+    public CommandResult<GetOrderPriorityResult> getOrderPriority(UserVisitPK userVisitPK, GetOrderPriorityForm form) {
         return CDI.current().select(GetOrderPriorityCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderPriorities(UserVisitPK userVisitPK, GetOrderPrioritiesForm form) {
+    public CommandResult<GetOrderPrioritiesResult> getOrderPriorities(UserVisitPK userVisitPK, GetOrderPrioritiesForm form) {
         return CDI.current().select(GetOrderPrioritiesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -319,7 +320,7 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> editOrderPriority(UserVisitPK userVisitPK, EditOrderPriorityForm form) {
+    public CommandResult<EditOrderPriorityResult> editOrderPriority(UserVisitPK userVisitPK, EditOrderPriorityForm form) {
         return CDI.current().select(EditOrderPriorityCommand.class).get().run(userVisitPK, form);
     }
 
@@ -338,17 +339,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderPriorityDescription(UserVisitPK userVisitPK, GetOrderPriorityDescriptionForm form) {
+    public CommandResult<GetOrderPriorityDescriptionResult> getOrderPriorityDescription(UserVisitPK userVisitPK, GetOrderPriorityDescriptionForm form) {
         return CDI.current().select(GetOrderPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderPriorityDescriptions(UserVisitPK userVisitPK, GetOrderPriorityDescriptionsForm form) {
+    public CommandResult<GetOrderPriorityDescriptionsResult> getOrderPriorityDescriptions(UserVisitPK userVisitPK, GetOrderPriorityDescriptionsForm form) {
         return CDI.current().select(GetOrderPriorityDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderPriorityDescription(UserVisitPK userVisitPK, EditOrderPriorityDescriptionForm form) {
+    public CommandResult<EditOrderPriorityDescriptionResult> editOrderPriorityDescription(UserVisitPK userVisitPK, EditOrderPriorityDescriptionForm form) {
         return CDI.current().select(EditOrderPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -367,17 +368,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderAdjustmentTypeChoicesForm form) {
+    public CommandResult<GetOrderAdjustmentTypeChoicesResult> getOrderAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderAdjustmentTypeChoicesForm form) {
         return CDI.current().select(GetOrderAdjustmentTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAdjustmentType(UserVisitPK userVisitPK, GetOrderAdjustmentTypeForm form) {
+    public CommandResult<GetOrderAdjustmentTypeResult> getOrderAdjustmentType(UserVisitPK userVisitPK, GetOrderAdjustmentTypeForm form) {
         return CDI.current().select(GetOrderAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAdjustmentTypes(UserVisitPK userVisitPK, GetOrderAdjustmentTypesForm form) {
+    public CommandResult<GetOrderAdjustmentTypesResult> getOrderAdjustmentTypes(UserVisitPK userVisitPK, GetOrderAdjustmentTypesForm form) {
         return CDI.current().select(GetOrderAdjustmentTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -387,7 +388,7 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> editOrderAdjustmentType(UserVisitPK userVisitPK, EditOrderAdjustmentTypeForm form) {
+    public CommandResult<EditOrderAdjustmentTypeResult> editOrderAdjustmentType(UserVisitPK userVisitPK, EditOrderAdjustmentTypeForm form) {
         return CDI.current().select(EditOrderAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -406,17 +407,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, GetOrderAdjustmentTypeDescriptionForm form) {
+    public CommandResult<GetOrderAdjustmentTypeDescriptionResult> getOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, GetOrderAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(GetOrderAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetOrderAdjustmentTypeDescriptionsForm form) {
+    public CommandResult<GetOrderAdjustmentTypeDescriptionsResult> getOrderAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetOrderAdjustmentTypeDescriptionsForm form) {
         return CDI.current().select(GetOrderAdjustmentTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, EditOrderAdjustmentTypeDescriptionForm form) {
+    public CommandResult<EditOrderAdjustmentTypeDescriptionResult> editOrderAdjustmentTypeDescription(UserVisitPK userVisitPK, EditOrderAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(EditOrderAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -435,17 +436,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderLineAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeChoicesForm form) {
+    public CommandResult<GetOrderLineAdjustmentTypeChoicesResult> getOrderLineAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeChoicesForm form) {
         return CDI.current().select(GetOrderLineAdjustmentTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderLineAdjustmentType(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeForm form) {
+    public CommandResult<GetOrderLineAdjustmentTypeResult> getOrderLineAdjustmentType(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeForm form) {
         return CDI.current().select(GetOrderLineAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderLineAdjustmentTypes(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypesForm form) {
+    public CommandResult<GetOrderLineAdjustmentTypesResult> getOrderLineAdjustmentTypes(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypesForm form) {
         return CDI.current().select(GetOrderLineAdjustmentTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -455,7 +456,7 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> editOrderLineAdjustmentType(UserVisitPK userVisitPK, EditOrderLineAdjustmentTypeForm form) {
+    public CommandResult<EditOrderLineAdjustmentTypeResult> editOrderLineAdjustmentType(UserVisitPK userVisitPK, EditOrderLineAdjustmentTypeForm form) {
         return CDI.current().select(EditOrderLineAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -474,17 +475,17 @@ public class OrderBean
     }
 
     @Override
-    public CommandResult<?> getOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeDescriptionForm form) {
+    public CommandResult<GetOrderLineAdjustmentTypeDescriptionResult> getOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(GetOrderLineAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getOrderLineAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeDescriptionsForm form) {
+    public CommandResult<GetOrderLineAdjustmentTypeDescriptionsResult> getOrderLineAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeDescriptionsForm form) {
         return CDI.current().select(GetOrderLineAdjustmentTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, EditOrderLineAdjustmentTypeDescriptionForm form) {
+    public CommandResult<EditOrderLineAdjustmentTypeDescriptionResult> editOrderLineAdjustmentTypeDescription(UserVisitPK userVisitPK, EditOrderLineAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(EditOrderLineAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 

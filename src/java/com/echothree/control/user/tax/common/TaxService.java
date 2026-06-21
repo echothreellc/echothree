@@ -17,6 +17,7 @@
 package com.echothree.control.user.tax.common;
 
 import com.echothree.control.user.tax.common.form.*;
+import com.echothree.control.user.tax.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface TaxService
 
     CommandResult<?> createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form);
 
-    CommandResult<?> getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form);
+    CommandResult<GetTaxClassificationsResult> getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form);
 
-    CommandResult<?> getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form);
+    CommandResult<GetTaxClassificationResult> getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form);
 
-    CommandResult<?> getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form);
+    CommandResult<GetTaxClassificationChoicesResult> getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form);
 
     CommandResult<?> setDefaultTaxClassification(UserVisitPK userVisitPK, SetDefaultTaxClassificationForm form);
 
-    CommandResult<?> editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form);
+    CommandResult<EditTaxClassificationResult> editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form);
 
     CommandResult<?> deleteTaxClassification(UserVisitPK userVisitPK, DeleteTaxClassificationForm form);
 
@@ -53,11 +54,11 @@ public interface TaxService
 
     CommandResult<?> createTaxClassificationTranslation(UserVisitPK userVisitPK, CreateTaxClassificationTranslationForm form);
 
-    CommandResult<?> getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form);
+    CommandResult<GetTaxClassificationTranslationsResult> getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form);
 
-    CommandResult<?> getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form);
+    CommandResult<GetTaxClassificationTranslationResult> getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form);
 
-    CommandResult<?> editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form);
+    CommandResult<EditTaxClassificationTranslationResult> editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form);
 
     CommandResult<?> deleteTaxClassificationTranslation(UserVisitPK userVisitPK, DeleteTaxClassificationTranslationForm form);
     
@@ -67,11 +68,11 @@ public interface TaxService
 
     CommandResult<?> createItemTaxClassification(UserVisitPK userVisitPK, CreateItemTaxClassificationForm form);
 
-    CommandResult<?> getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form);
+    CommandResult<GetItemTaxClassificationsResult> getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form);
 
-    CommandResult<?> getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form);
+    CommandResult<GetItemTaxClassificationResult> getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form);
 
-    CommandResult<?> editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form);
+    CommandResult<EditItemTaxClassificationResult> editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form);
 
     CommandResult<?> deleteItemTaxClassification(UserVisitPK userVisitPK, DeleteItemTaxClassificationForm form);
 
@@ -81,13 +82,13 @@ public interface TaxService
     
     CommandResult<?> createTax(UserVisitPK userVisitPK, CreateTaxForm form);
     
-    CommandResult<?> getTaxes(UserVisitPK userVisitPK, GetTaxesForm form);
+    CommandResult<GetTaxesResult> getTaxes(UserVisitPK userVisitPK, GetTaxesForm form);
     
-    CommandResult<?> getTax(UserVisitPK userVisitPK, GetTaxForm form);
+    CommandResult<GetTaxResult> getTax(UserVisitPK userVisitPK, GetTaxForm form);
     
     CommandResult<?> setDefaultTax(UserVisitPK userVisitPK, SetDefaultTaxForm form);
     
-    CommandResult<?> editTax(UserVisitPK userVisitPK, EditTaxForm form);
+    CommandResult<EditTaxResult> editTax(UserVisitPK userVisitPK, EditTaxForm form);
     
     CommandResult<?> deleteTax(UserVisitPK userVisitPK, DeleteTaxForm form);
     
@@ -97,9 +98,9 @@ public interface TaxService
     
     CommandResult<?> createTaxDescription(UserVisitPK userVisitPK, CreateTaxDescriptionForm form);
     
-    CommandResult<?> getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form);
+    CommandResult<GetTaxDescriptionsResult> getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form);
     
-    CommandResult<?> editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form);
+    CommandResult<EditTaxDescriptionResult> editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form);
     
     CommandResult<?> deleteTaxDescription(UserVisitPK userVisitPK, DeleteTaxDescriptionForm form);
     
@@ -109,7 +110,7 @@ public interface TaxService
     
     CommandResult<?> createGeoCodeTax(UserVisitPK userVisitPK, CreateGeoCodeTaxForm form);
     
-    CommandResult<?> getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form);
+    CommandResult<GetGeoCodeTaxesResult> getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form);
     
     CommandResult<?> deleteGeoCodeTax(UserVisitPK userVisitPK, DeleteGeoCodeTaxForm form);
     

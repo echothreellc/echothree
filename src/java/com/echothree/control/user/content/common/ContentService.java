@@ -17,6 +17,7 @@
 package com.echothree.control.user.content.common;
 
 import com.echothree.control.user.content.common.form.*;
+import com.echothree.control.user.content.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,11 +36,11 @@ public interface ContentService
     
     CommandResult<?> createContentPageAreaType(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form);
 
-    CommandResult<?> getContentPageAreaTypeChoices(UserVisitPK userVisitPK, GetContentPageAreaTypeChoicesForm form);
+    CommandResult<GetContentPageAreaTypeChoicesResult> getContentPageAreaTypeChoices(UserVisitPK userVisitPK, GetContentPageAreaTypeChoicesForm form);
 
-    CommandResult<?> getContentPageAreaType(UserVisitPK userVisitPK, GetContentPageAreaTypeForm form);
+    CommandResult<GetContentPageAreaTypeResult> getContentPageAreaType(UserVisitPK userVisitPK, GetContentPageAreaTypeForm form);
 
-    CommandResult<?> getContentPageAreaTypes(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form);
+    CommandResult<GetContentPageAreaTypesResult> getContentPageAreaTypes(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Page Area Type Descriptions
@@ -53,15 +54,15 @@ public interface ContentService
     
     CommandResult<?> createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form);
 
-    CommandResult<?> getContentPageLayoutChoices(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form);
+    CommandResult<GetContentPageLayoutChoicesResult> getContentPageLayoutChoices(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form);
 
-    CommandResult<?> getContentPageLayout(UserVisitPK userVisitPK, GetContentPageLayoutForm form);
+    CommandResult<GetContentPageLayoutResult> getContentPageLayout(UserVisitPK userVisitPK, GetContentPageLayoutForm form);
 
-    CommandResult<?> getContentPageLayouts(UserVisitPK userVisitPK, GetContentPageLayoutsForm form);
+    CommandResult<GetContentPageLayoutsResult> getContentPageLayouts(UserVisitPK userVisitPK, GetContentPageLayoutsForm form);
 
     CommandResult<?> setDefaultContentPageLayout(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form);
 
-    CommandResult<?> editContentPageLayout(UserVisitPK userVisitPK, EditContentPageLayoutForm form);
+    CommandResult<EditContentPageLayoutResult> editContentPageLayout(UserVisitPK userVisitPK, EditContentPageLayoutForm form);
 
     CommandResult<?> deleteContentPageLayout(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form);
     
@@ -71,11 +72,11 @@ public interface ContentService
     
     CommandResult<?> createContentPageLayoutDescription(UserVisitPK userVisitPK, CreateContentPageLayoutDescriptionForm form);
 
-    CommandResult<?> getContentPageLayoutDescription(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form);
+    CommandResult<GetContentPageLayoutDescriptionResult> getContentPageLayoutDescription(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form);
 
-    CommandResult<?> getContentPageLayoutDescriptions(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionsForm form);
+    CommandResult<GetContentPageLayoutDescriptionsResult> getContentPageLayoutDescriptions(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionsForm form);
 
-    CommandResult<?> editContentPageLayoutDescription(UserVisitPK userVisitPK, EditContentPageLayoutDescriptionForm form);
+    CommandResult<EditContentPageLayoutDescriptionResult> editContentPageLayoutDescription(UserVisitPK userVisitPK, EditContentPageLayoutDescriptionForm form);
 
     CommandResult<?> deleteContentPageLayoutDescription(UserVisitPK userVisitPK, DeleteContentPageLayoutDescriptionForm form);
     
@@ -85,9 +86,9 @@ public interface ContentService
     
     CommandResult<?> createContentPageLayoutArea(UserVisitPK userVisitPK, CreateContentPageLayoutAreaForm form);
     
-    CommandResult<?> getContentPageLayoutArea(UserVisitPK userVisitPK, GetContentPageLayoutAreaForm form);
+    CommandResult<GetContentPageLayoutAreaResult> getContentPageLayoutArea(UserVisitPK userVisitPK, GetContentPageLayoutAreaForm form);
     
-    CommandResult<?> getContentPageLayoutAreas(UserVisitPK userVisitPK, GetContentPageLayoutAreasForm form);
+    CommandResult<GetContentPageLayoutAreasResult> getContentPageLayoutAreas(UserVisitPK userVisitPK, GetContentPageLayoutAreasForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Page Layout Area Descriptions
@@ -101,15 +102,15 @@ public interface ContentService
     
     CommandResult<?> createContentCollection(UserVisitPK userVisitPK, CreateContentCollectionForm form);
     
-    CommandResult<?> getContentCollection(UserVisitPK userVisitPK, GetContentCollectionForm form);
+    CommandResult<GetContentCollectionResult> getContentCollection(UserVisitPK userVisitPK, GetContentCollectionForm form);
     
-    CommandResult<?> getContentCollections(UserVisitPK userVisitPK, GetContentCollectionsForm form);
+    CommandResult<GetContentCollectionsResult> getContentCollections(UserVisitPK userVisitPK, GetContentCollectionsForm form);
     
-    CommandResult<?> editContentCollection(UserVisitPK userVisitPK, EditContentCollectionForm form);
+    CommandResult<EditContentCollectionResult> editContentCollection(UserVisitPK userVisitPK, EditContentCollectionForm form);
     
     CommandResult<?> deleteContentCollection(UserVisitPK userVisitPK, DeleteContentCollectionForm form);
     
-    CommandResult<?> getContentCollectionChoices(UserVisitPK userVisitPK, GetContentCollectionChoicesForm form);
+    CommandResult<GetContentCollectionChoicesResult> getContentCollectionChoices(UserVisitPK userVisitPK, GetContentCollectionChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Collection Descriptions
@@ -117,11 +118,11 @@ public interface ContentService
     
     CommandResult<?> createContentCollectionDescription(UserVisitPK userVisitPK, CreateContentCollectionDescriptionForm form);
 
-    CommandResult<?> getContentCollectionDescription(UserVisitPK userVisitPK, GetContentCollectionDescriptionForm form);
+    CommandResult<GetContentCollectionDescriptionResult> getContentCollectionDescription(UserVisitPK userVisitPK, GetContentCollectionDescriptionForm form);
 
-    CommandResult<?> getContentCollectionDescriptions(UserVisitPK userVisitPK, GetContentCollectionDescriptionsForm form);
+    CommandResult<GetContentCollectionDescriptionsResult> getContentCollectionDescriptions(UserVisitPK userVisitPK, GetContentCollectionDescriptionsForm form);
     
-    CommandResult<?> editContentCollectionDescription(UserVisitPK userVisitPK, EditContentCollectionDescriptionForm form);
+    CommandResult<EditContentCollectionDescriptionResult> editContentCollectionDescription(UserVisitPK userVisitPK, EditContentCollectionDescriptionForm form);
     
     CommandResult<?> deleteContentCollectionDescription(UserVisitPK userVisitPK, DeleteContentCollectionDescriptionForm form);
     
@@ -131,17 +132,17 @@ public interface ContentService
     
     CommandResult<?> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form);
     
-    CommandResult<?> getContentSection(UserVisitPK userVisitPK, GetContentSectionForm form);
+    CommandResult<GetContentSectionResult> getContentSection(UserVisitPK userVisitPK, GetContentSectionForm form);
     
-    CommandResult<?> getContentSections(UserVisitPK userVisitPK, GetContentSectionsForm form);
+    CommandResult<GetContentSectionsResult> getContentSections(UserVisitPK userVisitPK, GetContentSectionsForm form);
     
     CommandResult<?> setDefaultContentSection(UserVisitPK userVisitPK, SetDefaultContentSectionForm form);
     
-    CommandResult<?> editContentSection(UserVisitPK userVisitPK, EditContentSectionForm form);
+    CommandResult<EditContentSectionResult> editContentSection(UserVisitPK userVisitPK, EditContentSectionForm form);
     
     CommandResult<?> deleteContentSection(UserVisitPK userVisitPK, DeleteContentSectionForm form);
     
-    CommandResult<?> getContentSectionChoices(UserVisitPK userVisitPK, GetContentSectionChoicesForm form);
+    CommandResult<GetContentSectionChoicesResult> getContentSectionChoices(UserVisitPK userVisitPK, GetContentSectionChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Section Description
@@ -149,11 +150,11 @@ public interface ContentService
     
     CommandResult<?> createContentSectionDescription(UserVisitPK userVisitPK, CreateContentSectionDescriptionForm form);
     
-    CommandResult<?> getContentSectionDescription(UserVisitPK userVisitPK, GetContentSectionDescriptionForm form);
+    CommandResult<GetContentSectionDescriptionResult> getContentSectionDescription(UserVisitPK userVisitPK, GetContentSectionDescriptionForm form);
 
-    CommandResult<?> getContentSectionDescriptions(UserVisitPK userVisitPK, GetContentSectionDescriptionsForm form);
+    CommandResult<GetContentSectionDescriptionsResult> getContentSectionDescriptions(UserVisitPK userVisitPK, GetContentSectionDescriptionsForm form);
 
-    CommandResult<?> editContentSectionDescription(UserVisitPK userVisitPK, EditContentSectionDescriptionForm form);
+    CommandResult<EditContentSectionDescriptionResult> editContentSectionDescription(UserVisitPK userVisitPK, EditContentSectionDescriptionForm form);
     
     CommandResult<?> deleteContentSectionDescription(UserVisitPK userVisitPK, DeleteContentSectionDescriptionForm form);
     
@@ -163,13 +164,13 @@ public interface ContentService
     
     CommandResult<?> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form);
     
-    CommandResult<?> getContentPage(UserVisitPK userVisitPK, GetContentPageForm form);
+    CommandResult<GetContentPageResult> getContentPage(UserVisitPK userVisitPK, GetContentPageForm form);
     
-    CommandResult<?> getContentPages(UserVisitPK userVisitPK, GetContentPagesForm form);
+    CommandResult<GetContentPagesResult> getContentPages(UserVisitPK userVisitPK, GetContentPagesForm form);
     
     CommandResult<?> setDefaultContentPage(UserVisitPK userVisitPK, SetDefaultContentPageForm form);
     
-    CommandResult<?> editContentPage(UserVisitPK userVisitPK, EditContentPageForm form);
+    CommandResult<EditContentPageResult> editContentPage(UserVisitPK userVisitPK, EditContentPageForm form);
     
     CommandResult<?> deleteContentPage(UserVisitPK userVisitPK, DeleteContentPageForm form);
     
@@ -179,11 +180,11 @@ public interface ContentService
     
     CommandResult<?> createContentPageDescription(UserVisitPK userVisitPK, CreateContentPageDescriptionForm form);
     
-    CommandResult<?> getContentPageDescription(UserVisitPK userVisitPK, GetContentPageDescriptionForm form);
+    CommandResult<GetContentPageDescriptionResult> getContentPageDescription(UserVisitPK userVisitPK, GetContentPageDescriptionForm form);
 
-    CommandResult<?> getContentPageDescriptions(UserVisitPK userVisitPK, GetContentPageDescriptionsForm form);
+    CommandResult<GetContentPageDescriptionsResult> getContentPageDescriptions(UserVisitPK userVisitPK, GetContentPageDescriptionsForm form);
 
-    CommandResult<?> editContentPageDescription(UserVisitPK userVisitPK, EditContentPageDescriptionForm form);
+    CommandResult<EditContentPageDescriptionResult> editContentPageDescription(UserVisitPK userVisitPK, EditContentPageDescriptionForm form);
     
     CommandResult<?> deleteContentPageDescription(UserVisitPK userVisitPK, DeleteContentPageDescriptionForm form);
     
@@ -193,13 +194,13 @@ public interface ContentService
     
     CommandResult<?> createContentCatalog(UserVisitPK userVisitPK, CreateContentCatalogForm form);
     
-    CommandResult<?> getContentCatalog(UserVisitPK userVisitPK, GetContentCatalogForm form);
+    CommandResult<GetContentCatalogResult> getContentCatalog(UserVisitPK userVisitPK, GetContentCatalogForm form);
     
-    CommandResult<?> getContentCatalogs(UserVisitPK userVisitPK, GetContentCatalogsForm form);
+    CommandResult<GetContentCatalogsResult> getContentCatalogs(UserVisitPK userVisitPK, GetContentCatalogsForm form);
     
     CommandResult<?> setDefaultContentCatalog(UserVisitPK userVisitPK, SetDefaultContentCatalogForm form);
     
-    CommandResult<?> editContentCatalog(UserVisitPK userVisitPK, EditContentCatalogForm form);
+    CommandResult<EditContentCatalogResult> editContentCatalog(UserVisitPK userVisitPK, EditContentCatalogForm form);
     
     CommandResult<?> deleteContentCatalog(UserVisitPK userVisitPK, DeleteContentCatalogForm form);
     
@@ -209,11 +210,11 @@ public interface ContentService
     
     CommandResult<?> createContentCatalogDescription(UserVisitPK userVisitPK, CreateContentCatalogDescriptionForm form);
 
-    CommandResult<?> getContentCatalogDescription(UserVisitPK userVisitPK, GetContentCatalogDescriptionForm form);
+    CommandResult<GetContentCatalogDescriptionResult> getContentCatalogDescription(UserVisitPK userVisitPK, GetContentCatalogDescriptionForm form);
 
-    CommandResult<?> getContentCatalogDescriptions(UserVisitPK userVisitPK, GetContentCatalogDescriptionsForm form);
+    CommandResult<GetContentCatalogDescriptionsResult> getContentCatalogDescriptions(UserVisitPK userVisitPK, GetContentCatalogDescriptionsForm form);
     
-    CommandResult<?> editContentCatalogDescription(UserVisitPK userVisitPK, EditContentCatalogDescriptionForm form);
+    CommandResult<EditContentCatalogDescriptionResult> editContentCatalogDescription(UserVisitPK userVisitPK, EditContentCatalogDescriptionForm form);
     
     CommandResult<?> deleteContentCatalogDescription(UserVisitPK userVisitPK, DeleteContentCatalogDescriptionForm form);
     
@@ -221,9 +222,9 @@ public interface ContentService
     //   Content Catalog Items
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> getContentCatalogItem(UserVisitPK userVisitPK, GetContentCatalogItemForm form);
+    CommandResult<GetContentCatalogItemResult> getContentCatalogItem(UserVisitPK userVisitPK, GetContentCatalogItemForm form);
 
-    CommandResult<?> getContentCatalogItems(UserVisitPK userVisitPK, GetContentCatalogItemsForm form);
+    CommandResult<GetContentCatalogItemsResult> getContentCatalogItems(UserVisitPK userVisitPK, GetContentCatalogItemsForm form);
 
     // --------------------------------------------------------------------------------
     //   Content Categories
@@ -231,17 +232,17 @@ public interface ContentService
 
     CommandResult<?> createContentCategory(UserVisitPK userVisitPK, CreateContentCategoryForm form);
 
-    CommandResult<?> getContentCategory(UserVisitPK userVisitPK, GetContentCategoryForm form);
+    CommandResult<GetContentCategoryResult> getContentCategory(UserVisitPK userVisitPK, GetContentCategoryForm form);
 
-    CommandResult<?> getContentCategories(UserVisitPK userVisitPK, GetContentCategoriesForm form);
+    CommandResult<GetContentCategoriesResult> getContentCategories(UserVisitPK userVisitPK, GetContentCategoriesForm form);
 
     CommandResult<?> setDefaultContentCategory(UserVisitPK userVisitPK, SetDefaultContentCategoryForm form);
 
-    CommandResult<?> editContentCategory(UserVisitPK userVisitPK, EditContentCategoryForm form);
+    CommandResult<EditContentCategoryResult> editContentCategory(UserVisitPK userVisitPK, EditContentCategoryForm form);
 
     CommandResult<?> deleteContentCategory(UserVisitPK userVisitPK, DeleteContentCategoryForm form);
 
-    CommandResult<?> getContentCategoryChoices(UserVisitPK userVisitPK, GetContentCategoryChoicesForm form);
+    CommandResult<GetContentCategoryChoicesResult> getContentCategoryChoices(UserVisitPK userVisitPK, GetContentCategoryChoicesForm form);
 
     // --------------------------------------------------------------------------------
     //   Content Category Descriptions
@@ -249,11 +250,11 @@ public interface ContentService
     
     CommandResult<?> createContentCategoryDescription(UserVisitPK userVisitPK, CreateContentCategoryDescriptionForm form);
     
-    CommandResult<?> getContentCategoryDescription(UserVisitPK userVisitPK, GetContentCategoryDescriptionForm form);
+    CommandResult<GetContentCategoryDescriptionResult> getContentCategoryDescription(UserVisitPK userVisitPK, GetContentCategoryDescriptionForm form);
 
-    CommandResult<?> getContentCategoryDescriptions(UserVisitPK userVisitPK, GetContentCategoryDescriptionsForm form);
+    CommandResult<GetContentCategoryDescriptionsResult> getContentCategoryDescriptions(UserVisitPK userVisitPK, GetContentCategoryDescriptionsForm form);
 
-    CommandResult<?> editContentCategoryDescription(UserVisitPK userVisitPK, EditContentCategoryDescriptionForm form);
+    CommandResult<EditContentCategoryDescriptionResult> editContentCategoryDescription(UserVisitPK userVisitPK, EditContentCategoryDescriptionForm form);
     
     CommandResult<?> deleteContentCategoryDescription(UserVisitPK userVisitPK, DeleteContentCategoryDescriptionForm form);
     
@@ -263,13 +264,13 @@ public interface ContentService
     
     CommandResult<?> createContentCategoryItem(UserVisitPK userVisitPK, CreateContentCategoryItemForm form);
     
-    CommandResult<?> getContentCategoryItem(UserVisitPK userVisitPK, GetContentCategoryItemForm form);
+    CommandResult<GetContentCategoryItemResult> getContentCategoryItem(UserVisitPK userVisitPK, GetContentCategoryItemForm form);
     
-    CommandResult<?> getContentCategoryItems(UserVisitPK userVisitPK, GetContentCategoryItemsForm form);
+    CommandResult<GetContentCategoryItemsResult> getContentCategoryItems(UserVisitPK userVisitPK, GetContentCategoryItemsForm form);
     
     CommandResult<?> setDefaultContentCategoryItem(UserVisitPK userVisitPK, SetDefaultContentCategoryItemForm form);
     
-    CommandResult<?> editContentCategoryItem(UserVisitPK userVisitPK, EditContentCategoryItemForm form);
+    CommandResult<EditContentCategoryItemResult> editContentCategoryItem(UserVisitPK userVisitPK, EditContentCategoryItemForm form);
     
     CommandResult<?> deleteContentCategoryItem(UserVisitPK userVisitPK, DeleteContentCategoryItemForm form);
     
@@ -279,9 +280,9 @@ public interface ContentService
     
     CommandResult<?> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form);
     
-    CommandResult<?> getContentForum(UserVisitPK userVisitPK, GetContentForumForm form);
+    CommandResult<GetContentForumResult> getContentForum(UserVisitPK userVisitPK, GetContentForumForm form);
     
-    CommandResult<?> getContentForums(UserVisitPK userVisitPK, GetContentForumsForm form);
+    CommandResult<GetContentForumsResult> getContentForums(UserVisitPK userVisitPK, GetContentForumsForm form);
     
     CommandResult<?> setDefaultContentForum(UserVisitPK userVisitPK, SetDefaultContentForumForm form);
     
@@ -293,11 +294,11 @@ public interface ContentService
     
     CommandResult<?> createContentWebAddress(UserVisitPK userVisitPK, CreateContentWebAddressForm form);
     
-    CommandResult<?> getContentWebAddress(UserVisitPK userVisitPK, GetContentWebAddressForm form);
+    CommandResult<GetContentWebAddressResult> getContentWebAddress(UserVisitPK userVisitPK, GetContentWebAddressForm form);
     
-    CommandResult<?> getContentWebAddresses(UserVisitPK userVisitPK, GetContentWebAddressesForm form);
+    CommandResult<GetContentWebAddressesResult> getContentWebAddresses(UserVisitPK userVisitPK, GetContentWebAddressesForm form);
     
-    CommandResult<?> editContentWebAddress(UserVisitPK userVisitPK, EditContentWebAddressForm form);
+    CommandResult<EditContentWebAddressResult> editContentWebAddress(UserVisitPK userVisitPK, EditContentWebAddressForm form);
     
     CommandResult<?> deleteContentWebAddress(UserVisitPK userVisitPK, DeleteContentWebAddressForm form);
     
@@ -307,11 +308,11 @@ public interface ContentService
     
     CommandResult<?> createContentWebAddressDescription(UserVisitPK userVisitPK, CreateContentWebAddressDescriptionForm form);
     
-    CommandResult<?> getContentWebAddressDescription(UserVisitPK userVisitPK, GetContentWebAddressDescriptionForm form);
+    CommandResult<GetContentWebAddressDescriptionResult> getContentWebAddressDescription(UserVisitPK userVisitPK, GetContentWebAddressDescriptionForm form);
 
-    CommandResult<?> getContentWebAddressDescriptions(UserVisitPK userVisitPK, GetContentWebAddressDescriptionsForm form);
+    CommandResult<GetContentWebAddressDescriptionsResult> getContentWebAddressDescriptions(UserVisitPK userVisitPK, GetContentWebAddressDescriptionsForm form);
 
-    CommandResult<?> editContentWebAddressDescription(UserVisitPK userVisitPK, EditContentWebAddressDescriptionForm form);
+    CommandResult<EditContentWebAddressDescriptionResult> editContentWebAddressDescription(UserVisitPK userVisitPK, EditContentWebAddressDescriptionForm form);
     
     CommandResult<?> deleteContentWebAddressDescription(UserVisitPK userVisitPK, DeleteContentWebAddressDescriptionForm form);
     
@@ -327,11 +328,11 @@ public interface ContentService
     
     CommandResult<?> createContentPageArea(UserVisitPK userVisitPK, CreateContentPageAreaForm form);
  
-    CommandResult<?> getContentPageArea(UserVisitPK userVisitPK, GetContentPageAreaForm form);
+    CommandResult<GetContentPageAreaResult> getContentPageArea(UserVisitPK userVisitPK, GetContentPageAreaForm form);
 
-    CommandResult<?> getContentPageAreas(UserVisitPK userVisitPK, GetContentPageAreasForm form);
+    CommandResult<GetContentPageAreasResult> getContentPageAreas(UserVisitPK userVisitPK, GetContentPageAreasForm form);
 
-    CommandResult<?> editContentPageArea(UserVisitPK userVisitPK, EditContentPageAreaForm form);
+    CommandResult<EditContentPageAreaResult> editContentPageArea(UserVisitPK userVisitPK, EditContentPageAreaForm form);
     
     CommandResult<?> deleteContentPageArea(UserVisitPK userVisitPK, DeleteContentPageAreaForm form);
     

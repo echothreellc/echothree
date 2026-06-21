@@ -17,6 +17,7 @@
 package com.echothree.control.user.uom.common;
 
 import com.echothree.control.user.uom.common.form.*;
+import com.echothree.control.user.uom.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form);
     
-    CommandResult<?> getUnitOfMeasureKinds(UserVisitPK userVisitPK, GetUnitOfMeasureKindsForm form);
+    CommandResult<GetUnitOfMeasureKindsResult> getUnitOfMeasureKinds(UserVisitPK userVisitPK, GetUnitOfMeasureKindsForm form);
     
-    CommandResult<?> getUnitOfMeasureKind(UserVisitPK userVisitPK, GetUnitOfMeasureKindForm form);
+    CommandResult<GetUnitOfMeasureKindResult> getUnitOfMeasureKind(UserVisitPK userVisitPK, GetUnitOfMeasureKindForm form);
     
-    CommandResult<?> getUnitOfMeasureKindChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindChoicesForm form);
+    CommandResult<GetUnitOfMeasureKindChoicesResult> getUnitOfMeasureKindChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindChoicesForm form);
     
     CommandResult<?> setDefaultUnitOfMeasureKind(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindForm form);
     
-    CommandResult<?> editUnitOfMeasureKind(UserVisitPK userVisitPK, EditUnitOfMeasureKindForm form);
+    CommandResult<EditUnitOfMeasureKindResult> editUnitOfMeasureKind(UserVisitPK userVisitPK, EditUnitOfMeasureKindForm form);
     
     CommandResult<?> deleteUnitOfMeasureKind(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindForm form);
     
@@ -53,9 +54,9 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureKindDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureKindDescriptionForm form);
     
-    CommandResult<?> getUnitOfMeasureKindDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureKindDescriptionsForm form);
+    CommandResult<GetUnitOfMeasureKindDescriptionsResult> getUnitOfMeasureKindDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureKindDescriptionsForm form);
     
-    CommandResult<?> editUnitOfMeasureKindDescription(UserVisitPK userVisitPK, EditUnitOfMeasureKindDescriptionForm form);
+    CommandResult<EditUnitOfMeasureKindDescriptionResult> editUnitOfMeasureKindDescription(UserVisitPK userVisitPK, EditUnitOfMeasureKindDescriptionForm form);
     
     CommandResult<?> deleteUnitOfMeasureKindDescription(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindDescriptionForm form);
     
@@ -65,17 +66,17 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form);
     
-    CommandResult<?> getUnitOfMeasureTypes(UserVisitPK userVisitPK, GetUnitOfMeasureTypesForm form);
+    CommandResult<GetUnitOfMeasureTypesResult> getUnitOfMeasureTypes(UserVisitPK userVisitPK, GetUnitOfMeasureTypesForm form);
     
-    CommandResult<?> getUnitOfMeasureType(UserVisitPK userVisitPK, GetUnitOfMeasureTypeForm form);
+    CommandResult<GetUnitOfMeasureTypeResult> getUnitOfMeasureType(UserVisitPK userVisitPK, GetUnitOfMeasureTypeForm form);
     
-    CommandResult<?> getUnitOfMeasureTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureTypeChoicesForm form);
+    CommandResult<GetUnitOfMeasureTypeChoicesResult> getUnitOfMeasureTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureTypeChoicesForm form);
     
-    CommandResult<?> getUnitOfMeasureChoices(UserVisitPK userVisitPK, GetUnitOfMeasureChoicesForm form);
+    CommandResult<GetUnitOfMeasureChoicesResult> getUnitOfMeasureChoices(UserVisitPK userVisitPK, GetUnitOfMeasureChoicesForm form);
     
     CommandResult<?> setDefaultUnitOfMeasureType(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureTypeForm form);
     
-    CommandResult<?> editUnitOfMeasureType(UserVisitPK userVisitPK, EditUnitOfMeasureTypeForm form);
+    CommandResult<EditUnitOfMeasureTypeResult> editUnitOfMeasureType(UserVisitPK userVisitPK, EditUnitOfMeasureTypeForm form);
     
     CommandResult<?> deleteUnitOfMeasureType(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeForm form);
     
@@ -85,9 +86,9 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeDescriptionForm form);
     
-    CommandResult<?> getUnitOfMeasureTypeDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureTypeDescriptionsForm form);
+    CommandResult<GetUnitOfMeasureTypeDescriptionsResult> getUnitOfMeasureTypeDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureTypeDescriptionsForm form);
     
-    CommandResult<?> editUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, EditUnitOfMeasureTypeDescriptionForm form);
+    CommandResult<EditUnitOfMeasureTypeDescriptionResult> editUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, EditUnitOfMeasureTypeDescriptionForm form);
     
     CommandResult<?> deleteUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeDescriptionForm form);
     
@@ -97,7 +98,7 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeVolumeForm form);
     
-    CommandResult<?> editUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, EditUnitOfMeasureTypeVolumeForm form);
+    CommandResult<EditUnitOfMeasureTypeVolumeResult> editUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, EditUnitOfMeasureTypeVolumeForm form);
     
     CommandResult<?> deleteUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeVolumeForm form);
     
@@ -107,7 +108,7 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeWeightForm form);
     
-    CommandResult<?> editUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, EditUnitOfMeasureTypeWeightForm form);
+    CommandResult<EditUnitOfMeasureTypeWeightResult> editUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, EditUnitOfMeasureTypeWeightForm form);
     
     CommandResult<?> deleteUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeWeightForm form);
     
@@ -117,9 +118,9 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureEquivalent(UserVisitPK userVisitPK, CreateUnitOfMeasureEquivalentForm form);
     
-    CommandResult<?> getUnitOfMeasureEquivalents(UserVisitPK userVisitPK, GetUnitOfMeasureEquivalentsForm form);
+    CommandResult<GetUnitOfMeasureEquivalentsResult> getUnitOfMeasureEquivalents(UserVisitPK userVisitPK, GetUnitOfMeasureEquivalentsForm form);
     
-    CommandResult<?> editUnitOfMeasureEquivalent(UserVisitPK userVisitPK, EditUnitOfMeasureEquivalentForm form);
+    CommandResult<EditUnitOfMeasureEquivalentResult> editUnitOfMeasureEquivalent(UserVisitPK userVisitPK, EditUnitOfMeasureEquivalentForm form);
     
     CommandResult<?> deleteUnitOfMeasureEquivalent(UserVisitPK userVisitPK, DeleteUnitOfMeasureEquivalentForm form);
     
@@ -129,11 +130,11 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureKindUseType(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseTypeForm form);
     
-    CommandResult<?> getUnitOfMeasureKindUseTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeChoicesForm form);
+    CommandResult<GetUnitOfMeasureKindUseTypeChoicesResult> getUnitOfMeasureKindUseTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeChoicesForm form);
     
-    CommandResult<?> getUnitOfMeasureKindUseTypes(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypesForm form);
+    CommandResult<GetUnitOfMeasureKindUseTypesResult> getUnitOfMeasureKindUseTypes(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypesForm form);
     
-    CommandResult<?> getUnitOfMeasureKindUseType(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeForm form);
+    CommandResult<GetUnitOfMeasureKindUseTypeResult> getUnitOfMeasureKindUseType(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Kind Use Type Descriptions
@@ -147,13 +148,13 @@ public interface UomService
     
     CommandResult<?> createUnitOfMeasureKindUse(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseForm form);
     
-    CommandResult<?> getUnitOfMeasureKindUses(UserVisitPK userVisitPK, GetUnitOfMeasureKindUsesForm form);
+    CommandResult<GetUnitOfMeasureKindUsesResult> getUnitOfMeasureKindUses(UserVisitPK userVisitPK, GetUnitOfMeasureKindUsesForm form);
     
-    CommandResult<?> getUnitOfMeasureKindUse(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseForm form);
+    CommandResult<GetUnitOfMeasureKindUseResult> getUnitOfMeasureKindUse(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseForm form);
     
     CommandResult<?> setDefaultUnitOfMeasureKindUse(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindUseForm form);
     
-    CommandResult<?> editUnitOfMeasureKindUse(UserVisitPK userVisitPK, EditUnitOfMeasureKindUseForm form);
+    CommandResult<EditUnitOfMeasureKindUseResult> editUnitOfMeasureKindUse(UserVisitPK userVisitPK, EditUnitOfMeasureKindUseForm form);
     
     CommandResult<?> deleteUnitOfMeasureKindUse(UserVisitPK userVisitPK, DeleteUnitOfMeasureKindUseForm form);
     

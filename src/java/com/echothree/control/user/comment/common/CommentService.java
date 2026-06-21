@@ -17,6 +17,7 @@
 package com.echothree.control.user.comment.common;
 
 import com.echothree.control.user.comment.common.form.*;
+import com.echothree.control.user.comment.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,11 +36,11 @@ public interface CommentService
     
     CommandResult<?> createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form);
     
-    CommandResult<?> getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form);
+    CommandResult<GetCommentTypeResult> getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form);
     
-    CommandResult<?> getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form);
+    CommandResult<GetCommentTypesResult> getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form);
     
-    CommandResult<?> editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form);
+    CommandResult<EditCommentTypeResult> editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form);
     
     CommandResult<?> deleteCommentType(UserVisitPK userVisitPK, DeleteCommentTypeForm form);
     
@@ -49,9 +50,9 @@ public interface CommentService
     
     CommandResult<?> createCommentTypeDescription(UserVisitPK userVisitPK, CreateCommentTypeDescriptionForm form);
     
-    CommandResult<?> getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form);
+    CommandResult<GetCommentTypeDescriptionsResult> getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form);
     
-    CommandResult<?> editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form);
+    CommandResult<EditCommentTypeDescriptionResult> editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form);
     
     CommandResult<?> deleteCommentTypeDescription(UserVisitPK userVisitPK, DeleteCommentTypeDescriptionForm form);
     
@@ -61,11 +62,11 @@ public interface CommentService
     
     CommandResult<?> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
     
-    CommandResult<?> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form);
+    CommandResult<GetCommentUsageTypeResult> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form);
     
-    CommandResult<?> getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form);
+    CommandResult<GetCommentUsageTypesResult> getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form);
     
-    CommandResult<?> editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form);
+    CommandResult<EditCommentUsageTypeResult> editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form);
     
     CommandResult<?> deleteCommentUsageType(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form);
     
@@ -75,9 +76,9 @@ public interface CommentService
     
     CommandResult<?> createCommentUsageTypeDescription(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form);
     
-    CommandResult<?> getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form);
+    CommandResult<GetCommentUsageTypeDescriptionsResult> getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form);
     
-    CommandResult<?> editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form);
+    CommandResult<EditCommentUsageTypeDescriptionResult> editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form);
     
     CommandResult<?> deleteCommentUsageTypeDescription(UserVisitPK userVisitPK, DeleteCommentUsageTypeDescriptionForm form);
     
@@ -87,11 +88,11 @@ public interface CommentService
     
     CommandResult<?> createComment(UserVisitPK userVisitPK, CreateCommentForm form);
     
-    CommandResult<?> getComment(UserVisitPK userVisitPK, GetCommentForm form);
+    CommandResult<GetCommentResult> getComment(UserVisitPK userVisitPK, GetCommentForm form);
     
-    CommandResult<?> editComment(UserVisitPK userVisitPK, EditCommentForm form);
+    CommandResult<EditCommentResult> editComment(UserVisitPK userVisitPK, EditCommentForm form);
     
-    CommandResult<?> getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form);
+    CommandResult<GetCommentStatusChoicesResult> getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form);
     
     CommandResult<?> setCommentStatus(UserVisitPK userVisitPK, SetCommentStatusForm form);
     

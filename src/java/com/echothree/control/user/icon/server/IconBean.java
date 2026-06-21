@@ -18,6 +18,7 @@ package com.echothree.control.user.icon.server;
 
 import com.echothree.control.user.icon.common.IconRemote;
 import com.echothree.control.user.icon.common.form.*;
+import com.echothree.control.user.icon.common.result.*;
 import com.echothree.control.user.icon.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -61,7 +62,7 @@ public class IconBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form) {
+    public CommandResult<GetIconChoicesResult> getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form) {
         return CDI.current().select(GetIconChoicesCommand.class).get().run(userVisitPK, form);
     }
     

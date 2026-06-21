@@ -17,6 +17,7 @@
 package com.echothree.control.user.employee.common;
 
 import com.echothree.control.user.employee.common.form.*;
+import com.echothree.control.user.employee.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -29,15 +30,15 @@ public interface EmployeeService
     
     CommandResult<?> createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form);
     
-    CommandResult<?> getResponsibilityTypes(UserVisitPK userVisitPK, GetResponsibilityTypesForm form);
+    CommandResult<GetResponsibilityTypesResult> getResponsibilityTypes(UserVisitPK userVisitPK, GetResponsibilityTypesForm form);
     
-    CommandResult<?> getResponsibilityType(UserVisitPK userVisitPK, GetResponsibilityTypeForm form);
+    CommandResult<GetResponsibilityTypeResult> getResponsibilityType(UserVisitPK userVisitPK, GetResponsibilityTypeForm form);
     
-    CommandResult<?> getResponsibilityTypeChoices(UserVisitPK userVisitPK, GetResponsibilityTypeChoicesForm form);
+    CommandResult<GetResponsibilityTypeChoicesResult> getResponsibilityTypeChoices(UserVisitPK userVisitPK, GetResponsibilityTypeChoicesForm form);
     
     CommandResult<?> setDefaultResponsibilityType(UserVisitPK userVisitPK, SetDefaultResponsibilityTypeForm form);
     
-    CommandResult<?> editResponsibilityType(UserVisitPK userVisitPK, EditResponsibilityTypeForm form);
+    CommandResult<EditResponsibilityTypeResult> editResponsibilityType(UserVisitPK userVisitPK, EditResponsibilityTypeForm form);
     
     CommandResult<?> deleteResponsibilityType(UserVisitPK userVisitPK, DeleteResponsibilityTypeForm form);
     
@@ -47,9 +48,9 @@ public interface EmployeeService
     
     CommandResult<?> createResponsibilityTypeDescription(UserVisitPK userVisitPK, CreateResponsibilityTypeDescriptionForm form);
     
-    CommandResult<?> getResponsibilityTypeDescriptions(UserVisitPK userVisitPK, GetResponsibilityTypeDescriptionsForm form);
+    CommandResult<GetResponsibilityTypeDescriptionsResult> getResponsibilityTypeDescriptions(UserVisitPK userVisitPK, GetResponsibilityTypeDescriptionsForm form);
     
-    CommandResult<?> editResponsibilityTypeDescription(UserVisitPK userVisitPK, EditResponsibilityTypeDescriptionForm form);
+    CommandResult<EditResponsibilityTypeDescriptionResult> editResponsibilityTypeDescription(UserVisitPK userVisitPK, EditResponsibilityTypeDescriptionForm form);
     
     CommandResult<?> deleteResponsibilityTypeDescription(UserVisitPK userVisitPK, DeleteResponsibilityTypeDescriptionForm form);
     
@@ -59,15 +60,15 @@ public interface EmployeeService
     
     CommandResult<?> createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form);
     
-    CommandResult<?> getSkillTypes(UserVisitPK userVisitPK, GetSkillTypesForm form);
+    CommandResult<GetSkillTypesResult> getSkillTypes(UserVisitPK userVisitPK, GetSkillTypesForm form);
     
-    CommandResult<?> getSkillType(UserVisitPK userVisitPK, GetSkillTypeForm form);
+    CommandResult<GetSkillTypeResult> getSkillType(UserVisitPK userVisitPK, GetSkillTypeForm form);
     
-    CommandResult<?> getSkillTypeChoices(UserVisitPK userVisitPK, GetSkillTypeChoicesForm form);
+    CommandResult<GetSkillTypeChoicesResult> getSkillTypeChoices(UserVisitPK userVisitPK, GetSkillTypeChoicesForm form);
     
     CommandResult<?> setDefaultSkillType(UserVisitPK userVisitPK, SetDefaultSkillTypeForm form);
     
-    CommandResult<?> editSkillType(UserVisitPK userVisitPK, EditSkillTypeForm form);
+    CommandResult<EditSkillTypeResult> editSkillType(UserVisitPK userVisitPK, EditSkillTypeForm form);
     
     CommandResult<?> deleteSkillType(UserVisitPK userVisitPK, DeleteSkillTypeForm form);
     
@@ -77,9 +78,9 @@ public interface EmployeeService
     
     CommandResult<?> createSkillTypeDescription(UserVisitPK userVisitPK, CreateSkillTypeDescriptionForm form);
     
-    CommandResult<?> getSkillTypeDescriptions(UserVisitPK userVisitPK, GetSkillTypeDescriptionsForm form);
+    CommandResult<GetSkillTypeDescriptionsResult> getSkillTypeDescriptions(UserVisitPK userVisitPK, GetSkillTypeDescriptionsForm form);
     
-    CommandResult<?> editSkillTypeDescription(UserVisitPK userVisitPK, EditSkillTypeDescriptionForm form);
+    CommandResult<EditSkillTypeDescriptionResult> editSkillTypeDescription(UserVisitPK userVisitPK, EditSkillTypeDescriptionForm form);
     
     CommandResult<?> deleteSkillTypeDescription(UserVisitPK userVisitPK, DeleteSkillTypeDescriptionForm form);
     
@@ -89,15 +90,15 @@ public interface EmployeeService
 
     CommandResult<?> createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form);
 
-    CommandResult<?> getLeaveTypes(UserVisitPK userVisitPK, GetLeaveTypesForm form);
+    CommandResult<GetLeaveTypesResult> getLeaveTypes(UserVisitPK userVisitPK, GetLeaveTypesForm form);
 
-    CommandResult<?> getLeaveType(UserVisitPK userVisitPK, GetLeaveTypeForm form);
+    CommandResult<GetLeaveTypeResult> getLeaveType(UserVisitPK userVisitPK, GetLeaveTypeForm form);
 
-    CommandResult<?> getLeaveTypeChoices(UserVisitPK userVisitPK, GetLeaveTypeChoicesForm form);
+    CommandResult<GetLeaveTypeChoicesResult> getLeaveTypeChoices(UserVisitPK userVisitPK, GetLeaveTypeChoicesForm form);
 
     CommandResult<?> setDefaultLeaveType(UserVisitPK userVisitPK, SetDefaultLeaveTypeForm form);
 
-    CommandResult<?> editLeaveType(UserVisitPK userVisitPK, EditLeaveTypeForm form);
+    CommandResult<EditLeaveTypeResult> editLeaveType(UserVisitPK userVisitPK, EditLeaveTypeForm form);
 
     CommandResult<?> deleteLeaveType(UserVisitPK userVisitPK, DeleteLeaveTypeForm form);
 
@@ -107,11 +108,11 @@ public interface EmployeeService
 
     CommandResult<?> createLeaveTypeDescription(UserVisitPK userVisitPK, CreateLeaveTypeDescriptionForm form);
 
-    CommandResult<?> getLeaveTypeDescription(UserVisitPK userVisitPK, GetLeaveTypeDescriptionForm form);
+    CommandResult<GetLeaveTypeDescriptionResult> getLeaveTypeDescription(UserVisitPK userVisitPK, GetLeaveTypeDescriptionForm form);
 
-    CommandResult<?> getLeaveTypeDescriptions(UserVisitPK userVisitPK, GetLeaveTypeDescriptionsForm form);
+    CommandResult<GetLeaveTypeDescriptionsResult> getLeaveTypeDescriptions(UserVisitPK userVisitPK, GetLeaveTypeDescriptionsForm form);
 
-    CommandResult<?> editLeaveTypeDescription(UserVisitPK userVisitPK, EditLeaveTypeDescriptionForm form);
+    CommandResult<EditLeaveTypeDescriptionResult> editLeaveTypeDescription(UserVisitPK userVisitPK, EditLeaveTypeDescriptionForm form);
 
     CommandResult<?> deleteLeaveTypeDescription(UserVisitPK userVisitPK, DeleteLeaveTypeDescriptionForm form);
     
@@ -121,15 +122,15 @@ public interface EmployeeService
 
     CommandResult<?> createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form);
 
-    CommandResult<?> getLeaveReasons(UserVisitPK userVisitPK, GetLeaveReasonsForm form);
+    CommandResult<GetLeaveReasonsResult> getLeaveReasons(UserVisitPK userVisitPK, GetLeaveReasonsForm form);
 
-    CommandResult<?> getLeaveReason(UserVisitPK userVisitPK, GetLeaveReasonForm form);
+    CommandResult<GetLeaveReasonResult> getLeaveReason(UserVisitPK userVisitPK, GetLeaveReasonForm form);
 
-    CommandResult<?> getLeaveReasonChoices(UserVisitPK userVisitPK, GetLeaveReasonChoicesForm form);
+    CommandResult<GetLeaveReasonChoicesResult> getLeaveReasonChoices(UserVisitPK userVisitPK, GetLeaveReasonChoicesForm form);
 
     CommandResult<?> setDefaultLeaveReason(UserVisitPK userVisitPK, SetDefaultLeaveReasonForm form);
 
-    CommandResult<?> editLeaveReason(UserVisitPK userVisitPK, EditLeaveReasonForm form);
+    CommandResult<EditLeaveReasonResult> editLeaveReason(UserVisitPK userVisitPK, EditLeaveReasonForm form);
 
     CommandResult<?> deleteLeaveReason(UserVisitPK userVisitPK, DeleteLeaveReasonForm form);
 
@@ -139,11 +140,11 @@ public interface EmployeeService
 
     CommandResult<?> createLeaveReasonDescription(UserVisitPK userVisitPK, CreateLeaveReasonDescriptionForm form);
 
-    CommandResult<?> getLeaveReasonDescription(UserVisitPK userVisitPK, GetLeaveReasonDescriptionForm form);
+    CommandResult<GetLeaveReasonDescriptionResult> getLeaveReasonDescription(UserVisitPK userVisitPK, GetLeaveReasonDescriptionForm form);
 
-    CommandResult<?> getLeaveReasonDescriptions(UserVisitPK userVisitPK, GetLeaveReasonDescriptionsForm form);
+    CommandResult<GetLeaveReasonDescriptionsResult> getLeaveReasonDescriptions(UserVisitPK userVisitPK, GetLeaveReasonDescriptionsForm form);
 
-    CommandResult<?> editLeaveReasonDescription(UserVisitPK userVisitPK, EditLeaveReasonDescriptionForm form);
+    CommandResult<EditLeaveReasonDescriptionResult> editLeaveReasonDescription(UserVisitPK userVisitPK, EditLeaveReasonDescriptionForm form);
 
     CommandResult<?> deleteLeaveReasonDescription(UserVisitPK userVisitPK, DeleteLeaveReasonDescriptionForm form);
 
@@ -153,15 +154,15 @@ public interface EmployeeService
 
     CommandResult<?> createLeave(UserVisitPK userVisitPK, CreateLeaveForm form);
 
-    CommandResult<?> getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form);
+    CommandResult<GetLeaveStatusChoicesResult> getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form);
 
     CommandResult<?> setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form);
 
-    CommandResult<?> getLeaves(UserVisitPK userVisitPK, GetLeavesForm form);
+    CommandResult<GetLeavesResult> getLeaves(UserVisitPK userVisitPK, GetLeavesForm form);
 
-    CommandResult<?> getLeave(UserVisitPK userVisitPK, GetLeaveForm form);
+    CommandResult<GetLeaveResult> getLeave(UserVisitPK userVisitPK, GetLeaveForm form);
 
-    CommandResult<?> editLeave(UserVisitPK userVisitPK, EditLeaveForm form);
+    CommandResult<EditLeaveResult> editLeave(UserVisitPK userVisitPK, EditLeaveForm form);
 
     CommandResult<?> deleteLeave(UserVisitPK userVisitPK, DeleteLeaveForm form);
 
@@ -171,15 +172,15 @@ public interface EmployeeService
 
     CommandResult<?> createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form);
 
-    CommandResult<?> getTerminationReasons(UserVisitPK userVisitPK, GetTerminationReasonsForm form);
+    CommandResult<GetTerminationReasonsResult> getTerminationReasons(UserVisitPK userVisitPK, GetTerminationReasonsForm form);
 
-    CommandResult<?> getTerminationReason(UserVisitPK userVisitPK, GetTerminationReasonForm form);
+    CommandResult<GetTerminationReasonResult> getTerminationReason(UserVisitPK userVisitPK, GetTerminationReasonForm form);
 
-    CommandResult<?> getTerminationReasonChoices(UserVisitPK userVisitPK, GetTerminationReasonChoicesForm form);
+    CommandResult<GetTerminationReasonChoicesResult> getTerminationReasonChoices(UserVisitPK userVisitPK, GetTerminationReasonChoicesForm form);
 
     CommandResult<?> setDefaultTerminationReason(UserVisitPK userVisitPK, SetDefaultTerminationReasonForm form);
 
-    CommandResult<?> editTerminationReason(UserVisitPK userVisitPK, EditTerminationReasonForm form);
+    CommandResult<EditTerminationReasonResult> editTerminationReason(UserVisitPK userVisitPK, EditTerminationReasonForm form);
 
     CommandResult<?> deleteTerminationReason(UserVisitPK userVisitPK, DeleteTerminationReasonForm form);
 
@@ -189,9 +190,9 @@ public interface EmployeeService
 
     CommandResult<?> createTerminationReasonDescription(UserVisitPK userVisitPK, CreateTerminationReasonDescriptionForm form);
 
-    CommandResult<?> getTerminationReasonDescriptions(UserVisitPK userVisitPK, GetTerminationReasonDescriptionsForm form);
+    CommandResult<GetTerminationReasonDescriptionsResult> getTerminationReasonDescriptions(UserVisitPK userVisitPK, GetTerminationReasonDescriptionsForm form);
 
-    CommandResult<?> editTerminationReasonDescription(UserVisitPK userVisitPK, EditTerminationReasonDescriptionForm form);
+    CommandResult<EditTerminationReasonDescriptionResult> editTerminationReasonDescription(UserVisitPK userVisitPK, EditTerminationReasonDescriptionForm form);
 
     CommandResult<?> deleteTerminationReasonDescription(UserVisitPK userVisitPK, DeleteTerminationReasonDescriptionForm form);
 
@@ -201,15 +202,15 @@ public interface EmployeeService
     
     CommandResult<?> createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form);
     
-    CommandResult<?> getTerminationTypes(UserVisitPK userVisitPK, GetTerminationTypesForm form);
+    CommandResult<GetTerminationTypesResult> getTerminationTypes(UserVisitPK userVisitPK, GetTerminationTypesForm form);
     
-    CommandResult<?> getTerminationType(UserVisitPK userVisitPK, GetTerminationTypeForm form);
+    CommandResult<GetTerminationTypeResult> getTerminationType(UserVisitPK userVisitPK, GetTerminationTypeForm form);
     
-    CommandResult<?> getTerminationTypeChoices(UserVisitPK userVisitPK, GetTerminationTypeChoicesForm form);
+    CommandResult<GetTerminationTypeChoicesResult> getTerminationTypeChoices(UserVisitPK userVisitPK, GetTerminationTypeChoicesForm form);
     
     CommandResult<?> setDefaultTerminationType(UserVisitPK userVisitPK, SetDefaultTerminationTypeForm form);
     
-    CommandResult<?> editTerminationType(UserVisitPK userVisitPK, EditTerminationTypeForm form);
+    CommandResult<EditTerminationTypeResult> editTerminationType(UserVisitPK userVisitPK, EditTerminationTypeForm form);
     
     CommandResult<?> deleteTerminationType(UserVisitPK userVisitPK, DeleteTerminationTypeForm form);
     
@@ -219,9 +220,9 @@ public interface EmployeeService
     
     CommandResult<?> createTerminationTypeDescription(UserVisitPK userVisitPK, CreateTerminationTypeDescriptionForm form);
     
-    CommandResult<?> getTerminationTypeDescriptions(UserVisitPK userVisitPK, GetTerminationTypeDescriptionsForm form);
+    CommandResult<GetTerminationTypeDescriptionsResult> getTerminationTypeDescriptions(UserVisitPK userVisitPK, GetTerminationTypeDescriptionsForm form);
     
-    CommandResult<?> editTerminationTypeDescription(UserVisitPK userVisitPK, EditTerminationTypeDescriptionForm form);
+    CommandResult<EditTerminationTypeDescriptionResult> editTerminationTypeDescription(UserVisitPK userVisitPK, EditTerminationTypeDescriptionForm form);
     
     CommandResult<?> deleteTerminationTypeDescription(UserVisitPK userVisitPK, DeleteTerminationTypeDescriptionForm form);
     
@@ -231,11 +232,11 @@ public interface EmployeeService
 
     CommandResult<?> createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form);
 
-    CommandResult<?> getEmployments(UserVisitPK userVisitPK, GetEmploymentsForm form);
+    CommandResult<GetEmploymentsResult> getEmployments(UserVisitPK userVisitPK, GetEmploymentsForm form);
 
-    CommandResult<?> getEmployment(UserVisitPK userVisitPK, GetEmploymentForm form);
+    CommandResult<GetEmploymentResult> getEmployment(UserVisitPK userVisitPK, GetEmploymentForm form);
 
-    CommandResult<?> editEmployment(UserVisitPK userVisitPK, EditEmploymentForm form);
+    CommandResult<EditEmploymentResult> editEmployment(UserVisitPK userVisitPK, EditEmploymentForm form);
 
     CommandResult<?> deleteEmployment(UserVisitPK userVisitPK, DeleteEmploymentForm form);
 
@@ -245,7 +246,7 @@ public interface EmployeeService
     
     CommandResult<?> createPartyResponsibility(UserVisitPK userVisitPK, CreatePartyResponsibilityForm form);
     
-    CommandResult<?> getPartyResponsibilities(UserVisitPK userVisitPK, GetPartyResponsibilitiesForm form);
+    CommandResult<GetPartyResponsibilitiesResult> getPartyResponsibilities(UserVisitPK userVisitPK, GetPartyResponsibilitiesForm form);
     
     CommandResult<?> deletePartyResponsibility(UserVisitPK userVisitPK, DeletePartyResponsibilityForm form);
     
@@ -255,7 +256,7 @@ public interface EmployeeService
     
     CommandResult<?> createPartySkill(UserVisitPK userVisitPK, CreatePartySkillForm form);
     
-    CommandResult<?> getPartySkills(UserVisitPK userVisitPK, GetPartySkillsForm form);
+    CommandResult<GetPartySkillsResult> getPartySkills(UserVisitPK userVisitPK, GetPartySkillsForm form);
     
     CommandResult<?> deletePartySkill(UserVisitPK userVisitPK, DeletePartySkillForm form);
     
@@ -265,15 +266,15 @@ public interface EmployeeService
     
     CommandResult<?> createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form);
     
-    CommandResult<?> getEmployeeTypeChoices(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form);
+    CommandResult<GetEmployeeTypeChoicesResult> getEmployeeTypeChoices(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form);
     
-    CommandResult<?> getEmployeeType(UserVisitPK userVisitPK, GetEmployeeTypeForm form);
+    CommandResult<GetEmployeeTypeResult> getEmployeeType(UserVisitPK userVisitPK, GetEmployeeTypeForm form);
     
-    CommandResult<?> getEmployeeTypes(UserVisitPK userVisitPK, GetEmployeeTypesForm form);
+    CommandResult<GetEmployeeTypesResult> getEmployeeTypes(UserVisitPK userVisitPK, GetEmployeeTypesForm form);
     
     CommandResult<?> setDefaultEmployeeType(UserVisitPK userVisitPK, SetDefaultEmployeeTypeForm form);
     
-    CommandResult<?> editEmployeeType(UserVisitPK userVisitPK, EditEmployeeTypeForm form);
+    CommandResult<EditEmployeeTypeResult> editEmployeeType(UserVisitPK userVisitPK, EditEmployeeTypeForm form);
     
     CommandResult<?> deleteEmployeeType(UserVisitPK userVisitPK, DeleteEmployeeTypeForm form);
     
@@ -283,9 +284,9 @@ public interface EmployeeService
     
     CommandResult<?> createEmployeeTypeDescription(UserVisitPK userVisitPK, CreateEmployeeTypeDescriptionForm form);
     
-    CommandResult<?> getEmployeeTypeDescriptions(UserVisitPK userVisitPK, GetEmployeeTypeDescriptionsForm form);
+    CommandResult<GetEmployeeTypeDescriptionsResult> getEmployeeTypeDescriptions(UserVisitPK userVisitPK, GetEmployeeTypeDescriptionsForm form);
     
-    CommandResult<?> editEmployeeTypeDescription(UserVisitPK userVisitPK, EditEmployeeTypeDescriptionForm form);
+    CommandResult<EditEmployeeTypeDescriptionResult> editEmployeeTypeDescription(UserVisitPK userVisitPK, EditEmployeeTypeDescriptionForm form);
     
     CommandResult<?> deleteEmployeeTypeDescription(UserVisitPK userVisitPK, DeleteEmployeeTypeDescriptionForm form);
     
@@ -293,7 +294,7 @@ public interface EmployeeService
     //   Employees
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getEmployee(UserVisitPK userVisitPK, GetEmployeeForm form);
+    CommandResult<GetEmployeeResult> getEmployee(UserVisitPK userVisitPK, GetEmployeeForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

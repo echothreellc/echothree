@@ -17,6 +17,7 @@
 package com.echothree.control.user.selector.common;
 
 import com.echothree.control.user.selector.common.form.*;
+import com.echothree.control.user.selector.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface SelectorService
 
     CommandResult<?> createSelectorKind(UserVisitPK userVisitPK, CreateSelectorKindForm form);
 
-    CommandResult<?> getSelectorKinds(UserVisitPK userVisitPK, GetSelectorKindsForm form);
+    CommandResult<GetSelectorKindsResult> getSelectorKinds(UserVisitPK userVisitPK, GetSelectorKindsForm form);
 
-    CommandResult<?> getSelectorKind(UserVisitPK userVisitPK, GetSelectorKindForm form);
+    CommandResult<GetSelectorKindResult> getSelectorKind(UserVisitPK userVisitPK, GetSelectorKindForm form);
 
-    CommandResult<?> getSelectorKindChoices(UserVisitPK userVisitPK, GetSelectorKindChoicesForm form);
+    CommandResult<GetSelectorKindChoicesResult> getSelectorKindChoices(UserVisitPK userVisitPK, GetSelectorKindChoicesForm form);
 
     CommandResult<?> setDefaultSelectorKind(UserVisitPK userVisitPK, SetDefaultSelectorKindForm form);
 
-    CommandResult<?> editSelectorKind(UserVisitPK userVisitPK, EditSelectorKindForm form);
+    CommandResult<EditSelectorKindResult> editSelectorKind(UserVisitPK userVisitPK, EditSelectorKindForm form);
 
     CommandResult<?> deleteSelectorKind(UserVisitPK userVisitPK, DeleteSelectorKindForm form);
 
@@ -53,11 +54,11 @@ public interface SelectorService
 
     CommandResult<?> createSelectorKindDescription(UserVisitPK userVisitPK, CreateSelectorKindDescriptionForm form);
 
-    CommandResult<?> getSelectorKindDescriptions(UserVisitPK userVisitPK, GetSelectorKindDescriptionsForm form);
+    CommandResult<GetSelectorKindDescriptionsResult> getSelectorKindDescriptions(UserVisitPK userVisitPK, GetSelectorKindDescriptionsForm form);
 
-    CommandResult<?> getSelectorKindDescription(UserVisitPK userVisitPK, GetSelectorKindDescriptionForm form);
+    CommandResult<GetSelectorKindDescriptionResult> getSelectorKindDescription(UserVisitPK userVisitPK, GetSelectorKindDescriptionForm form);
 
-    CommandResult<?> editSelectorKindDescription(UserVisitPK userVisitPK, EditSelectorKindDescriptionForm form);
+    CommandResult<EditSelectorKindDescriptionResult> editSelectorKindDescription(UserVisitPK userVisitPK, EditSelectorKindDescriptionForm form);
 
     CommandResult<?> deleteSelectorKindDescription(UserVisitPK userVisitPK, DeleteSelectorKindDescriptionForm form);
 
@@ -67,15 +68,15 @@ public interface SelectorService
 
     CommandResult<?> createSelectorType(UserVisitPK userVisitPK, CreateSelectorTypeForm form);
 
-    CommandResult<?> getSelectorTypes(UserVisitPK userVisitPK, GetSelectorTypesForm form);
+    CommandResult<GetSelectorTypesResult> getSelectorTypes(UserVisitPK userVisitPK, GetSelectorTypesForm form);
 
-    CommandResult<?> getSelectorType(UserVisitPK userVisitPK, GetSelectorTypeForm form);
+    CommandResult<GetSelectorTypeResult> getSelectorType(UserVisitPK userVisitPK, GetSelectorTypeForm form);
 
-    CommandResult<?> getSelectorTypeChoices(UserVisitPK userVisitPK, GetSelectorTypeChoicesForm form);
+    CommandResult<GetSelectorTypeChoicesResult> getSelectorTypeChoices(UserVisitPK userVisitPK, GetSelectorTypeChoicesForm form);
 
     CommandResult<?> setDefaultSelectorType(UserVisitPK userVisitPK, SetDefaultSelectorTypeForm form);
 
-    CommandResult<?> editSelectorType(UserVisitPK userVisitPK, EditSelectorTypeForm form);
+    CommandResult<EditSelectorTypeResult> editSelectorType(UserVisitPK userVisitPK, EditSelectorTypeForm form);
 
     CommandResult<?> deleteSelectorType(UserVisitPK userVisitPK, DeleteSelectorTypeForm form);
 
@@ -85,11 +86,11 @@ public interface SelectorService
 
     CommandResult<?> createSelectorTypeDescription(UserVisitPK userVisitPK, CreateSelectorTypeDescriptionForm form);
 
-    CommandResult<?> getSelectorTypeDescriptions(UserVisitPK userVisitPK, GetSelectorTypeDescriptionsForm form);
+    CommandResult<GetSelectorTypeDescriptionsResult> getSelectorTypeDescriptions(UserVisitPK userVisitPK, GetSelectorTypeDescriptionsForm form);
 
-    CommandResult<?> getSelectorTypeDescription(UserVisitPK userVisitPK, GetSelectorTypeDescriptionForm form);
+    CommandResult<GetSelectorTypeDescriptionResult> getSelectorTypeDescription(UserVisitPK userVisitPK, GetSelectorTypeDescriptionForm form);
 
-    CommandResult<?> editSelectorTypeDescription(UserVisitPK userVisitPK, EditSelectorTypeDescriptionForm form);
+    CommandResult<EditSelectorTypeDescriptionResult> editSelectorTypeDescription(UserVisitPK userVisitPK, EditSelectorTypeDescriptionForm form);
 
     CommandResult<?> deleteSelectorTypeDescription(UserVisitPK userVisitPK, DeleteSelectorTypeDescriptionForm form);
 
@@ -99,7 +100,7 @@ public interface SelectorService
     
     CommandResult<?> createSelectorBooleanType(UserVisitPK userVisitPK, CreateSelectorBooleanTypeForm form);
     
-    CommandResult<?> getSelectorBooleanTypeChoices(UserVisitPK userVisitPK, GetSelectorBooleanTypeChoicesForm form);
+    CommandResult<GetSelectorBooleanTypeChoicesResult> getSelectorBooleanTypeChoices(UserVisitPK userVisitPK, GetSelectorBooleanTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Selector Boolean Type Descriptions
@@ -113,7 +114,7 @@ public interface SelectorService
     
     CommandResult<?> createSelectorComparisonType(UserVisitPK userVisitPK, CreateSelectorComparisonTypeForm form);
     
-    CommandResult<?> getSelectorComparisonTypeChoices(UserVisitPK userVisitPK, GetSelectorComparisonTypeChoicesForm form);
+    CommandResult<GetSelectorComparisonTypeChoicesResult> getSelectorComparisonTypeChoices(UserVisitPK userVisitPK, GetSelectorComparisonTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Selector Comparison Type Descriptions
@@ -127,9 +128,9 @@ public interface SelectorService
     
     CommandResult<?> createSelectorNodeType(UserVisitPK userVisitPK, CreateSelectorNodeTypeForm form);
     
-    CommandResult<?> getSelectorNodeType(UserVisitPK userVisitPK, GetSelectorNodeTypeForm form);
+    CommandResult<GetSelectorNodeTypeResult> getSelectorNodeType(UserVisitPK userVisitPK, GetSelectorNodeTypeForm form);
     
-    CommandResult<?> getSelectorNodeTypes(UserVisitPK userVisitPK, GetSelectorNodeTypesForm form);
+    CommandResult<GetSelectorNodeTypesResult> getSelectorNodeTypes(UserVisitPK userVisitPK, GetSelectorNodeTypesForm form);
     
     // --------------------------------------------------------------------------------
     //   Selector Node Type Descriptions
@@ -149,7 +150,7 @@ public interface SelectorService
     
     CommandResult<?> createSelectorTextSearchType(UserVisitPK userVisitPK, CreateSelectorTextSearchTypeForm form);
     
-    CommandResult<?> getSelectorTextSearchTypeChoices(UserVisitPK userVisitPK, GetSelectorTextSearchTypeChoicesForm form);
+    CommandResult<GetSelectorTextSearchTypeChoicesResult> getSelectorTextSearchTypeChoices(UserVisitPK userVisitPK, GetSelectorTextSearchTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Selector Text Search Type Descriptions
@@ -163,15 +164,15 @@ public interface SelectorService
     
     CommandResult<?> createSelector(UserVisitPK userVisitPK, CreateSelectorForm form);
     
-    CommandResult<?> getSelectorChoices(UserVisitPK userVisitPK, GetSelectorChoicesForm form);
+    CommandResult<GetSelectorChoicesResult> getSelectorChoices(UserVisitPK userVisitPK, GetSelectorChoicesForm form);
     
-    CommandResult<?> getSelectors(UserVisitPK userVisitPK, GetSelectorsForm form);
+    CommandResult<GetSelectorsResult> getSelectors(UserVisitPK userVisitPK, GetSelectorsForm form);
     
-    CommandResult<?> getSelector(UserVisitPK userVisitPK, GetSelectorForm form);
+    CommandResult<GetSelectorResult> getSelector(UserVisitPK userVisitPK, GetSelectorForm form);
     
     CommandResult<?> setDefaultSelector(UserVisitPK userVisitPK, SetDefaultSelectorForm form);
     
-    CommandResult<?> editSelector(UserVisitPK userVisitPK, EditSelectorForm form);
+    CommandResult<EditSelectorResult> editSelector(UserVisitPK userVisitPK, EditSelectorForm form);
     
     CommandResult<?> deleteSelector(UserVisitPK userVisitPK, DeleteSelectorForm form);
     
@@ -181,9 +182,9 @@ public interface SelectorService
     
     CommandResult<?> createSelectorDescription(UserVisitPK userVisitPK, CreateSelectorDescriptionForm form);
     
-    CommandResult<?> getSelectorDescriptions(UserVisitPK userVisitPK, GetSelectorDescriptionsForm form);
+    CommandResult<GetSelectorDescriptionsResult> getSelectorDescriptions(UserVisitPK userVisitPK, GetSelectorDescriptionsForm form);
     
-    CommandResult<?> editSelectorDescription(UserVisitPK userVisitPK, EditSelectorDescriptionForm form);
+    CommandResult<EditSelectorDescriptionResult> editSelectorDescription(UserVisitPK userVisitPK, EditSelectorDescriptionForm form);
     
     CommandResult<?> deleteSelectorDescription(UserVisitPK userVisitPK, DeleteSelectorDescriptionForm form);
     
@@ -193,11 +194,11 @@ public interface SelectorService
     
     CommandResult<?> createSelectorNode(UserVisitPK userVisitPK, CreateSelectorNodeForm form);
     
-    CommandResult<?> getSelectorNodeChoices(UserVisitPK userVisitPK, GetSelectorNodeChoicesForm form);
+    CommandResult<GetSelectorNodeChoicesResult> getSelectorNodeChoices(UserVisitPK userVisitPK, GetSelectorNodeChoicesForm form);
     
-    CommandResult<?> getSelectorNode(UserVisitPK userVisitPK, GetSelectorNodeForm form);
+    CommandResult<GetSelectorNodeResult> getSelectorNode(UserVisitPK userVisitPK, GetSelectorNodeForm form);
     
-    CommandResult<?> getSelectorNodes(UserVisitPK userVisitPK, GetSelectorNodesForm form);
+    CommandResult<GetSelectorNodesResult> getSelectorNodes(UserVisitPK userVisitPK, GetSelectorNodesForm form);
     
     CommandResult<?> setRootSelectorNode(UserVisitPK userVisitPK, SetRootSelectorNodeForm form);
     
@@ -209,9 +210,9 @@ public interface SelectorService
     
     CommandResult<?> createSelectorNodeDescription(UserVisitPK userVisitPK, CreateSelectorNodeDescriptionForm form);
     
-    CommandResult<?> getSelectorNodeDescriptions(UserVisitPK userVisitPK, GetSelectorNodeDescriptionsForm form);
+    CommandResult<GetSelectorNodeDescriptionsResult> getSelectorNodeDescriptions(UserVisitPK userVisitPK, GetSelectorNodeDescriptionsForm form);
     
-    CommandResult<?> editSelectorNodeDescription(UserVisitPK userVisitPK, EditSelectorNodeDescriptionForm form);
+    CommandResult<EditSelectorNodeDescriptionResult> editSelectorNodeDescription(UserVisitPK userVisitPK, EditSelectorNodeDescriptionForm form);
     
     CommandResult<?> deleteSelectorNodeDescription(UserVisitPK userVisitPK, DeleteSelectorNodeDescriptionForm form);
     
@@ -219,7 +220,7 @@ public interface SelectorService
     //   Selector Parties
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> getSelectorParties(UserVisitPK userVisitPK, GetSelectorPartiesForm form);
+    CommandResult<GetSelectorPartiesResult> getSelectorParties(UserVisitPK userVisitPK, GetSelectorPartiesForm form);
     
     // -------------------------------------------------------------------------
     //   Utilities

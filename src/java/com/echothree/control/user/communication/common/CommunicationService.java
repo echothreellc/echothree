@@ -17,6 +17,7 @@
 package com.echothree.control.user.communication.common;
 
 import com.echothree.control.user.communication.common.form.*;
+import com.echothree.control.user.communication.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -53,15 +54,15 @@ public interface CommunicationService
     
     CommandResult<?> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form);
     
-    CommandResult<?> getCommunicationEventPurposes(UserVisitPK userVisitPK, GetCommunicationEventPurposesForm form);
+    CommandResult<GetCommunicationEventPurposesResult> getCommunicationEventPurposes(UserVisitPK userVisitPK, GetCommunicationEventPurposesForm form);
     
-    CommandResult<?> getCommunicationEventPurpose(UserVisitPK userVisitPK, GetCommunicationEventPurposeForm form);
+    CommandResult<GetCommunicationEventPurposeResult> getCommunicationEventPurpose(UserVisitPK userVisitPK, GetCommunicationEventPurposeForm form);
     
-    CommandResult<?> getCommunicationEventPurposeChoices(UserVisitPK userVisitPK, GetCommunicationEventPurposeChoicesForm form);
+    CommandResult<GetCommunicationEventPurposeChoicesResult> getCommunicationEventPurposeChoices(UserVisitPK userVisitPK, GetCommunicationEventPurposeChoicesForm form);
     
     CommandResult<?> setDefaultCommunicationEventPurpose(UserVisitPK userVisitPK, SetDefaultCommunicationEventPurposeForm form);
     
-    CommandResult<?> editCommunicationEventPurpose(UserVisitPK userVisitPK, EditCommunicationEventPurposeForm form);
+    CommandResult<EditCommunicationEventPurposeResult> editCommunicationEventPurpose(UserVisitPK userVisitPK, EditCommunicationEventPurposeForm form);
     
     CommandResult<?> deleteCommunicationEventPurpose(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeForm form);
     
@@ -71,9 +72,9 @@ public interface CommunicationService
     
     CommandResult<?> createCommunicationEventPurposeDescription(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form);
     
-    CommandResult<?> getCommunicationEventPurposeDescriptions(UserVisitPK userVisitPK, GetCommunicationEventPurposeDescriptionsForm form);
+    CommandResult<GetCommunicationEventPurposeDescriptionsResult> getCommunicationEventPurposeDescriptions(UserVisitPK userVisitPK, GetCommunicationEventPurposeDescriptionsForm form);
     
-    CommandResult<?> editCommunicationEventPurposeDescription(UserVisitPK userVisitPK, EditCommunicationEventPurposeDescriptionForm form);
+    CommandResult<EditCommunicationEventPurposeDescriptionResult> editCommunicationEventPurposeDescription(UserVisitPK userVisitPK, EditCommunicationEventPurposeDescriptionForm form);
     
     CommandResult<?> deleteCommunicationEventPurposeDescription(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form);
     
@@ -95,9 +96,9 @@ public interface CommunicationService
     
     CommandResult<?> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form);
     
-    CommandResult<?> getCommunicationSources(UserVisitPK userVisitPK, GetCommunicationSourcesForm form);
+    CommandResult<GetCommunicationSourcesResult> getCommunicationSources(UserVisitPK userVisitPK, GetCommunicationSourcesForm form);
     
-    CommandResult<?> getCommunicationSource(UserVisitPK userVisitPK, GetCommunicationSourceForm form);
+    CommandResult<GetCommunicationSourceResult> getCommunicationSource(UserVisitPK userVisitPK, GetCommunicationSourceForm form);
     
     CommandResult<?> deleteCommunicationSource(UserVisitPK userVisitPK, DeleteCommunicationSourceForm form);
     
@@ -107,9 +108,9 @@ public interface CommunicationService
     
     CommandResult<?> createCommunicationSourceDescription(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form);
     
-    CommandResult<?> getCommunicationSourceDescriptions(UserVisitPK userVisitPK, GetCommunicationSourceDescriptionsForm form);
+    CommandResult<GetCommunicationSourceDescriptionsResult> getCommunicationSourceDescriptions(UserVisitPK userVisitPK, GetCommunicationSourceDescriptionsForm form);
     
-    CommandResult<?> editCommunicationSourceDescription(UserVisitPK userVisitPK, EditCommunicationSourceDescriptionForm form);
+    CommandResult<EditCommunicationSourceDescriptionResult> editCommunicationSourceDescription(UserVisitPK userVisitPK, EditCommunicationSourceDescriptionForm form);
     
     CommandResult<?> deleteCommunicationSourceDescription(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form);
     
@@ -119,7 +120,7 @@ public interface CommunicationService
     
     CommandResult<?> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form);
     
-    CommandResult<?> getCommunicationEvent(UserVisitPK userVisitPK, GetCommunicationEventForm form);
+    CommandResult<GetCommunicationEventResult> getCommunicationEvent(UserVisitPK userVisitPK, GetCommunicationEventForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

@@ -17,6 +17,7 @@
 package com.echothree.control.user.purchase.common;
 
 import com.echothree.control.user.purchase.common.form.*;
+import com.echothree.control.user.purchase.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,7 +36,7 @@ public interface PurchaseService
 
     CommandResult<?> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
 
-    CommandResult<?> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
+    CommandResult<GetPurchaseOrderStatusChoicesResult> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
 
     CommandResult<?> setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form);
 
@@ -45,7 +46,7 @@ public interface PurchaseService
 
     CommandResult<?> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
 
-    CommandResult<?> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
+    CommandResult<GetPurchaseInvoiceStatusChoicesResult> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
 
     CommandResult<?> setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form);
 

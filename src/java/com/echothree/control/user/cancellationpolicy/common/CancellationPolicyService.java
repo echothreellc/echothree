@@ -17,6 +17,7 @@
 package com.echothree.control.user.cancellationpolicy.common;
 
 import com.echothree.control.user.cancellationpolicy.common.form.*;
+import com.echothree.control.user.cancellationpolicy.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -33,11 +34,11 @@ public interface CancellationPolicyService
     //   Party Cancellation Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getPartyCancellationPolicy(UserVisitPK userVisitPK, GetPartyCancellationPolicyForm form);
+    CommandResult<GetPartyCancellationPolicyResult> getPartyCancellationPolicy(UserVisitPK userVisitPK, GetPartyCancellationPolicyForm form);
 
-    CommandResult<?> getPartyCancellationPolicies(UserVisitPK userVisitPK, GetPartyCancellationPoliciesForm form);
+    CommandResult<GetPartyCancellationPoliciesResult> getPartyCancellationPolicies(UserVisitPK userVisitPK, GetPartyCancellationPoliciesForm form);
 
-    CommandResult<?> getPartyCancellationPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyCancellationPolicyStatusChoicesForm form);
+    CommandResult<GetPartyCancellationPolicyStatusChoicesResult> getPartyCancellationPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyCancellationPolicyStatusChoicesForm form);
 
     CommandResult<?> setPartyCancellationPolicyStatus(UserVisitPK userVisitPK, SetPartyCancellationPolicyStatusForm form);
 
@@ -49,15 +50,15 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationKind(UserVisitPK userVisitPK, CreateCancellationKindForm form);
     
-    CommandResult<?> getCancellationKinds(UserVisitPK userVisitPK, GetCancellationKindsForm form);
+    CommandResult<GetCancellationKindsResult> getCancellationKinds(UserVisitPK userVisitPK, GetCancellationKindsForm form);
     
-    CommandResult<?> getCancellationKind(UserVisitPK userVisitPK, GetCancellationKindForm form);
+    CommandResult<GetCancellationKindResult> getCancellationKind(UserVisitPK userVisitPK, GetCancellationKindForm form);
     
-    CommandResult<?> getCancellationKindChoices(UserVisitPK userVisitPK, GetCancellationKindChoicesForm form);
+    CommandResult<GetCancellationKindChoicesResult> getCancellationKindChoices(UserVisitPK userVisitPK, GetCancellationKindChoicesForm form);
     
     CommandResult<?> setDefaultCancellationKind(UserVisitPK userVisitPK, SetDefaultCancellationKindForm form);
     
-    CommandResult<?> editCancellationKind(UserVisitPK userVisitPK, EditCancellationKindForm form);
+    CommandResult<EditCancellationKindResult> editCancellationKind(UserVisitPK userVisitPK, EditCancellationKindForm form);
     
     CommandResult<?> deleteCancellationKind(UserVisitPK userVisitPK, DeleteCancellationKindForm form);
     
@@ -67,9 +68,9 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationKindDescription(UserVisitPK userVisitPK, CreateCancellationKindDescriptionForm form);
     
-    CommandResult<?> getCancellationKindDescriptions(UserVisitPK userVisitPK, GetCancellationKindDescriptionsForm form);
+    CommandResult<GetCancellationKindDescriptionsResult> getCancellationKindDescriptions(UserVisitPK userVisitPK, GetCancellationKindDescriptionsForm form);
     
-    CommandResult<?> editCancellationKindDescription(UserVisitPK userVisitPK, EditCancellationKindDescriptionForm form);
+    CommandResult<EditCancellationKindDescriptionResult> editCancellationKindDescription(UserVisitPK userVisitPK, EditCancellationKindDescriptionForm form);
     
     CommandResult<?> deleteCancellationKindDescription(UserVisitPK userVisitPK, DeleteCancellationKindDescriptionForm form);
     
@@ -79,15 +80,15 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationPolicy(UserVisitPK userVisitPK, CreateCancellationPolicyForm form);
     
-    CommandResult<?> getCancellationPolicies(UserVisitPK userVisitPK, GetCancellationPoliciesForm form);
+    CommandResult<GetCancellationPoliciesResult> getCancellationPolicies(UserVisitPK userVisitPK, GetCancellationPoliciesForm form);
     
-    CommandResult<?> getCancellationPolicy(UserVisitPK userVisitPK, GetCancellationPolicyForm form);
+    CommandResult<GetCancellationPolicyResult> getCancellationPolicy(UserVisitPK userVisitPK, GetCancellationPolicyForm form);
     
-    CommandResult<?> getCancellationPolicyChoices(UserVisitPK userVisitPK, GetCancellationPolicyChoicesForm form);
+    CommandResult<GetCancellationPolicyChoicesResult> getCancellationPolicyChoices(UserVisitPK userVisitPK, GetCancellationPolicyChoicesForm form);
     
     CommandResult<?> setDefaultCancellationPolicy(UserVisitPK userVisitPK, SetDefaultCancellationPolicyForm form);
     
-    CommandResult<?> editCancellationPolicy(UserVisitPK userVisitPK, EditCancellationPolicyForm form);
+    CommandResult<EditCancellationPolicyResult> editCancellationPolicy(UserVisitPK userVisitPK, EditCancellationPolicyForm form);
     
     CommandResult<?> deleteCancellationPolicy(UserVisitPK userVisitPK, DeleteCancellationPolicyForm form);
     
@@ -97,11 +98,11 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationPolicyTranslation(UserVisitPK userVisitPK, CreateCancellationPolicyTranslationForm form);
 
-    CommandResult<?> getCancellationPolicyTranslation(UserVisitPK userVisitPK, GetCancellationPolicyTranslationForm form);
+    CommandResult<GetCancellationPolicyTranslationResult> getCancellationPolicyTranslation(UserVisitPK userVisitPK, GetCancellationPolicyTranslationForm form);
 
-    CommandResult<?> getCancellationPolicyTranslations(UserVisitPK userVisitPK, GetCancellationPolicyTranslationsForm form);
+    CommandResult<GetCancellationPolicyTranslationsResult> getCancellationPolicyTranslations(UserVisitPK userVisitPK, GetCancellationPolicyTranslationsForm form);
     
-    CommandResult<?> editCancellationPolicyTranslation(UserVisitPK userVisitPK, EditCancellationPolicyTranslationForm form);
+    CommandResult<EditCancellationPolicyTranslationResult> editCancellationPolicyTranslation(UserVisitPK userVisitPK, EditCancellationPolicyTranslationForm form);
     
     CommandResult<?> deleteCancellationPolicyTranslation(UserVisitPK userVisitPK, DeleteCancellationPolicyTranslationForm form);
     
@@ -111,11 +112,11 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationPolicyReason(UserVisitPK userVisitPK, CreateCancellationPolicyReasonForm form);
     
-    CommandResult<?> getCancellationPolicyReasons(UserVisitPK userVisitPK, GetCancellationPolicyReasonsForm form);
+    CommandResult<GetCancellationPolicyReasonsResult> getCancellationPolicyReasons(UserVisitPK userVisitPK, GetCancellationPolicyReasonsForm form);
     
     CommandResult<?> setDefaultCancellationPolicyReason(UserVisitPK userVisitPK, SetDefaultCancellationPolicyReasonForm form);
     
-    CommandResult<?> editCancellationPolicyReason(UserVisitPK userVisitPK, EditCancellationPolicyReasonForm form);
+    CommandResult<EditCancellationPolicyReasonResult> editCancellationPolicyReason(UserVisitPK userVisitPK, EditCancellationPolicyReasonForm form);
     
     CommandResult<?> deleteCancellationPolicyReason(UserVisitPK userVisitPK, DeleteCancellationPolicyReasonForm form);
     
@@ -125,15 +126,15 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationReason(UserVisitPK userVisitPK, CreateCancellationReasonForm form);
     
-    CommandResult<?> getCancellationReasons(UserVisitPK userVisitPK, GetCancellationReasonsForm form);
+    CommandResult<GetCancellationReasonsResult> getCancellationReasons(UserVisitPK userVisitPK, GetCancellationReasonsForm form);
     
-    CommandResult<?> getCancellationReason(UserVisitPK userVisitPK, GetCancellationReasonForm form);
+    CommandResult<GetCancellationReasonResult> getCancellationReason(UserVisitPK userVisitPK, GetCancellationReasonForm form);
     
-    CommandResult<?> getCancellationReasonChoices(UserVisitPK userVisitPK, GetCancellationReasonChoicesForm form);
+    CommandResult<GetCancellationReasonChoicesResult> getCancellationReasonChoices(UserVisitPK userVisitPK, GetCancellationReasonChoicesForm form);
     
     CommandResult<?> setDefaultCancellationReason(UserVisitPK userVisitPK, SetDefaultCancellationReasonForm form);
     
-    CommandResult<?> editCancellationReason(UserVisitPK userVisitPK, EditCancellationReasonForm form);
+    CommandResult<EditCancellationReasonResult> editCancellationReason(UserVisitPK userVisitPK, EditCancellationReasonForm form);
     
     CommandResult<?> deleteCancellationReason(UserVisitPK userVisitPK, DeleteCancellationReasonForm form);
     
@@ -143,9 +144,9 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationReasonDescription(UserVisitPK userVisitPK, CreateCancellationReasonDescriptionForm form);
     
-    CommandResult<?> getCancellationReasonDescriptions(UserVisitPK userVisitPK, GetCancellationReasonDescriptionsForm form);
+    CommandResult<GetCancellationReasonDescriptionsResult> getCancellationReasonDescriptions(UserVisitPK userVisitPK, GetCancellationReasonDescriptionsForm form);
     
-    CommandResult<?> editCancellationReasonDescription(UserVisitPK userVisitPK, EditCancellationReasonDescriptionForm form);
+    CommandResult<EditCancellationReasonDescriptionResult> editCancellationReasonDescription(UserVisitPK userVisitPK, EditCancellationReasonDescriptionForm form);
     
     CommandResult<?> deleteCancellationReasonDescription(UserVisitPK userVisitPK, DeleteCancellationReasonDescriptionForm form);
     
@@ -155,11 +156,11 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationReasonType(UserVisitPK userVisitPK, CreateCancellationReasonTypeForm form);
     
-    CommandResult<?> getCancellationReasonTypes(UserVisitPK userVisitPK, GetCancellationReasonTypesForm form);
+    CommandResult<GetCancellationReasonTypesResult> getCancellationReasonTypes(UserVisitPK userVisitPK, GetCancellationReasonTypesForm form);
     
     CommandResult<?> setDefaultCancellationReasonType(UserVisitPK userVisitPK, SetDefaultCancellationReasonTypeForm form);
     
-    CommandResult<?> editCancellationReasonType(UserVisitPK userVisitPK, EditCancellationReasonTypeForm form);
+    CommandResult<EditCancellationReasonTypeResult> editCancellationReasonType(UserVisitPK userVisitPK, EditCancellationReasonTypeForm form);
     
     CommandResult<?> deleteCancellationReasonType(UserVisitPK userVisitPK, DeleteCancellationReasonTypeForm form);
     
@@ -169,15 +170,15 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationType(UserVisitPK userVisitPK, CreateCancellationTypeForm form);
     
-    CommandResult<?> getCancellationTypes(UserVisitPK userVisitPK, GetCancellationTypesForm form);
+    CommandResult<GetCancellationTypesResult> getCancellationTypes(UserVisitPK userVisitPK, GetCancellationTypesForm form);
     
-    CommandResult<?> getCancellationType(UserVisitPK userVisitPK, GetCancellationTypeForm form);
+    CommandResult<GetCancellationTypeResult> getCancellationType(UserVisitPK userVisitPK, GetCancellationTypeForm form);
     
-    CommandResult<?> getCancellationTypeChoices(UserVisitPK userVisitPK, GetCancellationTypeChoicesForm form);
+    CommandResult<GetCancellationTypeChoicesResult> getCancellationTypeChoices(UserVisitPK userVisitPK, GetCancellationTypeChoicesForm form);
     
     CommandResult<?> setDefaultCancellationType(UserVisitPK userVisitPK, SetDefaultCancellationTypeForm form);
     
-    CommandResult<?> editCancellationType(UserVisitPK userVisitPK, EditCancellationTypeForm form);
+    CommandResult<EditCancellationTypeResult> editCancellationType(UserVisitPK userVisitPK, EditCancellationTypeForm form);
     
     CommandResult<?> deleteCancellationType(UserVisitPK userVisitPK, DeleteCancellationTypeForm form);
     
@@ -187,9 +188,9 @@ public interface CancellationPolicyService
     
     CommandResult<?> createCancellationTypeDescription(UserVisitPK userVisitPK, CreateCancellationTypeDescriptionForm form);
     
-    CommandResult<?> getCancellationTypeDescriptions(UserVisitPK userVisitPK, GetCancellationTypeDescriptionsForm form);
+    CommandResult<GetCancellationTypeDescriptionsResult> getCancellationTypeDescriptions(UserVisitPK userVisitPK, GetCancellationTypeDescriptionsForm form);
     
-    CommandResult<?> editCancellationTypeDescription(UserVisitPK userVisitPK, EditCancellationTypeDescriptionForm form);
+    CommandResult<EditCancellationTypeDescriptionResult> editCancellationTypeDescription(UserVisitPK userVisitPK, EditCancellationTypeDescriptionForm form);
     
     CommandResult<?> deleteCancellationTypeDescription(UserVisitPK userVisitPK, DeleteCancellationTypeDescriptionForm form);
     

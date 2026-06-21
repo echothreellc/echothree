@@ -17,6 +17,7 @@
 package com.echothree.control.user.letter.common;
 
 import com.echothree.control.user.letter.common.form.*;
+import com.echothree.control.user.letter.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface LetterService
     
     CommandResult<?> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form);
     
-    CommandResult<?> getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form);
+    CommandResult<GetLetterSourceChoicesResult> getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form);
     
-    CommandResult<?> getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form);
+    CommandResult<GetLetterSourceResult> getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form);
     
-    CommandResult<?> getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form);
+    CommandResult<GetLetterSourcesResult> getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form);
     
     CommandResult<?> setDefaultLetterSource(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form);
     
-    CommandResult<?> editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form);
+    CommandResult<EditLetterSourceResult> editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form);
     
     CommandResult<?> deleteLetterSource(UserVisitPK userVisitPK, DeleteLetterSourceForm form);
     
@@ -53,9 +54,9 @@ public interface LetterService
     
     CommandResult<?> createLetterSourceDescription(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form);
     
-    CommandResult<?> getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form);
+    CommandResult<GetLetterSourceDescriptionsResult> getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form);
     
-    CommandResult<?> editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form);
+    CommandResult<EditLetterSourceDescriptionResult> editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form);
     
     CommandResult<?> deleteLetterSourceDescription(UserVisitPK userVisitPK, DeleteLetterSourceDescriptionForm form);
     
@@ -65,15 +66,15 @@ public interface LetterService
     
     CommandResult<?> createLetter(UserVisitPK userVisitPK, CreateLetterForm form);
     
-    CommandResult<?> getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form);
+    CommandResult<GetLetterChoicesResult> getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form);
     
-    CommandResult<?> getLetter(UserVisitPK userVisitPK, GetLetterForm form);
+    CommandResult<GetLetterResult> getLetter(UserVisitPK userVisitPK, GetLetterForm form);
     
-    CommandResult<?> getLetters(UserVisitPK userVisitPK, GetLettersForm form);
+    CommandResult<GetLettersResult> getLetters(UserVisitPK userVisitPK, GetLettersForm form);
     
     CommandResult<?> setDefaultLetter(UserVisitPK userVisitPK, SetDefaultLetterForm form);
     
-    CommandResult<?> editLetter(UserVisitPK userVisitPK, EditLetterForm form);
+    CommandResult<EditLetterResult> editLetter(UserVisitPK userVisitPK, EditLetterForm form);
     
     CommandResult<?> deleteLetter(UserVisitPK userVisitPK, DeleteLetterForm form);
     
@@ -83,9 +84,9 @@ public interface LetterService
     
     CommandResult<?> createLetterDescription(UserVisitPK userVisitPK, CreateLetterDescriptionForm form);
     
-    CommandResult<?> getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form);
+    CommandResult<GetLetterDescriptionsResult> getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form);
     
-    CommandResult<?> editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form);
+    CommandResult<EditLetterDescriptionResult> editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form);
     
     CommandResult<?> deleteLetterDescription(UserVisitPK userVisitPK, DeleteLetterDescriptionForm form);
     
@@ -95,9 +96,9 @@ public interface LetterService
     
     CommandResult<?> createLetterContactMechanismPurpose(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form);
     
-    CommandResult<?> getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form);
+    CommandResult<GetLetterContactMechanismPurposesResult> getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form);
     
-    CommandResult<?> editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form);
+    CommandResult<EditLetterContactMechanismPurposeResult> editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form);
     
     CommandResult<?> deleteLetterContactMechanismPurpose(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form);
     
@@ -105,9 +106,9 @@ public interface LetterService
     //   Queued Letters
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form);
+    CommandResult<GetQueuedLetterResult> getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form);
 
-    CommandResult<?> getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form);
+    CommandResult<GetQueuedLettersResult> getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form);
 
     CommandResult<?> deleteQueuedLetter(UserVisitPK userVisitPK, DeleteQueuedLetterForm form);
 

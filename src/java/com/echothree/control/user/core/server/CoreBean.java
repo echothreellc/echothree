@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server;
 
 import com.echothree.control.user.core.common.CoreRemote;
 import com.echothree.control.user.core.common.form.*;
+import com.echothree.control.user.core.common.result.*;
 import com.echothree.control.user.core.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -62,17 +63,17 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getBaseEncryptionKey(UserVisitPK userVisitPK, GetBaseEncryptionKeyForm form) {
+    public CommandResult<GetBaseEncryptionKeyResult> getBaseEncryptionKey(UserVisitPK userVisitPK, GetBaseEncryptionKeyForm form) {
         return CDI.current().select(GetBaseEncryptionKeyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getBaseEncryptionKeys(UserVisitPK userVisitPK, GetBaseEncryptionKeysForm form) {
+    public CommandResult<GetBaseEncryptionKeysResult> getBaseEncryptionKeys(UserVisitPK userVisitPK, GetBaseEncryptionKeysForm form) {
         return CDI.current().select(GetBaseEncryptionKeysCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getBaseEncryptionKeyStatusChoices(UserVisitPK userVisitPK, GetBaseEncryptionKeyStatusChoicesForm form) {
+    public CommandResult<GetBaseEncryptionKeyStatusChoicesResult> getBaseEncryptionKeyStatusChoices(UserVisitPK userVisitPK, GetBaseEncryptionKeyStatusChoicesForm form) {
         return CDI.current().select(GetBaseEncryptionKeyStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -110,17 +111,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getComponentVendor(UserVisitPK userVisitPK, GetComponentVendorForm form) {
+    public CommandResult<GetComponentVendorResult> getComponentVendor(UserVisitPK userVisitPK, GetComponentVendorForm form) {
         return CDI.current().select(GetComponentVendorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getComponentVendors(UserVisitPK userVisitPK, GetComponentVendorsForm form) {
+    public CommandResult<GetComponentVendorsResult> getComponentVendors(UserVisitPK userVisitPK, GetComponentVendorsForm form) {
         return CDI.current().select(GetComponentVendorsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editComponentVendor(UserVisitPK userVisitPK, EditComponentVendorForm form) {
+    public CommandResult<EditComponentVendorResult> editComponentVendor(UserVisitPK userVisitPK, EditComponentVendorForm form) {
         return CDI.current().select(EditComponentVendorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -139,17 +140,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityType(UserVisitPK userVisitPK, GetEntityTypeForm form) {
+    public CommandResult<GetEntityTypeResult> getEntityType(UserVisitPK userVisitPK, GetEntityTypeForm form) {
         return CDI.current().select(GetEntityTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityTypes(UserVisitPK userVisitPK, GetEntityTypesForm form) {
+    public CommandResult<GetEntityTypesResult> getEntityTypes(UserVisitPK userVisitPK, GetEntityTypesForm form) {
         return CDI.current().select(GetEntityTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityType(UserVisitPK userVisitPK, EditEntityTypeForm form) {
+    public CommandResult<EditEntityTypeResult> editEntityType(UserVisitPK userVisitPK, EditEntityTypeForm form) {
         return CDI.current().select(EditEntityTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -168,17 +169,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getCommand(UserVisitPK userVisitPK, GetCommandForm form) {
+    public CommandResult<GetCommandResult> getCommand(UserVisitPK userVisitPK, GetCommandForm form) {
         return CDI.current().select(GetCommandCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommands(UserVisitPK userVisitPK, GetCommandsForm form) {
+    public CommandResult<GetCommandsResult> getCommands(UserVisitPK userVisitPK, GetCommandsForm form) {
         return CDI.current().select(GetCommandsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommand(UserVisitPK userVisitPK, EditCommandForm form) {
+    public CommandResult<EditCommandResult> editCommand(UserVisitPK userVisitPK, EditCommandForm form) {
         return CDI.current().select(EditCommandCommand.class).get().run(userVisitPK, form);
     }
     
@@ -197,17 +198,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getCommandDescription(UserVisitPK userVisitPK, GetCommandDescriptionForm form) {
+    public CommandResult<GetCommandDescriptionResult> getCommandDescription(UserVisitPK userVisitPK, GetCommandDescriptionForm form) {
         return CDI.current().select(GetCommandDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommandDescriptions(UserVisitPK userVisitPK, GetCommandDescriptionsForm form) {
+    public CommandResult<GetCommandDescriptionsResult> getCommandDescriptions(UserVisitPK userVisitPK, GetCommandDescriptionsForm form) {
         return CDI.current().select(GetCommandDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommandDescription(UserVisitPK userVisitPK, EditCommandDescriptionForm form) {
+    public CommandResult<EditCommandDescriptionResult> editCommandDescription(UserVisitPK userVisitPK, EditCommandDescriptionForm form) {
         return CDI.current().select(EditCommandDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -226,17 +227,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getCommandMessageTypeChoices(UserVisitPK userVisitPK, GetCommandMessageTypeChoicesForm form) {
+    public CommandResult<GetCommandMessageTypeChoicesResult> getCommandMessageTypeChoices(UserVisitPK userVisitPK, GetCommandMessageTypeChoicesForm form) {
         return CDI.current().select(GetCommandMessageTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommandMessageType(UserVisitPK userVisitPK, GetCommandMessageTypeForm form) {
+    public CommandResult<GetCommandMessageTypeResult> getCommandMessageType(UserVisitPK userVisitPK, GetCommandMessageTypeForm form) {
         return CDI.current().select(GetCommandMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommandMessageTypes(UserVisitPK userVisitPK, GetCommandMessageTypesForm form) {
+    public CommandResult<GetCommandMessageTypesResult> getCommandMessageTypes(UserVisitPK userVisitPK, GetCommandMessageTypesForm form) {
         return CDI.current().select(GetCommandMessageTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -246,7 +247,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editCommandMessageType(UserVisitPK userVisitPK, EditCommandMessageTypeForm form) {
+    public CommandResult<EditCommandMessageTypeResult> editCommandMessageType(UserVisitPK userVisitPK, EditCommandMessageTypeForm form) {
         return CDI.current().select(EditCommandMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -265,17 +266,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getCommandMessageTypeDescription(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionForm form) {
+    public CommandResult<GetCommandMessageTypeDescriptionResult> getCommandMessageTypeDescription(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionForm form) {
         return CDI.current().select(GetCommandMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommandMessageTypeDescriptions(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionsForm form) {
+    public CommandResult<GetCommandMessageTypeDescriptionsResult> getCommandMessageTypeDescriptions(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionsForm form) {
         return CDI.current().select(GetCommandMessageTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommandMessageTypeDescription(UserVisitPK userVisitPK, EditCommandMessageTypeDescriptionForm form) {
+    public CommandResult<EditCommandMessageTypeDescriptionResult> editCommandMessageTypeDescription(UserVisitPK userVisitPK, EditCommandMessageTypeDescriptionForm form) {
         return CDI.current().select(EditCommandMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -294,17 +295,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getCommandMessage(UserVisitPK userVisitPK, GetCommandMessageForm form) {
+    public CommandResult<GetCommandMessageResult> getCommandMessage(UserVisitPK userVisitPK, GetCommandMessageForm form) {
         return CDI.current().select(GetCommandMessageCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCommandMessages(UserVisitPK userVisitPK, GetCommandMessagesForm form) {
+    public CommandResult<GetCommandMessagesResult> getCommandMessages(UserVisitPK userVisitPK, GetCommandMessagesForm form) {
         return CDI.current().select(GetCommandMessagesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editCommandMessage(UserVisitPK userVisitPK, EditCommandMessageForm form) {
+    public CommandResult<EditCommandMessageResult> editCommandMessage(UserVisitPK userVisitPK, EditCommandMessageForm form) {
         return CDI.current().select(EditCommandMessageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -323,17 +324,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getCommandMessageTranslation(UserVisitPK userVisitPK, GetCommandMessageTranslationForm form) {
+    public CommandResult<GetCommandMessageTranslationResult> getCommandMessageTranslation(UserVisitPK userVisitPK, GetCommandMessageTranslationForm form) {
         return CDI.current().select(GetCommandMessageTranslationCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCommandMessageTranslations(UserVisitPK userVisitPK, GetCommandMessageTranslationsForm form) {
+    public CommandResult<GetCommandMessageTranslationsResult> getCommandMessageTranslations(UserVisitPK userVisitPK, GetCommandMessageTranslationsForm form) {
         return CDI.current().select(GetCommandMessageTranslationsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editCommandMessageTranslation(UserVisitPK userVisitPK, EditCommandMessageTranslationForm form) {
+    public CommandResult<EditCommandMessageTranslationResult> editCommandMessageTranslation(UserVisitPK userVisitPK, EditCommandMessageTranslationForm form) {
         return CDI.current().select(EditCommandMessageTranslationCommand.class).get().run(userVisitPK, form);
     }
 
@@ -352,12 +353,12 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
+    public CommandResult<GetEntityInstanceResult> getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
         return CDI.current().select(GetEntityInstanceCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
+    public CommandResult<GetEntityInstancesResult> getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
         return CDI.current().select(GetEntityInstancesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -386,17 +387,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getEventType(UserVisitPK userVisitPK, GetEventTypeForm form) {
+    public CommandResult<GetEventTypeResult> getEventType(UserVisitPK userVisitPK, GetEventTypeForm form) {
         return CDI.current().select(GetEventTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEventTypes(UserVisitPK userVisitPK, GetEventTypesForm form) {
+    public CommandResult<GetEventTypesResult> getEventTypes(UserVisitPK userVisitPK, GetEventTypesForm form) {
         return CDI.current().select(GetEventTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEventTypeChoices(UserVisitPK userVisitPK, GetEventTypeChoicesForm form) {
+    public CommandResult<GetEventTypeChoicesResult> getEventTypeChoices(UserVisitPK userVisitPK, GetEventTypeChoicesForm form) {
         return CDI.current().select(GetEventTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -414,17 +415,17 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getEventGroup(UserVisitPK userVisitPK, GetEventGroupForm form) {
+    public CommandResult<GetEventGroupResult> getEventGroup(UserVisitPK userVisitPK, GetEventGroupForm form) {
         return CDI.current().select(GetEventGroupCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEventGroups(UserVisitPK userVisitPK, GetEventGroupsForm form) {
+    public CommandResult<GetEventGroupsResult> getEventGroups(UserVisitPK userVisitPK, GetEventGroupsForm form) {
         return CDI.current().select(GetEventGroupsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEventGroupStatusChoices(UserVisitPK userVisitPK, GetEventGroupStatusChoicesForm form) {
+    public CommandResult<GetEventGroupStatusChoicesResult> getEventGroupStatusChoices(UserVisitPK userVisitPK, GetEventGroupStatusChoicesForm form) {
         return CDI.current().select(GetEventGroupStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -443,7 +444,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getEvents(UserVisitPK userVisitPK, GetEventsForm form) {
+    public CommandResult<GetEventsResult> getEvents(UserVisitPK userVisitPK, GetEventsForm form) {
         return CDI.current().select(GetEventsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -493,17 +494,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form) {
+    public CommandResult<GetEntityAliasTypeResult> getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form) {
         return CDI.current().select(GetEntityAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityAliasTypes(UserVisitPK userVisitPK, GetEntityAliasTypesForm form) {
+    public CommandResult<GetEntityAliasTypesResult> getEntityAliasTypes(UserVisitPK userVisitPK, GetEntityAliasTypesForm form) {
         return CDI.current().select(GetEntityAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityAliasTypeChoices(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form) {
+    public CommandResult<GetEntityAliasTypeChoicesResult> getEntityAliasTypeChoices(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form) {
         return CDI.current().select(GetEntityAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -513,7 +514,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityAliasType(UserVisitPK userVisitPK, EditEntityAliasTypeForm form) {
+    public CommandResult<EditEntityAliasTypeResult> editEntityAliasType(UserVisitPK userVisitPK, EditEntityAliasTypeForm form) {
         return CDI.current().select(EditEntityAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -532,17 +533,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getEntityAliasTypeDescription(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionForm form) {
+    public CommandResult<GetEntityAliasTypeDescriptionResult> getEntityAliasTypeDescription(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionForm form) {
         return CDI.current().select(GetEntityAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityAliasTypeDescriptions(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionsForm form) {
+    public CommandResult<GetEntityAliasTypeDescriptionsResult> getEntityAliasTypeDescriptions(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionsForm form) {
         return CDI.current().select(GetEntityAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editEntityAliasTypeDescription(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form) {
+    public CommandResult<EditEntityAliasTypeDescriptionResult> editEntityAliasTypeDescription(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form) {
         return CDI.current().select(EditEntityAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -561,17 +562,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form) {
+    public CommandResult<GetEntityAliasResult> getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form) {
         return CDI.current().select(GetEntityAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityAliases(UserVisitPK userVisitPK, GetEntityAliasesForm form) {
+    public CommandResult<GetEntityAliasesResult> getEntityAliases(UserVisitPK userVisitPK, GetEntityAliasesForm form) {
         return CDI.current().select(GetEntityAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form) {
+    public CommandResult<EditEntityAliasResult> editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form) {
         return CDI.current().select(EditEntityAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -590,17 +591,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeGroupDescription(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionForm form) {
+    public CommandResult<GetEntityAttributeGroupDescriptionResult> getEntityAttributeGroupDescription(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionForm form) {
         return CDI.current().select(GetEntityAttributeGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeGroupDescriptions(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionsForm form) {
+    public CommandResult<GetEntityAttributeGroupDescriptionsResult> getEntityAttributeGroupDescriptions(UserVisitPK userVisitPK, GetEntityAttributeGroupDescriptionsForm form) {
         return CDI.current().select(GetEntityAttributeGroupDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityAttributeGroupDescription(UserVisitPK userVisitPK, EditEntityAttributeGroupDescriptionForm form) {
+    public CommandResult<EditEntityAttributeGroupDescriptionResult> editEntityAttributeGroupDescription(UserVisitPK userVisitPK, EditEntityAttributeGroupDescriptionForm form) {
         return CDI.current().select(EditEntityAttributeGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -619,17 +620,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeGroupForm form) {
+    public CommandResult<GetEntityAttributeGroupResult> getEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeGroupForm form) {
         return CDI.current().select(GetEntityAttributeGroupCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeGroupsForm form) {
+    public CommandResult<GetEntityAttributeGroupsResult> getEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeGroupsForm form) {
         return CDI.current().select(GetEntityAttributeGroupsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeGroupChoices(UserVisitPK userVisitPK, GetEntityAttributeGroupChoicesForm form) {
+    public CommandResult<GetEntityAttributeGroupChoicesResult> getEntityAttributeGroupChoices(UserVisitPK userVisitPK, GetEntityAttributeGroupChoicesForm form) {
         return CDI.current().select(GetEntityAttributeGroupChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -639,7 +640,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeGroupForm form) {
+    public CommandResult<EditEntityAttributeGroupResult> editEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeGroupForm form) {
         return CDI.current().select(EditEntityAttributeGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -658,17 +659,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeDescription(UserVisitPK userVisitPK, GetEntityAttributeDescriptionForm form) {
+    public CommandResult<GetEntityAttributeDescriptionResult> getEntityAttributeDescription(UserVisitPK userVisitPK, GetEntityAttributeDescriptionForm form) {
         return CDI.current().select(GetEntityAttributeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeDescriptions(UserVisitPK userVisitPK, GetEntityAttributeDescriptionsForm form) {
+    public CommandResult<GetEntityAttributeDescriptionsResult> getEntityAttributeDescriptions(UserVisitPK userVisitPK, GetEntityAttributeDescriptionsForm form) {
         return CDI.current().select(GetEntityAttributeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityAttributeDescription(UserVisitPK userVisitPK, EditEntityAttributeDescriptionForm form) {
+    public CommandResult<EditEntityAttributeDescriptionResult> editEntityAttributeDescription(UserVisitPK userVisitPK, EditEntityAttributeDescriptionForm form) {
         return CDI.current().select(EditEntityAttributeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -687,17 +688,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttribute(UserVisitPK userVisitPK, GetEntityAttributeForm form) {
+    public CommandResult<GetEntityAttributeResult> getEntityAttribute(UserVisitPK userVisitPK, GetEntityAttributeForm form) {
         return CDI.current().select(GetEntityAttributeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributes(UserVisitPK userVisitPK, GetEntityAttributesForm form) {
+    public CommandResult<GetEntityAttributesResult> getEntityAttributes(UserVisitPK userVisitPK, GetEntityAttributesForm form) {
         return CDI.current().select(GetEntityAttributesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityAttribute(UserVisitPK userVisitPK, EditEntityAttributeForm form) {
+    public CommandResult<EditEntityAttributeResult> editEntityAttribute(UserVisitPK userVisitPK, EditEntityAttributeForm form) {
         return CDI.current().select(EditEntityAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -716,17 +717,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupForm form) {
+    public CommandResult<GetEntityAttributeEntityAttributeGroupResult> getEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupForm form) {
         return CDI.current().select(GetEntityAttributeEntityAttributeGroupCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupsForm form) {
+    public CommandResult<GetEntityAttributeEntityAttributeGroupsResult> getEntityAttributeEntityAttributeGroups(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupsForm form) {
         return CDI.current().select(GetEntityAttributeEntityAttributeGroupsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeEntityAttributeGroupForm form) {
+    public CommandResult<EditEntityAttributeEntityAttributeGroupResult> editEntityAttributeEntityAttributeGroup(UserVisitPK userVisitPK, EditEntityAttributeEntityAttributeGroupForm form) {
         return CDI.current().select(EditEntityAttributeEntityAttributeGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -754,17 +755,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeType(UserVisitPK userVisitPK, GetEntityAttributeTypeForm form) {
+    public CommandResult<GetEntityAttributeTypeResult> getEntityAttributeType(UserVisitPK userVisitPK, GetEntityAttributeTypeForm form) {
         return CDI.current().select(GetEntityAttributeTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeTypes(UserVisitPK userVisitPK, GetEntityAttributeTypesForm form) {
+    public CommandResult<GetEntityAttributeTypesResult> getEntityAttributeTypes(UserVisitPK userVisitPK, GetEntityAttributeTypesForm form) {
         return CDI.current().select(GetEntityAttributeTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeTypeChoices(UserVisitPK userVisitPK, GetEntityAttributeTypeChoicesForm form) {
+    public CommandResult<GetEntityAttributeTypeChoicesResult> getEntityAttributeTypeChoices(UserVisitPK userVisitPK, GetEntityAttributeTypeChoicesForm form) {
         return CDI.current().select(GetEntityAttributeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -778,17 +779,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityListItemDescription(UserVisitPK userVisitPK, GetEntityListItemDescriptionForm form) {
+    public CommandResult<GetEntityListItemDescriptionResult> getEntityListItemDescription(UserVisitPK userVisitPK, GetEntityListItemDescriptionForm form) {
         return CDI.current().select(GetEntityListItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityListItemDescriptions(UserVisitPK userVisitPK, GetEntityListItemDescriptionsForm form) {
+    public CommandResult<GetEntityListItemDescriptionsResult> getEntityListItemDescriptions(UserVisitPK userVisitPK, GetEntityListItemDescriptionsForm form) {
         return CDI.current().select(GetEntityListItemDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityListItemDescription(UserVisitPK userVisitPK, EditEntityListItemDescriptionForm form) {
+    public CommandResult<EditEntityListItemDescriptionResult> editEntityListItemDescription(UserVisitPK userVisitPK, EditEntityListItemDescriptionForm form) {
         return CDI.current().select(EditEntityListItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -807,17 +808,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityListItem(UserVisitPK userVisitPK, GetEntityListItemForm form) {
+    public CommandResult<GetEntityListItemResult> getEntityListItem(UserVisitPK userVisitPK, GetEntityListItemForm form) {
         return CDI.current().select(GetEntityListItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityListItems(UserVisitPK userVisitPK, GetEntityListItemsForm form) {
+    public CommandResult<GetEntityListItemsResult> getEntityListItems(UserVisitPK userVisitPK, GetEntityListItemsForm form) {
         return CDI.current().select(GetEntityListItemsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityListItemChoices(UserVisitPK userVisitPK, GetEntityListItemChoicesForm form) {
+    public CommandResult<GetEntityListItemChoicesResult> getEntityListItemChoices(UserVisitPK userVisitPK, GetEntityListItemChoicesForm form) {
         return CDI.current().select(GetEntityListItemChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -827,7 +828,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityListItem(UserVisitPK userVisitPK, EditEntityListItemForm form) {
+    public CommandResult<EditEntityListItemResult> editEntityListItem(UserVisitPK userVisitPK, EditEntityListItemForm form) {
         return CDI.current().select(EditEntityListItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -846,17 +847,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityIntegerRangeDescription(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionForm form) {
+    public CommandResult<GetEntityIntegerRangeDescriptionResult> getEntityIntegerRangeDescription(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionForm form) {
         return CDI.current().select(GetEntityIntegerRangeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityIntegerRangeDescriptions(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionsForm form) {
+    public CommandResult<GetEntityIntegerRangeDescriptionsResult> getEntityIntegerRangeDescriptions(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionsForm form) {
         return CDI.current().select(GetEntityIntegerRangeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityIntegerRangeDescription(UserVisitPK userVisitPK, EditEntityIntegerRangeDescriptionForm form) {
+    public CommandResult<EditEntityIntegerRangeDescriptionResult> editEntityIntegerRangeDescription(UserVisitPK userVisitPK, EditEntityIntegerRangeDescriptionForm form) {
         return CDI.current().select(EditEntityIntegerRangeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -875,17 +876,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityIntegerRange(UserVisitPK userVisitPK, GetEntityIntegerRangeForm form) {
+    public CommandResult<GetEntityIntegerRangeResult> getEntityIntegerRange(UserVisitPK userVisitPK, GetEntityIntegerRangeForm form) {
         return CDI.current().select(GetEntityIntegerRangeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityIntegerRanges(UserVisitPK userVisitPK, GetEntityIntegerRangesForm form) {
+    public CommandResult<GetEntityIntegerRangesResult> getEntityIntegerRanges(UserVisitPK userVisitPK, GetEntityIntegerRangesForm form) {
         return CDI.current().select(GetEntityIntegerRangesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityIntegerRangeChoices(UserVisitPK userVisitPK, GetEntityIntegerRangeChoicesForm form) {
+    public CommandResult<GetEntityIntegerRangeChoicesResult> getEntityIntegerRangeChoices(UserVisitPK userVisitPK, GetEntityIntegerRangeChoicesForm form) {
         return CDI.current().select(GetEntityIntegerRangeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -895,7 +896,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityIntegerRange(UserVisitPK userVisitPK, EditEntityIntegerRangeForm form) {
+    public CommandResult<EditEntityIntegerRangeResult> editEntityIntegerRange(UserVisitPK userVisitPK, EditEntityIntegerRangeForm form) {
         return CDI.current().select(EditEntityIntegerRangeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -914,17 +915,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityLongRangeDescription(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionForm form) {
+    public CommandResult<GetEntityLongRangeDescriptionResult> getEntityLongRangeDescription(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionForm form) {
         return CDI.current().select(GetEntityLongRangeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityLongRangeDescriptions(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionsForm form) {
+    public CommandResult<GetEntityLongRangeDescriptionsResult> getEntityLongRangeDescriptions(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionsForm form) {
         return CDI.current().select(GetEntityLongRangeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityLongRangeDescription(UserVisitPK userVisitPK, EditEntityLongRangeDescriptionForm form) {
+    public CommandResult<EditEntityLongRangeDescriptionResult> editEntityLongRangeDescription(UserVisitPK userVisitPK, EditEntityLongRangeDescriptionForm form) {
         return CDI.current().select(EditEntityLongRangeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -943,17 +944,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityLongRange(UserVisitPK userVisitPK, GetEntityLongRangeForm form) {
+    public CommandResult<GetEntityLongRangeResult> getEntityLongRange(UserVisitPK userVisitPK, GetEntityLongRangeForm form) {
         return CDI.current().select(GetEntityLongRangeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityLongRanges(UserVisitPK userVisitPK, GetEntityLongRangesForm form) {
+    public CommandResult<GetEntityLongRangesResult> getEntityLongRanges(UserVisitPK userVisitPK, GetEntityLongRangesForm form) {
         return CDI.current().select(GetEntityLongRangesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityLongRangeChoices(UserVisitPK userVisitPK, GetEntityLongRangeChoicesForm form) {
+    public CommandResult<GetEntityLongRangeChoicesResult> getEntityLongRangeChoices(UserVisitPK userVisitPK, GetEntityLongRangeChoicesForm form) {
         return CDI.current().select(GetEntityLongRangeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -963,7 +964,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityLongRange(UserVisitPK userVisitPK, EditEntityLongRangeForm form) {
+    public CommandResult<EditEntityLongRangeResult> editEntityLongRange(UserVisitPK userVisitPK, EditEntityLongRangeForm form) {
         return CDI.current().select(EditEntityLongRangeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -982,17 +983,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityTypeDescription(UserVisitPK userVisitPK, GetEntityTypeDescriptionForm form) {
+    public CommandResult<GetEntityTypeDescriptionResult> getEntityTypeDescription(UserVisitPK userVisitPK, GetEntityTypeDescriptionForm form) {
         return CDI.current().select(GetEntityTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityTypeDescriptions(UserVisitPK userVisitPK, GetEntityTypeDescriptionsForm form) {
+    public CommandResult<GetEntityTypeDescriptionsResult> getEntityTypeDescriptions(UserVisitPK userVisitPK, GetEntityTypeDescriptionsForm form) {
         return CDI.current().select(GetEntityTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityTypeDescription(UserVisitPK userVisitPK, EditEntityTypeDescriptionForm form) {
+    public CommandResult<EditEntityTypeDescriptionResult> editEntityTypeDescription(UserVisitPK userVisitPK, EditEntityTypeDescriptionForm form) {
         return CDI.current().select(EditEntityTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1011,17 +1012,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getMimeTypeUsageType(UserVisitPK userVisitPK, GetMimeTypeUsageTypeForm form) {
+    public CommandResult<GetMimeTypeUsageTypeResult> getMimeTypeUsageType(UserVisitPK userVisitPK, GetMimeTypeUsageTypeForm form) {
         return CDI.current().select(GetMimeTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getMimeTypeUsageTypes(UserVisitPK userVisitPK, GetMimeTypeUsageTypesForm form) {
+    public CommandResult<GetMimeTypeUsageTypesResult> getMimeTypeUsageTypes(UserVisitPK userVisitPK, GetMimeTypeUsageTypesForm form) {
         return CDI.current().select(GetMimeTypeUsageTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getMimeTypeUsageTypeChoices(UserVisitPK userVisitPK, GetMimeTypeUsageTypeChoicesForm form) {
+    public CommandResult<GetMimeTypeUsageTypeChoicesResult> getMimeTypeUsageTypeChoices(UserVisitPK userVisitPK, GetMimeTypeUsageTypeChoicesForm form) {
         return CDI.current().select(GetMimeTypeUsageTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1044,17 +1045,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getMimeTypes(UserVisitPK userVisitPK, GetMimeTypesForm form) {
+    public CommandResult<GetMimeTypesResult> getMimeTypes(UserVisitPK userVisitPK, GetMimeTypesForm form) {
         return CDI.current().select(GetMimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getMimeType(UserVisitPK userVisitPK, GetMimeTypeForm form) {
+    public CommandResult<GetMimeTypeResult> getMimeType(UserVisitPK userVisitPK, GetMimeTypeForm form) {
         return CDI.current().select(GetMimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getMimeTypeChoices(UserVisitPK userVisitPK, GetMimeTypeChoicesForm form) {
+    public CommandResult<GetMimeTypeChoicesResult> getMimeTypeChoices(UserVisitPK userVisitPK, GetMimeTypeChoicesForm form) {
         return CDI.current().select(GetMimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1064,7 +1065,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editMimeType(UserVisitPK userVisitPK, EditMimeTypeForm form) {
+    public CommandResult<EditMimeTypeResult> editMimeType(UserVisitPK userVisitPK, EditMimeTypeForm form) {
         return CDI.current().select(EditMimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1083,17 +1084,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getMimeTypeDescriptions(UserVisitPK userVisitPK, GetMimeTypeDescriptionsForm form) {
+    public CommandResult<GetMimeTypeDescriptionsResult> getMimeTypeDescriptions(UserVisitPK userVisitPK, GetMimeTypeDescriptionsForm form) {
         return CDI.current().select(GetMimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getMimeTypeDescription(UserVisitPK userVisitPK, GetMimeTypeDescriptionForm form) {
+    public CommandResult<GetMimeTypeDescriptionResult> getMimeTypeDescription(UserVisitPK userVisitPK, GetMimeTypeDescriptionForm form) {
         return CDI.current().select(GetMimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editMimeTypeDescription(UserVisitPK userVisitPK, EditMimeTypeDescriptionForm form) {
+    public CommandResult<EditMimeTypeDescriptionResult> editMimeTypeDescription(UserVisitPK userVisitPK, EditMimeTypeDescriptionForm form) {
         return CDI.current().select(EditMimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1112,7 +1113,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getMimeTypeUsages(UserVisitPK userVisitPK, GetMimeTypeUsagesForm form) {
+    public CommandResult<GetMimeTypeUsagesResult> getMimeTypeUsages(UserVisitPK userVisitPK, GetMimeTypeUsagesForm form) {
         return CDI.current().select(GetMimeTypeUsagesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1126,12 +1127,12 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getMimeTypeFileExtension(UserVisitPK userVisitPK, GetMimeTypeFileExtensionForm form) {
+    public CommandResult<GetMimeTypeFileExtensionResult> getMimeTypeFileExtension(UserVisitPK userVisitPK, GetMimeTypeFileExtensionForm form) {
         return CDI.current().select(GetMimeTypeFileExtensionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getMimeTypeFileExtensions(UserVisitPK userVisitPK, GetMimeTypeFileExtensionsForm form) {
+    public CommandResult<GetMimeTypeFileExtensionsResult> getMimeTypeFileExtensions(UserVisitPK userVisitPK, GetMimeTypeFileExtensionsForm form) {
         return CDI.current().select(GetMimeTypeFileExtensionsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1145,17 +1146,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getProtocolChoices(UserVisitPK userVisitPK, GetProtocolChoicesForm form) {
+    public CommandResult<GetProtocolChoicesResult> getProtocolChoices(UserVisitPK userVisitPK, GetProtocolChoicesForm form) {
         return CDI.current().select(GetProtocolChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getProtocol(UserVisitPK userVisitPK, GetProtocolForm form) {
+    public CommandResult<GetProtocolResult> getProtocol(UserVisitPK userVisitPK, GetProtocolForm form) {
         return CDI.current().select(GetProtocolCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getProtocols(UserVisitPK userVisitPK, GetProtocolsForm form) {
+    public CommandResult<GetProtocolsResult> getProtocols(UserVisitPK userVisitPK, GetProtocolsForm form) {
         return CDI.current().select(GetProtocolsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1165,7 +1166,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editProtocol(UserVisitPK userVisitPK, EditProtocolForm form) {
+    public CommandResult<EditProtocolResult> editProtocol(UserVisitPK userVisitPK, EditProtocolForm form) {
         return CDI.current().select(EditProtocolCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1184,17 +1185,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getProtocolDescription(UserVisitPK userVisitPK, GetProtocolDescriptionForm form) {
+    public CommandResult<GetProtocolDescriptionResult> getProtocolDescription(UserVisitPK userVisitPK, GetProtocolDescriptionForm form) {
         return CDI.current().select(GetProtocolDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getProtocolDescriptions(UserVisitPK userVisitPK, GetProtocolDescriptionsForm form) {
+    public CommandResult<GetProtocolDescriptionsResult> getProtocolDescriptions(UserVisitPK userVisitPK, GetProtocolDescriptionsForm form) {
         return CDI.current().select(GetProtocolDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editProtocolDescription(UserVisitPK userVisitPK, EditProtocolDescriptionForm form) {
+    public CommandResult<EditProtocolDescriptionResult> editProtocolDescription(UserVisitPK userVisitPK, EditProtocolDescriptionForm form) {
         return CDI.current().select(EditProtocolDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1213,17 +1214,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getServiceChoices(UserVisitPK userVisitPK, GetServiceChoicesForm form) {
+    public CommandResult<GetServiceChoicesResult> getServiceChoices(UserVisitPK userVisitPK, GetServiceChoicesForm form) {
         return CDI.current().select(GetServiceChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getService(UserVisitPK userVisitPK, GetServiceForm form) {
+    public CommandResult<GetServiceResult> getService(UserVisitPK userVisitPK, GetServiceForm form) {
         return CDI.current().select(GetServiceCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getServices(UserVisitPK userVisitPK, GetServicesForm form) {
+    public CommandResult<GetServicesResult> getServices(UserVisitPK userVisitPK, GetServicesForm form) {
         return CDI.current().select(GetServicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1233,7 +1234,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editService(UserVisitPK userVisitPK, EditServiceForm form) {
+    public CommandResult<EditServiceResult> editService(UserVisitPK userVisitPK, EditServiceForm form) {
         return CDI.current().select(EditServiceCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1252,17 +1253,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getServiceDescription(UserVisitPK userVisitPK, GetServiceDescriptionForm form) {
+    public CommandResult<GetServiceDescriptionResult> getServiceDescription(UserVisitPK userVisitPK, GetServiceDescriptionForm form) {
         return CDI.current().select(GetServiceDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getServiceDescriptions(UserVisitPK userVisitPK, GetServiceDescriptionsForm form) {
+    public CommandResult<GetServiceDescriptionsResult> getServiceDescriptions(UserVisitPK userVisitPK, GetServiceDescriptionsForm form) {
         return CDI.current().select(GetServiceDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editServiceDescription(UserVisitPK userVisitPK, EditServiceDescriptionForm form) {
+    public CommandResult<EditServiceDescriptionResult> editServiceDescription(UserVisitPK userVisitPK, EditServiceDescriptionForm form) {
         return CDI.current().select(EditServiceDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1281,17 +1282,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getServerChoices(UserVisitPK userVisitPK, GetServerChoicesForm form) {
+    public CommandResult<GetServerChoicesResult> getServerChoices(UserVisitPK userVisitPK, GetServerChoicesForm form) {
         return CDI.current().select(GetServerChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getServer(UserVisitPK userVisitPK, GetServerForm form) {
+    public CommandResult<GetServerResult> getServer(UserVisitPK userVisitPK, GetServerForm form) {
         return CDI.current().select(GetServerCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getServers(UserVisitPK userVisitPK, GetServersForm form) {
+    public CommandResult<GetServersResult> getServers(UserVisitPK userVisitPK, GetServersForm form) {
         return CDI.current().select(GetServersCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1301,7 +1302,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editServer(UserVisitPK userVisitPK, EditServerForm form) {
+    public CommandResult<EditServerResult> editServer(UserVisitPK userVisitPK, EditServerForm form) {
         return CDI.current().select(EditServerCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1320,17 +1321,17 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getServerDescription(UserVisitPK userVisitPK, GetServerDescriptionForm form) {
+    public CommandResult<GetServerDescriptionResult> getServerDescription(UserVisitPK userVisitPK, GetServerDescriptionForm form) {
         return CDI.current().select(GetServerDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getServerDescriptions(UserVisitPK userVisitPK, GetServerDescriptionsForm form) {
+    public CommandResult<GetServerDescriptionsResult> getServerDescriptions(UserVisitPK userVisitPK, GetServerDescriptionsForm form) {
         return CDI.current().select(GetServerDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editServerDescription(UserVisitPK userVisitPK, EditServerDescriptionForm form) {
+    public CommandResult<EditServerDescriptionResult> editServerDescription(UserVisitPK userVisitPK, EditServerDescriptionForm form) {
         return CDI.current().select(EditServerDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1349,12 +1350,12 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getServerService(UserVisitPK userVisitPK, GetServerServiceForm form) {
+    public CommandResult<GetServerServiceResult> getServerService(UserVisitPK userVisitPK, GetServerServiceForm form) {
         return CDI.current().select(GetServerServiceCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getServerServices(UserVisitPK userVisitPK, GetServerServicesForm form) {
+    public CommandResult<GetServerServicesResult> getServerServices(UserVisitPK userVisitPK, GetServerServicesForm form) {
         return CDI.current().select(GetServerServicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1373,7 +1374,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form) {
+    public CommandResult<EditEntityBooleanDefaultResult> editEntityBooleanDefault(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form) {
         return CDI.current().select(EditEntityBooleanDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1392,7 +1393,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form) {
+    public CommandResult<EditEntityBooleanAttributeResult> editEntityBooleanAttribute(UserVisitPK userVisitPK, EditEntityBooleanAttributeForm form) {
         return CDI.current().select(EditEntityBooleanAttributeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1411,7 +1412,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form) {
+    public CommandResult<EditEntityIntegerDefaultResult> editEntityIntegerDefault(UserVisitPK userVisitPK, EditEntityIntegerDefaultForm form) {
         return CDI.current().select(EditEntityIntegerDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1430,7 +1431,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityIntegerAttribute(UserVisitPK userVisitPK, EditEntityIntegerAttributeForm form) {
+    public CommandResult<EditEntityIntegerAttributeResult> editEntityIntegerAttribute(UserVisitPK userVisitPK, EditEntityIntegerAttributeForm form) {
         return CDI.current().select(EditEntityIntegerAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1449,7 +1450,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityListItemDefault(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form) {
+    public CommandResult<EditEntityListItemDefaultResult> editEntityListItemDefault(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form) {
         return CDI.current().select(EditEntityListItemDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1468,7 +1469,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityListItemAttribute(UserVisitPK userVisitPK, EditEntityListItemAttributeForm form) {
+    public CommandResult<EditEntityListItemAttributeResult> editEntityListItemAttribute(UserVisitPK userVisitPK, EditEntityListItemAttributeForm form) {
         return CDI.current().select(EditEntityListItemAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1487,7 +1488,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityLongDefault(UserVisitPK userVisitPK, EditEntityLongDefaultForm form) {
+    public CommandResult<EditEntityLongDefaultResult> editEntityLongDefault(UserVisitPK userVisitPK, EditEntityLongDefaultForm form) {
         return CDI.current().select(EditEntityLongDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1506,7 +1507,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityLongAttribute(UserVisitPK userVisitPK, EditEntityLongAttributeForm form) {
+    public CommandResult<EditEntityLongAttributeResult> editEntityLongAttribute(UserVisitPK userVisitPK, EditEntityLongAttributeForm form) {
         return CDI.current().select(EditEntityLongAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1553,7 +1554,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityNameAttribute(UserVisitPK userVisitPK, EditEntityNameAttributeForm form) {
+    public CommandResult<EditEntityNameAttributeResult> editEntityNameAttribute(UserVisitPK userVisitPK, EditEntityNameAttributeForm form) {
         return CDI.current().select(EditEntityNameAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1572,7 +1573,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form) {
+    public CommandResult<EditEntityStringDefaultResult> editEntityStringDefault(UserVisitPK userVisitPK, EditEntityStringDefaultForm form) {
         return CDI.current().select(EditEntityStringDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1591,7 +1592,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityStringAttribute(UserVisitPK userVisitPK, EditEntityStringAttributeForm form) {
+    public CommandResult<EditEntityStringAttributeResult> editEntityStringAttribute(UserVisitPK userVisitPK, EditEntityStringAttributeForm form) {
         return CDI.current().select(EditEntityStringAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1610,7 +1611,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form) {
+    public CommandResult<EditEntityGeoPointDefaultResult> editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form) {
         return CDI.current().select(EditEntityGeoPointDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1629,7 +1630,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form) {
+    public CommandResult<EditEntityGeoPointAttributeResult> editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form) {
         return CDI.current().select(EditEntityGeoPointAttributeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1648,12 +1649,12 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityBlobAttribute(UserVisitPK userVisitPK, EditEntityBlobAttributeForm form) {
+    public CommandResult<EditEntityBlobAttributeResult> editEntityBlobAttribute(UserVisitPK userVisitPK, EditEntityBlobAttributeForm form) {
         return CDI.current().select(EditEntityBlobAttributeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityBlobAttribute(UserVisitPK userVisitPK, GetEntityBlobAttributeForm form) {
+    public CommandResult<GetEntityBlobAttributeResult> getEntityBlobAttribute(UserVisitPK userVisitPK, GetEntityBlobAttributeForm form) {
         return CDI.current().select(GetEntityBlobAttributeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1672,12 +1673,12 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityClobAttribute(UserVisitPK userVisitPK, EditEntityClobAttributeForm form) {
+    public CommandResult<EditEntityClobAttributeResult> editEntityClobAttribute(UserVisitPK userVisitPK, EditEntityClobAttributeForm form) {
         return CDI.current().select(EditEntityClobAttributeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityClobAttribute(UserVisitPK userVisitPK, GetEntityClobAttributeForm form) {
+    public CommandResult<GetEntityClobAttributeResult> getEntityClobAttribute(UserVisitPK userVisitPK, GetEntityClobAttributeForm form) {
         return CDI.current().select(GetEntityClobAttributeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1696,7 +1697,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form) {
+    public CommandResult<EditEntityTimeDefaultResult> editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form) {
         return CDI.current().select(EditEntityTimeDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1715,7 +1716,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityTimeAttribute(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form) {
+    public CommandResult<EditEntityTimeAttributeResult> editEntityTimeAttribute(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form) {
         return CDI.current().select(EditEntityTimeAttributeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1734,7 +1735,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form) {
+    public CommandResult<EditEntityDateDefaultResult> editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form) {
         return CDI.current().select(EditEntityDateDefaultCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1753,7 +1754,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> editEntityDateAttribute(UserVisitPK userVisitPK, EditEntityDateAttributeForm form) {
+    public CommandResult<EditEntityDateAttributeResult> editEntityDateAttribute(UserVisitPK userVisitPK, EditEntityDateAttributeForm form) {
         return CDI.current().select(EditEntityDateAttributeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1772,12 +1773,12 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAttributeEntityType(UserVisitPK userVisitPK, GetEntityAttributeEntityTypeForm form) {
+    public CommandResult<GetEntityAttributeEntityTypeResult> getEntityAttributeEntityType(UserVisitPK userVisitPK, GetEntityAttributeEntityTypeForm form) {
         return CDI.current().select(GetEntityAttributeEntityTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityAttributeEntityTypes(UserVisitPK userVisitPK, GetEntityAttributeEntityTypesForm form) {
+    public CommandResult<GetEntityAttributeEntityTypesResult> getEntityAttributeEntityTypes(UserVisitPK userVisitPK, GetEntityAttributeEntityTypesForm form) {
         return CDI.current().select(GetEntityAttributeEntityTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1796,7 +1797,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEntityEntityAttribute(UserVisitPK userVisitPK, EditEntityEntityAttributeForm form) {
+    public CommandResult<EditEntityEntityAttributeResult> editEntityEntityAttribute(UserVisitPK userVisitPK, EditEntityEntityAttributeForm form) {
         return CDI.current().select(EditEntityEntityAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1848,12 +1849,12 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> getCacheEntry(UserVisitPK userVisitPK, GetCacheEntryForm form) {
+    public CommandResult<GetCacheEntryResult> getCacheEntry(UserVisitPK userVisitPK, GetCacheEntryForm form) {
         return CDI.current().select(GetCacheEntryCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCacheEntries(UserVisitPK userVisitPK, GetCacheEntriesForm form) {
+    public CommandResult<GetCacheEntriesResult> getCacheEntries(UserVisitPK userVisitPK, GetCacheEntriesForm form) {
         return CDI.current().select(GetCacheEntriesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1867,7 +1868,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> getCacheEntryDependencies(UserVisitPK userVisitPK, GetCacheEntryDependenciesForm form) {
+    public CommandResult<GetCacheEntryDependenciesResult> getCacheEntryDependencies(UserVisitPK userVisitPK, GetCacheEntryDependenciesForm form) {
         return CDI.current().select(GetCacheEntryDependenciesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1881,17 +1882,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getApplicationChoices(UserVisitPK userVisitPK, GetApplicationChoicesForm form) {
+    public CommandResult<GetApplicationChoicesResult> getApplicationChoices(UserVisitPK userVisitPK, GetApplicationChoicesForm form) {
         return CDI.current().select(GetApplicationChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplication(UserVisitPK userVisitPK, GetApplicationForm form) {
+    public CommandResult<GetApplicationResult> getApplication(UserVisitPK userVisitPK, GetApplicationForm form) {
         return CDI.current().select(GetApplicationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplications(UserVisitPK userVisitPK, GetApplicationsForm form) {
+    public CommandResult<GetApplicationsResult> getApplications(UserVisitPK userVisitPK, GetApplicationsForm form) {
         return CDI.current().select(GetApplicationsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1901,7 +1902,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editApplication(UserVisitPK userVisitPK, EditApplicationForm form) {
+    public CommandResult<EditApplicationResult> editApplication(UserVisitPK userVisitPK, EditApplicationForm form) {
         return CDI.current().select(EditApplicationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1920,17 +1921,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getApplicationDescription(UserVisitPK userVisitPK, GetApplicationDescriptionForm form) {
+    public CommandResult<GetApplicationDescriptionResult> getApplicationDescription(UserVisitPK userVisitPK, GetApplicationDescriptionForm form) {
         return CDI.current().select(GetApplicationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplicationDescriptions(UserVisitPK userVisitPK, GetApplicationDescriptionsForm form) {
+    public CommandResult<GetApplicationDescriptionsResult> getApplicationDescriptions(UserVisitPK userVisitPK, GetApplicationDescriptionsForm form) {
         return CDI.current().select(GetApplicationDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editApplicationDescription(UserVisitPK userVisitPK, EditApplicationDescriptionForm form) {
+    public CommandResult<EditApplicationDescriptionResult> editApplicationDescription(UserVisitPK userVisitPK, EditApplicationDescriptionForm form) {
         return CDI.current().select(EditApplicationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1949,17 +1950,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEditorChoices(UserVisitPK userVisitPK, GetEditorChoicesForm form) {
+    public CommandResult<GetEditorChoicesResult> getEditorChoices(UserVisitPK userVisitPK, GetEditorChoicesForm form) {
         return CDI.current().select(GetEditorChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEditor(UserVisitPK userVisitPK, GetEditorForm form) {
+    public CommandResult<GetEditorResult> getEditor(UserVisitPK userVisitPK, GetEditorForm form) {
         return CDI.current().select(GetEditorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEditors(UserVisitPK userVisitPK, GetEditorsForm form) {
+    public CommandResult<GetEditorsResult> getEditors(UserVisitPK userVisitPK, GetEditorsForm form) {
         return CDI.current().select(GetEditorsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1969,7 +1970,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editEditor(UserVisitPK userVisitPK, EditEditorForm form) {
+    public CommandResult<EditEditorResult> editEditor(UserVisitPK userVisitPK, EditEditorForm form) {
         return CDI.current().select(EditEditorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1988,17 +1989,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEditorDescription(UserVisitPK userVisitPK, GetEditorDescriptionForm form) {
+    public CommandResult<GetEditorDescriptionResult> getEditorDescription(UserVisitPK userVisitPK, GetEditorDescriptionForm form) {
         return CDI.current().select(GetEditorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEditorDescriptions(UserVisitPK userVisitPK, GetEditorDescriptionsForm form) {
+    public CommandResult<GetEditorDescriptionsResult> getEditorDescriptions(UserVisitPK userVisitPK, GetEditorDescriptionsForm form) {
         return CDI.current().select(GetEditorDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEditorDescription(UserVisitPK userVisitPK, EditEditorDescriptionForm form) {
+    public CommandResult<EditEditorDescriptionResult> editEditorDescription(UserVisitPK userVisitPK, EditEditorDescriptionForm form) {
         return CDI.current().select(EditEditorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2017,17 +2018,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getApplicationEditorChoices(UserVisitPK userVisitPK, GetApplicationEditorChoicesForm form) {
+    public CommandResult<GetApplicationEditorChoicesResult> getApplicationEditorChoices(UserVisitPK userVisitPK, GetApplicationEditorChoicesForm form) {
         return CDI.current().select(GetApplicationEditorChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplicationEditor(UserVisitPK userVisitPK, GetApplicationEditorForm form) {
+    public CommandResult<GetApplicationEditorResult> getApplicationEditor(UserVisitPK userVisitPK, GetApplicationEditorForm form) {
         return CDI.current().select(GetApplicationEditorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplicationEditors(UserVisitPK userVisitPK, GetApplicationEditorsForm form) {
+    public CommandResult<GetApplicationEditorsResult> getApplicationEditors(UserVisitPK userVisitPK, GetApplicationEditorsForm form) {
         return CDI.current().select(GetApplicationEditorsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2037,7 +2038,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editApplicationEditor(UserVisitPK userVisitPK, EditApplicationEditorForm form) {
+    public CommandResult<EditApplicationEditorResult> editApplicationEditor(UserVisitPK userVisitPK, EditApplicationEditorForm form) {
         return CDI.current().select(EditApplicationEditorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2056,17 +2057,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getApplicationEditorUseChoices(UserVisitPK userVisitPK, GetApplicationEditorUseChoicesForm form) {
+    public CommandResult<GetApplicationEditorUseChoicesResult> getApplicationEditorUseChoices(UserVisitPK userVisitPK, GetApplicationEditorUseChoicesForm form) {
         return CDI.current().select(GetApplicationEditorUseChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplicationEditorUse(UserVisitPK userVisitPK, GetApplicationEditorUseForm form) {
+    public CommandResult<GetApplicationEditorUseResult> getApplicationEditorUse(UserVisitPK userVisitPK, GetApplicationEditorUseForm form) {
         return CDI.current().select(GetApplicationEditorUseCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplicationEditorUses(UserVisitPK userVisitPK, GetApplicationEditorUsesForm form) {
+    public CommandResult<GetApplicationEditorUsesResult> getApplicationEditorUses(UserVisitPK userVisitPK, GetApplicationEditorUsesForm form) {
         return CDI.current().select(GetApplicationEditorUsesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2076,7 +2077,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editApplicationEditorUse(UserVisitPK userVisitPK, EditApplicationEditorUseForm form) {
+    public CommandResult<EditApplicationEditorUseResult> editApplicationEditorUse(UserVisitPK userVisitPK, EditApplicationEditorUseForm form) {
         return CDI.current().select(EditApplicationEditorUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2095,17 +2096,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getApplicationEditorUseDescription(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionForm form) {
+    public CommandResult<GetApplicationEditorUseDescriptionResult> getApplicationEditorUseDescription(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionForm form) {
         return CDI.current().select(GetApplicationEditorUseDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getApplicationEditorUseDescriptions(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionsForm form) {
+    public CommandResult<GetApplicationEditorUseDescriptionsResult> getApplicationEditorUseDescriptions(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionsForm form) {
         return CDI.current().select(GetApplicationEditorUseDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editApplicationEditorUseDescription(UserVisitPK userVisitPK, EditApplicationEditorUseDescriptionForm form) {
+    public CommandResult<EditApplicationEditorUseDescriptionResult> editApplicationEditorUseDescription(UserVisitPK userVisitPK, EditApplicationEditorUseDescriptionForm form) {
         return CDI.current().select(EditApplicationEditorUseDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2124,17 +2125,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getAppearanceChoices(UserVisitPK userVisitPK, GetAppearanceChoicesForm form) {
+    public CommandResult<GetAppearanceChoicesResult> getAppearanceChoices(UserVisitPK userVisitPK, GetAppearanceChoicesForm form) {
         return CDI.current().select(GetAppearanceChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getAppearance(UserVisitPK userVisitPK, GetAppearanceForm form) {
+    public CommandResult<GetAppearanceResult> getAppearance(UserVisitPK userVisitPK, GetAppearanceForm form) {
         return CDI.current().select(GetAppearanceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getAppearances(UserVisitPK userVisitPK, GetAppearancesForm form) {
+    public CommandResult<GetAppearancesResult> getAppearances(UserVisitPK userVisitPK, GetAppearancesForm form) {
         return CDI.current().select(GetAppearancesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2144,7 +2145,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editAppearance(UserVisitPK userVisitPK, EditAppearanceForm form) {
+    public CommandResult<EditAppearanceResult> editAppearance(UserVisitPK userVisitPK, EditAppearanceForm form) {
         return CDI.current().select(EditAppearanceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2163,17 +2164,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getAppearanceDescription(UserVisitPK userVisitPK, GetAppearanceDescriptionForm form) {
+    public CommandResult<GetAppearanceDescriptionResult> getAppearanceDescription(UserVisitPK userVisitPK, GetAppearanceDescriptionForm form) {
         return CDI.current().select(GetAppearanceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getAppearanceDescriptions(UserVisitPK userVisitPK, GetAppearanceDescriptionsForm form) {
+    public CommandResult<GetAppearanceDescriptionsResult> getAppearanceDescriptions(UserVisitPK userVisitPK, GetAppearanceDescriptionsForm form) {
         return CDI.current().select(GetAppearanceDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editAppearanceDescription(UserVisitPK userVisitPK, EditAppearanceDescriptionForm form) {
+    public CommandResult<EditAppearanceDescriptionResult> editAppearanceDescription(UserVisitPK userVisitPK, EditAppearanceDescriptionForm form) {
         return CDI.current().select(EditAppearanceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2192,12 +2193,12 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getAppearanceTextDecoration(UserVisitPK userVisitPK, GetAppearanceTextDecorationForm form) {
+    public CommandResult<GetAppearanceTextDecorationResult> getAppearanceTextDecoration(UserVisitPK userVisitPK, GetAppearanceTextDecorationForm form) {
         return CDI.current().select(GetAppearanceTextDecorationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getAppearanceTextDecorations(UserVisitPK userVisitPK, GetAppearanceTextDecorationsForm form) {
+    public CommandResult<GetAppearanceTextDecorationsResult> getAppearanceTextDecorations(UserVisitPK userVisitPK, GetAppearanceTextDecorationsForm form) {
         return CDI.current().select(GetAppearanceTextDecorationsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2216,12 +2217,12 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getAppearanceTextTransformation(UserVisitPK userVisitPK, GetAppearanceTextTransformationForm form) {
+    public CommandResult<GetAppearanceTextTransformationResult> getAppearanceTextTransformation(UserVisitPK userVisitPK, GetAppearanceTextTransformationForm form) {
         return CDI.current().select(GetAppearanceTextTransformationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getAppearanceTextTransformations(UserVisitPK userVisitPK, GetAppearanceTextTransformationsForm form) {
+    public CommandResult<GetAppearanceTextTransformationsResult> getAppearanceTextTransformations(UserVisitPK userVisitPK, GetAppearanceTextTransformationsForm form) {
         return CDI.current().select(GetAppearanceTextTransformationsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2240,17 +2241,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getColorChoices(UserVisitPK userVisitPK, GetColorChoicesForm form) {
+    public CommandResult<GetColorChoicesResult> getColorChoices(UserVisitPK userVisitPK, GetColorChoicesForm form) {
         return CDI.current().select(GetColorChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getColor(UserVisitPK userVisitPK, GetColorForm form) {
+    public CommandResult<GetColorResult> getColor(UserVisitPK userVisitPK, GetColorForm form) {
         return CDI.current().select(GetColorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getColors(UserVisitPK userVisitPK, GetColorsForm form) {
+    public CommandResult<GetColorsResult> getColors(UserVisitPK userVisitPK, GetColorsForm form) {
         return CDI.current().select(GetColorsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2260,7 +2261,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editColor(UserVisitPK userVisitPK, EditColorForm form) {
+    public CommandResult<EditColorResult> editColor(UserVisitPK userVisitPK, EditColorForm form) {
         return CDI.current().select(EditColorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2279,17 +2280,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getColorDescription(UserVisitPK userVisitPK, GetColorDescriptionForm form) {
+    public CommandResult<GetColorDescriptionResult> getColorDescription(UserVisitPK userVisitPK, GetColorDescriptionForm form) {
         return CDI.current().select(GetColorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getColorDescriptions(UserVisitPK userVisitPK, GetColorDescriptionsForm form) {
+    public CommandResult<GetColorDescriptionsResult> getColorDescriptions(UserVisitPK userVisitPK, GetColorDescriptionsForm form) {
         return CDI.current().select(GetColorDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editColorDescription(UserVisitPK userVisitPK, EditColorDescriptionForm form) {
+    public CommandResult<EditColorDescriptionResult> editColorDescription(UserVisitPK userVisitPK, EditColorDescriptionForm form) {
         return CDI.current().select(EditColorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2308,17 +2309,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getFontStyleChoices(UserVisitPK userVisitPK, GetFontStyleChoicesForm form) {
+    public CommandResult<GetFontStyleChoicesResult> getFontStyleChoices(UserVisitPK userVisitPK, GetFontStyleChoicesForm form) {
         return CDI.current().select(GetFontStyleChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getFontStyle(UserVisitPK userVisitPK, GetFontStyleForm form) {
+    public CommandResult<GetFontStyleResult> getFontStyle(UserVisitPK userVisitPK, GetFontStyleForm form) {
         return CDI.current().select(GetFontStyleCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getFontStyles(UserVisitPK userVisitPK, GetFontStylesForm form) {
+    public CommandResult<GetFontStylesResult> getFontStyles(UserVisitPK userVisitPK, GetFontStylesForm form) {
         return CDI.current().select(GetFontStylesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2328,7 +2329,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editFontStyle(UserVisitPK userVisitPK, EditFontStyleForm form) {
+    public CommandResult<EditFontStyleResult> editFontStyle(UserVisitPK userVisitPK, EditFontStyleForm form) {
         return CDI.current().select(EditFontStyleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2347,17 +2348,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getFontStyleDescription(UserVisitPK userVisitPK, GetFontStyleDescriptionForm form) {
+    public CommandResult<GetFontStyleDescriptionResult> getFontStyleDescription(UserVisitPK userVisitPK, GetFontStyleDescriptionForm form) {
         return CDI.current().select(GetFontStyleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getFontStyleDescriptions(UserVisitPK userVisitPK, GetFontStyleDescriptionsForm form) {
+    public CommandResult<GetFontStyleDescriptionsResult> getFontStyleDescriptions(UserVisitPK userVisitPK, GetFontStyleDescriptionsForm form) {
         return CDI.current().select(GetFontStyleDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editFontStyleDescription(UserVisitPK userVisitPK, EditFontStyleDescriptionForm form) {
+    public CommandResult<EditFontStyleDescriptionResult> editFontStyleDescription(UserVisitPK userVisitPK, EditFontStyleDescriptionForm form) {
         return CDI.current().select(EditFontStyleDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2376,17 +2377,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getFontWeightChoices(UserVisitPK userVisitPK, GetFontWeightChoicesForm form) {
+    public CommandResult<GetFontWeightChoicesResult> getFontWeightChoices(UserVisitPK userVisitPK, GetFontWeightChoicesForm form) {
         return CDI.current().select(GetFontWeightChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getFontWeight(UserVisitPK userVisitPK, GetFontWeightForm form) {
+    public CommandResult<GetFontWeightResult> getFontWeight(UserVisitPK userVisitPK, GetFontWeightForm form) {
         return CDI.current().select(GetFontWeightCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getFontWeights(UserVisitPK userVisitPK, GetFontWeightsForm form) {
+    public CommandResult<GetFontWeightsResult> getFontWeights(UserVisitPK userVisitPK, GetFontWeightsForm form) {
         return CDI.current().select(GetFontWeightsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2396,7 +2397,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editFontWeight(UserVisitPK userVisitPK, EditFontWeightForm form) {
+    public CommandResult<EditFontWeightResult> editFontWeight(UserVisitPK userVisitPK, EditFontWeightForm form) {
         return CDI.current().select(EditFontWeightCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2415,17 +2416,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getFontWeightDescription(UserVisitPK userVisitPK, GetFontWeightDescriptionForm form) {
+    public CommandResult<GetFontWeightDescriptionResult> getFontWeightDescription(UserVisitPK userVisitPK, GetFontWeightDescriptionForm form) {
         return CDI.current().select(GetFontWeightDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getFontWeightDescriptions(UserVisitPK userVisitPK, GetFontWeightDescriptionsForm form) {
+    public CommandResult<GetFontWeightDescriptionsResult> getFontWeightDescriptions(UserVisitPK userVisitPK, GetFontWeightDescriptionsForm form) {
         return CDI.current().select(GetFontWeightDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editFontWeightDescription(UserVisitPK userVisitPK, EditFontWeightDescriptionForm form) {
+    public CommandResult<EditFontWeightDescriptionResult> editFontWeightDescription(UserVisitPK userVisitPK, EditFontWeightDescriptionForm form) {
         return CDI.current().select(EditFontWeightDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2444,17 +2445,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getTextDecorationChoices(UserVisitPK userVisitPK, GetTextDecorationChoicesForm form) {
+    public CommandResult<GetTextDecorationChoicesResult> getTextDecorationChoices(UserVisitPK userVisitPK, GetTextDecorationChoicesForm form) {
         return CDI.current().select(GetTextDecorationChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTextDecoration(UserVisitPK userVisitPK, GetTextDecorationForm form) {
+    public CommandResult<GetTextDecorationResult> getTextDecoration(UserVisitPK userVisitPK, GetTextDecorationForm form) {
         return CDI.current().select(GetTextDecorationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTextDecorations(UserVisitPK userVisitPK, GetTextDecorationsForm form) {
+    public CommandResult<GetTextDecorationsResult> getTextDecorations(UserVisitPK userVisitPK, GetTextDecorationsForm form) {
         return CDI.current().select(GetTextDecorationsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2464,7 +2465,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editTextDecoration(UserVisitPK userVisitPK, EditTextDecorationForm form) {
+    public CommandResult<EditTextDecorationResult> editTextDecoration(UserVisitPK userVisitPK, EditTextDecorationForm form) {
         return CDI.current().select(EditTextDecorationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2483,17 +2484,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getTextDecorationDescription(UserVisitPK userVisitPK, GetTextDecorationDescriptionForm form) {
+    public CommandResult<GetTextDecorationDescriptionResult> getTextDecorationDescription(UserVisitPK userVisitPK, GetTextDecorationDescriptionForm form) {
         return CDI.current().select(GetTextDecorationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTextDecorationDescriptions(UserVisitPK userVisitPK, GetTextDecorationDescriptionsForm form) {
+    public CommandResult<GetTextDecorationDescriptionsResult> getTextDecorationDescriptions(UserVisitPK userVisitPK, GetTextDecorationDescriptionsForm form) {
         return CDI.current().select(GetTextDecorationDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editTextDecorationDescription(UserVisitPK userVisitPK, EditTextDecorationDescriptionForm form) {
+    public CommandResult<EditTextDecorationDescriptionResult> editTextDecorationDescription(UserVisitPK userVisitPK, EditTextDecorationDescriptionForm form) {
         return CDI.current().select(EditTextDecorationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2512,17 +2513,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getTextTransformationChoices(UserVisitPK userVisitPK, GetTextTransformationChoicesForm form) {
+    public CommandResult<GetTextTransformationChoicesResult> getTextTransformationChoices(UserVisitPK userVisitPK, GetTextTransformationChoicesForm form) {
         return CDI.current().select(GetTextTransformationChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTextTransformation(UserVisitPK userVisitPK, GetTextTransformationForm form) {
+    public CommandResult<GetTextTransformationResult> getTextTransformation(UserVisitPK userVisitPK, GetTextTransformationForm form) {
         return CDI.current().select(GetTextTransformationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTextTransformations(UserVisitPK userVisitPK, GetTextTransformationsForm form) {
+    public CommandResult<GetTextTransformationsResult> getTextTransformations(UserVisitPK userVisitPK, GetTextTransformationsForm form) {
         return CDI.current().select(GetTextTransformationsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2532,7 +2533,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> editTextTransformation(UserVisitPK userVisitPK, EditTextTransformationForm form) {
+    public CommandResult<EditTextTransformationResult> editTextTransformation(UserVisitPK userVisitPK, EditTextTransformationForm form) {
         return CDI.current().select(EditTextTransformationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2551,17 +2552,17 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getTextTransformationDescription(UserVisitPK userVisitPK, GetTextTransformationDescriptionForm form) {
+    public CommandResult<GetTextTransformationDescriptionResult> getTextTransformationDescription(UserVisitPK userVisitPK, GetTextTransformationDescriptionForm form) {
         return CDI.current().select(GetTextTransformationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTextTransformationDescriptions(UserVisitPK userVisitPK, GetTextTransformationDescriptionsForm form) {
+    public CommandResult<GetTextTransformationDescriptionsResult> getTextTransformationDescriptions(UserVisitPK userVisitPK, GetTextTransformationDescriptionsForm form) {
         return CDI.current().select(GetTextTransformationDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editTextTransformationDescription(UserVisitPK userVisitPK, EditTextTransformationDescriptionForm form) {
+    public CommandResult<EditTextTransformationDescriptionResult> editTextTransformationDescription(UserVisitPK userVisitPK, EditTextTransformationDescriptionForm form) {
         return CDI.current().select(EditTextTransformationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2580,12 +2581,12 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> getEntityAppearance(UserVisitPK userVisitPK, GetEntityAppearanceForm form) {
+    public CommandResult<GetEntityAppearanceResult> getEntityAppearance(UserVisitPK userVisitPK, GetEntityAppearanceForm form) {
         return CDI.current().select(GetEntityAppearanceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editEntityAppearance(UserVisitPK userVisitPK, EditEntityAppearanceForm form) {
+    public CommandResult<EditEntityAppearanceResult> editEntityAppearance(UserVisitPK userVisitPK, EditEntityAppearanceForm form) {
         return CDI.current().select(EditEntityAppearanceCommand.class).get().run(userVisitPK, form);
     }
     

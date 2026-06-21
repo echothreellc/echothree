@@ -18,6 +18,7 @@ package com.echothree.control.user.tax.server;
 
 import com.echothree.control.user.tax.common.TaxRemote;
 import com.echothree.control.user.tax.common.form.*;
+import com.echothree.control.user.tax.common.result.*;
 import com.echothree.control.user.tax.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class TaxBean
     }
 
     @Override
-    public CommandResult<?> getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form) {
+    public CommandResult<GetTaxClassificationsResult> getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form) {
         return CDI.current().select(GetTaxClassificationsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form) {
+    public CommandResult<GetTaxClassificationResult> getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form) {
         return CDI.current().select(GetTaxClassificationCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form) {
+    public CommandResult<GetTaxClassificationChoicesResult> getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form) {
         return CDI.current().select(GetTaxClassificationChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -68,7 +69,7 @@ public class TaxBean
     }
 
     @Override
-    public CommandResult<?> editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form) {
+    public CommandResult<EditTaxClassificationResult> editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form) {
         return CDI.current().select(EditTaxClassificationCommand.class).get().run(userVisitPK, form);
     }
 
@@ -87,17 +88,17 @@ public class TaxBean
     }
 
     @Override
-    public CommandResult<?> getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form) {
+    public CommandResult<GetTaxClassificationTranslationsResult> getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form) {
         return CDI.current().select(GetTaxClassificationTranslationsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form) {
+    public CommandResult<GetTaxClassificationTranslationResult> getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form) {
         return CDI.current().select(GetTaxClassificationTranslationCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form) {
+    public CommandResult<EditTaxClassificationTranslationResult> editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form) {
         return CDI.current().select(EditTaxClassificationTranslationCommand.class).get().run(userVisitPK, form);
     }
 
@@ -116,17 +117,17 @@ public class TaxBean
     }
 
     @Override
-    public CommandResult<?> getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form) {
+    public CommandResult<GetItemTaxClassificationsResult> getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form) {
         return CDI.current().select(GetItemTaxClassificationsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form) {
+    public CommandResult<GetItemTaxClassificationResult> getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form) {
         return CDI.current().select(GetItemTaxClassificationCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form) {
+    public CommandResult<EditItemTaxClassificationResult> editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form) {
         return CDI.current().select(EditItemTaxClassificationCommand.class).get().run(userVisitPK, form);
     }
 
@@ -145,12 +146,12 @@ public class TaxBean
     }
     
     @Override
-    public CommandResult<?> getTaxes(UserVisitPK userVisitPK, GetTaxesForm form) {
+    public CommandResult<GetTaxesResult> getTaxes(UserVisitPK userVisitPK, GetTaxesForm form) {
         return CDI.current().select(GetTaxesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getTax(UserVisitPK userVisitPK, GetTaxForm form) {
+    public CommandResult<GetTaxResult> getTax(UserVisitPK userVisitPK, GetTaxForm form) {
         return CDI.current().select(GetTaxCommand.class).get().run(userVisitPK, form);
     }
     
@@ -160,7 +161,7 @@ public class TaxBean
     }
     
     @Override
-    public CommandResult<?> editTax(UserVisitPK userVisitPK, EditTaxForm form) {
+    public CommandResult<EditTaxResult> editTax(UserVisitPK userVisitPK, EditTaxForm form) {
         return CDI.current().select(EditTaxCommand.class).get().run(userVisitPK, form);
     }
     
@@ -179,12 +180,12 @@ public class TaxBean
     }
     
     @Override
-    public CommandResult<?> getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form) {
+    public CommandResult<GetTaxDescriptionsResult> getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form) {
         return CDI.current().select(GetTaxDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form) {
+    public CommandResult<EditTaxDescriptionResult> editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form) {
         return CDI.current().select(EditTaxDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -203,7 +204,7 @@ public class TaxBean
     }
     
     @Override
-    public CommandResult<?> getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form) {
+    public CommandResult<GetGeoCodeTaxesResult> getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form) {
         return CDI.current().select(GetGeoCodeTaxesCommand.class).get().run(userVisitPK, form);
     }
     

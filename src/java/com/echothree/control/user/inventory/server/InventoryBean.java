@@ -18,6 +18,7 @@ package com.echothree.control.user.inventory.server;
 
 import com.echothree.control.user.inventory.common.InventoryRemote;
 import com.echothree.control.user.inventory.common.form.*;
+import com.echothree.control.user.inventory.common.result.*;
 import com.echothree.control.user.inventory.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryConditions(UserVisitPK userVisitPK, GetInventoryConditionsForm form) {
+    public CommandResult<GetInventoryConditionsResult> getInventoryConditions(UserVisitPK userVisitPK, GetInventoryConditionsForm form) {
         return CDI.current().select(GetInventoryConditionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getInventoryCondition(UserVisitPK userVisitPK, GetInventoryConditionForm form) {
+    public CommandResult<GetInventoryConditionResult> getInventoryCondition(UserVisitPK userVisitPK, GetInventoryConditionForm form) {
         return CDI.current().select(GetInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getInventoryConditionChoices(UserVisitPK userVisitPK, GetInventoryConditionChoicesForm form) {
+    public CommandResult<GetInventoryConditionChoicesResult> getInventoryConditionChoices(UserVisitPK userVisitPK, GetInventoryConditionChoicesForm form) {
         return CDI.current().select(GetInventoryConditionChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> editInventoryCondition(UserVisitPK userVisitPK, EditInventoryConditionForm form) {
+    public CommandResult<EditInventoryConditionResult> editInventoryCondition(UserVisitPK userVisitPK, EditInventoryConditionForm form) {
         return CDI.current().select(EditInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,12 +88,12 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryConditionDescriptions(UserVisitPK userVisitPK, GetInventoryConditionDescriptionsForm form) {
+    public CommandResult<GetInventoryConditionDescriptionsResult> getInventoryConditionDescriptions(UserVisitPK userVisitPK, GetInventoryConditionDescriptionsForm form) {
         return CDI.current().select(GetInventoryConditionDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editInventoryConditionDescription(UserVisitPK userVisitPK, EditInventoryConditionDescriptionForm form) {
+    public CommandResult<EditInventoryConditionDescriptionResult> editInventoryConditionDescription(UserVisitPK userVisitPK, EditInventoryConditionDescriptionForm form) {
         return CDI.current().select(EditInventoryConditionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -111,12 +112,12 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryConditionUseTypeChoices(UserVisitPK userVisitPK, GetInventoryConditionUseTypeChoicesForm form) {
+    public CommandResult<GetInventoryConditionUseTypeChoicesResult> getInventoryConditionUseTypeChoices(UserVisitPK userVisitPK, GetInventoryConditionUseTypeChoicesForm form) {
         return CDI.current().select(GetInventoryConditionUseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getInventoryConditionUseTypes(UserVisitPK userVisitPK, GetInventoryConditionUseTypesForm form) {
+    public CommandResult<GetInventoryConditionUseTypesResult> getInventoryConditionUseTypes(UserVisitPK userVisitPK, GetInventoryConditionUseTypesForm form) {
         return CDI.current().select(GetInventoryConditionUseTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -139,7 +140,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryConditionUses(UserVisitPK userVisitPK, GetInventoryConditionUsesForm form) {
+    public CommandResult<GetInventoryConditionUsesResult> getInventoryConditionUses(UserVisitPK userVisitPK, GetInventoryConditionUsesForm form) {
         return CDI.current().select(GetInventoryConditionUsesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -163,17 +164,17 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryLocationGroups(UserVisitPK userVisitPK, GetInventoryLocationGroupsForm form) {
+    public CommandResult<GetInventoryLocationGroupsResult> getInventoryLocationGroups(UserVisitPK userVisitPK, GetInventoryLocationGroupsForm form) {
         return CDI.current().select(GetInventoryLocationGroupsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getInventoryLocationGroup(UserVisitPK userVisitPK, GetInventoryLocationGroupForm form) {
+    public CommandResult<GetInventoryLocationGroupResult> getInventoryLocationGroup(UserVisitPK userVisitPK, GetInventoryLocationGroupForm form) {
         return CDI.current().select(GetInventoryLocationGroupCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getInventoryLocationGroupChoices(UserVisitPK userVisitPK, GetInventoryLocationGroupChoicesForm form) {
+    public CommandResult<GetInventoryLocationGroupChoicesResult> getInventoryLocationGroupChoices(UserVisitPK userVisitPK, GetInventoryLocationGroupChoicesForm form) {
         return CDI.current().select(GetInventoryLocationGroupChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -183,7 +184,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryLocationGroupStatusChoices(UserVisitPK userVisitPK, GetInventoryLocationGroupStatusChoicesForm form) {
+    public CommandResult<GetInventoryLocationGroupStatusChoicesResult> getInventoryLocationGroupStatusChoices(UserVisitPK userVisitPK, GetInventoryLocationGroupStatusChoicesForm form) {
         return CDI.current().select(GetInventoryLocationGroupStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -193,7 +194,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> editInventoryLocationGroup(UserVisitPK userVisitPK, EditInventoryLocationGroupForm form) {
+    public CommandResult<EditInventoryLocationGroupResult> editInventoryLocationGroup(UserVisitPK userVisitPK, EditInventoryLocationGroupForm form) {
         return CDI.current().select(EditInventoryLocationGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -212,12 +213,12 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryLocationGroupDescriptions(UserVisitPK userVisitPK, GetInventoryLocationGroupDescriptionsForm form) {
+    public CommandResult<GetInventoryLocationGroupDescriptionsResult> getInventoryLocationGroupDescriptions(UserVisitPK userVisitPK, GetInventoryLocationGroupDescriptionsForm form) {
         return CDI.current().select(GetInventoryLocationGroupDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editInventoryLocationGroupDescription(UserVisitPK userVisitPK, EditInventoryLocationGroupDescriptionForm form) {
+    public CommandResult<EditInventoryLocationGroupDescriptionResult> editInventoryLocationGroupDescription(UserVisitPK userVisitPK, EditInventoryLocationGroupDescriptionForm form) {
         return CDI.current().select(EditInventoryLocationGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -236,12 +237,12 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getInventoryLocationGroupCapacities(UserVisitPK userVisitPK, GetInventoryLocationGroupCapacitiesForm form) {
+    public CommandResult<GetInventoryLocationGroupCapacitiesResult> getInventoryLocationGroupCapacities(UserVisitPK userVisitPK, GetInventoryLocationGroupCapacitiesForm form) {
         return CDI.current().select(GetInventoryLocationGroupCapacitiesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editInventoryLocationGroupCapacity(UserVisitPK userVisitPK, EditInventoryLocationGroupCapacityForm form) {
+    public CommandResult<EditInventoryLocationGroupCapacityResult> editInventoryLocationGroupCapacity(UserVisitPK userVisitPK, EditInventoryLocationGroupCapacityForm form) {
         return CDI.current().select(EditInventoryLocationGroupCapacityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -260,7 +261,7 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> editInventoryLocationGroupVolume(UserVisitPK userVisitPK, EditInventoryLocationGroupVolumeForm form) {
+    public CommandResult<EditInventoryLocationGroupVolumeResult> editInventoryLocationGroupVolume(UserVisitPK userVisitPK, EditInventoryLocationGroupVolumeForm form) {
         return CDI.current().select(EditInventoryLocationGroupVolumeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -274,12 +275,12 @@ public class InventoryBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> getLots(UserVisitPK userVisitPK, GetLotsForm form) {
+    public CommandResult<GetLotsResult> getLots(UserVisitPK userVisitPK, GetLotsForm form) {
         return CDI.current().select(GetLotsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLot(UserVisitPK userVisitPK, GetLotForm form) {
+    public CommandResult<GetLotResult> getLot(UserVisitPK userVisitPK, GetLotForm form) {
         return CDI.current().select(GetLotCommand.class).get().run(userVisitPK, form);
     }
 
@@ -293,17 +294,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getLotTimeTypeChoices(UserVisitPK userVisitPK, GetLotTimeTypeChoicesForm form) {
+    public CommandResult<GetLotTimeTypeChoicesResult> getLotTimeTypeChoices(UserVisitPK userVisitPK, GetLotTimeTypeChoicesForm form) {
         return CDI.current().select(GetLotTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotTimeType(UserVisitPK userVisitPK, GetLotTimeTypeForm form) {
+    public CommandResult<GetLotTimeTypeResult> getLotTimeType(UserVisitPK userVisitPK, GetLotTimeTypeForm form) {
         return CDI.current().select(GetLotTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotTimeTypes(UserVisitPK userVisitPK, GetLotTimeTypesForm form) {
+    public CommandResult<GetLotTimeTypesResult> getLotTimeTypes(UserVisitPK userVisitPK, GetLotTimeTypesForm form) {
         return CDI.current().select(GetLotTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -313,7 +314,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> editLotTimeType(UserVisitPK userVisitPK, EditLotTimeTypeForm form) {
+    public CommandResult<EditLotTimeTypeResult> editLotTimeType(UserVisitPK userVisitPK, EditLotTimeTypeForm form) {
         return CDI.current().select(EditLotTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -332,17 +333,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getLotTimeTypeDescription(UserVisitPK userVisitPK, GetLotTimeTypeDescriptionForm form) {
+    public CommandResult<GetLotTimeTypeDescriptionResult> getLotTimeTypeDescription(UserVisitPK userVisitPK, GetLotTimeTypeDescriptionForm form) {
         return CDI.current().select(GetLotTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotTimeTypeDescriptions(UserVisitPK userVisitPK, GetLotTimeTypeDescriptionsForm form) {
+    public CommandResult<GetLotTimeTypeDescriptionsResult> getLotTimeTypeDescriptions(UserVisitPK userVisitPK, GetLotTimeTypeDescriptionsForm form) {
         return CDI.current().select(GetLotTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editLotTimeTypeDescription(UserVisitPK userVisitPK, EditLotTimeTypeDescriptionForm form) {
+    public CommandResult<EditLotTimeTypeDescriptionResult> editLotTimeTypeDescription(UserVisitPK userVisitPK, EditLotTimeTypeDescriptionForm form) {
         return CDI.current().select(EditLotTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -361,17 +362,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getLotAliasTypeChoices(UserVisitPK userVisitPK, GetLotAliasTypeChoicesForm form) {
+    public CommandResult<GetLotAliasTypeChoicesResult> getLotAliasTypeChoices(UserVisitPK userVisitPK, GetLotAliasTypeChoicesForm form) {
         return CDI.current().select(GetLotAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotAliasType(UserVisitPK userVisitPK, GetLotAliasTypeForm form) {
+    public CommandResult<GetLotAliasTypeResult> getLotAliasType(UserVisitPK userVisitPK, GetLotAliasTypeForm form) {
         return CDI.current().select(GetLotAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotAliasTypes(UserVisitPK userVisitPK, GetLotAliasTypesForm form) {
+    public CommandResult<GetLotAliasTypesResult> getLotAliasTypes(UserVisitPK userVisitPK, GetLotAliasTypesForm form) {
         return CDI.current().select(GetLotAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -381,7 +382,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> editLotAliasType(UserVisitPK userVisitPK, EditLotAliasTypeForm form) {
+    public CommandResult<EditLotAliasTypeResult> editLotAliasType(UserVisitPK userVisitPK, EditLotAliasTypeForm form) {
         return CDI.current().select(EditLotAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -400,17 +401,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getLotAliasTypeDescription(UserVisitPK userVisitPK, GetLotAliasTypeDescriptionForm form) {
+    public CommandResult<GetLotAliasTypeDescriptionResult> getLotAliasTypeDescription(UserVisitPK userVisitPK, GetLotAliasTypeDescriptionForm form) {
         return CDI.current().select(GetLotAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotAliasTypeDescriptions(UserVisitPK userVisitPK, GetLotAliasTypeDescriptionsForm form) {
+    public CommandResult<GetLotAliasTypeDescriptionsResult> getLotAliasTypeDescriptions(UserVisitPK userVisitPK, GetLotAliasTypeDescriptionsForm form) {
         return CDI.current().select(GetLotAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editLotAliasTypeDescription(UserVisitPK userVisitPK, EditLotAliasTypeDescriptionForm form) {
+    public CommandResult<EditLotAliasTypeDescriptionResult> editLotAliasTypeDescription(UserVisitPK userVisitPK, EditLotAliasTypeDescriptionForm form) {
         return CDI.current().select(EditLotAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -429,17 +430,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getLotAlias(UserVisitPK userVisitPK, GetLotAliasForm form) {
+    public CommandResult<GetLotAliasResult> getLotAlias(UserVisitPK userVisitPK, GetLotAliasForm form) {
         return CDI.current().select(GetLotAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getLotAliases(UserVisitPK userVisitPK, GetLotAliasesForm form) {
+    public CommandResult<GetLotAliasesResult> getLotAliases(UserVisitPK userVisitPK, GetLotAliasesForm form) {
         return CDI.current().select(GetLotAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editLotAlias(UserVisitPK userVisitPK, EditLotAliasForm form) {
+    public CommandResult<EditLotAliasResult> editLotAlias(UserVisitPK userVisitPK, EditLotAliasForm form) {
         return CDI.current().select(EditLotAliasCommand.class).get().run(userVisitPK, form);
     }
 
@@ -458,17 +459,17 @@ public class InventoryBean
     }
     
     @Override
-    public CommandResult<?> getPartyInventoryLevel(UserVisitPK userVisitPK, GetPartyInventoryLevelForm form) {
+    public CommandResult<GetPartyInventoryLevelResult> getPartyInventoryLevel(UserVisitPK userVisitPK, GetPartyInventoryLevelForm form) {
         return CDI.current().select(GetPartyInventoryLevelCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getPartyInventoryLevels(UserVisitPK userVisitPK, GetPartyInventoryLevelsForm form) {
+    public CommandResult<GetPartyInventoryLevelsResult> getPartyInventoryLevels(UserVisitPK userVisitPK, GetPartyInventoryLevelsForm form) {
         return CDI.current().select(GetPartyInventoryLevelsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editPartyInventoryLevel(UserVisitPK userVisitPK, EditPartyInventoryLevelForm form) {
+    public CommandResult<EditPartyInventoryLevelResult> editPartyInventoryLevel(UserVisitPK userVisitPK, EditPartyInventoryLevelForm form) {
         return CDI.current().select(EditPartyInventoryLevelCommand.class).get().run(userVisitPK, form);
     }
     
@@ -487,17 +488,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getAllocationPriorityChoices(UserVisitPK userVisitPK, GetAllocationPriorityChoicesForm form) {
+    public CommandResult<GetAllocationPriorityChoicesResult> getAllocationPriorityChoices(UserVisitPK userVisitPK, GetAllocationPriorityChoicesForm form) {
         return CDI.current().select(GetAllocationPriorityChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getAllocationPriority(UserVisitPK userVisitPK, GetAllocationPriorityForm form) {
+    public CommandResult<GetAllocationPriorityResult> getAllocationPriority(UserVisitPK userVisitPK, GetAllocationPriorityForm form) {
         return CDI.current().select(GetAllocationPriorityCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getAllocationPriorities(UserVisitPK userVisitPK, GetAllocationPrioritiesForm form) {
+    public CommandResult<GetAllocationPrioritiesResult> getAllocationPriorities(UserVisitPK userVisitPK, GetAllocationPrioritiesForm form) {
         return CDI.current().select(GetAllocationPrioritiesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -507,7 +508,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> editAllocationPriority(UserVisitPK userVisitPK, EditAllocationPriorityForm form) {
+    public CommandResult<EditAllocationPriorityResult> editAllocationPriority(UserVisitPK userVisitPK, EditAllocationPriorityForm form) {
         return CDI.current().select(EditAllocationPriorityCommand.class).get().run(userVisitPK, form);
     }
 
@@ -526,17 +527,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getAllocationPriorityDescription(UserVisitPK userVisitPK, GetAllocationPriorityDescriptionForm form) {
+    public CommandResult<GetAllocationPriorityDescriptionResult> getAllocationPriorityDescription(UserVisitPK userVisitPK, GetAllocationPriorityDescriptionForm form) {
         return CDI.current().select(GetAllocationPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getAllocationPriorityDescriptions(UserVisitPK userVisitPK, GetAllocationPriorityDescriptionsForm form) {
+    public CommandResult<GetAllocationPriorityDescriptionsResult> getAllocationPriorityDescriptions(UserVisitPK userVisitPK, GetAllocationPriorityDescriptionsForm form) {
         return CDI.current().select(GetAllocationPriorityDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editAllocationPriorityDescription(UserVisitPK userVisitPK, EditAllocationPriorityDescriptionForm form) {
+    public CommandResult<EditAllocationPriorityDescriptionResult> editAllocationPriorityDescription(UserVisitPK userVisitPK, EditAllocationPriorityDescriptionForm form) {
         return CDI.current().select(EditAllocationPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -555,17 +556,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getInventoryAdjustmentTypes(UserVisitPK userVisitPK, GetInventoryAdjustmentTypesForm form) {
+    public CommandResult<GetInventoryAdjustmentTypesResult> getInventoryAdjustmentTypes(UserVisitPK userVisitPK, GetInventoryAdjustmentTypesForm form) {
         return CDI.current().select(GetInventoryAdjustmentTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getInventoryAdjustmentType(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeForm form) {
+    public CommandResult<GetInventoryAdjustmentTypeResult> getInventoryAdjustmentType(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeForm form) {
         return CDI.current().select(GetInventoryAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getInventoryAdjustmentTypeChoices(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeChoicesForm form) {
+    public CommandResult<GetInventoryAdjustmentTypeChoicesResult> getInventoryAdjustmentTypeChoices(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeChoicesForm form) {
         return CDI.current().select(GetInventoryAdjustmentTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -575,7 +576,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> editInventoryAdjustmentType(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeForm form) {
+    public CommandResult<EditInventoryAdjustmentTypeResult> editInventoryAdjustmentType(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeForm form) {
         return CDI.current().select(EditInventoryAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -594,12 +595,12 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getInventoryAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeDescriptionsForm form) {
+    public CommandResult<GetInventoryAdjustmentTypeDescriptionsResult> getInventoryAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeDescriptionsForm form) {
         return CDI.current().select(GetInventoryAdjustmentTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeDescriptionForm form) {
+    public CommandResult<EditInventoryAdjustmentTypeDescriptionResult> editInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeDescriptionForm form) {
         return CDI.current().select(EditInventoryAdjustmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -618,17 +619,17 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getInventoryTransactionTypes(UserVisitPK userVisitPK, GetInventoryTransactionTypesForm form) {
+    public CommandResult<GetInventoryTransactionTypesResult> getInventoryTransactionTypes(UserVisitPK userVisitPK, GetInventoryTransactionTypesForm form) {
         return CDI.current().select(GetInventoryTransactionTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getInventoryTransactionType(UserVisitPK userVisitPK, GetInventoryTransactionTypeForm form) {
+    public CommandResult<GetInventoryTransactionTypeResult> getInventoryTransactionType(UserVisitPK userVisitPK, GetInventoryTransactionTypeForm form) {
         return CDI.current().select(GetInventoryTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getInventoryTransactionTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionTypeChoicesForm form) {
+    public CommandResult<GetInventoryTransactionTypeChoicesResult> getInventoryTransactionTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionTypeChoicesForm form) {
         return CDI.current().select(GetInventoryTransactionTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -638,7 +639,7 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> editInventoryTransactionType(UserVisitPK userVisitPK, EditInventoryTransactionTypeForm form) {
+    public CommandResult<EditInventoryTransactionTypeResult> editInventoryTransactionType(UserVisitPK userVisitPK, EditInventoryTransactionTypeForm form) {
         return CDI.current().select(EditInventoryTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -657,12 +658,12 @@ public class InventoryBean
     }
 
     @Override
-    public CommandResult<?> getInventoryTransactionTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTypeDescriptionsForm form) {
+    public CommandResult<GetInventoryTransactionTypeDescriptionsResult> getInventoryTransactionTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTypeDescriptionsForm form) {
         return CDI.current().select(GetInventoryTransactionTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editInventoryTransactionTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTypeDescriptionForm form) {
+    public CommandResult<EditInventoryTransactionTypeDescriptionResult> editInventoryTransactionTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTypeDescriptionForm form) {
         return CDI.current().select(EditInventoryTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 

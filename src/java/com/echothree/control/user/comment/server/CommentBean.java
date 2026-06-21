@@ -18,6 +18,7 @@ package com.echothree.control.user.comment.server;
 
 import com.echothree.control.user.comment.common.CommentRemote;
 import com.echothree.control.user.comment.common.form.*;
+import com.echothree.control.user.comment.common.result.*;
 import com.echothree.control.user.comment.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class CommentBean
     }
     
     @Override
-    public CommandResult<?> getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form) {
+    public CommandResult<GetCommentTypeResult> getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form) {
         return CDI.current().select(GetCommentTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form) {
+    public CommandResult<GetCommentTypesResult> getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form) {
         return CDI.current().select(GetCommentTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form) {
+    public CommandResult<EditCommentTypeResult> editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form) {
         return CDI.current().select(EditCommentTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -77,12 +78,12 @@ public class CommentBean
     }
     
     @Override
-    public CommandResult<?> getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form) {
+    public CommandResult<GetCommentTypeDescriptionsResult> getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form) {
         return CDI.current().select(GetCommentTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form) {
+    public CommandResult<EditCommentTypeDescriptionResult> editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form) {
         return CDI.current().select(EditCommentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -101,17 +102,17 @@ public class CommentBean
     }
     
     @Override
-    public CommandResult<?> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form) {
+    public CommandResult<GetCommentUsageTypeResult> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form) {
         return CDI.current().select(GetCommentUsageTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form) {
+    public CommandResult<GetCommentUsageTypesResult> getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form) {
         return CDI.current().select(GetCommentUsageTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form) {
+    public CommandResult<EditCommentUsageTypeResult> editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form) {
         return CDI.current().select(EditCommentUsageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -130,12 +131,12 @@ public class CommentBean
     }
     
     @Override
-    public CommandResult<?> getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form) {
+    public CommandResult<GetCommentUsageTypeDescriptionsResult> getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form) {
         return CDI.current().select(GetCommentUsageTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form) {
+    public CommandResult<EditCommentUsageTypeDescriptionResult> editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form) {
         return CDI.current().select(EditCommentUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -154,12 +155,12 @@ public class CommentBean
     }
     
     @Override
-    public CommandResult<?> editComment(UserVisitPK userVisitPK, EditCommentForm form) {
+    public CommandResult<EditCommentResult> editComment(UserVisitPK userVisitPK, EditCommentForm form) {
         return CDI.current().select(EditCommentCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form) {
+    public CommandResult<GetCommentStatusChoicesResult> getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form) {
         return CDI.current().select(GetCommentStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -169,7 +170,7 @@ public class CommentBean
     }
     
     @Override
-    public CommandResult<?> getComment(UserVisitPK userVisitPK, GetCommentForm form) {
+    public CommandResult<GetCommentResult> getComment(UserVisitPK userVisitPK, GetCommentForm form) {
         return CDI.current().select(GetCommentCommand.class).get().run(userVisitPK, form);
     }
     

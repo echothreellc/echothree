@@ -18,6 +18,7 @@ package com.echothree.control.user.message.server;
 
 import com.echothree.control.user.message.common.MessageRemote;
 import com.echothree.control.user.message.common.form.*;
+import com.echothree.control.user.message.common.result.*;
 import com.echothree.control.user.message.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class MessageBean
     }
     
     @Override
-    public CommandResult<?> getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form) {
+    public CommandResult<GetMessageTypeResult> getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form) {
         return CDI.current().select(GetMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form) {
+    public CommandResult<GetMessageTypesResult> getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form) {
         return CDI.current().select(GetMessageTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form) {
+    public CommandResult<EditMessageTypeResult> editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form) {
         return CDI.current().select(EditMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -77,12 +78,12 @@ public class MessageBean
     }
     
     @Override
-    public CommandResult<?> getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form) {
+    public CommandResult<GetMessageTypeDescriptionsResult> getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form) {
         return CDI.current().select(GetMessageTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form) {
+    public CommandResult<EditMessageTypeDescriptionResult> editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form) {
         return CDI.current().select(EditMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -101,12 +102,12 @@ public class MessageBean
     }
     
     @Override
-    public CommandResult<?> getMessage(UserVisitPK userVisitPK, GetMessageForm form) {
+    public CommandResult<GetMessageResult> getMessage(UserVisitPK userVisitPK, GetMessageForm form) {
         return CDI.current().select(GetMessageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getMessages(UserVisitPK userVisitPK, GetMessagesForm form) {
+    public CommandResult<GetMessagesResult> getMessages(UserVisitPK userVisitPK, GetMessagesForm form) {
         return CDI.current().select(GetMessagesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -125,12 +126,12 @@ public class MessageBean
     }
     
     @Override
-    public CommandResult<?> getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form) {
+    public CommandResult<GetMessageDescriptionsResult> getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form) {
         return CDI.current().select(GetMessageDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form) {
+    public CommandResult<EditMessageDescriptionResult> editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form) {
         return CDI.current().select(EditMessageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -149,12 +150,12 @@ public class MessageBean
     }
     
     @Override
-    public CommandResult<?> getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form) {
+    public CommandResult<GetEntityMessageResult> getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form) {
         return CDI.current().select(GetEntityMessageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
+    public CommandResult<GetEntityMessagesResult> getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
         return CDI.current().select(GetEntityMessagesCommand.class).get().run(userVisitPK, form);
     }
     

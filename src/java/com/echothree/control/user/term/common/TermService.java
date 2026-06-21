@@ -17,6 +17,7 @@
 package com.echothree.control.user.term.common;
 
 import com.echothree.control.user.term.common.form.*;
+import com.echothree.control.user.term.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,11 +36,11 @@ public interface TermService
     
     CommandResult<?> createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form);
     
-    CommandResult<?> getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form);
+    CommandResult<GetTermTypesResult> getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form);
     
-    CommandResult<?> getTermType(UserVisitPK userVisitPK, GetTermTypeForm form);
+    CommandResult<GetTermTypeResult> getTermType(UserVisitPK userVisitPK, GetTermTypeForm form);
     
-    CommandResult<?> getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form);
+    CommandResult<GetTermTypeChoicesResult> getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form);
     
     // -------------------------------------------------------------------------
     //   Term Type Descriptions
@@ -53,11 +54,11 @@ public interface TermService
     
     CommandResult<?> createTerm(UserVisitPK userVisitPK, CreateTermForm form);
     
-    CommandResult<?> getTerms(UserVisitPK userVisitPK, GetTermsForm form);
+    CommandResult<GetTermsResult> getTerms(UserVisitPK userVisitPK, GetTermsForm form);
     
-    CommandResult<?> getTerm(UserVisitPK userVisitPK, GetTermForm form);
+    CommandResult<GetTermResult> getTerm(UserVisitPK userVisitPK, GetTermForm form);
     
-    CommandResult<?> getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form);
+    CommandResult<GetTermChoicesResult> getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form);
     
     CommandResult<?> setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form);
     
@@ -69,9 +70,9 @@ public interface TermService
     
     CommandResult<?> createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form);
     
-    CommandResult<?> getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form);
+    CommandResult<GetTermDescriptionsResult> getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form);
     
-    CommandResult<?> editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form);
+    CommandResult<EditTermDescriptionResult> editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form);
     
     CommandResult<?> deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form);
     
@@ -81,9 +82,9 @@ public interface TermService
     
     CommandResult<?> createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form);
     
-    CommandResult<?> editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form);
+    CommandResult<EditCustomerTypeCreditLimitResult> editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form);
     
-    CommandResult<?> getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form);
+    CommandResult<GetCustomerTypeCreditLimitsResult> getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form);
     
     CommandResult<?> deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form);
     
@@ -93,9 +94,9 @@ public interface TermService
     
     CommandResult<?> createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form);
     
-    CommandResult<?> editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form);
+    CommandResult<EditPartyCreditLimitResult> editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form);
     
-    CommandResult<?> getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form);
+    CommandResult<GetPartyCreditLimitsResult> getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form);
     
     CommandResult<?> deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form);
     
@@ -103,6 +104,6 @@ public interface TermService
     //   Party Terms
     // -------------------------------------------------------------------------
     
-    CommandResult<?> editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form);
+    CommandResult<EditPartyTermResult> editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form);
     
 }

@@ -17,6 +17,7 @@
 package com.echothree.control.user.authentication.common;
 
 import com.echothree.control.user.authentication.common.form.*;
+import com.echothree.control.user.authentication.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -53,15 +54,15 @@ public interface AuthenticationService
     //   Logins
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form);
+    CommandResult<GetCustomerLoginDefaultsResult> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form);
     
     CommandResult<?> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form);
     
-    CommandResult<?> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form);
+    CommandResult<GetEmployeeLoginDefaultsResult> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form);
     
     CommandResult<?> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form);
     
-    CommandResult<?> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form);
+    CommandResult<GetVendorLoginDefaultsResult> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form);
     
     CommandResult<?> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form);
     

@@ -18,6 +18,7 @@ package com.echothree.control.user.purchase.server;
 
 import com.echothree.control.user.purchase.common.PurchaseRemote;
 import com.echothree.control.user.purchase.common.form.*;
+import com.echothree.control.user.purchase.common.result.*;
 import com.echothree.control.user.purchase.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,7 +49,7 @@ public class PurchaseBean
     }
 
     @Override
-    public CommandResult<?> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
+    public CommandResult<GetPurchaseOrderStatusChoicesResult> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
         return CDI.current().select(GetPurchaseOrderStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -67,7 +68,7 @@ public class PurchaseBean
     }
 
     @Override
-    public CommandResult<?> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
+    public CommandResult<GetPurchaseInvoiceStatusChoicesResult> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
         return CDI.current().select(GetPurchaseInvoiceStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 

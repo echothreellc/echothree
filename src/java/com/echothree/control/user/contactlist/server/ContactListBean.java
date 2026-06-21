@@ -18,6 +18,7 @@ package com.echothree.control.user.contactlist.server;
 
 import com.echothree.control.user.contactlist.common.ContactListRemote;
 import com.echothree.control.user.contactlist.common.form.*;
+import com.echothree.control.user.contactlist.common.result.*;
 import com.echothree.control.user.contactlist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form) {
+    public CommandResult<GetContactListTypesResult> getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form) {
         return CDI.current().select(GetContactListTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListType(UserVisitPK userVisitPK, GetContactListTypeForm form) {
+    public CommandResult<GetContactListTypeResult> getContactListType(UserVisitPK userVisitPK, GetContactListTypeForm form) {
         return CDI.current().select(GetContactListTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListTypeChoices(UserVisitPK userVisitPK, GetContactListTypeChoicesForm form) {
+    public CommandResult<GetContactListTypeChoicesResult> getContactListTypeChoices(UserVisitPK userVisitPK, GetContactListTypeChoicesForm form) {
         return CDI.current().select(GetContactListTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -68,7 +69,7 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> editContactListType(UserVisitPK userVisitPK, EditContactListTypeForm form) {
+    public CommandResult<EditContactListTypeResult> editContactListType(UserVisitPK userVisitPK, EditContactListTypeForm form) {
         return CDI.current().select(EditContactListTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -87,17 +88,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListTypeDescriptions(UserVisitPK userVisitPK, GetContactListTypeDescriptionsForm form) {
+    public CommandResult<GetContactListTypeDescriptionsResult> getContactListTypeDescriptions(UserVisitPK userVisitPK, GetContactListTypeDescriptionsForm form) {
         return CDI.current().select(GetContactListTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListTypeDescription(UserVisitPK userVisitPK, GetContactListTypeDescriptionForm form) {
+    public CommandResult<GetContactListTypeDescriptionResult> getContactListTypeDescription(UserVisitPK userVisitPK, GetContactListTypeDescriptionForm form) {
         return CDI.current().select(GetContactListTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editContactListTypeDescription(UserVisitPK userVisitPK, EditContactListTypeDescriptionForm form) {
+    public CommandResult<EditContactListTypeDescriptionResult> editContactListTypeDescription(UserVisitPK userVisitPK, EditContactListTypeDescriptionForm form) {
         return CDI.current().select(EditContactListTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -116,17 +117,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form) {
+    public CommandResult<GetContactListGroupsResult> getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form) {
         return CDI.current().select(GetContactListGroupsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListGroup(UserVisitPK userVisitPK, GetContactListGroupForm form) {
+    public CommandResult<GetContactListGroupResult> getContactListGroup(UserVisitPK userVisitPK, GetContactListGroupForm form) {
         return CDI.current().select(GetContactListGroupCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListGroupChoices(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form) {
+    public CommandResult<GetContactListGroupChoicesResult> getContactListGroupChoices(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form) {
         return CDI.current().select(GetContactListGroupChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -136,7 +137,7 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> editContactListGroup(UserVisitPK userVisitPK, EditContactListGroupForm form) {
+    public CommandResult<EditContactListGroupResult> editContactListGroup(UserVisitPK userVisitPK, EditContactListGroupForm form) {
         return CDI.current().select(EditContactListGroupCommand.class).get().run(userVisitPK, form);
     }
 
@@ -155,17 +156,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListGroupDescriptions(UserVisitPK userVisitPK, GetContactListGroupDescriptionsForm form) {
+    public CommandResult<GetContactListGroupDescriptionsResult> getContactListGroupDescriptions(UserVisitPK userVisitPK, GetContactListGroupDescriptionsForm form) {
         return CDI.current().select(GetContactListGroupDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListGroupDescription(UserVisitPK userVisitPK, GetContactListGroupDescriptionForm form) {
+    public CommandResult<GetContactListGroupDescriptionResult> getContactListGroupDescription(UserVisitPK userVisitPK, GetContactListGroupDescriptionForm form) {
         return CDI.current().select(GetContactListGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editContactListGroupDescription(UserVisitPK userVisitPK, EditContactListGroupDescriptionForm form) {
+    public CommandResult<EditContactListGroupDescriptionResult> editContactListGroupDescription(UserVisitPK userVisitPK, EditContactListGroupDescriptionForm form) {
         return CDI.current().select(EditContactListGroupDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -184,17 +185,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form) {
+    public CommandResult<GetContactListFrequenciesResult> getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form) {
         return CDI.current().select(GetContactListFrequenciesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListFrequency(UserVisitPK userVisitPK, GetContactListFrequencyForm form) {
+    public CommandResult<GetContactListFrequencyResult> getContactListFrequency(UserVisitPK userVisitPK, GetContactListFrequencyForm form) {
         return CDI.current().select(GetContactListFrequencyCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListFrequencyChoices(UserVisitPK userVisitPK, GetContactListFrequencyChoicesForm form) {
+    public CommandResult<GetContactListFrequencyChoicesResult> getContactListFrequencyChoices(UserVisitPK userVisitPK, GetContactListFrequencyChoicesForm form) {
         return CDI.current().select(GetContactListFrequencyChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> editContactListFrequency(UserVisitPK userVisitPK, EditContactListFrequencyForm form) {
+    public CommandResult<EditContactListFrequencyResult> editContactListFrequency(UserVisitPK userVisitPK, EditContactListFrequencyForm form) {
         return CDI.current().select(EditContactListFrequencyCommand.class).get().run(userVisitPK, form);
     }
 
@@ -223,17 +224,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListFrequencyDescriptions(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionsForm form) {
+    public CommandResult<GetContactListFrequencyDescriptionsResult> getContactListFrequencyDescriptions(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionsForm form) {
         return CDI.current().select(GetContactListFrequencyDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListFrequencyDescription(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionForm form) {
+    public CommandResult<GetContactListFrequencyDescriptionResult> getContactListFrequencyDescription(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionForm form) {
         return CDI.current().select(GetContactListFrequencyDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editContactListFrequencyDescription(UserVisitPK userVisitPK, EditContactListFrequencyDescriptionForm form) {
+    public CommandResult<EditContactListFrequencyDescriptionResult> editContactListFrequencyDescription(UserVisitPK userVisitPK, EditContactListFrequencyDescriptionForm form) {
         return CDI.current().select(EditContactListFrequencyDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -252,17 +253,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactLists(UserVisitPK userVisitPK, GetContactListsForm form) {
+    public CommandResult<GetContactListsResult> getContactLists(UserVisitPK userVisitPK, GetContactListsForm form) {
         return CDI.current().select(GetContactListsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactList(UserVisitPK userVisitPK, GetContactListForm form) {
+    public CommandResult<GetContactListResult> getContactList(UserVisitPK userVisitPK, GetContactListForm form) {
         return CDI.current().select(GetContactListCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListChoices(UserVisitPK userVisitPK, GetContactListChoicesForm form) {
+    public CommandResult<GetContactListChoicesResult> getContactListChoices(UserVisitPK userVisitPK, GetContactListChoicesForm form) {
         return CDI.current().select(GetContactListChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -272,7 +273,7 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> editContactList(UserVisitPK userVisitPK, EditContactListForm form) {
+    public CommandResult<EditContactListResult> editContactList(UserVisitPK userVisitPK, EditContactListForm form) {
         return CDI.current().select(EditContactListCommand.class).get().run(userVisitPK, form);
     }
 
@@ -291,17 +292,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getContactListDescriptions(UserVisitPK userVisitPK, GetContactListDescriptionsForm form) {
+    public CommandResult<GetContactListDescriptionsResult> getContactListDescriptions(UserVisitPK userVisitPK, GetContactListDescriptionsForm form) {
         return CDI.current().select(GetContactListDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContactListDescription(UserVisitPK userVisitPK, GetContactListDescriptionForm form) {
+    public CommandResult<GetContactListDescriptionResult> getContactListDescription(UserVisitPK userVisitPK, GetContactListDescriptionForm form) {
         return CDI.current().select(GetContactListDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editContactListDescription(UserVisitPK userVisitPK, EditContactListDescriptionForm form) {
+    public CommandResult<EditContactListDescriptionResult> editContactListDescription(UserVisitPK userVisitPK, EditContactListDescriptionForm form) {
         return CDI.current().select(EditContactListDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -320,17 +321,17 @@ public class ContactListBean
     }
     
     @Override
-    public CommandResult<?> getPartyTypeContactLists(UserVisitPK userVisitPK, GetPartyTypeContactListsForm form) {
+    public CommandResult<GetPartyTypeContactListsResult> getPartyTypeContactLists(UserVisitPK userVisitPK, GetPartyTypeContactListsForm form) {
         return CDI.current().select(GetPartyTypeContactListsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyTypeContactList(UserVisitPK userVisitPK, GetPartyTypeContactListForm form) {
+    public CommandResult<GetPartyTypeContactListResult> getPartyTypeContactList(UserVisitPK userVisitPK, GetPartyTypeContactListForm form) {
         return CDI.current().select(GetPartyTypeContactListCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPartyTypeContactList(UserVisitPK userVisitPK, EditPartyTypeContactListForm form) {
+    public CommandResult<EditPartyTypeContactListResult> editPartyTypeContactList(UserVisitPK userVisitPK, EditPartyTypeContactListForm form) {
         return CDI.current().select(EditPartyTypeContactListCommand.class).get().run(userVisitPK, form);
     }
     
@@ -349,17 +350,17 @@ public class ContactListBean
     }
     
     @Override
-    public CommandResult<?> getPartyTypeContactListGroups(UserVisitPK userVisitPK, GetPartyTypeContactListGroupsForm form) {
+    public CommandResult<GetPartyTypeContactListGroupsResult> getPartyTypeContactListGroups(UserVisitPK userVisitPK, GetPartyTypeContactListGroupsForm form) {
         return CDI.current().select(GetPartyTypeContactListGroupsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyTypeContactListGroup(UserVisitPK userVisitPK, GetPartyTypeContactListGroupForm form) {
+    public CommandResult<GetPartyTypeContactListGroupResult> getPartyTypeContactListGroup(UserVisitPK userVisitPK, GetPartyTypeContactListGroupForm form) {
         return CDI.current().select(GetPartyTypeContactListGroupCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editPartyTypeContactListGroup(UserVisitPK userVisitPK, EditPartyTypeContactListGroupForm form) {
+    public CommandResult<EditPartyTypeContactListGroupResult> editPartyTypeContactListGroup(UserVisitPK userVisitPK, EditPartyTypeContactListGroupForm form) {
         return CDI.current().select(EditPartyTypeContactListGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -378,17 +379,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getCustomerTypeContactLists(UserVisitPK userVisitPK, GetCustomerTypeContactListsForm form) {
+    public CommandResult<GetCustomerTypeContactListsResult> getCustomerTypeContactLists(UserVisitPK userVisitPK, GetCustomerTypeContactListsForm form) {
         return CDI.current().select(GetCustomerTypeContactListsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCustomerTypeContactList(UserVisitPK userVisitPK, GetCustomerTypeContactListForm form) {
+    public CommandResult<GetCustomerTypeContactListResult> getCustomerTypeContactList(UserVisitPK userVisitPK, GetCustomerTypeContactListForm form) {
         return CDI.current().select(GetCustomerTypeContactListCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editCustomerTypeContactList(UserVisitPK userVisitPK, EditCustomerTypeContactListForm form) {
+    public CommandResult<EditCustomerTypeContactListResult> editCustomerTypeContactList(UserVisitPK userVisitPK, EditCustomerTypeContactListForm form) {
         return CDI.current().select(EditCustomerTypeContactListCommand.class).get().run(userVisitPK, form);
     }
 
@@ -407,17 +408,17 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> getCustomerTypeContactListGroups(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupsForm form) {
+    public CommandResult<GetCustomerTypeContactListGroupsResult> getCustomerTypeContactListGroups(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupsForm form) {
         return CDI.current().select(GetCustomerTypeContactListGroupsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCustomerTypeContactListGroup(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupForm form) {
+    public CommandResult<GetCustomerTypeContactListGroupResult> getCustomerTypeContactListGroup(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupForm form) {
         return CDI.current().select(GetCustomerTypeContactListGroupCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editCustomerTypeContactListGroup(UserVisitPK userVisitPK, EditCustomerTypeContactListGroupForm form) {
+    public CommandResult<EditCustomerTypeContactListGroupResult> editCustomerTypeContactListGroup(UserVisitPK userVisitPK, EditCustomerTypeContactListGroupForm form) {
         return CDI.current().select(EditCustomerTypeContactListGroupCommand.class).get().run(userVisitPK, form);
     }
 
@@ -436,17 +437,17 @@ public class ContactListBean
     }
     
     @Override
-    public CommandResult<?> getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form) {
+    public CommandResult<GetContactListContactMechanismPurposeChoicesResult> getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form) {
         return CDI.current().select(GetContactListContactMechanismPurposeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getContactListContactMechanismPurpose(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeForm form) {
+    public CommandResult<GetContactListContactMechanismPurposeResult> getContactListContactMechanismPurpose(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeForm form) {
         return CDI.current().select(GetContactListContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getContactListContactMechanismPurposes(UserVisitPK userVisitPK, GetContactListContactMechanismPurposesForm form) {
+    public CommandResult<GetContactListContactMechanismPurposesResult> getContactListContactMechanismPurposes(UserVisitPK userVisitPK, GetContactListContactMechanismPurposesForm form) {
         return CDI.current().select(GetContactListContactMechanismPurposesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -456,7 +457,7 @@ public class ContactListBean
     }
     
     @Override
-    public CommandResult<?> editContactListContactMechanismPurpose(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form) {
+    public CommandResult<EditContactListContactMechanismPurposeResult> editContactListContactMechanismPurpose(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form) {
         return CDI.current().select(EditContactListContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -475,17 +476,17 @@ public class ContactListBean
     }
     
     @Override
-    public CommandResult<?> getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form) {
+    public CommandResult<GetPartyContactListsResult> getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form) {
         return CDI.current().select(GetPartyContactListsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyContactList(UserVisitPK userVisitPK, GetPartyContactListForm form) {
+    public CommandResult<GetPartyContactListResult> getPartyContactList(UserVisitPK userVisitPK, GetPartyContactListForm form) {
         return CDI.current().select(GetPartyContactListCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getPartyContactListStatusChoices(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form) {
+    public CommandResult<GetPartyContactListStatusChoicesResult> getPartyContactListStatusChoices(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form) {
         return CDI.current().select(GetPartyContactListStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -495,7 +496,7 @@ public class ContactListBean
     }
 
     @Override
-    public CommandResult<?> editPartyContactList(UserVisitPK userVisitPK, EditPartyContactListForm form) {
+    public CommandResult<EditPartyContactListResult> editPartyContactList(UserVisitPK userVisitPK, EditPartyContactListForm form) {
         return CDI.current().select(EditPartyContactListCommand.class).get().run(userVisitPK, form);
     }
     

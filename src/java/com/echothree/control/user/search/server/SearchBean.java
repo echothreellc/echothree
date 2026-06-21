@@ -18,6 +18,7 @@ package com.echothree.control.user.search.server;
 
 import com.echothree.control.user.search.common.SearchRemote;
 import com.echothree.control.user.search.common.form.*;
+import com.echothree.control.user.search.common.result.*;
 import com.echothree.control.user.search.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getSearchDefaultOperatorChoices(UserVisitPK userVisitPK, GetSearchDefaultOperatorChoicesForm form) {
+    public CommandResult<GetSearchDefaultOperatorChoicesResult> getSearchDefaultOperatorChoices(UserVisitPK userVisitPK, GetSearchDefaultOperatorChoicesForm form) {
         return CDI.current().select(GetSearchDefaultOperatorChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSearchDefaultOperator(UserVisitPK userVisitPK, GetSearchDefaultOperatorForm form) {
+    public CommandResult<GetSearchDefaultOperatorResult> getSearchDefaultOperator(UserVisitPK userVisitPK, GetSearchDefaultOperatorForm form) {
         return CDI.current().select(GetSearchDefaultOperatorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSearchDefaultOperators(UserVisitPK userVisitPK, GetSearchDefaultOperatorsForm form) {
+    public CommandResult<GetSearchDefaultOperatorsResult> getSearchDefaultOperators(UserVisitPK userVisitPK, GetSearchDefaultOperatorsForm form) {
         return CDI.current().select(GetSearchDefaultOperatorsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> editSearchDefaultOperator(UserVisitPK userVisitPK, EditSearchDefaultOperatorForm form) {
+    public CommandResult<EditSearchDefaultOperatorResult> editSearchDefaultOperator(UserVisitPK userVisitPK, EditSearchDefaultOperatorForm form) {
         return CDI.current().select(EditSearchDefaultOperatorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,17 +88,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getSearchDefaultOperatorDescription(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionForm form) {
+    public CommandResult<GetSearchDefaultOperatorDescriptionResult> getSearchDefaultOperatorDescription(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionForm form) {
         return CDI.current().select(GetSearchDefaultOperatorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSearchDefaultOperatorDescriptions(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionsForm form) {
+    public CommandResult<GetSearchDefaultOperatorDescriptionsResult> getSearchDefaultOperatorDescriptions(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionsForm form) {
         return CDI.current().select(GetSearchDefaultOperatorDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSearchDefaultOperatorDescription(UserVisitPK userVisitPK, EditSearchDefaultOperatorDescriptionForm form) {
+    public CommandResult<EditSearchDefaultOperatorDescriptionResult> editSearchDefaultOperatorDescription(UserVisitPK userVisitPK, EditSearchDefaultOperatorDescriptionForm form) {
         return CDI.current().select(EditSearchDefaultOperatorDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -116,17 +117,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getSearchSortDirectionChoices(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form) {
+    public CommandResult<GetSearchSortDirectionChoicesResult> getSearchSortDirectionChoices(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form) {
         return CDI.current().select(GetSearchSortDirectionChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSearchSortDirection(UserVisitPK userVisitPK, GetSearchSortDirectionForm form) {
+    public CommandResult<GetSearchSortDirectionResult> getSearchSortDirection(UserVisitPK userVisitPK, GetSearchSortDirectionForm form) {
         return CDI.current().select(GetSearchSortDirectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSearchSortDirections(UserVisitPK userVisitPK, GetSearchSortDirectionsForm form) {
+    public CommandResult<GetSearchSortDirectionsResult> getSearchSortDirections(UserVisitPK userVisitPK, GetSearchSortDirectionsForm form) {
         return CDI.current().select(GetSearchSortDirectionsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -136,7 +137,7 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> editSearchSortDirection(UserVisitPK userVisitPK, EditSearchSortDirectionForm form) {
+    public CommandResult<EditSearchSortDirectionResult> editSearchSortDirection(UserVisitPK userVisitPK, EditSearchSortDirectionForm form) {
         return CDI.current().select(EditSearchSortDirectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -155,17 +156,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getSearchSortDirectionDescription(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionForm form) {
+    public CommandResult<GetSearchSortDirectionDescriptionResult> getSearchSortDirectionDescription(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionForm form) {
         return CDI.current().select(GetSearchSortDirectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSearchSortDirectionDescriptions(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionsForm form) {
+    public CommandResult<GetSearchSortDirectionDescriptionsResult> getSearchSortDirectionDescriptions(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionsForm form) {
         return CDI.current().select(GetSearchSortDirectionDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editSearchSortDirectionDescription(UserVisitPK userVisitPK, EditSearchSortDirectionDescriptionForm form) {
+    public CommandResult<EditSearchSortDirectionDescriptionResult> editSearchSortDirectionDescription(UserVisitPK userVisitPK, EditSearchSortDirectionDescriptionForm form) {
         return CDI.current().select(EditSearchSortDirectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -184,17 +185,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchKinds(UserVisitPK userVisitPK, GetSearchKindsForm form) {
+    public CommandResult<GetSearchKindsResult> getSearchKinds(UserVisitPK userVisitPK, GetSearchKindsForm form) {
         return CDI.current().select(GetSearchKindsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchKind(UserVisitPK userVisitPK, GetSearchKindForm form) {
+    public CommandResult<GetSearchKindResult> getSearchKind(UserVisitPK userVisitPK, GetSearchKindForm form) {
         return CDI.current().select(GetSearchKindCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchKindChoices(UserVisitPK userVisitPK, GetSearchKindChoicesForm form) {
+    public CommandResult<GetSearchKindChoicesResult> getSearchKindChoices(UserVisitPK userVisitPK, GetSearchKindChoicesForm form) {
         return CDI.current().select(GetSearchKindChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -204,7 +205,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> editSearchKind(UserVisitPK userVisitPK, EditSearchKindForm form) {
+    public CommandResult<EditSearchKindResult> editSearchKind(UserVisitPK userVisitPK, EditSearchKindForm form) {
         return CDI.current().select(EditSearchKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -223,17 +224,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchKindDescriptions(UserVisitPK userVisitPK, GetSearchKindDescriptionsForm form) {
+    public CommandResult<GetSearchKindDescriptionsResult> getSearchKindDescriptions(UserVisitPK userVisitPK, GetSearchKindDescriptionsForm form) {
         return CDI.current().select(GetSearchKindDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchKindDescription(UserVisitPK userVisitPK, GetSearchKindDescriptionForm form) {
+    public CommandResult<GetSearchKindDescriptionResult> getSearchKindDescription(UserVisitPK userVisitPK, GetSearchKindDescriptionForm form) {
         return CDI.current().select(GetSearchKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editSearchKindDescription(UserVisitPK userVisitPK, EditSearchKindDescriptionForm form) {
+    public CommandResult<EditSearchKindDescriptionResult> editSearchKindDescription(UserVisitPK userVisitPK, EditSearchKindDescriptionForm form) {
         return CDI.current().select(EditSearchKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -252,17 +253,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchTypes(UserVisitPK userVisitPK, GetSearchTypesForm form) {
+    public CommandResult<GetSearchTypesResult> getSearchTypes(UserVisitPK userVisitPK, GetSearchTypesForm form) {
         return CDI.current().select(GetSearchTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchType(UserVisitPK userVisitPK, GetSearchTypeForm form) {
+    public CommandResult<GetSearchTypeResult> getSearchType(UserVisitPK userVisitPK, GetSearchTypeForm form) {
         return CDI.current().select(GetSearchTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchTypeChoices(UserVisitPK userVisitPK, GetSearchTypeChoicesForm form) {
+    public CommandResult<GetSearchTypeChoicesResult> getSearchTypeChoices(UserVisitPK userVisitPK, GetSearchTypeChoicesForm form) {
         return CDI.current().select(GetSearchTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -272,7 +273,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> editSearchType(UserVisitPK userVisitPK, EditSearchTypeForm form) {
+    public CommandResult<EditSearchTypeResult> editSearchType(UserVisitPK userVisitPK, EditSearchTypeForm form) {
         return CDI.current().select(EditSearchTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -291,17 +292,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchTypeDescriptions(UserVisitPK userVisitPK, GetSearchTypeDescriptionsForm form) {
+    public CommandResult<GetSearchTypeDescriptionsResult> getSearchTypeDescriptions(UserVisitPK userVisitPK, GetSearchTypeDescriptionsForm form) {
         return CDI.current().select(GetSearchTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchTypeDescription(UserVisitPK userVisitPK, GetSearchTypeDescriptionForm form) {
+    public CommandResult<GetSearchTypeDescriptionResult> getSearchTypeDescription(UserVisitPK userVisitPK, GetSearchTypeDescriptionForm form) {
         return CDI.current().select(GetSearchTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editSearchTypeDescription(UserVisitPK userVisitPK, EditSearchTypeDescriptionForm form) {
+    public CommandResult<EditSearchTypeDescriptionResult> editSearchTypeDescription(UserVisitPK userVisitPK, EditSearchTypeDescriptionForm form) {
         return CDI.current().select(EditSearchTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -320,17 +321,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchSortOrders(UserVisitPK userVisitPK, GetSearchSortOrdersForm form) {
+    public CommandResult<GetSearchSortOrdersResult> getSearchSortOrders(UserVisitPK userVisitPK, GetSearchSortOrdersForm form) {
         return CDI.current().select(GetSearchSortOrdersCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchSortOrder(UserVisitPK userVisitPK, GetSearchSortOrderForm form) {
+    public CommandResult<GetSearchSortOrderResult> getSearchSortOrder(UserVisitPK userVisitPK, GetSearchSortOrderForm form) {
         return CDI.current().select(GetSearchSortOrderCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchSortOrderChoices(UserVisitPK userVisitPK, GetSearchSortOrderChoicesForm form) {
+    public CommandResult<GetSearchSortOrderChoicesResult> getSearchSortOrderChoices(UserVisitPK userVisitPK, GetSearchSortOrderChoicesForm form) {
         return CDI.current().select(GetSearchSortOrderChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -340,7 +341,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> editSearchSortOrder(UserVisitPK userVisitPK, EditSearchSortOrderForm form) {
+    public CommandResult<EditSearchSortOrderResult> editSearchSortOrder(UserVisitPK userVisitPK, EditSearchSortOrderForm form) {
         return CDI.current().select(EditSearchSortOrderCommand.class).get().run(userVisitPK, form);
     }
 
@@ -359,17 +360,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchSortOrderDescriptions(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionsForm form) {
+    public CommandResult<GetSearchSortOrderDescriptionsResult> getSearchSortOrderDescriptions(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionsForm form) {
         return CDI.current().select(GetSearchSortOrderDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchSortOrderDescription(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionForm form) {
+    public CommandResult<GetSearchSortOrderDescriptionResult> getSearchSortOrderDescription(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionForm form) {
         return CDI.current().select(GetSearchSortOrderDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editSearchSortOrderDescription(UserVisitPK userVisitPK, EditSearchSortOrderDescriptionForm form) {
+    public CommandResult<EditSearchSortOrderDescriptionResult> editSearchSortOrderDescription(UserVisitPK userVisitPK, EditSearchSortOrderDescriptionForm form) {
         return CDI.current().select(EditSearchSortOrderDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -388,17 +389,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchUseTypes(UserVisitPK userVisitPK, GetSearchUseTypesForm form) {
+    public CommandResult<GetSearchUseTypesResult> getSearchUseTypes(UserVisitPK userVisitPK, GetSearchUseTypesForm form) {
         return CDI.current().select(GetSearchUseTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchUseType(UserVisitPK userVisitPK, GetSearchUseTypeForm form) {
+    public CommandResult<GetSearchUseTypeResult> getSearchUseType(UserVisitPK userVisitPK, GetSearchUseTypeForm form) {
         return CDI.current().select(GetSearchUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchUseTypeChoices(UserVisitPK userVisitPK, GetSearchUseTypeChoicesForm form) {
+    public CommandResult<GetSearchUseTypeChoicesResult> getSearchUseTypeChoices(UserVisitPK userVisitPK, GetSearchUseTypeChoicesForm form) {
         return CDI.current().select(GetSearchUseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -408,7 +409,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> editSearchUseType(UserVisitPK userVisitPK, EditSearchUseTypeForm form) {
+    public CommandResult<EditSearchUseTypeResult> editSearchUseType(UserVisitPK userVisitPK, EditSearchUseTypeForm form) {
         return CDI.current().select(EditSearchUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -427,17 +428,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchUseTypeDescriptions(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionsForm form) {
+    public CommandResult<GetSearchUseTypeDescriptionsResult> getSearchUseTypeDescriptions(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionsForm form) {
         return CDI.current().select(GetSearchUseTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchUseTypeDescription(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionForm form) {
+    public CommandResult<GetSearchUseTypeDescriptionResult> getSearchUseTypeDescription(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionForm form) {
         return CDI.current().select(GetSearchUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editSearchUseTypeDescription(UserVisitPK userVisitPK, EditSearchUseTypeDescriptionForm form) {
+    public CommandResult<EditSearchUseTypeDescriptionResult> editSearchUseTypeDescription(UserVisitPK userVisitPK, EditSearchUseTypeDescriptionForm form) {
         return CDI.current().select(EditSearchUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -456,17 +457,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchResultActionTypes(UserVisitPK userVisitPK, GetSearchResultActionTypesForm form) {
+    public CommandResult<GetSearchResultActionTypesResult> getSearchResultActionTypes(UserVisitPK userVisitPK, GetSearchResultActionTypesForm form) {
         return CDI.current().select(GetSearchResultActionTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchResultActionType(UserVisitPK userVisitPK, GetSearchResultActionTypeForm form) {
+    public CommandResult<GetSearchResultActionTypeResult> getSearchResultActionType(UserVisitPK userVisitPK, GetSearchResultActionTypeForm form) {
         return CDI.current().select(GetSearchResultActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchResultActionTypeChoices(UserVisitPK userVisitPK, GetSearchResultActionTypeChoicesForm form) {
+    public CommandResult<GetSearchResultActionTypeChoicesResult> getSearchResultActionTypeChoices(UserVisitPK userVisitPK, GetSearchResultActionTypeChoicesForm form) {
         return CDI.current().select(GetSearchResultActionTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -476,7 +477,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> editSearchResultActionType(UserVisitPK userVisitPK, EditSearchResultActionTypeForm form) {
+    public CommandResult<EditSearchResultActionTypeResult> editSearchResultActionType(UserVisitPK userVisitPK, EditSearchResultActionTypeForm form) {
         return CDI.current().select(EditSearchResultActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -495,17 +496,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchResultActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionsForm form) {
+    public CommandResult<GetSearchResultActionTypeDescriptionsResult> getSearchResultActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionsForm form) {
         return CDI.current().select(GetSearchResultActionTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchResultActionTypeDescription(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionForm form) {
+    public CommandResult<GetSearchResultActionTypeDescriptionResult> getSearchResultActionTypeDescription(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionForm form) {
         return CDI.current().select(GetSearchResultActionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editSearchResultActionTypeDescription(UserVisitPK userVisitPK, EditSearchResultActionTypeDescriptionForm form) {
+    public CommandResult<EditSearchResultActionTypeDescriptionResult> editSearchResultActionTypeDescription(UserVisitPK userVisitPK, EditSearchResultActionTypeDescriptionForm form) {
         return CDI.current().select(EditSearchResultActionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -524,17 +525,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchCheckSpellingActionTypes(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form) {
+    public CommandResult<GetSearchCheckSpellingActionTypesResult> getSearchCheckSpellingActionTypes(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form) {
         return CDI.current().select(GetSearchCheckSpellingActionTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchCheckSpellingActionType(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeForm form) {
+    public CommandResult<GetSearchCheckSpellingActionTypeResult> getSearchCheckSpellingActionType(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeForm form) {
         return CDI.current().select(GetSearchCheckSpellingActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchCheckSpellingActionTypeChoices(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeChoicesForm form) {
+    public CommandResult<GetSearchCheckSpellingActionTypeChoicesResult> getSearchCheckSpellingActionTypeChoices(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeChoicesForm form) {
         return CDI.current().select(GetSearchCheckSpellingActionTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -544,7 +545,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> editSearchCheckSpellingActionType(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeForm form) {
+    public CommandResult<EditSearchCheckSpellingActionTypeResult> editSearchCheckSpellingActionType(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeForm form) {
         return CDI.current().select(EditSearchCheckSpellingActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -563,17 +564,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSearchCheckSpellingActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionsForm form) {
+    public CommandResult<GetSearchCheckSpellingActionTypeDescriptionsResult> getSearchCheckSpellingActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionsForm form) {
         return CDI.current().select(GetSearchCheckSpellingActionTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionForm form) {
+    public CommandResult<GetSearchCheckSpellingActionTypeDescriptionResult> getSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionForm form) {
         return CDI.current().select(GetSearchCheckSpellingActionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> editSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeDescriptionForm form) {
+    public CommandResult<EditSearchCheckSpellingActionTypeDescriptionResult> editSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeDescriptionForm form) {
         return CDI.current().select(EditSearchCheckSpellingActionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -592,17 +593,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form) {
+    public CommandResult<GetCustomerResultsResult> getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form) {
         return CDI.current().select(GetCustomerResultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form) {
+    public CommandResult<GetCustomerResultsFacetResult> getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form) {
         return CDI.current().select(GetCustomerResultsFacetCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form) {
+    public CommandResult<GetCustomerResultsFacetsResult> getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form) {
         return CDI.current().select(GetCustomerResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -626,17 +627,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getItemResults(UserVisitPK userVisitPK, GetItemResultsForm form) {
+    public CommandResult<GetItemResultsResult> getItemResults(UserVisitPK userVisitPK, GetItemResultsForm form) {
         return CDI.current().select(GetItemResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getItemResultsFacet(UserVisitPK userVisitPK, GetItemResultsFacetForm form) {
+    public CommandResult<GetItemResultsFacetResult> getItemResultsFacet(UserVisitPK userVisitPK, GetItemResultsFacetForm form) {
         return CDI.current().select(GetItemResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getItemResultsFacets(UserVisitPK userVisitPK, GetItemResultsFacetsForm form) {
+    public CommandResult<GetItemResultsFacetsResult> getItemResultsFacets(UserVisitPK userVisitPK, GetItemResultsFacetsForm form) {
         return CDI.current().select(GetItemResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -670,7 +671,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getVendorResults(UserVisitPK userVisitPK, GetVendorResultsForm form) {
+    public CommandResult<GetVendorResultsResult> getVendorResults(UserVisitPK userVisitPK, GetVendorResultsForm form) {
         return CDI.current().select(GetVendorResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -694,7 +695,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getForumMessageResults(UserVisitPK userVisitPK, GetForumMessageResultsForm form) {
+    public CommandResult<GetForumMessageResultsResult> getForumMessageResults(UserVisitPK userVisitPK, GetForumMessageResultsForm form) {
         return CDI.current().select(GetForumMessageResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -718,17 +719,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form) {
+    public CommandResult<GetEmployeeResultsResult> getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form) {
         return CDI.current().select(GetEmployeeResultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form) {
+    public CommandResult<GetEmployeeResultsFacetResult> getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form) {
         return CDI.current().select(GetEmployeeResultsFacetCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form) {
+    public CommandResult<GetEmployeeResultsFacetsResult> getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form) {
         return CDI.current().select(GetEmployeeResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -752,7 +753,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getLeaveResults(UserVisitPK userVisitPK, GetLeaveResultsForm form) {
+    public CommandResult<GetLeaveResultsResult> getLeaveResults(UserVisitPK userVisitPK, GetLeaveResultsForm form) {
         return CDI.current().select(GetLeaveResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -776,7 +777,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSalesOrderBatchResults(UserVisitPK userVisitPK, GetSalesOrderBatchResultsForm form) {
+    public CommandResult<GetSalesOrderBatchResultsResult> getSalesOrderBatchResults(UserVisitPK userVisitPK, GetSalesOrderBatchResultsForm form) {
         return CDI.current().select(GetSalesOrderBatchResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -800,7 +801,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getSalesOrderResults(UserVisitPK userVisitPK, GetSalesOrderResultsForm form) {
+    public CommandResult<GetSalesOrderResultsResult> getSalesOrderResults(UserVisitPK userVisitPK, GetSalesOrderResultsForm form) {
         return CDI.current().select(GetSalesOrderResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -824,7 +825,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form) {
+    public CommandResult<GetComponentVendorResultsResult> getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form) {
         return CDI.current().select(GetComponentVendorResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -848,17 +849,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form) {
+    public CommandResult<GetEntityTypeResultsResult> getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form) {
         return CDI.current().select(GetEntityTypeResultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form) {
+    public CommandResult<GetEntityTypeResultsFacetResult> getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form) {
         return CDI.current().select(GetEntityTypeResultsFacetCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form) {
+    public CommandResult<GetEntityTypeResultsFacetsResult> getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form) {
         return CDI.current().select(GetEntityTypeResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -882,7 +883,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form) {
+    public CommandResult<GetEntityAliasTypeResultsResult> getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form) {
         return CDI.current().select(GetEntityAliasTypeResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -906,7 +907,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form) {
+    public CommandResult<GetEntityAttributeGroupResultsResult> getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form) {
         return CDI.current().select(GetEntityAttributeGroupResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -930,7 +931,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form) {
+    public CommandResult<GetEntityAttributeResultsResult> getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form) {
         return CDI.current().select(GetEntityAttributeResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -954,7 +955,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form) {
+    public CommandResult<GetEntityListItemResultsResult> getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form) {
         return CDI.current().select(GetEntityListItemResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -978,7 +979,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form) {
+    public CommandResult<GetContentCatalogResultsResult> getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form) {
         return CDI.current().select(GetContentCatalogResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1002,17 +1003,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form) {
+    public CommandResult<GetContentCatalogItemResultsResult> getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form) {
         return CDI.current().select(GetContentCatalogItemResultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form) {
+    public CommandResult<GetContentCatalogItemResultsFacetResult> getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form) {
         return CDI.current().select(GetContentCatalogItemResultsFacetCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form) {
+    public CommandResult<GetContentCatalogItemResultsFacetsResult> getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form) {
         return CDI.current().select(GetContentCatalogItemResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1036,17 +1037,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form) {
+    public CommandResult<GetContentCategoryResultsResult> getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form) {
         return CDI.current().select(GetContentCategoryResultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form) {
+    public CommandResult<GetContentCategoryResultsFacetResult> getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form) {
         return CDI.current().select(GetContentCategoryResultsFacetCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form) {
+    public CommandResult<GetContentCategoryResultsFacetsResult> getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form) {
         return CDI.current().select(GetContentCategoryResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1070,17 +1071,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroupResults(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsForm form) {
+    public CommandResult<GetSecurityRoleGroupResultsResult> getSecurityRoleGroupResults(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsForm form) {
         return CDI.current().select(GetSecurityRoleGroupResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroupResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetForm form) {
+    public CommandResult<GetSecurityRoleGroupResultsFacetResult> getSecurityRoleGroupResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetForm form) {
         return CDI.current().select(GetSecurityRoleGroupResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleGroupResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetsForm form) {
+    public CommandResult<GetSecurityRoleGroupResultsFacetsResult> getSecurityRoleGroupResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetsForm form) {
         return CDI.current().select(GetSecurityRoleGroupResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1104,17 +1105,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleResults(UserVisitPK userVisitPK, GetSecurityRoleResultsForm form) {
+    public CommandResult<GetSecurityRoleResultsResult> getSecurityRoleResults(UserVisitPK userVisitPK, GetSecurityRoleResultsForm form) {
         return CDI.current().select(GetSecurityRoleResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetForm form) {
+    public CommandResult<GetSecurityRoleResultsFacetResult> getSecurityRoleResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetForm form) {
         return CDI.current().select(GetSecurityRoleResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getSecurityRoleResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetsForm form) {
+    public CommandResult<GetSecurityRoleResultsFacetsResult> getSecurityRoleResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetsForm form) {
         return CDI.current().select(GetSecurityRoleResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1138,17 +1139,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsForm form) {
+    public CommandResult<GetHarmonizedTariffScheduleCodeResultsResult> getHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsForm form) {
         return CDI.current().select(GetHarmonizedTariffScheduleCodeResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getHarmonizedTariffScheduleCodeResultsFacet(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetForm form) {
+    public CommandResult<GetHarmonizedTariffScheduleCodeResultsFacetResult> getHarmonizedTariffScheduleCodeResultsFacet(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetForm form) {
         return CDI.current().select(GetHarmonizedTariffScheduleCodeResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getHarmonizedTariffScheduleCodeResultsFacets(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetsForm form) {
+    public CommandResult<GetHarmonizedTariffScheduleCodeResultsFacetsResult> getHarmonizedTariffScheduleCodeResultsFacets(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetsForm form) {
         return CDI.current().select(GetHarmonizedTariffScheduleCodeResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1172,17 +1173,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getContactMechanismResults(UserVisitPK userVisitPK, GetContactMechanismResultsForm form) {
+    public CommandResult<GetContactMechanismResultsResult> getContactMechanismResults(UserVisitPK userVisitPK, GetContactMechanismResultsForm form) {
         return CDI.current().select(GetContactMechanismResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getContactMechanismResultsFacet(UserVisitPK userVisitPK, GetContactMechanismResultsFacetForm form) {
+    public CommandResult<GetContactMechanismResultsFacetResult> getContactMechanismResultsFacet(UserVisitPK userVisitPK, GetContactMechanismResultsFacetForm form) {
         return CDI.current().select(GetContactMechanismResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getContactMechanismResultsFacets(UserVisitPK userVisitPK, GetContactMechanismResultsFacetsForm form) {
+    public CommandResult<GetContactMechanismResultsFacetsResult> getContactMechanismResultsFacets(UserVisitPK userVisitPK, GetContactMechanismResultsFacetsForm form) {
         return CDI.current().select(GetContactMechanismResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1206,17 +1207,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getOfferResults(UserVisitPK userVisitPK, GetOfferResultsForm form) {
+    public CommandResult<GetOfferResultsResult> getOfferResults(UserVisitPK userVisitPK, GetOfferResultsForm form) {
         return CDI.current().select(GetOfferResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getOfferResultsFacet(UserVisitPK userVisitPK, GetOfferResultsFacetForm form) {
+    public CommandResult<GetOfferResultsFacetResult> getOfferResultsFacet(UserVisitPK userVisitPK, GetOfferResultsFacetForm form) {
         return CDI.current().select(GetOfferResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getOfferResultsFacets(UserVisitPK userVisitPK, GetOfferResultsFacetsForm form) {
+    public CommandResult<GetOfferResultsFacetsResult> getOfferResultsFacets(UserVisitPK userVisitPK, GetOfferResultsFacetsForm form) {
         return CDI.current().select(GetOfferResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1240,17 +1241,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getUseResults(UserVisitPK userVisitPK, GetUseResultsForm form) {
+    public CommandResult<GetUseResultsResult> getUseResults(UserVisitPK userVisitPK, GetUseResultsForm form) {
         return CDI.current().select(GetUseResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUseResultsFacet(UserVisitPK userVisitPK, GetUseResultsFacetForm form) {
+    public CommandResult<GetUseResultsFacetResult> getUseResultsFacet(UserVisitPK userVisitPK, GetUseResultsFacetForm form) {
         return CDI.current().select(GetUseResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUseResultsFacets(UserVisitPK userVisitPK, GetUseResultsFacetsForm form) {
+    public CommandResult<GetUseResultsFacetsResult> getUseResultsFacets(UserVisitPK userVisitPK, GetUseResultsFacetsForm form) {
         return CDI.current().select(GetUseResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1274,17 +1275,17 @@ public class SearchBean
     }
     
     @Override
-    public CommandResult<?> getUseTypeResults(UserVisitPK userVisitPK, GetUseTypeResultsForm form) {
+    public CommandResult<GetUseTypeResultsResult> getUseTypeResults(UserVisitPK userVisitPK, GetUseTypeResultsForm form) {
         return CDI.current().select(GetUseTypeResultsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUseTypeResultsFacet(UserVisitPK userVisitPK, GetUseTypeResultsFacetForm form) {
+    public CommandResult<GetUseTypeResultsFacetResult> getUseTypeResultsFacet(UserVisitPK userVisitPK, GetUseTypeResultsFacetForm form) {
         return CDI.current().select(GetUseTypeResultsFacetCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUseTypeResultsFacets(UserVisitPK userVisitPK, GetUseTypeResultsFacetsForm form) {
+    public CommandResult<GetUseTypeResultsFacetsResult> getUseTypeResultsFacets(UserVisitPK userVisitPK, GetUseTypeResultsFacetsForm form) {
         return CDI.current().select(GetUseTypeResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1308,7 +1309,7 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form) {
+    public CommandResult<GetShippingMethodResultsResult> getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form) {
         return CDI.current().select(GetShippingMethodResultsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1332,17 +1333,17 @@ public class SearchBean
     }
 
     @Override
-    public CommandResult<?> getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form) {
+    public CommandResult<GetWarehouseResultsResult> getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form) {
         return CDI.current().select(GetWarehouseResultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form) {
+    public CommandResult<GetWarehouseResultsFacetResult> getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form) {
         return CDI.current().select(GetWarehouseResultsFacetCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form) {
+    public CommandResult<GetWarehouseResultsFacetsResult> getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form) {
         return CDI.current().select(GetWarehouseResultsFacetsCommand.class).get().run(userVisitPK, form);
     }
 

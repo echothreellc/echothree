@@ -17,6 +17,7 @@
 package com.echothree.control.user.returnpolicy.common;
 
 import com.echothree.control.user.returnpolicy.common.form.*;
+import com.echothree.control.user.returnpolicy.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -33,11 +34,11 @@ public interface ReturnPolicyService
     //   Party Return Policies
     // -------------------------------------------------------------------------
 
-    CommandResult<?> getPartyReturnPolicy(UserVisitPK userVisitPK, GetPartyReturnPolicyForm form);
+    CommandResult<GetPartyReturnPolicyResult> getPartyReturnPolicy(UserVisitPK userVisitPK, GetPartyReturnPolicyForm form);
 
-    CommandResult<?> getPartyReturnPolicies(UserVisitPK userVisitPK, GetPartyReturnPoliciesForm form);
+    CommandResult<GetPartyReturnPoliciesResult> getPartyReturnPolicies(UserVisitPK userVisitPK, GetPartyReturnPoliciesForm form);
 
-    CommandResult<?> getPartyReturnPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyReturnPolicyStatusChoicesForm form);
+    CommandResult<GetPartyReturnPolicyStatusChoicesResult> getPartyReturnPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyReturnPolicyStatusChoicesForm form);
 
     CommandResult<?> setPartyReturnPolicyStatus(UserVisitPK userVisitPK, SetPartyReturnPolicyStatusForm form);
 
@@ -49,15 +50,15 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnKind(UserVisitPK userVisitPK, CreateReturnKindForm form);
     
-    CommandResult<?> getReturnKinds(UserVisitPK userVisitPK, GetReturnKindsForm form);
+    CommandResult<GetReturnKindsResult> getReturnKinds(UserVisitPK userVisitPK, GetReturnKindsForm form);
     
-    CommandResult<?> getReturnKind(UserVisitPK userVisitPK, GetReturnKindForm form);
+    CommandResult<GetReturnKindResult> getReturnKind(UserVisitPK userVisitPK, GetReturnKindForm form);
     
-    CommandResult<?> getReturnKindChoices(UserVisitPK userVisitPK, GetReturnKindChoicesForm form);
+    CommandResult<GetReturnKindChoicesResult> getReturnKindChoices(UserVisitPK userVisitPK, GetReturnKindChoicesForm form);
     
     CommandResult<?> setDefaultReturnKind(UserVisitPK userVisitPK, SetDefaultReturnKindForm form);
     
-    CommandResult<?> editReturnKind(UserVisitPK userVisitPK, EditReturnKindForm form);
+    CommandResult<EditReturnKindResult> editReturnKind(UserVisitPK userVisitPK, EditReturnKindForm form);
     
     CommandResult<?> deleteReturnKind(UserVisitPK userVisitPK, DeleteReturnKindForm form);
     
@@ -67,11 +68,11 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnKindDescription(UserVisitPK userVisitPK, CreateReturnKindDescriptionForm form);
     
-    CommandResult<?> getReturnKindDescriptions(UserVisitPK userVisitPK, GetReturnKindDescriptionsForm form);
+    CommandResult<GetReturnKindDescriptionsResult> getReturnKindDescriptions(UserVisitPK userVisitPK, GetReturnKindDescriptionsForm form);
 
-    CommandResult<?> getReturnKindDescription(UserVisitPK userVisitPK, GetReturnKindDescriptionForm form);
+    CommandResult<GetReturnKindDescriptionResult> getReturnKindDescription(UserVisitPK userVisitPK, GetReturnKindDescriptionForm form);
 
-    CommandResult<?> editReturnKindDescription(UserVisitPK userVisitPK, EditReturnKindDescriptionForm form);
+    CommandResult<EditReturnKindDescriptionResult> editReturnKindDescription(UserVisitPK userVisitPK, EditReturnKindDescriptionForm form);
     
     CommandResult<?> deleteReturnKindDescription(UserVisitPK userVisitPK, DeleteReturnKindDescriptionForm form);
     
@@ -81,15 +82,15 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnPolicy(UserVisitPK userVisitPK, CreateReturnPolicyForm form);
     
-    CommandResult<?> getReturnPolicies(UserVisitPK userVisitPK, GetReturnPoliciesForm form);
+    CommandResult<GetReturnPoliciesResult> getReturnPolicies(UserVisitPK userVisitPK, GetReturnPoliciesForm form);
     
-    CommandResult<?> getReturnPolicy(UserVisitPK userVisitPK, GetReturnPolicyForm form);
+    CommandResult<GetReturnPolicyResult> getReturnPolicy(UserVisitPK userVisitPK, GetReturnPolicyForm form);
     
-    CommandResult<?> getReturnPolicyChoices(UserVisitPK userVisitPK, GetReturnPolicyChoicesForm form);
+    CommandResult<GetReturnPolicyChoicesResult> getReturnPolicyChoices(UserVisitPK userVisitPK, GetReturnPolicyChoicesForm form);
     
     CommandResult<?> setDefaultReturnPolicy(UserVisitPK userVisitPK, SetDefaultReturnPolicyForm form);
     
-    CommandResult<?> editReturnPolicy(UserVisitPK userVisitPK, EditReturnPolicyForm form);
+    CommandResult<EditReturnPolicyResult> editReturnPolicy(UserVisitPK userVisitPK, EditReturnPolicyForm form);
     
     CommandResult<?> deleteReturnPolicy(UserVisitPK userVisitPK, DeleteReturnPolicyForm form);
     
@@ -99,11 +100,11 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnPolicyTranslation(UserVisitPK userVisitPK, CreateReturnPolicyTranslationForm form);
     
-    CommandResult<?> getReturnPolicyTranslation(UserVisitPK userVisitPK, GetReturnPolicyTranslationForm form);
+    CommandResult<GetReturnPolicyTranslationResult> getReturnPolicyTranslation(UserVisitPK userVisitPK, GetReturnPolicyTranslationForm form);
 
-    CommandResult<?> getReturnPolicyTranslations(UserVisitPK userVisitPK, GetReturnPolicyTranslationsForm form);
+    CommandResult<GetReturnPolicyTranslationsResult> getReturnPolicyTranslations(UserVisitPK userVisitPK, GetReturnPolicyTranslationsForm form);
 
-    CommandResult<?> editReturnPolicyTranslation(UserVisitPK userVisitPK, EditReturnPolicyTranslationForm form);
+    CommandResult<EditReturnPolicyTranslationResult> editReturnPolicyTranslation(UserVisitPK userVisitPK, EditReturnPolicyTranslationForm form);
     
     CommandResult<?> deleteReturnPolicyTranslation(UserVisitPK userVisitPK, DeleteReturnPolicyTranslationForm form);
     
@@ -113,11 +114,11 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnPolicyReason(UserVisitPK userVisitPK, CreateReturnPolicyReasonForm form);
     
-    CommandResult<?> getReturnPolicyReasons(UserVisitPK userVisitPK, GetReturnPolicyReasonsForm form);
+    CommandResult<GetReturnPolicyReasonsResult> getReturnPolicyReasons(UserVisitPK userVisitPK, GetReturnPolicyReasonsForm form);
     
     CommandResult<?> setDefaultReturnPolicyReason(UserVisitPK userVisitPK, SetDefaultReturnPolicyReasonForm form);
     
-    CommandResult<?> editReturnPolicyReason(UserVisitPK userVisitPK, EditReturnPolicyReasonForm form);
+    CommandResult<EditReturnPolicyReasonResult> editReturnPolicyReason(UserVisitPK userVisitPK, EditReturnPolicyReasonForm form);
     
     CommandResult<?> deleteReturnPolicyReason(UserVisitPK userVisitPK, DeleteReturnPolicyReasonForm form);
     
@@ -127,15 +128,15 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnReason(UserVisitPK userVisitPK, CreateReturnReasonForm form);
     
-    CommandResult<?> getReturnReasons(UserVisitPK userVisitPK, GetReturnReasonsForm form);
+    CommandResult<GetReturnReasonsResult> getReturnReasons(UserVisitPK userVisitPK, GetReturnReasonsForm form);
     
-    CommandResult<?> getReturnReason(UserVisitPK userVisitPK, GetReturnReasonForm form);
+    CommandResult<GetReturnReasonResult> getReturnReason(UserVisitPK userVisitPK, GetReturnReasonForm form);
     
-    CommandResult<?> getReturnReasonChoices(UserVisitPK userVisitPK, GetReturnReasonChoicesForm form);
+    CommandResult<GetReturnReasonChoicesResult> getReturnReasonChoices(UserVisitPK userVisitPK, GetReturnReasonChoicesForm form);
     
     CommandResult<?> setDefaultReturnReason(UserVisitPK userVisitPK, SetDefaultReturnReasonForm form);
     
-    CommandResult<?> editReturnReason(UserVisitPK userVisitPK, EditReturnReasonForm form);
+    CommandResult<EditReturnReasonResult> editReturnReason(UserVisitPK userVisitPK, EditReturnReasonForm form);
     
     CommandResult<?> deleteReturnReason(UserVisitPK userVisitPK, DeleteReturnReasonForm form);
     
@@ -145,9 +146,9 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnReasonDescription(UserVisitPK userVisitPK, CreateReturnReasonDescriptionForm form);
     
-    CommandResult<?> getReturnReasonDescriptions(UserVisitPK userVisitPK, GetReturnReasonDescriptionsForm form);
+    CommandResult<GetReturnReasonDescriptionsResult> getReturnReasonDescriptions(UserVisitPK userVisitPK, GetReturnReasonDescriptionsForm form);
     
-    CommandResult<?> editReturnReasonDescription(UserVisitPK userVisitPK, EditReturnReasonDescriptionForm form);
+    CommandResult<EditReturnReasonDescriptionResult> editReturnReasonDescription(UserVisitPK userVisitPK, EditReturnReasonDescriptionForm form);
     
     CommandResult<?> deleteReturnReasonDescription(UserVisitPK userVisitPK, DeleteReturnReasonDescriptionForm form);
     
@@ -157,11 +158,11 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnReasonType(UserVisitPK userVisitPK, CreateReturnReasonTypeForm form);
     
-    CommandResult<?> getReturnReasonTypes(UserVisitPK userVisitPK, GetReturnReasonTypesForm form);
+    CommandResult<GetReturnReasonTypesResult> getReturnReasonTypes(UserVisitPK userVisitPK, GetReturnReasonTypesForm form);
     
     CommandResult<?> setDefaultReturnReasonType(UserVisitPK userVisitPK, SetDefaultReturnReasonTypeForm form);
     
-    CommandResult<?> editReturnReasonType(UserVisitPK userVisitPK, EditReturnReasonTypeForm form);
+    CommandResult<EditReturnReasonTypeResult> editReturnReasonType(UserVisitPK userVisitPK, EditReturnReasonTypeForm form);
     
     CommandResult<?> deleteReturnReasonType(UserVisitPK userVisitPK, DeleteReturnReasonTypeForm form);
     
@@ -171,15 +172,15 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnType(UserVisitPK userVisitPK, CreateReturnTypeForm form);
     
-    CommandResult<?> getReturnTypes(UserVisitPK userVisitPK, GetReturnTypesForm form);
+    CommandResult<GetReturnTypesResult> getReturnTypes(UserVisitPK userVisitPK, GetReturnTypesForm form);
     
-    CommandResult<?> getReturnType(UserVisitPK userVisitPK, GetReturnTypeForm form);
+    CommandResult<GetReturnTypeResult> getReturnType(UserVisitPK userVisitPK, GetReturnTypeForm form);
     
-    CommandResult<?> getReturnTypeChoices(UserVisitPK userVisitPK, GetReturnTypeChoicesForm form);
+    CommandResult<GetReturnTypeChoicesResult> getReturnTypeChoices(UserVisitPK userVisitPK, GetReturnTypeChoicesForm form);
     
     CommandResult<?> setDefaultReturnType(UserVisitPK userVisitPK, SetDefaultReturnTypeForm form);
     
-    CommandResult<?> editReturnType(UserVisitPK userVisitPK, EditReturnTypeForm form);
+    CommandResult<EditReturnTypeResult> editReturnType(UserVisitPK userVisitPK, EditReturnTypeForm form);
     
     CommandResult<?> deleteReturnType(UserVisitPK userVisitPK, DeleteReturnTypeForm form);
     
@@ -189,11 +190,11 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnTypeDescription(UserVisitPK userVisitPK, CreateReturnTypeDescriptionForm form);
     
-    CommandResult<?> getReturnTypeDescriptions(UserVisitPK userVisitPK, GetReturnTypeDescriptionsForm form);
+    CommandResult<GetReturnTypeDescriptionsResult> getReturnTypeDescriptions(UserVisitPK userVisitPK, GetReturnTypeDescriptionsForm form);
 
-    CommandResult<?> getReturnTypeDescription(UserVisitPK userVisitPK, GetReturnTypeDescriptionForm form);
+    CommandResult<GetReturnTypeDescriptionResult> getReturnTypeDescription(UserVisitPK userVisitPK, GetReturnTypeDescriptionForm form);
 
-    CommandResult<?> editReturnTypeDescription(UserVisitPK userVisitPK, EditReturnTypeDescriptionForm form);
+    CommandResult<EditReturnTypeDescriptionResult> editReturnTypeDescription(UserVisitPK userVisitPK, EditReturnTypeDescriptionForm form);
     
     CommandResult<?> deleteReturnTypeDescription(UserVisitPK userVisitPK, DeleteReturnTypeDescriptionForm form);
     
@@ -203,11 +204,11 @@ public interface ReturnPolicyService
     
     CommandResult<?> createReturnTypeShippingMethod(UserVisitPK userVisitPK, CreateReturnTypeShippingMethodForm form);
     
-    CommandResult<?> getReturnTypeShippingMethods(UserVisitPK userVisitPK, GetReturnTypeShippingMethodsForm form);
+    CommandResult<GetReturnTypeShippingMethodsResult> getReturnTypeShippingMethods(UserVisitPK userVisitPK, GetReturnTypeShippingMethodsForm form);
     
     CommandResult<?> setDefaultReturnTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultReturnTypeShippingMethodForm form);
     
-    CommandResult<?> editReturnTypeShippingMethod(UserVisitPK userVisitPK, EditReturnTypeShippingMethodForm form);
+    CommandResult<EditReturnTypeShippingMethodResult> editReturnTypeShippingMethod(UserVisitPK userVisitPK, EditReturnTypeShippingMethodForm form);
     
     CommandResult<?> deleteReturnTypeShippingMethod(UserVisitPK userVisitPK, DeleteReturnTypeShippingMethodForm form);
     

@@ -18,6 +18,7 @@ package com.echothree.control.user.workflow.server;
 
 import com.echothree.control.user.workflow.common.WorkflowRemote;
 import com.echothree.control.user.workflow.common.form.*;
+import com.echothree.control.user.workflow.common.result.*;
 import com.echothree.control.user.workflow.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class WorkflowBean
     }
 
     @Override
-    public CommandResult<?> getWorkflowStepType(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form) {
+    public CommandResult<GetWorkflowStepTypeResult> getWorkflowStepType(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form) {
         return CDI.current().select(GetWorkflowStepTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWorkflowStepTypes(UserVisitPK userVisitPK, GetWorkflowStepTypesForm form) {
+    public CommandResult<GetWorkflowStepTypesResult> getWorkflowStepTypes(UserVisitPK userVisitPK, GetWorkflowStepTypesForm form) {
         return CDI.current().select(GetWorkflowStepTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWorkflowStepTypeChoices(UserVisitPK userVisitPK, GetWorkflowStepTypeChoicesForm form) {
+    public CommandResult<GetWorkflowStepTypeChoicesResult> getWorkflowStepTypeChoices(UserVisitPK userVisitPK, GetWorkflowStepTypeChoicesForm form) {
         return CDI.current().select(GetWorkflowStepTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -81,22 +82,22 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflow(UserVisitPK userVisitPK, GetWorkflowForm form) {
+    public CommandResult<GetWorkflowResult> getWorkflow(UserVisitPK userVisitPK, GetWorkflowForm form) {
         return CDI.current().select(GetWorkflowCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form) {
+    public CommandResult<GetWorkflowsResult> getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form) {
         return CDI.current().select(GetWorkflowsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form) {
+    public CommandResult<GetWorkflowChoicesResult> getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form) {
         return CDI.current().select(GetWorkflowChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form) {
+    public CommandResult<EditWorkflowResult> editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form) {
         return CDI.current().select(EditWorkflowCommand.class).get().run(userVisitPK, form);
     }
     
@@ -115,17 +116,17 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDescription(UserVisitPK userVisitPK, GetWorkflowDescriptionForm form) {
+    public CommandResult<GetWorkflowDescriptionResult> getWorkflowDescription(UserVisitPK userVisitPK, GetWorkflowDescriptionForm form) {
         return CDI.current().select(GetWorkflowDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDescriptions(UserVisitPK userVisitPK, GetWorkflowDescriptionsForm form) {
+    public CommandResult<GetWorkflowDescriptionsResult> getWorkflowDescriptions(UserVisitPK userVisitPK, GetWorkflowDescriptionsForm form) {
         return CDI.current().select(GetWorkflowDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowDescription(UserVisitPK userVisitPK, EditWorkflowDescriptionForm form) {
+    public CommandResult<EditWorkflowDescriptionResult> editWorkflowDescription(UserVisitPK userVisitPK, EditWorkflowDescriptionForm form) {
         return CDI.current().select(EditWorkflowDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -144,22 +145,22 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowStep(UserVisitPK userVisitPK, GetWorkflowStepForm form) {
+    public CommandResult<GetWorkflowStepResult> getWorkflowStep(UserVisitPK userVisitPK, GetWorkflowStepForm form) {
         return CDI.current().select(GetWorkflowStepCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowSteps(UserVisitPK userVisitPK, GetWorkflowStepsForm form) {
+    public CommandResult<GetWorkflowStepsResult> getWorkflowSteps(UserVisitPK userVisitPK, GetWorkflowStepsForm form) {
         return CDI.current().select(GetWorkflowStepsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowStepChoices(UserVisitPK userVisitPK, GetWorkflowStepChoicesForm form) {
+    public CommandResult<GetWorkflowStepChoicesResult> getWorkflowStepChoices(UserVisitPK userVisitPK, GetWorkflowStepChoicesForm form) {
         return CDI.current().select(GetWorkflowStepChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowStep(UserVisitPK userVisitPK, EditWorkflowStepForm form) {
+    public CommandResult<EditWorkflowStepResult> editWorkflowStep(UserVisitPK userVisitPK, EditWorkflowStepForm form) {
         return CDI.current().select(EditWorkflowStepCommand.class).get().run(userVisitPK, form);
     }
     
@@ -183,17 +184,17 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowStepDescription(UserVisitPK userVisitPK, GetWorkflowStepDescriptionForm form) {
+    public CommandResult<GetWorkflowStepDescriptionResult> getWorkflowStepDescription(UserVisitPK userVisitPK, GetWorkflowStepDescriptionForm form) {
         return CDI.current().select(GetWorkflowStepDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowStepDescriptions(UserVisitPK userVisitPK, GetWorkflowStepDescriptionsForm form) {
+    public CommandResult<GetWorkflowStepDescriptionsResult> getWorkflowStepDescriptions(UserVisitPK userVisitPK, GetWorkflowStepDescriptionsForm form) {
         return CDI.current().select(GetWorkflowStepDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowStepDescription(UserVisitPK userVisitPK, EditWorkflowStepDescriptionForm form) {
+    public CommandResult<EditWorkflowStepDescriptionResult> editWorkflowStepDescription(UserVisitPK userVisitPK, EditWorkflowStepDescriptionForm form) {
         return CDI.current().select(EditWorkflowStepDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -212,17 +213,17 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestination(UserVisitPK userVisitPK, GetWorkflowDestinationForm form) {
+    public CommandResult<GetWorkflowDestinationResult> getWorkflowDestination(UserVisitPK userVisitPK, GetWorkflowDestinationForm form) {
         return CDI.current().select(GetWorkflowDestinationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinations(UserVisitPK userVisitPK, GetWorkflowDestinationsForm form) {
+    public CommandResult<GetWorkflowDestinationsResult> getWorkflowDestinations(UserVisitPK userVisitPK, GetWorkflowDestinationsForm form) {
         return CDI.current().select(GetWorkflowDestinationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowDestination(UserVisitPK userVisitPK, EditWorkflowDestinationForm form) {
+    public CommandResult<EditWorkflowDestinationResult> editWorkflowDestination(UserVisitPK userVisitPK, EditWorkflowDestinationForm form) {
         return CDI.current().select(EditWorkflowDestinationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -246,17 +247,17 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationDescription(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionForm form) {
+    public CommandResult<GetWorkflowDestinationDescriptionResult> getWorkflowDestinationDescription(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionForm form) {
         return CDI.current().select(GetWorkflowDestinationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationDescriptions(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionsForm form) {
+    public CommandResult<GetWorkflowDestinationDescriptionsResult> getWorkflowDestinationDescriptions(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionsForm form) {
         return CDI.current().select(GetWorkflowDestinationDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowDestinationDescription(UserVisitPK userVisitPK, EditWorkflowDestinationDescriptionForm form) {
+    public CommandResult<EditWorkflowDestinationDescriptionResult> editWorkflowDestinationDescription(UserVisitPK userVisitPK, EditWorkflowDestinationDescriptionForm form) {
         return CDI.current().select(EditWorkflowDestinationDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -275,12 +276,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationStep(UserVisitPK userVisitPK, GetWorkflowDestinationStepForm form) {
+    public CommandResult<GetWorkflowDestinationStepResult> getWorkflowDestinationStep(UserVisitPK userVisitPK, GetWorkflowDestinationStepForm form) {
         return CDI.current().select(GetWorkflowDestinationStepCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationSteps(UserVisitPK userVisitPK, GetWorkflowDestinationStepsForm form) {
+    public CommandResult<GetWorkflowDestinationStepsResult> getWorkflowDestinationSteps(UserVisitPK userVisitPK, GetWorkflowDestinationStepsForm form) {
         return CDI.current().select(GetWorkflowDestinationStepsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -299,12 +300,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationSelector(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorForm form) {
+    public CommandResult<GetWorkflowDestinationSelectorResult> getWorkflowDestinationSelector(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorForm form) {
         return CDI.current().select(GetWorkflowDestinationSelectorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationSelectors(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorsForm form) {
+    public CommandResult<GetWorkflowDestinationSelectorsResult> getWorkflowDestinationSelectors(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorsForm form) {
         return CDI.current().select(GetWorkflowDestinationSelectorsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -323,12 +324,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationPartyType(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypeForm form) {
+    public CommandResult<GetWorkflowDestinationPartyTypeResult> getWorkflowDestinationPartyType(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypeForm form) {
         return CDI.current().select(GetWorkflowDestinationPartyTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationPartyTypes(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypesForm form) {
+    public CommandResult<GetWorkflowDestinationPartyTypesResult> getWorkflowDestinationPartyTypes(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypesForm form) {
         return CDI.current().select(GetWorkflowDestinationPartyTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -347,12 +348,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRoleForm form) {
+    public CommandResult<GetWorkflowDestinationSecurityRoleResult> getWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRoleForm form) {
         return CDI.current().select(GetWorkflowDestinationSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowDestinationSecurityRoles(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRolesForm form) {
+    public CommandResult<GetWorkflowDestinationSecurityRolesResult> getWorkflowDestinationSecurityRoles(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRolesForm form) {
         return CDI.current().select(GetWorkflowDestinationSecurityRolesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -371,12 +372,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntityType(UserVisitPK userVisitPK, GetWorkflowEntityTypeForm form) {
+    public CommandResult<GetWorkflowEntityTypeResult> getWorkflowEntityType(UserVisitPK userVisitPK, GetWorkflowEntityTypeForm form) {
         return CDI.current().select(GetWorkflowEntityTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> getWorkflowEntityTypes(UserVisitPK userVisitPK, GetWorkflowEntityTypesForm form) {
+    public CommandResult<GetWorkflowEntityTypesResult> getWorkflowEntityTypes(UserVisitPK userVisitPK, GetWorkflowEntityTypesForm form) {
         return CDI.current().select(GetWorkflowEntityTypesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -395,17 +396,17 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntrance(UserVisitPK userVisitPK, GetWorkflowEntranceForm form) {
+    public CommandResult<GetWorkflowEntranceResult> getWorkflowEntrance(UserVisitPK userVisitPK, GetWorkflowEntranceForm form) {
         return CDI.current().select(GetWorkflowEntranceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntrances(UserVisitPK userVisitPK, GetWorkflowEntrancesForm form) {
+    public CommandResult<GetWorkflowEntrancesResult> getWorkflowEntrances(UserVisitPK userVisitPK, GetWorkflowEntrancesForm form) {
         return CDI.current().select(GetWorkflowEntrancesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowEntrance(UserVisitPK userVisitPK, EditWorkflowEntranceForm form) {
+    public CommandResult<EditWorkflowEntranceResult> editWorkflowEntrance(UserVisitPK userVisitPK, EditWorkflowEntranceForm form) {
         return CDI.current().select(EditWorkflowEntranceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -429,17 +430,17 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceDescription(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionForm form) {
+    public CommandResult<GetWorkflowEntranceDescriptionResult> getWorkflowEntranceDescription(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionForm form) {
         return CDI.current().select(GetWorkflowEntranceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceDescriptions(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionsForm form) {
+    public CommandResult<GetWorkflowEntranceDescriptionsResult> getWorkflowEntranceDescriptions(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionsForm form) {
         return CDI.current().select(GetWorkflowEntranceDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWorkflowEntranceDescription(UserVisitPK userVisitPK, EditWorkflowEntranceDescriptionForm form) {
+    public CommandResult<EditWorkflowEntranceDescriptionResult> editWorkflowEntranceDescription(UserVisitPK userVisitPK, EditWorkflowEntranceDescriptionForm form) {
         return CDI.current().select(EditWorkflowEntranceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -458,12 +459,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceStep(UserVisitPK userVisitPK, GetWorkflowEntranceStepForm form) {
+    public CommandResult<GetWorkflowEntranceStepResult> getWorkflowEntranceStep(UserVisitPK userVisitPK, GetWorkflowEntranceStepForm form) {
         return CDI.current().select(GetWorkflowEntranceStepCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceSteps(UserVisitPK userVisitPK, GetWorkflowEntranceStepsForm form) {
+    public CommandResult<GetWorkflowEntranceStepsResult> getWorkflowEntranceSteps(UserVisitPK userVisitPK, GetWorkflowEntranceStepsForm form) {
         return CDI.current().select(GetWorkflowEntranceStepsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -482,12 +483,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceSelector(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorForm form) {
+    public CommandResult<GetWorkflowEntranceSelectorResult> getWorkflowEntranceSelector(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorForm form) {
         return CDI.current().select(GetWorkflowEntranceSelectorCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceSelectors(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorsForm form) {
+    public CommandResult<GetWorkflowEntranceSelectorsResult> getWorkflowEntranceSelectors(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorsForm form) {
         return CDI.current().select(GetWorkflowEntranceSelectorsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -506,12 +507,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntrancePartyType(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypeForm form) {
+    public CommandResult<GetWorkflowEntrancePartyTypeResult> getWorkflowEntrancePartyType(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypeForm form) {
         return CDI.current().select(GetWorkflowEntrancePartyTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntrancePartyTypes(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypesForm form) {
+    public CommandResult<GetWorkflowEntrancePartyTypesResult> getWorkflowEntrancePartyTypes(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypesForm form) {
         return CDI.current().select(GetWorkflowEntrancePartyTypesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -530,12 +531,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRoleForm form) {
+    public CommandResult<GetWorkflowEntranceSecurityRoleResult> getWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRoleForm form) {
         return CDI.current().select(GetWorkflowEntranceSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowEntranceSecurityRoles(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRolesForm form) {
+    public CommandResult<GetWorkflowEntranceSecurityRolesResult> getWorkflowEntranceSecurityRoles(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRolesForm form) {
         return CDI.current().select(GetWorkflowEntranceSecurityRolesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -554,12 +555,12 @@ public class WorkflowBean
     }
     
     @Override
-    public CommandResult<?> getWorkflowSelectorKind(UserVisitPK userVisitPK, GetWorkflowSelectorKindForm form) {
+    public CommandResult<GetWorkflowSelectorKindResult> getWorkflowSelectorKind(UserVisitPK userVisitPK, GetWorkflowSelectorKindForm form) {
         return CDI.current().select(GetWorkflowSelectorKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWorkflowSelectorKinds(UserVisitPK userVisitPK, GetWorkflowSelectorKindsForm form) {
+    public CommandResult<GetWorkflowSelectorKindsResult> getWorkflowSelectorKinds(UserVisitPK userVisitPK, GetWorkflowSelectorKindsForm form) {
         return CDI.current().select(GetWorkflowSelectorKindsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -573,7 +574,7 @@ public class WorkflowBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> getWorkflowEntityStatuses(UserVisitPK userVisitPK, GetWorkflowEntityStatusesForm form) {
+    public CommandResult<GetWorkflowEntityStatusesResult> getWorkflowEntityStatuses(UserVisitPK userVisitPK, GetWorkflowEntityStatusesForm form) {
         return CDI.current().select(GetWorkflowEntityStatusesCommand.class).get().run(userVisitPK, form);
     }
     

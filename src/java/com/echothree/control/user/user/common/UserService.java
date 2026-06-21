@@ -17,6 +17,7 @@
 package com.echothree.control.user.user.common;
 
 import com.echothree.control.user.user.common.form.*;
+import com.echothree.control.user.user.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface UserService
     
     CommandResult<?> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form);
     
-    CommandResult<?> getRecoveryQuestions(UserVisitPK userVisitPK, GetRecoveryQuestionsForm form);
+    CommandResult<GetRecoveryQuestionsResult> getRecoveryQuestions(UserVisitPK userVisitPK, GetRecoveryQuestionsForm form);
     
-    CommandResult<?> getRecoveryQuestion(UserVisitPK userVisitPK, GetRecoveryQuestionForm form);
+    CommandResult<GetRecoveryQuestionResult> getRecoveryQuestion(UserVisitPK userVisitPK, GetRecoveryQuestionForm form);
     
-    CommandResult<?> getRecoveryQuestionChoices(UserVisitPK userVisitPK, GetRecoveryQuestionChoicesForm form);
+    CommandResult<GetRecoveryQuestionChoicesResult> getRecoveryQuestionChoices(UserVisitPK userVisitPK, GetRecoveryQuestionChoicesForm form);
     
     CommandResult<?> setDefaultRecoveryQuestion(UserVisitPK userVisitPK, SetDefaultRecoveryQuestionForm form);
     
-    CommandResult<?> editRecoveryQuestion(UserVisitPK userVisitPK, EditRecoveryQuestionForm form);
+    CommandResult<EditRecoveryQuestionResult> editRecoveryQuestion(UserVisitPK userVisitPK, EditRecoveryQuestionForm form);
     
     CommandResult<?> deleteRecoveryQuestion(UserVisitPK userVisitPK, DeleteRecoveryQuestionForm form);
     
@@ -53,9 +54,9 @@ public interface UserService
     
     CommandResult<?> createRecoveryQuestionDescription(UserVisitPK userVisitPK, CreateRecoveryQuestionDescriptionForm form);
     
-    CommandResult<?> getRecoveryQuestionDescriptions(UserVisitPK userVisitPK, GetRecoveryQuestionDescriptionsForm form);
+    CommandResult<GetRecoveryQuestionDescriptionsResult> getRecoveryQuestionDescriptions(UserVisitPK userVisitPK, GetRecoveryQuestionDescriptionsForm form);
     
-    CommandResult<?> editRecoveryQuestionDescription(UserVisitPK userVisitPK, EditRecoveryQuestionDescriptionForm form);
+    CommandResult<EditRecoveryQuestionDescriptionResult> editRecoveryQuestionDescription(UserVisitPK userVisitPK, EditRecoveryQuestionDescriptionForm form);
     
     CommandResult<?> deleteRecoveryQuestionDescription(UserVisitPK userVisitPK, DeleteRecoveryQuestionDescriptionForm form);
     
@@ -63,9 +64,9 @@ public interface UserService
     //   Recovery Answers
     // -------------------------------------------------------------------------
     
-    CommandResult<?> getRecoveryAnswer(UserVisitPK userVisitPK, GetRecoveryAnswerForm form);
+    CommandResult<GetRecoveryAnswerResult> getRecoveryAnswer(UserVisitPK userVisitPK, GetRecoveryAnswerForm form);
     
-    CommandResult<?> editRecoveryAnswer(UserVisitPK userVisitPK, EditRecoveryAnswerForm form);
+    CommandResult<EditRecoveryAnswerResult> editRecoveryAnswer(UserVisitPK userVisitPK, EditRecoveryAnswerForm form);
     
     // -------------------------------------------------------------------------
     //   User Login Password Encoder Types
@@ -97,9 +98,9 @@ public interface UserService
     
     CommandResult<?> createUserLogin(UserVisitPK userVisitPK, CreateUserLoginForm form);
     
-    CommandResult<?> getUserLogin(UserVisitPK userVisitPK, GetUserLoginForm form);
+    CommandResult<GetUserLoginResult> getUserLogin(UserVisitPK userVisitPK, GetUserLoginForm form);
     
-    CommandResult<?> editUserLogin(UserVisitPK userVisitPK, EditUserLoginForm form);
+    CommandResult<EditUserLoginResult> editUserLogin(UserVisitPK userVisitPK, EditUserLoginForm form);
     
     CommandResult<?> deleteUserLogin(UserVisitPK userVisitPK, DeleteUserLoginForm form);
     
@@ -113,11 +114,11 @@ public interface UserService
     //   User Visit Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> getUserVisitGroup(UserVisitPK userVisitPK, GetUserVisitGroupForm form);
+    CommandResult<GetUserVisitGroupResult> getUserVisitGroup(UserVisitPK userVisitPK, GetUserVisitGroupForm form);
     
-    CommandResult<?> getUserVisitGroups(UserVisitPK userVisitPK, GetUserVisitGroupsForm form);
+    CommandResult<GetUserVisitGroupsResult> getUserVisitGroups(UserVisitPK userVisitPK, GetUserVisitGroupsForm form);
     
-    CommandResult<?> getUserVisitGroupStatusChoices(UserVisitPK userVisitPK, GetUserVisitGroupStatusChoicesForm form);
+    CommandResult<GetUserVisitGroupStatusChoicesResult> getUserVisitGroupStatusChoices(UserVisitPK userVisitPK, GetUserVisitGroupStatusChoicesForm form);
     
     CommandResult<?> setUserVisitGroupStatus(UserVisitPK userVisitPK, SetUserVisitGroupStatusForm form);
     
@@ -137,6 +138,6 @@ public interface UserService
     //   User Sessions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> getUserSession(UserVisitPK userVisitPK, GetUserSessionForm form);
+    CommandResult<GetUserSessionResult> getUserSession(UserVisitPK userVisitPK, GetUserSessionForm form);
     
 }

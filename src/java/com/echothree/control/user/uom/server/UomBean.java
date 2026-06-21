@@ -18,6 +18,7 @@ package com.echothree.control.user.uom.server;
 
 import com.echothree.control.user.uom.common.UomRemote;
 import com.echothree.control.user.uom.common.form.*;
+import com.echothree.control.user.uom.common.result.*;
 import com.echothree.control.user.uom.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,18 +49,18 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKinds(UserVisitPK userVisitPK, GetUnitOfMeasureKindsForm form) {
+    public CommandResult<GetUnitOfMeasureKindsResult> getUnitOfMeasureKinds(UserVisitPK userVisitPK, GetUnitOfMeasureKindsForm form) {
         return CDI.current().select(GetUnitOfMeasureKindsCommand.class).get().run(userVisitPK, form);
     }
     
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKind(UserVisitPK userVisitPK, GetUnitOfMeasureKindForm form) {
+    public CommandResult<GetUnitOfMeasureKindResult> getUnitOfMeasureKind(UserVisitPK userVisitPK, GetUnitOfMeasureKindForm form) {
         return CDI.current().select(GetUnitOfMeasureKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindChoicesForm form) {
+    public CommandResult<GetUnitOfMeasureKindChoicesResult> getUnitOfMeasureKindChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindChoicesForm form) {
         return CDI.current().select(GetUnitOfMeasureKindChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -69,7 +70,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureKind(UserVisitPK userVisitPK, EditUnitOfMeasureKindForm form) {
+    public CommandResult<EditUnitOfMeasureKindResult> editUnitOfMeasureKind(UserVisitPK userVisitPK, EditUnitOfMeasureKindForm form) {
         return CDI.current().select(EditUnitOfMeasureKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -88,12 +89,12 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureKindDescriptionsForm form) {
+    public CommandResult<GetUnitOfMeasureKindDescriptionsResult> getUnitOfMeasureKindDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureKindDescriptionsForm form) {
         return CDI.current().select(GetUnitOfMeasureKindDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureKindDescription(UserVisitPK userVisitPK, EditUnitOfMeasureKindDescriptionForm form) {
+    public CommandResult<EditUnitOfMeasureKindDescriptionResult> editUnitOfMeasureKindDescription(UserVisitPK userVisitPK, EditUnitOfMeasureKindDescriptionForm form) {
         return CDI.current().select(EditUnitOfMeasureKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -112,22 +113,22 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureTypes(UserVisitPK userVisitPK, GetUnitOfMeasureTypesForm form) {
+    public CommandResult<GetUnitOfMeasureTypesResult> getUnitOfMeasureTypes(UserVisitPK userVisitPK, GetUnitOfMeasureTypesForm form) {
         return CDI.current().select(GetUnitOfMeasureTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureType(UserVisitPK userVisitPK, GetUnitOfMeasureTypeForm form) {
+    public CommandResult<GetUnitOfMeasureTypeResult> getUnitOfMeasureType(UserVisitPK userVisitPK, GetUnitOfMeasureTypeForm form) {
         return CDI.current().select(GetUnitOfMeasureTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureTypeChoicesForm form) {
+    public CommandResult<GetUnitOfMeasureTypeChoicesResult> getUnitOfMeasureTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureTypeChoicesForm form) {
         return CDI.current().select(GetUnitOfMeasureTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureChoices(UserVisitPK userVisitPK, GetUnitOfMeasureChoicesForm form) {
+    public CommandResult<GetUnitOfMeasureChoicesResult> getUnitOfMeasureChoices(UserVisitPK userVisitPK, GetUnitOfMeasureChoicesForm form) {
         return CDI.current().select(GetUnitOfMeasureChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -137,7 +138,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureType(UserVisitPK userVisitPK, EditUnitOfMeasureTypeForm form) {
+    public CommandResult<EditUnitOfMeasureTypeResult> editUnitOfMeasureType(UserVisitPK userVisitPK, EditUnitOfMeasureTypeForm form) {
         return CDI.current().select(EditUnitOfMeasureTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -156,12 +157,12 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureTypeDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureTypeDescriptionsForm form) {
+    public CommandResult<GetUnitOfMeasureTypeDescriptionsResult> getUnitOfMeasureTypeDescriptions(UserVisitPK userVisitPK, GetUnitOfMeasureTypeDescriptionsForm form) {
         return CDI.current().select(GetUnitOfMeasureTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, EditUnitOfMeasureTypeDescriptionForm form) {
+    public CommandResult<EditUnitOfMeasureTypeDescriptionResult> editUnitOfMeasureTypeDescription(UserVisitPK userVisitPK, EditUnitOfMeasureTypeDescriptionForm form) {
         return CDI.current().select(EditUnitOfMeasureTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -180,7 +181,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, EditUnitOfMeasureTypeVolumeForm form) {
+    public CommandResult<EditUnitOfMeasureTypeVolumeResult> editUnitOfMeasureTypeVolume(UserVisitPK userVisitPK, EditUnitOfMeasureTypeVolumeForm form) {
         return CDI.current().select(EditUnitOfMeasureTypeVolumeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -199,7 +200,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, EditUnitOfMeasureTypeWeightForm form) {
+    public CommandResult<EditUnitOfMeasureTypeWeightResult> editUnitOfMeasureTypeWeight(UserVisitPK userVisitPK, EditUnitOfMeasureTypeWeightForm form) {
         return CDI.current().select(EditUnitOfMeasureTypeWeightCommand.class).get().run(userVisitPK, form);
     }
     
@@ -218,12 +219,12 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureEquivalents(UserVisitPK userVisitPK, GetUnitOfMeasureEquivalentsForm form) {
+    public CommandResult<GetUnitOfMeasureEquivalentsResult> getUnitOfMeasureEquivalents(UserVisitPK userVisitPK, GetUnitOfMeasureEquivalentsForm form) {
         return CDI.current().select(GetUnitOfMeasureEquivalentsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureEquivalent(UserVisitPK userVisitPK, EditUnitOfMeasureEquivalentForm form) {
+    public CommandResult<EditUnitOfMeasureEquivalentResult> editUnitOfMeasureEquivalent(UserVisitPK userVisitPK, EditUnitOfMeasureEquivalentForm form) {
         return CDI.current().select(EditUnitOfMeasureEquivalentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -242,17 +243,17 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindUseTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeChoicesForm form) {
+    public CommandResult<GetUnitOfMeasureKindUseTypeChoicesResult> getUnitOfMeasureKindUseTypeChoices(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeChoicesForm form) {
         return CDI.current().select(GetUnitOfMeasureKindUseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindUseTypes(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypesForm form) {
+    public CommandResult<GetUnitOfMeasureKindUseTypesResult> getUnitOfMeasureKindUseTypes(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypesForm form) {
         return CDI.current().select(GetUnitOfMeasureKindUseTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindUseType(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeForm form) {
+    public CommandResult<GetUnitOfMeasureKindUseTypeResult> getUnitOfMeasureKindUseType(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypeForm form) {
         return CDI.current().select(GetUnitOfMeasureKindUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -275,12 +276,12 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindUses(UserVisitPK userVisitPK, GetUnitOfMeasureKindUsesForm form) {
+    public CommandResult<GetUnitOfMeasureKindUsesResult> getUnitOfMeasureKindUses(UserVisitPK userVisitPK, GetUnitOfMeasureKindUsesForm form) {
         return CDI.current().select(GetUnitOfMeasureKindUsesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getUnitOfMeasureKindUse(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseForm form) {
+    public CommandResult<GetUnitOfMeasureKindUseResult> getUnitOfMeasureKindUse(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseForm form) {
         return CDI.current().select(GetUnitOfMeasureKindUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -290,7 +291,7 @@ public class UomBean
     }
     
     @Override
-    public CommandResult<?> editUnitOfMeasureKindUse(UserVisitPK userVisitPK, EditUnitOfMeasureKindUseForm form) {
+    public CommandResult<EditUnitOfMeasureKindUseResult> editUnitOfMeasureKindUse(UserVisitPK userVisitPK, EditUnitOfMeasureKindUseForm form) {
         return CDI.current().select(EditUnitOfMeasureKindUseCommand.class).get().run(userVisitPK, form);
     }
     

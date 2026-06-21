@@ -18,6 +18,7 @@ package com.echothree.control.user.wishlist.server;
 
 import com.echothree.control.user.wishlist.common.WishlistRemote;
 import com.echothree.control.user.wishlist.common.form.*;
+import com.echothree.control.user.wishlist.common.result.*;
 import com.echothree.control.user.wishlist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -48,17 +49,17 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form) {
+    public CommandResult<GetWishlistTypeResult> getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form) {
         return CDI.current().select(GetWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWishlistTypes(UserVisitPK userVisitPK, GetWishlistTypesForm form) {
+    public CommandResult<GetWishlistTypesResult> getWishlistTypes(UserVisitPK userVisitPK, GetWishlistTypesForm form) {
         return CDI.current().select(GetWishlistTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form) {
+    public CommandResult<GetWishlistTypeChoicesResult> getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form) {
         return CDI.current().select(GetWishlistTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -68,7 +69,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form) {
+    public CommandResult<EditWishlistTypeResult> editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form) {
         return CDI.current().select(EditWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -87,12 +88,12 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form) {
+    public CommandResult<GetWishlistTypeDescriptionsResult> getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form) {
         return CDI.current().select(GetWishlistTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form) {
+    public CommandResult<EditWishlistTypeDescriptionResult> editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form) {
         return CDI.current().select(EditWishlistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -111,17 +112,17 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form) {
+    public CommandResult<GetWishlistPriorityResult> getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form) {
         return CDI.current().select(GetWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form) {
+    public CommandResult<GetWishlistPrioritiesResult> getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form) {
         return CDI.current().select(GetWishlistPrioritiesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
+    public CommandResult<GetWishlistPriorityChoicesResult> getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
         return CDI.current().select(GetWishlistPriorityChoicesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -131,7 +132,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form) {
+    public CommandResult<EditWishlistPriorityResult> editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form) {
         return CDI.current().select(EditWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -150,12 +151,12 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
+    public CommandResult<GetWishlistPriorityDescriptionsResult> getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
         return CDI.current().select(GetWishlistPriorityDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form) {
+    public CommandResult<EditWishlistPriorityDescriptionResult> editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form) {
         return CDI.current().select(EditWishlistPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -174,7 +175,7 @@ public class WishlistBean
     }
     
     @Override
-    public CommandResult<?> getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form) {
+    public CommandResult<GetWishlistLinesResult> getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form) {
         return CDI.current().select(GetWishlistLinesCommand.class).get().run(userVisitPK, form);
     }
     

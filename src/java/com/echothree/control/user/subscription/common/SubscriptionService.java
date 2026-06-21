@@ -17,6 +17,7 @@
 package com.echothree.control.user.subscription.common;
 
 import com.echothree.control.user.subscription.common.form.*;
+import com.echothree.control.user.subscription.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface SubscriptionService
 
     CommandResult<?> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form);
 
-    CommandResult<?> getSubscriptionKinds(UserVisitPK userVisitPK, GetSubscriptionKindsForm form);
+    CommandResult<GetSubscriptionKindsResult> getSubscriptionKinds(UserVisitPK userVisitPK, GetSubscriptionKindsForm form);
 
-    CommandResult<?> getSubscriptionKind(UserVisitPK userVisitPK, GetSubscriptionKindForm form);
+    CommandResult<GetSubscriptionKindResult> getSubscriptionKind(UserVisitPK userVisitPK, GetSubscriptionKindForm form);
 
-    CommandResult<?> getSubscriptionKindChoices(UserVisitPK userVisitPK, GetSubscriptionKindChoicesForm form);
+    CommandResult<GetSubscriptionKindChoicesResult> getSubscriptionKindChoices(UserVisitPK userVisitPK, GetSubscriptionKindChoicesForm form);
 
     CommandResult<?> setDefaultSubscriptionKind(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form);
 
-    CommandResult<?> editSubscriptionKind(UserVisitPK userVisitPK, EditSubscriptionKindForm form);
+    CommandResult<EditSubscriptionKindResult> editSubscriptionKind(UserVisitPK userVisitPK, EditSubscriptionKindForm form);
 
     CommandResult<?> deleteSubscriptionKind(UserVisitPK userVisitPK, DeleteSubscriptionKindForm form);
 
@@ -53,11 +54,11 @@ public interface SubscriptionService
 
     CommandResult<?> createSubscriptionKindDescription(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form);
 
-    CommandResult<?> getSubscriptionKindDescriptions(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionsForm form);
+    CommandResult<GetSubscriptionKindDescriptionsResult> getSubscriptionKindDescriptions(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionsForm form);
 
-    CommandResult<?> getSubscriptionKindDescription(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionForm form);
+    CommandResult<GetSubscriptionKindDescriptionResult> getSubscriptionKindDescription(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionForm form);
 
-    CommandResult<?> editSubscriptionKindDescription(UserVisitPK userVisitPK, EditSubscriptionKindDescriptionForm form);
+    CommandResult<EditSubscriptionKindDescriptionResult> editSubscriptionKindDescription(UserVisitPK userVisitPK, EditSubscriptionKindDescriptionForm form);
 
     CommandResult<?> deleteSubscriptionKindDescription(UserVisitPK userVisitPK, DeleteSubscriptionKindDescriptionForm form);
 
@@ -67,15 +68,15 @@ public interface SubscriptionService
     
     CommandResult<?> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form);
     
-    CommandResult<?> getSubscriptionTypes(UserVisitPK userVisitPK, GetSubscriptionTypesForm form);
+    CommandResult<GetSubscriptionTypesResult> getSubscriptionTypes(UserVisitPK userVisitPK, GetSubscriptionTypesForm form);
     
-    CommandResult<?> getSubscriptionType(UserVisitPK userVisitPK, GetSubscriptionTypeForm form);
+    CommandResult<GetSubscriptionTypeResult> getSubscriptionType(UserVisitPK userVisitPK, GetSubscriptionTypeForm form);
     
-    CommandResult<?> getSubscriptionTypeChoices(UserVisitPK userVisitPK, GetSubscriptionTypeChoicesForm form);
+    CommandResult<GetSubscriptionTypeChoicesResult> getSubscriptionTypeChoices(UserVisitPK userVisitPK, GetSubscriptionTypeChoicesForm form);
     
     CommandResult<?> setDefaultSubscriptionType(UserVisitPK userVisitPK, SetDefaultSubscriptionTypeForm form);
     
-    CommandResult<?> editSubscriptionType(UserVisitPK userVisitPK, EditSubscriptionTypeForm form);
+    CommandResult<EditSubscriptionTypeResult> editSubscriptionType(UserVisitPK userVisitPK, EditSubscriptionTypeForm form);
     
     CommandResult<?> deleteSubscriptionType(UserVisitPK userVisitPK, DeleteSubscriptionTypeForm form);
     
@@ -85,9 +86,9 @@ public interface SubscriptionService
     
     CommandResult<?> createSubscriptionTypeDescription(UserVisitPK userVisitPK, CreateSubscriptionTypeDescriptionForm form);
     
-    CommandResult<?> getSubscriptionTypeDescriptions(UserVisitPK userVisitPK, GetSubscriptionTypeDescriptionsForm form);
+    CommandResult<GetSubscriptionTypeDescriptionsResult> getSubscriptionTypeDescriptions(UserVisitPK userVisitPK, GetSubscriptionTypeDescriptionsForm form);
     
-    CommandResult<?> editSubscriptionTypeDescription(UserVisitPK userVisitPK, EditSubscriptionTypeDescriptionForm form);
+    CommandResult<EditSubscriptionTypeDescriptionResult> editSubscriptionTypeDescription(UserVisitPK userVisitPK, EditSubscriptionTypeDescriptionForm form);
     
     CommandResult<?> deleteSubscriptionTypeDescription(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form);
     
@@ -97,7 +98,7 @@ public interface SubscriptionService
     
     CommandResult<?> createSubscriptionTypeChain(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form);
     
-    CommandResult<?> getSubscriptionTypeChains(UserVisitPK userVisitPK, GetSubscriptionTypeChainsForm form);
+    CommandResult<GetSubscriptionTypeChainsResult> getSubscriptionTypeChains(UserVisitPK userVisitPK, GetSubscriptionTypeChainsForm form);
     
     CommandResult<?> deleteSubscriptionTypeChain(UserVisitPK userVisitPK, DeleteSubscriptionTypeChainForm form);
     
@@ -107,9 +108,9 @@ public interface SubscriptionService
     
     CommandResult<?> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form);
     
-    CommandResult<?> getSubscriptions(UserVisitPK userVisitPK, GetSubscriptionsForm form);
+    CommandResult<GetSubscriptionsResult> getSubscriptions(UserVisitPK userVisitPK, GetSubscriptionsForm form);
     
-    CommandResult<?> getSubscription(UserVisitPK userVisitPK, GetSubscriptionForm form);
+    CommandResult<GetSubscriptionResult> getSubscription(UserVisitPK userVisitPK, GetSubscriptionForm form);
     
     CommandResult<?> deleteSubscription(UserVisitPK userVisitPK, DeleteSubscriptionForm form);
     

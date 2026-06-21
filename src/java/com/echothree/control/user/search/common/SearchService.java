@@ -17,6 +17,7 @@
 package com.echothree.control.user.search.common;
 
 import com.echothree.control.user.search.common.form.*;
+import com.echothree.control.user.search.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -35,15 +36,15 @@ public interface SearchService
     
     CommandResult<?> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form);
     
-    CommandResult<?> getSearchDefaultOperatorChoices(UserVisitPK userVisitPK, GetSearchDefaultOperatorChoicesForm form);
+    CommandResult<GetSearchDefaultOperatorChoicesResult> getSearchDefaultOperatorChoices(UserVisitPK userVisitPK, GetSearchDefaultOperatorChoicesForm form);
     
-    CommandResult<?> getSearchDefaultOperator(UserVisitPK userVisitPK, GetSearchDefaultOperatorForm form);
+    CommandResult<GetSearchDefaultOperatorResult> getSearchDefaultOperator(UserVisitPK userVisitPK, GetSearchDefaultOperatorForm form);
     
-    CommandResult<?> getSearchDefaultOperators(UserVisitPK userVisitPK, GetSearchDefaultOperatorsForm form);
+    CommandResult<GetSearchDefaultOperatorsResult> getSearchDefaultOperators(UserVisitPK userVisitPK, GetSearchDefaultOperatorsForm form);
     
     CommandResult<?> setDefaultSearchDefaultOperator(UserVisitPK userVisitPK, SetDefaultSearchDefaultOperatorForm form);
     
-    CommandResult<?> editSearchDefaultOperator(UserVisitPK userVisitPK, EditSearchDefaultOperatorForm form);
+    CommandResult<EditSearchDefaultOperatorResult> editSearchDefaultOperator(UserVisitPK userVisitPK, EditSearchDefaultOperatorForm form);
     
     CommandResult<?> deleteSearchDefaultOperator(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorForm form);
     
@@ -53,11 +54,11 @@ public interface SearchService
     
     CommandResult<?> createSearchDefaultOperatorDescription(UserVisitPK userVisitPK, CreateSearchDefaultOperatorDescriptionForm form);
     
-    CommandResult<?> getSearchDefaultOperatorDescription(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionForm form);
+    CommandResult<GetSearchDefaultOperatorDescriptionResult> getSearchDefaultOperatorDescription(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionForm form);
     
-    CommandResult<?> getSearchDefaultOperatorDescriptions(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionsForm form);
+    CommandResult<GetSearchDefaultOperatorDescriptionsResult> getSearchDefaultOperatorDescriptions(UserVisitPK userVisitPK, GetSearchDefaultOperatorDescriptionsForm form);
     
-    CommandResult<?> editSearchDefaultOperatorDescription(UserVisitPK userVisitPK, EditSearchDefaultOperatorDescriptionForm form);
+    CommandResult<EditSearchDefaultOperatorDescriptionResult> editSearchDefaultOperatorDescription(UserVisitPK userVisitPK, EditSearchDefaultOperatorDescriptionForm form);
     
     CommandResult<?> deleteSearchDefaultOperatorDescription(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorDescriptionForm form);
     
@@ -67,15 +68,15 @@ public interface SearchService
     
     CommandResult<?> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form);
     
-    CommandResult<?> getSearchSortDirectionChoices(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form);
+    CommandResult<GetSearchSortDirectionChoicesResult> getSearchSortDirectionChoices(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form);
     
-    CommandResult<?> getSearchSortDirection(UserVisitPK userVisitPK, GetSearchSortDirectionForm form);
+    CommandResult<GetSearchSortDirectionResult> getSearchSortDirection(UserVisitPK userVisitPK, GetSearchSortDirectionForm form);
     
-    CommandResult<?> getSearchSortDirections(UserVisitPK userVisitPK, GetSearchSortDirectionsForm form);
+    CommandResult<GetSearchSortDirectionsResult> getSearchSortDirections(UserVisitPK userVisitPK, GetSearchSortDirectionsForm form);
     
     CommandResult<?> setDefaultSearchSortDirection(UserVisitPK userVisitPK, SetDefaultSearchSortDirectionForm form);
     
-    CommandResult<?> editSearchSortDirection(UserVisitPK userVisitPK, EditSearchSortDirectionForm form);
+    CommandResult<EditSearchSortDirectionResult> editSearchSortDirection(UserVisitPK userVisitPK, EditSearchSortDirectionForm form);
     
     CommandResult<?> deleteSearchSortDirection(UserVisitPK userVisitPK, DeleteSearchSortDirectionForm form);
     
@@ -85,11 +86,11 @@ public interface SearchService
     
     CommandResult<?> createSearchSortDirectionDescription(UserVisitPK userVisitPK, CreateSearchSortDirectionDescriptionForm form);
     
-    CommandResult<?> getSearchSortDirectionDescription(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionForm form);
+    CommandResult<GetSearchSortDirectionDescriptionResult> getSearchSortDirectionDescription(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionForm form);
     
-    CommandResult<?> getSearchSortDirectionDescriptions(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionsForm form);
+    CommandResult<GetSearchSortDirectionDescriptionsResult> getSearchSortDirectionDescriptions(UserVisitPK userVisitPK, GetSearchSortDirectionDescriptionsForm form);
     
-    CommandResult<?> editSearchSortDirectionDescription(UserVisitPK userVisitPK, EditSearchSortDirectionDescriptionForm form);
+    CommandResult<EditSearchSortDirectionDescriptionResult> editSearchSortDirectionDescription(UserVisitPK userVisitPK, EditSearchSortDirectionDescriptionForm form);
     
     CommandResult<?> deleteSearchSortDirectionDescription(UserVisitPK userVisitPK, DeleteSearchSortDirectionDescriptionForm form);
     
@@ -99,15 +100,15 @@ public interface SearchService
 
     CommandResult<?> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form);
 
-    CommandResult<?> getSearchKinds(UserVisitPK userVisitPK, GetSearchKindsForm form);
+    CommandResult<GetSearchKindsResult> getSearchKinds(UserVisitPK userVisitPK, GetSearchKindsForm form);
 
-    CommandResult<?> getSearchKind(UserVisitPK userVisitPK, GetSearchKindForm form);
+    CommandResult<GetSearchKindResult> getSearchKind(UserVisitPK userVisitPK, GetSearchKindForm form);
 
-    CommandResult<?> getSearchKindChoices(UserVisitPK userVisitPK, GetSearchKindChoicesForm form);
+    CommandResult<GetSearchKindChoicesResult> getSearchKindChoices(UserVisitPK userVisitPK, GetSearchKindChoicesForm form);
 
     CommandResult<?> setDefaultSearchKind(UserVisitPK userVisitPK, SetDefaultSearchKindForm form);
 
-    CommandResult<?> editSearchKind(UserVisitPK userVisitPK, EditSearchKindForm form);
+    CommandResult<EditSearchKindResult> editSearchKind(UserVisitPK userVisitPK, EditSearchKindForm form);
 
     CommandResult<?> deleteSearchKind(UserVisitPK userVisitPK, DeleteSearchKindForm form);
 
@@ -117,11 +118,11 @@ public interface SearchService
 
     CommandResult<?> createSearchKindDescription(UserVisitPK userVisitPK, CreateSearchKindDescriptionForm form);
 
-    CommandResult<?> getSearchKindDescriptions(UserVisitPK userVisitPK, GetSearchKindDescriptionsForm form);
+    CommandResult<GetSearchKindDescriptionsResult> getSearchKindDescriptions(UserVisitPK userVisitPK, GetSearchKindDescriptionsForm form);
 
-    CommandResult<?> getSearchKindDescription(UserVisitPK userVisitPK, GetSearchKindDescriptionForm form);
+    CommandResult<GetSearchKindDescriptionResult> getSearchKindDescription(UserVisitPK userVisitPK, GetSearchKindDescriptionForm form);
 
-    CommandResult<?> editSearchKindDescription(UserVisitPK userVisitPK, EditSearchKindDescriptionForm form);
+    CommandResult<EditSearchKindDescriptionResult> editSearchKindDescription(UserVisitPK userVisitPK, EditSearchKindDescriptionForm form);
 
     CommandResult<?> deleteSearchKindDescription(UserVisitPK userVisitPK, DeleteSearchKindDescriptionForm form);
 
@@ -131,15 +132,15 @@ public interface SearchService
 
     CommandResult<?> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form);
 
-    CommandResult<?> getSearchTypes(UserVisitPK userVisitPK, GetSearchTypesForm form);
+    CommandResult<GetSearchTypesResult> getSearchTypes(UserVisitPK userVisitPK, GetSearchTypesForm form);
 
-    CommandResult<?> getSearchType(UserVisitPK userVisitPK, GetSearchTypeForm form);
+    CommandResult<GetSearchTypeResult> getSearchType(UserVisitPK userVisitPK, GetSearchTypeForm form);
 
-    CommandResult<?> getSearchTypeChoices(UserVisitPK userVisitPK, GetSearchTypeChoicesForm form);
+    CommandResult<GetSearchTypeChoicesResult> getSearchTypeChoices(UserVisitPK userVisitPK, GetSearchTypeChoicesForm form);
 
     CommandResult<?> setDefaultSearchType(UserVisitPK userVisitPK, SetDefaultSearchTypeForm form);
 
-    CommandResult<?> editSearchType(UserVisitPK userVisitPK, EditSearchTypeForm form);
+    CommandResult<EditSearchTypeResult> editSearchType(UserVisitPK userVisitPK, EditSearchTypeForm form);
 
     CommandResult<?> deleteSearchType(UserVisitPK userVisitPK, DeleteSearchTypeForm form);
 
@@ -149,11 +150,11 @@ public interface SearchService
 
     CommandResult<?> createSearchTypeDescription(UserVisitPK userVisitPK, CreateSearchTypeDescriptionForm form);
 
-    CommandResult<?> getSearchTypeDescriptions(UserVisitPK userVisitPK, GetSearchTypeDescriptionsForm form);
+    CommandResult<GetSearchTypeDescriptionsResult> getSearchTypeDescriptions(UserVisitPK userVisitPK, GetSearchTypeDescriptionsForm form);
 
-    CommandResult<?> getSearchTypeDescription(UserVisitPK userVisitPK, GetSearchTypeDescriptionForm form);
+    CommandResult<GetSearchTypeDescriptionResult> getSearchTypeDescription(UserVisitPK userVisitPK, GetSearchTypeDescriptionForm form);
 
-    CommandResult<?> editSearchTypeDescription(UserVisitPK userVisitPK, EditSearchTypeDescriptionForm form);
+    CommandResult<EditSearchTypeDescriptionResult> editSearchTypeDescription(UserVisitPK userVisitPK, EditSearchTypeDescriptionForm form);
 
     CommandResult<?> deleteSearchTypeDescription(UserVisitPK userVisitPK, DeleteSearchTypeDescriptionForm form);
 
@@ -163,15 +164,15 @@ public interface SearchService
 
     CommandResult<?> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form);
 
-    CommandResult<?> getSearchSortOrders(UserVisitPK userVisitPK, GetSearchSortOrdersForm form);
+    CommandResult<GetSearchSortOrdersResult> getSearchSortOrders(UserVisitPK userVisitPK, GetSearchSortOrdersForm form);
 
-    CommandResult<?> getSearchSortOrder(UserVisitPK userVisitPK, GetSearchSortOrderForm form);
+    CommandResult<GetSearchSortOrderResult> getSearchSortOrder(UserVisitPK userVisitPK, GetSearchSortOrderForm form);
 
-    CommandResult<?> getSearchSortOrderChoices(UserVisitPK userVisitPK, GetSearchSortOrderChoicesForm form);
+    CommandResult<GetSearchSortOrderChoicesResult> getSearchSortOrderChoices(UserVisitPK userVisitPK, GetSearchSortOrderChoicesForm form);
 
     CommandResult<?> setDefaultSearchSortOrder(UserVisitPK userVisitPK, SetDefaultSearchSortOrderForm form);
 
-    CommandResult<?> editSearchSortOrder(UserVisitPK userVisitPK, EditSearchSortOrderForm form);
+    CommandResult<EditSearchSortOrderResult> editSearchSortOrder(UserVisitPK userVisitPK, EditSearchSortOrderForm form);
 
     CommandResult<?> deleteSearchSortOrder(UserVisitPK userVisitPK, DeleteSearchSortOrderForm form);
 
@@ -181,11 +182,11 @@ public interface SearchService
 
     CommandResult<?> createSearchSortOrderDescription(UserVisitPK userVisitPK, CreateSearchSortOrderDescriptionForm form);
 
-    CommandResult<?> getSearchSortOrderDescriptions(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionsForm form);
+    CommandResult<GetSearchSortOrderDescriptionsResult> getSearchSortOrderDescriptions(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionsForm form);
 
-    CommandResult<?> getSearchSortOrderDescription(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionForm form);
+    CommandResult<GetSearchSortOrderDescriptionResult> getSearchSortOrderDescription(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionForm form);
 
-    CommandResult<?> editSearchSortOrderDescription(UserVisitPK userVisitPK, EditSearchSortOrderDescriptionForm form);
+    CommandResult<EditSearchSortOrderDescriptionResult> editSearchSortOrderDescription(UserVisitPK userVisitPK, EditSearchSortOrderDescriptionForm form);
 
     CommandResult<?> deleteSearchSortOrderDescription(UserVisitPK userVisitPK, DeleteSearchSortOrderDescriptionForm form);
 
@@ -195,15 +196,15 @@ public interface SearchService
 
     CommandResult<?> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form);
 
-    CommandResult<?> getSearchUseTypes(UserVisitPK userVisitPK, GetSearchUseTypesForm form);
+    CommandResult<GetSearchUseTypesResult> getSearchUseTypes(UserVisitPK userVisitPK, GetSearchUseTypesForm form);
 
-    CommandResult<?> getSearchUseType(UserVisitPK userVisitPK, GetSearchUseTypeForm form);
+    CommandResult<GetSearchUseTypeResult> getSearchUseType(UserVisitPK userVisitPK, GetSearchUseTypeForm form);
 
-    CommandResult<?> getSearchUseTypeChoices(UserVisitPK userVisitPK, GetSearchUseTypeChoicesForm form);
+    CommandResult<GetSearchUseTypeChoicesResult> getSearchUseTypeChoices(UserVisitPK userVisitPK, GetSearchUseTypeChoicesForm form);
 
     CommandResult<?> setDefaultSearchUseType(UserVisitPK userVisitPK, SetDefaultSearchUseTypeForm form);
 
-    CommandResult<?> editSearchUseType(UserVisitPK userVisitPK, EditSearchUseTypeForm form);
+    CommandResult<EditSearchUseTypeResult> editSearchUseType(UserVisitPK userVisitPK, EditSearchUseTypeForm form);
 
     CommandResult<?> deleteSearchUseType(UserVisitPK userVisitPK, DeleteSearchUseTypeForm form);
 
@@ -213,11 +214,11 @@ public interface SearchService
 
     CommandResult<?> createSearchUseTypeDescription(UserVisitPK userVisitPK, CreateSearchUseTypeDescriptionForm form);
 
-    CommandResult<?> getSearchUseTypeDescriptions(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionsForm form);
+    CommandResult<GetSearchUseTypeDescriptionsResult> getSearchUseTypeDescriptions(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionsForm form);
 
-    CommandResult<?> getSearchUseTypeDescription(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionForm form);
+    CommandResult<GetSearchUseTypeDescriptionResult> getSearchUseTypeDescription(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionForm form);
 
-    CommandResult<?> editSearchUseTypeDescription(UserVisitPK userVisitPK, EditSearchUseTypeDescriptionForm form);
+    CommandResult<EditSearchUseTypeDescriptionResult> editSearchUseTypeDescription(UserVisitPK userVisitPK, EditSearchUseTypeDescriptionForm form);
 
     CommandResult<?> deleteSearchUseTypeDescription(UserVisitPK userVisitPK, DeleteSearchUseTypeDescriptionForm form);
 
@@ -227,15 +228,15 @@ public interface SearchService
 
     CommandResult<?> createSearchResultActionType(UserVisitPK userVisitPK, CreateSearchResultActionTypeForm form);
 
-    CommandResult<?> getSearchResultActionTypes(UserVisitPK userVisitPK, GetSearchResultActionTypesForm form);
+    CommandResult<GetSearchResultActionTypesResult> getSearchResultActionTypes(UserVisitPK userVisitPK, GetSearchResultActionTypesForm form);
 
-    CommandResult<?> getSearchResultActionType(UserVisitPK userVisitPK, GetSearchResultActionTypeForm form);
+    CommandResult<GetSearchResultActionTypeResult> getSearchResultActionType(UserVisitPK userVisitPK, GetSearchResultActionTypeForm form);
 
-    CommandResult<?> getSearchResultActionTypeChoices(UserVisitPK userVisitPK, GetSearchResultActionTypeChoicesForm form);
+    CommandResult<GetSearchResultActionTypeChoicesResult> getSearchResultActionTypeChoices(UserVisitPK userVisitPK, GetSearchResultActionTypeChoicesForm form);
 
     CommandResult<?> setDefaultSearchResultActionType(UserVisitPK userVisitPK, SetDefaultSearchResultActionTypeForm form);
 
-    CommandResult<?> editSearchResultActionType(UserVisitPK userVisitPK, EditSearchResultActionTypeForm form);
+    CommandResult<EditSearchResultActionTypeResult> editSearchResultActionType(UserVisitPK userVisitPK, EditSearchResultActionTypeForm form);
 
     CommandResult<?> deleteSearchResultActionType(UserVisitPK userVisitPK, DeleteSearchResultActionTypeForm form);
 
@@ -245,11 +246,11 @@ public interface SearchService
 
     CommandResult<?> createSearchResultActionTypeDescription(UserVisitPK userVisitPK, CreateSearchResultActionTypeDescriptionForm form);
 
-    CommandResult<?> getSearchResultActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionsForm form);
+    CommandResult<GetSearchResultActionTypeDescriptionsResult> getSearchResultActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionsForm form);
 
-    CommandResult<?> getSearchResultActionTypeDescription(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionForm form);
+    CommandResult<GetSearchResultActionTypeDescriptionResult> getSearchResultActionTypeDescription(UserVisitPK userVisitPK, GetSearchResultActionTypeDescriptionForm form);
 
-    CommandResult<?> editSearchResultActionTypeDescription(UserVisitPK userVisitPK, EditSearchResultActionTypeDescriptionForm form);
+    CommandResult<EditSearchResultActionTypeDescriptionResult> editSearchResultActionTypeDescription(UserVisitPK userVisitPK, EditSearchResultActionTypeDescriptionForm form);
 
     CommandResult<?> deleteSearchResultActionTypeDescription(UserVisitPK userVisitPK, DeleteSearchResultActionTypeDescriptionForm form);
 
@@ -259,15 +260,15 @@ public interface SearchService
 
     CommandResult<?> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form);
 
-    CommandResult<?> getSearchCheckSpellingActionTypes(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form);
+    CommandResult<GetSearchCheckSpellingActionTypesResult> getSearchCheckSpellingActionTypes(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form);
 
-    CommandResult<?> getSearchCheckSpellingActionType(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeForm form);
+    CommandResult<GetSearchCheckSpellingActionTypeResult> getSearchCheckSpellingActionType(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeForm form);
 
-    CommandResult<?> getSearchCheckSpellingActionTypeChoices(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeChoicesForm form);
+    CommandResult<GetSearchCheckSpellingActionTypeChoicesResult> getSearchCheckSpellingActionTypeChoices(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeChoicesForm form);
 
     CommandResult<?> setDefaultSearchCheckSpellingActionType(UserVisitPK userVisitPK, SetDefaultSearchCheckSpellingActionTypeForm form);
 
-    CommandResult<?> editSearchCheckSpellingActionType(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeForm form);
+    CommandResult<EditSearchCheckSpellingActionTypeResult> editSearchCheckSpellingActionType(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeForm form);
 
     CommandResult<?> deleteSearchCheckSpellingActionType(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeForm form);
 
@@ -277,11 +278,11 @@ public interface SearchService
 
     CommandResult<?> createSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeDescriptionForm form);
 
-    CommandResult<?> getSearchCheckSpellingActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionsForm form);
+    CommandResult<GetSearchCheckSpellingActionTypeDescriptionsResult> getSearchCheckSpellingActionTypeDescriptions(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionsForm form);
 
-    CommandResult<?> getSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionForm form);
+    CommandResult<GetSearchCheckSpellingActionTypeDescriptionResult> getSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeDescriptionForm form);
 
-    CommandResult<?> editSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeDescriptionForm form);
+    CommandResult<EditSearchCheckSpellingActionTypeDescriptionResult> editSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, EditSearchCheckSpellingActionTypeDescriptionForm form);
 
     CommandResult<?> deleteSearchCheckSpellingActionTypeDescription(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeDescriptionForm form);
 
@@ -291,11 +292,11 @@ public interface SearchService
     
     CommandResult<?> searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form);
     
-    CommandResult<?> getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form);
+    CommandResult<GetCustomerResultsResult> getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form);
 
-    CommandResult<?> getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form);
+    CommandResult<GetCustomerResultsFacetResult> getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form);
 
-    CommandResult<?> getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form);
+    CommandResult<GetCustomerResultsFacetsResult> getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form);
 
     CommandResult<?> countCustomerResults(UserVisitPK userVisitPK, CountCustomerResultsForm form);
     
@@ -307,11 +308,11 @@ public interface SearchService
 
     CommandResult<?> searchItems(UserVisitPK userVisitPK, SearchItemsForm form);
     
-    CommandResult<?> getItemResults(UserVisitPK userVisitPK, GetItemResultsForm form);
+    CommandResult<GetItemResultsResult> getItemResults(UserVisitPK userVisitPK, GetItemResultsForm form);
     
-    CommandResult<?> getItemResultsFacet(UserVisitPK userVisitPK, GetItemResultsFacetForm form);
+    CommandResult<GetItemResultsFacetResult> getItemResultsFacet(UserVisitPK userVisitPK, GetItemResultsFacetForm form);
     
-    CommandResult<?> getItemResultsFacets(UserVisitPK userVisitPK, GetItemResultsFacetsForm form);
+    CommandResult<GetItemResultsFacetsResult> getItemResultsFacets(UserVisitPK userVisitPK, GetItemResultsFacetsForm form);
     
     CommandResult<?> countItemResults(UserVisitPK userVisitPK, CountItemResultsForm form);
     
@@ -327,7 +328,7 @@ public interface SearchService
 
     CommandResult<?> searchVendors(UserVisitPK userVisitPK, SearchVendorsForm form);
 
-    CommandResult<?> getVendorResults(UserVisitPK userVisitPK, GetVendorResultsForm form);
+    CommandResult<GetVendorResultsResult> getVendorResults(UserVisitPK userVisitPK, GetVendorResultsForm form);
 
     CommandResult<?> countVendorResults(UserVisitPK userVisitPK, CountVendorResultsForm form);
 
@@ -339,7 +340,7 @@ public interface SearchService
 
     CommandResult<?> searchForumMessages(UserVisitPK userVisitPK, SearchForumMessagesForm form);
 
-    CommandResult<?> getForumMessageResults(UserVisitPK userVisitPK, GetForumMessageResultsForm form);
+    CommandResult<GetForumMessageResultsResult> getForumMessageResults(UserVisitPK userVisitPK, GetForumMessageResultsForm form);
 
     CommandResult<?> countForumMessageResults(UserVisitPK userVisitPK, CountForumMessageResultsForm form);
 
@@ -351,11 +352,11 @@ public interface SearchService
 
     CommandResult<?> searchEmployees(UserVisitPK userVisitPK, SearchEmployeesForm form);
 
-    CommandResult<?> getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form);
+    CommandResult<GetEmployeeResultsResult> getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form);
 
-    CommandResult<?> getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form);
+    CommandResult<GetEmployeeResultsFacetResult> getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form);
 
-    CommandResult<?> getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form);
+    CommandResult<GetEmployeeResultsFacetsResult> getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form);
 
     CommandResult<?> countEmployeeResults(UserVisitPK userVisitPK, CountEmployeeResultsForm form);
 
@@ -367,7 +368,7 @@ public interface SearchService
 
     CommandResult<?> searchLeaves(UserVisitPK userVisitPK, SearchLeavesForm form);
 
-    CommandResult<?> getLeaveResults(UserVisitPK userVisitPK, GetLeaveResultsForm form);
+    CommandResult<GetLeaveResultsResult> getLeaveResults(UserVisitPK userVisitPK, GetLeaveResultsForm form);
 
     CommandResult<?> countLeaveResults(UserVisitPK userVisitPK, CountLeaveResultsForm form);
 
@@ -379,7 +380,7 @@ public interface SearchService
 
     CommandResult<?> searchSalesOrderBatches(UserVisitPK userVisitPK, SearchSalesOrderBatchesForm form);
 
-    CommandResult<?> getSalesOrderBatchResults(UserVisitPK userVisitPK, GetSalesOrderBatchResultsForm form);
+    CommandResult<GetSalesOrderBatchResultsResult> getSalesOrderBatchResults(UserVisitPK userVisitPK, GetSalesOrderBatchResultsForm form);
 
     CommandResult<?> countSalesOrderBatchResults(UserVisitPK userVisitPK, CountSalesOrderBatchResultsForm form);
 
@@ -391,7 +392,7 @@ public interface SearchService
 
     CommandResult<?> searchSalesOrders(UserVisitPK userVisitPK, SearchSalesOrdersForm form);
 
-    CommandResult<?> getSalesOrderResults(UserVisitPK userVisitPK, GetSalesOrderResultsForm form);
+    CommandResult<GetSalesOrderResultsResult> getSalesOrderResults(UserVisitPK userVisitPK, GetSalesOrderResultsForm form);
 
     CommandResult<?> countSalesOrderResults(UserVisitPK userVisitPK, CountSalesOrderResultsForm form);
 
@@ -403,7 +404,7 @@ public interface SearchService
 
     CommandResult<?> searchComponentVendors(UserVisitPK userVisitPK, SearchComponentVendorsForm form);
 
-    CommandResult<?> getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form);
+    CommandResult<GetComponentVendorResultsResult> getComponentVendorResults(UserVisitPK userVisitPK, GetComponentVendorResultsForm form);
 
     CommandResult<?> countComponentVendorResults(UserVisitPK userVisitPK, CountComponentVendorResultsForm form);
 
@@ -415,11 +416,11 @@ public interface SearchService
 
     CommandResult<?> searchEntityTypes(UserVisitPK userVisitPK, SearchEntityTypesForm form);
 
-    CommandResult<?> getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form);
+    CommandResult<GetEntityTypeResultsResult> getEntityTypeResults(UserVisitPK userVisitPK, GetEntityTypeResultsForm form);
 
-    CommandResult<?> getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form);
+    CommandResult<GetEntityTypeResultsFacetResult> getEntityTypeResultsFacet(UserVisitPK userVisitPK, GetEntityTypeResultsFacetForm form);
 
-    CommandResult<?> getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form);
+    CommandResult<GetEntityTypeResultsFacetsResult> getEntityTypeResultsFacets(UserVisitPK userVisitPK, GetEntityTypeResultsFacetsForm form);
 
     CommandResult<?> countEntityTypeResults(UserVisitPK userVisitPK, CountEntityTypeResultsForm form);
 
@@ -431,7 +432,7 @@ public interface SearchService
 
     CommandResult<?> searchEntityAliasTypes(UserVisitPK userVisitPK, SearchEntityAliasTypesForm form);
 
-    CommandResult<?> getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form);
+    CommandResult<GetEntityAliasTypeResultsResult> getEntityAliasTypeResults(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form);
 
     CommandResult<?> countEntityAliasTypeResults(UserVisitPK userVisitPK, CountEntityAliasTypeResultsForm form);
 
@@ -443,7 +444,7 @@ public interface SearchService
 
     CommandResult<?> searchEntityAttributes(UserVisitPK userVisitPK, SearchEntityAttributesForm form);
 
-    CommandResult<?> getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form);
+    CommandResult<GetEntityAttributeResultsResult> getEntityAttributeResults(UserVisitPK userVisitPK, GetEntityAttributeResultsForm form);
 
     CommandResult<?> countEntityAttributeResults(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form);
 
@@ -455,7 +456,7 @@ public interface SearchService
 
     CommandResult<?> searchEntityAttributeGroups(UserVisitPK userVisitPK, SearchEntityAttributeGroupsForm form);
 
-    CommandResult<?> getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form);
+    CommandResult<GetEntityAttributeGroupResultsResult> getEntityAttributeGroupResults(UserVisitPK userVisitPK, GetEntityAttributeGroupResultsForm form);
 
     CommandResult<?> countEntityAttributeGroupResults(UserVisitPK userVisitPK, CountEntityAttributeGroupResultsForm form);
 
@@ -467,7 +468,7 @@ public interface SearchService
 
     CommandResult<?> searchEntityListItems(UserVisitPK userVisitPK, SearchEntityListItemsForm form);
 
-    CommandResult<?> getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form);
+    CommandResult<GetEntityListItemResultsResult> getEntityListItemResults(UserVisitPK userVisitPK, GetEntityListItemResultsForm form);
 
     CommandResult<?> countEntityListItemResults(UserVisitPK userVisitPK, CountEntityListItemResultsForm form);
 
@@ -479,7 +480,7 @@ public interface SearchService
 
     CommandResult<?> searchContentCatalogs(UserVisitPK userVisitPK, SearchContentCatalogsForm form);
 
-    CommandResult<?> getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form);
+    CommandResult<GetContentCatalogResultsResult> getContentCatalogResults(UserVisitPK userVisitPK, GetContentCatalogResultsForm form);
 
     CommandResult<?> countContentCatalogResults(UserVisitPK userVisitPK, CountContentCatalogResultsForm form);
 
@@ -491,11 +492,11 @@ public interface SearchService
 
     CommandResult<?> searchContentCatalogItems(UserVisitPK userVisitPK, SearchContentCatalogItemsForm form);
 
-    CommandResult<?> getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form);
+    CommandResult<GetContentCatalogItemResultsResult> getContentCatalogItemResults(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form);
 
-    CommandResult<?> getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form);
+    CommandResult<GetContentCatalogItemResultsFacetResult> getContentCatalogItemResultsFacet(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form);
 
-    CommandResult<?> getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form);
+    CommandResult<GetContentCatalogItemResultsFacetsResult> getContentCatalogItemResultsFacets(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetsForm form);
 
     CommandResult<?> countContentCatalogItemResults(UserVisitPK userVisitPK, CountContentCatalogItemResultsForm form);
 
@@ -507,11 +508,11 @@ public interface SearchService
 
     CommandResult<?> searchContentCategories(UserVisitPK userVisitPK, SearchContentCategoriesForm form);
 
-    CommandResult<?> getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form);
+    CommandResult<GetContentCategoryResultsResult> getContentCategoryResults(UserVisitPK userVisitPK, GetContentCategoryResultsForm form);
 
-    CommandResult<?> getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form);
+    CommandResult<GetContentCategoryResultsFacetResult> getContentCategoryResultsFacet(UserVisitPK userVisitPK, GetContentCategoryResultsFacetForm form);
 
-    CommandResult<?> getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form);
+    CommandResult<GetContentCategoryResultsFacetsResult> getContentCategoryResultsFacets(UserVisitPK userVisitPK, GetContentCategoryResultsFacetsForm form);
 
     CommandResult<?> countContentCategoryResults(UserVisitPK userVisitPK, CountContentCategoryResultsForm form);
 
@@ -523,11 +524,11 @@ public interface SearchService
 
     CommandResult<?> searchSecurityRoleGroups(UserVisitPK userVisitPK, SearchSecurityRoleGroupsForm form);
     
-    CommandResult<?> getSecurityRoleGroupResults(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsForm form);
+    CommandResult<GetSecurityRoleGroupResultsResult> getSecurityRoleGroupResults(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsForm form);
     
-    CommandResult<?> getSecurityRoleGroupResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetForm form);
+    CommandResult<GetSecurityRoleGroupResultsFacetResult> getSecurityRoleGroupResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetForm form);
     
-    CommandResult<?> getSecurityRoleGroupResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetsForm form);
+    CommandResult<GetSecurityRoleGroupResultsFacetsResult> getSecurityRoleGroupResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetsForm form);
     
     CommandResult<?> countSecurityRoleGroupResults(UserVisitPK userVisitPK, CountSecurityRoleGroupResultsForm form);
     
@@ -539,11 +540,11 @@ public interface SearchService
 
     CommandResult<?> searchSecurityRoles(UserVisitPK userVisitPK, SearchSecurityRolesForm form);
     
-    CommandResult<?> getSecurityRoleResults(UserVisitPK userVisitPK, GetSecurityRoleResultsForm form);
+    CommandResult<GetSecurityRoleResultsResult> getSecurityRoleResults(UserVisitPK userVisitPK, GetSecurityRoleResultsForm form);
     
-    CommandResult<?> getSecurityRoleResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetForm form);
+    CommandResult<GetSecurityRoleResultsFacetResult> getSecurityRoleResultsFacet(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetForm form);
     
-    CommandResult<?> getSecurityRoleResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetsForm form);
+    CommandResult<GetSecurityRoleResultsFacetsResult> getSecurityRoleResultsFacets(UserVisitPK userVisitPK, GetSecurityRoleResultsFacetsForm form);
     
     CommandResult<?> countSecurityRoleResults(UserVisitPK userVisitPK, CountSecurityRoleResultsForm form);
     
@@ -555,11 +556,11 @@ public interface SearchService
 
     CommandResult<?> searchHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, SearchHarmonizedTariffScheduleCodesForm form);
     
-    CommandResult<?> getHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeResultsResult> getHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsForm form);
     
-    CommandResult<?> getHarmonizedTariffScheduleCodeResultsFacet(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeResultsFacetResult> getHarmonizedTariffScheduleCodeResultsFacet(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetForm form);
     
-    CommandResult<?> getHarmonizedTariffScheduleCodeResultsFacets(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetsForm form);
+    CommandResult<GetHarmonizedTariffScheduleCodeResultsFacetsResult> getHarmonizedTariffScheduleCodeResultsFacets(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetsForm form);
     
     CommandResult<?> countHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, CountHarmonizedTariffScheduleCodeResultsForm form);
     
@@ -571,11 +572,11 @@ public interface SearchService
 
     CommandResult<?> searchContactMechanisms(UserVisitPK userVisitPK, SearchContactMechanismsForm form);
     
-    CommandResult<?> getContactMechanismResults(UserVisitPK userVisitPK, GetContactMechanismResultsForm form);
+    CommandResult<GetContactMechanismResultsResult> getContactMechanismResults(UserVisitPK userVisitPK, GetContactMechanismResultsForm form);
     
-    CommandResult<?> getContactMechanismResultsFacet(UserVisitPK userVisitPK, GetContactMechanismResultsFacetForm form);
+    CommandResult<GetContactMechanismResultsFacetResult> getContactMechanismResultsFacet(UserVisitPK userVisitPK, GetContactMechanismResultsFacetForm form);
     
-    CommandResult<?> getContactMechanismResultsFacets(UserVisitPK userVisitPK, GetContactMechanismResultsFacetsForm form);
+    CommandResult<GetContactMechanismResultsFacetsResult> getContactMechanismResultsFacets(UserVisitPK userVisitPK, GetContactMechanismResultsFacetsForm form);
     
     CommandResult<?> countContactMechanismResults(UserVisitPK userVisitPK, CountContactMechanismResultsForm form);
     
@@ -587,11 +588,11 @@ public interface SearchService
 
     CommandResult<?> searchOffers(UserVisitPK userVisitPK, SearchOffersForm form);
     
-    CommandResult<?> getOfferResults(UserVisitPK userVisitPK, GetOfferResultsForm form);
+    CommandResult<GetOfferResultsResult> getOfferResults(UserVisitPK userVisitPK, GetOfferResultsForm form);
     
-    CommandResult<?> getOfferResultsFacet(UserVisitPK userVisitPK, GetOfferResultsFacetForm form);
+    CommandResult<GetOfferResultsFacetResult> getOfferResultsFacet(UserVisitPK userVisitPK, GetOfferResultsFacetForm form);
     
-    CommandResult<?> getOfferResultsFacets(UserVisitPK userVisitPK, GetOfferResultsFacetsForm form);
+    CommandResult<GetOfferResultsFacetsResult> getOfferResultsFacets(UserVisitPK userVisitPK, GetOfferResultsFacetsForm form);
     
     CommandResult<?> countOfferResults(UserVisitPK userVisitPK, CountOfferResultsForm form);
     
@@ -603,11 +604,11 @@ public interface SearchService
 
     CommandResult<?> searchUses(UserVisitPK userVisitPK, SearchUsesForm form);
     
-    CommandResult<?> getUseResults(UserVisitPK userVisitPK, GetUseResultsForm form);
+    CommandResult<GetUseResultsResult> getUseResults(UserVisitPK userVisitPK, GetUseResultsForm form);
     
-    CommandResult<?> getUseResultsFacet(UserVisitPK userVisitPK, GetUseResultsFacetForm form);
+    CommandResult<GetUseResultsFacetResult> getUseResultsFacet(UserVisitPK userVisitPK, GetUseResultsFacetForm form);
     
-    CommandResult<?> getUseResultsFacets(UserVisitPK userVisitPK, GetUseResultsFacetsForm form);
+    CommandResult<GetUseResultsFacetsResult> getUseResultsFacets(UserVisitPK userVisitPK, GetUseResultsFacetsForm form);
     
     CommandResult<?> countUseResults(UserVisitPK userVisitPK, CountUseResultsForm form);
     
@@ -619,11 +620,11 @@ public interface SearchService
 
     CommandResult<?> searchUseTypes(UserVisitPK userVisitPK, SearchUseTypesForm form);
     
-    CommandResult<?> getUseTypeResults(UserVisitPK userVisitPK, GetUseTypeResultsForm form);
+    CommandResult<GetUseTypeResultsResult> getUseTypeResults(UserVisitPK userVisitPK, GetUseTypeResultsForm form);
     
-    CommandResult<?> getUseTypeResultsFacet(UserVisitPK userVisitPK, GetUseTypeResultsFacetForm form);
+    CommandResult<GetUseTypeResultsFacetResult> getUseTypeResultsFacet(UserVisitPK userVisitPK, GetUseTypeResultsFacetForm form);
     
-    CommandResult<?> getUseTypeResultsFacets(UserVisitPK userVisitPK, GetUseTypeResultsFacetsForm form);
+    CommandResult<GetUseTypeResultsFacetsResult> getUseTypeResultsFacets(UserVisitPK userVisitPK, GetUseTypeResultsFacetsForm form);
     
     CommandResult<?> countUseTypeResults(UserVisitPK userVisitPK, CountUseTypeResultsForm form);
     
@@ -635,7 +636,7 @@ public interface SearchService
 
     CommandResult<?> searchShippingMethods(UserVisitPK userVisitPK, SearchShippingMethodsForm form);
 
-    CommandResult<?> getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form);
+    CommandResult<GetShippingMethodResultsResult> getShippingMethodResults(UserVisitPK userVisitPK, GetShippingMethodResultsForm form);
 
     CommandResult<?> countShippingMethodResults(UserVisitPK userVisitPK, CountShippingMethodResultsForm form);
 
@@ -647,11 +648,11 @@ public interface SearchService
 
     CommandResult<?> searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form);
 
-    CommandResult<?> getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form);
+    CommandResult<GetWarehouseResultsResult> getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form);
 
-    CommandResult<?> getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form);
+    CommandResult<GetWarehouseResultsFacetResult> getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form);
 
-    CommandResult<?> getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form);
+    CommandResult<GetWarehouseResultsFacetsResult> getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form);
 
     CommandResult<?> countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form);
 
