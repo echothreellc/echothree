@@ -19,6 +19,7 @@ package com.echothree.util.server.control;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -65,13 +66,13 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         }
     }
 
-    public Future<CommandResult> runAsync(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+    public <R extends BaseResult> Future<CommandResult<R>> runAsync(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
         initForRun(editForm);
 
         return super.runAsync(userVisitPK);
     }
 
-    public CommandResult run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+    public <R extends BaseResult> CommandResult<R> run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
         initForRun(editForm);
 
         return super.run(userVisitPK);
