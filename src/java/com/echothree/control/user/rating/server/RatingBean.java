@@ -44,7 +44,7 @@ public class RatingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createRatingType(UserVisitPK userVisitPK, CreateRatingTypeForm form) {
+    public CommandResult<CreateRatingTypeResult> createRatingType(UserVisitPK userVisitPK, CreateRatingTypeForm form) {
         return CDI.current().select(CreateRatingTypeCommand.class).get().run(userVisitPK, form);
     }
     

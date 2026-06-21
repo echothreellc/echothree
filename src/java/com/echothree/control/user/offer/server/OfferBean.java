@@ -44,7 +44,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOffer(UserVisitPK userVisitPK, CreateOfferForm form) {
+    public CommandResult<CreateOfferResult> createOffer(UserVisitPK userVisitPK, CreateOfferForm form) {
         return CDI.current().select(CreateOfferCommand.class).get().run(userVisitPK, form);
     }
     
@@ -199,7 +199,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSource(UserVisitPK userVisitPK, CreateSourceForm form) {
+    public CommandResult<CreateSourceResult> createSource(UserVisitPK userVisitPK, CreateSourceForm form) {
         return CDI.current().select(CreateSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -291,7 +291,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUseType(UserVisitPK userVisitPK, CreateUseTypeForm form) {
+    public CommandResult<CreateUseTypeResult> createUseType(UserVisitPK userVisitPK, CreateUseTypeForm form) {
         return CDI.current().select(CreateUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -417,7 +417,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUse(UserVisitPK userVisitPK, CreateUseForm form) {
+    public CommandResult<CreateUseResult> createUse(UserVisitPK userVisitPK, CreateUseForm form) {
         return CDI.current().select(CreateUseCommand.class).get().run(userVisitPK, form);
     }
     

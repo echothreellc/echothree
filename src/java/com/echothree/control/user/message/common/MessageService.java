@@ -28,7 +28,7 @@ public interface MessageService
     //   Message Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form);
+    CommandResult<CreateMessageTypeResult> createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form);
     
     CommandResult<GetMessageTypeResult> getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form);
     

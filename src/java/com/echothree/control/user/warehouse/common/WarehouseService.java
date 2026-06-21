@@ -52,7 +52,7 @@ public interface WarehouseService
     //   WarehouseT ypes
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createWarehouseType(UserVisitPK userVisitPK, CreateWarehouseTypeForm form);
+    CommandResult<CreateWarehouseTypeResult> createWarehouseType(UserVisitPK userVisitPK, CreateWarehouseTypeForm form);
 
     CommandResult<GetWarehouseTypesResult> getWarehouseTypes(UserVisitPK userVisitPK, GetWarehouseTypesForm form);
 
@@ -84,7 +84,7 @@ public interface WarehouseService
     //   Warehouses
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWarehouse(UserVisitPK userVisitPK, CreateWarehouseForm form);
+    CommandResult<CreateWarehouseResult> createWarehouse(UserVisitPK userVisitPK, CreateWarehouseForm form);
     
     CommandResult<GetWarehousesResult> getWarehouses(UserVisitPK userVisitPK, GetWarehousesForm form);
     
@@ -102,7 +102,7 @@ public interface WarehouseService
     //   Location Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationType(UserVisitPK userVisitPK, CreateLocationTypeForm form);
+    CommandResult<CreateLocationTypeResult> createLocationType(UserVisitPK userVisitPK, CreateLocationTypeForm form);
     
     CommandResult<GetLocationTypesResult> getLocationTypes(UserVisitPK userVisitPK, GetLocationTypesForm form);
     
@@ -132,7 +132,7 @@ public interface WarehouseService
     //   Location Name Elements
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocationNameElement(UserVisitPK userVisitPK, CreateLocationNameElementForm form);
+    CommandResult<CreateLocationNameElementResult> createLocationNameElement(UserVisitPK userVisitPK, CreateLocationNameElementForm form);
     
     CommandResult<GetLocationNameElementsResult> getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form);
 
@@ -158,7 +158,7 @@ public interface WarehouseService
     //   Locations
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createLocation(UserVisitPK userVisitPK, CreateLocationForm form);
+    CommandResult<CreateLocationResult> createLocation(UserVisitPK userVisitPK, CreateLocationForm form);
     
     CommandResult<GetLocationsResult> getLocations(UserVisitPK userVisitPK, GetLocationsForm form);
     

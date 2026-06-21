@@ -120,7 +120,7 @@ public interface PartyService
     //   Personal Titles
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPersonalTitle(UserVisitPK userVisitPK, CreatePersonalTitleForm form);
+    CommandResult<CreatePersonalTitleResult> createPersonalTitle(UserVisitPK userVisitPK, CreatePersonalTitleForm form);
     
     CommandResult<GetPersonalTitleChoicesResult> getPersonalTitleChoices(UserVisitPK userVisitPK, GetPersonalTitleChoicesForm form);
     
@@ -136,7 +136,7 @@ public interface PartyService
     //   Name Suffixes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createNameSuffix(UserVisitPK userVisitPK, CreateNameSuffixForm form);
+    CommandResult<CreateNameSuffixResult> createNameSuffix(UserVisitPK userVisitPK, CreateNameSuffixForm form);
     
     CommandResult<GetNameSuffixChoicesResult> getNameSuffixChoices(UserVisitPK userVisitPK, GetNameSuffixChoicesForm form);
     
@@ -204,7 +204,7 @@ public interface PartyService
     //   Companies
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCompany(UserVisitPK userVisitPK, CreateCompanyForm form);
+    CommandResult<CreateCompanyResult> createCompany(UserVisitPK userVisitPK, CreateCompanyForm form);
     
     CommandResult<GetCompanyChoicesResult> getCompanyChoices(UserVisitPK userVisitPK, GetCompanyChoicesForm form);
     
@@ -222,7 +222,7 @@ public interface PartyService
     //   Divisions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createDivision(UserVisitPK userVisitPK, CreateDivisionForm form);
+    CommandResult<CreateDivisionResult> createDivision(UserVisitPK userVisitPK, CreateDivisionForm form);
     
     CommandResult<GetDivisionChoicesResult> getDivisionChoices(UserVisitPK userVisitPK, GetDivisionChoicesForm form);
     
@@ -240,7 +240,7 @@ public interface PartyService
     //   Departments
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createDepartment(UserVisitPK userVisitPK, CreateDepartmentForm form);
+    CommandResult<CreateDepartmentResult> createDepartment(UserVisitPK userVisitPK, CreateDepartmentForm form);
     
     CommandResult<GetDepartmentChoicesResult> getDepartmentChoices(UserVisitPK userVisitPK, GetDepartmentChoicesForm form);
 
@@ -258,15 +258,15 @@ public interface PartyService
     //   Customers
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCustomer(UserVisitPK userVisitPK, CreateCustomerForm form);
+    CommandResult<CreateCustomerResult> createCustomer(UserVisitPK userVisitPK, CreateCustomerForm form);
     
-    CommandResult<?> createCustomerWithLogin(UserVisitPK userVisitPK, CreateCustomerWithLoginForm createCustomerWithLoginForm);
+    CommandResult<CreateCustomerWithLoginResult> createCustomerWithLogin(UserVisitPK userVisitPK, CreateCustomerWithLoginForm createCustomerWithLoginForm);
     
     // --------------------------------------------------------------------------------
     //   Employees
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createEmployee(UserVisitPK userVisitPK, CreateEmployeeForm form);
+    CommandResult<CreateEmployeeResult> createEmployee(UserVisitPK userVisitPK, CreateEmployeeForm form);
     
     CommandResult<?> addEmployeeToCompany(UserVisitPK userVisitPK, AddEmployeeToCompanyForm form);
 
@@ -330,7 +330,7 @@ public interface PartyService
     //   Vendors
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createVendor(UserVisitPK userVisitPK, CreateVendorForm form);
+    CommandResult<CreateVendorResult> createVendor(UserVisitPK userVisitPK, CreateVendorForm form);
     
     CommandResult<GetVendorStatusChoicesResult> getVendorStatusChoices(UserVisitPK userVisitPK, GetVendorStatusChoicesForm form);
 
@@ -410,7 +410,7 @@ public interface PartyService
     //   Party Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPartyAliasType(UserVisitPK userVisitPK, CreatePartyAliasTypeForm form);
+    CommandResult<CreatePartyAliasTypeResult> createPartyAliasType(UserVisitPK userVisitPK, CreatePartyAliasTypeForm form);
 
     CommandResult<GetPartyAliasTypeChoicesResult> getPartyAliasTypeChoices(UserVisitPK userVisitPK, GetPartyAliasTypeChoicesForm form);
 

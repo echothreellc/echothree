@@ -106,7 +106,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createComponentVendor(UserVisitPK userVisitPK, CreateComponentVendorForm form) {
+    public CommandResult<CreateComponentVendorResult> createComponentVendor(UserVisitPK userVisitPK, CreateComponentVendorForm form) {
         return CDI.current().select(CreateComponentVendorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -135,7 +135,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createEntityType(UserVisitPK userVisitPK, CreateEntityTypeForm form) {
+    public CommandResult<CreateEntityTypeResult> createEntityType(UserVisitPK userVisitPK, CreateEntityTypeForm form) {
         return CDI.current().select(CreateEntityTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -348,7 +348,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form) {
+    public CommandResult<CreateEntityInstanceResult> createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form) {
         return CDI.current().select(CreateEntityInstanceCommand.class).get().run(userVisitPK, form);
     }
 
@@ -373,7 +373,7 @@ public class CoreBean
     }
 
     @Override
-    public CommandResult<?> generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form) {
+    public CommandResult<GenerateUuidResult> generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form) {
         return CDI.current().select(GenerateUuidCommand.class).get().run(userVisitPK, form);
     }
 
@@ -489,7 +489,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form) {
+    public CommandResult<CreateEntityAliasTypeResult> createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form) {
         return CDI.current().select(CreateEntityAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -615,7 +615,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createEntityAttributeGroup(UserVisitPK userVisitPK, CreateEntityAttributeGroupForm form) {
+    public CommandResult<CreateEntityAttributeGroupResult> createEntityAttributeGroup(UserVisitPK userVisitPK, CreateEntityAttributeGroupForm form) {
         return CDI.current().select(CreateEntityAttributeGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -683,7 +683,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createEntityAttribute(UserVisitPK userVisitPK, CreateEntityAttributeForm form) {
+    public CommandResult<CreateEntityAttributeResult> createEntityAttribute(UserVisitPK userVisitPK, CreateEntityAttributeForm form) {
         return CDI.current().select(CreateEntityAttributeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -803,7 +803,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createEntityListItem(UserVisitPK userVisitPK, CreateEntityListItemForm form) {
+    public CommandResult<CreateEntityListItemResult> createEntityListItem(UserVisitPK userVisitPK, CreateEntityListItemForm form) {
         return CDI.current().select(CreateEntityListItemCommand.class).get().run(userVisitPK, form);
     }
     

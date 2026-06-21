@@ -290,7 +290,7 @@ public interface SearchService
     //   Customer Search
     // -------------------------------------------------------------------------
     
-    CommandResult<?> searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form);
+    CommandResult<SearchCustomersResult> searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form);
     
     CommandResult<GetCustomerResultsResult> getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form);
 
@@ -306,7 +306,7 @@ public interface SearchService
     //   Item Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchItems(UserVisitPK userVisitPK, SearchItemsForm form);
+    CommandResult<SearchItemsResult> searchItems(UserVisitPK userVisitPK, SearchItemsForm form);
     
     CommandResult<GetItemResultsResult> getItemResults(UserVisitPK userVisitPK, GetItemResultsForm form);
     
@@ -326,7 +326,7 @@ public interface SearchService
     //   Vendor Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchVendors(UserVisitPK userVisitPK, SearchVendorsForm form);
+    CommandResult<SearchVendorsResult> searchVendors(UserVisitPK userVisitPK, SearchVendorsForm form);
 
     CommandResult<GetVendorResultsResult> getVendorResults(UserVisitPK userVisitPK, GetVendorResultsForm form);
 
@@ -350,7 +350,7 @@ public interface SearchService
     //   Employee Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchEmployees(UserVisitPK userVisitPK, SearchEmployeesForm form);
+    CommandResult<SearchEmployeesResult> searchEmployees(UserVisitPK userVisitPK, SearchEmployeesForm form);
 
     CommandResult<GetEmployeeResultsResult> getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form);
 
@@ -366,7 +366,7 @@ public interface SearchService
     //   Leave Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchLeaves(UserVisitPK userVisitPK, SearchLeavesForm form);
+    CommandResult<SearchLeavesResult> searchLeaves(UserVisitPK userVisitPK, SearchLeavesForm form);
 
     CommandResult<GetLeaveResultsResult> getLeaveResults(UserVisitPK userVisitPK, GetLeaveResultsForm form);
 
@@ -378,7 +378,7 @@ public interface SearchService
     //   Sales Order Batch Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchSalesOrderBatches(UserVisitPK userVisitPK, SearchSalesOrderBatchesForm form);
+    CommandResult<SearchSalesOrderBatchesResult> searchSalesOrderBatches(UserVisitPK userVisitPK, SearchSalesOrderBatchesForm form);
 
     CommandResult<GetSalesOrderBatchResultsResult> getSalesOrderBatchResults(UserVisitPK userVisitPK, GetSalesOrderBatchResultsForm form);
 
@@ -554,7 +554,7 @@ public interface SearchService
     //   Harmonized Tariff Schedule Code Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, SearchHarmonizedTariffScheduleCodesForm form);
+    CommandResult<SearchHarmonizedTariffScheduleCodesResult> searchHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, SearchHarmonizedTariffScheduleCodesForm form);
     
     CommandResult<GetHarmonizedTariffScheduleCodeResultsResult> getHarmonizedTariffScheduleCodeResults(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsForm form);
     
@@ -646,7 +646,7 @@ public interface SearchService
     //   Warehouse Search
     // -------------------------------------------------------------------------
 
-    CommandResult<?> searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form);
+    CommandResult<SearchWarehousesResult> searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form);
 
     CommandResult<GetWarehouseResultsResult> getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form);
 
@@ -662,6 +662,6 @@ public interface SearchService
     //   Identify
     // -------------------------------------------------------------------------
 
-    CommandResult<?> identify(UserVisitPK userVisitPK, IdentifyForm form);
+    CommandResult<IdentifyResult> identify(UserVisitPK userVisitPK, IdentifyForm form);
 
 }

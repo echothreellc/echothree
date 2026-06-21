@@ -44,7 +44,7 @@ public class CommentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form) {
+    public CommandResult<CreateCommentTypeResult> createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form) {
         return CDI.current().select(CreateCommentTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -150,7 +150,7 @@ public class CommentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createComment(UserVisitPK userVisitPK, CreateCommentForm form) {
+    public CommandResult<CreateCommentResult> createComment(UserVisitPK userVisitPK, CreateCommentForm form) {
         return CDI.current().select(CreateCommentCommand.class).get().run(userVisitPK, form);
     }
     

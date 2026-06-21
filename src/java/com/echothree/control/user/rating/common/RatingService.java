@@ -34,7 +34,7 @@ public interface RatingService
     //   Rating Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createRatingType(UserVisitPK userVisitPK, CreateRatingTypeForm form);
+    CommandResult<CreateRatingTypeResult> createRatingType(UserVisitPK userVisitPK, CreateRatingTypeForm form);
     
     CommandResult<GetRatingTypeResult> getRatingType(UserVisitPK userVisitPK, GetRatingTypeForm form);
     

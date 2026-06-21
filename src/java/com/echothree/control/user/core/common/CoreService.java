@@ -66,7 +66,7 @@ public interface CoreService
     //   Component Vendors
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createComponentVendor(UserVisitPK userVisitPK, CreateComponentVendorForm form);
+    CommandResult<CreateComponentVendorResult> createComponentVendor(UserVisitPK userVisitPK, CreateComponentVendorForm form);
     
     CommandResult<GetComponentVendorResult> getComponentVendor(UserVisitPK userVisitPK, GetComponentVendorForm form);
     
@@ -80,7 +80,7 @@ public interface CoreService
     //   Entity Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createEntityType(UserVisitPK userVisitPK, CreateEntityTypeForm form);
+    CommandResult<CreateEntityTypeResult> createEntityType(UserVisitPK userVisitPK, CreateEntityTypeForm form);
     
     CommandResult<GetEntityTypeResult> getEntityType(UserVisitPK userVisitPK, GetEntityTypeForm form);
     
@@ -182,7 +182,7 @@ public interface CoreService
     //   Entity Instances
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form);
+    CommandResult<CreateEntityInstanceResult> createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form);
 
     CommandResult<GetEntityInstanceResult> getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form);
 
@@ -192,7 +192,7 @@ public interface CoreService
 
     CommandResult<?> removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form);
 
-    CommandResult<?> generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form);
+    CommandResult<GenerateUuidResult> generateUuid(UserVisitPK userVisitPK, GenerateUuidForm form);
 
     // -------------------------------------------------------------------------
     //   Event Types
@@ -260,7 +260,7 @@ public interface CoreService
     //   Entity Alias Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form);
+    CommandResult<CreateEntityAliasTypeResult> createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form);
 
     CommandResult<GetEntityAliasTypeResult> getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form);
 
@@ -306,7 +306,7 @@ public interface CoreService
     //   Entity Attribute Groups
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createEntityAttributeGroup(UserVisitPK userVisitPK, CreateEntityAttributeGroupForm form);
+    CommandResult<CreateEntityAttributeGroupResult> createEntityAttributeGroup(UserVisitPK userVisitPK, CreateEntityAttributeGroupForm form);
     
     CommandResult<GetEntityAttributeGroupResult> getEntityAttributeGroup(UserVisitPK userVisitPK, GetEntityAttributeGroupForm form);
     
@@ -352,7 +352,7 @@ public interface CoreService
     //   Entity Attributes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createEntityAttribute(UserVisitPK userVisitPK, CreateEntityAttributeForm form);
+    CommandResult<CreateEntityAttributeResult> createEntityAttribute(UserVisitPK userVisitPK, CreateEntityAttributeForm form);
     
     CommandResult<GetEntityAttributeResult> getEntityAttribute(UserVisitPK userVisitPK, GetEntityAttributeForm form);
     
@@ -412,7 +412,7 @@ public interface CoreService
     //   Entity List Items
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createEntityListItem(UserVisitPK userVisitPK, CreateEntityListItemForm form);
+    CommandResult<CreateEntityListItemResult> createEntityListItem(UserVisitPK userVisitPK, CreateEntityListItemForm form);
     
     CommandResult<GetEntityListItemResult> getEntityListItem(UserVisitPK userVisitPK, GetEntityListItemForm form);
     

@@ -156,7 +156,7 @@ public interface ItemService
     //   Item Alias Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItemAliasType(UserVisitPK userVisitPK, CreateItemAliasTypeForm form);
+    CommandResult<CreateItemAliasTypeResult> createItemAliasType(UserVisitPK userVisitPK, CreateItemAliasTypeForm form);
 
     CommandResult<GetItemAliasTypeChoicesResult> getItemAliasTypeChoices(UserVisitPK userVisitPK, GetItemAliasTypeChoicesForm form);
 
@@ -220,7 +220,7 @@ public interface ItemService
     //   Item Description Type Use Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createItemDescriptionTypeUseType(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeForm form);
+    CommandResult<CreateItemDescriptionTypeUseTypeResult> createItemDescriptionTypeUseType(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeForm form);
 
     CommandResult<GetItemDescriptionTypeUseTypeChoicesResult> getItemDescriptionTypeUseTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeChoicesForm form);
 
@@ -264,7 +264,7 @@ public interface ItemService
     //   Item Image Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createItemImageType(UserVisitPK userVisitPK, CreateItemImageTypeForm form);
+    CommandResult<CreateItemImageTypeResult> createItemImageType(UserVisitPK userVisitPK, CreateItemImageTypeForm form);
 
     CommandResult<GetItemImageTypeChoicesResult> getItemImageTypeChoices(UserVisitPK userVisitPK, GetItemImageTypeChoicesForm form);
 
@@ -296,7 +296,7 @@ public interface ItemService
     //   Items
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItem(UserVisitPK userVisitPK, CreateItemForm form);
+    CommandResult<CreateItemResult> createItem(UserVisitPK userVisitPK, CreateItemForm form);
     
     CommandResult<GetItemStatusChoicesResult> getItemStatusChoices(UserVisitPK userVisitPK, GetItemStatusChoicesForm form);
     
@@ -388,7 +388,7 @@ public interface ItemService
     //   Item Volume Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form);
+    CommandResult<CreateItemVolumeTypeResult> createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form);
 
     CommandResult<GetItemVolumeTypeChoicesResult> getItemVolumeTypeChoices(UserVisitPK userVisitPK, GetItemVolumeTypeChoicesForm form);
 
@@ -434,7 +434,7 @@ public interface ItemService
     //   Item Weight Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form);
+    CommandResult<CreateItemWeightTypeResult> createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form);
 
     CommandResult<GetItemWeightTypeChoicesResult> getItemWeightTypeChoices(UserVisitPK userVisitPK, GetItemWeightTypeChoicesForm form);
 

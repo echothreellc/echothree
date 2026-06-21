@@ -44,7 +44,7 @@ public class TagBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form) {
+    public CommandResult<CreateTagScopeResult> createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form) {
         return CDI.current().select(CreateTagScopeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -136,7 +136,7 @@ public class TagBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTag(UserVisitPK userVisitPK, CreateTagForm form) {
+    public CommandResult<CreateTagResult> createTag(UserVisitPK userVisitPK, CreateTagForm form) {
         return CDI.current().select(CreateTagCommand.class).get().run(userVisitPK, form);
     }
     

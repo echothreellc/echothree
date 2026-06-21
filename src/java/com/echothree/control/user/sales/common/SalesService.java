@@ -34,7 +34,7 @@ public interface SalesService
     //   Sales Order Batches
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form);
+    CommandResult<CreateSalesOrderBatchResult> createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form);
     
     CommandResult<GetSalesOrderBatchResult> getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form);
 
@@ -52,7 +52,7 @@ public interface SalesService
     //   Sales Orders
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form);
+    CommandResult<CreateSalesOrderResult> createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form);
     
     CommandResult<GetSalesOrderStatusChoicesResult> getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form);
     
@@ -62,7 +62,7 @@ public interface SalesService
     //   Sales Order Payment Preferences
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form);
+    CommandResult<CreateSalesOrderPaymentPreferenceResult> createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Times
@@ -88,7 +88,7 @@ public interface SalesService
     //   Sales Order Lines
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form);
+    CommandResult<CreateSalesOrderLineResult> createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Line Times

@@ -44,7 +44,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryCondition(UserVisitPK userVisitPK, CreateInventoryConditionForm form) {
+    public CommandResult<CreateInventoryConditionResult> createInventoryCondition(UserVisitPK userVisitPK, CreateInventoryConditionForm form) {
         return CDI.current().select(CreateInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -159,7 +159,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createInventoryLocationGroup(UserVisitPK userVisitPK, CreateInventoryLocationGroupForm form) {
+    public CommandResult<CreateInventoryLocationGroupResult> createInventoryLocationGroup(UserVisitPK userVisitPK, CreateInventoryLocationGroupForm form) {
         return CDI.current().select(CreateInventoryLocationGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -483,7 +483,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createAllocationPriority(UserVisitPK userVisitPK, CreateAllocationPriorityForm form) {
+    public CommandResult<CreateAllocationPriorityResult> createAllocationPriority(UserVisitPK userVisitPK, CreateAllocationPriorityForm form) {
         return CDI.current().select(CreateAllocationPriorityCommand.class).get().run(userVisitPK, form);
     }
 
@@ -551,7 +551,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createInventoryAdjustmentType(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeForm form) {
+    public CommandResult<CreateInventoryAdjustmentTypeResult> createInventoryAdjustmentType(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeForm form) {
         return CDI.current().select(CreateInventoryAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 

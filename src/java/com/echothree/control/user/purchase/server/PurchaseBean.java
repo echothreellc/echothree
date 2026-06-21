@@ -44,7 +44,7 @@ public class PurchaseBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
+    public CommandResult<CreatePurchaseOrderResult> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
         return CDI.current().select(CreatePurchaseOrderCommand.class).get().run(userVisitPK, form);
     }
 
@@ -63,7 +63,7 @@ public class PurchaseBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
+    public CommandResult<CreatePurchaseInvoiceResult> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
         return CDI.current().select(CreatePurchaseInvoiceCommand.class).get().run(userVisitPK, form);
     }
 
@@ -82,7 +82,7 @@ public class PurchaseBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form) {
+    public CommandResult<CreatePurchaseInvoiceLineResult> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form) {
         return CDI.current().select(CreatePurchaseInvoiceLineCommand.class).get().run(userVisitPK, form);
     }
 

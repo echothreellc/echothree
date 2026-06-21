@@ -44,7 +44,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSelectorKind(UserVisitPK userVisitPK, CreateSelectorKindForm form) {
+    public CommandResult<CreateSelectorKindResult> createSelectorKind(UserVisitPK userVisitPK, CreateSelectorKindForm form) {
         return CDI.current().select(CreateSelectorKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +112,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSelectorType(UserVisitPK userVisitPK, CreateSelectorTypeForm form) {
+    public CommandResult<CreateSelectorTypeResult> createSelectorType(UserVisitPK userVisitPK, CreateSelectorTypeForm form) {
         return CDI.current().select(CreateSelectorTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -286,7 +286,7 @@ public class SelectorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSelector(UserVisitPK userVisitPK, CreateSelectorForm form) {
+    public CommandResult<CreateSelectorResult> createSelector(UserVisitPK userVisitPK, CreateSelectorForm form) {
         return CDI.current().select(CreateSelectorCommand.class).get().run(userVisitPK, form);
     }
     

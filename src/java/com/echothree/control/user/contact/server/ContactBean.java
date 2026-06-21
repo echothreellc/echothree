@@ -231,7 +231,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactEmailAddress(UserVisitPK userVisitPK, CreateContactEmailAddressForm form) {
+    public CommandResult<CreateContactEmailAddressResult> createContactEmailAddress(UserVisitPK userVisitPK, CreateContactEmailAddressForm form) {
         return CDI.current().select(CreateContactEmailAddressCommand.class).get().run(userVisitPK, form);
     }
     
@@ -245,7 +245,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactPostalAddress(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
+    public CommandResult<CreateContactPostalAddressResult> createContactPostalAddress(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
         return CDI.current().select(CreateContactPostalAddressCommand.class).get().run(userVisitPK, form);
     }
     
@@ -259,7 +259,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactTelephone(UserVisitPK userVisitPK, CreateContactTelephoneForm form) {
+    public CommandResult<CreateContactTelephoneResult> createContactTelephone(UserVisitPK userVisitPK, CreateContactTelephoneForm form) {
         return CDI.current().select(CreateContactTelephoneCommand.class).get().run(userVisitPK, form);
     }
     
@@ -273,7 +273,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContactWebAddress(UserVisitPK userVisitPK, CreateContactWebAddressForm form) {
+    public CommandResult<CreateContactWebAddressResult> createContactWebAddress(UserVisitPK userVisitPK, CreateContactWebAddressForm form) {
         return CDI.current().select(CreateContactWebAddressCommand.class).get().run(userVisitPK, form);
     }
     

@@ -34,7 +34,7 @@ public interface OfferService
     //   Offers
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOffer(UserVisitPK userVisitPK, CreateOfferForm form);
+    CommandResult<CreateOfferResult> createOffer(UserVisitPK userVisitPK, CreateOfferForm form);
     
     CommandResult<GetOffersResult> getOffers(UserVisitPK userVisitPK, GetOffersForm form);
     
@@ -108,7 +108,7 @@ public interface OfferService
     //   Sources
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSource(UserVisitPK userVisitPK, CreateSourceForm form);
+    CommandResult<CreateSourceResult> createSource(UserVisitPK userVisitPK, CreateSourceForm form);
     
     CommandResult<GetSourceChoicesResult> getSourceChoices(UserVisitPK userVisitPK, GetSourceChoicesForm form);
     
@@ -152,7 +152,7 @@ public interface OfferService
     //   Use Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createUseType(UserVisitPK userVisitPK, CreateUseTypeForm form);
+    CommandResult<CreateUseTypeResult> createUseType(UserVisitPK userVisitPK, CreateUseTypeForm form);
     
     CommandResult<GetUseTypesResult> getUseTypes(UserVisitPK userVisitPK, GetUseTypesForm form);
     
@@ -212,7 +212,7 @@ public interface OfferService
     //   Uses
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createUse(UserVisitPK userVisitPK, CreateUseForm form);
+    CommandResult<CreateUseResult> createUse(UserVisitPK userVisitPK, CreateUseForm form);
     
     CommandResult<GetUseChoicesResult> getUseChoices(UserVisitPK userVisitPK, GetUseChoicesForm form);
     

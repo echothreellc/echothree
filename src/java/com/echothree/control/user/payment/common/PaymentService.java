@@ -206,7 +206,7 @@ public interface PaymentService
     //   Payment Processors
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPaymentProcessor(UserVisitPK userVisitPK, CreatePaymentProcessorForm form);
+    CommandResult<CreatePaymentProcessorResult> createPaymentProcessor(UserVisitPK userVisitPK, CreatePaymentProcessorForm form);
     
     CommandResult<EditPaymentProcessorResult> editPaymentProcessor(UserVisitPK userVisitPK, EditPaymentProcessorForm form);
     
@@ -264,7 +264,7 @@ public interface PaymentService
     //   Payment Methods
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPaymentMethod(UserVisitPK userVisitPK, CreatePaymentMethodForm form);
+    CommandResult<CreatePaymentMethodResult> createPaymentMethod(UserVisitPK userVisitPK, CreatePaymentMethodForm form);
     
     CommandResult<EditPaymentMethodResult> editPaymentMethod(UserVisitPK userVisitPK, EditPaymentMethodForm form);
     
@@ -296,7 +296,7 @@ public interface PaymentService
     //   Party Payment Methods
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPartyPaymentMethod(UserVisitPK userVisitPK, CreatePartyPaymentMethodForm form);
+    CommandResult<CreatePartyPaymentMethodResult> createPartyPaymentMethod(UserVisitPK userVisitPK, CreatePartyPaymentMethodForm form);
 
     CommandResult<EditPartyPaymentMethodResult> editPartyPaymentMethod(UserVisitPK userVisitPK, EditPartyPaymentMethodForm form);
 

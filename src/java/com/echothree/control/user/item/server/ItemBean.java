@@ -277,7 +277,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItemAliasType(UserVisitPK userVisitPK, CreateItemAliasTypeForm form) {
+    public CommandResult<CreateItemAliasTypeResult> createItemAliasType(UserVisitPK userVisitPK, CreateItemAliasTypeForm form) {
         return CDI.current().select(CreateItemAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -413,7 +413,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createItemDescriptionTypeUseType(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeForm form) {
+    public CommandResult<CreateItemDescriptionTypeUseTypeResult> createItemDescriptionTypeUseType(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeForm form) {
         return CDI.current().select(CreateItemDescriptionTypeUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -505,7 +505,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createItemImageType(UserVisitPK userVisitPK, CreateItemImageTypeForm form) {
+    public CommandResult<CreateItemImageTypeResult> createItemImageType(UserVisitPK userVisitPK, CreateItemImageTypeForm form) {
         return CDI.current().select(CreateItemImageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -573,7 +573,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItem(UserVisitPK userVisitPK, CreateItemForm form) {
+    public CommandResult<CreateItemResult> createItem(UserVisitPK userVisitPK, CreateItemForm form) {
         return CDI.current().select(CreateItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -761,7 +761,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form) {
+    public CommandResult<CreateItemVolumeTypeResult> createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form) {
         return CDI.current().select(CreateItemVolumeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -858,7 +858,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form) {
+    public CommandResult<CreateItemWeightTypeResult> createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form) {
         return CDI.current().select(CreateItemWeightTypeCommand.class).get().run(userVisitPK, form);
     }
 

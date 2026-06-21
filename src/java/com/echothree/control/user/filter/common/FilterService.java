@@ -34,7 +34,7 @@ public interface FilterService
     //   Filter Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createFilterKind(UserVisitPK userVisitPK, CreateFilterKindForm form);
+    CommandResult<CreateFilterKindResult> createFilterKind(UserVisitPK userVisitPK, CreateFilterKindForm form);
 
     CommandResult<GetFilterKindsResult> getFilterKinds(UserVisitPK userVisitPK, GetFilterKindsForm form);
 
@@ -66,7 +66,7 @@ public interface FilterService
     //   Filter Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createFilterType(UserVisitPK userVisitPK, CreateFilterTypeForm form);
+    CommandResult<CreateFilterTypeResult> createFilterType(UserVisitPK userVisitPK, CreateFilterTypeForm form);
 
     CommandResult<GetFilterTypesResult> getFilterTypes(UserVisitPK userVisitPK, GetFilterTypesForm form);
 
@@ -134,7 +134,7 @@ public interface FilterService
     //   Filter Adjustments
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createFilterAdjustment(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form);
+    CommandResult<CreateFilterAdjustmentResult> createFilterAdjustment(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form);
     
     CommandResult<GetFilterAdjustmentResult> getFilterAdjustment(UserVisitPK userVisitPK, GetFilterAdjustmentForm form);
     
@@ -206,7 +206,7 @@ public interface FilterService
     //   Filters
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createFilter(UserVisitPK userVisitPK, CreateFilterForm createFilterForm);
+    CommandResult<CreateFilterResult> createFilter(UserVisitPK userVisitPK, CreateFilterForm createFilterForm);
     
     CommandResult<GetFiltersResult> getFilters(UserVisitPK userVisitPK, GetFiltersForm form);
     
@@ -236,7 +236,7 @@ public interface FilterService
     //   Filter Steps
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createFilterStep(UserVisitPK userVisitPK, CreateFilterStepForm form);
+    CommandResult<CreateFilterStepResult> createFilterStep(UserVisitPK userVisitPK, CreateFilterStepForm form);
     
     CommandResult<GetFilterStepResult> getFilterStep(UserVisitPK userVisitPK, GetFilterStepForm form);
     
@@ -264,7 +264,7 @@ public interface FilterService
     //   Filter Step Elements
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createFilterStepElement(UserVisitPK userVisitPK, CreateFilterStepElementForm form);
+    CommandResult<CreateFilterStepElementResult> createFilterStepElement(UserVisitPK userVisitPK, CreateFilterStepElementForm form);
     
     CommandResult<GetFilterStepElementResult> getFilterStepElement(UserVisitPK userVisitPK, GetFilterStepElementForm form);
     

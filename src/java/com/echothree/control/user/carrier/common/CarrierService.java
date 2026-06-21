@@ -50,7 +50,7 @@ public interface CarrierService
     //   Carriers
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCarrier(UserVisitPK userVisitPK, CreateCarrierForm form);
+    CommandResult<CreateCarrierResult> createCarrier(UserVisitPK userVisitPK, CreateCarrierForm form);
     
     CommandResult<GetCarrierResult> getCarrier(UserVisitPK userVisitPK, GetCarrierForm form);
     

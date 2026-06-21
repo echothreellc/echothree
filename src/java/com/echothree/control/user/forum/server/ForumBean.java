@@ -486,7 +486,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createBlogEntry(UserVisitPK userVisitPK, CreateBlogEntryForm form) {
+    public CommandResult<CreateBlogEntryResult> createBlogEntry(UserVisitPK userVisitPK, CreateBlogEntryForm form) {
         return CDI.current().select(CreateBlogEntryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -500,7 +500,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createBlogComment(UserVisitPK userVisitPK, CreateBlogCommentForm form) {
+    public CommandResult<CreateBlogCommentResult> createBlogComment(UserVisitPK userVisitPK, CreateBlogCommentForm form) {
         return CDI.current().select(CreateBlogCommentCommand.class).get().run(userVisitPK, form);
     }
     

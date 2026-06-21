@@ -461,7 +461,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCountry(UserVisitPK userVisitPK, CreateCountryForm form) {
+    public CommandResult<CreateCountryResult> createCountry(UserVisitPK userVisitPK, CreateCountryForm form) {
         return CDI.current().select(CreateCountryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -490,7 +490,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createState(UserVisitPK userVisitPK, CreateStateForm form) {
+    public CommandResult<CreateStateResult> createState(UserVisitPK userVisitPK, CreateStateForm form) {
         return CDI.current().select(CreateStateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -509,7 +509,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCounty(UserVisitPK userVisitPK, CreateCountyForm form) {
+    public CommandResult<CreateCountyResult> createCounty(UserVisitPK userVisitPK, CreateCountyForm form) {
         return CDI.current().select(CreateCountyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -528,7 +528,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCity(UserVisitPK userVisitPK, CreateCityForm form) {
+    public CommandResult<CreateCityResult> createCity(UserVisitPK userVisitPK, CreateCityForm form) {
         return CDI.current().select(CreateCityCommand.class).get().run(userVisitPK, form);
     }
     
@@ -557,7 +557,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createZipCode(UserVisitPK userVisitPK, CreateZipCodeForm form) {
+    public CommandResult<CreateZipCodeResult> createZipCode(UserVisitPK userVisitPK, CreateZipCodeForm form) {
         return CDI.current().select(CreateZipCodeCommand.class).get().run(userVisitPK, form);
     }
     

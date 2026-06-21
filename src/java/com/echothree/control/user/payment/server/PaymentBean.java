@@ -402,7 +402,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPaymentProcessor(UserVisitPK userVisitPK, CreatePaymentProcessorForm form) {
+    public CommandResult<CreatePaymentProcessorResult> createPaymentProcessor(UserVisitPK userVisitPK, CreatePaymentProcessorForm form) {
         return CDI.current().select(CreatePaymentProcessorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -517,7 +517,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPaymentMethod(UserVisitPK userVisitPK, CreatePaymentMethodForm form) {
+    public CommandResult<CreatePaymentMethodResult> createPaymentMethod(UserVisitPK userVisitPK, CreatePaymentMethodForm form) {
         return CDI.current().select(CreatePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -585,7 +585,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPartyPaymentMethod(UserVisitPK userVisitPK, CreatePartyPaymentMethodForm form) {
+    public CommandResult<CreatePartyPaymentMethodResult> createPartyPaymentMethod(UserVisitPK userVisitPK, CreatePartyPaymentMethodForm form) {
         return CDI.current().select(CreatePartyPaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     

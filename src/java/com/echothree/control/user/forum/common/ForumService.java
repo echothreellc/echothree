@@ -266,7 +266,7 @@ public interface ForumService
     //   Blog Entries
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createBlogEntry(UserVisitPK userVisitPK, CreateBlogEntryForm form);
+    CommandResult<CreateBlogEntryResult> createBlogEntry(UserVisitPK userVisitPK, CreateBlogEntryForm form);
     
     CommandResult<EditBlogEntryResult> editBlogEntry(UserVisitPK userVisitPK, EditBlogEntryForm form);
     
@@ -274,7 +274,7 @@ public interface ForumService
     //   Blog Comments
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createBlogComment(UserVisitPK userVisitPK, CreateBlogCommentForm form);
+    CommandResult<CreateBlogCommentResult> createBlogComment(UserVisitPK userVisitPK, CreateBlogCommentForm form);
     
     CommandResult<EditBlogCommentResult> editBlogComment(UserVisitPK userVisitPK, EditBlogCommentForm form);
     

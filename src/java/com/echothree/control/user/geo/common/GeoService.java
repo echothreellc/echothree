@@ -232,7 +232,7 @@ public interface GeoService
     //   Countries
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCountry(UserVisitPK userVisitPK, CreateCountryForm form);
+    CommandResult<CreateCountryResult> createCountry(UserVisitPK userVisitPK, CreateCountryForm form);
     
     CommandResult<GetCountryResult> getCountry(UserVisitPK userVisitPK, GetCountryForm form);
     
@@ -246,7 +246,7 @@ public interface GeoService
     //   States
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createState(UserVisitPK userVisitPK, CreateStateForm form);
+    CommandResult<CreateStateResult> createState(UserVisitPK userVisitPK, CreateStateForm form);
     
     CommandResult<GetStateResult> getState(UserVisitPK userVisitPK, GetStateForm form);
     
@@ -256,7 +256,7 @@ public interface GeoService
     //   Counties
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCounty(UserVisitPK userVisitPK, CreateCountyForm form);
+    CommandResult<CreateCountyResult> createCounty(UserVisitPK userVisitPK, CreateCountyForm form);
     
     CommandResult<GetCountyResult> getCounty(UserVisitPK userVisitPK, GetCountyForm form);
     
@@ -266,7 +266,7 @@ public interface GeoService
     //   Cities
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCity(UserVisitPK userVisitPK, CreateCityForm form);
+    CommandResult<CreateCityResult> createCity(UserVisitPK userVisitPK, CreateCityForm form);
     
     CommandResult<?> addCityToCounty(UserVisitPK userVisitPK, AddCityToCountyForm form);
     
@@ -280,7 +280,7 @@ public interface GeoService
     //   Zip Codes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createZipCode(UserVisitPK userVisitPK, CreateZipCodeForm form);
+    CommandResult<CreateZipCodeResult> createZipCode(UserVisitPK userVisitPK, CreateZipCodeForm form);
     
     CommandResult<GetZipCodeResult> getZipCode(UserVisitPK userVisitPK, GetZipCodeForm form);
     

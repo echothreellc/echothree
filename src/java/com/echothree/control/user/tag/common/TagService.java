@@ -34,7 +34,7 @@ public interface TagService
     //   Tag Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form);
+    CommandResult<CreateTagScopeResult> createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form);
     
     CommandResult<GetTagScopeResult> getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form);
     
@@ -78,7 +78,7 @@ public interface TagService
     //   Tags
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTag(UserVisitPK userVisitPK, CreateTagForm form);
+    CommandResult<CreateTagResult> createTag(UserVisitPK userVisitPK, CreateTagForm form);
     
     CommandResult<GetTagResult> getTag(UserVisitPK userVisitPK, GetTagForm form);
     

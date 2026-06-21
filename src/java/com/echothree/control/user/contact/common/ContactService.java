@@ -130,7 +130,7 @@ public interface ContactService
     //   Contact Email Addresses
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactEmailAddress(UserVisitPK userVisitPK, CreateContactEmailAddressForm form);
+    CommandResult<CreateContactEmailAddressResult> createContactEmailAddress(UserVisitPK userVisitPK, CreateContactEmailAddressForm form);
     
     CommandResult<EditContactEmailAddressResult> editContactEmailAddress(UserVisitPK userVisitPK, EditContactEmailAddressForm form);
     
@@ -138,7 +138,7 @@ public interface ContactService
     //   Contact Postal Addresses
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactPostalAddress(UserVisitPK userVisitPK, CreateContactPostalAddressForm form);
+    CommandResult<CreateContactPostalAddressResult> createContactPostalAddress(UserVisitPK userVisitPK, CreateContactPostalAddressForm form);
     
     CommandResult<EditContactPostalAddressResult> editContactPostalAddress(UserVisitPK userVisitPK, EditContactPostalAddressForm form);
     
@@ -146,7 +146,7 @@ public interface ContactService
     //   Contact Telephones
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactTelephone(UserVisitPK userVisitPK, CreateContactTelephoneForm form);
+    CommandResult<CreateContactTelephoneResult> createContactTelephone(UserVisitPK userVisitPK, CreateContactTelephoneForm form);
     
     CommandResult<EditContactTelephoneResult> editContactTelephone(UserVisitPK userVisitPK, EditContactTelephoneForm form);
     
@@ -154,7 +154,7 @@ public interface ContactService
     //   Contact Web Addresses
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContactWebAddress(UserVisitPK userVisitPK, CreateContactWebAddressForm form);
+    CommandResult<CreateContactWebAddressResult> createContactWebAddress(UserVisitPK userVisitPK, CreateContactWebAddressForm form);
     
     CommandResult<EditContactWebAddressResult> editContactWebAddress(UserVisitPK userVisitPK, EditContactWebAddressForm form);
     

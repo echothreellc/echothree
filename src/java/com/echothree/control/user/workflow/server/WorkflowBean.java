@@ -77,7 +77,7 @@ public class WorkflowBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWorkflow(UserVisitPK userVisitPK, CreateWorkflowForm form) {
+    public CommandResult<CreateWorkflowResult> createWorkflow(UserVisitPK userVisitPK, CreateWorkflowForm form) {
         return CDI.current().select(CreateWorkflowCommand.class).get().run(userVisitPK, form);
     }
     
@@ -140,7 +140,7 @@ public class WorkflowBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWorkflowStep(UserVisitPK userVisitPK, CreateWorkflowStepForm form) {
+    public CommandResult<CreateWorkflowStepResult> createWorkflowStep(UserVisitPK userVisitPK, CreateWorkflowStepForm form) {
         return CDI.current().select(CreateWorkflowStepCommand.class).get().run(userVisitPK, form);
     }
     
@@ -208,7 +208,7 @@ public class WorkflowBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWorkflowDestination(UserVisitPK userVisitPK, CreateWorkflowDestinationForm form) {
+    public CommandResult<CreateWorkflowDestinationResult> createWorkflowDestination(UserVisitPK userVisitPK, CreateWorkflowDestinationForm form) {
         return CDI.current().select(CreateWorkflowDestinationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -391,7 +391,7 @@ public class WorkflowBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWorkflowEntrance(UserVisitPK userVisitPK, CreateWorkflowEntranceForm form) {
+    public CommandResult<CreateWorkflowEntranceResult> createWorkflowEntrance(UserVisitPK userVisitPK, CreateWorkflowEntranceForm form) {
         return CDI.current().select(CreateWorkflowEntranceCommand.class).get().run(userVisitPK, form);
     }
     

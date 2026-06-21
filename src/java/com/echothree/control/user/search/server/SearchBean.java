@@ -588,7 +588,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form) {
+    public CommandResult<SearchCustomersResult> searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form) {
         return CDI.current().select(SearchCustomersCommand.class).get().run(userVisitPK, form);
     }
     
@@ -622,7 +622,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchItems(UserVisitPK userVisitPK, SearchItemsForm form) {
+    public CommandResult<SearchItemsResult> searchItems(UserVisitPK userVisitPK, SearchItemsForm form) {
         return CDI.current().select(SearchItemsCommand.class).get().run(userVisitPK, form);
     }
     
@@ -666,7 +666,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchVendors(UserVisitPK userVisitPK, SearchVendorsForm form) {
+    public CommandResult<SearchVendorsResult> searchVendors(UserVisitPK userVisitPK, SearchVendorsForm form) {
         return CDI.current().select(SearchVendorsCommand.class).get().run(userVisitPK, form);
     }
 
@@ -714,7 +714,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchEmployees(UserVisitPK userVisitPK, SearchEmployeesForm form) {
+    public CommandResult<SearchEmployeesResult> searchEmployees(UserVisitPK userVisitPK, SearchEmployeesForm form) {
         return CDI.current().select(SearchEmployeesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -748,7 +748,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchLeaves(UserVisitPK userVisitPK, SearchLeavesForm form) {
+    public CommandResult<SearchLeavesResult> searchLeaves(UserVisitPK userVisitPK, SearchLeavesForm form) {
         return CDI.current().select(SearchLeavesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -772,7 +772,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchSalesOrderBatches(UserVisitPK userVisitPK, SearchSalesOrderBatchesForm form) {
+    public CommandResult<SearchSalesOrderBatchesResult> searchSalesOrderBatches(UserVisitPK userVisitPK, SearchSalesOrderBatchesForm form) {
         return CDI.current().select(SearchSalesOrderBatchesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1134,7 +1134,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, SearchHarmonizedTariffScheduleCodesForm form) {
+    public CommandResult<SearchHarmonizedTariffScheduleCodesResult> searchHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, SearchHarmonizedTariffScheduleCodesForm form) {
         return CDI.current().select(SearchHarmonizedTariffScheduleCodesCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1328,7 +1328,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form) {
+    public CommandResult<SearchWarehousesResult> searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form) {
         return CDI.current().select(SearchWarehousesCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1362,7 +1362,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> identify(UserVisitPK userVisitPK, IdentifyForm form) {
+    public CommandResult<IdentifyResult> identify(UserVisitPK userVisitPK, IdentifyForm form) {
         return CDI.current().select(IdentifyCommand.class).get().run(userVisitPK, form);
     }
 

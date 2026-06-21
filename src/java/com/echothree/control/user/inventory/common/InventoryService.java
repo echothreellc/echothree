@@ -34,7 +34,7 @@ public interface InventoryService
     //   Inventory Conditions
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryCondition(UserVisitPK userVisitPK, CreateInventoryConditionForm form);
+    CommandResult<CreateInventoryConditionResult> createInventoryCondition(UserVisitPK userVisitPK, CreateInventoryConditionForm form);
     
     CommandResult<GetInventoryConditionsResult> getInventoryConditions(UserVisitPK userVisitPK, GetInventoryConditionsForm form);
     
@@ -92,7 +92,7 @@ public interface InventoryService
     //   Inventory Location Groups
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createInventoryLocationGroup(UserVisitPK userVisitPK, CreateInventoryLocationGroupForm form);
+    CommandResult<CreateInventoryLocationGroupResult> createInventoryLocationGroup(UserVisitPK userVisitPK, CreateInventoryLocationGroupForm form);
     
     CommandResult<GetInventoryLocationGroupsResult> getInventoryLocationGroups(UserVisitPK userVisitPK, GetInventoryLocationGroupsForm form);
     
@@ -248,7 +248,7 @@ public interface InventoryService
     //   Allocation Priorities
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createAllocationPriority(UserVisitPK userVisitPK, CreateAllocationPriorityForm form);
+    CommandResult<CreateAllocationPriorityResult> createAllocationPriority(UserVisitPK userVisitPK, CreateAllocationPriorityForm form);
 
     CommandResult<GetAllocationPriorityChoicesResult> getAllocationPriorityChoices(UserVisitPK userVisitPK, GetAllocationPriorityChoicesForm form);
 
@@ -280,7 +280,7 @@ public interface InventoryService
     //   Inventory Adjustment Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createInventoryAdjustmentType(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeForm form);
+    CommandResult<CreateInventoryAdjustmentTypeResult> createInventoryAdjustmentType(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeForm form);
 
     CommandResult<GetInventoryAdjustmentTypesResult> getInventoryAdjustmentTypes(UserVisitPK userVisitPK, GetInventoryAdjustmentTypesForm form);
 

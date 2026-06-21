@@ -34,7 +34,7 @@ public interface SelectorService
     //   Selector Kinds
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createSelectorKind(UserVisitPK userVisitPK, CreateSelectorKindForm form);
+    CommandResult<CreateSelectorKindResult> createSelectorKind(UserVisitPK userVisitPK, CreateSelectorKindForm form);
 
     CommandResult<GetSelectorKindsResult> getSelectorKinds(UserVisitPK userVisitPK, GetSelectorKindsForm form);
 
@@ -66,7 +66,7 @@ public interface SelectorService
     //   Selector Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createSelectorType(UserVisitPK userVisitPK, CreateSelectorTypeForm form);
+    CommandResult<CreateSelectorTypeResult> createSelectorType(UserVisitPK userVisitPK, CreateSelectorTypeForm form);
 
     CommandResult<GetSelectorTypesResult> getSelectorTypes(UserVisitPK userVisitPK, GetSelectorTypesForm form);
 
@@ -162,7 +162,7 @@ public interface SelectorService
     //   Selectors
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSelector(UserVisitPK userVisitPK, CreateSelectorForm form);
+    CommandResult<CreateSelectorResult> createSelector(UserVisitPK userVisitPK, CreateSelectorForm form);
     
     CommandResult<GetSelectorChoicesResult> getSelectorChoices(UserVisitPK userVisitPK, GetSelectorChoicesForm form);
     

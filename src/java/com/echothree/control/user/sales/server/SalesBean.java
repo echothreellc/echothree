@@ -44,7 +44,7 @@ public class SalesBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form) {
+    public CommandResult<CreateSalesOrderBatchResult> createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form) {
         return CDI.current().select(CreateSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
     
@@ -83,7 +83,7 @@ public class SalesBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form) {
+    public CommandResult<CreateSalesOrderResult> createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form) {
         return CDI.current().select(CreateSalesOrderCommand.class).get().run(userVisitPK, form);
     }
     
@@ -102,7 +102,7 @@ public class SalesBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form) {
+    public CommandResult<CreateSalesOrderPaymentPreferenceResult> createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form) {
         return CDI.current().select(CreateSalesOrderPaymentPreferenceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -140,7 +140,7 @@ public class SalesBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form) {
+    public CommandResult<CreateSalesOrderLineResult> createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form) {
         return CDI.current().select(CreateSalesOrderLineCommand.class).get().run(userVisitPK, form);
     }
 

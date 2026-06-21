@@ -34,7 +34,7 @@ public interface CommentService
     //   Comment Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form);
+    CommandResult<CreateCommentTypeResult> createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form);
     
     CommandResult<GetCommentTypeResult> getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form);
     
@@ -86,7 +86,7 @@ public interface CommentService
     //   Comments
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createComment(UserVisitPK userVisitPK, CreateCommentForm form);
+    CommandResult<CreateCommentResult> createComment(UserVisitPK userVisitPK, CreateCommentForm form);
     
     CommandResult<GetCommentResult> getComment(UserVisitPK userVisitPK, GetCommentForm form);
     

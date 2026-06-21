@@ -44,7 +44,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createFilterKind(UserVisitPK userVisitPK, CreateFilterKindForm form) {
+    public CommandResult<CreateFilterKindResult> createFilterKind(UserVisitPK userVisitPK, CreateFilterKindForm form) {
         return CDI.current().select(CreateFilterKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -112,7 +112,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createFilterType(UserVisitPK userVisitPK, CreateFilterTypeForm form) {
+    public CommandResult<CreateFilterTypeResult> createFilterType(UserVisitPK userVisitPK, CreateFilterTypeForm form) {
         return CDI.current().select(CreateFilterTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -246,7 +246,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterAdjustment(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form) {
+    public CommandResult<CreateFilterAdjustmentResult> createFilterAdjustment(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form) {
         return CDI.current().select(CreateFilterAdjustmentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -396,7 +396,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilter(UserVisitPK userVisitPK, CreateFilterForm form) {
+    public CommandResult<CreateFilterResult> createFilter(UserVisitPK userVisitPK, CreateFilterForm form) {
         return CDI.current().select(CreateFilterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -459,7 +459,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterStep(UserVisitPK userVisitPK, CreateFilterStepForm form) {
+    public CommandResult<CreateFilterStepResult> createFilterStep(UserVisitPK userVisitPK, CreateFilterStepForm form) {
         return CDI.current().select(CreateFilterStepCommand.class).get().run(userVisitPK, form);
     }
     
@@ -517,7 +517,7 @@ public class FilterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFilterStepElement(UserVisitPK userVisitPK, CreateFilterStepElementForm form) {
+    public CommandResult<CreateFilterStepElementResult> createFilterStepElement(UserVisitPK userVisitPK, CreateFilterStepElementForm form) {
         return CDI.current().select(CreateFilterStepElementCommand.class).get().run(userVisitPK, form);
     }
     

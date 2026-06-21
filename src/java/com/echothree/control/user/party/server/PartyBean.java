@@ -199,7 +199,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPersonalTitle(UserVisitPK userVisitPK, CreatePersonalTitleForm form) {
+    public CommandResult<CreatePersonalTitleResult> createPersonalTitle(UserVisitPK userVisitPK, CreatePersonalTitleForm form) {
         return CDI.current().select(CreatePersonalTitleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -233,7 +233,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createNameSuffix(UserVisitPK userVisitPK, CreateNameSuffixForm form) {
+    public CommandResult<CreateNameSuffixResult> createNameSuffix(UserVisitPK userVisitPK, CreateNameSuffixForm form) {
         return CDI.current().select(CreateNameSuffixCommand.class).get().run(userVisitPK, form);
     }
     
@@ -373,7 +373,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCompany(UserVisitPK userVisitPK, CreateCompanyForm form) {
+    public CommandResult<CreateCompanyResult> createCompany(UserVisitPK userVisitPK, CreateCompanyForm form) {
         return CDI.current().select(CreateCompanyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -412,7 +412,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createDivision(UserVisitPK userVisitPK, CreateDivisionForm form) {
+    public CommandResult<CreateDivisionResult> createDivision(UserVisitPK userVisitPK, CreateDivisionForm form) {
         return CDI.current().select(CreateDivisionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -451,7 +451,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createDepartment(UserVisitPK userVisitPK, CreateDepartmentForm form) {
+    public CommandResult<CreateDepartmentResult> createDepartment(UserVisitPK userVisitPK, CreateDepartmentForm form) {
         return CDI.current().select(CreateDepartmentCommand.class).get().run(userVisitPK, form);
     }
     
@@ -550,12 +550,12 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCustomer(UserVisitPK userVisitPK, CreateCustomerForm form) {
+    public CommandResult<CreateCustomerResult> createCustomer(UserVisitPK userVisitPK, CreateCustomerForm form) {
         return CDI.current().select(CreateCustomerCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> createCustomerWithLogin(UserVisitPK userVisitPK, CreateCustomerWithLoginForm form) {
+    public CommandResult<CreateCustomerWithLoginResult> createCustomerWithLogin(UserVisitPK userVisitPK, CreateCustomerWithLoginForm form) {
         return CDI.current().select(CreateCustomerWithLoginCommand.class).get().run(userVisitPK, form);
     }
     
@@ -564,7 +564,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createEmployee(UserVisitPK userVisitPK, CreateEmployeeForm form) {
+    public CommandResult<CreateEmployeeResult> createEmployee(UserVisitPK userVisitPK, CreateEmployeeForm form) {
         return CDI.current().select(CreateEmployeeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -628,7 +628,7 @@ public class PartyBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createVendor(UserVisitPK userVisitPK, CreateVendorForm form) {
+    public CommandResult<CreateVendorResult> createVendor(UserVisitPK userVisitPK, CreateVendorForm form) {
         return CDI.current().select(CreateVendorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -792,7 +792,7 @@ public class PartyBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyAliasType(UserVisitPK userVisitPK, CreatePartyAliasTypeForm form) {
+    public CommandResult<CreatePartyAliasTypeResult> createPartyAliasType(UserVisitPK userVisitPK, CreatePartyAliasTypeForm form) {
         return CDI.current().select(CreatePartyAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 

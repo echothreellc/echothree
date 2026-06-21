@@ -34,7 +34,7 @@ public interface PurchaseService
     //   Purchase Orders
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
+    CommandResult<CreatePurchaseOrderResult> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
 
     CommandResult<GetPurchaseOrderStatusChoicesResult> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
 
@@ -44,7 +44,7 @@ public interface PurchaseService
     //   Purchase Invoices
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
+    CommandResult<CreatePurchaseInvoiceResult> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
 
     CommandResult<GetPurchaseInvoiceStatusChoicesResult> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
 
@@ -54,6 +54,6 @@ public interface PurchaseService
     //   Purchase Invoice Lines
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form);
+    CommandResult<CreatePurchaseInvoiceLineResult> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form);
 
 }

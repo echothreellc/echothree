@@ -44,7 +44,7 @@ public class MessageBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form) {
+    public CommandResult<CreateMessageTypeResult> createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form) {
         return CDI.current().select(CreateMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     

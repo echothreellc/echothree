@@ -72,7 +72,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCarrier(UserVisitPK userVisitPK, CreateCarrierForm form) {
+    public CommandResult<CreateCarrierResult> createCarrier(UserVisitPK userVisitPK, CreateCarrierForm form) {
         return CDI.current().select(CreateCarrierCommand.class).get().run(userVisitPK, form);
     }
     

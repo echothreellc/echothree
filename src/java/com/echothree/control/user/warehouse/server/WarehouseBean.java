@@ -77,7 +77,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createWarehouseType(UserVisitPK userVisitPK, CreateWarehouseTypeForm form) {
+    public CommandResult<CreateWarehouseTypeResult> createWarehouseType(UserVisitPK userVisitPK, CreateWarehouseTypeForm form) {
         return CDI.current().select(CreateWarehouseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -145,7 +145,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWarehouse(UserVisitPK userVisitPK, CreateWarehouseForm form) {
+    public CommandResult<CreateWarehouseResult> createWarehouse(UserVisitPK userVisitPK, CreateWarehouseForm form) {
         return CDI.current().select(CreateWarehouseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -184,7 +184,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationType(UserVisitPK userVisitPK, CreateLocationTypeForm form) {
+    public CommandResult<CreateLocationTypeResult> createLocationType(UserVisitPK userVisitPK, CreateLocationTypeForm form) {
         return CDI.current().select(CreateLocationTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -247,7 +247,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocationNameElement(UserVisitPK userVisitPK, CreateLocationNameElementForm form) {
+    public CommandResult<CreateLocationNameElementResult> createLocationNameElement(UserVisitPK userVisitPK, CreateLocationNameElementForm form) {
         return CDI.current().select(CreateLocationNameElementCommand.class).get().run(userVisitPK, form);
     }
     
@@ -300,7 +300,7 @@ public class WarehouseBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createLocation(UserVisitPK userVisitPK, CreateLocationForm form) {
+    public CommandResult<CreateLocationResult> createLocation(UserVisitPK userVisitPK, CreateLocationForm form) {
         return CDI.current().select(CreateLocationCommand.class).get().run(userVisitPK, form);
     }
     

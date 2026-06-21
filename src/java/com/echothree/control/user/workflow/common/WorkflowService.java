@@ -52,7 +52,7 @@ public interface WorkflowService
     //   Workflows
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflow(UserVisitPK userVisitPK, CreateWorkflowForm form);
+    CommandResult<CreateWorkflowResult> createWorkflow(UserVisitPK userVisitPK, CreateWorkflowForm form);
     
     CommandResult<GetWorkflowResult> getWorkflow(UserVisitPK userVisitPK, GetWorkflowForm form);
     
@@ -82,7 +82,7 @@ public interface WorkflowService
     //   Workflow Steps
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowStep(UserVisitPK userVisitPK, CreateWorkflowStepForm form);
+    CommandResult<CreateWorkflowStepResult> createWorkflowStep(UserVisitPK userVisitPK, CreateWorkflowStepForm form);
     
     CommandResult<GetWorkflowStepResult> getWorkflowStep(UserVisitPK userVisitPK, GetWorkflowStepForm form);
     
@@ -114,7 +114,7 @@ public interface WorkflowService
     //   Workflow Destinations
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowDestination(UserVisitPK userVisitPK, CreateWorkflowDestinationForm form);
+    CommandResult<CreateWorkflowDestinationResult> createWorkflowDestination(UserVisitPK userVisitPK, CreateWorkflowDestinationForm form);
     
     CommandResult<GetWorkflowDestinationResult> getWorkflowDestination(UserVisitPK userVisitPK, GetWorkflowDestinationForm form);
     
@@ -204,7 +204,7 @@ public interface WorkflowService
     //   Workflow Entrances
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createWorkflowEntrance(UserVisitPK userVisitPK, CreateWorkflowEntranceForm form);
+    CommandResult<CreateWorkflowEntranceResult> createWorkflowEntrance(UserVisitPK userVisitPK, CreateWorkflowEntranceForm form);
     
     CommandResult<GetWorkflowEntranceResult> getWorkflowEntrance(UserVisitPK userVisitPK, GetWorkflowEntranceForm form);
     
