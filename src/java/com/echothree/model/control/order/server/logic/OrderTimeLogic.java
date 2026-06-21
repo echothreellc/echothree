@@ -124,14 +124,14 @@ public class OrderTimeLogic
         }
     }
 
-    private OrderTime getOrderTimeEntity(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName) {
+    public OrderTime getOrderTimeEntity(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName) {
         var orderDetail = order.getLastDetail();
         var orderType = orderDetail.getOrderType();
         var orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName);
         OrderTime result = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            result = orderTimeControl.getOrderTimeForUpdate(order, orderTimeType);
+            result = orderTimeControl.getOrderTime(order, orderTimeType);
 
             if(result == null) {
                 handleExecutionError(UnknownOrderTimeException.class, eea, ExecutionErrors.UnknownOrderTime.name(), getOrderTypeName(orderType), orderDetail.getOrderName(),
