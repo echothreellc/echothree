@@ -33,76 +33,76 @@ public interface CommentService
     //   Comment Types
     // -------------------------------------------------------------------------
     
-    CommandResult createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form);
+    CommandResult<?> createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form);
     
-    CommandResult getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form);
+    CommandResult<?> getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form);
     
-    CommandResult getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form);
+    CommandResult<?> getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form);
     
-    CommandResult editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form);
+    CommandResult<?> editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form);
     
-    CommandResult deleteCommentType(UserVisitPK userVisitPK, DeleteCommentTypeForm form);
+    CommandResult<?> deleteCommentType(UserVisitPK userVisitPK, DeleteCommentTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommentTypeDescription(UserVisitPK userVisitPK, CreateCommentTypeDescriptionForm form);
+    CommandResult<?> createCommentTypeDescription(UserVisitPK userVisitPK, CreateCommentTypeDescriptionForm form);
     
-    CommandResult getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form);
+    CommandResult<?> getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form);
     
-    CommandResult editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form);
+    CommandResult<?> editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form);
     
-    CommandResult deleteCommentTypeDescription(UserVisitPK userVisitPK, DeleteCommentTypeDescriptionForm form);
+    CommandResult<?> deleteCommentTypeDescription(UserVisitPK userVisitPK, DeleteCommentTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Usage Types
     // -------------------------------------------------------------------------
     
-    CommandResult createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
+    CommandResult<?> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
     
-    CommandResult getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form);
+    CommandResult<?> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form);
     
-    CommandResult getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form);
+    CommandResult<?> getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form);
     
-    CommandResult editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form);
+    CommandResult<?> editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form);
     
-    CommandResult deleteCommentUsageType(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form);
+    CommandResult<?> deleteCommentUsageType(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Usage Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommentUsageTypeDescription(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form);
+    CommandResult<?> createCommentUsageTypeDescription(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form);
     
-    CommandResult getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form);
+    CommandResult<?> getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form);
     
-    CommandResult editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form);
+    CommandResult<?> editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form);
     
-    CommandResult deleteCommentUsageTypeDescription(UserVisitPK userVisitPK, DeleteCommentUsageTypeDescriptionForm form);
+    CommandResult<?> deleteCommentUsageTypeDescription(UserVisitPK userVisitPK, DeleteCommentUsageTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Comments
     // -------------------------------------------------------------------------
     
-    CommandResult createComment(UserVisitPK userVisitPK, CreateCommentForm form);
+    CommandResult<?> createComment(UserVisitPK userVisitPK, CreateCommentForm form);
     
-    CommandResult getComment(UserVisitPK userVisitPK, GetCommentForm form);
+    CommandResult<?> getComment(UserVisitPK userVisitPK, GetCommentForm form);
     
-    CommandResult editComment(UserVisitPK userVisitPK, EditCommentForm form);
+    CommandResult<?> editComment(UserVisitPK userVisitPK, EditCommentForm form);
     
-    CommandResult getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form);
+    CommandResult<?> getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form);
     
-    CommandResult setCommentStatus(UserVisitPK userVisitPK, SetCommentStatusForm form);
+    CommandResult<?> setCommentStatus(UserVisitPK userVisitPK, SetCommentStatusForm form);
     
-    CommandResult deleteComment(UserVisitPK userVisitPK, DeleteCommentForm form);
+    CommandResult<?> deleteComment(UserVisitPK userVisitPK, DeleteCommentForm form);
     
     // -------------------------------------------------------------------------
     //   Comment Usages
     // -------------------------------------------------------------------------
     
-    CommandResult createCommentUsage(UserVisitPK userVisitPK, CreateCommentUsageForm form);
+    CommandResult<?> createCommentUsage(UserVisitPK userVisitPK, CreateCommentUsageForm form);
     
-    CommandResult deleteCommentUsage(UserVisitPK userVisitPK, DeleteCommentUsageForm form);
+    CommandResult<?> deleteCommentUsage(UserVisitPK userVisitPK, DeleteCommentUsageForm form);
     
 }

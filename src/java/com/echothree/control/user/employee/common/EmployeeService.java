@@ -27,273 +27,273 @@ public interface EmployeeService
     //   Responsibility Types
     // -------------------------------------------------------------------------
     
-    CommandResult createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form);
+    CommandResult<?> createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form);
     
-    CommandResult getResponsibilityTypes(UserVisitPK userVisitPK, GetResponsibilityTypesForm form);
+    CommandResult<?> getResponsibilityTypes(UserVisitPK userVisitPK, GetResponsibilityTypesForm form);
     
-    CommandResult getResponsibilityType(UserVisitPK userVisitPK, GetResponsibilityTypeForm form);
+    CommandResult<?> getResponsibilityType(UserVisitPK userVisitPK, GetResponsibilityTypeForm form);
     
-    CommandResult getResponsibilityTypeChoices(UserVisitPK userVisitPK, GetResponsibilityTypeChoicesForm form);
+    CommandResult<?> getResponsibilityTypeChoices(UserVisitPK userVisitPK, GetResponsibilityTypeChoicesForm form);
     
-    CommandResult setDefaultResponsibilityType(UserVisitPK userVisitPK, SetDefaultResponsibilityTypeForm form);
+    CommandResult<?> setDefaultResponsibilityType(UserVisitPK userVisitPK, SetDefaultResponsibilityTypeForm form);
     
-    CommandResult editResponsibilityType(UserVisitPK userVisitPK, EditResponsibilityTypeForm form);
+    CommandResult<?> editResponsibilityType(UserVisitPK userVisitPK, EditResponsibilityTypeForm form);
     
-    CommandResult deleteResponsibilityType(UserVisitPK userVisitPK, DeleteResponsibilityTypeForm form);
+    CommandResult<?> deleteResponsibilityType(UserVisitPK userVisitPK, DeleteResponsibilityTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Responsibility Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createResponsibilityTypeDescription(UserVisitPK userVisitPK, CreateResponsibilityTypeDescriptionForm form);
+    CommandResult<?> createResponsibilityTypeDescription(UserVisitPK userVisitPK, CreateResponsibilityTypeDescriptionForm form);
     
-    CommandResult getResponsibilityTypeDescriptions(UserVisitPK userVisitPK, GetResponsibilityTypeDescriptionsForm form);
+    CommandResult<?> getResponsibilityTypeDescriptions(UserVisitPK userVisitPK, GetResponsibilityTypeDescriptionsForm form);
     
-    CommandResult editResponsibilityTypeDescription(UserVisitPK userVisitPK, EditResponsibilityTypeDescriptionForm form);
+    CommandResult<?> editResponsibilityTypeDescription(UserVisitPK userVisitPK, EditResponsibilityTypeDescriptionForm form);
     
-    CommandResult deleteResponsibilityTypeDescription(UserVisitPK userVisitPK, DeleteResponsibilityTypeDescriptionForm form);
+    CommandResult<?> deleteResponsibilityTypeDescription(UserVisitPK userVisitPK, DeleteResponsibilityTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Skill Types
     // -------------------------------------------------------------------------
     
-    CommandResult createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form);
+    CommandResult<?> createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form);
     
-    CommandResult getSkillTypes(UserVisitPK userVisitPK, GetSkillTypesForm form);
+    CommandResult<?> getSkillTypes(UserVisitPK userVisitPK, GetSkillTypesForm form);
     
-    CommandResult getSkillType(UserVisitPK userVisitPK, GetSkillTypeForm form);
+    CommandResult<?> getSkillType(UserVisitPK userVisitPK, GetSkillTypeForm form);
     
-    CommandResult getSkillTypeChoices(UserVisitPK userVisitPK, GetSkillTypeChoicesForm form);
+    CommandResult<?> getSkillTypeChoices(UserVisitPK userVisitPK, GetSkillTypeChoicesForm form);
     
-    CommandResult setDefaultSkillType(UserVisitPK userVisitPK, SetDefaultSkillTypeForm form);
+    CommandResult<?> setDefaultSkillType(UserVisitPK userVisitPK, SetDefaultSkillTypeForm form);
     
-    CommandResult editSkillType(UserVisitPK userVisitPK, EditSkillTypeForm form);
+    CommandResult<?> editSkillType(UserVisitPK userVisitPK, EditSkillTypeForm form);
     
-    CommandResult deleteSkillType(UserVisitPK userVisitPK, DeleteSkillTypeForm form);
+    CommandResult<?> deleteSkillType(UserVisitPK userVisitPK, DeleteSkillTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Skill Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createSkillTypeDescription(UserVisitPK userVisitPK, CreateSkillTypeDescriptionForm form);
+    CommandResult<?> createSkillTypeDescription(UserVisitPK userVisitPK, CreateSkillTypeDescriptionForm form);
     
-    CommandResult getSkillTypeDescriptions(UserVisitPK userVisitPK, GetSkillTypeDescriptionsForm form);
+    CommandResult<?> getSkillTypeDescriptions(UserVisitPK userVisitPK, GetSkillTypeDescriptionsForm form);
     
-    CommandResult editSkillTypeDescription(UserVisitPK userVisitPK, EditSkillTypeDescriptionForm form);
+    CommandResult<?> editSkillTypeDescription(UserVisitPK userVisitPK, EditSkillTypeDescriptionForm form);
     
-    CommandResult deleteSkillTypeDescription(UserVisitPK userVisitPK, DeleteSkillTypeDescriptionForm form);
+    CommandResult<?> deleteSkillTypeDescription(UserVisitPK userVisitPK, DeleteSkillTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Leave Types
     // -------------------------------------------------------------------------
 
-    CommandResult createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form);
+    CommandResult<?> createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form);
 
-    CommandResult getLeaveTypes(UserVisitPK userVisitPK, GetLeaveTypesForm form);
+    CommandResult<?> getLeaveTypes(UserVisitPK userVisitPK, GetLeaveTypesForm form);
 
-    CommandResult getLeaveType(UserVisitPK userVisitPK, GetLeaveTypeForm form);
+    CommandResult<?> getLeaveType(UserVisitPK userVisitPK, GetLeaveTypeForm form);
 
-    CommandResult getLeaveTypeChoices(UserVisitPK userVisitPK, GetLeaveTypeChoicesForm form);
+    CommandResult<?> getLeaveTypeChoices(UserVisitPK userVisitPK, GetLeaveTypeChoicesForm form);
 
-    CommandResult setDefaultLeaveType(UserVisitPK userVisitPK, SetDefaultLeaveTypeForm form);
+    CommandResult<?> setDefaultLeaveType(UserVisitPK userVisitPK, SetDefaultLeaveTypeForm form);
 
-    CommandResult editLeaveType(UserVisitPK userVisitPK, EditLeaveTypeForm form);
+    CommandResult<?> editLeaveType(UserVisitPK userVisitPK, EditLeaveTypeForm form);
 
-    CommandResult deleteLeaveType(UserVisitPK userVisitPK, DeleteLeaveTypeForm form);
+    CommandResult<?> deleteLeaveType(UserVisitPK userVisitPK, DeleteLeaveTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Leave Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createLeaveTypeDescription(UserVisitPK userVisitPK, CreateLeaveTypeDescriptionForm form);
+    CommandResult<?> createLeaveTypeDescription(UserVisitPK userVisitPK, CreateLeaveTypeDescriptionForm form);
 
-    CommandResult getLeaveTypeDescription(UserVisitPK userVisitPK, GetLeaveTypeDescriptionForm form);
+    CommandResult<?> getLeaveTypeDescription(UserVisitPK userVisitPK, GetLeaveTypeDescriptionForm form);
 
-    CommandResult getLeaveTypeDescriptions(UserVisitPK userVisitPK, GetLeaveTypeDescriptionsForm form);
+    CommandResult<?> getLeaveTypeDescriptions(UserVisitPK userVisitPK, GetLeaveTypeDescriptionsForm form);
 
-    CommandResult editLeaveTypeDescription(UserVisitPK userVisitPK, EditLeaveTypeDescriptionForm form);
+    CommandResult<?> editLeaveTypeDescription(UserVisitPK userVisitPK, EditLeaveTypeDescriptionForm form);
 
-    CommandResult deleteLeaveTypeDescription(UserVisitPK userVisitPK, DeleteLeaveTypeDescriptionForm form);
+    CommandResult<?> deleteLeaveTypeDescription(UserVisitPK userVisitPK, DeleteLeaveTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Leave Reasons
     // -------------------------------------------------------------------------
 
-    CommandResult createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form);
+    CommandResult<?> createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form);
 
-    CommandResult getLeaveReasons(UserVisitPK userVisitPK, GetLeaveReasonsForm form);
+    CommandResult<?> getLeaveReasons(UserVisitPK userVisitPK, GetLeaveReasonsForm form);
 
-    CommandResult getLeaveReason(UserVisitPK userVisitPK, GetLeaveReasonForm form);
+    CommandResult<?> getLeaveReason(UserVisitPK userVisitPK, GetLeaveReasonForm form);
 
-    CommandResult getLeaveReasonChoices(UserVisitPK userVisitPK, GetLeaveReasonChoicesForm form);
+    CommandResult<?> getLeaveReasonChoices(UserVisitPK userVisitPK, GetLeaveReasonChoicesForm form);
 
-    CommandResult setDefaultLeaveReason(UserVisitPK userVisitPK, SetDefaultLeaveReasonForm form);
+    CommandResult<?> setDefaultLeaveReason(UserVisitPK userVisitPK, SetDefaultLeaveReasonForm form);
 
-    CommandResult editLeaveReason(UserVisitPK userVisitPK, EditLeaveReasonForm form);
+    CommandResult<?> editLeaveReason(UserVisitPK userVisitPK, EditLeaveReasonForm form);
 
-    CommandResult deleteLeaveReason(UserVisitPK userVisitPK, DeleteLeaveReasonForm form);
+    CommandResult<?> deleteLeaveReason(UserVisitPK userVisitPK, DeleteLeaveReasonForm form);
 
     // -------------------------------------------------------------------------
     //   Leave Reason Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createLeaveReasonDescription(UserVisitPK userVisitPK, CreateLeaveReasonDescriptionForm form);
+    CommandResult<?> createLeaveReasonDescription(UserVisitPK userVisitPK, CreateLeaveReasonDescriptionForm form);
 
-    CommandResult getLeaveReasonDescription(UserVisitPK userVisitPK, GetLeaveReasonDescriptionForm form);
+    CommandResult<?> getLeaveReasonDescription(UserVisitPK userVisitPK, GetLeaveReasonDescriptionForm form);
 
-    CommandResult getLeaveReasonDescriptions(UserVisitPK userVisitPK, GetLeaveReasonDescriptionsForm form);
+    CommandResult<?> getLeaveReasonDescriptions(UserVisitPK userVisitPK, GetLeaveReasonDescriptionsForm form);
 
-    CommandResult editLeaveReasonDescription(UserVisitPK userVisitPK, EditLeaveReasonDescriptionForm form);
+    CommandResult<?> editLeaveReasonDescription(UserVisitPK userVisitPK, EditLeaveReasonDescriptionForm form);
 
-    CommandResult deleteLeaveReasonDescription(UserVisitPK userVisitPK, DeleteLeaveReasonDescriptionForm form);
+    CommandResult<?> deleteLeaveReasonDescription(UserVisitPK userVisitPK, DeleteLeaveReasonDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Leaves
     // -------------------------------------------------------------------------
 
-    CommandResult createLeave(UserVisitPK userVisitPK, CreateLeaveForm form);
+    CommandResult<?> createLeave(UserVisitPK userVisitPK, CreateLeaveForm form);
 
-    CommandResult getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form);
+    CommandResult<?> getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form);
 
-    CommandResult setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form);
+    CommandResult<?> setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form);
 
-    CommandResult getLeaves(UserVisitPK userVisitPK, GetLeavesForm form);
+    CommandResult<?> getLeaves(UserVisitPK userVisitPK, GetLeavesForm form);
 
-    CommandResult getLeave(UserVisitPK userVisitPK, GetLeaveForm form);
+    CommandResult<?> getLeave(UserVisitPK userVisitPK, GetLeaveForm form);
 
-    CommandResult editLeave(UserVisitPK userVisitPK, EditLeaveForm form);
+    CommandResult<?> editLeave(UserVisitPK userVisitPK, EditLeaveForm form);
 
-    CommandResult deleteLeave(UserVisitPK userVisitPK, DeleteLeaveForm form);
+    CommandResult<?> deleteLeave(UserVisitPK userVisitPK, DeleteLeaveForm form);
 
     // -------------------------------------------------------------------------
     //   Termination Reasons
     // -------------------------------------------------------------------------
 
-    CommandResult createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form);
+    CommandResult<?> createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form);
 
-    CommandResult getTerminationReasons(UserVisitPK userVisitPK, GetTerminationReasonsForm form);
+    CommandResult<?> getTerminationReasons(UserVisitPK userVisitPK, GetTerminationReasonsForm form);
 
-    CommandResult getTerminationReason(UserVisitPK userVisitPK, GetTerminationReasonForm form);
+    CommandResult<?> getTerminationReason(UserVisitPK userVisitPK, GetTerminationReasonForm form);
 
-    CommandResult getTerminationReasonChoices(UserVisitPK userVisitPK, GetTerminationReasonChoicesForm form);
+    CommandResult<?> getTerminationReasonChoices(UserVisitPK userVisitPK, GetTerminationReasonChoicesForm form);
 
-    CommandResult setDefaultTerminationReason(UserVisitPK userVisitPK, SetDefaultTerminationReasonForm form);
+    CommandResult<?> setDefaultTerminationReason(UserVisitPK userVisitPK, SetDefaultTerminationReasonForm form);
 
-    CommandResult editTerminationReason(UserVisitPK userVisitPK, EditTerminationReasonForm form);
+    CommandResult<?> editTerminationReason(UserVisitPK userVisitPK, EditTerminationReasonForm form);
 
-    CommandResult deleteTerminationReason(UserVisitPK userVisitPK, DeleteTerminationReasonForm form);
+    CommandResult<?> deleteTerminationReason(UserVisitPK userVisitPK, DeleteTerminationReasonForm form);
 
     // -------------------------------------------------------------------------
     //   Termination Reason Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createTerminationReasonDescription(UserVisitPK userVisitPK, CreateTerminationReasonDescriptionForm form);
+    CommandResult<?> createTerminationReasonDescription(UserVisitPK userVisitPK, CreateTerminationReasonDescriptionForm form);
 
-    CommandResult getTerminationReasonDescriptions(UserVisitPK userVisitPK, GetTerminationReasonDescriptionsForm form);
+    CommandResult<?> getTerminationReasonDescriptions(UserVisitPK userVisitPK, GetTerminationReasonDescriptionsForm form);
 
-    CommandResult editTerminationReasonDescription(UserVisitPK userVisitPK, EditTerminationReasonDescriptionForm form);
+    CommandResult<?> editTerminationReasonDescription(UserVisitPK userVisitPK, EditTerminationReasonDescriptionForm form);
 
-    CommandResult deleteTerminationReasonDescription(UserVisitPK userVisitPK, DeleteTerminationReasonDescriptionForm form);
+    CommandResult<?> deleteTerminationReasonDescription(UserVisitPK userVisitPK, DeleteTerminationReasonDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Termination Types
     // -------------------------------------------------------------------------
     
-    CommandResult createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form);
+    CommandResult<?> createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form);
     
-    CommandResult getTerminationTypes(UserVisitPK userVisitPK, GetTerminationTypesForm form);
+    CommandResult<?> getTerminationTypes(UserVisitPK userVisitPK, GetTerminationTypesForm form);
     
-    CommandResult getTerminationType(UserVisitPK userVisitPK, GetTerminationTypeForm form);
+    CommandResult<?> getTerminationType(UserVisitPK userVisitPK, GetTerminationTypeForm form);
     
-    CommandResult getTerminationTypeChoices(UserVisitPK userVisitPK, GetTerminationTypeChoicesForm form);
+    CommandResult<?> getTerminationTypeChoices(UserVisitPK userVisitPK, GetTerminationTypeChoicesForm form);
     
-    CommandResult setDefaultTerminationType(UserVisitPK userVisitPK, SetDefaultTerminationTypeForm form);
+    CommandResult<?> setDefaultTerminationType(UserVisitPK userVisitPK, SetDefaultTerminationTypeForm form);
     
-    CommandResult editTerminationType(UserVisitPK userVisitPK, EditTerminationTypeForm form);
+    CommandResult<?> editTerminationType(UserVisitPK userVisitPK, EditTerminationTypeForm form);
     
-    CommandResult deleteTerminationType(UserVisitPK userVisitPK, DeleteTerminationTypeForm form);
+    CommandResult<?> deleteTerminationType(UserVisitPK userVisitPK, DeleteTerminationTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Termination Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTerminationTypeDescription(UserVisitPK userVisitPK, CreateTerminationTypeDescriptionForm form);
+    CommandResult<?> createTerminationTypeDescription(UserVisitPK userVisitPK, CreateTerminationTypeDescriptionForm form);
     
-    CommandResult getTerminationTypeDescriptions(UserVisitPK userVisitPK, GetTerminationTypeDescriptionsForm form);
+    CommandResult<?> getTerminationTypeDescriptions(UserVisitPK userVisitPK, GetTerminationTypeDescriptionsForm form);
     
-    CommandResult editTerminationTypeDescription(UserVisitPK userVisitPK, EditTerminationTypeDescriptionForm form);
+    CommandResult<?> editTerminationTypeDescription(UserVisitPK userVisitPK, EditTerminationTypeDescriptionForm form);
     
-    CommandResult deleteTerminationTypeDescription(UserVisitPK userVisitPK, DeleteTerminationTypeDescriptionForm form);
+    CommandResult<?> deleteTerminationTypeDescription(UserVisitPK userVisitPK, DeleteTerminationTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Employments
     // -------------------------------------------------------------------------
 
-    CommandResult createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form);
+    CommandResult<?> createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form);
 
-    CommandResult getEmployments(UserVisitPK userVisitPK, GetEmploymentsForm form);
+    CommandResult<?> getEmployments(UserVisitPK userVisitPK, GetEmploymentsForm form);
 
-    CommandResult getEmployment(UserVisitPK userVisitPK, GetEmploymentForm form);
+    CommandResult<?> getEmployment(UserVisitPK userVisitPK, GetEmploymentForm form);
 
-    CommandResult editEmployment(UserVisitPK userVisitPK, EditEmploymentForm form);
+    CommandResult<?> editEmployment(UserVisitPK userVisitPK, EditEmploymentForm form);
 
-    CommandResult deleteEmployment(UserVisitPK userVisitPK, DeleteEmploymentForm form);
+    CommandResult<?> deleteEmployment(UserVisitPK userVisitPK, DeleteEmploymentForm form);
 
     // -------------------------------------------------------------------------
     //   Party Responsibilities
     // -------------------------------------------------------------------------
     
-    CommandResult createPartyResponsibility(UserVisitPK userVisitPK, CreatePartyResponsibilityForm form);
+    CommandResult<?> createPartyResponsibility(UserVisitPK userVisitPK, CreatePartyResponsibilityForm form);
     
-    CommandResult getPartyResponsibilities(UserVisitPK userVisitPK, GetPartyResponsibilitiesForm form);
+    CommandResult<?> getPartyResponsibilities(UserVisitPK userVisitPK, GetPartyResponsibilitiesForm form);
     
-    CommandResult deletePartyResponsibility(UserVisitPK userVisitPK, DeletePartyResponsibilityForm form);
+    CommandResult<?> deletePartyResponsibility(UserVisitPK userVisitPK, DeletePartyResponsibilityForm form);
     
     // -------------------------------------------------------------------------
     //   Party Skills
     // -------------------------------------------------------------------------
     
-    CommandResult createPartySkill(UserVisitPK userVisitPK, CreatePartySkillForm form);
+    CommandResult<?> createPartySkill(UserVisitPK userVisitPK, CreatePartySkillForm form);
     
-    CommandResult getPartySkills(UserVisitPK userVisitPK, GetPartySkillsForm form);
+    CommandResult<?> getPartySkills(UserVisitPK userVisitPK, GetPartySkillsForm form);
     
-    CommandResult deletePartySkill(UserVisitPK userVisitPK, DeletePartySkillForm form);
+    CommandResult<?> deletePartySkill(UserVisitPK userVisitPK, DeletePartySkillForm form);
     
     // --------------------------------------------------------------------------------
     //   Employee Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form);
+    CommandResult<?> createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form);
     
-    CommandResult getEmployeeTypeChoices(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form);
+    CommandResult<?> getEmployeeTypeChoices(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form);
     
-    CommandResult getEmployeeType(UserVisitPK userVisitPK, GetEmployeeTypeForm form);
+    CommandResult<?> getEmployeeType(UserVisitPK userVisitPK, GetEmployeeTypeForm form);
     
-    CommandResult getEmployeeTypes(UserVisitPK userVisitPK, GetEmployeeTypesForm form);
+    CommandResult<?> getEmployeeTypes(UserVisitPK userVisitPK, GetEmployeeTypesForm form);
     
-    CommandResult setDefaultEmployeeType(UserVisitPK userVisitPK, SetDefaultEmployeeTypeForm form);
+    CommandResult<?> setDefaultEmployeeType(UserVisitPK userVisitPK, SetDefaultEmployeeTypeForm form);
     
-    CommandResult editEmployeeType(UserVisitPK userVisitPK, EditEmployeeTypeForm form);
+    CommandResult<?> editEmployeeType(UserVisitPK userVisitPK, EditEmployeeTypeForm form);
     
-    CommandResult deleteEmployeeType(UserVisitPK userVisitPK, DeleteEmployeeTypeForm form);
+    CommandResult<?> deleteEmployeeType(UserVisitPK userVisitPK, DeleteEmployeeTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Employee Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createEmployeeTypeDescription(UserVisitPK userVisitPK, CreateEmployeeTypeDescriptionForm form);
+    CommandResult<?> createEmployeeTypeDescription(UserVisitPK userVisitPK, CreateEmployeeTypeDescriptionForm form);
     
-    CommandResult getEmployeeTypeDescriptions(UserVisitPK userVisitPK, GetEmployeeTypeDescriptionsForm form);
+    CommandResult<?> getEmployeeTypeDescriptions(UserVisitPK userVisitPK, GetEmployeeTypeDescriptionsForm form);
     
-    CommandResult editEmployeeTypeDescription(UserVisitPK userVisitPK, EditEmployeeTypeDescriptionForm form);
+    CommandResult<?> editEmployeeTypeDescription(UserVisitPK userVisitPK, EditEmployeeTypeDescriptionForm form);
     
-    CommandResult deleteEmployeeTypeDescription(UserVisitPK userVisitPK, DeleteEmployeeTypeDescriptionForm form);
+    CommandResult<?> deleteEmployeeTypeDescription(UserVisitPK userVisitPK, DeleteEmployeeTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Employees
     // -------------------------------------------------------------------------
     
-    CommandResult getEmployee(UserVisitPK userVisitPK, GetEmployeeForm form);
+    CommandResult<?> getEmployee(UserVisitPK userVisitPK, GetEmployeeForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

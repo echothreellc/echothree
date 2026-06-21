@@ -27,185 +27,185 @@ public interface TrainingService
     //   Training Classes
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form);
+    CommandResult<?> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form);
     
-    CommandResult getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form);
+    CommandResult<?> getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form);
     
-    CommandResult getTrainingClass(UserVisitPK userVisitPK, GetTrainingClassForm form);
+    CommandResult<?> getTrainingClass(UserVisitPK userVisitPK, GetTrainingClassForm form);
     
-    CommandResult getTrainingClassChoices(UserVisitPK userVisitPK, GetTrainingClassChoicesForm form);
+    CommandResult<?> getTrainingClassChoices(UserVisitPK userVisitPK, GetTrainingClassChoicesForm form);
     
-    CommandResult setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form);
+    CommandResult<?> setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form);
     
-    CommandResult editTrainingClass(UserVisitPK userVisitPK, EditTrainingClassForm form);
+    CommandResult<?> editTrainingClass(UserVisitPK userVisitPK, EditTrainingClassForm form);
     
-    CommandResult deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form);
+    CommandResult<?> deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form);
+    CommandResult<?> createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form);
     
-    CommandResult getTrainingClassTranslation(UserVisitPK userVisitPK, GetTrainingClassTranslationForm form);
+    CommandResult<?> getTrainingClassTranslation(UserVisitPK userVisitPK, GetTrainingClassTranslationForm form);
     
-    CommandResult getTrainingClassTranslations(UserVisitPK userVisitPK, GetTrainingClassTranslationsForm form);
+    CommandResult<?> getTrainingClassTranslations(UserVisitPK userVisitPK, GetTrainingClassTranslationsForm form);
     
-    CommandResult editTrainingClassTranslation(UserVisitPK userVisitPK, EditTrainingClassTranslationForm form);
+    CommandResult<?> editTrainingClassTranslation(UserVisitPK userVisitPK, EditTrainingClassTranslationForm form);
     
-    CommandResult deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form);
+    CommandResult<?> deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Sections
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form);
+    CommandResult<?> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form);
     
-    CommandResult getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form);
+    CommandResult<?> getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form);
     
-    CommandResult getTrainingClassSection(UserVisitPK userVisitPK, GetTrainingClassSectionForm form);
+    CommandResult<?> getTrainingClassSection(UserVisitPK userVisitPK, GetTrainingClassSectionForm form);
     
-    CommandResult editTrainingClassSection(UserVisitPK userVisitPK, EditTrainingClassSectionForm form);
+    CommandResult<?> editTrainingClassSection(UserVisitPK userVisitPK, EditTrainingClassSectionForm form);
     
-    CommandResult deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form);
+    CommandResult<?> deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Section Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form);
+    CommandResult<?> createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form);
     
-    CommandResult getTrainingClassSectionTranslation(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationForm form);
+    CommandResult<?> getTrainingClassSectionTranslation(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationForm form);
     
-    CommandResult getTrainingClassSectionTranslations(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationsForm form);
+    CommandResult<?> getTrainingClassSectionTranslations(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationsForm form);
     
-    CommandResult editTrainingClassSectionTranslation(UserVisitPK userVisitPK, EditTrainingClassSectionTranslationForm form);
+    CommandResult<?> editTrainingClassSectionTranslation(UserVisitPK userVisitPK, EditTrainingClassSectionTranslationForm form);
     
-    CommandResult deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form);
+    CommandResult<?> deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Pages
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form);
+    CommandResult<?> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form);
     
-    CommandResult getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form);
+    CommandResult<?> getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form);
     
-    CommandResult getTrainingClassPage(UserVisitPK userVisitPK, GetTrainingClassPageForm form);
+    CommandResult<?> getTrainingClassPage(UserVisitPK userVisitPK, GetTrainingClassPageForm form);
     
-    CommandResult editTrainingClassPage(UserVisitPK userVisitPK, EditTrainingClassPageForm form);
+    CommandResult<?> editTrainingClassPage(UserVisitPK userVisitPK, EditTrainingClassPageForm form);
     
-    CommandResult deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form);
+    CommandResult<?> deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Page Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form);
+    CommandResult<?> createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form);
     
-    CommandResult getTrainingClassPageTranslation(UserVisitPK userVisitPK, GetTrainingClassPageTranslationForm form);
+    CommandResult<?> getTrainingClassPageTranslation(UserVisitPK userVisitPK, GetTrainingClassPageTranslationForm form);
     
-    CommandResult getTrainingClassPageTranslations(UserVisitPK userVisitPK, GetTrainingClassPageTranslationsForm form);
+    CommandResult<?> getTrainingClassPageTranslations(UserVisitPK userVisitPK, GetTrainingClassPageTranslationsForm form);
     
-    CommandResult editTrainingClassPageTranslation(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form);
+    CommandResult<?> editTrainingClassPageTranslation(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form);
     
-    CommandResult deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form);
+    CommandResult<?> deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Questions
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form);
+    CommandResult<?> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form);
     
-    CommandResult getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form);
+    CommandResult<?> getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form);
     
-    CommandResult getTrainingClassQuestion(UserVisitPK userVisitPK, GetTrainingClassQuestionForm form);
+    CommandResult<?> getTrainingClassQuestion(UserVisitPK userVisitPK, GetTrainingClassQuestionForm form);
     
-    CommandResult editTrainingClassQuestion(UserVisitPK userVisitPK, EditTrainingClassQuestionForm form);
+    CommandResult<?> editTrainingClassQuestion(UserVisitPK userVisitPK, EditTrainingClassQuestionForm form);
     
-    CommandResult deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form);
+    CommandResult<?> deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Question Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form);
+    CommandResult<?> createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form);
     
-    CommandResult getTrainingClassQuestionTranslation(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationForm form);
+    CommandResult<?> getTrainingClassQuestionTranslation(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationForm form);
     
-    CommandResult getTrainingClassQuestionTranslations(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationsForm form);
+    CommandResult<?> getTrainingClassQuestionTranslations(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationsForm form);
     
-    CommandResult editTrainingClassQuestionTranslation(UserVisitPK userVisitPK, EditTrainingClassQuestionTranslationForm form);
+    CommandResult<?> editTrainingClassQuestionTranslation(UserVisitPK userVisitPK, EditTrainingClassQuestionTranslationForm form);
     
-    CommandResult deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form);
+    CommandResult<?> deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Answers
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form);
+    CommandResult<?> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form);
     
-    CommandResult getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form);
+    CommandResult<?> getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form);
     
-    CommandResult getTrainingClassAnswer(UserVisitPK userVisitPK, GetTrainingClassAnswerForm form);
+    CommandResult<?> getTrainingClassAnswer(UserVisitPK userVisitPK, GetTrainingClassAnswerForm form);
     
-    CommandResult editTrainingClassAnswer(UserVisitPK userVisitPK, EditTrainingClassAnswerForm form);
+    CommandResult<?> editTrainingClassAnswer(UserVisitPK userVisitPK, EditTrainingClassAnswerForm form);
     
-    CommandResult deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form);
+    CommandResult<?> deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form);
     
     // -------------------------------------------------------------------------
     //   Training Class Answer Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form);
+    CommandResult<?> createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form);
     
-    CommandResult getTrainingClassAnswerTranslation(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form);
+    CommandResult<?> getTrainingClassAnswerTranslation(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form);
     
-    CommandResult getTrainingClassAnswerTranslations(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationsForm form);
+    CommandResult<?> getTrainingClassAnswerTranslations(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationsForm form);
     
-    CommandResult editTrainingClassAnswerTranslation(UserVisitPK userVisitPK, EditTrainingClassAnswerTranslationForm form);
+    CommandResult<?> editTrainingClassAnswerTranslation(UserVisitPK userVisitPK, EditTrainingClassAnswerTranslationForm form);
     
-    CommandResult deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form);
+    CommandResult<?> deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Party Training Classes
     // -------------------------------------------------------------------------
 
-    CommandResult createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form);
+    CommandResult<?> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form);
 
-    CommandResult getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form);
+    CommandResult<?> getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form);
 
-    CommandResult setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form);
+    CommandResult<?> setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form);
 
-    CommandResult getPartyTrainingClass(UserVisitPK userVisitPK, GetPartyTrainingClassForm form);
+    CommandResult<?> getPartyTrainingClass(UserVisitPK userVisitPK, GetPartyTrainingClassForm form);
 
-    CommandResult getPartyTrainingClasses(UserVisitPK userVisitPK, GetPartyTrainingClassesForm form);
+    CommandResult<?> getPartyTrainingClasses(UserVisitPK userVisitPK, GetPartyTrainingClassesForm form);
 
-    CommandResult editPartyTrainingClass(UserVisitPK userVisitPK, EditPartyTrainingClassForm form);
+    CommandResult<?> editPartyTrainingClass(UserVisitPK userVisitPK, EditPartyTrainingClassForm form);
 
-    CommandResult deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form);
+    CommandResult<?> deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form);
 
     // -------------------------------------------------------------------------
     //   Party Training Class Sessions
     // -------------------------------------------------------------------------
     
-    CommandResult getPartyTrainingClassSession(UserVisitPK userVisitPK, GetPartyTrainingClassSessionForm form);
+    CommandResult<?> getPartyTrainingClassSession(UserVisitPK userVisitPK, GetPartyTrainingClassSessionForm form);
 
-    CommandResult getPartyTrainingClassSessions(UserVisitPK userVisitPK, GetPartyTrainingClassSessionsForm form);
+    CommandResult<?> getPartyTrainingClassSessions(UserVisitPK userVisitPK, GetPartyTrainingClassSessionsForm form);
 
-    CommandResult deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form);
+    CommandResult<?> deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form);
 
     // -------------------------------------------------------------------------
     //   Party Training Class Session Pages
     // -------------------------------------------------------------------------
     
-    CommandResult editPartyTrainingClassSessionPage(UserVisitPK userVisitPK, EditPartyTrainingClassSessionPageForm form);
+    CommandResult<?> editPartyTrainingClassSessionPage(UserVisitPK userVisitPK, EditPartyTrainingClassSessionPageForm form);
 
     // -------------------------------------------------------------------------
     //   Party Training Class Session Answers
     // -------------------------------------------------------------------------
     
-    CommandResult editPartyTrainingClassSessionAnswer(UserVisitPK userVisitPK, EditPartyTrainingClassSessionAnswerForm form);
+    CommandResult<?> editPartyTrainingClassSessionAnswer(UserVisitPK userVisitPK, EditPartyTrainingClassSessionAnswerForm form);
 
     // -------------------------------------------------------------------------
     //   Testing

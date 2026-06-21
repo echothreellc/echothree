@@ -43,27 +43,27 @@ public class MessageBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form) {
+    public CommandResult<?> createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form) {
         return CDI.current().select(CreateMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form) {
+    public CommandResult<?> getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form) {
         return CDI.current().select(GetMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form) {
+    public CommandResult<?> getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form) {
         return CDI.current().select(GetMessageTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form) {
+    public CommandResult<?> editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form) {
         return CDI.current().select(EditMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteMessageType(UserVisitPK userVisitPK, DeleteMessageTypeForm form) {
+    public CommandResult<?> deleteMessageType(UserVisitPK userVisitPK, DeleteMessageTypeForm form) {
         return CDI.current().select(DeleteMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -72,22 +72,22 @@ public class MessageBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createMessageTypeDescription(UserVisitPK userVisitPK, CreateMessageTypeDescriptionForm form) {
+    public CommandResult<?> createMessageTypeDescription(UserVisitPK userVisitPK, CreateMessageTypeDescriptionForm form) {
         return CDI.current().select(CreateMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form) {
+    public CommandResult<?> getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form) {
         return CDI.current().select(GetMessageTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form) {
+    public CommandResult<?> editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form) {
         return CDI.current().select(EditMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteMessageTypeDescription(UserVisitPK userVisitPK, DeleteMessageTypeDescriptionForm form) {
+    public CommandResult<?> deleteMessageTypeDescription(UserVisitPK userVisitPK, DeleteMessageTypeDescriptionForm form) {
         return CDI.current().select(DeleteMessageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -96,22 +96,22 @@ public class MessageBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createMessage(UserVisitPK userVisitPK, CreateMessageForm form) {
+    public CommandResult<?> createMessage(UserVisitPK userVisitPK, CreateMessageForm form) {
         return CDI.current().select(CreateMessageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getMessage(UserVisitPK userVisitPK, GetMessageForm form) {
+    public CommandResult<?> getMessage(UserVisitPK userVisitPK, GetMessageForm form) {
         return CDI.current().select(GetMessageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getMessages(UserVisitPK userVisitPK, GetMessagesForm form) {
+    public CommandResult<?> getMessages(UserVisitPK userVisitPK, GetMessagesForm form) {
         return CDI.current().select(GetMessagesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteMessage(UserVisitPK userVisitPK, DeleteMessageForm form) {
+    public CommandResult<?> deleteMessage(UserVisitPK userVisitPK, DeleteMessageForm form) {
         return CDI.current().select(DeleteMessageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -120,22 +120,22 @@ public class MessageBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createMessageDescription(UserVisitPK userVisitPK, CreateMessageDescriptionForm form) {
+    public CommandResult<?> createMessageDescription(UserVisitPK userVisitPK, CreateMessageDescriptionForm form) {
         return CDI.current().select(CreateMessageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form) {
+    public CommandResult<?> getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form) {
         return CDI.current().select(GetMessageDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form) {
+    public CommandResult<?> editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form) {
         return CDI.current().select(EditMessageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteMessageDescription(UserVisitPK userVisitPK, DeleteMessageDescriptionForm form) {
+    public CommandResult<?> deleteMessageDescription(UserVisitPK userVisitPK, DeleteMessageDescriptionForm form) {
         return CDI.current().select(DeleteMessageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -144,22 +144,22 @@ public class MessageBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createEntityMessage(UserVisitPK userVisitPK, CreateEntityMessageForm form) {
+    public CommandResult<?> createEntityMessage(UserVisitPK userVisitPK, CreateEntityMessageForm form) {
         return CDI.current().select(CreateEntityMessageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form) {
+    public CommandResult<?> getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form) {
         return CDI.current().select(GetEntityMessageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
+    public CommandResult<?> getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
         return CDI.current().select(GetEntityMessagesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteEntityMessage(UserVisitPK userVisitPK, DeleteEntityMessageForm form) {
+    public CommandResult<?> deleteEntityMessage(UserVisitPK userVisitPK, DeleteEntityMessageForm form) {
         return CDI.current().select(DeleteEntityMessageCommand.class).get().run(userVisitPK, form);
     }
     

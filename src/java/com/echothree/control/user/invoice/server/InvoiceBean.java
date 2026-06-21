@@ -43,7 +43,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceLineUseType(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeForm form) {
+    public CommandResult<?> createInvoiceLineUseType(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeForm form) {
         return CDI.current().select(CreateInvoiceLineUseTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -52,7 +52,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceLineUseTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeDescriptionForm form) {
+    public CommandResult<?> createInvoiceLineUseTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeDescriptionForm form) {
         return CDI.current().select(CreateInvoiceLineUseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -61,7 +61,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceRoleType(UserVisitPK userVisitPK, CreateInvoiceRoleTypeForm form) {
+    public CommandResult<?> createInvoiceRoleType(UserVisitPK userVisitPK, CreateInvoiceRoleTypeForm form) {
         return CDI.current().select(CreateInvoiceRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -70,7 +70,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceRoleTypeDescription(UserVisitPK userVisitPK, CreateInvoiceRoleTypeDescriptionForm form) {
+    public CommandResult<?> createInvoiceRoleTypeDescription(UserVisitPK userVisitPK, CreateInvoiceRoleTypeDescriptionForm form) {
         return CDI.current().select(CreateInvoiceRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -79,37 +79,37 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form) {
+    public CommandResult<?> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form) {
         return CDI.current().select(CreateInvoiceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceTypeChoices(UserVisitPK userVisitPK, GetInvoiceTypeChoicesForm form) {
+    public CommandResult<?> getInvoiceTypeChoices(UserVisitPK userVisitPK, GetInvoiceTypeChoicesForm form) {
         return CDI.current().select(GetInvoiceTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceType(UserVisitPK userVisitPK, GetInvoiceTypeForm form) {
+    public CommandResult<?> getInvoiceType(UserVisitPK userVisitPK, GetInvoiceTypeForm form) {
         return CDI.current().select(GetInvoiceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceTypes(UserVisitPK userVisitPK, GetInvoiceTypesForm form) {
+    public CommandResult<?> getInvoiceTypes(UserVisitPK userVisitPK, GetInvoiceTypesForm form) {
         return CDI.current().select(GetInvoiceTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultInvoiceType(UserVisitPK userVisitPK, SetDefaultInvoiceTypeForm form) {
+    public CommandResult<?> setDefaultInvoiceType(UserVisitPK userVisitPK, SetDefaultInvoiceTypeForm form) {
         return CDI.current().select(SetDefaultInvoiceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editInvoiceType(UserVisitPK userVisitPK, EditInvoiceTypeForm form) {
+    public CommandResult<?> editInvoiceType(UserVisitPK userVisitPK, EditInvoiceTypeForm form) {
         return CDI.current().select(EditInvoiceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteInvoiceType(UserVisitPK userVisitPK, DeleteInvoiceTypeForm form) {
+    public CommandResult<?> deleteInvoiceType(UserVisitPK userVisitPK, DeleteInvoiceTypeForm form) {
         return CDI.current().select(DeleteInvoiceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -118,22 +118,22 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTypeDescriptionForm form) {
+    public CommandResult<?> createInvoiceTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTypeDescriptionForm form) {
         return CDI.current().select(CreateInvoiceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceTypeDescriptionsForm form) {
+    public CommandResult<?> getInvoiceTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceTypeDescriptionsForm form) {
         return CDI.current().select(GetInvoiceTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editInvoiceTypeDescription(UserVisitPK userVisitPK, EditInvoiceTypeDescriptionForm form) {
+    public CommandResult<?> editInvoiceTypeDescription(UserVisitPK userVisitPK, EditInvoiceTypeDescriptionForm form) {
         return CDI.current().select(EditInvoiceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteInvoiceTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTypeDescriptionForm form) {
+    public CommandResult<?> deleteInvoiceTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTypeDescriptionForm form) {
         return CDI.current().select(DeleteInvoiceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -142,37 +142,37 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form) {
+    public CommandResult<?> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form) {
         return CDI.current().select(CreateInvoiceTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getInvoiceTimeTypeChoices(UserVisitPK userVisitPK, GetInvoiceTimeTypeChoicesForm form) {
+    public CommandResult<?> getInvoiceTimeTypeChoices(UserVisitPK userVisitPK, GetInvoiceTimeTypeChoicesForm form) {
         return CDI.current().select(GetInvoiceTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getInvoiceTimeType(UserVisitPK userVisitPK, GetInvoiceTimeTypeForm form) {
+    public CommandResult<?> getInvoiceTimeType(UserVisitPK userVisitPK, GetInvoiceTimeTypeForm form) {
         return CDI.current().select(GetInvoiceTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getInvoiceTimeTypes(UserVisitPK userVisitPK, GetInvoiceTimeTypesForm form) {
+    public CommandResult<?> getInvoiceTimeTypes(UserVisitPK userVisitPK, GetInvoiceTimeTypesForm form) {
         return CDI.current().select(GetInvoiceTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultInvoiceTimeType(UserVisitPK userVisitPK, SetDefaultInvoiceTimeTypeForm form) {
+    public CommandResult<?> setDefaultInvoiceTimeType(UserVisitPK userVisitPK, SetDefaultInvoiceTimeTypeForm form) {
         return CDI.current().select(SetDefaultInvoiceTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editInvoiceTimeType(UserVisitPK userVisitPK, EditInvoiceTimeTypeForm form) {
+    public CommandResult<?> editInvoiceTimeType(UserVisitPK userVisitPK, EditInvoiceTimeTypeForm form) {
         return CDI.current().select(EditInvoiceTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteInvoiceTimeType(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeForm form) {
+    public CommandResult<?> deleteInvoiceTimeType(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeForm form) {
         return CDI.current().select(DeleteInvoiceTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -181,27 +181,27 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createInvoiceTimeTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTimeTypeDescriptionForm form) {
+    public CommandResult<?> createInvoiceTimeTypeDescription(UserVisitPK userVisitPK, CreateInvoiceTimeTypeDescriptionForm form) {
         return CDI.current().select(CreateInvoiceTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getInvoiceTimeTypeDescription(UserVisitPK userVisitPK, GetInvoiceTimeTypeDescriptionForm form) {
+    public CommandResult<?> getInvoiceTimeTypeDescription(UserVisitPK userVisitPK, GetInvoiceTimeTypeDescriptionForm form) {
         return CDI.current().select(GetInvoiceTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getInvoiceTimeTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceTimeTypeDescriptionsForm form) {
+    public CommandResult<?> getInvoiceTimeTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceTimeTypeDescriptionsForm form) {
         return CDI.current().select(GetInvoiceTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editInvoiceTimeTypeDescription(UserVisitPK userVisitPK, EditInvoiceTimeTypeDescriptionForm form) {
+    public CommandResult<?> editInvoiceTimeTypeDescription(UserVisitPK userVisitPK, EditInvoiceTimeTypeDescriptionForm form) {
         return CDI.current().select(EditInvoiceTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteInvoiceTimeTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeDescriptionForm form) {
+    public CommandResult<?> deleteInvoiceTimeTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeDescriptionForm form) {
         return CDI.current().select(DeleteInvoiceTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -210,37 +210,37 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form) {
+    public CommandResult<?> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form) {
         return CDI.current().select(CreateInvoiceLineTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceLineTypeChoices(UserVisitPK userVisitPK, GetInvoiceLineTypeChoicesForm form) {
+    public CommandResult<?> getInvoiceLineTypeChoices(UserVisitPK userVisitPK, GetInvoiceLineTypeChoicesForm form) {
         return CDI.current().select(GetInvoiceLineTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceLineType(UserVisitPK userVisitPK, GetInvoiceLineTypeForm form) {
+    public CommandResult<?> getInvoiceLineType(UserVisitPK userVisitPK, GetInvoiceLineTypeForm form) {
         return CDI.current().select(GetInvoiceLineTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceLineTypes(UserVisitPK userVisitPK, GetInvoiceLineTypesForm form) {
+    public CommandResult<?> getInvoiceLineTypes(UserVisitPK userVisitPK, GetInvoiceLineTypesForm form) {
         return CDI.current().select(GetInvoiceLineTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultInvoiceLineType(UserVisitPK userVisitPK, SetDefaultInvoiceLineTypeForm form) {
+    public CommandResult<?> setDefaultInvoiceLineType(UserVisitPK userVisitPK, SetDefaultInvoiceLineTypeForm form) {
         return CDI.current().select(SetDefaultInvoiceLineTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editInvoiceLineType(UserVisitPK userVisitPK, EditInvoiceLineTypeForm form) {
+    public CommandResult<?> editInvoiceLineType(UserVisitPK userVisitPK, EditInvoiceLineTypeForm form) {
         return CDI.current().select(EditInvoiceLineTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteInvoiceLineType(UserVisitPK userVisitPK, DeleteInvoiceLineTypeForm form) {
+    public CommandResult<?> deleteInvoiceLineType(UserVisitPK userVisitPK, DeleteInvoiceLineTypeForm form) {
         return CDI.current().select(DeleteInvoiceLineTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -249,22 +249,22 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createInvoiceLineTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineTypeDescriptionForm form) {
+    public CommandResult<?> createInvoiceLineTypeDescription(UserVisitPK userVisitPK, CreateInvoiceLineTypeDescriptionForm form) {
         return CDI.current().select(CreateInvoiceLineTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getInvoiceLineTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceLineTypeDescriptionsForm form) {
+    public CommandResult<?> getInvoiceLineTypeDescriptions(UserVisitPK userVisitPK, GetInvoiceLineTypeDescriptionsForm form) {
         return CDI.current().select(GetInvoiceLineTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editInvoiceLineTypeDescription(UserVisitPK userVisitPK, EditInvoiceLineTypeDescriptionForm form) {
+    public CommandResult<?> editInvoiceLineTypeDescription(UserVisitPK userVisitPK, EditInvoiceLineTypeDescriptionForm form) {
         return CDI.current().select(EditInvoiceLineTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteInvoiceLineTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceLineTypeDescriptionForm form) {
+    public CommandResult<?> deleteInvoiceLineTypeDescription(UserVisitPK userVisitPK, DeleteInvoiceLineTypeDescriptionForm form) {
         return CDI.current().select(DeleteInvoiceLineTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

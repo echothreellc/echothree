@@ -33,130 +33,130 @@ public interface PrinterService
     //   Printer Groups
     // -------------------------------------------------------------------------
     
-    CommandResult createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form);
+    CommandResult<?> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form);
     
-    CommandResult getPrinterGroupChoices(UserVisitPK userVisitPK, GetPrinterGroupChoicesForm form);
+    CommandResult<?> getPrinterGroupChoices(UserVisitPK userVisitPK, GetPrinterGroupChoicesForm form);
 
-    CommandResult getPrinterGroup(UserVisitPK userVisitPK, GetPrinterGroupForm form);
+    CommandResult<?> getPrinterGroup(UserVisitPK userVisitPK, GetPrinterGroupForm form);
 
-    CommandResult getPrinterGroups(UserVisitPK userVisitPK, GetPrinterGroupsForm form);
+    CommandResult<?> getPrinterGroups(UserVisitPK userVisitPK, GetPrinterGroupsForm form);
     
-    CommandResult setDefaultPrinterGroup(UserVisitPK userVisitPK, SetDefaultPrinterGroupForm form);
+    CommandResult<?> setDefaultPrinterGroup(UserVisitPK userVisitPK, SetDefaultPrinterGroupForm form);
     
-    CommandResult editPrinterGroup(UserVisitPK userVisitPK, EditPrinterGroupForm form);
+    CommandResult<?> editPrinterGroup(UserVisitPK userVisitPK, EditPrinterGroupForm form);
     
-    CommandResult getPrinterGroupStatusChoices(UserVisitPK userVisitPK, GetPrinterGroupStatusChoicesForm form);
+    CommandResult<?> getPrinterGroupStatusChoices(UserVisitPK userVisitPK, GetPrinterGroupStatusChoicesForm form);
     
-    CommandResult setPrinterGroupStatus(UserVisitPK userVisitPK, SetPrinterGroupStatusForm form);
+    CommandResult<?> setPrinterGroupStatus(UserVisitPK userVisitPK, SetPrinterGroupStatusForm form);
     
-    CommandResult deletePrinterGroup(UserVisitPK userVisitPK, DeletePrinterGroupForm form);
+    CommandResult<?> deletePrinterGroup(UserVisitPK userVisitPK, DeletePrinterGroupForm form);
     
     // -------------------------------------------------------------------------
     //   Printer Group Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createPrinterGroupDescription(UserVisitPK userVisitPK, CreatePrinterGroupDescriptionForm form);
+    CommandResult<?> createPrinterGroupDescription(UserVisitPK userVisitPK, CreatePrinterGroupDescriptionForm form);
     
-    CommandResult getPrinterGroupDescription(UserVisitPK userVisitPK, GetPrinterGroupDescriptionForm form);
+    CommandResult<?> getPrinterGroupDescription(UserVisitPK userVisitPK, GetPrinterGroupDescriptionForm form);
 
-    CommandResult getPrinterGroupDescriptions(UserVisitPK userVisitPK, GetPrinterGroupDescriptionsForm form);
+    CommandResult<?> getPrinterGroupDescriptions(UserVisitPK userVisitPK, GetPrinterGroupDescriptionsForm form);
 
-    CommandResult editPrinterGroupDescription(UserVisitPK userVisitPK, EditPrinterGroupDescriptionForm form);
+    CommandResult<?> editPrinterGroupDescription(UserVisitPK userVisitPK, EditPrinterGroupDescriptionForm form);
     
-    CommandResult deletePrinterGroupDescription(UserVisitPK userVisitPK, DeletePrinterGroupDescriptionForm form);
+    CommandResult<?> deletePrinterGroupDescription(UserVisitPK userVisitPK, DeletePrinterGroupDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Printers
     // -------------------------------------------------------------------------
     
-    CommandResult createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form);
+    CommandResult<?> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form);
 
-    CommandResult getPrinter(UserVisitPK userVisitPK, GetPrinterForm form);
+    CommandResult<?> getPrinter(UserVisitPK userVisitPK, GetPrinterForm form);
 
-    CommandResult getPrinters(UserVisitPK userVisitPK, GetPrintersForm form);
+    CommandResult<?> getPrinters(UserVisitPK userVisitPK, GetPrintersForm form);
     
-    CommandResult editPrinter(UserVisitPK userVisitPK, EditPrinterForm form);
+    CommandResult<?> editPrinter(UserVisitPK userVisitPK, EditPrinterForm form);
     
-    CommandResult getPrinterStatusChoices(UserVisitPK userVisitPK, GetPrinterStatusChoicesForm form);
+    CommandResult<?> getPrinterStatusChoices(UserVisitPK userVisitPK, GetPrinterStatusChoicesForm form);
     
-    CommandResult setPrinterStatus(UserVisitPK userVisitPK, SetPrinterStatusForm form);
+    CommandResult<?> setPrinterStatus(UserVisitPK userVisitPK, SetPrinterStatusForm form);
     
-    CommandResult deletePrinter(UserVisitPK userVisitPK, DeletePrinterForm form);
+    CommandResult<?> deletePrinter(UserVisitPK userVisitPK, DeletePrinterForm form);
     
     // -------------------------------------------------------------------------
     //   Printer Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createPrinterDescription(UserVisitPK userVisitPK, CreatePrinterDescriptionForm form);
+    CommandResult<?> createPrinterDescription(UserVisitPK userVisitPK, CreatePrinterDescriptionForm form);
     
-    CommandResult getPrinterDescription(UserVisitPK userVisitPK, GetPrinterDescriptionForm form);
+    CommandResult<?> getPrinterDescription(UserVisitPK userVisitPK, GetPrinterDescriptionForm form);
 
-    CommandResult getPrinterDescriptions(UserVisitPK userVisitPK, GetPrinterDescriptionsForm form);
+    CommandResult<?> getPrinterDescriptions(UserVisitPK userVisitPK, GetPrinterDescriptionsForm form);
 
-    CommandResult editPrinterDescription(UserVisitPK userVisitPK, EditPrinterDescriptionForm form);
+    CommandResult<?> editPrinterDescription(UserVisitPK userVisitPK, EditPrinterDescriptionForm form);
     
-    CommandResult deletePrinterDescription(UserVisitPK userVisitPK, DeletePrinterDescriptionForm form);
+    CommandResult<?> deletePrinterDescription(UserVisitPK userVisitPK, DeletePrinterDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Printer Group Jobs
     // -------------------------------------------------------------------------
     
-    CommandResult createPrinterGroupJob(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form);
+    CommandResult<?> createPrinterGroupJob(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form);
 
-    CommandResult getPrinterGroupJob(UserVisitPK userVisitPK, GetPrinterGroupJobForm form);
+    CommandResult<?> getPrinterGroupJob(UserVisitPK userVisitPK, GetPrinterGroupJobForm form);
 
-    CommandResult getPrinterGroupJobs(UserVisitPK userVisitPK, GetPrinterGroupJobsForm form);
+    CommandResult<?> getPrinterGroupJobs(UserVisitPK userVisitPK, GetPrinterGroupJobsForm form);
 
-    CommandResult getPrinterGroupJobStatusChoices(UserVisitPK userVisitPK, GetPrinterGroupJobStatusChoicesForm form);
+    CommandResult<?> getPrinterGroupJobStatusChoices(UserVisitPK userVisitPK, GetPrinterGroupJobStatusChoicesForm form);
 
-    CommandResult setPrinterGroupJobStatus(UserVisitPK userVisitPK, SetPrinterGroupJobStatusForm form);
+    CommandResult<?> setPrinterGroupJobStatus(UserVisitPK userVisitPK, SetPrinterGroupJobStatusForm form);
 
-    CommandResult deletePrinterGroupJob(UserVisitPK userVisitPK, DeletePrinterGroupJobForm form);
+    CommandResult<?> deletePrinterGroupJob(UserVisitPK userVisitPK, DeletePrinterGroupJobForm form);
     
     // -------------------------------------------------------------------------
     //   Printer Group Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form);
+    CommandResult<?> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form);
 
-    CommandResult getPrinterGroupUseTypeChoices(UserVisitPK userVisitPK, GetPrinterGroupUseTypeChoicesForm form);
+    CommandResult<?> getPrinterGroupUseTypeChoices(UserVisitPK userVisitPK, GetPrinterGroupUseTypeChoicesForm form);
 
-    CommandResult getPrinterGroupUseType(UserVisitPK userVisitPK, GetPrinterGroupUseTypeForm form);
+    CommandResult<?> getPrinterGroupUseType(UserVisitPK userVisitPK, GetPrinterGroupUseTypeForm form);
 
-    CommandResult getPrinterGroupUseTypes(UserVisitPK userVisitPK, GetPrinterGroupUseTypesForm form);
+    CommandResult<?> getPrinterGroupUseTypes(UserVisitPK userVisitPK, GetPrinterGroupUseTypesForm form);
 
-    CommandResult setDefaultPrinterGroupUseType(UserVisitPK userVisitPK, SetDefaultPrinterGroupUseTypeForm form);
+    CommandResult<?> setDefaultPrinterGroupUseType(UserVisitPK userVisitPK, SetDefaultPrinterGroupUseTypeForm form);
 
-    CommandResult editPrinterGroupUseType(UserVisitPK userVisitPK, EditPrinterGroupUseTypeForm form);
+    CommandResult<?> editPrinterGroupUseType(UserVisitPK userVisitPK, EditPrinterGroupUseTypeForm form);
 
-    CommandResult deletePrinterGroupUseType(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeForm form);
+    CommandResult<?> deletePrinterGroupUseType(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Printer Group Use Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeDescriptionForm form);
+    CommandResult<?> createPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeDescriptionForm form);
 
-    CommandResult getPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, GetPrinterGroupUseTypeDescriptionForm form);
+    CommandResult<?> getPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, GetPrinterGroupUseTypeDescriptionForm form);
 
-    CommandResult getPrinterGroupUseTypeDescriptions(UserVisitPK userVisitPK, GetPrinterGroupUseTypeDescriptionsForm form);
+    CommandResult<?> getPrinterGroupUseTypeDescriptions(UserVisitPK userVisitPK, GetPrinterGroupUseTypeDescriptionsForm form);
 
-    CommandResult editPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, EditPrinterGroupUseTypeDescriptionForm form);
+    CommandResult<?> editPrinterGroupUseTypeDescription(UserVisitPK userVisitPK, EditPrinterGroupUseTypeDescriptionForm form);
 
-    CommandResult deletePrinterGroupUseTypeDescription(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeDescriptionForm form);
+    CommandResult<?> deletePrinterGroupUseTypeDescription(UserVisitPK userVisitPK, DeletePrinterGroupUseTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Party Printer Group Uses
     // -------------------------------------------------------------------------
 
-    CommandResult createPartyPrinterGroupUse(UserVisitPK userVisitPK, CreatePartyPrinterGroupUseForm form);
+    CommandResult<?> createPartyPrinterGroupUse(UserVisitPK userVisitPK, CreatePartyPrinterGroupUseForm form);
 
-    CommandResult getPartyPrinterGroupUse(UserVisitPK userVisitPK, GetPartyPrinterGroupUseForm form);
+    CommandResult<?> getPartyPrinterGroupUse(UserVisitPK userVisitPK, GetPartyPrinterGroupUseForm form);
 
-    CommandResult getPartyPrinterGroupUses(UserVisitPK userVisitPK, GetPartyPrinterGroupUsesForm form);
+    CommandResult<?> getPartyPrinterGroupUses(UserVisitPK userVisitPK, GetPartyPrinterGroupUsesForm form);
 
-    CommandResult editPartyPrinterGroupUse(UserVisitPK userVisitPK, EditPartyPrinterGroupUseForm form);
+    CommandResult<?> editPartyPrinterGroupUse(UserVisitPK userVisitPK, EditPartyPrinterGroupUseForm form);
 
-    CommandResult deletePartyPrinterGroupUse(UserVisitPK userVisitPK, DeletePartyPrinterGroupUseForm form);
+    CommandResult<?> deletePartyPrinterGroupUse(UserVisitPK userVisitPK, DeletePartyPrinterGroupUseForm form);
 
 }

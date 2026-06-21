@@ -33,72 +33,72 @@ public interface TagService
     //   Tag Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form);
+    CommandResult<?> createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form);
     
-    CommandResult getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form);
+    CommandResult<?> getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form);
     
-    CommandResult getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form);
+    CommandResult<?> getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form);
     
-    CommandResult getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form);
+    CommandResult<?> getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form);
     
-    CommandResult setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form);
+    CommandResult<?> setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form);
     
-    CommandResult editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form);
+    CommandResult<?> editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form);
     
-    CommandResult deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form);
+    CommandResult<?> deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form);
     
     // -------------------------------------------------------------------------
     //   Tag Scope Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form);
+    CommandResult<?> createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form);
     
-    CommandResult getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form);
+    CommandResult<?> getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form);
     
-    CommandResult getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form);
+    CommandResult<?> getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form);
     
-    CommandResult editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form);
+    CommandResult<?> editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form);
     
-    CommandResult deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form);
+    CommandResult<?> deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Tag Scope Entity Types
     // -------------------------------------------------------------------------
     
-    CommandResult createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form);
+    CommandResult<?> createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form);
     
-    CommandResult getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form);
+    CommandResult<?> getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form);
     
-    CommandResult getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form);
+    CommandResult<?> getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form);
     
-    CommandResult deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form);
+    CommandResult<?> deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Tags
     // -------------------------------------------------------------------------
     
-    CommandResult createTag(UserVisitPK userVisitPK, CreateTagForm form);
+    CommandResult<?> createTag(UserVisitPK userVisitPK, CreateTagForm form);
     
-    CommandResult getTag(UserVisitPK userVisitPK, GetTagForm form);
+    CommandResult<?> getTag(UserVisitPK userVisitPK, GetTagForm form);
     
-    CommandResult getTags(UserVisitPK userVisitPK, GetTagsForm form);
+    CommandResult<?> getTags(UserVisitPK userVisitPK, GetTagsForm form);
     
-    CommandResult getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form);
+    CommandResult<?> getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form);
     
-    CommandResult editTag(UserVisitPK userVisitPK, EditTagForm form);
+    CommandResult<?> editTag(UserVisitPK userVisitPK, EditTagForm form);
     
-    CommandResult deleteTag(UserVisitPK userVisitPK, DeleteTagForm form);
+    CommandResult<?> deleteTag(UserVisitPK userVisitPK, DeleteTagForm form);
     
     // -------------------------------------------------------------------------
     //   Entity Tags
     // -------------------------------------------------------------------------
     
-    CommandResult createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form);
+    CommandResult<?> createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form);
     
-    CommandResult getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form);
+    CommandResult<?> getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form);
     
-    CommandResult getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form);
+    CommandResult<?> getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form);
     
-    CommandResult deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form);
+    CommandResult<?> deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form);
     
 }

@@ -33,34 +33,34 @@ public interface JobService
     //   Jobs
     // --------------------------------------------------------------------------------
     
-    CommandResult createJob(UserVisitPK userVisitPK, CreateJobForm form);
+    CommandResult<?> createJob(UserVisitPK userVisitPK, CreateJobForm form);
     
-    CommandResult getJob(UserVisitPK userVisitPK, GetJobForm form);
+    CommandResult<?> getJob(UserVisitPK userVisitPK, GetJobForm form);
     
-    CommandResult getJobs(UserVisitPK userVisitPK, GetJobsForm form);
+    CommandResult<?> getJobs(UserVisitPK userVisitPK, GetJobsForm form);
     
-    CommandResult getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form);
+    CommandResult<?> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form);
     
-    CommandResult setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form);
+    CommandResult<?> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form);
     
-    CommandResult editJob(UserVisitPK userVisitPK, EditJobForm form);
+    CommandResult<?> editJob(UserVisitPK userVisitPK, EditJobForm form);
     
-    CommandResult deleteJob(UserVisitPK userVisitPK, DeleteJobForm form);
+    CommandResult<?> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form);
     
-    CommandResult startJob(UserVisitPK userVisitPK, StartJobForm form);
+    CommandResult<?> startJob(UserVisitPK userVisitPK, StartJobForm form);
     
-    CommandResult endJob(UserVisitPK userVisitPK, EndJobForm form);
+    CommandResult<?> endJob(UserVisitPK userVisitPK, EndJobForm form);
     
     // --------------------------------------------------------------------------------
     //   Job Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form);
+    CommandResult<?> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form);
     
-    CommandResult getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form);
+    CommandResult<?> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form);
     
-    CommandResult editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form);
+    CommandResult<?> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form);
     
-    CommandResult deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form);
+    CommandResult<?> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form);
     
 }

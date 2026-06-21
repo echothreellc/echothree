@@ -33,84 +33,84 @@ public interface TaxService
     //   Tax Classifications
     // -------------------------------------------------------------------------
 
-    CommandResult createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form);
+    CommandResult<?> createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form);
 
-    CommandResult getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form);
+    CommandResult<?> getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form);
 
-    CommandResult getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form);
+    CommandResult<?> getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form);
 
-    CommandResult getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form);
+    CommandResult<?> getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form);
 
-    CommandResult setDefaultTaxClassification(UserVisitPK userVisitPK, SetDefaultTaxClassificationForm form);
+    CommandResult<?> setDefaultTaxClassification(UserVisitPK userVisitPK, SetDefaultTaxClassificationForm form);
 
-    CommandResult editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form);
+    CommandResult<?> editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form);
 
-    CommandResult deleteTaxClassification(UserVisitPK userVisitPK, DeleteTaxClassificationForm form);
+    CommandResult<?> deleteTaxClassification(UserVisitPK userVisitPK, DeleteTaxClassificationForm form);
 
     // -------------------------------------------------------------------------
     //   Tax Classification Translations
     // -------------------------------------------------------------------------
 
-    CommandResult createTaxClassificationTranslation(UserVisitPK userVisitPK, CreateTaxClassificationTranslationForm form);
+    CommandResult<?> createTaxClassificationTranslation(UserVisitPK userVisitPK, CreateTaxClassificationTranslationForm form);
 
-    CommandResult getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form);
+    CommandResult<?> getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form);
 
-    CommandResult getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form);
+    CommandResult<?> getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form);
 
-    CommandResult editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form);
+    CommandResult<?> editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form);
 
-    CommandResult deleteTaxClassificationTranslation(UserVisitPK userVisitPK, DeleteTaxClassificationTranslationForm form);
+    CommandResult<?> deleteTaxClassificationTranslation(UserVisitPK userVisitPK, DeleteTaxClassificationTranslationForm form);
     
     // -------------------------------------------------------------------------
     //   Item Tax Classifications
     // -------------------------------------------------------------------------
 
-    CommandResult createItemTaxClassification(UserVisitPK userVisitPK, CreateItemTaxClassificationForm form);
+    CommandResult<?> createItemTaxClassification(UserVisitPK userVisitPK, CreateItemTaxClassificationForm form);
 
-    CommandResult getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form);
+    CommandResult<?> getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form);
 
-    CommandResult getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form);
+    CommandResult<?> getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form);
 
-    CommandResult editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form);
+    CommandResult<?> editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form);
 
-    CommandResult deleteItemTaxClassification(UserVisitPK userVisitPK, DeleteItemTaxClassificationForm form);
+    CommandResult<?> deleteItemTaxClassification(UserVisitPK userVisitPK, DeleteItemTaxClassificationForm form);
 
     // -------------------------------------------------------------------------
     //   Taxes
     // -------------------------------------------------------------------------
     
-    CommandResult createTax(UserVisitPK userVisitPK, CreateTaxForm form);
+    CommandResult<?> createTax(UserVisitPK userVisitPK, CreateTaxForm form);
     
-    CommandResult getTaxes(UserVisitPK userVisitPK, GetTaxesForm form);
+    CommandResult<?> getTaxes(UserVisitPK userVisitPK, GetTaxesForm form);
     
-    CommandResult getTax(UserVisitPK userVisitPK, GetTaxForm form);
+    CommandResult<?> getTax(UserVisitPK userVisitPK, GetTaxForm form);
     
-    CommandResult setDefaultTax(UserVisitPK userVisitPK, SetDefaultTaxForm form);
+    CommandResult<?> setDefaultTax(UserVisitPK userVisitPK, SetDefaultTaxForm form);
     
-    CommandResult editTax(UserVisitPK userVisitPK, EditTaxForm form);
+    CommandResult<?> editTax(UserVisitPK userVisitPK, EditTaxForm form);
     
-    CommandResult deleteTax(UserVisitPK userVisitPK, DeleteTaxForm form);
+    CommandResult<?> deleteTax(UserVisitPK userVisitPK, DeleteTaxForm form);
     
     // --------------------------------------------------------------------------------
     //   Tax Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createTaxDescription(UserVisitPK userVisitPK, CreateTaxDescriptionForm form);
+    CommandResult<?> createTaxDescription(UserVisitPK userVisitPK, CreateTaxDescriptionForm form);
     
-    CommandResult getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form);
+    CommandResult<?> getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form);
     
-    CommandResult editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form);
+    CommandResult<?> editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form);
     
-    CommandResult deleteTaxDescription(UserVisitPK userVisitPK, DeleteTaxDescriptionForm form);
+    CommandResult<?> deleteTaxDescription(UserVisitPK userVisitPK, DeleteTaxDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Geo Code Taxes
     // -------------------------------------------------------------------------
     
-    CommandResult createGeoCodeTax(UserVisitPK userVisitPK, CreateGeoCodeTaxForm form);
+    CommandResult<?> createGeoCodeTax(UserVisitPK userVisitPK, CreateGeoCodeTaxForm form);
     
-    CommandResult getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form);
+    CommandResult<?> getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form);
     
-    CommandResult deleteGeoCodeTax(UserVisitPK userVisitPK, DeleteGeoCodeTaxForm form);
+    CommandResult<?> deleteGeoCodeTax(UserVisitPK userVisitPK, DeleteGeoCodeTaxForm form);
     
 }

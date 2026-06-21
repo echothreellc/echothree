@@ -33,90 +33,90 @@ public interface BatchService
     //   Batch Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form);
+    CommandResult<?> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form);
     
-    CommandResult getBatchTypeChoices(UserVisitPK userVisitPK, GetBatchTypeChoicesForm form);
+    CommandResult<?> getBatchTypeChoices(UserVisitPK userVisitPK, GetBatchTypeChoicesForm form);
     
-    CommandResult getBatchType(UserVisitPK userVisitPK, GetBatchTypeForm form);
+    CommandResult<?> getBatchType(UserVisitPK userVisitPK, GetBatchTypeForm form);
     
-    CommandResult getBatchTypes(UserVisitPK userVisitPK, GetBatchTypesForm form);
+    CommandResult<?> getBatchTypes(UserVisitPK userVisitPK, GetBatchTypesForm form);
     
-    CommandResult setDefaultBatchType(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form);
+    CommandResult<?> setDefaultBatchType(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form);
     
-    CommandResult editBatchType(UserVisitPK userVisitPK, EditBatchTypeForm form);
+    CommandResult<?> editBatchType(UserVisitPK userVisitPK, EditBatchTypeForm form);
     
-    CommandResult deleteBatchType(UserVisitPK userVisitPK, DeleteBatchTypeForm form);
+    CommandResult<?> deleteBatchType(UserVisitPK userVisitPK, DeleteBatchTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Batch Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createBatchTypeDescription(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form);
+    CommandResult<?> createBatchTypeDescription(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form);
 
-    CommandResult getBatchTypeDescription(UserVisitPK userVisitPK, GetBatchTypeDescriptionForm form);
+    CommandResult<?> getBatchTypeDescription(UserVisitPK userVisitPK, GetBatchTypeDescriptionForm form);
 
-    CommandResult getBatchTypeDescriptions(UserVisitPK userVisitPK, GetBatchTypeDescriptionsForm form);
+    CommandResult<?> getBatchTypeDescriptions(UserVisitPK userVisitPK, GetBatchTypeDescriptionsForm form);
 
-    CommandResult editBatchTypeDescription(UserVisitPK userVisitPK, EditBatchTypeDescriptionForm form);
+    CommandResult<?> editBatchTypeDescription(UserVisitPK userVisitPK, EditBatchTypeDescriptionForm form);
 
-    CommandResult deleteBatchTypeDescription(UserVisitPK userVisitPK, DeleteBatchTypeDescriptionForm form);
+    CommandResult<?> deleteBatchTypeDescription(UserVisitPK userVisitPK, DeleteBatchTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Type Entity Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createBatchTypeEntityType(UserVisitPK userVisitPK, CreateBatchTypeEntityTypeForm form);
+    CommandResult<?> createBatchTypeEntityType(UserVisitPK userVisitPK, CreateBatchTypeEntityTypeForm form);
 
-    CommandResult getBatchTypeEntityType(UserVisitPK userVisitPK, GetBatchTypeEntityTypeForm form);
+    CommandResult<?> getBatchTypeEntityType(UserVisitPK userVisitPK, GetBatchTypeEntityTypeForm form);
 
-    CommandResult getBatchTypeEntityTypes(UserVisitPK userVisitPK, GetBatchTypeEntityTypesForm form);
+    CommandResult<?> getBatchTypeEntityTypes(UserVisitPK userVisitPK, GetBatchTypeEntityTypesForm form);
 
-    CommandResult deleteBatchTypeEntityType(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form);
+    CommandResult<?> deleteBatchTypeEntityType(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form);
+    CommandResult<?> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form);
 
-    CommandResult getBatchAliasTypeChoices(UserVisitPK userVisitPK, GetBatchAliasTypeChoicesForm form);
+    CommandResult<?> getBatchAliasTypeChoices(UserVisitPK userVisitPK, GetBatchAliasTypeChoicesForm form);
 
-    CommandResult getBatchAliasType(UserVisitPK userVisitPK, GetBatchAliasTypeForm form);
+    CommandResult<?> getBatchAliasType(UserVisitPK userVisitPK, GetBatchAliasTypeForm form);
 
-    CommandResult getBatchAliasTypes(UserVisitPK userVisitPK, GetBatchAliasTypesForm form);
+    CommandResult<?> getBatchAliasTypes(UserVisitPK userVisitPK, GetBatchAliasTypesForm form);
 
-    CommandResult setDefaultBatchAliasType(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form);
+    CommandResult<?> setDefaultBatchAliasType(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form);
 
-    CommandResult editBatchAliasType(UserVisitPK userVisitPK, EditBatchAliasTypeForm form);
+    CommandResult<?> editBatchAliasType(UserVisitPK userVisitPK, EditBatchAliasTypeForm form);
 
-    CommandResult deleteBatchAliasType(UserVisitPK userVisitPK, DeleteBatchAliasTypeForm form);
+    CommandResult<?> deleteBatchAliasType(UserVisitPK userVisitPK, DeleteBatchAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createBatchAliasTypeDescription(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form);
+    CommandResult<?> createBatchAliasTypeDescription(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form);
 
-    CommandResult getBatchAliasTypeDescription(UserVisitPK userVisitPK, GetBatchAliasTypeDescriptionForm form);
+    CommandResult<?> getBatchAliasTypeDescription(UserVisitPK userVisitPK, GetBatchAliasTypeDescriptionForm form);
 
-    CommandResult getBatchAliasTypeDescriptions(UserVisitPK userVisitPK, GetBatchAliasTypeDescriptionsForm form);
+    CommandResult<?> getBatchAliasTypeDescriptions(UserVisitPK userVisitPK, GetBatchAliasTypeDescriptionsForm form);
 
-    CommandResult editBatchAliasTypeDescription(UserVisitPK userVisitPK, EditBatchAliasTypeDescriptionForm form);
+    CommandResult<?> editBatchAliasTypeDescription(UserVisitPK userVisitPK, EditBatchAliasTypeDescriptionForm form);
 
-    CommandResult deleteBatchAliasTypeDescription(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form);
+    CommandResult<?> deleteBatchAliasTypeDescription(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Batch Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult createBatchAlias(UserVisitPK userVisitPK, CreateBatchAliasForm form);
+    CommandResult<?> createBatchAlias(UserVisitPK userVisitPK, CreateBatchAliasForm form);
 
-    CommandResult getBatchAlias(UserVisitPK userVisitPK, GetBatchAliasForm form);
+    CommandResult<?> getBatchAlias(UserVisitPK userVisitPK, GetBatchAliasForm form);
 
-    CommandResult getBatchAliases(UserVisitPK userVisitPK, GetBatchAliasesForm form);
+    CommandResult<?> getBatchAliases(UserVisitPK userVisitPK, GetBatchAliasesForm form);
 
-    CommandResult editBatchAlias(UserVisitPK userVisitPK, EditBatchAliasForm form);
+    CommandResult<?> editBatchAlias(UserVisitPK userVisitPK, EditBatchAliasForm form);
 
-    CommandResult deleteBatchAlias(UserVisitPK userVisitPK, DeleteBatchAliasForm form);
+    CommandResult<?> deleteBatchAlias(UserVisitPK userVisitPK, DeleteBatchAliasForm form);
 
 }

@@ -33,74 +33,74 @@ public interface SalesService
     //   Sales Order Batches
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form);
+    CommandResult<?> createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form);
     
-    CommandResult getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form);
+    CommandResult<?> getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form);
 
-    CommandResult getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form);
+    CommandResult<?> getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form);
     
-    CommandResult getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form);
+    CommandResult<?> getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form);
     
-    CommandResult setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form);
+    CommandResult<?> setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form);
     
-    CommandResult editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form);
+    CommandResult<?> editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form);
 
-    CommandResult deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form);
+    CommandResult<?> deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Orders
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form);
+    CommandResult<?> createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form);
     
-    CommandResult getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form);
+    CommandResult<?> getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form);
     
-    CommandResult setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form);
+    CommandResult<?> setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Payment Preferences
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form);
+    CommandResult<?> createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Times
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form);
+    CommandResult<?> createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form);
     
-    CommandResult getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form);
+    CommandResult<?> getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form);
 
-    CommandResult getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form);
+    CommandResult<?> getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form);
     
-    CommandResult editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form);
+    CommandResult<?> editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form);
 
-    CommandResult deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
+    CommandResult<?> deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Shipment Groups
     // -------------------------------------------------------------------------
 
-    public CommandResult editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form);
+    public CommandResult<?> editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Lines
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form);
+    CommandResult<?> createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Line Times
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form);
+    CommandResult<?> createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form);
     
-    CommandResult getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form);
+    CommandResult<?> getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form);
 
-    CommandResult getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form);
+    CommandResult<?> getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form);
     
-    CommandResult editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form);
+    CommandResult<?> editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form);
 
-    CommandResult deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form);
+    CommandResult<?> deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form);
 
 }

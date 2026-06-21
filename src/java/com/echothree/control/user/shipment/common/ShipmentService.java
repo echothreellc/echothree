@@ -33,154 +33,154 @@ public interface ShipmentService
     //   Free On Boards
     // -------------------------------------------------------------------------
 
-    CommandResult createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form);
+    CommandResult<?> createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form);
 
-    CommandResult getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form);
+    CommandResult<?> getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form);
 
-    CommandResult getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form);
+    CommandResult<?> getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form);
 
-    CommandResult getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form);
+    CommandResult<?> getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form);
 
-    CommandResult setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form);
+    CommandResult<?> setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form);
 
-    CommandResult editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form);
+    CommandResult<?> editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form);
 
-    CommandResult deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form);
+    CommandResult<?> deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form);
 
     // -------------------------------------------------------------------------
     //   Free On Board Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form);
+    CommandResult<?> createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form);
 
-    CommandResult getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form);
+    CommandResult<?> getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form);
 
-    CommandResult editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form);
+    CommandResult<?> editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form);
 
-    CommandResult deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form);
+    CommandResult<?> deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form);
+    CommandResult<?> createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form);
 
-    CommandResult getShipmentTypeChoices(UserVisitPK userVisitPK, GetShipmentTypeChoicesForm form);
+    CommandResult<?> getShipmentTypeChoices(UserVisitPK userVisitPK, GetShipmentTypeChoicesForm form);
 
-    CommandResult getShipmentType(UserVisitPK userVisitPK, GetShipmentTypeForm form);
+    CommandResult<?> getShipmentType(UserVisitPK userVisitPK, GetShipmentTypeForm form);
 
-    CommandResult getShipmentTypes(UserVisitPK userVisitPK, GetShipmentTypesForm form);
+    CommandResult<?> getShipmentTypes(UserVisitPK userVisitPK, GetShipmentTypesForm form);
 
-    CommandResult setDefaultShipmentType(UserVisitPK userVisitPK, SetDefaultShipmentTypeForm form);
+    CommandResult<?> setDefaultShipmentType(UserVisitPK userVisitPK, SetDefaultShipmentTypeForm form);
 
-    CommandResult editShipmentType(UserVisitPK userVisitPK, EditShipmentTypeForm form);
+    CommandResult<?> editShipmentType(UserVisitPK userVisitPK, EditShipmentTypeForm form);
 
-    CommandResult deleteShipmentType(UserVisitPK userVisitPK, DeleteShipmentTypeForm form);
+    CommandResult<?> deleteShipmentType(UserVisitPK userVisitPK, DeleteShipmentTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentTypeDescription(UserVisitPK userVisitPK, CreateShipmentTypeDescriptionForm form);
+    CommandResult<?> createShipmentTypeDescription(UserVisitPK userVisitPK, CreateShipmentTypeDescriptionForm form);
 
-    CommandResult getShipmentTypeDescription(UserVisitPK userVisitPK, GetShipmentTypeDescriptionForm form);
+    CommandResult<?> getShipmentTypeDescription(UserVisitPK userVisitPK, GetShipmentTypeDescriptionForm form);
 
-    CommandResult getShipmentTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTypeDescriptionsForm form);
+    CommandResult<?> getShipmentTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTypeDescriptionsForm form);
 
-    CommandResult editShipmentTypeDescription(UserVisitPK userVisitPK, EditShipmentTypeDescriptionForm form);
+    CommandResult<?> editShipmentTypeDescription(UserVisitPK userVisitPK, EditShipmentTypeDescriptionForm form);
 
-    CommandResult deleteShipmentTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTypeDescriptionForm form);
+    CommandResult<?> deleteShipmentTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form);
+    CommandResult<?> createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form);
 
-    CommandResult getShipmentTimeTypeChoices(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form);
+    CommandResult<?> getShipmentTimeTypeChoices(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form);
 
-    CommandResult getShipmentTimeType(UserVisitPK userVisitPK, GetShipmentTimeTypeForm form);
+    CommandResult<?> getShipmentTimeType(UserVisitPK userVisitPK, GetShipmentTimeTypeForm form);
 
-    CommandResult getShipmentTimeTypes(UserVisitPK userVisitPK, GetShipmentTimeTypesForm form);
+    CommandResult<?> getShipmentTimeTypes(UserVisitPK userVisitPK, GetShipmentTimeTypesForm form);
 
-    CommandResult setDefaultShipmentTimeType(UserVisitPK userVisitPK, SetDefaultShipmentTimeTypeForm form);
+    CommandResult<?> setDefaultShipmentTimeType(UserVisitPK userVisitPK, SetDefaultShipmentTimeTypeForm form);
 
-    CommandResult editShipmentTimeType(UserVisitPK userVisitPK, EditShipmentTimeTypeForm form);
+    CommandResult<?> editShipmentTimeType(UserVisitPK userVisitPK, EditShipmentTimeTypeForm form);
 
-    CommandResult deleteShipmentTimeType(UserVisitPK userVisitPK, DeleteShipmentTimeTypeForm form);
+    CommandResult<?> deleteShipmentTimeType(UserVisitPK userVisitPK, DeleteShipmentTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentTimeTypeDescription(UserVisitPK userVisitPK, CreateShipmentTimeTypeDescriptionForm form);
+    CommandResult<?> createShipmentTimeTypeDescription(UserVisitPK userVisitPK, CreateShipmentTimeTypeDescriptionForm form);
 
-    CommandResult getShipmentTimeTypeDescription(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionForm form);
+    CommandResult<?> getShipmentTimeTypeDescription(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionForm form);
 
-    CommandResult getShipmentTimeTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionsForm form);
+    CommandResult<?> getShipmentTimeTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionsForm form);
 
-    CommandResult editShipmentTimeTypeDescription(UserVisitPK userVisitPK, EditShipmentTimeTypeDescriptionForm form);
+    CommandResult<?> editShipmentTimeTypeDescription(UserVisitPK userVisitPK, EditShipmentTimeTypeDescriptionForm form);
 
-    CommandResult deleteShipmentTimeTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTimeTypeDescriptionForm form);
+    CommandResult<?> deleteShipmentTimeTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTimeTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Shipment Type Shipping Methods
     // -------------------------------------------------------------------------
 
-    CommandResult createShipmentTypeShippingMethod(UserVisitPK userVisitPK, CreateShipmentTypeShippingMethodForm form);
+    CommandResult<?> createShipmentTypeShippingMethod(UserVisitPK userVisitPK, CreateShipmentTypeShippingMethodForm form);
 
-    CommandResult getShipmentTypeShippingMethods(UserVisitPK userVisitPK, GetShipmentTypeShippingMethodsForm form);
+    CommandResult<?> getShipmentTypeShippingMethods(UserVisitPK userVisitPK, GetShipmentTypeShippingMethodsForm form);
 
-    CommandResult setDefaultShipmentTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultShipmentTypeShippingMethodForm form);
+    CommandResult<?> setDefaultShipmentTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultShipmentTypeShippingMethodForm form);
 
-    CommandResult editShipmentTypeShippingMethod(UserVisitPK userVisitPK, EditShipmentTypeShippingMethodForm form);
+    CommandResult<?> editShipmentTypeShippingMethod(UserVisitPK userVisitPK, EditShipmentTypeShippingMethodForm form);
 
-    CommandResult deleteShipmentTypeShippingMethod(UserVisitPK userVisitPK, DeleteShipmentTypeShippingMethodForm form);
+    CommandResult<?> deleteShipmentTypeShippingMethod(UserVisitPK userVisitPK, DeleteShipmentTypeShippingMethodForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form);
+    CommandResult<?> createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form);
 
-    CommandResult getShipmentAliasTypeChoices(UserVisitPK userVisitPK, GetShipmentAliasTypeChoicesForm form);
+    CommandResult<?> getShipmentAliasTypeChoices(UserVisitPK userVisitPK, GetShipmentAliasTypeChoicesForm form);
 
-    CommandResult getShipmentAliasType(UserVisitPK userVisitPK, GetShipmentAliasTypeForm form);
+    CommandResult<?> getShipmentAliasType(UserVisitPK userVisitPK, GetShipmentAliasTypeForm form);
 
-    CommandResult getShipmentAliasTypes(UserVisitPK userVisitPK, GetShipmentAliasTypesForm form);
+    CommandResult<?> getShipmentAliasTypes(UserVisitPK userVisitPK, GetShipmentAliasTypesForm form);
 
-    CommandResult setDefaultShipmentAliasType(UserVisitPK userVisitPK, SetDefaultShipmentAliasTypeForm form);
+    CommandResult<?> setDefaultShipmentAliasType(UserVisitPK userVisitPK, SetDefaultShipmentAliasTypeForm form);
 
-    CommandResult editShipmentAliasType(UserVisitPK userVisitPK, EditShipmentAliasTypeForm form);
+    CommandResult<?> editShipmentAliasType(UserVisitPK userVisitPK, EditShipmentAliasTypeForm form);
 
-    CommandResult deleteShipmentAliasType(UserVisitPK userVisitPK, DeleteShipmentAliasTypeForm form);
+    CommandResult<?> deleteShipmentAliasType(UserVisitPK userVisitPK, DeleteShipmentAliasTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentAliasTypeDescription(UserVisitPK userVisitPK, CreateShipmentAliasTypeDescriptionForm form);
+    CommandResult<?> createShipmentAliasTypeDescription(UserVisitPK userVisitPK, CreateShipmentAliasTypeDescriptionForm form);
 
-    CommandResult getShipmentAliasTypeDescription(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionForm form);
+    CommandResult<?> getShipmentAliasTypeDescription(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionForm form);
 
-    CommandResult getShipmentAliasTypeDescriptions(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionsForm form);
+    CommandResult<?> getShipmentAliasTypeDescriptions(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionsForm form);
 
-    CommandResult editShipmentAliasTypeDescription(UserVisitPK userVisitPK, EditShipmentAliasTypeDescriptionForm form);
+    CommandResult<?> editShipmentAliasTypeDescription(UserVisitPK userVisitPK, EditShipmentAliasTypeDescriptionForm form);
 
-    CommandResult deleteShipmentAliasTypeDescription(UserVisitPK userVisitPK, DeleteShipmentAliasTypeDescriptionForm form);
+    CommandResult<?> deleteShipmentAliasTypeDescription(UserVisitPK userVisitPK, DeleteShipmentAliasTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Shipment Aliases
     // --------------------------------------------------------------------------------
 
-    CommandResult createShipmentAlias(UserVisitPK userVisitPK, CreateShipmentAliasForm form);
+    CommandResult<?> createShipmentAlias(UserVisitPK userVisitPK, CreateShipmentAliasForm form);
 
-    CommandResult getShipmentAlias(UserVisitPK userVisitPK, GetShipmentAliasForm form);
+    CommandResult<?> getShipmentAlias(UserVisitPK userVisitPK, GetShipmentAliasForm form);
 
-    CommandResult getShipmentAliases(UserVisitPK userVisitPK, GetShipmentAliasesForm form);
+    CommandResult<?> getShipmentAliases(UserVisitPK userVisitPK, GetShipmentAliasesForm form);
 
-    CommandResult editShipmentAlias(UserVisitPK userVisitPK, EditShipmentAliasForm form);
+    CommandResult<?> editShipmentAlias(UserVisitPK userVisitPK, EditShipmentAliasForm form);
 
-    CommandResult deleteShipmentAlias(UserVisitPK userVisitPK, DeleteShipmentAliasForm form);
+    CommandResult<?> deleteShipmentAlias(UserVisitPK userVisitPK, DeleteShipmentAliasForm form);
 
 }

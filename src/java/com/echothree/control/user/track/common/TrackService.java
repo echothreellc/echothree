@@ -33,42 +33,42 @@ public interface TrackService
     //   Tracks
     // --------------------------------------------------------------------------------
     
-    CommandResult createTrack(UserVisitPK userVisitPK, CreateTrackForm form);
+    CommandResult<?> createTrack(UserVisitPK userVisitPK, CreateTrackForm form);
     
-    CommandResult getTrackChoices(UserVisitPK userVisitPK, GetTrackChoicesForm form);
+    CommandResult<?> getTrackChoices(UserVisitPK userVisitPK, GetTrackChoicesForm form);
     
-    CommandResult getTrack(UserVisitPK userVisitPK, GetTrackForm form);
+    CommandResult<?> getTrack(UserVisitPK userVisitPK, GetTrackForm form);
     
-    CommandResult getTracks(UserVisitPK userVisitPK, GetTracksForm form);
+    CommandResult<?> getTracks(UserVisitPK userVisitPK, GetTracksForm form);
     
-    CommandResult setDefaultTrack(UserVisitPK userVisitPK, SetDefaultTrackForm form);
+    CommandResult<?> setDefaultTrack(UserVisitPK userVisitPK, SetDefaultTrackForm form);
     
-    CommandResult getTrackStatusChoices(UserVisitPK userVisitPK, GetTrackStatusChoicesForm form);
+    CommandResult<?> getTrackStatusChoices(UserVisitPK userVisitPK, GetTrackStatusChoicesForm form);
     
-    CommandResult setTrackStatus(UserVisitPK userVisitPK, SetTrackStatusForm form);
+    CommandResult<?> setTrackStatus(UserVisitPK userVisitPK, SetTrackStatusForm form);
     
-    CommandResult editTrack(UserVisitPK userVisitPK, EditTrackForm form);
+    CommandResult<?> editTrack(UserVisitPK userVisitPK, EditTrackForm form);
     
-    CommandResult deleteTrack(UserVisitPK userVisitPK, DeleteTrackForm form);
+    CommandResult<?> deleteTrack(UserVisitPK userVisitPK, DeleteTrackForm form);
     
     // --------------------------------------------------------------------------------
     //   Track Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createTrackDescription(UserVisitPK userVisitPK, CreateTrackDescriptionForm form);
+    CommandResult<?> createTrackDescription(UserVisitPK userVisitPK, CreateTrackDescriptionForm form);
     
-    CommandResult getTrackDescription(UserVisitPK userVisitPK, GetTrackDescriptionForm form);
+    CommandResult<?> getTrackDescription(UserVisitPK userVisitPK, GetTrackDescriptionForm form);
     
-    CommandResult getTrackDescriptions(UserVisitPK userVisitPK, GetTrackDescriptionsForm form);
+    CommandResult<?> getTrackDescriptions(UserVisitPK userVisitPK, GetTrackDescriptionsForm form);
     
-    CommandResult editTrackDescription(UserVisitPK userVisitPK, EditTrackDescriptionForm form);
+    CommandResult<?> editTrackDescription(UserVisitPK userVisitPK, EditTrackDescriptionForm form);
     
-    CommandResult deleteTrackDescription(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form);
+    CommandResult<?> deleteTrackDescription(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   User Visit Tracks
     // --------------------------------------------------------------------------------
     
-    CommandResult createUserVisitTrack(UserVisitPK userVisitPK, CreateUserVisitTrackForm form);
+    CommandResult<?> createUserVisitTrack(UserVisitPK userVisitPK, CreateUserVisitTrackForm form);
     
 }

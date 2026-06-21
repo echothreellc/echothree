@@ -33,70 +33,70 @@ public interface AssociateService
     //   Associate Programs
     // -------------------------------------------------------------------------
     
-    CommandResult createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form);
+    CommandResult<?> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form);
     
-    CommandResult getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form);
+    CommandResult<?> getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form);
     
-    CommandResult getAssociatePrograms(UserVisitPK userVisitPK, GetAssociateProgramsForm form);
+    CommandResult<?> getAssociatePrograms(UserVisitPK userVisitPK, GetAssociateProgramsForm form);
     
-    CommandResult getAssociateProgramChoices(UserVisitPK userVisitPK, GetAssociateProgramChoicesForm form);
+    CommandResult<?> getAssociateProgramChoices(UserVisitPK userVisitPK, GetAssociateProgramChoicesForm form);
     
-    CommandResult setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form);
+    CommandResult<?> setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form);
     
-    CommandResult editAssociateProgram(UserVisitPK userVisitPK, EditAssociateProgramForm form);
+    CommandResult<?> editAssociateProgram(UserVisitPK userVisitPK, EditAssociateProgramForm form);
     
-    CommandResult deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form);
+    CommandResult<?> deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form);
     
     // -------------------------------------------------------------------------
     //   Associate Program Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form);
+    CommandResult<?> createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form);
     
-    CommandResult getAssociateProgramDescriptions(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form);
+    CommandResult<?> getAssociateProgramDescriptions(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form);
     
-    CommandResult editAssociateProgramDescription(UserVisitPK userVisitPK, EditAssociateProgramDescriptionForm form);
+    CommandResult<?> editAssociateProgramDescription(UserVisitPK userVisitPK, EditAssociateProgramDescriptionForm form);
     
-    CommandResult deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form);
+    CommandResult<?> deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Associates
     // -------------------------------------------------------------------------
     
-    CommandResult createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form);
+    CommandResult<?> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form);
     
-    CommandResult getAssociate(UserVisitPK userVisitPK, GetAssociateForm form);
+    CommandResult<?> getAssociate(UserVisitPK userVisitPK, GetAssociateForm form);
     
-    CommandResult getAssociates(UserVisitPK userVisitPK, GetAssociatesForm form);
+    CommandResult<?> getAssociates(UserVisitPK userVisitPK, GetAssociatesForm form);
     
-    CommandResult getAssociateChoices(UserVisitPK userVisitPK, GetAssociateChoicesForm form);
+    CommandResult<?> getAssociateChoices(UserVisitPK userVisitPK, GetAssociateChoicesForm form);
     
-    CommandResult deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form);
+    CommandResult<?> deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form);
     
     // -------------------------------------------------------------------------
     //   Associate Contact Mechanisms
     // -------------------------------------------------------------------------
     
-    CommandResult createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form);
+    CommandResult<?> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form);
     
-    CommandResult getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form);
+    CommandResult<?> getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form);
     
-    CommandResult getAssociatePartyContactMechanisms(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismsForm form);
+    CommandResult<?> getAssociatePartyContactMechanisms(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismsForm form);
     
-    CommandResult getAssociatePartyContactMechanismChoices(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismChoicesForm form);
+    CommandResult<?> getAssociatePartyContactMechanismChoices(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismChoicesForm form);
     
-    CommandResult setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form);
+    CommandResult<?> setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form);
     
-    CommandResult deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form);
+    CommandResult<?> deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form);
     
     // -------------------------------------------------------------------------
     //   Associate Referrals
     // -------------------------------------------------------------------------
     
-    CommandResult getAssociateReferral(UserVisitPK userVisitPK, GetAssociateReferralForm form);
+    CommandResult<?> getAssociateReferral(UserVisitPK userVisitPK, GetAssociateReferralForm form);
     
-    CommandResult getAssociateReferrals(UserVisitPK userVisitPK, GetAssociateReferralsForm form);
+    CommandResult<?> getAssociateReferrals(UserVisitPK userVisitPK, GetAssociateReferralsForm form);
     
-    CommandResult deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form);
+    CommandResult<?> deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form);
     
 }

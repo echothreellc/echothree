@@ -33,136 +33,136 @@ public interface SecurityService
     //   Security Role Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form);
+    CommandResult<?> createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form);
     
-    CommandResult getSecurityRoleGroupChoices(UserVisitPK userVisitPK, GetSecurityRoleGroupChoicesForm form);
+    CommandResult<?> getSecurityRoleGroupChoices(UserVisitPK userVisitPK, GetSecurityRoleGroupChoicesForm form);
     
-    CommandResult getSecurityRoleGroup(UserVisitPK userVisitPK, GetSecurityRoleGroupForm form);
+    CommandResult<?> getSecurityRoleGroup(UserVisitPK userVisitPK, GetSecurityRoleGroupForm form);
     
-    CommandResult getSecurityRoleGroups(UserVisitPK userVisitPK, GetSecurityRoleGroupsForm form);
+    CommandResult<?> getSecurityRoleGroups(UserVisitPK userVisitPK, GetSecurityRoleGroupsForm form);
     
-    CommandResult setDefaultSecurityRoleGroup(UserVisitPK userVisitPK, SetDefaultSecurityRoleGroupForm form);
+    CommandResult<?> setDefaultSecurityRoleGroup(UserVisitPK userVisitPK, SetDefaultSecurityRoleGroupForm form);
     
-    CommandResult editSecurityRoleGroup(UserVisitPK userVisitPK, EditSecurityRoleGroupForm form);
+    CommandResult<?> editSecurityRoleGroup(UserVisitPK userVisitPK, EditSecurityRoleGroupForm form);
     
-    CommandResult deleteSecurityRoleGroup(UserVisitPK userVisitPK, DeleteSecurityRoleGroupForm form);
+    CommandResult<?> deleteSecurityRoleGroup(UserVisitPK userVisitPK, DeleteSecurityRoleGroupForm form);
     
     // --------------------------------------------------------------------------------
     //   Security Role Group Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createSecurityRoleGroupDescription(UserVisitPK userVisitPK, CreateSecurityRoleGroupDescriptionForm form);
+    CommandResult<?> createSecurityRoleGroupDescription(UserVisitPK userVisitPK, CreateSecurityRoleGroupDescriptionForm form);
     
-    CommandResult getSecurityRoleGroupDescription(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionForm form);
+    CommandResult<?> getSecurityRoleGroupDescription(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionForm form);
     
-    CommandResult getSecurityRoleGroupDescriptions(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionsForm form);
+    CommandResult<?> getSecurityRoleGroupDescriptions(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionsForm form);
     
-    CommandResult editSecurityRoleGroupDescription(UserVisitPK userVisitPK, EditSecurityRoleGroupDescriptionForm form);
+    CommandResult<?> editSecurityRoleGroupDescription(UserVisitPK userVisitPK, EditSecurityRoleGroupDescriptionForm form);
     
-    CommandResult deleteSecurityRoleGroupDescription(UserVisitPK userVisitPK, DeleteSecurityRoleGroupDescriptionForm form);
+    CommandResult<?> deleteSecurityRoleGroupDescription(UserVisitPK userVisitPK, DeleteSecurityRoleGroupDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Security Roles
     // -------------------------------------------------------------------------
     
-    CommandResult checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form);
+    CommandResult<?> checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form);
     
-    CommandResult createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form);
+    CommandResult<?> createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form);
     
-    CommandResult getSecurityRoles(UserVisitPK userVisitPK, GetSecurityRolesForm form);
+    CommandResult<?> getSecurityRoles(UserVisitPK userVisitPK, GetSecurityRolesForm form);
     
-    CommandResult getSecurityRole(UserVisitPK userVisitPK, GetSecurityRoleForm form);
+    CommandResult<?> getSecurityRole(UserVisitPK userVisitPK, GetSecurityRoleForm form);
     
-    CommandResult getSecurityRoleChoices(UserVisitPK userVisitPK, GetSecurityRoleChoicesForm form);
+    CommandResult<?> getSecurityRoleChoices(UserVisitPK userVisitPK, GetSecurityRoleChoicesForm form);
     
-    CommandResult setDefaultSecurityRole(UserVisitPK userVisitPK, SetDefaultSecurityRoleForm form);
+    CommandResult<?> setDefaultSecurityRole(UserVisitPK userVisitPK, SetDefaultSecurityRoleForm form);
     
-    CommandResult editSecurityRole(UserVisitPK userVisitPK, EditSecurityRoleForm form);
+    CommandResult<?> editSecurityRole(UserVisitPK userVisitPK, EditSecurityRoleForm form);
     
-    CommandResult deleteSecurityRole(UserVisitPK userVisitPK, DeleteSecurityRoleForm form);
+    CommandResult<?> deleteSecurityRole(UserVisitPK userVisitPK, DeleteSecurityRoleForm form);
     
     // -------------------------------------------------------------------------
     //   Security Role Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createSecurityRoleDescription(UserVisitPK userVisitPK, CreateSecurityRoleDescriptionForm form);
+    CommandResult<?> createSecurityRoleDescription(UserVisitPK userVisitPK, CreateSecurityRoleDescriptionForm form);
     
-    CommandResult getSecurityRoleDescription(UserVisitPK userVisitPK, GetSecurityRoleDescriptionForm form);
+    CommandResult<?> getSecurityRoleDescription(UserVisitPK userVisitPK, GetSecurityRoleDescriptionForm form);
     
-    CommandResult getSecurityRoleDescriptions(UserVisitPK userVisitPK, GetSecurityRoleDescriptionsForm form);
+    CommandResult<?> getSecurityRoleDescriptions(UserVisitPK userVisitPK, GetSecurityRoleDescriptionsForm form);
     
-    CommandResult editSecurityRoleDescription(UserVisitPK userVisitPK, EditSecurityRoleDescriptionForm form);
+    CommandResult<?> editSecurityRoleDescription(UserVisitPK userVisitPK, EditSecurityRoleDescriptionForm form);
     
-    CommandResult deleteSecurityRoleDescription(UserVisitPK userVisitPK, DeleteSecurityRoleDescriptionForm form);
+    CommandResult<?> deleteSecurityRoleDescription(UserVisitPK userVisitPK, DeleteSecurityRoleDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Security Role Party Types
     // -------------------------------------------------------------------------
     
-    CommandResult createSecurityRolePartyType(UserVisitPK userVisitPK, CreateSecurityRolePartyTypeForm form);
+    CommandResult<?> createSecurityRolePartyType(UserVisitPK userVisitPK, CreateSecurityRolePartyTypeForm form);
     
-    CommandResult getSecurityRolePartyTypes(UserVisitPK userVisitPK, GetSecurityRolePartyTypesForm form);
+    CommandResult<?> getSecurityRolePartyTypes(UserVisitPK userVisitPK, GetSecurityRolePartyTypesForm form);
     
-    CommandResult getSecurityRolePartyType(UserVisitPK userVisitPK, GetSecurityRolePartyTypeForm form);
+    CommandResult<?> getSecurityRolePartyType(UserVisitPK userVisitPK, GetSecurityRolePartyTypeForm form);
     
-    CommandResult editSecurityRolePartyType(UserVisitPK userVisitPK, EditSecurityRolePartyTypeForm form);
+    CommandResult<?> editSecurityRolePartyType(UserVisitPK userVisitPK, EditSecurityRolePartyTypeForm form);
     
-    CommandResult deleteSecurityRolePartyType(UserVisitPK userVisitPK, DeleteSecurityRolePartyTypeForm form);
+    CommandResult<?> deleteSecurityRolePartyType(UserVisitPK userVisitPK, DeleteSecurityRolePartyTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Party Security Role Templates
     // -------------------------------------------------------------------------
     
-    CommandResult createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form);
+    CommandResult<?> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form);
     
-    CommandResult getPartySecurityRoleTemplate(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateForm form);
+    CommandResult<?> getPartySecurityRoleTemplate(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateForm form);
     
-    CommandResult getPartySecurityRoleTemplates(UserVisitPK userVisitPK, GetPartySecurityRoleTemplatesForm form);
+    CommandResult<?> getPartySecurityRoleTemplates(UserVisitPK userVisitPK, GetPartySecurityRoleTemplatesForm form);
     
-    CommandResult getPartySecurityRoleTemplateChoices(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateChoicesForm form);
+    CommandResult<?> getPartySecurityRoleTemplateChoices(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateChoicesForm form);
     
-    CommandResult setDefaultPartySecurityRoleTemplate(UserVisitPK userVisitPK, SetDefaultPartySecurityRoleTemplateForm form);
+    CommandResult<?> setDefaultPartySecurityRoleTemplate(UserVisitPK userVisitPK, SetDefaultPartySecurityRoleTemplateForm form);
     
-    CommandResult editPartySecurityRoleTemplate(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateForm form);
+    CommandResult<?> editPartySecurityRoleTemplate(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateForm form);
     
-    CommandResult deletePartySecurityRoleTemplate(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateForm form);
+    CommandResult<?> deletePartySecurityRoleTemplate(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateForm form);
     
     // -------------------------------------------------------------------------
     //   Party Security Role Template Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateDescriptionForm form);
+    CommandResult<?> createPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateDescriptionForm form);
     
-    CommandResult getPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionForm form);
+    CommandResult<?> getPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionForm form);
     
-    CommandResult getPartySecurityRoleTemplateDescriptions(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionsForm form);
+    CommandResult<?> getPartySecurityRoleTemplateDescriptions(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionsForm form);
     
-    CommandResult editPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateDescriptionForm form);
+    CommandResult<?> editPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateDescriptionForm form);
     
-    CommandResult deletePartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateDescriptionForm form);
+    CommandResult<?> deletePartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Party Security Role Template Roles
     // -------------------------------------------------------------------------
     
-    CommandResult createPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateRoleForm form);
+    CommandResult<?> createPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateRoleForm form);
     
-    CommandResult getPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRoleForm form);
+    CommandResult<?> getPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRoleForm form);
     
-    CommandResult getPartySecurityRoleTemplateRoles(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRolesForm form);
+    CommandResult<?> getPartySecurityRoleTemplateRoles(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRolesForm form);
     
-    CommandResult deletePartySecurityRoleTemplateRole(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateRoleForm form);
+    CommandResult<?> deletePartySecurityRoleTemplateRole(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateRoleForm form);
     
     // -------------------------------------------------------------------------
     //   Party Security Role Template Training Classes
     // -------------------------------------------------------------------------
     
-    CommandResult createPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateTrainingClassForm form);
+    CommandResult<?> createPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateTrainingClassForm form);
     
-    CommandResult getPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassForm form);
+    CommandResult<?> getPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassForm form);
     
-    CommandResult getPartySecurityRoleTemplateTrainingClasses(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassesForm form);
+    CommandResult<?> getPartySecurityRoleTemplateTrainingClasses(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassesForm form);
     
-    CommandResult deletePartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateTrainingClassForm form);
+    CommandResult<?> deletePartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateTrainingClassForm form);
     
 }

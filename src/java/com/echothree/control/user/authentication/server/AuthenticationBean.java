@@ -50,7 +50,7 @@ public class AuthenticationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult getJobUserVisit(GetJobUserVisitForm form) {
+    public CommandResult<?> getJobUserVisit(GetJobUserVisitForm form) {
         return CDI.current().select(GetJobUserVisitCommand.class).get().run(null, form);
     }
 
@@ -98,7 +98,7 @@ public class AuthenticationBean
     }
     
     @Override
-    public CommandResult getUserVisit(GetUserVisitForm form) {
+    public CommandResult<?> getUserVisit(GetUserVisitForm form) {
         return CDI.current().select(GetUserVisitCommand.class).get().run(null, form);
     }
     
@@ -113,17 +113,17 @@ public class AuthenticationBean
     }
     
     @Override
-    public CommandResult invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
+    public CommandResult<?> invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
         return CDI.current().select(InvalidateAbandonedUserVisitsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
+    public CommandResult<?> removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
         return CDI.current().select(RemoveInactiveUserKeysCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult removeInvalidatedUserVisits(UserVisitPK userVisitPK) {
+    public CommandResult<?> removeInvalidatedUserVisits(UserVisitPK userVisitPK) {
         return CDI.current().select(RemoveInvalidatedUserVisitsCommand.class).get().run(userVisitPK);
     }
     
@@ -132,52 +132,52 @@ public class AuthenticationBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
+    public CommandResult<?> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
         return CDI.current().select(GetCustomerLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
+    public CommandResult<?> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
         return CDI.current().select(CustomerLoginCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
+    public CommandResult<?> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
         return CDI.current().select(GetEmployeeLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
+    public CommandResult<?> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
         return CDI.current().select(EmployeeLoginCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
+    public CommandResult<?> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
         return CDI.current().select(GetVendorLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
+    public CommandResult<?> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
         return CDI.current().select(VendorLoginCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
+    public CommandResult<?> setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
         return CDI.current().select(SetPasswordCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
+    public CommandResult<?> recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
         return CDI.current().select(RecoverPasswordCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult idle(UserVisitPK userVisitPK) {
+    public CommandResult<?> idle(UserVisitPK userVisitPK) {
         return CDI.current().select(IdleCommand.class).get().run(userVisitPK);
     }
 
     @Override
-    public CommandResult logout(UserVisitPK userVisitPK) {
+    public CommandResult<?> logout(UserVisitPK userVisitPK) {
         return CDI.current().select(LogoutCommand.class).get().run(userVisitPK);
     }
     

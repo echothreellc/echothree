@@ -33,44 +33,44 @@ public interface AuthenticationService
     //   User Visits and Sessions
     // -------------------------------------------------------------------------
     
-    CommandResult getJobUserVisit(GetJobUserVisitForm form);
+    CommandResult<?> getJobUserVisit(GetJobUserVisitForm form);
     
     UserVisitPK getDataLoaderUserVisit();
     
-    CommandResult getUserVisit(GetUserVisitForm form);
+    CommandResult<?> getUserVisit(GetUserVisitForm form);
 
     void invalidateUserSession(UserVisitPK userVisitPK);
     
     void invalidateUserVisit(UserVisitPK userVisitPK);
     
-    CommandResult invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form);
+    CommandResult<?> invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form);
     
-    CommandResult removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form);
+    CommandResult<?> removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form);
     
-    CommandResult removeInvalidatedUserVisits(UserVisitPK userVisitPK);
+    CommandResult<?> removeInvalidatedUserVisits(UserVisitPK userVisitPK);
     
     // -------------------------------------------------------------------------
     //   Logins
     // -------------------------------------------------------------------------
     
-    CommandResult getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form);
+    CommandResult<?> getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form);
     
-    CommandResult customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form);
+    CommandResult<?> customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form);
     
-    CommandResult getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form);
+    CommandResult<?> getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form);
     
-    CommandResult employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form);
+    CommandResult<?> employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form);
     
-    CommandResult getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form);
+    CommandResult<?> getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form);
     
-    CommandResult vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form);
+    CommandResult<?> vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form);
     
-    CommandResult setPassword(UserVisitPK userVisitPK, SetPasswordForm form);
+    CommandResult<?> setPassword(UserVisitPK userVisitPK, SetPasswordForm form);
     
-    CommandResult recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form);
+    CommandResult<?> recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form);
     
-    CommandResult idle(UserVisitPK userVisitPK);
+    CommandResult<?> idle(UserVisitPK userVisitPK);
     
-    CommandResult logout(UserVisitPK userVisitPK);
+    CommandResult<?> logout(UserVisitPK userVisitPK);
     
 }

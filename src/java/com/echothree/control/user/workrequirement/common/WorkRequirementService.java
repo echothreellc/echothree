@@ -27,45 +27,45 @@ public interface WorkRequirementService
     //   Work Requirement Types
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
+    CommandResult<?> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
     
-    CommandResult getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
+    CommandResult<?> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
     
-    CommandResult getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form);
+    CommandResult<?> getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form);
     
-    CommandResult deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form);
+    CommandResult<?> deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirement Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form);
+    CommandResult<?> createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form);
     
-    CommandResult getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form);
+    CommandResult<?> getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form);
     
-    CommandResult editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form);
+    CommandResult<?> editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form);
     
-    CommandResult deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form);
+    CommandResult<?> deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirement Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form);
+    CommandResult<?> getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form);
     
-    CommandResult getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form);
+    CommandResult<?> getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirements
     // -------------------------------------------------------------------------
     
-    CommandResult getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form);
+    CommandResult<?> getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form);
     
     // -------------------------------------------------------------------------
     //   Work Assignments
     // -------------------------------------------------------------------------
 
-    public CommandResult getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form);
+    public CommandResult<?> getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form);
 
     // -------------------------------------------------------------------------
     //   Testing

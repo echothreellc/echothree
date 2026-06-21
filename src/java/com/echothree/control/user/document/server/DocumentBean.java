@@ -43,37 +43,37 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
+    public CommandResult<?> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
         return CDI.current().select(CreateDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeChoicesForm form) {
+    public CommandResult<?> getDocumentTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeChoicesForm form) {
         return CDI.current().select(GetDocumentTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentType(UserVisitPK userVisitPK, GetDocumentTypeForm form) {
+    public CommandResult<?> getDocumentType(UserVisitPK userVisitPK, GetDocumentTypeForm form) {
         return CDI.current().select(GetDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypes(UserVisitPK userVisitPK, GetDocumentTypesForm form) {
+    public CommandResult<?> getDocumentTypes(UserVisitPK userVisitPK, GetDocumentTypesForm form) {
         return CDI.current().select(GetDocumentTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultDocumentType(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form) {
+    public CommandResult<?> setDefaultDocumentType(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form) {
         return CDI.current().select(SetDefaultDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editDocumentType(UserVisitPK userVisitPK, EditDocumentTypeForm form) {
+    public CommandResult<?> editDocumentType(UserVisitPK userVisitPK, EditDocumentTypeForm form) {
         return CDI.current().select(EditDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteDocumentType(UserVisitPK userVisitPK, DeleteDocumentTypeForm form) {
+    public CommandResult<?> deleteDocumentType(UserVisitPK userVisitPK, DeleteDocumentTypeForm form) {
         return CDI.current().select(DeleteDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -82,27 +82,27 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createDocumentTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeDescriptionForm form) {
+    public CommandResult<?> createDocumentTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeDescriptionForm form) {
         return CDI.current().select(CreateDocumentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeDescriptionForm form) {
+    public CommandResult<?> getDocumentTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeDescriptionForm form) {
         return CDI.current().select(GetDocumentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeDescriptionsForm form) {
+    public CommandResult<?> getDocumentTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeDescriptionsForm form) {
         return CDI.current().select(GetDocumentTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editDocumentTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeDescriptionForm form) {
+    public CommandResult<?> editDocumentTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeDescriptionForm form) {
         return CDI.current().select(EditDocumentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteDocumentTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeDescriptionForm form) {
+    public CommandResult<?> deleteDocumentTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeDescriptionForm form) {
         return CDI.current().select(DeleteDocumentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -111,37 +111,37 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
         return CDI.current().select(CreateDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsageTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeChoicesForm form) {
+    public CommandResult<?> getDocumentTypeUsageTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeChoicesForm form) {
         return CDI.current().select(GetDocumentTypeUsageTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsageType(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> getDocumentTypeUsageType(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeForm form) {
         return CDI.current().select(GetDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetDocumentTypeUsageTypesForm form) {
+    public CommandResult<?> getDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetDocumentTypeUsageTypesForm form) {
         return CDI.current().select(GetDocumentTypeUsageTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> setDefaultDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageTypeForm form) {
         return CDI.current().select(SetDefaultDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editDocumentTypeUsageType(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> editDocumentTypeUsageType(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeForm form) {
         return CDI.current().select(EditDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteDocumentTypeUsageType(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> deleteDocumentTypeUsageType(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeForm form) {
         return CDI.current().select(DeleteDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -150,27 +150,27 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeDescriptionForm form) {
+    public CommandResult<?> createDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeDescriptionForm form) {
         return CDI.current().select(CreateDocumentTypeUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionForm form) {
+    public CommandResult<?> getDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionForm form) {
         return CDI.current().select(GetDocumentTypeUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsageTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionsForm form) {
+    public CommandResult<?> getDocumentTypeUsageTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionsForm form) {
         return CDI.current().select(GetDocumentTypeUsageTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeDescriptionForm form) {
+    public CommandResult<?> editDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeDescriptionForm form) {
         return CDI.current().select(EditDocumentTypeUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form) {
+    public CommandResult<?> deleteDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form) {
         return CDI.current().select(DeleteDocumentTypeUsageTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -179,32 +179,32 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createDocumentTypeUsage(UserVisitPK userVisitPK, CreateDocumentTypeUsageForm form) {
+    public CommandResult<?> createDocumentTypeUsage(UserVisitPK userVisitPK, CreateDocumentTypeUsageForm form) {
         return CDI.current().select(CreateDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsage(UserVisitPK userVisitPK, GetDocumentTypeUsageForm form) {
+    public CommandResult<?> getDocumentTypeUsage(UserVisitPK userVisitPK, GetDocumentTypeUsageForm form) {
         return CDI.current().select(GetDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentTypeUsages(UserVisitPK userVisitPK, GetDocumentTypeUsagesForm form) {
+    public CommandResult<?> getDocumentTypeUsages(UserVisitPK userVisitPK, GetDocumentTypeUsagesForm form) {
         return CDI.current().select(GetDocumentTypeUsagesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultDocumentTypeUsage(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageForm form) {
+    public CommandResult<?> setDefaultDocumentTypeUsage(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageForm form) {
         return CDI.current().select(SetDefaultDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editDocumentTypeUsage(UserVisitPK userVisitPK, EditDocumentTypeUsageForm form) {
+    public CommandResult<?> editDocumentTypeUsage(UserVisitPK userVisitPK, EditDocumentTypeUsageForm form) {
         return CDI.current().select(EditDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteDocumentTypeUsage(UserVisitPK userVisitPK, DeleteDocumentTypeUsageForm form) {
+    public CommandResult<?> deleteDocumentTypeUsage(UserVisitPK userVisitPK, DeleteDocumentTypeUsageForm form) {
         return CDI.current().select(DeleteDocumentTypeUsageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -213,32 +213,32 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> createPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(CreatePartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> getPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(GetPartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyTypeDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypesForm form) {
+    public CommandResult<?> getPartyTypeDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypesForm form) {
         return CDI.current().select(GetPartyTypeDocumentTypeUsageTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> setDefaultPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(SetDefaultPartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, EditPartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> editPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, EditPartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(EditPartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deletePartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form) {
+    public CommandResult<?> deletePartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form) {
         return CDI.current().select(DeletePartyTypeDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -247,32 +247,32 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form) {
+    public CommandResult<?> createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form) {
         return CDI.current().select(CreatePartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyDocument(UserVisitPK userVisitPK, GetPartyDocumentForm form) {
+    public CommandResult<?> getPartyDocument(UserVisitPK userVisitPK, GetPartyDocumentForm form) {
         return CDI.current().select(GetPartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyDocuments(UserVisitPK userVisitPK, GetPartyDocumentsForm form) {
+    public CommandResult<?> getPartyDocuments(UserVisitPK userVisitPK, GetPartyDocumentsForm form) {
         return CDI.current().select(GetPartyDocumentsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultPartyDocument(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form) {
+    public CommandResult<?> setDefaultPartyDocument(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form) {
         return CDI.current().select(SetDefaultPartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editPartyDocument(UserVisitPK userVisitPK, EditPartyDocumentForm form) {
+    public CommandResult<?> editPartyDocument(UserVisitPK userVisitPK, EditPartyDocumentForm form) {
         return CDI.current().select(EditPartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deletePartyDocument(UserVisitPK userVisitPK, DeletePartyDocumentForm form) {
+    public CommandResult<?> deletePartyDocument(UserVisitPK userVisitPK, DeletePartyDocumentForm form) {
         return CDI.current().select(DeletePartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -281,27 +281,27 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createDocumentDescription(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form) {
+    public CommandResult<?> createDocumentDescription(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form) {
         return CDI.current().select(CreateDocumentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentDescription(UserVisitPK userVisitPK, GetDocumentDescriptionForm form) {
+    public CommandResult<?> getDocumentDescription(UserVisitPK userVisitPK, GetDocumentDescriptionForm form) {
         return CDI.current().select(GetDocumentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getDocumentDescriptions(UserVisitPK userVisitPK, GetDocumentDescriptionsForm form) {
+    public CommandResult<?> getDocumentDescriptions(UserVisitPK userVisitPK, GetDocumentDescriptionsForm form) {
         return CDI.current().select(GetDocumentDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editDocumentDescription(UserVisitPK userVisitPK, EditDocumentDescriptionForm form) {
+    public CommandResult<?> editDocumentDescription(UserVisitPK userVisitPK, EditDocumentDescriptionForm form) {
         return CDI.current().select(EditDocumentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteDocumentDescription(UserVisitPK userVisitPK, DeleteDocumentDescriptionForm form) {
+    public CommandResult<?> deleteDocumentDescription(UserVisitPK userVisitPK, DeleteDocumentDescriptionForm form) {
         return CDI.current().select(DeleteDocumentDescriptionCommand.class).get().run(userVisitPK, form);
     }
 

@@ -33,76 +33,76 @@ public interface TermService
     //   Term Types
     // -------------------------------------------------------------------------
     
-    CommandResult createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form);
+    CommandResult<?> createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form);
     
-    CommandResult getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form);
+    CommandResult<?> getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form);
     
-    CommandResult getTermType(UserVisitPK userVisitPK, GetTermTypeForm form);
+    CommandResult<?> getTermType(UserVisitPK userVisitPK, GetTermTypeForm form);
     
-    CommandResult getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form);
+    CommandResult<?> getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form);
     
     // -------------------------------------------------------------------------
     //   Term Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form);
+    CommandResult<?> createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Terms
     // -------------------------------------------------------------------------
     
-    CommandResult createTerm(UserVisitPK userVisitPK, CreateTermForm form);
+    CommandResult<?> createTerm(UserVisitPK userVisitPK, CreateTermForm form);
     
-    CommandResult getTerms(UserVisitPK userVisitPK, GetTermsForm form);
+    CommandResult<?> getTerms(UserVisitPK userVisitPK, GetTermsForm form);
     
-    CommandResult getTerm(UserVisitPK userVisitPK, GetTermForm form);
+    CommandResult<?> getTerm(UserVisitPK userVisitPK, GetTermForm form);
     
-    CommandResult getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form);
+    CommandResult<?> getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form);
     
-    CommandResult setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form);
+    CommandResult<?> setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form);
     
-    CommandResult deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form);
+    CommandResult<?> deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form);
     
     // -------------------------------------------------------------------------
     //   Term Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form);
+    CommandResult<?> createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form);
     
-    CommandResult getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form);
+    CommandResult<?> getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form);
     
-    CommandResult editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form);
+    CommandResult<?> editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form);
     
-    CommandResult deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form);
+    CommandResult<?> deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Customer Type Credit Limits
     // -------------------------------------------------------------------------
     
-    CommandResult createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form);
+    CommandResult<?> createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form);
     
-    CommandResult editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form);
+    CommandResult<?> editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form);
     
-    CommandResult getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form);
+    CommandResult<?> getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form);
     
-    CommandResult deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form);
+    CommandResult<?> deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form);
     
     // -------------------------------------------------------------------------
     //   Party Credit Limits
     // -------------------------------------------------------------------------
     
-    CommandResult createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form);
+    CommandResult<?> createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form);
     
-    CommandResult editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form);
+    CommandResult<?> editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form);
     
-    CommandResult getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form);
+    CommandResult<?> getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form);
     
-    CommandResult deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form);
+    CommandResult<?> deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form);
     
     // -------------------------------------------------------------------------
     //   Party Terms
     // -------------------------------------------------------------------------
     
-    CommandResult editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form);
+    CommandResult<?> editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form);
     
 }

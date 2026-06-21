@@ -33,42 +33,42 @@ public interface ShippingService
     //   Shipping Methods
     // -------------------------------------------------------------------------
     
-    CommandResult createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form);
+    CommandResult<?> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form);
     
-    CommandResult getShippingMethod(UserVisitPK userVisitPK, GetShippingMethodForm form);
+    CommandResult<?> getShippingMethod(UserVisitPK userVisitPK, GetShippingMethodForm form);
     
-    CommandResult getShippingMethods(UserVisitPK userVisitPK, GetShippingMethodsForm form);
+    CommandResult<?> getShippingMethods(UserVisitPK userVisitPK, GetShippingMethodsForm form);
     
-    CommandResult getShippingMethodChoices(UserVisitPK userVisitPK, GetShippingMethodChoicesForm form);
+    CommandResult<?> getShippingMethodChoices(UserVisitPK userVisitPK, GetShippingMethodChoicesForm form);
     
-    CommandResult editShippingMethod(UserVisitPK userVisitPK, EditShippingMethodForm form);
+    CommandResult<?> editShippingMethod(UserVisitPK userVisitPK, EditShippingMethodForm form);
     
-    CommandResult deleteShippingMethod(UserVisitPK userVisitPK, DeleteShippingMethodForm form);
+    CommandResult<?> deleteShippingMethod(UserVisitPK userVisitPK, DeleteShippingMethodForm form);
     
     // -------------------------------------------------------------------------
     //   Shipping Method Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createShippingMethodDescription(UserVisitPK userVisitPK, CreateShippingMethodDescriptionForm form);
+    CommandResult<?> createShippingMethodDescription(UserVisitPK userVisitPK, CreateShippingMethodDescriptionForm form);
     
-    CommandResult getShippingMethodDescription(UserVisitPK userVisitPK, GetShippingMethodDescriptionForm form);
+    CommandResult<?> getShippingMethodDescription(UserVisitPK userVisitPK, GetShippingMethodDescriptionForm form);
 
-    CommandResult getShippingMethodDescriptions(UserVisitPK userVisitPK, GetShippingMethodDescriptionsForm form);
+    CommandResult<?> getShippingMethodDescriptions(UserVisitPK userVisitPK, GetShippingMethodDescriptionsForm form);
 
-    CommandResult editShippingMethodDescription(UserVisitPK userVisitPK, EditShippingMethodDescriptionForm form);
+    CommandResult<?> editShippingMethodDescription(UserVisitPK userVisitPK, EditShippingMethodDescriptionForm form);
     
-    CommandResult deleteShippingMethodDescription(UserVisitPK userVisitPK, DeleteShippingMethodDescriptionForm form);
+    CommandResult<?> deleteShippingMethodDescription(UserVisitPK userVisitPK, DeleteShippingMethodDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Shipping Method Carrier Services
     // -------------------------------------------------------------------------
     
-    CommandResult createShippingMethodCarrierService(UserVisitPK userVisitPK, CreateShippingMethodCarrierServiceForm form);
+    CommandResult<?> createShippingMethodCarrierService(UserVisitPK userVisitPK, CreateShippingMethodCarrierServiceForm form);
     
-    CommandResult getShippingMethodCarrierService(UserVisitPK userVisitPK, GetShippingMethodCarrierServiceForm form);
+    CommandResult<?> getShippingMethodCarrierService(UserVisitPK userVisitPK, GetShippingMethodCarrierServiceForm form);
 
-    CommandResult getShippingMethodCarrierServices(UserVisitPK userVisitPK, GetShippingMethodCarrierServicesForm form);
+    CommandResult<?> getShippingMethodCarrierServices(UserVisitPK userVisitPK, GetShippingMethodCarrierServicesForm form);
 
-    CommandResult deleteShippingMethodCarrierService(UserVisitPK userVisitPK, DeleteShippingMethodCarrierServiceForm form);
+    CommandResult<?> deleteShippingMethodCarrierService(UserVisitPK userVisitPK, DeleteShippingMethodCarrierServiceForm form);
     
 }

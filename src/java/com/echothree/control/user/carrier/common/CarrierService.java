@@ -33,136 +33,136 @@ public interface CarrierService
     //   Carrier Types
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form);
+    CommandResult<?> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form);
     
-    CommandResult getCarrierTypes(UserVisitPK userVisitPK, GetCarrierTypesForm form);
+    CommandResult<?> getCarrierTypes(UserVisitPK userVisitPK, GetCarrierTypesForm form);
     
-    CommandResult getCarrierTypeChoices(UserVisitPK userVisitPK, GetCarrierTypeChoicesForm form);
+    CommandResult<?> getCarrierTypeChoices(UserVisitPK userVisitPK, GetCarrierTypeChoicesForm form);
     
     // -------------------------------------------------------------------------
     //   Carrier Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierTypeDescription(UserVisitPK userVisitPK, CreateCarrierTypeDescriptionForm form);
+    CommandResult<?> createCarrierTypeDescription(UserVisitPK userVisitPK, CreateCarrierTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Carriers
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrier(UserVisitPK userVisitPK, CreateCarrierForm form);
+    CommandResult<?> createCarrier(UserVisitPK userVisitPK, CreateCarrierForm form);
     
-    CommandResult getCarrier(UserVisitPK userVisitPK, GetCarrierForm form);
+    CommandResult<?> getCarrier(UserVisitPK userVisitPK, GetCarrierForm form);
     
-    CommandResult getCarriers(UserVisitPK userVisitPK, GetCarriersForm form);
+    CommandResult<?> getCarriers(UserVisitPK userVisitPK, GetCarriersForm form);
     
-    CommandResult getCarrierChoices(UserVisitPK userVisitPK, GetCarrierChoicesForm form);
+    CommandResult<?> getCarrierChoices(UserVisitPK userVisitPK, GetCarrierChoicesForm form);
 
-    CommandResult setDefaultCarrier(UserVisitPK userVisitPK, SetDefaultCarrierForm form);
+    CommandResult<?> setDefaultCarrier(UserVisitPK userVisitPK, SetDefaultCarrierForm form);
     
-    CommandResult deleteCarrier(UserVisitPK userVisitPK, DeleteCarrierForm form);
+    CommandResult<?> deleteCarrier(UserVisitPK userVisitPK, DeleteCarrierForm form);
     
     // -------------------------------------------------------------------------
     //   Carrier Services
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form);
+    CommandResult<?> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form);
     
-    CommandResult getCarrierService(UserVisitPK userVisitPK, GetCarrierServiceForm form);
+    CommandResult<?> getCarrierService(UserVisitPK userVisitPK, GetCarrierServiceForm form);
     
-    CommandResult getCarrierServices(UserVisitPK userVisitPK, GetCarrierServicesForm form);
+    CommandResult<?> getCarrierServices(UserVisitPK userVisitPK, GetCarrierServicesForm form);
     
-    CommandResult getCarrierServiceChoices(UserVisitPK userVisitPK, GetCarrierServiceChoicesForm form);
+    CommandResult<?> getCarrierServiceChoices(UserVisitPK userVisitPK, GetCarrierServiceChoicesForm form);
     
-    CommandResult setDefaultCarrierService(UserVisitPK userVisitPK, SetDefaultCarrierServiceForm form);
+    CommandResult<?> setDefaultCarrierService(UserVisitPK userVisitPK, SetDefaultCarrierServiceForm form);
     
-    CommandResult editCarrierService(UserVisitPK userVisitPK, EditCarrierServiceForm form);
+    CommandResult<?> editCarrierService(UserVisitPK userVisitPK, EditCarrierServiceForm form);
     
-    CommandResult deleteCarrierService(UserVisitPK userVisitPK, DeleteCarrierServiceForm form);
+    CommandResult<?> deleteCarrierService(UserVisitPK userVisitPK, DeleteCarrierServiceForm form);
     
     // -------------------------------------------------------------------------
     //   Carrier Service Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierServiceDescription(UserVisitPK userVisitPK, CreateCarrierServiceDescriptionForm form);
+    CommandResult<?> createCarrierServiceDescription(UserVisitPK userVisitPK, CreateCarrierServiceDescriptionForm form);
     
-    CommandResult getCarrierServiceDescription(UserVisitPK userVisitPK, GetCarrierServiceDescriptionForm form);
+    CommandResult<?> getCarrierServiceDescription(UserVisitPK userVisitPK, GetCarrierServiceDescriptionForm form);
 
-    CommandResult getCarrierServiceDescriptions(UserVisitPK userVisitPK, GetCarrierServiceDescriptionsForm form);
+    CommandResult<?> getCarrierServiceDescriptions(UserVisitPK userVisitPK, GetCarrierServiceDescriptionsForm form);
 
-    CommandResult editCarrierServiceDescription(UserVisitPK userVisitPK, EditCarrierServiceDescriptionForm form);
+    CommandResult<?> editCarrierServiceDescription(UserVisitPK userVisitPK, EditCarrierServiceDescriptionForm form);
     
-    CommandResult deleteCarrierServiceDescription(UserVisitPK userVisitPK, DeleteCarrierServiceDescriptionForm form);
+    CommandResult<?> deleteCarrierServiceDescription(UserVisitPK userVisitPK, DeleteCarrierServiceDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Carrier Options
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form);
+    CommandResult<?> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form);
     
-    CommandResult getCarrierOption(UserVisitPK userVisitPK, GetCarrierOptionForm form);
+    CommandResult<?> getCarrierOption(UserVisitPK userVisitPK, GetCarrierOptionForm form);
     
-    CommandResult getCarrierOptions(UserVisitPK userVisitPK, GetCarrierOptionsForm form);
+    CommandResult<?> getCarrierOptions(UserVisitPK userVisitPK, GetCarrierOptionsForm form);
     
-    CommandResult getCarrierOptionChoices(UserVisitPK userVisitPK, GetCarrierOptionChoicesForm form);
+    CommandResult<?> getCarrierOptionChoices(UserVisitPK userVisitPK, GetCarrierOptionChoicesForm form);
     
-    CommandResult setDefaultCarrierOption(UserVisitPK userVisitPK, SetDefaultCarrierOptionForm form);
+    CommandResult<?> setDefaultCarrierOption(UserVisitPK userVisitPK, SetDefaultCarrierOptionForm form);
     
-    CommandResult editCarrierOption(UserVisitPK userVisitPK, EditCarrierOptionForm form);
+    CommandResult<?> editCarrierOption(UserVisitPK userVisitPK, EditCarrierOptionForm form);
     
-    CommandResult deleteCarrierOption(UserVisitPK userVisitPK, DeleteCarrierOptionForm form);
+    CommandResult<?> deleteCarrierOption(UserVisitPK userVisitPK, DeleteCarrierOptionForm form);
     
     // -------------------------------------------------------------------------
     //   Carrier Option Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierOptionDescription(UserVisitPK userVisitPK, CreateCarrierOptionDescriptionForm form);
+    CommandResult<?> createCarrierOptionDescription(UserVisitPK userVisitPK, CreateCarrierOptionDescriptionForm form);
     
-    CommandResult getCarrierOptionDescription(UserVisitPK userVisitPK, GetCarrierOptionDescriptionForm form);
+    CommandResult<?> getCarrierOptionDescription(UserVisitPK userVisitPK, GetCarrierOptionDescriptionForm form);
 
-    CommandResult getCarrierOptionDescriptions(UserVisitPK userVisitPK, GetCarrierOptionDescriptionsForm form);
+    CommandResult<?> getCarrierOptionDescriptions(UserVisitPK userVisitPK, GetCarrierOptionDescriptionsForm form);
 
-    CommandResult editCarrierOptionDescription(UserVisitPK userVisitPK, EditCarrierOptionDescriptionForm form);
+    CommandResult<?> editCarrierOptionDescription(UserVisitPK userVisitPK, EditCarrierOptionDescriptionForm form);
     
-    CommandResult deleteCarrierOptionDescription(UserVisitPK userVisitPK, DeleteCarrierOptionDescriptionForm form);
+    CommandResult<?> deleteCarrierOptionDescription(UserVisitPK userVisitPK, DeleteCarrierOptionDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Carrier Service Options
     // -------------------------------------------------------------------------
     
-    CommandResult createCarrierServiceOption(UserVisitPK userVisitPK, CreateCarrierServiceOptionForm form);
+    CommandResult<?> createCarrierServiceOption(UserVisitPK userVisitPK, CreateCarrierServiceOptionForm form);
     
-    CommandResult getCarrierServiceOption(UserVisitPK userVisitPK, GetCarrierServiceOptionForm form);
+    CommandResult<?> getCarrierServiceOption(UserVisitPK userVisitPK, GetCarrierServiceOptionForm form);
     
-    CommandResult getCarrierServiceOptions(UserVisitPK userVisitPK, GetCarrierServiceOptionsForm form);
+    CommandResult<?> getCarrierServiceOptions(UserVisitPK userVisitPK, GetCarrierServiceOptionsForm form);
     
-    CommandResult editCarrierServiceOption(UserVisitPK userVisitPK, EditCarrierServiceOptionForm form);
+    CommandResult<?> editCarrierServiceOption(UserVisitPK userVisitPK, EditCarrierServiceOptionForm form);
     
-    CommandResult deleteCarrierServiceOption(UserVisitPK userVisitPK, DeleteCarrierServiceOptionForm form);
+    CommandResult<?> deleteCarrierServiceOption(UserVisitPK userVisitPK, DeleteCarrierServiceOptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Carriers
     // --------------------------------------------------------------------------------
 
-    CommandResult createPartyCarrier(UserVisitPK userVisitPK, CreatePartyCarrierForm form);
+    CommandResult<?> createPartyCarrier(UserVisitPK userVisitPK, CreatePartyCarrierForm form);
 
-    CommandResult getPartyCarrier(UserVisitPK userVisitPK, GetPartyCarrierForm form);
+    CommandResult<?> getPartyCarrier(UserVisitPK userVisitPK, GetPartyCarrierForm form);
 
-    CommandResult getPartyCarriers(UserVisitPK userVisitPK, GetPartyCarriersForm form);
+    CommandResult<?> getPartyCarriers(UserVisitPK userVisitPK, GetPartyCarriersForm form);
 
-    CommandResult deletePartyCarrier(UserVisitPK userVisitPK, DeletePartyCarrierForm form);
+    CommandResult<?> deletePartyCarrier(UserVisitPK userVisitPK, DeletePartyCarrierForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Carrier Accounts
     // --------------------------------------------------------------------------------
 
-    CommandResult createPartyCarrierAccount(UserVisitPK userVisitPK, CreatePartyCarrierAccountForm form);
+    CommandResult<?> createPartyCarrierAccount(UserVisitPK userVisitPK, CreatePartyCarrierAccountForm form);
 
-    CommandResult getPartyCarrierAccount(UserVisitPK userVisitPK, GetPartyCarrierAccountForm form);
+    CommandResult<?> getPartyCarrierAccount(UserVisitPK userVisitPK, GetPartyCarrierAccountForm form);
 
-    CommandResult getPartyCarrierAccounts(UserVisitPK userVisitPK, GetPartyCarrierAccountsForm form);
+    CommandResult<?> getPartyCarrierAccounts(UserVisitPK userVisitPK, GetPartyCarrierAccountsForm form);
 
-    CommandResult editPartyCarrierAccount(UserVisitPK userVisitPK, EditPartyCarrierAccountForm form);
+    CommandResult<?> editPartyCarrierAccount(UserVisitPK userVisitPK, EditPartyCarrierAccountForm form);
 
-    CommandResult deletePartyCarrierAccount(UserVisitPK userVisitPK, DeletePartyCarrierAccountForm form);
+    CommandResult<?> deletePartyCarrierAccount(UserVisitPK userVisitPK, DeletePartyCarrierAccountForm form);
 
 }

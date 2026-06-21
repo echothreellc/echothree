@@ -33,82 +33,82 @@ public interface LetterService
     //   Letter Sources
     // --------------------------------------------------------------------------------
     
-    CommandResult createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form);
+    CommandResult<?> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form);
     
-    CommandResult getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form);
+    CommandResult<?> getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form);
     
-    CommandResult getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form);
+    CommandResult<?> getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form);
     
-    CommandResult getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form);
+    CommandResult<?> getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form);
     
-    CommandResult setDefaultLetterSource(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form);
+    CommandResult<?> setDefaultLetterSource(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form);
     
-    CommandResult editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form);
+    CommandResult<?> editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form);
     
-    CommandResult deleteLetterSource(UserVisitPK userVisitPK, DeleteLetterSourceForm form);
+    CommandResult<?> deleteLetterSource(UserVisitPK userVisitPK, DeleteLetterSourceForm form);
     
     // --------------------------------------------------------------------------------
     //   Letter Source Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createLetterSourceDescription(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form);
+    CommandResult<?> createLetterSourceDescription(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form);
     
-    CommandResult getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form);
+    CommandResult<?> getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form);
     
-    CommandResult editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form);
+    CommandResult<?> editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form);
     
-    CommandResult deleteLetterSourceDescription(UserVisitPK userVisitPK, DeleteLetterSourceDescriptionForm form);
+    CommandResult<?> deleteLetterSourceDescription(UserVisitPK userVisitPK, DeleteLetterSourceDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Letters
     // --------------------------------------------------------------------------------
     
-    CommandResult createLetter(UserVisitPK userVisitPK, CreateLetterForm form);
+    CommandResult<?> createLetter(UserVisitPK userVisitPK, CreateLetterForm form);
     
-    CommandResult getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form);
+    CommandResult<?> getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form);
     
-    CommandResult getLetter(UserVisitPK userVisitPK, GetLetterForm form);
+    CommandResult<?> getLetter(UserVisitPK userVisitPK, GetLetterForm form);
     
-    CommandResult getLetters(UserVisitPK userVisitPK, GetLettersForm form);
+    CommandResult<?> getLetters(UserVisitPK userVisitPK, GetLettersForm form);
     
-    CommandResult setDefaultLetter(UserVisitPK userVisitPK, SetDefaultLetterForm form);
+    CommandResult<?> setDefaultLetter(UserVisitPK userVisitPK, SetDefaultLetterForm form);
     
-    CommandResult editLetter(UserVisitPK userVisitPK, EditLetterForm form);
+    CommandResult<?> editLetter(UserVisitPK userVisitPK, EditLetterForm form);
     
-    CommandResult deleteLetter(UserVisitPK userVisitPK, DeleteLetterForm form);
+    CommandResult<?> deleteLetter(UserVisitPK userVisitPK, DeleteLetterForm form);
     
     // --------------------------------------------------------------------------------
     //   Letter Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createLetterDescription(UserVisitPK userVisitPK, CreateLetterDescriptionForm form);
+    CommandResult<?> createLetterDescription(UserVisitPK userVisitPK, CreateLetterDescriptionForm form);
     
-    CommandResult getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form);
+    CommandResult<?> getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form);
     
-    CommandResult editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form);
+    CommandResult<?> editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form);
     
-    CommandResult deleteLetterDescription(UserVisitPK userVisitPK, DeleteLetterDescriptionForm form);
+    CommandResult<?> deleteLetterDescription(UserVisitPK userVisitPK, DeleteLetterDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Letter Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
     
-    CommandResult createLetterContactMechanismPurpose(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form);
+    CommandResult<?> createLetterContactMechanismPurpose(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form);
     
-    CommandResult getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form);
+    CommandResult<?> getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form);
     
-    CommandResult editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form);
+    CommandResult<?> editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form);
     
-    CommandResult deleteLetterContactMechanismPurpose(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form);
+    CommandResult<?> deleteLetterContactMechanismPurpose(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form);
     
     // --------------------------------------------------------------------------------
     //   Queued Letters
     // --------------------------------------------------------------------------------
     
-    CommandResult getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form);
+    CommandResult<?> getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form);
 
-    CommandResult getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form);
+    CommandResult<?> getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form);
 
-    CommandResult deleteQueuedLetter(UserVisitPK userVisitPK, DeleteQueuedLetterForm form);
+    CommandResult<?> deleteQueuedLetter(UserVisitPK userVisitPK, DeleteQueuedLetterForm form);
 
 }

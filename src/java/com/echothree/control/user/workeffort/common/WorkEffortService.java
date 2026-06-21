@@ -27,63 +27,63 @@ public interface WorkEffortService
     //   Work Effort Types
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
+    CommandResult<?> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
     
-    CommandResult getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form);
+    CommandResult<?> getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form);
     
-    CommandResult getWorkEffortType(UserVisitPK userVisitPK, GetWorkEffortTypeForm form);
+    CommandResult<?> getWorkEffortType(UserVisitPK userVisitPK, GetWorkEffortTypeForm form);
     
-    CommandResult deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form);
+    CommandResult<?> deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Effort Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form);
+    CommandResult<?> createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form);
 
-    CommandResult getWorkEffortTypeDescriptions(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form);
+    CommandResult<?> getWorkEffortTypeDescriptions(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form);
 
-    CommandResult editWorkEffortTypeDescription(UserVisitPK userVisitPK, EditWorkEffortTypeDescriptionForm form);
+    CommandResult<?> editWorkEffortTypeDescription(UserVisitPK userVisitPK, EditWorkEffortTypeDescriptionForm form);
 
-    CommandResult deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form);
+    CommandResult<?> deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Work Effort Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
+    CommandResult<?> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
     
-    CommandResult getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form);
+    CommandResult<?> getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form);
     
-    CommandResult getWorkEffortScope(UserVisitPK userVisitPK, GetWorkEffortScopeForm form);
+    CommandResult<?> getWorkEffortScope(UserVisitPK userVisitPK, GetWorkEffortScopeForm form);
     
-    CommandResult getWorkEffortScopeChoices(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form);
+    CommandResult<?> getWorkEffortScopeChoices(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form);
     
-    CommandResult setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form);
+    CommandResult<?> setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form);
     
-    CommandResult editWorkEffortScope(UserVisitPK userVisitPK, EditWorkEffortScopeForm form);
+    CommandResult<?> editWorkEffortScope(UserVisitPK userVisitPK, EditWorkEffortScopeForm form);
 
-    CommandResult deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form);
+    CommandResult<?> deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form);
 
     // -------------------------------------------------------------------------
     //   Work Effort Scope Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form);
+    CommandResult<?> createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form);
     
-    CommandResult getWorkEffortScopeDescription(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionForm form);
+    CommandResult<?> getWorkEffortScopeDescription(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionForm form);
 
-    CommandResult getWorkEffortScopeDescriptions(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionsForm form);
+    CommandResult<?> getWorkEffortScopeDescriptions(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionsForm form);
 
-    CommandResult editWorkEffortScopeDescription(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form);
+    CommandResult<?> editWorkEffortScopeDescription(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form);
     
-    CommandResult deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form);
+    CommandResult<?> deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Work Effort
     // -------------------------------------------------------------------------
     
-    CommandResult getWorkEffort(UserVisitPK userVisitPK, GetWorkEffortForm form);
+    CommandResult<?> getWorkEffort(UserVisitPK userVisitPK, GetWorkEffortForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

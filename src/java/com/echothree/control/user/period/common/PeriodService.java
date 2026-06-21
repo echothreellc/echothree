@@ -33,70 +33,70 @@ public interface PeriodService
     //   Period Kinds
     // -------------------------------------------------------------------------
     
-    CommandResult createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form);
+    CommandResult<?> createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form);
     
-    CommandResult getPeriodKinds(UserVisitPK userVisitPK, GetPeriodKindsForm form);
+    CommandResult<?> getPeriodKinds(UserVisitPK userVisitPK, GetPeriodKindsForm form);
     
-    CommandResult getPeriodKind(UserVisitPK userVisitPK, GetPeriodKindForm form);
+    CommandResult<?> getPeriodKind(UserVisitPK userVisitPK, GetPeriodKindForm form);
     
-    CommandResult getPeriodKindChoices(UserVisitPK userVisitPK, GetPeriodKindChoicesForm form);
+    CommandResult<?> getPeriodKindChoices(UserVisitPK userVisitPK, GetPeriodKindChoicesForm form);
     
-    CommandResult setDefaultPeriodKind(UserVisitPK userVisitPK, SetDefaultPeriodKindForm form);
+    CommandResult<?> setDefaultPeriodKind(UserVisitPK userVisitPK, SetDefaultPeriodKindForm form);
     
-    CommandResult editPeriodKind(UserVisitPK userVisitPK, EditPeriodKindForm form);
+    CommandResult<?> editPeriodKind(UserVisitPK userVisitPK, EditPeriodKindForm form);
     
-    CommandResult deletePeriodKind(UserVisitPK userVisitPK, DeletePeriodKindForm form);
+    CommandResult<?> deletePeriodKind(UserVisitPK userVisitPK, DeletePeriodKindForm form);
     
     // -------------------------------------------------------------------------
     //   Period Kind Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createPeriodKindDescription(UserVisitPK userVisitPK, CreatePeriodKindDescriptionForm form);
+    CommandResult<?> createPeriodKindDescription(UserVisitPK userVisitPK, CreatePeriodKindDescriptionForm form);
     
-    CommandResult getPeriodKindDescriptions(UserVisitPK userVisitPK, GetPeriodKindDescriptionsForm form);
+    CommandResult<?> getPeriodKindDescriptions(UserVisitPK userVisitPK, GetPeriodKindDescriptionsForm form);
     
-    CommandResult editPeriodKindDescription(UserVisitPK userVisitPK, EditPeriodKindDescriptionForm form);
+    CommandResult<?> editPeriodKindDescription(UserVisitPK userVisitPK, EditPeriodKindDescriptionForm form);
     
-    CommandResult deletePeriodKindDescription(UserVisitPK userVisitPK, DeletePeriodKindDescriptionForm form);
+    CommandResult<?> deletePeriodKindDescription(UserVisitPK userVisitPK, DeletePeriodKindDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Period Types
     // -------------------------------------------------------------------------
     
-    CommandResult createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form);
+    CommandResult<?> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form);
     
-    CommandResult getPeriodTypes(UserVisitPK userVisitPK, GetPeriodTypesForm form);
+    CommandResult<?> getPeriodTypes(UserVisitPK userVisitPK, GetPeriodTypesForm form);
     
-    CommandResult getPeriodType(UserVisitPK userVisitPK, GetPeriodTypeForm form);
+    CommandResult<?> getPeriodType(UserVisitPK userVisitPK, GetPeriodTypeForm form);
     
-    CommandResult getPeriodTypeChoices(UserVisitPK userVisitPK, GetPeriodTypeChoicesForm form);
+    CommandResult<?> getPeriodTypeChoices(UserVisitPK userVisitPK, GetPeriodTypeChoicesForm form);
     
-    CommandResult setDefaultPeriodType(UserVisitPK userVisitPK, SetDefaultPeriodTypeForm form);
+    CommandResult<?> setDefaultPeriodType(UserVisitPK userVisitPK, SetDefaultPeriodTypeForm form);
     
-    CommandResult editPeriodType(UserVisitPK userVisitPK, EditPeriodTypeForm form);
+    CommandResult<?> editPeriodType(UserVisitPK userVisitPK, EditPeriodTypeForm form);
     
-    CommandResult deletePeriodType(UserVisitPK userVisitPK, DeletePeriodTypeForm form);
+    CommandResult<?> deletePeriodType(UserVisitPK userVisitPK, DeletePeriodTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Period Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createPeriodTypeDescription(UserVisitPK userVisitPK, CreatePeriodTypeDescriptionForm form);
+    CommandResult<?> createPeriodTypeDescription(UserVisitPK userVisitPK, CreatePeriodTypeDescriptionForm form);
     
-    CommandResult getPeriodTypeDescriptions(UserVisitPK userVisitPK, GetPeriodTypeDescriptionsForm form);
+    CommandResult<?> getPeriodTypeDescriptions(UserVisitPK userVisitPK, GetPeriodTypeDescriptionsForm form);
     
-    CommandResult editPeriodTypeDescription(UserVisitPK userVisitPK, EditPeriodTypeDescriptionForm form);
+    CommandResult<?> editPeriodTypeDescription(UserVisitPK userVisitPK, EditPeriodTypeDescriptionForm form);
     
-    CommandResult deletePeriodTypeDescription(UserVisitPK userVisitPK, DeletePeriodTypeDescriptionForm form);
+    CommandResult<?> deletePeriodTypeDescription(UserVisitPK userVisitPK, DeletePeriodTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Fiscal Periods
     // -------------------------------------------------------------------------
     
-    CommandResult createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form);
+    CommandResult<?> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form);
     
-    CommandResult getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form);
+    CommandResult<?> getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form);
     
-    CommandResult setFiscalPeriodStatus(UserVisitPK userVisitPK, SetFiscalPeriodStatusForm form);
+    CommandResult<?> setFiscalPeriodStatus(UserVisitPK userVisitPK, SetFiscalPeriodStatusForm form);
     
 }

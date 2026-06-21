@@ -45,368 +45,368 @@ public interface AccountingService
     //   Currencies
     // -------------------------------------------------------------------------
     
-    CommandResult createCurrency(UserVisitPK userVisitPK, CreateCurrencyForm form);
+    CommandResult<?> createCurrency(UserVisitPK userVisitPK, CreateCurrencyForm form);
     
-    CommandResult setDefaultCurrency(UserVisitPK userVisitPK, SetDefaultCurrencyForm form);
+    CommandResult<?> setDefaultCurrency(UserVisitPK userVisitPK, SetDefaultCurrencyForm form);
     
-    CommandResult getCurrencyChoices(UserVisitPK userVisitPK, GetCurrencyChoicesForm form);
+    CommandResult<?> getCurrencyChoices(UserVisitPK userVisitPK, GetCurrencyChoicesForm form);
     
-    CommandResult getCurrencies(UserVisitPK userVisitPK, GetCurrenciesForm form);
+    CommandResult<?> getCurrencies(UserVisitPK userVisitPK, GetCurrenciesForm form);
     
-    CommandResult getCurrency(UserVisitPK userVisitPK, GetCurrencyForm form);
+    CommandResult<?> getCurrency(UserVisitPK userVisitPK, GetCurrencyForm form);
 
-    CommandResult getPreferredCurrency(UserVisitPK userVisitPK, GetPreferredCurrencyForm form);
+    CommandResult<?> getPreferredCurrency(UserVisitPK userVisitPK, GetPreferredCurrencyForm form);
 
     // -------------------------------------------------------------------------
     //   Currency Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCurrencyDescription(UserVisitPK userVisitPK, CreateCurrencyDescriptionForm form);
+    CommandResult<?> createCurrencyDescription(UserVisitPK userVisitPK, CreateCurrencyDescriptionForm form);
     
-    CommandResult getCurrencyDescriptions(UserVisitPK userVisitPK, GetCurrencyDescriptionsForm form);
+    CommandResult<?> getCurrencyDescriptions(UserVisitPK userVisitPK, GetCurrencyDescriptionsForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Accounting Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form);
+    CommandResult<?> createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form);
     
-    CommandResult getItemAccountingCategoryChoices(UserVisitPK userVisitPK, GetItemAccountingCategoryChoicesForm form);
+    CommandResult<?> getItemAccountingCategoryChoices(UserVisitPK userVisitPK, GetItemAccountingCategoryChoicesForm form);
     
-    CommandResult getItemAccountingCategory(UserVisitPK userVisitPK, GetItemAccountingCategoryForm form);
+    CommandResult<?> getItemAccountingCategory(UserVisitPK userVisitPK, GetItemAccountingCategoryForm form);
     
-    CommandResult getItemAccountingCategories(UserVisitPK userVisitPK, GetItemAccountingCategoriesForm form);
+    CommandResult<?> getItemAccountingCategories(UserVisitPK userVisitPK, GetItemAccountingCategoriesForm form);
     
-    CommandResult setDefaultItemAccountingCategory(UserVisitPK userVisitPK, SetDefaultItemAccountingCategoryForm form);
+    CommandResult<?> setDefaultItemAccountingCategory(UserVisitPK userVisitPK, SetDefaultItemAccountingCategoryForm form);
     
-    CommandResult editItemAccountingCategory(UserVisitPK userVisitPK, EditItemAccountingCategoryForm form);
+    CommandResult<?> editItemAccountingCategory(UserVisitPK userVisitPK, EditItemAccountingCategoryForm form);
     
-    CommandResult deleteItemAccountingCategory(UserVisitPK userVisitPK, DeleteItemAccountingCategoryForm form);
+    CommandResult<?> deleteItemAccountingCategory(UserVisitPK userVisitPK, DeleteItemAccountingCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Accounting Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createItemAccountingCategoryDescription(UserVisitPK userVisitPK, CreateItemAccountingCategoryDescriptionForm form);
+    CommandResult<?> createItemAccountingCategoryDescription(UserVisitPK userVisitPK, CreateItemAccountingCategoryDescriptionForm form);
     
-    CommandResult getItemAccountingCategoryDescription(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionForm form);
+    CommandResult<?> getItemAccountingCategoryDescription(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionForm form);
     
-    CommandResult getItemAccountingCategoryDescriptions(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionsForm form);
+    CommandResult<?> getItemAccountingCategoryDescriptions(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionsForm form);
     
-    CommandResult editItemAccountingCategoryDescription(UserVisitPK userVisitPK, EditItemAccountingCategoryDescriptionForm form);
+    CommandResult<?> editItemAccountingCategoryDescription(UserVisitPK userVisitPK, EditItemAccountingCategoryDescriptionForm form);
     
-    CommandResult deleteItemAccountingCategoryDescription(UserVisitPK userVisitPK, DeleteItemAccountingCategoryDescriptionForm form);
+    CommandResult<?> deleteItemAccountingCategoryDescription(UserVisitPK userVisitPK, DeleteItemAccountingCategoryDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountType(UserVisitPK userVisitPK, CreateGlAccountTypeForm form);
+    CommandResult<?> createGlAccountType(UserVisitPK userVisitPK, CreateGlAccountTypeForm form);
     
-    CommandResult getGlAccountType(UserVisitPK userVisitPK, GetGlAccountTypeForm form);
+    CommandResult<?> getGlAccountType(UserVisitPK userVisitPK, GetGlAccountTypeForm form);
     
-    CommandResult getGlAccountTypes(UserVisitPK userVisitPK, GetGlAccountTypesForm form);
+    CommandResult<?> getGlAccountTypes(UserVisitPK userVisitPK, GetGlAccountTypesForm form);
     
-    CommandResult getGlAccountTypeChoices(UserVisitPK userVisitPK, GetGlAccountTypeChoicesForm form);
+    CommandResult<?> getGlAccountTypeChoices(UserVisitPK userVisitPK, GetGlAccountTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountTypeDescription(UserVisitPK userVisitPK, CreateGlAccountTypeDescriptionForm form);
+    CommandResult<?> createGlAccountTypeDescription(UserVisitPK userVisitPK, CreateGlAccountTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Classes
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form);
+    CommandResult<?> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form);
     
-    CommandResult getGlAccountClassChoices(UserVisitPK userVisitPK, GetGlAccountClassChoicesForm form);
+    CommandResult<?> getGlAccountClassChoices(UserVisitPK userVisitPK, GetGlAccountClassChoicesForm form);
     
-    CommandResult getGlAccountClass(UserVisitPK userVisitPK, GetGlAccountClassForm form);
+    CommandResult<?> getGlAccountClass(UserVisitPK userVisitPK, GetGlAccountClassForm form);
     
-    CommandResult getGlAccountClasses(UserVisitPK userVisitPK, GetGlAccountClassesForm form);
+    CommandResult<?> getGlAccountClasses(UserVisitPK userVisitPK, GetGlAccountClassesForm form);
     
-    CommandResult setDefaultGlAccountClass(UserVisitPK userVisitPK, SetDefaultGlAccountClassForm form);
+    CommandResult<?> setDefaultGlAccountClass(UserVisitPK userVisitPK, SetDefaultGlAccountClassForm form);
     
-    CommandResult editGlAccountClass(UserVisitPK userVisitPK, EditGlAccountClassForm form);
+    CommandResult<?> editGlAccountClass(UserVisitPK userVisitPK, EditGlAccountClassForm form);
     
-    CommandResult deleteGlAccountClass(UserVisitPK userVisitPK, DeleteGlAccountClassForm form);
+    CommandResult<?> deleteGlAccountClass(UserVisitPK userVisitPK, DeleteGlAccountClassForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Class Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountClassDescription(UserVisitPK userVisitPK, CreateGlAccountClassDescriptionForm form);
+    CommandResult<?> createGlAccountClassDescription(UserVisitPK userVisitPK, CreateGlAccountClassDescriptionForm form);
     
-    CommandResult getGlAccountClassDescription(UserVisitPK userVisitPK, GetGlAccountClassDescriptionForm form);
+    CommandResult<?> getGlAccountClassDescription(UserVisitPK userVisitPK, GetGlAccountClassDescriptionForm form);
     
-    CommandResult getGlAccountClassDescriptions(UserVisitPK userVisitPK, GetGlAccountClassDescriptionsForm form);
+    CommandResult<?> getGlAccountClassDescriptions(UserVisitPK userVisitPK, GetGlAccountClassDescriptionsForm form);
     
-    CommandResult editGlAccountClassDescription(UserVisitPK userVisitPK, EditGlAccountClassDescriptionForm form);
+    CommandResult<?> editGlAccountClassDescription(UserVisitPK userVisitPK, EditGlAccountClassDescriptionForm form);
     
-    CommandResult deleteGlAccountClassDescription(UserVisitPK userVisitPK, DeleteGlAccountClassDescriptionForm form);
+    CommandResult<?> deleteGlAccountClassDescription(UserVisitPK userVisitPK, DeleteGlAccountClassDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form);
+    CommandResult<?> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form);
     
-    CommandResult getGlAccountCategoryChoices(UserVisitPK userVisitPK, GetGlAccountCategoryChoicesForm form);
+    CommandResult<?> getGlAccountCategoryChoices(UserVisitPK userVisitPK, GetGlAccountCategoryChoicesForm form);
     
-    CommandResult getGlAccountCategory(UserVisitPK userVisitPK, GetGlAccountCategoryForm form);
+    CommandResult<?> getGlAccountCategory(UserVisitPK userVisitPK, GetGlAccountCategoryForm form);
     
-    CommandResult getGlAccountCategories(UserVisitPK userVisitPK, GetGlAccountCategoriesForm form);
+    CommandResult<?> getGlAccountCategories(UserVisitPK userVisitPK, GetGlAccountCategoriesForm form);
     
-    CommandResult setDefaultGlAccountCategory(UserVisitPK userVisitPK, SetDefaultGlAccountCategoryForm form);
+    CommandResult<?> setDefaultGlAccountCategory(UserVisitPK userVisitPK, SetDefaultGlAccountCategoryForm form);
     
-    CommandResult editGlAccountCategory(UserVisitPK userVisitPK, EditGlAccountCategoryForm form);
+    CommandResult<?> editGlAccountCategory(UserVisitPK userVisitPK, EditGlAccountCategoryForm form);
     
-    CommandResult deleteGlAccountCategory(UserVisitPK userVisitPK, DeleteGlAccountCategoryForm form);
+    CommandResult<?> deleteGlAccountCategory(UserVisitPK userVisitPK, DeleteGlAccountCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateGlAccountCategoryDescriptionForm form);
+    CommandResult<?> createGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateGlAccountCategoryDescriptionForm form);
     
-    CommandResult getGlAccountCategoryDescription(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionForm form);
+    CommandResult<?> getGlAccountCategoryDescription(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionForm form);
     
-    CommandResult getGlAccountCategoryDescriptions(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionsForm form);
+    CommandResult<?> getGlAccountCategoryDescriptions(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionsForm form);
     
-    CommandResult editGlAccountCategoryDescription(UserVisitPK userVisitPK, EditGlAccountCategoryDescriptionForm form);
+    CommandResult<?> editGlAccountCategoryDescription(UserVisitPK userVisitPK, EditGlAccountCategoryDescriptionForm form);
     
-    CommandResult deleteGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteGlAccountCategoryDescriptionForm form);
+    CommandResult<?> deleteGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteGlAccountCategoryDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Resource Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form);
+    CommandResult<?> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form);
     
-    CommandResult getGlResourceTypeChoices(UserVisitPK userVisitPK, GetGlResourceTypeChoicesForm form);
+    CommandResult<?> getGlResourceTypeChoices(UserVisitPK userVisitPK, GetGlResourceTypeChoicesForm form);
     
-    CommandResult getGlResourceType(UserVisitPK userVisitPK, GetGlResourceTypeForm form);
+    CommandResult<?> getGlResourceType(UserVisitPK userVisitPK, GetGlResourceTypeForm form);
     
-    CommandResult getGlResourceTypes(UserVisitPK userVisitPK, GetGlResourceTypesForm form);
+    CommandResult<?> getGlResourceTypes(UserVisitPK userVisitPK, GetGlResourceTypesForm form);
     
-    CommandResult setDefaultGlResourceType(UserVisitPK userVisitPK, SetDefaultGlResourceTypeForm form);
+    CommandResult<?> setDefaultGlResourceType(UserVisitPK userVisitPK, SetDefaultGlResourceTypeForm form);
     
-    CommandResult editGlResourceType(UserVisitPK userVisitPK, EditGlResourceTypeForm form);
+    CommandResult<?> editGlResourceType(UserVisitPK userVisitPK, EditGlResourceTypeForm form);
     
-    CommandResult deleteGlResourceType(UserVisitPK userVisitPK, DeleteGlResourceTypeForm form);
+    CommandResult<?> deleteGlResourceType(UserVisitPK userVisitPK, DeleteGlResourceTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Resource Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlResourceTypeDescription(UserVisitPK userVisitPK, CreateGlResourceTypeDescriptionForm form);
+    CommandResult<?> createGlResourceTypeDescription(UserVisitPK userVisitPK, CreateGlResourceTypeDescriptionForm form);
     
-    CommandResult getGlResourceTypeDescription(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionForm form);
+    CommandResult<?> getGlResourceTypeDescription(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionForm form);
     
-    CommandResult getGlResourceTypeDescriptions(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionsForm form);
+    CommandResult<?> getGlResourceTypeDescriptions(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionsForm form);
     
-    CommandResult editGlResourceTypeDescription(UserVisitPK userVisitPK, EditGlResourceTypeDescriptionForm form);
+    CommandResult<?> editGlResourceTypeDescription(UserVisitPK userVisitPK, EditGlResourceTypeDescriptionForm form);
     
-    CommandResult deleteGlResourceTypeDescription(UserVisitPK userVisitPK, DeleteGlResourceTypeDescriptionForm form);
+    CommandResult<?> deleteGlResourceTypeDescription(UserVisitPK userVisitPK, DeleteGlResourceTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Accounts
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form);
+    CommandResult<?> createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form);
     
-    CommandResult getGlAccountChoices(UserVisitPK userVisitPK, GetGlAccountChoicesForm form);
+    CommandResult<?> getGlAccountChoices(UserVisitPK userVisitPK, GetGlAccountChoicesForm form);
     
-    CommandResult getGlAccount(UserVisitPK userVisitPK, GetGlAccountForm form);
+    CommandResult<?> getGlAccount(UserVisitPK userVisitPK, GetGlAccountForm form);
     
-    CommandResult getGlAccounts(UserVisitPK userVisitPK, GetGlAccountsForm form);
+    CommandResult<?> getGlAccounts(UserVisitPK userVisitPK, GetGlAccountsForm form);
     
-    CommandResult editGlAccount(UserVisitPK userVisitPK, EditGlAccountForm form);
+    CommandResult<?> editGlAccount(UserVisitPK userVisitPK, EditGlAccountForm form);
     
-    CommandResult deleteGlAccount(UserVisitPK userVisitPK, DeleteGlAccountForm form);
+    CommandResult<?> deleteGlAccount(UserVisitPK userVisitPK, DeleteGlAccountForm form);
     
     // --------------------------------------------------------------------------------
     //   Gl Account Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createGlAccountDescription(UserVisitPK userVisitPK, CreateGlAccountDescriptionForm form);
+    CommandResult<?> createGlAccountDescription(UserVisitPK userVisitPK, CreateGlAccountDescriptionForm form);
     
-    CommandResult getGlAccountDescription(UserVisitPK userVisitPK, GetGlAccountDescriptionForm form);
+    CommandResult<?> getGlAccountDescription(UserVisitPK userVisitPK, GetGlAccountDescriptionForm form);
     
-    CommandResult getGlAccountDescriptions(UserVisitPK userVisitPK, GetGlAccountDescriptionsForm form);
+    CommandResult<?> getGlAccountDescriptions(UserVisitPK userVisitPK, GetGlAccountDescriptionsForm form);
     
-    CommandResult editGlAccountDescription(UserVisitPK userVisitPK, EditGlAccountDescriptionForm form);
+    CommandResult<?> editGlAccountDescription(UserVisitPK userVisitPK, EditGlAccountDescriptionForm form);
     
-    CommandResult deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form);
+    CommandResult<?> deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Transaction Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form);
+    CommandResult<?> createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form);
 
-    CommandResult getTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetTransactionTimeTypeChoicesForm form);
+    CommandResult<?> getTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetTransactionTimeTypeChoicesForm form);
 
-    CommandResult getTransactionTimeType(UserVisitPK userVisitPK, GetTransactionTimeTypeForm form);
+    CommandResult<?> getTransactionTimeType(UserVisitPK userVisitPK, GetTransactionTimeTypeForm form);
 
-    CommandResult getTransactionTimeTypes(UserVisitPK userVisitPK, GetTransactionTimeTypesForm form);
+    CommandResult<?> getTransactionTimeTypes(UserVisitPK userVisitPK, GetTransactionTimeTypesForm form);
 
-    CommandResult setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form);
+    CommandResult<?> setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form);
 
-    CommandResult editTransactionTimeType(UserVisitPK userVisitPK, EditTransactionTimeTypeForm form);
+    CommandResult<?> editTransactionTimeType(UserVisitPK userVisitPK, EditTransactionTimeTypeForm form);
 
-    CommandResult deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form);
+    CommandResult<?> deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Transaction Time Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form);
+    CommandResult<?> createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form);
 
-    CommandResult getTransactionTimeTypeDescription(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionForm form);
+    CommandResult<?> getTransactionTimeTypeDescription(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionForm form);
 
-    CommandResult getTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionsForm form);
+    CommandResult<?> getTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionsForm form);
 
-    CommandResult editTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form);
+    CommandResult<?> editTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form);
 
-    CommandResult deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form);
+    CommandResult<?> deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Transaction Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form);
+    CommandResult<?> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form);
     
-    CommandResult getTransactionType(UserVisitPK userVisitPK, GetTransactionTypeForm form);
+    CommandResult<?> getTransactionType(UserVisitPK userVisitPK, GetTransactionTypeForm form);
     
-    CommandResult getTransactionTypes(UserVisitPK userVisitPK, GetTransactionTypesForm form);
+    CommandResult<?> getTransactionTypes(UserVisitPK userVisitPK, GetTransactionTypesForm form);
     
-    CommandResult editTransactionType(UserVisitPK userVisitPK, EditTransactionTypeForm form);
+    CommandResult<?> editTransactionType(UserVisitPK userVisitPK, EditTransactionTypeForm form);
     
-    CommandResult deleteTransactionType(UserVisitPK userVisitPK, DeleteTransactionTypeForm form);
+    CommandResult<?> deleteTransactionType(UserVisitPK userVisitPK, DeleteTransactionTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createTransactionTypeDescription(UserVisitPK userVisitPK, CreateTransactionTypeDescriptionForm form);
+    CommandResult<?> createTransactionTypeDescription(UserVisitPK userVisitPK, CreateTransactionTypeDescriptionForm form);
     
-    CommandResult getTransactionTypeDescription(UserVisitPK userVisitPK, GetTransactionTypeDescriptionForm form);
+    CommandResult<?> getTransactionTypeDescription(UserVisitPK userVisitPK, GetTransactionTypeDescriptionForm form);
     
-    CommandResult getTransactionTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTypeDescriptionsForm form);
+    CommandResult<?> getTransactionTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTypeDescriptionsForm form);
     
-    CommandResult editTransactionTypeDescription(UserVisitPK userVisitPK, EditTransactionTypeDescriptionForm form);
+    CommandResult<?> editTransactionTypeDescription(UserVisitPK userVisitPK, EditTransactionTypeDescriptionForm form);
     
-    CommandResult deleteTransactionTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTypeDescriptionForm form);
+    CommandResult<?> deleteTransactionTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form);
+    CommandResult<?> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form);
     
-    CommandResult getTransactionGlAccountCategory(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryForm form);
+    CommandResult<?> getTransactionGlAccountCategory(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryForm form);
     
-    CommandResult getTransactionGlAccountCategories(UserVisitPK userVisitPK, GetTransactionGlAccountCategoriesForm form);
+    CommandResult<?> getTransactionGlAccountCategories(UserVisitPK userVisitPK, GetTransactionGlAccountCategoriesForm form);
     
-    CommandResult editTransactionGlAccountCategory(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryForm form);
+    CommandResult<?> editTransactionGlAccountCategory(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryForm form);
     
-    CommandResult deleteTransactionGlAccountCategory(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryForm form);
+    CommandResult<?> deleteTransactionGlAccountCategory(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryDescriptionForm form);
+    CommandResult<?> createTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryDescriptionForm form);
     
-    CommandResult getTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionForm form);
+    CommandResult<?> getTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionForm form);
     
-    CommandResult getTransactionGlAccountCategoryDescriptions(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionsForm form);
+    CommandResult<?> getTransactionGlAccountCategoryDescriptions(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionsForm form);
     
-    CommandResult editTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryDescriptionForm form);
+    CommandResult<?> editTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryDescriptionForm form);
     
-    CommandResult deleteTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryDescriptionForm form);
+    CommandResult<?> deleteTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Entity Role Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form);
+    CommandResult<?> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form);
     
-    CommandResult getTransactionEntityRoleType(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeForm form);
+    CommandResult<?> getTransactionEntityRoleType(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeForm form);
     
-    CommandResult getTransactionEntityRoleTypes(UserVisitPK userVisitPK, GetTransactionEntityRoleTypesForm form);
+    CommandResult<?> getTransactionEntityRoleTypes(UserVisitPK userVisitPK, GetTransactionEntityRoleTypesForm form);
     
-    CommandResult editTransactionEntityRoleType(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeForm form);
+    CommandResult<?> editTransactionEntityRoleType(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeForm form);
     
-    CommandResult deleteTransactionEntityRoleType(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeForm form);
+    CommandResult<?> deleteTransactionEntityRoleType(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Entity Role Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeDescriptionForm form);
+    CommandResult<?> createTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeDescriptionForm form);
     
-    CommandResult getTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionForm form);
+    CommandResult<?> getTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionForm form);
     
-    CommandResult getTransactionEntityRoleTypeDescriptions(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionsForm form);
+    CommandResult<?> getTransactionEntityRoleTypeDescriptions(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionsForm form);
     
-    CommandResult editTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeDescriptionForm form);
+    CommandResult<?> editTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeDescriptionForm form);
     
-    CommandResult deleteTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeDescriptionForm form);
+    CommandResult<?> deleteTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Transaction Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult getTransactionGroups(UserVisitPK userVisitPK, GetTransactionGroupsForm form);
+    CommandResult<?> getTransactionGroups(UserVisitPK userVisitPK, GetTransactionGroupsForm form);
     
-    CommandResult getTransactionGroup(UserVisitPK userVisitPK, GetTransactionGroupForm form);
+    CommandResult<?> getTransactionGroup(UserVisitPK userVisitPK, GetTransactionGroupForm form);
     
-    CommandResult getTransactionGroupStatusChoices(UserVisitPK userVisitPK, GetTransactionGroupStatusChoicesForm form);
+    CommandResult<?> getTransactionGroupStatusChoices(UserVisitPK userVisitPK, GetTransactionGroupStatusChoicesForm form);
     
-    CommandResult setTransactionGroupStatus(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form);
+    CommandResult<?> setTransactionGroupStatus(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Transactions
     // --------------------------------------------------------------------------------
     
-    CommandResult getTransactions(UserVisitPK userVisitPK, GetTransactionsForm form);
+    CommandResult<?> getTransactions(UserVisitPK userVisitPK, GetTransactionsForm form);
     
-    CommandResult getTransaction(UserVisitPK userVisitPK, GetTransactionForm form);
+    CommandResult<?> getTransaction(UserVisitPK userVisitPK, GetTransactionForm form);
     
     // --------------------------------------------------------------------------------
     //   Symbol Positions
     // --------------------------------------------------------------------------------
     
-    CommandResult createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form);
+    CommandResult<?> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form);
     
-    CommandResult getSymbolPositionChoices(UserVisitPK userVisitPK, GetSymbolPositionChoicesForm form);
+    CommandResult<?> getSymbolPositionChoices(UserVisitPK userVisitPK, GetSymbolPositionChoicesForm form);
     
-    CommandResult getSymbolPosition(UserVisitPK userVisitPK, GetSymbolPositionForm form);
+    CommandResult<?> getSymbolPosition(UserVisitPK userVisitPK, GetSymbolPositionForm form);
     
-    CommandResult getSymbolPositions(UserVisitPK userVisitPK, GetSymbolPositionsForm form);
+    CommandResult<?> getSymbolPositions(UserVisitPK userVisitPK, GetSymbolPositionsForm form);
     
-    CommandResult setDefaultSymbolPosition(UserVisitPK userVisitPK, SetDefaultSymbolPositionForm form);
+    CommandResult<?> setDefaultSymbolPosition(UserVisitPK userVisitPK, SetDefaultSymbolPositionForm form);
     
-    CommandResult editSymbolPosition(UserVisitPK userVisitPK, EditSymbolPositionForm form);
+    CommandResult<?> editSymbolPosition(UserVisitPK userVisitPK, EditSymbolPositionForm form);
     
-    CommandResult deleteSymbolPosition(UserVisitPK userVisitPK, DeleteSymbolPositionForm form);
+    CommandResult<?> deleteSymbolPosition(UserVisitPK userVisitPK, DeleteSymbolPositionForm form);
     
     // --------------------------------------------------------------------------------
     //   Symbol Position Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createSymbolPositionDescription(UserVisitPK userVisitPK, CreateSymbolPositionDescriptionForm form);
+    CommandResult<?> createSymbolPositionDescription(UserVisitPK userVisitPK, CreateSymbolPositionDescriptionForm form);
     
-    CommandResult getSymbolPositionDescription(UserVisitPK userVisitPK, GetSymbolPositionDescriptionForm form);
+    CommandResult<?> getSymbolPositionDescription(UserVisitPK userVisitPK, GetSymbolPositionDescriptionForm form);
     
-    CommandResult getSymbolPositionDescriptions(UserVisitPK userVisitPK, GetSymbolPositionDescriptionsForm form);
+    CommandResult<?> getSymbolPositionDescriptions(UserVisitPK userVisitPK, GetSymbolPositionDescriptionsForm form);
     
-    CommandResult editSymbolPositionDescription(UserVisitPK userVisitPK, EditSymbolPositionDescriptionForm form);
+    CommandResult<?> editSymbolPositionDescription(UserVisitPK userVisitPK, EditSymbolPositionDescriptionForm form);
     
-    CommandResult deleteSymbolPositionDescription(UserVisitPK userVisitPK, DeleteSymbolPositionDescriptionForm form);
+    CommandResult<?> deleteSymbolPositionDescription(UserVisitPK userVisitPK, DeleteSymbolPositionDescriptionForm form);
     
 }

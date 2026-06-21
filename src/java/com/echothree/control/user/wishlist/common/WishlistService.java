@@ -33,68 +33,68 @@ public interface WishlistService
     //   Wishlist Types
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form);
+    CommandResult<?> createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form);
     
-    CommandResult getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form);
+    CommandResult<?> getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form);
     
-    CommandResult getWishlistTypes(UserVisitPK userVisitPK, GetWishlistTypesForm form);
+    CommandResult<?> getWishlistTypes(UserVisitPK userVisitPK, GetWishlistTypesForm form);
     
-    CommandResult getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form);
+    CommandResult<?> getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form);
     
-    CommandResult setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form);
+    CommandResult<?> setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form);
     
-    CommandResult editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form);
+    CommandResult<?> editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form);
     
-    CommandResult deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form);
+    CommandResult<?> deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form);
+    CommandResult<?> createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form);
     
-    CommandResult getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form);
+    CommandResult<?> getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form);
     
-    CommandResult editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form);
+    CommandResult<?> editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form);
     
-    CommandResult deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form);
+    CommandResult<?> deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Priorities
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form);
+    CommandResult<?> createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form);
     
-    CommandResult getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form);
+    CommandResult<?> getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form);
     
-    CommandResult getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form);
+    CommandResult<?> getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form);
     
-    CommandResult getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form);
+    CommandResult<?> getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form);
     
-    CommandResult setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form);
+    CommandResult<?> setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form);
     
-    CommandResult editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form);
+    CommandResult<?> editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form);
     
-    CommandResult deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form);
+    CommandResult<?> deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Priority Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form);
+    CommandResult<?> createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form);
     
-    CommandResult getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form);
+    CommandResult<?> getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form);
     
-    CommandResult editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form);
+    CommandResult<?> editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form);
     
-    CommandResult deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form);
+    CommandResult<?> deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Lines
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form);
+    CommandResult<?> createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form);
     
-    CommandResult getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form);
+    CommandResult<?> getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form);
     
 }

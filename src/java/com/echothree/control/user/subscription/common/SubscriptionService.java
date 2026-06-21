@@ -33,84 +33,84 @@ public interface SubscriptionService
     //   Subscription Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form);
+    CommandResult<?> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form);
 
-    CommandResult getSubscriptionKinds(UserVisitPK userVisitPK, GetSubscriptionKindsForm form);
+    CommandResult<?> getSubscriptionKinds(UserVisitPK userVisitPK, GetSubscriptionKindsForm form);
 
-    CommandResult getSubscriptionKind(UserVisitPK userVisitPK, GetSubscriptionKindForm form);
+    CommandResult<?> getSubscriptionKind(UserVisitPK userVisitPK, GetSubscriptionKindForm form);
 
-    CommandResult getSubscriptionKindChoices(UserVisitPK userVisitPK, GetSubscriptionKindChoicesForm form);
+    CommandResult<?> getSubscriptionKindChoices(UserVisitPK userVisitPK, GetSubscriptionKindChoicesForm form);
 
-    CommandResult setDefaultSubscriptionKind(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form);
+    CommandResult<?> setDefaultSubscriptionKind(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form);
 
-    CommandResult editSubscriptionKind(UserVisitPK userVisitPK, EditSubscriptionKindForm form);
+    CommandResult<?> editSubscriptionKind(UserVisitPK userVisitPK, EditSubscriptionKindForm form);
 
-    CommandResult deleteSubscriptionKind(UserVisitPK userVisitPK, DeleteSubscriptionKindForm form);
+    CommandResult<?> deleteSubscriptionKind(UserVisitPK userVisitPK, DeleteSubscriptionKindForm form);
 
     // -------------------------------------------------------------------------
     //   Subscription Kind Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createSubscriptionKindDescription(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form);
+    CommandResult<?> createSubscriptionKindDescription(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form);
 
-    CommandResult getSubscriptionKindDescriptions(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionsForm form);
+    CommandResult<?> getSubscriptionKindDescriptions(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionsForm form);
 
-    CommandResult getSubscriptionKindDescription(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionForm form);
+    CommandResult<?> getSubscriptionKindDescription(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionForm form);
 
-    CommandResult editSubscriptionKindDescription(UserVisitPK userVisitPK, EditSubscriptionKindDescriptionForm form);
+    CommandResult<?> editSubscriptionKindDescription(UserVisitPK userVisitPK, EditSubscriptionKindDescriptionForm form);
 
-    CommandResult deleteSubscriptionKindDescription(UserVisitPK userVisitPK, DeleteSubscriptionKindDescriptionForm form);
+    CommandResult<?> deleteSubscriptionKindDescription(UserVisitPK userVisitPK, DeleteSubscriptionKindDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Subscription Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form);
+    CommandResult<?> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form);
     
-    CommandResult getSubscriptionTypes(UserVisitPK userVisitPK, GetSubscriptionTypesForm form);
+    CommandResult<?> getSubscriptionTypes(UserVisitPK userVisitPK, GetSubscriptionTypesForm form);
     
-    CommandResult getSubscriptionType(UserVisitPK userVisitPK, GetSubscriptionTypeForm form);
+    CommandResult<?> getSubscriptionType(UserVisitPK userVisitPK, GetSubscriptionTypeForm form);
     
-    CommandResult getSubscriptionTypeChoices(UserVisitPK userVisitPK, GetSubscriptionTypeChoicesForm form);
+    CommandResult<?> getSubscriptionTypeChoices(UserVisitPK userVisitPK, GetSubscriptionTypeChoicesForm form);
     
-    CommandResult setDefaultSubscriptionType(UserVisitPK userVisitPK, SetDefaultSubscriptionTypeForm form);
+    CommandResult<?> setDefaultSubscriptionType(UserVisitPK userVisitPK, SetDefaultSubscriptionTypeForm form);
     
-    CommandResult editSubscriptionType(UserVisitPK userVisitPK, EditSubscriptionTypeForm form);
+    CommandResult<?> editSubscriptionType(UserVisitPK userVisitPK, EditSubscriptionTypeForm form);
     
-    CommandResult deleteSubscriptionType(UserVisitPK userVisitPK, DeleteSubscriptionTypeForm form);
+    CommandResult<?> deleteSubscriptionType(UserVisitPK userVisitPK, DeleteSubscriptionTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Subscription Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createSubscriptionTypeDescription(UserVisitPK userVisitPK, CreateSubscriptionTypeDescriptionForm form);
+    CommandResult<?> createSubscriptionTypeDescription(UserVisitPK userVisitPK, CreateSubscriptionTypeDescriptionForm form);
     
-    CommandResult getSubscriptionTypeDescriptions(UserVisitPK userVisitPK, GetSubscriptionTypeDescriptionsForm form);
+    CommandResult<?> getSubscriptionTypeDescriptions(UserVisitPK userVisitPK, GetSubscriptionTypeDescriptionsForm form);
     
-    CommandResult editSubscriptionTypeDescription(UserVisitPK userVisitPK, EditSubscriptionTypeDescriptionForm form);
+    CommandResult<?> editSubscriptionTypeDescription(UserVisitPK userVisitPK, EditSubscriptionTypeDescriptionForm form);
     
-    CommandResult deleteSubscriptionTypeDescription(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form);
+    CommandResult<?> deleteSubscriptionTypeDescription(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Subscription Type Chains
     // --------------------------------------------------------------------------------
     
-    CommandResult createSubscriptionTypeChain(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form);
+    CommandResult<?> createSubscriptionTypeChain(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form);
     
-    CommandResult getSubscriptionTypeChains(UserVisitPK userVisitPK, GetSubscriptionTypeChainsForm form);
+    CommandResult<?> getSubscriptionTypeChains(UserVisitPK userVisitPK, GetSubscriptionTypeChainsForm form);
     
-    CommandResult deleteSubscriptionTypeChain(UserVisitPK userVisitPK, DeleteSubscriptionTypeChainForm form);
+    CommandResult<?> deleteSubscriptionTypeChain(UserVisitPK userVisitPK, DeleteSubscriptionTypeChainForm form);
     
     // --------------------------------------------------------------------------------
     //   Subscriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form);
+    CommandResult<?> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form);
     
-    CommandResult getSubscriptions(UserVisitPK userVisitPK, GetSubscriptionsForm form);
+    CommandResult<?> getSubscriptions(UserVisitPK userVisitPK, GetSubscriptionsForm form);
     
-    CommandResult getSubscription(UserVisitPK userVisitPK, GetSubscriptionForm form);
+    CommandResult<?> getSubscription(UserVisitPK userVisitPK, GetSubscriptionForm form);
     
-    CommandResult deleteSubscription(UserVisitPK userVisitPK, DeleteSubscriptionForm form);
+    CommandResult<?> deleteSubscription(UserVisitPK userVisitPK, DeleteSubscriptionForm form);
     
 }

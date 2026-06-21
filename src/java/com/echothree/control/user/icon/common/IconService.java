@@ -33,18 +33,18 @@ public interface IconService
     //   Icon Usage Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form);
+    CommandResult<?> createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Icon Usage Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createIconUsageTypeDescription(UserVisitPK userVisitPK, CreateIconUsageTypeDescriptionForm form);
+    CommandResult<?> createIconUsageTypeDescription(UserVisitPK userVisitPK, CreateIconUsageTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Icons
     // --------------------------------------------------------------------------------
     
-    CommandResult getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form);
+    CommandResult<?> getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form);
     
 }

@@ -33,26 +33,26 @@ public interface PurchaseService
     //   Purchase Orders
     // --------------------------------------------------------------------------------
 
-    CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
+    CommandResult<?> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
 
-    CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
+    CommandResult<?> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
 
-    CommandResult setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form);
+    CommandResult<?> setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Purchase Invoices
     // --------------------------------------------------------------------------------
 
-    CommandResult createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
+    CommandResult<?> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
 
-    CommandResult getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
+    CommandResult<?> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
 
-    CommandResult setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form);
+    CommandResult<?> setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Purchase Invoice Lines
     // --------------------------------------------------------------------------------
     
-    CommandResult createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form);
+    CommandResult<?> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form);
 
 }

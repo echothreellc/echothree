@@ -33,52 +33,52 @@ public interface ClubService
     //   Clubs
     // --------------------------------------------------------------------------------
     
-    CommandResult createClub(UserVisitPK userVisitPK, CreateClubForm form);
+    CommandResult<?> createClub(UserVisitPK userVisitPK, CreateClubForm form);
     
-    CommandResult getClubs(UserVisitPK userVisitPK, GetClubsForm form);
+    CommandResult<?> getClubs(UserVisitPK userVisitPK, GetClubsForm form);
     
-    CommandResult getClub(UserVisitPK userVisitPK, GetClubForm form);
+    CommandResult<?> getClub(UserVisitPK userVisitPK, GetClubForm form);
     
-    CommandResult setDefaultClub(UserVisitPK userVisitPK, SetDefaultClubForm form);
+    CommandResult<?> setDefaultClub(UserVisitPK userVisitPK, SetDefaultClubForm form);
     
-    CommandResult editClub(UserVisitPK userVisitPK, EditClubForm form);
+    CommandResult<?> editClub(UserVisitPK userVisitPK, EditClubForm form);
     
-    CommandResult deleteClub(UserVisitPK userVisitPK, DeleteClubForm form);
+    CommandResult<?> deleteClub(UserVisitPK userVisitPK, DeleteClubForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubDescription(UserVisitPK userVisitPK, CreateClubDescriptionForm form);
+    CommandResult<?> createClubDescription(UserVisitPK userVisitPK, CreateClubDescriptionForm form);
     
-    CommandResult getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form);
+    CommandResult<?> getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form);
     
-    CommandResult editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form);
+    CommandResult<?> editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form);
     
-    CommandResult deleteClubDescription(UserVisitPK userVisitPK, DeleteClubDescriptionForm form);
+    CommandResult<?> deleteClubDescription(UserVisitPK userVisitPK, DeleteClubDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Item Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubItemType(UserVisitPK userVisitPK, CreateClubItemTypeForm form);
+    CommandResult<?> createClubItemType(UserVisitPK userVisitPK, CreateClubItemTypeForm form);
     
-    CommandResult getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form);
+    CommandResult<?> getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Item Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubItemTypeDescription(UserVisitPK userVisitPK, CreateClubItemTypeDescriptionForm form);
+    CommandResult<?> createClubItemTypeDescription(UserVisitPK userVisitPK, CreateClubItemTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Items
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubItem(UserVisitPK userVisitPK, CreateClubItemForm form);
+    CommandResult<?> createClubItem(UserVisitPK userVisitPK, CreateClubItemForm form);
     
-    CommandResult getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form);
+    CommandResult<?> getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form);
     
-    CommandResult deleteClubItem(UserVisitPK userVisitPK, DeleteClubItemForm form);
+    CommandResult<?> deleteClubItem(UserVisitPK userVisitPK, DeleteClubItemForm form);
     
 }

@@ -43,47 +43,47 @@ public class JobBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createJob(UserVisitPK userVisitPK, CreateJobForm form) {
+    public CommandResult<?> createJob(UserVisitPK userVisitPK, CreateJobForm form) {
         return CDI.current().select(CreateJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getJob(UserVisitPK userVisitPK, GetJobForm form) {
+    public CommandResult<?> getJob(UserVisitPK userVisitPK, GetJobForm form) {
         return CDI.current().select(GetJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getJobs(UserVisitPK userVisitPK, GetJobsForm form) {
+    public CommandResult<?> getJobs(UserVisitPK userVisitPK, GetJobsForm form) {
         return CDI.current().select(GetJobsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
+    public CommandResult<?> getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
         return CDI.current().select(GetJobStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form) {
+    public CommandResult<?> setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form) {
         return CDI.current().select(SetJobStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editJob(UserVisitPK userVisitPK, EditJobForm form) {
+    public CommandResult<?> editJob(UserVisitPK userVisitPK, EditJobForm form) {
         return CDI.current().select(EditJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteJob(UserVisitPK userVisitPK, DeleteJobForm form) {
+    public CommandResult<?> deleteJob(UserVisitPK userVisitPK, DeleteJobForm form) {
         return CDI.current().select(DeleteJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult startJob(UserVisitPK userVisitPK, StartJobForm form) {
+    public CommandResult<?> startJob(UserVisitPK userVisitPK, StartJobForm form) {
         return CDI.current().select(StartJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult endJob(UserVisitPK userVisitPK, EndJobForm form) {
+    public CommandResult<?> endJob(UserVisitPK userVisitPK, EndJobForm form) {
         return CDI.current().select(EndJobCommand.class).get().run(userVisitPK, form);
     }
     
@@ -92,22 +92,22 @@ public class JobBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
+    public CommandResult<?> createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
         return CDI.current().select(CreateJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form) {
+    public CommandResult<?> getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form) {
         return CDI.current().select(GetJobDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
+    public CommandResult<?> editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
         return CDI.current().select(EditJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form) {
+    public CommandResult<?> deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form) {
         return CDI.current().select(DeleteJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

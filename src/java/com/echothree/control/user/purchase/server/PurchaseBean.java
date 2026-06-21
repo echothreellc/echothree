@@ -43,17 +43,17 @@ public class PurchaseBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
+    public CommandResult<?> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
         return CDI.current().select(CreatePurchaseOrderCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
+    public CommandResult<?> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
         return CDI.current().select(GetPurchaseOrderStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
+    public CommandResult<?> setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
         return CDI.current().select(SetPurchaseOrderStatusCommand.class).get().run(userVisitPK, form);
     }
 
@@ -62,17 +62,17 @@ public class PurchaseBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
+    public CommandResult<?> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
         return CDI.current().select(CreatePurchaseInvoiceCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
+    public CommandResult<?> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
         return CDI.current().select(GetPurchaseInvoiceStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
+    public CommandResult<?> setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
         return CDI.current().select(SetPurchaseInvoiceStatusCommand.class).get().run(userVisitPK, form);
     }
 
@@ -81,7 +81,7 @@ public class PurchaseBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form) {
+    public CommandResult<?> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form) {
         return CDI.current().select(CreatePurchaseInvoiceLineCommand.class).get().run(userVisitPK, form);
     }
 

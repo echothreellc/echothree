@@ -43,37 +43,37 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form) {
+    public CommandResult<?> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form) {
         return CDI.current().select(CreateLetterSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form) {
+    public CommandResult<?> getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form) {
         return CDI.current().select(GetLetterSourceChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form) {
+    public CommandResult<?> getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form) {
         return CDI.current().select(GetLetterSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form) {
+    public CommandResult<?> getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form) {
         return CDI.current().select(GetLetterSourcesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultLetterSource(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form) {
+    public CommandResult<?> setDefaultLetterSource(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form) {
         return CDI.current().select(SetDefaultLetterSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form) {
+    public CommandResult<?> editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form) {
         return CDI.current().select(EditLetterSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteLetterSource(UserVisitPK userVisitPK, DeleteLetterSourceForm form) {
+    public CommandResult<?> deleteLetterSource(UserVisitPK userVisitPK, DeleteLetterSourceForm form) {
         return CDI.current().select(DeleteLetterSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -82,22 +82,22 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createLetterSourceDescription(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form) {
+    public CommandResult<?> createLetterSourceDescription(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form) {
         return CDI.current().select(CreateLetterSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form) {
+    public CommandResult<?> getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form) {
         return CDI.current().select(GetLetterSourceDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form) {
+    public CommandResult<?> editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form) {
         return CDI.current().select(EditLetterSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteLetterSourceDescription(UserVisitPK userVisitPK, DeleteLetterSourceDescriptionForm form) {
+    public CommandResult<?> deleteLetterSourceDescription(UserVisitPK userVisitPK, DeleteLetterSourceDescriptionForm form) {
         return CDI.current().select(DeleteLetterSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -106,37 +106,37 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createLetter(UserVisitPK userVisitPK, CreateLetterForm form) {
+    public CommandResult<?> createLetter(UserVisitPK userVisitPK, CreateLetterForm form) {
         return CDI.current().select(CreateLetterCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form) {
+    public CommandResult<?> getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form) {
         return CDI.current().select(GetLetterChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetter(UserVisitPK userVisitPK, GetLetterForm form) {
+    public CommandResult<?> getLetter(UserVisitPK userVisitPK, GetLetterForm form) {
         return CDI.current().select(GetLetterCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetters(UserVisitPK userVisitPK, GetLettersForm form) {
+    public CommandResult<?> getLetters(UserVisitPK userVisitPK, GetLettersForm form) {
         return CDI.current().select(GetLettersCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultLetter(UserVisitPK userVisitPK, SetDefaultLetterForm form) {
+    public CommandResult<?> setDefaultLetter(UserVisitPK userVisitPK, SetDefaultLetterForm form) {
         return CDI.current().select(SetDefaultLetterCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editLetter(UserVisitPK userVisitPK, EditLetterForm form) {
+    public CommandResult<?> editLetter(UserVisitPK userVisitPK, EditLetterForm form) {
         return CDI.current().select(EditLetterCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteLetter(UserVisitPK userVisitPK, DeleteLetterForm form) {
+    public CommandResult<?> deleteLetter(UserVisitPK userVisitPK, DeleteLetterForm form) {
         return CDI.current().select(DeleteLetterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -145,22 +145,22 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createLetterDescription(UserVisitPK userVisitPK, CreateLetterDescriptionForm form) {
+    public CommandResult<?> createLetterDescription(UserVisitPK userVisitPK, CreateLetterDescriptionForm form) {
         return CDI.current().select(CreateLetterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form) {
+    public CommandResult<?> getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form) {
         return CDI.current().select(GetLetterDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form) {
+    public CommandResult<?> editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form) {
         return CDI.current().select(EditLetterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteLetterDescription(UserVisitPK userVisitPK, DeleteLetterDescriptionForm form) {
+    public CommandResult<?> deleteLetterDescription(UserVisitPK userVisitPK, DeleteLetterDescriptionForm form) {
         return CDI.current().select(DeleteLetterDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -169,22 +169,22 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createLetterContactMechanismPurpose(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form) {
+    public CommandResult<?> createLetterContactMechanismPurpose(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form) {
         return CDI.current().select(CreateLetterContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form) {
+    public CommandResult<?> getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form) {
         return CDI.current().select(GetLetterContactMechanismPurposesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form) {
+    public CommandResult<?> editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form) {
         return CDI.current().select(EditLetterContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteLetterContactMechanismPurpose(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form) {
+    public CommandResult<?> deleteLetterContactMechanismPurpose(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form) {
         return CDI.current().select(DeleteLetterContactMechanismPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -193,17 +193,17 @@ public class LetterBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form) {
+    public CommandResult<?> getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form) {
         return CDI.current().select(GetQueuedLetterCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form) {
+    public CommandResult<?> getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form) {
         return CDI.current().select(GetQueuedLettersCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteQueuedLetter(UserVisitPK userVisitPK, DeleteQueuedLetterForm form) {
+    public CommandResult<?> deleteQueuedLetter(UserVisitPK userVisitPK, DeleteQueuedLetterForm form) {
         return CDI.current().select(DeleteQueuedLetterCommand.class).get().run(userVisitPK, form);
     }
 
