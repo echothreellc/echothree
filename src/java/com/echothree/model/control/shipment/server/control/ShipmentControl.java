@@ -2292,11 +2292,14 @@ public class ShipmentControl
     }
 
     public List<ShipmentAliasTransfer> getShipmentAliasTransfersByShipment(UserVisit userVisit, Shipment shipment) {
-        var shipmentaliases = getShipmentAliasesByShipment(shipment);
-        List<ShipmentAliasTransfer> shipmentAliasTransfers = new ArrayList<>(shipmentaliases.size());
+        return getShipmentAliasTransfers(userVisit, getShipmentAliasesByShipment(shipment));
+    }
 
-        shipmentaliases.forEach((shipmentAlias) ->
-                shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(userVisit, shipmentAlias))
+    public List<ShipmentAliasTransfer> getShipmentAliasTransfers(UserVisit userVisit, Collection<ShipmentAlias> shipmentAliases) {
+        List<ShipmentAliasTransfer> shipmentAliasTransfers = new ArrayList<>(shipmentAliases.size());
+
+        shipmentAliases.forEach((shipmentAlias) ->
+                shipmentAliasTransfers.add(getShipmentAliasTransfer(userVisit, shipmentAlias))
         );
 
         return shipmentAliasTransfers;

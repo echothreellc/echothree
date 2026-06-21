@@ -22,21 +22,22 @@ import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShipmentAliasCommand
-        extends BaseSimpleCommand<GetShipmentAliasForm> {
+        extends BaseSingleEntityCommand<ShipmentAlias, GetShipmentAliasForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,9 +46,12 @@ public class GetShipmentAliasCommand
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    ShipmentControl shipmentControl;
+
     /** Creates a new instance of GetShipmentAliasCommand */
     public GetShipmentAliasCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -64,9 +68,8 @@ public class GetShipmentAliasCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-        var result = ShipmentResultFactory.getGetShipmentAliasResult();
+    protected ShipmentAlias getEntity() {
+        ShipmentAlias shipmentAlias = null;
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -79,11 +82,9 @@ public class GetShipmentAliasCommand
                 var shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
                 if(shipmentAliasType != null) {
-                    var shipmentAlias = shipmentControl.getShipmentAlias(shipment, shipmentAliasType);
+                    shipmentAlias = shipmentControl.getShipmentAlias(shipment, shipmentAliasType);
 
-                    if(shipmentAlias != null) {
-                        result.setShipmentAlias(shipmentControl.getShipmentAliasTransfer(getUserVisit(), shipmentAlias));
-                    } else {
+                    if(shipmentAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownShipmentAlias.name(), shipmentName, shipmentAliasTypeName);
                     }
                 } else {
@@ -94,6 +95,17 @@ public class GetShipmentAliasCommand
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
+        }
+
+        return shipmentAlias;
+    }
+
+    @Override
+    protected BaseResult getResult(ShipmentAlias shipmentAlias) {
+        var result = ShipmentResultFactory.getGetShipmentAliasResult();
+
+        if(shipmentAlias != null) {
+            result.setShipmentAlias(shipmentControl.getShipmentAliasTransfer(getUserVisit(), shipmentAlias));
         }
 
         return result;
