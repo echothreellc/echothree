@@ -27,6 +27,9 @@ public interface GetPartyScaleUsesResult
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
     
+    Long getPartyScaleUseCount();
+    void setPartyScaleUseCount(Long partyScaleUseCount);
+
     List<PartyScaleUseTransfer> getPartyScaleUses();
     void setPartyScaleUses(List<PartyScaleUseTransfer> partyScaleUses);
     

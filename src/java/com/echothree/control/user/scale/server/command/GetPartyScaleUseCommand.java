@@ -19,27 +19,27 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.GetPartyScaleUseForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.scale.server.entity.PartyScaleUse;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyScaleUseCommand
-        extends BaseSimpleCommand<GetPartyScaleUseForm> {
+        extends BaseSingleEntityCommand<PartyScaleUse, GetPartyScaleUseForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -49,54 +49,63 @@ public class GetPartyScaleUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyScaleUse.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ScaleUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetPartyScaleUseCommand */
     public GetPartyScaleUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ScaleResultFactory.getGetPartyScaleUseResult();
+    protected PartyScaleUse getEntity() {
+        PartyScaleUse partyScaleUse = null;
         var partyName = form.getPartyName();
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
-            party = partyControl.getPartyByName(partyName);
-
-            if(party == null) {
-                addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-            }
+            party = partyLogic.getPartyByName(this, partyName);
         } else {
             party = getParty();
         }
 
+
         if(!hasExecutionErrors()) {
-            var scaleControl = Session.getModelController(ScaleControl.class);
             var scaleUseTypeName = form.getScaleUseTypeName();
             var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
             if(scaleUseType != null) {
-                var partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
+                partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
 
-                if(partyScaleUse != null) {
-                    result.setPartyScaleUse(scaleControl.getPartyScaleUseTransfer(getUserVisit(), partyScaleUse));
-                } else {
+                if(partyScaleUse == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyScaleUse.name(), party.getLastDetail().getPartyName(), scaleUseTypeName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownScaleUseTypeName.name(), scaleUseTypeName);
             }
+        }
+
+        return partyScaleUse;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyScaleUse partyScaleUse) {
+        var result = ScaleResultFactory.getGetPartyScaleUseResult();
+
+        if(partyScaleUse != null) {
+            result.setPartyScaleUse(scaleControl.getPartyScaleUseTransfer(getUserVisit(), partyScaleUse));
         }
 
         return result;
