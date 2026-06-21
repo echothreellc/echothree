@@ -19,13 +19,13 @@ package com.echothree.control.user.sales.server.command;
 import com.echothree.control.user.sales.common.form.GetSalesOrderTimesForm;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.sales.server.logic.SalesOrderTimeLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderTimesCommand
@@ -36,8 +36,11 @@ public class GetSalesOrderTimesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+    
+    @Inject
+    SalesOrderTimeLogic salesOrderTimeLogic;
     
     /** Creates a new instance of GetSalesOrderTimesCommand */
     public GetSalesOrderTimesCommand() {
@@ -49,7 +52,7 @@ public class GetSalesOrderTimesCommand
         var result = SalesResultFactory.getGetSalesOrderTimesResult();
         var orderName = form.getOrderName();
         
-        result.setOrderTimes(SalesOrderTimeLogic.getInstance().getOrderTimeTransfersByOrder(this, getUserVisit(), orderName));
+        result.setOrderTimes(salesOrderTimeLogic.getOrderTimeTransfersByOrder(this, getUserVisit(), orderName));
         
         return result;
     }

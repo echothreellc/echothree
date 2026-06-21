@@ -26,6 +26,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SalesOrderLineTimeLogic
@@ -39,8 +40,13 @@ public class SalesOrderLineTimeLogic
         return CDI.current().select(SalesOrderLineTimeLogic.class).get();
     }
     
+    @Inject
+    OrderLineTimeLogic orderLineTimeLogic;
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
+    
     public void createOrderLineTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence, final String orderTimeTypeName, final Long time, final BasePK createdBy) {
-        var orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(eea, orderName, orderLineSequence);
+        var orderLine = salesOrderLineLogic.getOrderLineByName(eea, orderName, orderLineSequence);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             createOrderLineTime(eea, orderLine, orderTimeTypeName, time, createdBy);
@@ -50,11 +56,11 @@ public class SalesOrderLineTimeLogic
     public void createOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time, final BasePK createdBy) {
         // TODO: Check Order's status.
 
-        OrderLineTimeLogic.getInstance().createOrderLineTime(eea, orderLine, orderTimeTypeName, time, createdBy);
+        orderLineTimeLogic.createOrderLineTime(eea, orderLine, orderTimeTypeName, time, createdBy);
     }
 
     public void updateOrderLineTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence, final String orderTimeTypeName, final Long time, final BasePK updatedBy) {
-        var orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(eea, orderName, orderLineSequence);
+        var orderLine = salesOrderLineLogic.getOrderLineByName(eea, orderName, orderLineSequence);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             updateOrderLineTime(eea, orderLine, orderTimeTypeName, time, updatedBy);
@@ -64,11 +70,11 @@ public class SalesOrderLineTimeLogic
     public void updateOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time, final BasePK updatedBy) {
         // TODO: Check Order's status.
 
-        OrderLineTimeLogic.getInstance().updateOrderLineTime(eea, orderLine, orderTimeTypeName, time, updatedBy);
+        orderLineTimeLogic.updateOrderLineTime(eea, orderLine, orderTimeTypeName, time, updatedBy);
     }
 
     public OrderLineTimeTransfer getOrderLineTimeTransfer(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String orderName, final String orderLineSequence, final String orderTimeTypeName) {
-        var orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(eea, orderName, orderLineSequence);
+        var orderLine = salesOrderLineLogic.getOrderLineByName(eea, orderName, orderLineSequence);
         OrderLineTimeTransfer result = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -79,17 +85,17 @@ public class SalesOrderLineTimeLogic
     }
 
     public OrderLineTimeTransfer getOrderLineTimeTransfer(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final OrderLine orderLine, final String orderTimeTypeName) {
-        return OrderLineTimeLogic.getInstance().getOrderLineTimeTransfer(eea, userVisit, orderLine, orderTimeTypeName);
+        return orderLineTimeLogic.getOrderLineTimeTransfer(eea, userVisit, orderLine, orderTimeTypeName);
     }
 
     public List<OrderLineTimeTransfer> getOrderLineTimeTransfersByOrder(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String orderName, final String orderLineSequence) {
-        var orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(eea, orderName, orderLineSequence);
+        var orderLine = salesOrderLineLogic.getOrderLineByName(eea, orderName, orderLineSequence);
         
-        return OrderLineTimeLogic.getInstance().getOrderLineTimeTransfersByOrder(eea, userVisit, orderLine);
+        return orderLineTimeLogic.getOrderLineTimeTransfersByOrder(eea, userVisit, orderLine);
     }
 
     public void deleteOrderLineTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence, final String orderTimeTypeName, final BasePK deletedBy) {
-        var orderLine = SalesOrderLineLogic.getInstance().getOrderLineByName(eea, orderName, orderLineSequence);
+        var orderLine = salesOrderLineLogic.getOrderLineByName(eea, orderName, orderLineSequence);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             deleteOrderLineTime(eea, orderLine, orderTimeTypeName, deletedBy);
@@ -99,7 +105,7 @@ public class SalesOrderLineTimeLogic
     public void deleteOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final BasePK deletedBy) {
         // TODO: Check Order's status.
 
-        OrderLineTimeLogic.getInstance().deleteOrderLineTime(eea, orderLine, orderTimeTypeName, deletedBy);
+        orderLineTimeLogic.deleteOrderLineTime(eea, orderLine, orderTimeTypeName, deletedBy);
     }
 
 }
