@@ -17,6 +17,7 @@
 package com.echothree.control.user.customer.common;
 
 import com.echothree.control.user.customer.common.form.*;
+import com.echothree.control.user.customer.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -89,7 +90,7 @@ public interface CustomerService
     
     CommandResult setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form);
     
-    CommandResult editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form);
+    CommandResult<EditCustomerTypePaymentMethodResult> editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form);
     
     CommandResult deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form);
     
@@ -105,7 +106,7 @@ public interface CustomerService
     
     CommandResult setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form);
     
-    CommandResult editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form);
+    CommandResult<EditCustomerTypeShippingMethodResult> editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form);
     
     CommandResult deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form);
     

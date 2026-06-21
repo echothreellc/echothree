@@ -20,15 +20,15 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.Messages;
 import java.io.Serializable;
 
-public class ExecutionResult
+public class ExecutionResult<R extends BaseResult>
         implements Serializable {
     
-    private Messages executionWarnings;
-    private Messages executionErrors;
-    private BaseResult result;
+    final private Messages executionWarnings;
+    final private Messages executionErrors;
+    final private R result;
     
     /** Creates a new instance of ExecutionResult */
-    public ExecutionResult(Messages executionWarnings, Messages executionErrors, BaseResult result) {
+    public ExecutionResult(final Messages executionWarnings, final Messages executionErrors, final R result) {
         this.executionWarnings = executionWarnings;
         this.executionErrors = executionErrors;
         this.result = result;
@@ -43,24 +43,28 @@ public class ExecutionResult
     }
     
     public Boolean getHasLockErrors() {
-        return executionErrors == null ? false
-                : executionErrors.containsKeys(Messages.EXECUTION_ERROR, ExecutionErrors.EntityLockFailed.name(), ExecutionErrors.EntityLockStale.name());
+        return executionErrors != null && executionErrors.containsKeys(Messages.EXECUTION_ERROR, ExecutionErrors.EntityLockFailed.name(), ExecutionErrors.EntityLockStale.name());
     }
     
     public Boolean getHasWarnings() {
-        return executionWarnings == null? false: executionWarnings.size(Messages.EXECUTION_WARNING) != 0;
+        return executionWarnings != null && executionWarnings.size(Messages.EXECUTION_WARNING) != 0;
     }
     
     public Boolean getHasErrors() {
-        return executionErrors == null? false: executionErrors.size(Messages.EXECUTION_ERROR) != 0;
+        return executionErrors != null && executionErrors.size(Messages.EXECUTION_ERROR) != 0;
     }
     
     public Boolean getHasResults() {
         return result != null;
     }
     
-    public BaseResult getResult() {
+    public R getResult() {
         return result;
+    }
+
+    // Migration function that allows avoiding casts until R is implemented everywhere.
+    public <T extends BaseResult> T getResult(Class<T> resultClass) {
+        return resultClass.cast(result);
     }
     
     @Override

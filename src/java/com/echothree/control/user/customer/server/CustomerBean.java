@@ -18,6 +18,8 @@ package com.echothree.control.user.customer.server;
 
 import com.echothree.control.user.customer.common.CustomerRemote;
 import com.echothree.control.user.customer.common.form.*;
+import com.echothree.control.user.customer.common.result.EditCustomerTypePaymentMethodResult;
+import com.echothree.control.user.customer.common.result.EditCustomerTypeShippingMethodResult;
 import com.echothree.control.user.customer.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -165,7 +167,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form) {
+    public CommandResult<EditCustomerTypePaymentMethodResult> editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form) {
         return CDI.current().select(EditCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -199,7 +201,7 @@ public class CustomerBean
     }
     
     @Override
-    public CommandResult editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form) {
+    public CommandResult<EditCustomerTypeShippingMethodResult> editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form) {
         return CDI.current().select(EditCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
