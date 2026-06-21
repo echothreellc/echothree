@@ -70,10 +70,10 @@ public class ItemAliasTypeHandler
 
                     createForm.set(spec.get());
 
-                    commandResult = itemService.createItemAliasTypeDescription(initialDataParser.getUserVisit(), createForm);
+                    var createItemAliasTypeDescriptionCommandResult = itemService.createItemAliasTypeDescription(initialDataParser.getUserVisit(), createForm);
 
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createItemAliasTypeDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createItemAliasTypeDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

@@ -17,8 +17,10 @@
 package com.echothree.control.user.workrequirement.common;
 
 import com.echothree.control.user.workrequirement.common.form.*;
+import com.echothree.control.user.workrequirement.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface WorkRequirementService
         extends WorkRequirementForms {
@@ -27,45 +29,45 @@ public interface WorkRequirementService
     //   Work Requirement Types
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
+    CommandResult<VoidResult> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
     
-    CommandResult getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
+    CommandResult<GetWorkRequirementTypesResult> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
     
-    CommandResult getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form);
+    CommandResult<GetWorkRequirementTypeResult> getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form);
     
-    CommandResult deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form);
+    CommandResult<VoidResult> deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirement Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form);
+    CommandResult<VoidResult> createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form);
     
-    CommandResult getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form);
+    CommandResult<GetWorkRequirementTypeDescriptionsResult> getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form);
     
-    CommandResult editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form);
+    CommandResult<EditWorkRequirementTypeDescriptionResult> editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form);
     
-    CommandResult deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirement Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form);
+    CommandResult<GetWorkRequirementScopesResult> getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form);
     
-    CommandResult getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form);
+    CommandResult<GetWorkRequirementScopeResult> getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Requirements
     // -------------------------------------------------------------------------
     
-    CommandResult getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form);
+    CommandResult<GetWorkRequirementResult> getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form);
     
     // -------------------------------------------------------------------------
     //   Work Assignments
     // -------------------------------------------------------------------------
 
-    public CommandResult getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form);
+    public CommandResult<GetWorkAssignmentsResult> getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form);
 
     // -------------------------------------------------------------------------
     //   Testing

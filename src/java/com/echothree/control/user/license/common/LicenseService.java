@@ -17,8 +17,10 @@
 package com.echothree.control.user.license.common;
 
 import com.echothree.control.user.license.common.form.*;
+import com.echothree.control.user.license.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface LicenseService
         extends LicenseForms {
@@ -33,38 +35,38 @@ public interface LicenseService
     //   License Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form);
+    CommandResult<VoidResult> createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form);
     
-    CommandResult getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form);
+    CommandResult<GetLicenseTypeChoicesResult> getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form);
     
-    CommandResult getLicenseType(UserVisitPK userVisitPK, GetLicenseTypeForm form);
+    CommandResult<GetLicenseTypeResult> getLicenseType(UserVisitPK userVisitPK, GetLicenseTypeForm form);
     
-    CommandResult getLicenseTypes(UserVisitPK userVisitPK, GetLicenseTypesForm form);
+    CommandResult<GetLicenseTypesResult> getLicenseTypes(UserVisitPK userVisitPK, GetLicenseTypesForm form);
     
-    CommandResult setDefaultLicenseType(UserVisitPK userVisitPK, SetDefaultLicenseTypeForm form);
+    CommandResult<VoidResult> setDefaultLicenseType(UserVisitPK userVisitPK, SetDefaultLicenseTypeForm form);
     
-    CommandResult editLicenseType(UserVisitPK userVisitPK, EditLicenseTypeForm form);
+    CommandResult<EditLicenseTypeResult> editLicenseType(UserVisitPK userVisitPK, EditLicenseTypeForm form);
     
-    CommandResult deleteLicenseType(UserVisitPK userVisitPK, DeleteLicenseTypeForm form);
+    CommandResult<VoidResult> deleteLicenseType(UserVisitPK userVisitPK, DeleteLicenseTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   License Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createLicenseTypeDescription(UserVisitPK userVisitPK, CreateLicenseTypeDescriptionForm form);
+    CommandResult<VoidResult> createLicenseTypeDescription(UserVisitPK userVisitPK, CreateLicenseTypeDescriptionForm form);
     
-    CommandResult getLicenseTypeDescription(UserVisitPK userVisitPK, GetLicenseTypeDescriptionForm form);
+    CommandResult<GetLicenseTypeDescriptionResult> getLicenseTypeDescription(UserVisitPK userVisitPK, GetLicenseTypeDescriptionForm form);
     
-    CommandResult getLicenseTypeDescriptions(UserVisitPK userVisitPK, GetLicenseTypeDescriptionsForm form);
+    CommandResult<GetLicenseTypeDescriptionsResult> getLicenseTypeDescriptions(UserVisitPK userVisitPK, GetLicenseTypeDescriptionsForm form);
     
-    CommandResult editLicenseTypeDescription(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form);
+    CommandResult<EditLicenseTypeDescriptionResult> editLicenseTypeDescription(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form);
     
-    CommandResult deleteLicenseTypeDescription(UserVisitPK userVisitPK, DeleteLicenseTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteLicenseTypeDescription(UserVisitPK userVisitPK, DeleteLicenseTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   License Utilities
     // --------------------------------------------------------------------------------
     
-    CommandResult updateLicense(UserVisitPK userVisitPK);
+    CommandResult<VoidResult> updateLicense(UserVisitPK userVisitPK);
     
 }

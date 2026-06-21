@@ -17,8 +17,10 @@
 package com.echothree.control.user.filter.common;
 
 import com.echothree.control.user.filter.common.form.*;
+import com.echothree.control.user.filter.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface FilterService
         extends FilterForms {
@@ -33,280 +35,280 @@ public interface FilterService
     //   Filter Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult createFilterKind(UserVisitPK userVisitPK, CreateFilterKindForm form);
+    CommandResult<CreateFilterKindResult> createFilterKind(UserVisitPK userVisitPK, CreateFilterKindForm form);
 
-    CommandResult getFilterKinds(UserVisitPK userVisitPK, GetFilterKindsForm form);
+    CommandResult<GetFilterKindsResult> getFilterKinds(UserVisitPK userVisitPK, GetFilterKindsForm form);
 
-    CommandResult getFilterKind(UserVisitPK userVisitPK, GetFilterKindForm form);
+    CommandResult<GetFilterKindResult> getFilterKind(UserVisitPK userVisitPK, GetFilterKindForm form);
 
-    CommandResult getFilterKindChoices(UserVisitPK userVisitPK, GetFilterKindChoicesForm form);
+    CommandResult<GetFilterKindChoicesResult> getFilterKindChoices(UserVisitPK userVisitPK, GetFilterKindChoicesForm form);
 
-    CommandResult setDefaultFilterKind(UserVisitPK userVisitPK, SetDefaultFilterKindForm form);
+    CommandResult<VoidResult> setDefaultFilterKind(UserVisitPK userVisitPK, SetDefaultFilterKindForm form);
 
-    CommandResult editFilterKind(UserVisitPK userVisitPK, EditFilterKindForm form);
+    CommandResult<EditFilterKindResult> editFilterKind(UserVisitPK userVisitPK, EditFilterKindForm form);
 
-    CommandResult deleteFilterKind(UserVisitPK userVisitPK, DeleteFilterKindForm form);
+    CommandResult<VoidResult> deleteFilterKind(UserVisitPK userVisitPK, DeleteFilterKindForm form);
 
     // -------------------------------------------------------------------------
     //   Filter Kind Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createFilterKindDescription(UserVisitPK userVisitPK, CreateFilterKindDescriptionForm form);
+    CommandResult<VoidResult> createFilterKindDescription(UserVisitPK userVisitPK, CreateFilterKindDescriptionForm form);
 
-    CommandResult getFilterKindDescriptions(UserVisitPK userVisitPK, GetFilterKindDescriptionsForm form);
+    CommandResult<GetFilterKindDescriptionsResult> getFilterKindDescriptions(UserVisitPK userVisitPK, GetFilterKindDescriptionsForm form);
 
-    CommandResult getFilterKindDescription(UserVisitPK userVisitPK, GetFilterKindDescriptionForm form);
+    CommandResult<GetFilterKindDescriptionResult> getFilterKindDescription(UserVisitPK userVisitPK, GetFilterKindDescriptionForm form);
 
-    CommandResult editFilterKindDescription(UserVisitPK userVisitPK, EditFilterKindDescriptionForm form);
+    CommandResult<EditFilterKindDescriptionResult> editFilterKindDescription(UserVisitPK userVisitPK, EditFilterKindDescriptionForm form);
 
-    CommandResult deleteFilterKindDescription(UserVisitPK userVisitPK, DeleteFilterKindDescriptionForm form);
+    CommandResult<VoidResult> deleteFilterKindDescription(UserVisitPK userVisitPK, DeleteFilterKindDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Filter Types
     // -------------------------------------------------------------------------
 
-    CommandResult createFilterType(UserVisitPK userVisitPK, CreateFilterTypeForm form);
+    CommandResult<CreateFilterTypeResult> createFilterType(UserVisitPK userVisitPK, CreateFilterTypeForm form);
 
-    CommandResult getFilterTypes(UserVisitPK userVisitPK, GetFilterTypesForm form);
+    CommandResult<GetFilterTypesResult> getFilterTypes(UserVisitPK userVisitPK, GetFilterTypesForm form);
 
-    CommandResult getFilterType(UserVisitPK userVisitPK, GetFilterTypeForm form);
+    CommandResult<GetFilterTypeResult> getFilterType(UserVisitPK userVisitPK, GetFilterTypeForm form);
 
-    CommandResult getFilterTypeChoices(UserVisitPK userVisitPK, GetFilterTypeChoicesForm form);
+    CommandResult<GetFilterTypeChoicesResult> getFilterTypeChoices(UserVisitPK userVisitPK, GetFilterTypeChoicesForm form);
 
-    CommandResult setDefaultFilterType(UserVisitPK userVisitPK, SetDefaultFilterTypeForm form);
+    CommandResult<VoidResult> setDefaultFilterType(UserVisitPK userVisitPK, SetDefaultFilterTypeForm form);
 
-    CommandResult editFilterType(UserVisitPK userVisitPK, EditFilterTypeForm form);
+    CommandResult<EditFilterTypeResult> editFilterType(UserVisitPK userVisitPK, EditFilterTypeForm form);
 
-    CommandResult deleteFilterType(UserVisitPK userVisitPK, DeleteFilterTypeForm form);
+    CommandResult<VoidResult> deleteFilterType(UserVisitPK userVisitPK, DeleteFilterTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Filter Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createFilterTypeDescription(UserVisitPK userVisitPK, CreateFilterTypeDescriptionForm form);
+    CommandResult<VoidResult> createFilterTypeDescription(UserVisitPK userVisitPK, CreateFilterTypeDescriptionForm form);
 
-    CommandResult getFilterTypeDescriptions(UserVisitPK userVisitPK, GetFilterTypeDescriptionsForm form);
+    CommandResult<GetFilterTypeDescriptionsResult> getFilterTypeDescriptions(UserVisitPK userVisitPK, GetFilterTypeDescriptionsForm form);
 
-    CommandResult getFilterTypeDescription(UserVisitPK userVisitPK, GetFilterTypeDescriptionForm form);
+    CommandResult<GetFilterTypeDescriptionResult> getFilterTypeDescription(UserVisitPK userVisitPK, GetFilterTypeDescriptionForm form);
 
-    CommandResult editFilterTypeDescription(UserVisitPK userVisitPK, EditFilterTypeDescriptionForm form);
+    CommandResult<EditFilterTypeDescriptionResult> editFilterTypeDescription(UserVisitPK userVisitPK, EditFilterTypeDescriptionForm form);
 
-    CommandResult deleteFilterTypeDescription(UserVisitPK userVisitPK, DeleteFilterTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteFilterTypeDescription(UserVisitPK userVisitPK, DeleteFilterTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Filter Adjustment Sources
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentSource(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceForm form);
+    CommandResult<VoidResult> createFilterAdjustmentSource(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceForm form);
 
-    CommandResult getFilterAdjustmentSources(UserVisitPK userVisitPK, GetFilterAdjustmentSourcesForm form);
+    CommandResult<GetFilterAdjustmentSourcesResult> getFilterAdjustmentSources(UserVisitPK userVisitPK, GetFilterAdjustmentSourcesForm form);
 
-    CommandResult getFilterAdjustmentSource(UserVisitPK userVisitPK, GetFilterAdjustmentSourceForm form);
+    CommandResult<GetFilterAdjustmentSourceResult> getFilterAdjustmentSource(UserVisitPK userVisitPK, GetFilterAdjustmentSourceForm form);
     
-    CommandResult getFilterAdjustmentSourceChoices(UserVisitPK userVisitPK, GetFilterAdjustmentSourceChoicesForm form);
+    CommandResult<GetFilterAdjustmentSourceChoicesResult> getFilterAdjustmentSourceChoices(UserVisitPK userVisitPK, GetFilterAdjustmentSourceChoicesForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Source Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentSourceDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceDescriptionForm form);
+    CommandResult<VoidResult> createFilterAdjustmentSourceDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Types
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentType(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeForm form);
+    CommandResult<VoidResult> createFilterAdjustmentType(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeForm form);
 
-    CommandResult getFilterAdjustmentTypes(UserVisitPK userVisitPK, GetFilterAdjustmentTypesForm form);
+    CommandResult<GetFilterAdjustmentTypesResult> getFilterAdjustmentTypes(UserVisitPK userVisitPK, GetFilterAdjustmentTypesForm form);
 
-    CommandResult getFilterAdjustmentType(UserVisitPK userVisitPK, GetFilterAdjustmentTypeForm form);
+    CommandResult<GetFilterAdjustmentTypeResult> getFilterAdjustmentType(UserVisitPK userVisitPK, GetFilterAdjustmentTypeForm form);
     
-    CommandResult getFilterAdjustmentTypeChoices(UserVisitPK userVisitPK, GetFilterAdjustmentTypeChoicesForm form);
+    CommandResult<GetFilterAdjustmentTypeChoicesResult> getFilterAdjustmentTypeChoices(UserVisitPK userVisitPK, GetFilterAdjustmentTypeChoicesForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeDescriptionForm form);
+    CommandResult<VoidResult> createFilterAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustments
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustment(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form);
+    CommandResult<CreateFilterAdjustmentResult> createFilterAdjustment(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form);
     
-    CommandResult getFilterAdjustment(UserVisitPK userVisitPK, GetFilterAdjustmentForm form);
+    CommandResult<GetFilterAdjustmentResult> getFilterAdjustment(UserVisitPK userVisitPK, GetFilterAdjustmentForm form);
     
-    CommandResult getFilterAdjustments(UserVisitPK userVisitPK, GetFilterAdjustmentsForm form);
+    CommandResult<GetFilterAdjustmentsResult> getFilterAdjustments(UserVisitPK userVisitPK, GetFilterAdjustmentsForm form);
     
-    CommandResult getFilterAdjustmentChoices(UserVisitPK userVisitPK, GetFilterAdjustmentChoicesForm form);
+    CommandResult<GetFilterAdjustmentChoicesResult> getFilterAdjustmentChoices(UserVisitPK userVisitPK, GetFilterAdjustmentChoicesForm form);
     
-    CommandResult setDefaultFilterAdjustment(UserVisitPK userVisitPK, SetDefaultFilterAdjustmentForm form);
+    CommandResult<VoidResult> setDefaultFilterAdjustment(UserVisitPK userVisitPK, SetDefaultFilterAdjustmentForm form);
     
-    CommandResult editFilterAdjustment(UserVisitPK userVisitPK, EditFilterAdjustmentForm form);
+    CommandResult<EditFilterAdjustmentResult> editFilterAdjustment(UserVisitPK userVisitPK, EditFilterAdjustmentForm form);
     
-    CommandResult deleteFilterAdjustment(UserVisitPK userVisitPK, DeleteFilterAdjustmentForm form);
+    CommandResult<VoidResult> deleteFilterAdjustment(UserVisitPK userVisitPK, DeleteFilterAdjustmentForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentDescriptionForm form);
+    CommandResult<VoidResult> createFilterAdjustmentDescription(UserVisitPK userVisitPK, CreateFilterAdjustmentDescriptionForm form);
     
-    CommandResult getFilterAdjustmentDescriptions(UserVisitPK userVisitPK, GetFilterAdjustmentDescriptionsForm form);
+    CommandResult<GetFilterAdjustmentDescriptionsResult> getFilterAdjustmentDescriptions(UserVisitPK userVisitPK, GetFilterAdjustmentDescriptionsForm form);
     
-    CommandResult editFilterAdjustmentDescription(UserVisitPK userVisitPK, EditFilterAdjustmentDescriptionForm form);
+    CommandResult<EditFilterAdjustmentDescriptionResult> editFilterAdjustmentDescription(UserVisitPK userVisitPK, EditFilterAdjustmentDescriptionForm form);
     
-    CommandResult deleteFilterAdjustmentDescription(UserVisitPK userVisitPK, DeleteFilterAdjustmentDescriptionForm form);
+    CommandResult<VoidResult> deleteFilterAdjustmentDescription(UserVisitPK userVisitPK, DeleteFilterAdjustmentDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Amounts
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentAmountForm form);
+    CommandResult<VoidResult> createFilterAdjustmentAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentAmountForm form);
 
-    CommandResult getFilterAdjustmentAmounts(UserVisitPK userVisitPK, GetFilterAdjustmentAmountsForm form);
+    CommandResult<GetFilterAdjustmentAmountsResult> getFilterAdjustmentAmounts(UserVisitPK userVisitPK, GetFilterAdjustmentAmountsForm form);
 
-    CommandResult getFilterAdjustmentAmount(UserVisitPK userVisitPK, GetFilterAdjustmentAmountForm form);
+    CommandResult<GetFilterAdjustmentAmountResult> getFilterAdjustmentAmount(UserVisitPK userVisitPK, GetFilterAdjustmentAmountForm form);
 
-    CommandResult editFilterAdjustmentAmount(UserVisitPK userVisitPK, EditFilterAdjustmentAmountForm form);
+    CommandResult<EditFilterAdjustmentAmountResult> editFilterAdjustmentAmount(UserVisitPK userVisitPK, EditFilterAdjustmentAmountForm form);
     
-    CommandResult deleteFilterAdjustmentAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentAmountForm form);
+    CommandResult<VoidResult> deleteFilterAdjustmentAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentAmountForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Fixed Amount
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentFixedAmountForm form);
+    CommandResult<VoidResult> createFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentFixedAmountForm form);
 
-    CommandResult getFilterAdjustmentFixedAmounts(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountsForm form);
+    CommandResult<GetFilterAdjustmentFixedAmountsResult> getFilterAdjustmentFixedAmounts(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountsForm form);
 
-    CommandResult getFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountForm form);
+    CommandResult<GetFilterAdjustmentFixedAmountResult> getFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountForm form);
 
-    CommandResult editFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, EditFilterAdjustmentFixedAmountForm form);
+    CommandResult<EditFilterAdjustmentFixedAmountResult> editFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, EditFilterAdjustmentFixedAmountForm form);
     
-    CommandResult deleteFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentFixedAmountForm form);
+    CommandResult<VoidResult> deleteFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, DeleteFilterAdjustmentFixedAmountForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Adjustment Percents
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterAdjustmentPercent(UserVisitPK userVisitPK, CreateFilterAdjustmentPercentForm form);
+    CommandResult<VoidResult> createFilterAdjustmentPercent(UserVisitPK userVisitPK, CreateFilterAdjustmentPercentForm form);
 
-    CommandResult getFilterAdjustmentPercents(UserVisitPK userVisitPK, GetFilterAdjustmentPercentsForm form);
+    CommandResult<GetFilterAdjustmentPercentsResult> getFilterAdjustmentPercents(UserVisitPK userVisitPK, GetFilterAdjustmentPercentsForm form);
 
-    CommandResult getFilterAdjustmentPercent(UserVisitPK userVisitPK, GetFilterAdjustmentPercentForm form);
+    CommandResult<GetFilterAdjustmentPercentResult> getFilterAdjustmentPercent(UserVisitPK userVisitPK, GetFilterAdjustmentPercentForm form);
 
-    CommandResult editFilterAdjustmentPercent(UserVisitPK userVisitPK, EditFilterAdjustmentPercentForm form);
+    CommandResult<EditFilterAdjustmentPercentResult> editFilterAdjustmentPercent(UserVisitPK userVisitPK, EditFilterAdjustmentPercentForm form);
     
-    CommandResult deleteFilterAdjustmentPercent(UserVisitPK userVisitPK, DeleteFilterAdjustmentPercentForm form);
+    CommandResult<VoidResult> deleteFilterAdjustmentPercent(UserVisitPK userVisitPK, DeleteFilterAdjustmentPercentForm form);
     
     // -------------------------------------------------------------------------
     //   Filters
     // -------------------------------------------------------------------------
     
-    CommandResult createFilter(UserVisitPK userVisitPK, CreateFilterForm createFilterForm);
+    CommandResult<CreateFilterResult> createFilter(UserVisitPK userVisitPK, CreateFilterForm createFilterForm);
     
-    CommandResult getFilters(UserVisitPK userVisitPK, GetFiltersForm form);
+    CommandResult<GetFiltersResult> getFilters(UserVisitPK userVisitPK, GetFiltersForm form);
     
-    CommandResult getFilter(UserVisitPK userVisitPK, GetFilterForm form);
+    CommandResult<GetFilterResult> getFilter(UserVisitPK userVisitPK, GetFilterForm form);
     
-    CommandResult getFilterChoices(UserVisitPK userVisitPK, GetFilterChoicesForm form);
+    CommandResult<GetFilterChoicesResult> getFilterChoices(UserVisitPK userVisitPK, GetFilterChoicesForm form);
     
-    CommandResult setDefaultFilter(UserVisitPK userVisitPK, SetDefaultFilterForm form);
+    CommandResult<VoidResult> setDefaultFilter(UserVisitPK userVisitPK, SetDefaultFilterForm form);
     
-    CommandResult editFilter(UserVisitPK userVisitPK, EditFilterForm form);
+    CommandResult<EditFilterResult> editFilter(UserVisitPK userVisitPK, EditFilterForm form);
     
-    CommandResult deleteFilter(UserVisitPK userVisitPK, DeleteFilterForm form);
+    CommandResult<VoidResult> deleteFilter(UserVisitPK userVisitPK, DeleteFilterForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterDescription(UserVisitPK userVisitPK, CreateFilterDescriptionForm form);
+    CommandResult<VoidResult> createFilterDescription(UserVisitPK userVisitPK, CreateFilterDescriptionForm form);
     
-    CommandResult getFilterDescriptions(UserVisitPK userVisitPK, GetFilterDescriptionsForm form);
+    CommandResult<GetFilterDescriptionsResult> getFilterDescriptions(UserVisitPK userVisitPK, GetFilterDescriptionsForm form);
     
-    CommandResult editFilterDescription(UserVisitPK userVisitPK, EditFilterDescriptionForm form);
+    CommandResult<EditFilterDescriptionResult> editFilterDescription(UserVisitPK userVisitPK, EditFilterDescriptionForm form);
     
-    CommandResult deleteFilterDescription(UserVisitPK userVisitPK, DeleteFilterDescriptionForm form);
+    CommandResult<VoidResult> deleteFilterDescription(UserVisitPK userVisitPK, DeleteFilterDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Steps
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterStep(UserVisitPK userVisitPK, CreateFilterStepForm form);
+    CommandResult<CreateFilterStepResult> createFilterStep(UserVisitPK userVisitPK, CreateFilterStepForm form);
     
-    CommandResult getFilterStep(UserVisitPK userVisitPK, GetFilterStepForm form);
+    CommandResult<GetFilterStepResult> getFilterStep(UserVisitPK userVisitPK, GetFilterStepForm form);
     
-    CommandResult getFilterSteps(UserVisitPK userVisitPK, GetFilterStepsForm form);
+    CommandResult<GetFilterStepsResult> getFilterSteps(UserVisitPK userVisitPK, GetFilterStepsForm form);
     
-    CommandResult getFilterStepChoices(UserVisitPK userVisitPK, GetFilterStepChoicesForm form);
+    CommandResult<GetFilterStepChoicesResult> getFilterStepChoices(UserVisitPK userVisitPK, GetFilterStepChoicesForm form);
     
-    CommandResult editFilterStep(UserVisitPK userVisitPK, EditFilterStepForm form);
+    CommandResult<EditFilterStepResult> editFilterStep(UserVisitPK userVisitPK, EditFilterStepForm form);
     
-    CommandResult deleteFilterStep(UserVisitPK userVisitPK, DeleteFilterStepForm form);
+    CommandResult<VoidResult> deleteFilterStep(UserVisitPK userVisitPK, DeleteFilterStepForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Step Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterStepDescription(UserVisitPK userVisitPK, CreateFilterStepDescriptionForm form);
+    CommandResult<VoidResult> createFilterStepDescription(UserVisitPK userVisitPK, CreateFilterStepDescriptionForm form);
     
-    CommandResult getFilterStepDescriptions(UserVisitPK userVisitPK, GetFilterStepDescriptionsForm form);
+    CommandResult<GetFilterStepDescriptionsResult> getFilterStepDescriptions(UserVisitPK userVisitPK, GetFilterStepDescriptionsForm form);
     
-    CommandResult editFilterStepDescription(UserVisitPK userVisitPK, EditFilterStepDescriptionForm form);
+    CommandResult<EditFilterStepDescriptionResult> editFilterStepDescription(UserVisitPK userVisitPK, EditFilterStepDescriptionForm form);
     
-    CommandResult deleteFilterStepDescription(UserVisitPK userVisitPK, DeleteFilterStepDescriptionForm form);
+    CommandResult<VoidResult> deleteFilterStepDescription(UserVisitPK userVisitPK, DeleteFilterStepDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Step Elements
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterStepElement(UserVisitPK userVisitPK, CreateFilterStepElementForm form);
+    CommandResult<CreateFilterStepElementResult> createFilterStepElement(UserVisitPK userVisitPK, CreateFilterStepElementForm form);
     
-    CommandResult getFilterStepElement(UserVisitPK userVisitPK, GetFilterStepElementForm form);
+    CommandResult<GetFilterStepElementResult> getFilterStepElement(UserVisitPK userVisitPK, GetFilterStepElementForm form);
     
-    CommandResult getFilterStepElements(UserVisitPK userVisitPK, GetFilterStepElementsForm form);
+    CommandResult<GetFilterStepElementsResult> getFilterStepElements(UserVisitPK userVisitPK, GetFilterStepElementsForm form);
     
-    CommandResult editFilterStepElement(UserVisitPK userVisitPK, EditFilterStepElementForm form);
+    CommandResult<EditFilterStepElementResult> editFilterStepElement(UserVisitPK userVisitPK, EditFilterStepElementForm form);
     
-    CommandResult deleteFilterStepElement(UserVisitPK userVisitPK, DeleteFilterStepElementForm form);
+    CommandResult<VoidResult> deleteFilterStepElement(UserVisitPK userVisitPK, DeleteFilterStepElementForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Step Element Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterStepElementDescription(UserVisitPK userVisitPK, CreateFilterStepElementDescriptionForm form);
+    CommandResult<VoidResult> createFilterStepElementDescription(UserVisitPK userVisitPK, CreateFilterStepElementDescriptionForm form);
     
-    CommandResult getFilterStepElementDescriptions(UserVisitPK userVisitPK, GetFilterStepElementDescriptionsForm form);
+    CommandResult<GetFilterStepElementDescriptionsResult> getFilterStepElementDescriptions(UserVisitPK userVisitPK, GetFilterStepElementDescriptionsForm form);
     
-    CommandResult editFilterStepElementDescription(UserVisitPK userVisitPK, EditFilterStepElementDescriptionForm form);
+    CommandResult<EditFilterStepElementDescriptionResult> editFilterStepElementDescription(UserVisitPK userVisitPK, EditFilterStepElementDescriptionForm form);
     
-    CommandResult deleteFilterStepElementDescription(UserVisitPK userVisitPK, DeleteFilterStepElementDescriptionForm form);
+    CommandResult<VoidResult> deleteFilterStepElementDescription(UserVisitPK userVisitPK, DeleteFilterStepElementDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Entrance Steps
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterEntranceStep(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form);
+    CommandResult<VoidResult> createFilterEntranceStep(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form);
 
-    CommandResult getFilterEntranceSteps(UserVisitPK userVisitPK, GetFilterEntranceStepsForm form);
+    CommandResult<GetFilterEntranceStepsResult> getFilterEntranceSteps(UserVisitPK userVisitPK, GetFilterEntranceStepsForm form);
 
-    CommandResult getFilterEntranceStep(UserVisitPK userVisitPK, GetFilterEntranceStepForm form);
+    CommandResult<GetFilterEntranceStepResult> getFilterEntranceStep(UserVisitPK userVisitPK, GetFilterEntranceStepForm form);
 
-    CommandResult deleteFilterEntranceStep(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form);
+    CommandResult<VoidResult> deleteFilterEntranceStep(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form);
     
     // -------------------------------------------------------------------------
     //   Filter Step Destinations
     // -------------------------------------------------------------------------
     
-    CommandResult createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form);
+    CommandResult<VoidResult> createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form);
 
-    CommandResult getFilterStepDestinations(UserVisitPK userVisitPK, GetFilterStepDestinationsForm form);
+    CommandResult<GetFilterStepDestinationsResult> getFilterStepDestinations(UserVisitPK userVisitPK, GetFilterStepDestinationsForm form);
 
-    CommandResult getFilterStepDestination(UserVisitPK userVisitPK, GetFilterStepDestinationForm form);
+    CommandResult<GetFilterStepDestinationResult> getFilterStepDestination(UserVisitPK userVisitPK, GetFilterStepDestinationForm form);
 
-    CommandResult deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form);
+    CommandResult<VoidResult> deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form);
     
 }

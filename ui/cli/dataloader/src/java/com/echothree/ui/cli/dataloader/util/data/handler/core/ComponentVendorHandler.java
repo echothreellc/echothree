@@ -90,10 +90,10 @@ public class ComponentVendorHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getEntityTypeName());
-                            commandResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
+                            var createEntityTypeResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createEntityTypeResult.hasErrors()) {
+                                getLogger().error(createEntityTypeResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());

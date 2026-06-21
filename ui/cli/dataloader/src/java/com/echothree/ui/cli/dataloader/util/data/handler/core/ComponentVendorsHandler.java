@@ -72,10 +72,10 @@ public class ComponentVendorsHandler
                         createForm.set(spec.get());
 
                         getLogger().debug("Creating: {}", spec.getComponentVendorName());
-                        commandResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);
+                        var createComponentVendorResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);
 
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                        if(createComponentVendorResult.hasErrors()) {
+                            getLogger().error(createComponentVendorResult.toString());
                         }
                     } else {
                         getLogger().error(commandResult.toString());

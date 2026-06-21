@@ -17,8 +17,10 @@
 package com.echothree.control.user.index.common;
 
 import com.echothree.control.user.index.common.form.*;
+import com.echothree.control.user.index.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface IndexService
         extends IndexForms {
@@ -33,104 +35,104 @@ public interface IndexService
     //   Index Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form);
+    CommandResult<VoidResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form);
     
-    CommandResult getIndexTypeChoices(UserVisitPK userVisitPK, GetIndexTypeChoicesForm form);
+    CommandResult<GetIndexTypeChoicesResult> getIndexTypeChoices(UserVisitPK userVisitPK, GetIndexTypeChoicesForm form);
     
-    CommandResult getIndexType(UserVisitPK userVisitPK, GetIndexTypeForm form);
+    CommandResult<GetIndexTypeResult> getIndexType(UserVisitPK userVisitPK, GetIndexTypeForm form);
     
-    CommandResult getIndexTypes(UserVisitPK userVisitPK, GetIndexTypesForm form);
+    CommandResult<GetIndexTypesResult> getIndexTypes(UserVisitPK userVisitPK, GetIndexTypesForm form);
     
-    CommandResult setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form);
+    CommandResult<VoidResult> setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form);
     
-    CommandResult editIndexType(UserVisitPK userVisitPK, EditIndexTypeForm form);
+    CommandResult<EditIndexTypeResult> editIndexType(UserVisitPK userVisitPK, EditIndexTypeForm form);
     
-    CommandResult deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form);
+    CommandResult<VoidResult> deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form);
+    CommandResult<VoidResult> createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form);
     
-    CommandResult getIndexTypeDescription(UserVisitPK userVisitPK, GetIndexTypeDescriptionForm form);
+    CommandResult<GetIndexTypeDescriptionResult> getIndexTypeDescription(UserVisitPK userVisitPK, GetIndexTypeDescriptionForm form);
     
-    CommandResult getIndexTypeDescriptions(UserVisitPK userVisitPK, GetIndexTypeDescriptionsForm form);
+    CommandResult<GetIndexTypeDescriptionsResult> getIndexTypeDescriptions(UserVisitPK userVisitPK, GetIndexTypeDescriptionsForm form);
     
-    CommandResult editIndexTypeDescription(UserVisitPK userVisitPK, EditIndexTypeDescriptionForm form);
+    CommandResult<EditIndexTypeDescriptionResult> editIndexTypeDescription(UserVisitPK userVisitPK, EditIndexTypeDescriptionForm form);
     
-    CommandResult deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Fields
     // --------------------------------------------------------------------------------
     
-    CommandResult createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form);
+    CommandResult<VoidResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form);
     
-    CommandResult getIndexFieldChoices(UserVisitPK userVisitPK, GetIndexFieldChoicesForm form);
+    CommandResult<GetIndexFieldChoicesResult> getIndexFieldChoices(UserVisitPK userVisitPK, GetIndexFieldChoicesForm form);
     
-    CommandResult getIndexField(UserVisitPK userVisitPK, GetIndexFieldForm form);
+    CommandResult<GetIndexFieldResult> getIndexField(UserVisitPK userVisitPK, GetIndexFieldForm form);
     
-    CommandResult getIndexFields(UserVisitPK userVisitPK, GetIndexFieldsForm form);
+    CommandResult<GetIndexFieldsResult> getIndexFields(UserVisitPK userVisitPK, GetIndexFieldsForm form);
     
-    CommandResult setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form);
+    CommandResult<VoidResult> setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form);
     
-    CommandResult editIndexField(UserVisitPK userVisitPK, EditIndexFieldForm form);
+    CommandResult<EditIndexFieldResult> editIndexField(UserVisitPK userVisitPK, EditIndexFieldForm form);
     
-    CommandResult deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form);
+    CommandResult<VoidResult> deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Field Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form);
+    CommandResult<VoidResult> createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form);
     
-    CommandResult getIndexFieldDescription(UserVisitPK userVisitPK, GetIndexFieldDescriptionForm form);
+    CommandResult<GetIndexFieldDescriptionResult> getIndexFieldDescription(UserVisitPK userVisitPK, GetIndexFieldDescriptionForm form);
     
-    CommandResult getIndexFieldDescriptions(UserVisitPK userVisitPK, GetIndexFieldDescriptionsForm form);
+    CommandResult<GetIndexFieldDescriptionsResult> getIndexFieldDescriptions(UserVisitPK userVisitPK, GetIndexFieldDescriptionsForm form);
     
-    CommandResult editIndexFieldDescription(UserVisitPK userVisitPK, EditIndexFieldDescriptionForm form);
+    CommandResult<EditIndexFieldDescriptionResult> editIndexFieldDescription(UserVisitPK userVisitPK, EditIndexFieldDescriptionForm form);
     
-    CommandResult deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form);
+    CommandResult<VoidResult> deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Indexes
     // --------------------------------------------------------------------------------
     
-    CommandResult createIndex(UserVisitPK userVisitPK, CreateIndexForm form);
+    CommandResult<VoidResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form);
     
-    CommandResult getIndexChoices(UserVisitPK userVisitPK, GetIndexChoicesForm form);
+    CommandResult<GetIndexChoicesResult> getIndexChoices(UserVisitPK userVisitPK, GetIndexChoicesForm form);
     
-    CommandResult getIndex(UserVisitPK userVisitPK, GetIndexForm form);
+    CommandResult<GetIndexResult> getIndex(UserVisitPK userVisitPK, GetIndexForm form);
     
-    CommandResult getIndexes(UserVisitPK userVisitPK, GetIndexesForm form);
+    CommandResult<GetIndexesResult> getIndexes(UserVisitPK userVisitPK, GetIndexesForm form);
     
-    CommandResult setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form);
+    CommandResult<VoidResult> setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form);
     
-    CommandResult editIndex(UserVisitPK userVisitPK, EditIndexForm form);
+    CommandResult<EditIndexResult> editIndex(UserVisitPK userVisitPK, EditIndexForm form);
     
-    CommandResult deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form);
+    CommandResult<VoidResult> deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form);
     
     // --------------------------------------------------------------------------------
     //   Index Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form);
+    CommandResult<VoidResult> createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form);
     
-    CommandResult getIndexDescription(UserVisitPK userVisitPK, GetIndexDescriptionForm form);
+    CommandResult<GetIndexDescriptionResult> getIndexDescription(UserVisitPK userVisitPK, GetIndexDescriptionForm form);
     
-    CommandResult getIndexDescriptions(UserVisitPK userVisitPK, GetIndexDescriptionsForm form);
+    CommandResult<GetIndexDescriptionsResult> getIndexDescriptions(UserVisitPK userVisitPK, GetIndexDescriptionsForm form);
     
-    CommandResult editIndexDescription(UserVisitPK userVisitPK, EditIndexDescriptionForm form);
+    CommandResult<EditIndexDescriptionResult> editIndexDescription(UserVisitPK userVisitPK, EditIndexDescriptionForm form);
     
-    CommandResult deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form);
+    CommandResult<VoidResult> deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
     
-    CommandResult updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form);
+    CommandResult<UpdateIndexesResult> updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form);
     
-    CommandResult forceReindex(UserVisitPK userVisitPK, ForceReindexForm form);
+    CommandResult<VoidResult> forceReindex(UserVisitPK userVisitPK, ForceReindexForm form);
     
 }

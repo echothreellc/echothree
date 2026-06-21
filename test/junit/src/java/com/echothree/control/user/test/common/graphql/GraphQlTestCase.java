@@ -69,8 +69,8 @@ public abstract class GraphQlTestCase {
         
         if(o instanceof Double) {
             result = (double)o;
-        } else if(o instanceof String) {
-            result = Double.parseDouble((String)o);
+        } else if(o instanceof String string) {
+            result = Double.parseDouble(string);
         } else {
             throw new Exception("Unidentified type for o");
         }
@@ -83,11 +83,13 @@ public abstract class GraphQlTestCase {
         return (String)PropertyUtils.getProperty(bean, name);
     }
 
+    @SuppressWarnings("unchecked")
     protected List<Map<String, Object>> getList(Object bean, String name)
             throws Exception {
         return (List<Map<String, Object>>)PropertyUtils.getProperty(bean, name);
     }
 
+    @SuppressWarnings("unchecked")
     protected Map<String, Object> getMap(Object bean, String name)
             throws Exception {
         return (Map<String, Object>)PropertyUtils.getProperty(bean, name);

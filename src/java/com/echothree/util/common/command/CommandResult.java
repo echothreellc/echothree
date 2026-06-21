@@ -20,34 +20,34 @@ import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.Messages;
 import java.io.Serializable;
 
-public class CommandResult
+public class CommandResult<R extends BaseResult>
         implements Serializable {
 
-    SecurityResult securityResult;
-    ValidationResult validationResult;
-    ExecutionResult executionResult;
+    final private SecurityResult securityResult;
+    final private ValidationResult validationResult;
+    final private ExecutionResult<R> executionResult;
 
     /** Creates a new instance of CommandResult */
-    public CommandResult(SecurityResult securityResult, ValidationResult validationResult, ExecutionResult executionResult) {
+    public CommandResult(final SecurityResult securityResult, final ValidationResult validationResult, final ExecutionResult<R> executionResult) {
         this.securityResult = securityResult;
         this.validationResult = validationResult;
         this.executionResult = executionResult;
     }
 
     public boolean hasSecurityMessages() {
-        return securityResult == null ? false : securityResult.getHasMessages();
+        return securityResult != null && securityResult.getHasMessages();
     }
 
     public boolean hasValidationErrors() {
-        return validationResult == null ? false : validationResult.getHasErrors();
+        return validationResult != null && validationResult.getHasErrors();
     }
 
     public boolean hasExecutionWarnings() {
-        return executionResult == null ? false : executionResult.getHasWarnings();
+        return executionResult != null && executionResult.getHasWarnings();
     }
 
     public boolean hasExecutionErrors() {
-        return executionResult == null ? false : executionResult.getHasErrors();
+        return executionResult != null && executionResult.getHasErrors();
     }
 
     public boolean hasErrors() {
@@ -74,8 +74,16 @@ public class CommandResult
         return validationResult;
     }
 
-    public ExecutionResult getExecutionResult() {
+    public ExecutionResult<R> getExecutionResult() {
         return executionResult;
+    }
+
+    public R getResult() {
+        return executionResult == null ? null : executionResult.getResult();
+    }
+
+    public <T extends BaseResult> T getResult(Class<T> resultClass) {
+        return executionResult == null ? null : executionResult.getResult(resultClass);
     }
 
     public boolean containsSecurityMessage(String key) {

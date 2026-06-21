@@ -17,8 +17,10 @@
 package com.echothree.control.user.sales.common;
 
 import com.echothree.control.user.sales.common.form.*;
+import com.echothree.control.user.sales.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface SalesService
         extends SalesForms {
@@ -33,74 +35,74 @@ public interface SalesService
     //   Sales Order Batches
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form);
+    CommandResult<CreateSalesOrderBatchResult> createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form);
     
-    CommandResult getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form);
+    CommandResult<GetSalesOrderBatchResult> getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form);
 
-    CommandResult getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form);
+    CommandResult<GetSalesOrderBatchesResult> getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form);
     
-    CommandResult getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form);
+    CommandResult<GetSalesOrderBatchStatusChoicesResult> getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form);
     
-    CommandResult setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form);
+    CommandResult<VoidResult> setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form);
     
-    CommandResult editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form);
+    CommandResult<EditSalesOrderBatchResult> editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form);
 
-    CommandResult deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form);
+    CommandResult<VoidResult> deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Orders
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form);
+    CommandResult<CreateSalesOrderResult> createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form);
     
-    CommandResult getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form);
+    CommandResult<GetSalesOrderStatusChoicesResult> getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form);
     
-    CommandResult setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form);
+    CommandResult<VoidResult> setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Payment Preferences
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form);
+    CommandResult<CreateSalesOrderPaymentPreferenceResult> createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Times
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form);
+    CommandResult<VoidResult> createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form);
     
-    CommandResult getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form);
+    CommandResult<GetSalesOrderTimeResult> getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form);
 
-    CommandResult getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form);
+    CommandResult<GetSalesOrderTimesResult> getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form);
     
-    CommandResult editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form);
+    CommandResult<EditSalesOrderTimeResult> editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form);
 
-    CommandResult deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
+    CommandResult<VoidResult> deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Shipment Groups
     // -------------------------------------------------------------------------
 
-    public CommandResult editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form);
+    public CommandResult<EditSalesOrderShipmentGroupResult> editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form);
 
     // -------------------------------------------------------------------------
     //   Sales Order Lines
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form);
+    CommandResult<CreateSalesOrderLineResult> createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form);
     
     // -------------------------------------------------------------------------
     //   Sales Order Line Times
     // -------------------------------------------------------------------------
     
-    CommandResult createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form);
+    CommandResult<VoidResult> createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form);
     
-    CommandResult getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form);
+    CommandResult<GetSalesOrderLineTimeResult> getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form);
 
-    CommandResult getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form);
+    CommandResult<GetSalesOrderLineTimesResult> getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form);
     
-    CommandResult editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form);
+    CommandResult<EditSalesOrderLineTimeResult> editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form);
 
-    CommandResult deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form);
+    CommandResult<VoidResult> deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form);
 
 }

@@ -70,10 +70,10 @@ public class ItemVolumeTypeHandler
 
                     createForm.set(spec.get());
 
-                    commandResult = itemService.createItemVolumeTypeDescription(initialDataParser.getUserVisit(), createForm);
+                    var createItemVolumeTypeDescriptionCommandResult = itemService.createItemVolumeTypeDescription(initialDataParser.getUserVisit(), createForm);
 
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createItemVolumeTypeDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createItemVolumeTypeDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

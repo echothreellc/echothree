@@ -18,9 +18,11 @@ package com.echothree.control.user.shipment.server;
 
 import com.echothree.control.user.shipment.common.ShipmentRemote;
 import com.echothree.control.user.shipment.common.form.*;
+import com.echothree.control.user.shipment.common.result.*;
 import com.echothree.control.user.shipment.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -43,37 +45,37 @@ public class ShipmentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form) {
+    public CommandResult<CreateFreeOnBoardResult> createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form) {
         return CDI.current().select(CreateFreeOnBoardCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form) {
+    public CommandResult<GetFreeOnBoardsResult> getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form) {
         return CDI.current().select(GetFreeOnBoardsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form) {
+    public CommandResult<GetFreeOnBoardResult> getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form) {
         return CDI.current().select(GetFreeOnBoardCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form) {
+    public CommandResult<GetFreeOnBoardChoicesResult> getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form) {
         return CDI.current().select(GetFreeOnBoardChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form) {
+    public CommandResult<VoidResult> setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form) {
         return CDI.current().select(SetDefaultFreeOnBoardCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form) {
+    public CommandResult<EditFreeOnBoardResult> editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form) {
         return CDI.current().select(EditFreeOnBoardCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form) {
+    public CommandResult<VoidResult> deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form) {
         return CDI.current().select(DeleteFreeOnBoardCommand.class).get().run(userVisitPK, form);
     }
 
@@ -82,22 +84,22 @@ public class ShipmentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form) {
+    public CommandResult<VoidResult> createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form) {
         return CDI.current().select(CreateFreeOnBoardDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form) {
+    public CommandResult<GetFreeOnBoardDescriptionsResult> getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form) {
         return CDI.current().select(GetFreeOnBoardDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form) {
+    public CommandResult<EditFreeOnBoardDescriptionResult> editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form) {
         return CDI.current().select(EditFreeOnBoardDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form) {
+    public CommandResult<VoidResult> deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form) {
         return CDI.current().select(DeleteFreeOnBoardDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -106,37 +108,37 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form) {
+    public CommandResult<VoidResult> createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form) {
         return CDI.current().select(CreateShipmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTypeChoices(UserVisitPK userVisitPK, GetShipmentTypeChoicesForm form) {
+    public CommandResult<GetShipmentTypeChoicesResult> getShipmentTypeChoices(UserVisitPK userVisitPK, GetShipmentTypeChoicesForm form) {
         return CDI.current().select(GetShipmentTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentType(UserVisitPK userVisitPK, GetShipmentTypeForm form) {
+    public CommandResult<GetShipmentTypeResult> getShipmentType(UserVisitPK userVisitPK, GetShipmentTypeForm form) {
         return CDI.current().select(GetShipmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTypes(UserVisitPK userVisitPK, GetShipmentTypesForm form) {
+    public CommandResult<GetShipmentTypesResult> getShipmentTypes(UserVisitPK userVisitPK, GetShipmentTypesForm form) {
         return CDI.current().select(GetShipmentTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultShipmentType(UserVisitPK userVisitPK, SetDefaultShipmentTypeForm form) {
+    public CommandResult<VoidResult> setDefaultShipmentType(UserVisitPK userVisitPK, SetDefaultShipmentTypeForm form) {
         return CDI.current().select(SetDefaultShipmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentType(UserVisitPK userVisitPK, EditShipmentTypeForm form) {
+    public CommandResult<EditShipmentTypeResult> editShipmentType(UserVisitPK userVisitPK, EditShipmentTypeForm form) {
         return CDI.current().select(EditShipmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentType(UserVisitPK userVisitPK, DeleteShipmentTypeForm form) {
+    public CommandResult<VoidResult> deleteShipmentType(UserVisitPK userVisitPK, DeleteShipmentTypeForm form) {
         return CDI.current().select(DeleteShipmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -145,27 +147,27 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentTypeDescription(UserVisitPK userVisitPK, CreateShipmentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createShipmentTypeDescription(UserVisitPK userVisitPK, CreateShipmentTypeDescriptionForm form) {
         return CDI.current().select(CreateShipmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTypeDescription(UserVisitPK userVisitPK, GetShipmentTypeDescriptionForm form) {
+    public CommandResult<GetShipmentTypeDescriptionResult> getShipmentTypeDescription(UserVisitPK userVisitPK, GetShipmentTypeDescriptionForm form) {
         return CDI.current().select(GetShipmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTypeDescriptionsForm form) {
+    public CommandResult<GetShipmentTypeDescriptionsResult> getShipmentTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTypeDescriptionsForm form) {
         return CDI.current().select(GetShipmentTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentTypeDescription(UserVisitPK userVisitPK, EditShipmentTypeDescriptionForm form) {
+    public CommandResult<EditShipmentTypeDescriptionResult> editShipmentTypeDescription(UserVisitPK userVisitPK, EditShipmentTypeDescriptionForm form) {
         return CDI.current().select(EditShipmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteShipmentTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTypeDescriptionForm form) {
         return CDI.current().select(DeleteShipmentTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -174,37 +176,37 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form) {
+    public CommandResult<VoidResult> createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form) {
         return CDI.current().select(CreateShipmentTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTimeTypeChoices(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form) {
+    public CommandResult<GetShipmentTimeTypeChoicesResult> getShipmentTimeTypeChoices(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form) {
         return CDI.current().select(GetShipmentTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTimeType(UserVisitPK userVisitPK, GetShipmentTimeTypeForm form) {
+    public CommandResult<GetShipmentTimeTypeResult> getShipmentTimeType(UserVisitPK userVisitPK, GetShipmentTimeTypeForm form) {
         return CDI.current().select(GetShipmentTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTimeTypes(UserVisitPK userVisitPK, GetShipmentTimeTypesForm form) {
+    public CommandResult<GetShipmentTimeTypesResult> getShipmentTimeTypes(UserVisitPK userVisitPK, GetShipmentTimeTypesForm form) {
         return CDI.current().select(GetShipmentTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultShipmentTimeType(UserVisitPK userVisitPK, SetDefaultShipmentTimeTypeForm form) {
+    public CommandResult<VoidResult> setDefaultShipmentTimeType(UserVisitPK userVisitPK, SetDefaultShipmentTimeTypeForm form) {
         return CDI.current().select(SetDefaultShipmentTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentTimeType(UserVisitPK userVisitPK, EditShipmentTimeTypeForm form) {
+    public CommandResult<EditShipmentTimeTypeResult> editShipmentTimeType(UserVisitPK userVisitPK, EditShipmentTimeTypeForm form) {
         return CDI.current().select(EditShipmentTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentTimeType(UserVisitPK userVisitPK, DeleteShipmentTimeTypeForm form) {
+    public CommandResult<VoidResult> deleteShipmentTimeType(UserVisitPK userVisitPK, DeleteShipmentTimeTypeForm form) {
         return CDI.current().select(DeleteShipmentTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -213,27 +215,27 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentTimeTypeDescription(UserVisitPK userVisitPK, CreateShipmentTimeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createShipmentTimeTypeDescription(UserVisitPK userVisitPK, CreateShipmentTimeTypeDescriptionForm form) {
         return CDI.current().select(CreateShipmentTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTimeTypeDescription(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionForm form) {
+    public CommandResult<GetShipmentTimeTypeDescriptionResult> getShipmentTimeTypeDescription(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionForm form) {
         return CDI.current().select(GetShipmentTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentTimeTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionsForm form) {
+    public CommandResult<GetShipmentTimeTypeDescriptionsResult> getShipmentTimeTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionsForm form) {
         return CDI.current().select(GetShipmentTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentTimeTypeDescription(UserVisitPK userVisitPK, EditShipmentTimeTypeDescriptionForm form) {
+    public CommandResult<EditShipmentTimeTypeDescriptionResult> editShipmentTimeTypeDescription(UserVisitPK userVisitPK, EditShipmentTimeTypeDescriptionForm form) {
         return CDI.current().select(EditShipmentTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentTimeTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTimeTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteShipmentTimeTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTimeTypeDescriptionForm form) {
         return CDI.current().select(DeleteShipmentTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -242,27 +244,27 @@ public class ShipmentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createShipmentTypeShippingMethod(UserVisitPK userVisitPK, CreateShipmentTypeShippingMethodForm form) {
+    public CommandResult<VoidResult> createShipmentTypeShippingMethod(UserVisitPK userVisitPK, CreateShipmentTypeShippingMethodForm form) {
         return CDI.current().select(CreateShipmentTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getShipmentTypeShippingMethods(UserVisitPK userVisitPK, GetShipmentTypeShippingMethodsForm form) {
+    public CommandResult<GetShipmentTypeShippingMethodsResult> getShipmentTypeShippingMethods(UserVisitPK userVisitPK, GetShipmentTypeShippingMethodsForm form) {
         return CDI.current().select(GetShipmentTypeShippingMethodsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultShipmentTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultShipmentTypeShippingMethodForm form) {
+    public CommandResult<VoidResult> setDefaultShipmentTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultShipmentTypeShippingMethodForm form) {
         return CDI.current().select(SetDefaultShipmentTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editShipmentTypeShippingMethod(UserVisitPK userVisitPK, EditShipmentTypeShippingMethodForm form) {
+    public CommandResult<EditShipmentTypeShippingMethodResult> editShipmentTypeShippingMethod(UserVisitPK userVisitPK, EditShipmentTypeShippingMethodForm form) {
         return CDI.current().select(EditShipmentTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteShipmentTypeShippingMethod(UserVisitPK userVisitPK, DeleteShipmentTypeShippingMethodForm form) {
+    public CommandResult<VoidResult> deleteShipmentTypeShippingMethod(UserVisitPK userVisitPK, DeleteShipmentTypeShippingMethodForm form) {
         return CDI.current().select(DeleteShipmentTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
@@ -271,37 +273,37 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form) {
+    public CommandResult<VoidResult> createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form) {
         return CDI.current().select(CreateShipmentAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAliasTypeChoices(UserVisitPK userVisitPK, GetShipmentAliasTypeChoicesForm form) {
+    public CommandResult<GetShipmentAliasTypeChoicesResult> getShipmentAliasTypeChoices(UserVisitPK userVisitPK, GetShipmentAliasTypeChoicesForm form) {
         return CDI.current().select(GetShipmentAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAliasType(UserVisitPK userVisitPK, GetShipmentAliasTypeForm form) {
+    public CommandResult<GetShipmentAliasTypeResult> getShipmentAliasType(UserVisitPK userVisitPK, GetShipmentAliasTypeForm form) {
         return CDI.current().select(GetShipmentAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAliasTypes(UserVisitPK userVisitPK, GetShipmentAliasTypesForm form) {
+    public CommandResult<GetShipmentAliasTypesResult> getShipmentAliasTypes(UserVisitPK userVisitPK, GetShipmentAliasTypesForm form) {
         return CDI.current().select(GetShipmentAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setDefaultShipmentAliasType(UserVisitPK userVisitPK, SetDefaultShipmentAliasTypeForm form) {
+    public CommandResult<VoidResult> setDefaultShipmentAliasType(UserVisitPK userVisitPK, SetDefaultShipmentAliasTypeForm form) {
         return CDI.current().select(SetDefaultShipmentAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentAliasType(UserVisitPK userVisitPK, EditShipmentAliasTypeForm form) {
+    public CommandResult<EditShipmentAliasTypeResult> editShipmentAliasType(UserVisitPK userVisitPK, EditShipmentAliasTypeForm form) {
         return CDI.current().select(EditShipmentAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentAliasType(UserVisitPK userVisitPK, DeleteShipmentAliasTypeForm form) {
+    public CommandResult<VoidResult> deleteShipmentAliasType(UserVisitPK userVisitPK, DeleteShipmentAliasTypeForm form) {
         return CDI.current().select(DeleteShipmentAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -310,27 +312,27 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentAliasTypeDescription(UserVisitPK userVisitPK, CreateShipmentAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createShipmentAliasTypeDescription(UserVisitPK userVisitPK, CreateShipmentAliasTypeDescriptionForm form) {
         return CDI.current().select(CreateShipmentAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAliasTypeDescription(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionForm form) {
+    public CommandResult<GetShipmentAliasTypeDescriptionResult> getShipmentAliasTypeDescription(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionForm form) {
         return CDI.current().select(GetShipmentAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAliasTypeDescriptions(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionsForm form) {
+    public CommandResult<GetShipmentAliasTypeDescriptionsResult> getShipmentAliasTypeDescriptions(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionsForm form) {
         return CDI.current().select(GetShipmentAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentAliasTypeDescription(UserVisitPK userVisitPK, EditShipmentAliasTypeDescriptionForm form) {
+    public CommandResult<EditShipmentAliasTypeDescriptionResult> editShipmentAliasTypeDescription(UserVisitPK userVisitPK, EditShipmentAliasTypeDescriptionForm form) {
         return CDI.current().select(EditShipmentAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentAliasTypeDescription(UserVisitPK userVisitPK, DeleteShipmentAliasTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteShipmentAliasTypeDescription(UserVisitPK userVisitPK, DeleteShipmentAliasTypeDescriptionForm form) {
         return CDI.current().select(DeleteShipmentAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -339,27 +341,27 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult createShipmentAlias(UserVisitPK userVisitPK, CreateShipmentAliasForm form) {
+    public CommandResult<VoidResult> createShipmentAlias(UserVisitPK userVisitPK, CreateShipmentAliasForm form) {
         return CDI.current().select(CreateShipmentAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAlias(UserVisitPK userVisitPK, GetShipmentAliasForm form) {
+    public CommandResult<GetShipmentAliasResult> getShipmentAlias(UserVisitPK userVisitPK, GetShipmentAliasForm form) {
         return CDI.current().select(GetShipmentAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getShipmentAliases(UserVisitPK userVisitPK, GetShipmentAliasesForm form) {
+    public CommandResult<GetShipmentAliasesResult> getShipmentAliases(UserVisitPK userVisitPK, GetShipmentAliasesForm form) {
         return CDI.current().select(GetShipmentAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editShipmentAlias(UserVisitPK userVisitPK, EditShipmentAliasForm form) {
+    public CommandResult<EditShipmentAliasResult> editShipmentAlias(UserVisitPK userVisitPK, EditShipmentAliasForm form) {
         return CDI.current().select(EditShipmentAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deleteShipmentAlias(UserVisitPK userVisitPK, DeleteShipmentAliasForm form) {
+    public CommandResult<VoidResult> deleteShipmentAlias(UserVisitPK userVisitPK, DeleteShipmentAliasForm form) {
         return CDI.current().select(DeleteShipmentAliasCommand.class).get().run(userVisitPK, form);
     }
 

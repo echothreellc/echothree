@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
@@ -130,13 +131,13 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         this.form = form;
     }
 
-    public Future<CommandResult> runAsync(UserVisitPK userVisitPK, F form) {
+    public <R extends BaseResult> Future<CommandResult<R>> runAsync(UserVisitPK userVisitPK, F form) {
         initForRun(form);
 
         return super.runAsync(userVisitPK);
     }
 
-    public CommandResult run(UserVisitPK userVisitPK, F form) {
+    public <R extends BaseResult> CommandResult<R> run(UserVisitPK userVisitPK, F form) {
         initForRun(form);
 
         return super.run(userVisitPK);

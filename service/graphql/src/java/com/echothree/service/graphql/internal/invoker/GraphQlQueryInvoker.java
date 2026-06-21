@@ -19,7 +19,6 @@ package com.echothree.service.graphql.internal.invoker;
 
 import com.echothree.control.user.graphql.common.GraphQlUtil;
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
-import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInput;
 import javax.naming.NamingException;
@@ -40,8 +39,7 @@ public class GraphQlQueryInvoker {
 
         var commandResult = futureCommandResult.get();
         if(!commandResult.hasErrors()) {
-            var executionResult = commandResult.getExecutionResult();
-            var result = (ExecuteGraphQlResult)executionResult.getResult();
+            var result = commandResult.getResult();
 
             graphQlExecutionResult = result.getExecutionResult();
         }
