@@ -1831,8 +1831,7 @@ public class ShipmentControl
         return shipmentAliasTypeTransferCache.getTransfer(userVisit, shipmentAliasType);
     }
 
-    public List<ShipmentAliasTypeTransfer> getShipmentAliasTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
-        var shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
+    public List<ShipmentAliasTypeTransfer> getShipmentAliasTypeTransfers(UserVisit userVisit, Collection<ShipmentAliasType> shipmentAliasTypes) {
         List<ShipmentAliasTypeTransfer> shipmentAliasTypeTransfers = new ArrayList<>(shipmentAliasTypes.size());
 
         shipmentAliasTypes.forEach((shipmentAliasType) ->
@@ -1840,6 +1839,10 @@ public class ShipmentControl
         );
 
         return shipmentAliasTypeTransfers;
+    }
+
+    public List<ShipmentAliasTypeTransfer> getShipmentAliasTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
+        return getShipmentAliasTypeTransfers(userVisit, getShipmentAliasTypes(shipmentType));
     }
 
     public ShipmentAliasTypeChoicesBean getShipmentAliasTypeChoices(String defaultShipmentAliasTypeChoice, Language language,
