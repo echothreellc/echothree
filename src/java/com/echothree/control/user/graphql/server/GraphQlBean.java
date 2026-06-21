@@ -18,6 +18,7 @@ package com.echothree.control.user.graphql.server;
 
 import com.echothree.control.user.graphql.common.GraphQlRemote;
 import com.echothree.control.user.graphql.common.form.*;
+import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.control.user.graphql.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -46,7 +47,7 @@ public class GraphQlBean
 
     @Override
     @Asynchronous
-    public Future<CommandResult> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form) {
+    public Future<CommandResult<ExecuteGraphQlResult>> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form) {
         return CDI.current().select(ExecuteGraphQlCommand.class).get().runAsync(userVisitPK, form);
     }
 
