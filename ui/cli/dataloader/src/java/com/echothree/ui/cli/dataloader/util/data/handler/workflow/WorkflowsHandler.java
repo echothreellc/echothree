@@ -72,10 +72,10 @@ public class WorkflowsHandler
                         createForm.set(spec.get());
 
                         getLogger().debug("Creating: {}", spec.getWorkflowName());
-                        commandResult = workflowService.createWorkflow(initialDataParser.getUserVisit(), createForm);
+                        var createWorkflowCommandResult = workflowService.createWorkflow(initialDataParser.getUserVisit(), createForm);
 
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                        if(createWorkflowCommandResult.hasErrors()) {
+                            getLogger().error(createWorkflowCommandResult.toString());
                         }
                     } else {
                         getLogger().error(commandResult.toString());

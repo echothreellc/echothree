@@ -80,10 +80,10 @@ public class WorkflowStepHandler
                         createForm.set(spec.get());
 
                         getLogger().debug("Creating: {}", spec.getWorkflowName());
-                        commandResult = workflowService.createWorkflowStepDescription(initialDataParser.getUserVisit(), createForm);
+                        var createWorkflowStepDescriptionCommandResult = workflowService.createWorkflowStepDescription(initialDataParser.getUserVisit(), createForm);
 
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                        if(createWorkflowStepDescriptionCommandResult.hasErrors()) {
+                            getLogger().error(createWorkflowStepDescriptionCommandResult.toString());
                         }
                     } else {
                         getLogger().error(commandResult.toString());

@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentpagearea;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentPageAreasResult;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutAreasResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,17 +62,17 @@ public class MainAction
             getContentPageAreasForm.setContentSectionName(contentSectionName);
             getContentPageAreasForm.setContentPageName(contentPageName);
 
-            var commandResult = ContentUtil.getHome().getContentPageAreas(getUserVisitPK(request), getContentPageAreasForm);
-            var executionResult = commandResult.getExecutionResult();
-            var getContentPageAreasResult = (GetContentPageAreasResult)executionResult.getResult();
+            var getContentPageAreasCommandResult = ContentUtil.getHome().getContentPageAreas(getUserVisitPK(request), getContentPageAreasForm);
+            var getContentPageAreasExecutionResult = getContentPageAreasCommandResult.getExecutionResult();
+            var getContentPageAreasResult = getContentPageAreasExecutionResult.getResult();
             
             getContentPageLayoutAreasForm.setContentCollectionName(contentCollectionName);
             getContentPageLayoutAreasForm.setContentSectionName(contentSectionName);
             getContentPageLayoutAreasForm.setContentPageName(contentPageName);
             
-            commandResult = ContentUtil.getHome().getContentPageLayoutAreas(getUserVisitPK(request), getContentPageLayoutAreasForm);
-            executionResult = commandResult.getExecutionResult();
-            var getContentPageLayoutAreasResult = (GetContentPageLayoutAreasResult)executionResult.getResult();
+            var getContentPageLayoutAreasCommandResult = ContentUtil.getHome().getContentPageLayoutAreas(getUserVisitPK(request), getContentPageLayoutAreasForm);
+            var getContentPageLayoutAreasResultExecutionResult = getContentPageLayoutAreasCommandResult.getExecutionResult();
+            var getContentPageLayoutAreasResult = getContentPageLayoutAreasResultExecutionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

@@ -16,16 +16,16 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.index;
 
-import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.IndexService;
+import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.edit.IndexFieldDescriptionEdit;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.control.user.index.common.result.EditIndexFieldDescriptionResult;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -76,10 +76,10 @@ public class IndexFieldHandler
                     createForm.setIndexFieldName(indexFieldName);
                     createForm.set(getAttrsMap(attrs));
 
-                    commandResult = indexService.createIndexFieldDescription(initialDataParser.getUserVisit(), createForm);
+                    var createIndexFieldDescriptionCommandResult = indexService.createIndexFieldDescription(initialDataParser.getUserVisit(), createForm);
                     
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createIndexFieldDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createIndexFieldDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

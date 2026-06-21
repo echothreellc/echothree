@@ -28,8 +28,6 @@ import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCo
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUsesForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.result.EditHarmonizedTariffScheduleCodeResult;
-import com.echothree.control.user.item.common.result.EditHarmonizedTariffScheduleCodeTranslationResult;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeTranslationResult;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUsesResult;
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodesResult;
 import com.echothree.control.user.item.common.spec.HarmonizedTariffScheduleCodeSpec;
@@ -224,7 +222,7 @@ public abstract class HtsCountryParser<H> {
             logger.error(commandResult.toString());
         } else {
             var executionResult = commandResult.getExecutionResult();
-            var editResult = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+            var editResult = executionResult.getResult();
             var harmonizedTariffScheduleCodeTranslation = editResult.getHarmonizedTariffScheduleCodeTranslation();
             var htsc = uniqueCodes.get(code);
             var description = getDescription(htsc);
@@ -239,11 +237,11 @@ public abstract class HtsCountryParser<H> {
                 editCodeTranslationForm.setEditMode(EditMode.LOCK);
                 editCodeTranslationForm.setSpec(getCodeTranslationForm);
                 
-                commandResult = itemService.editHarmonizedTariffScheduleCodeTranslation(userVisitPK, editCodeTranslationForm);
+                var editHarmonizedTariffScheduleCodeTranslationCommandResult = itemService.editHarmonizedTariffScheduleCodeTranslation(userVisitPK, editCodeTranslationForm);
 
-                if(!commandResult.hasErrors()) {
-                    executionResult = commandResult.getExecutionResult();
-                    var editTranslationResult = (EditHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
+                if(!editHarmonizedTariffScheduleCodeTranslationCommandResult.hasErrors()) {
+                    var editHarmonizedTariffScheduleCodeTranslationExecutionResult = editHarmonizedTariffScheduleCodeTranslationCommandResult.getExecutionResult();
+                    var editTranslationResult = editHarmonizedTariffScheduleCodeTranslationExecutionResult.getResult();
                     var edit = editTranslationResult.getEdit();
 
                     edit.setDescription(StringUtils.getInstance().left(description, 80));
@@ -253,9 +251,9 @@ public abstract class HtsCountryParser<H> {
                     editCodeTranslationForm.setEditMode(EditMode.UPDATE);
                     editCodeTranslationForm.setEdit(edit);
 
-                    commandResult = itemService.editHarmonizedTariffScheduleCodeTranslation(userVisitPK, editCodeTranslationForm);
+                    editHarmonizedTariffScheduleCodeTranslationCommandResult = itemService.editHarmonizedTariffScheduleCodeTranslation(userVisitPK, editCodeTranslationForm);
 
-                    if(commandResult.hasErrors()) {
+                    if(editHarmonizedTariffScheduleCodeTranslationCommandResult.hasErrors()) {
                         logger.error("  editHarmonizedTariffScheduleCodeTranslation update failed for {}: {}", code, commandResult);
                     }
                 } else {

@@ -75,10 +75,10 @@ public class SecurityRoleHandler
 
                     createForm.set(spec.get());
 
-                    commandResult = securityService.createSecurityRoleDescription(initialDataParser.getUserVisit(), createForm);
+                    var createSecurityRoleDescriptionCommandResult = securityService.createSecurityRoleDescription(initialDataParser.getUserVisit(), createForm);
                     
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createSecurityRoleDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createSecurityRoleDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

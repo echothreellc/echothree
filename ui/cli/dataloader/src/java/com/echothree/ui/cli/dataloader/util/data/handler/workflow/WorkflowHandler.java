@@ -22,7 +22,6 @@ import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.result.EditWorkflowDescriptionResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -83,10 +82,10 @@ public class WorkflowHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getWorkflowName());
-                            commandResult = workflowService.createWorkflowDescription(initialDataParser.getUserVisit(), createForm);
+                            var createWorkflowDescriptionCommandResult = workflowService.createWorkflowDescription(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createWorkflowDescriptionCommandResult.hasErrors()) {
+                                getLogger().error(createWorkflowDescriptionCommandResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());
@@ -132,10 +131,10 @@ public class WorkflowHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getWorkflowStepName());
-                            commandResult = workflowService.createWorkflowStep(initialDataParser.getUserVisit(), createForm);
+                            var createWorkflowStepCommandResult = workflowService.createWorkflowStep(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createWorkflowStepCommandResult.hasErrors()) {
+                                getLogger().error(createWorkflowStepCommandResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());
@@ -184,10 +183,10 @@ public class WorkflowHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getWorkflowDestinationName());
-                            commandResult = workflowService.createWorkflowDestination(initialDataParser.getUserVisit(), createForm);
+                            var createWorkflowDestinationCommandResult = workflowService.createWorkflowDestination(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createWorkflowDestinationCommandResult.hasErrors()) {
+                                getLogger().error(createWorkflowDestinationCommandResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());
@@ -236,10 +235,10 @@ public class WorkflowHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getWorkflowEntranceName());
-                            commandResult = workflowService.createWorkflowEntrance(initialDataParser.getUserVisit(), createForm);
+                            var createWorkflowEntranceCommandResult = workflowService.createWorkflowEntrance(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createWorkflowEntranceCommandResult.hasErrors()) {
+                                getLogger().error(createWorkflowEntranceCommandResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());

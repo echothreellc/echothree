@@ -70,10 +70,10 @@ public class ItemWeightTypeHandler
 
                     createForm.set(spec.get());
 
-                    commandResult = itemService.createItemWeightTypeDescription(initialDataParser.getUserVisit(), createForm);
+                    var createItemWeightTypeDescriptionCommandResult = itemService.createItemWeightTypeDescription(initialDataParser.getUserVisit(), createForm);
 
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createItemWeightTypeDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createItemWeightTypeDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());
