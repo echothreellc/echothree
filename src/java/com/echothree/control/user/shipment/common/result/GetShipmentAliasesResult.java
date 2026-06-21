@@ -27,6 +27,9 @@ public interface GetShipmentAliasesResult
     ShipmentTransfer getShipment();
     void setShipment(ShipmentTransfer shipment);
 
+    Long getShipmentAliasCount();
+    void setShipmentAliasCount(Long shipmentAliasCount);
+
     List<ShipmentAliasTransfer> getShipmentAliases();
     void setShipmentAliases(List<ShipmentAliasTransfer> shipmentAliases);
     
