@@ -725,12 +725,13 @@ public class ShipmentControl
         return getShipmentTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countShipmentTimeTypes() {
+    public long countShipmentTimeTypesByShipmentType(ShipmentType shipmentType) {
         return session.queryForLong("""
                         SELECT COUNT(*)
-                        FROM shipmenttimetypes
+                        FROM shipmenttimetypes, shipmenttimetypedetails
                         JOIN shipmenttimetypedetails ON shptimtypdt_shipmenttimetypedetailid = shptimtyp_activedetailid
-                        """);
+                        AND shptimtypdt_shptyp_shipmenttypeid = ?
+                        """, shipmentType);
     }
 
     private static final Map<EntityPermission, String> getShipmentTimeTypeByNameQueries;
@@ -853,15 +854,18 @@ public class ShipmentControl
         return shipmentTimeTypeTransferCache.getTransfer(userVisit, shipmentTimeType);
     }
 
-    public List<ShipmentTimeTypeTransfer> getShipmentTimeTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
-        var shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
-        List<ShipmentTimeTypeTransfer> shipmentTimeTypeTransfers = new ArrayList<>(shipmentTimeTypes.size());
+    public List<ShipmentTimeTypeTransfer> getShipmentTimeTypeTransfers(UserVisit userVisit, Collection<ShipmentTimeType> shipmentTimeTypes) {
+        var shipmentTimeTypeTransfers = new ArrayList<ShipmentTimeTypeTransfer>(shipmentTimeTypes.size());
 
-        shipmentTimeTypes.forEach((shipmentTimeType) ->
+        shipmentTimeTypes.forEach(shipmentTimeType ->
                 shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(userVisit, shipmentTimeType))
         );
 
         return shipmentTimeTypeTransfers;
+    }
+
+    public List<ShipmentTimeTypeTransfer> getShipmentTimeTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
+        return getShipmentTimeTypeTransfers(userVisit, getShipmentTimeTypes(shipmentType));
     }
 
     public ShipmentTimeTypeChoicesBean getShipmentTimeTypeChoices(String defaultShipmentTimeTypeChoice, Language language, boolean allowNullChoice,

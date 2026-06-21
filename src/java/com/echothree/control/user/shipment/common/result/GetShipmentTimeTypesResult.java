@@ -17,12 +17,19 @@
 package com.echothree.control.user.shipment.common.result;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeTransfer;
+import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetShipmentTimeTypesResult
         extends BaseResult {
     
+    ShipmentTypeTransfer getShipmentType();
+    void setShipmentType(ShipmentTypeTransfer shipmentType);
+
+    Long getShipmentTimeTypeCount();
+    void setShipmentTimeTypeCount(Long shipmentTimeTypeCount);
+
     List<ShipmentTimeTypeTransfer> getShipmentTimeTypes();
     void setShipmentTimeTypes(List<ShipmentTimeTypeTransfer> shipmentTimeTypes);
     
