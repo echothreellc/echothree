@@ -48,7 +48,7 @@ public interface CancellationPolicyService
     //   Cancellation Kinds
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCancellationKind(UserVisitPK userVisitPK, CreateCancellationKindForm form);
+    CommandResult<CreateCancellationKindResult> createCancellationKind(UserVisitPK userVisitPK, CreateCancellationKindForm form);
     
     CommandResult<GetCancellationKindsResult> getCancellationKinds(UserVisitPK userVisitPK, GetCancellationKindsForm form);
     

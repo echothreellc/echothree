@@ -34,7 +34,7 @@ public interface WishlistService
     //   Wishlist Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form);
+    CommandResult<CreateWishlistTypeResult> createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form);
     
     CommandResult<GetWishlistTypeResult> getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form);
     
@@ -64,7 +64,7 @@ public interface WishlistService
     //   Wishlist Type Priorities
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form);
+    CommandResult<CreateWishlistPriorityResult> createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form);
     
     CommandResult<GetWishlistPriorityResult> getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form);
     

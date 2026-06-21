@@ -77,7 +77,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form) {
+    public CommandResult<CreateContentPageLayoutResult> createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form) {
         return CDI.current().select(CreateContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
 
@@ -173,7 +173,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCollection(UserVisitPK userVisitPK, CreateContentCollectionForm form) {
+    public CommandResult<CreateContentCollectionResult> createContentCollection(UserVisitPK userVisitPK, CreateContentCollectionForm form) {
         return CDI.current().select(CreateContentCollectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -368,7 +368,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCatalog(UserVisitPK userVisitPK, CreateContentCatalogForm form) {
+    public CommandResult<CreateContentCatalogResult> createContentCatalog(UserVisitPK userVisitPK, CreateContentCatalogForm form) {
         return CDI.current().select(CreateContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
@@ -445,7 +445,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentCategory(UserVisitPK userVisitPK, CreateContentCategoryForm form) {
+    public CommandResult<CreateContentCategoryResult> createContentCategory(UserVisitPK userVisitPK, CreateContentCategoryForm form) {
         return CDI.current().select(CreateContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -576,7 +576,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createContentWebAddress(UserVisitPK userVisitPK, CreateContentWebAddressForm form) {
+    public CommandResult<CreateContentWebAddressResult> createContentWebAddress(UserVisitPK userVisitPK, CreateContentWebAddressForm form) {
         return CDI.current().select(CreateContentWebAddressCommand.class).get().run(userVisitPK, form);
     }
     

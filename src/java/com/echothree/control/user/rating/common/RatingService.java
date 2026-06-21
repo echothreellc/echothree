@@ -94,7 +94,7 @@ public interface RatingService
     //   Ratings
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createRating(UserVisitPK userVisitPK, CreateRatingForm form);
+    CommandResult<CreateRatingResult> createRating(UserVisitPK userVisitPK, CreateRatingForm form);
     
     CommandResult<GetRatingResult> getRating(UserVisitPK userVisitPK, GetRatingForm form);
     

@@ -62,7 +62,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form) {
+    public CommandResult<CreatePaymentMethodTypeResult> createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form) {
         return CDI.current().select(CreatePaymentMethodTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -125,7 +125,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form) {
+    public CommandResult<CreatePaymentMethodTypePartyTypeResult> createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form) {
         return CDI.current().select(CreatePaymentMethodTypePartyTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -164,7 +164,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentProcessorType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form) {
+    public CommandResult<CreatePaymentProcessorTypeResult> createPaymentProcessorType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form) {
         return CDI.current().select(CreatePaymentProcessorTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -227,7 +227,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeTypeForm form) {
+    public CommandResult<CreatePaymentProcessorTypeCodeTypeResult> createPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeTypeForm form) {
         return CDI.current().select(CreatePaymentProcessorTypeCodeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -295,7 +295,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form) {
+    public CommandResult<CreatePaymentProcessorTypeCodeResult> createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form) {
         return CDI.current().select(CreatePaymentProcessorTypeCodeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -363,7 +363,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form) {
+    public CommandResult<CreatePaymentProcessorTypeActionResult> createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form) {
         return CDI.current().select(CreatePaymentProcessorTypeActionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -624,7 +624,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentProcessorActionType(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeForm form) {
+    public CommandResult<CreatePaymentProcessorActionTypeResult> createPaymentProcessorActionType(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeForm form) {
         return CDI.current().select(CreatePaymentProcessorActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -687,7 +687,7 @@ public class PaymentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPaymentProcessorResultCode(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeForm form) {
+    public CommandResult<CreatePaymentProcessorResultCodeResult> createPaymentProcessorResultCode(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeForm form) {
         return CDI.current().select(CreatePaymentProcessorResultCodeCommand.class).get().run(userVisitPK, form);
     }
 

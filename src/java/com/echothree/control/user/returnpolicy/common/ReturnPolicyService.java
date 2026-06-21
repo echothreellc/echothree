@@ -48,7 +48,7 @@ public interface ReturnPolicyService
     //   Return Kinds
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createReturnKind(UserVisitPK userVisitPK, CreateReturnKindForm form);
+    CommandResult<CreateReturnKindResult> createReturnKind(UserVisitPK userVisitPK, CreateReturnKindForm form);
     
     CommandResult<GetReturnKindsResult> getReturnKinds(UserVisitPK userVisitPK, GetReturnKindsForm form);
     

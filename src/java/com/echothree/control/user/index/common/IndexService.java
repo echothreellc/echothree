@@ -130,7 +130,7 @@ public interface IndexService
     //   Utilities
     // -------------------------------------------------------------------------
     
-    CommandResult<?> updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form);
+    CommandResult<UpdateIndexesResult> updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form);
     
     CommandResult<?> forceReindex(UserVisitPK userVisitPK, ForceReindexForm form);
     

@@ -92,7 +92,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form) {
+    public CommandResult<CreateItemAccountingCategoryResult> createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form) {
         return CDI.current().select(CreateItemAccountingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -397,7 +397,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form) {
+    public CommandResult<CreateGlAccountResult> createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form) {
         return CDI.current().select(CreateGlAccountCommand.class).get().run(userVisitPK, form);
     }
     
@@ -460,7 +460,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form) {
+    public CommandResult<CreateTransactionTimeTypeResult> createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form) {
         return CDI.current().select(CreateTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 

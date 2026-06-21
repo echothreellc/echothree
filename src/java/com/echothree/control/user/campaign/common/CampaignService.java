@@ -34,7 +34,7 @@ public interface CampaignService
     //   Campaigns
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaign(UserVisitPK userVisitPK, CreateCampaignForm form);
+    CommandResult<CreateCampaignResult> createCampaign(UserVisitPK userVisitPK, CreateCampaignForm form);
     
     CommandResult<GetCampaignChoicesResult> getCampaignChoices(UserVisitPK userVisitPK, GetCampaignChoicesForm form);
     
@@ -70,7 +70,7 @@ public interface CampaignService
     //   Campaign Sources
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignSource(UserVisitPK userVisitPK, CreateCampaignSourceForm form);
+    CommandResult<CreateCampaignSourceResult> createCampaignSource(UserVisitPK userVisitPK, CreateCampaignSourceForm form);
     
     CommandResult<GetCampaignSourceChoicesResult> getCampaignSourceChoices(UserVisitPK userVisitPK, GetCampaignSourceChoicesForm form);
     
@@ -106,7 +106,7 @@ public interface CampaignService
     //   Campaign Mediums
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignMedium(UserVisitPK userVisitPK, CreateCampaignMediumForm form);
+    CommandResult<CreateCampaignMediumResult> createCampaignMedium(UserVisitPK userVisitPK, CreateCampaignMediumForm form);
     
     CommandResult<GetCampaignMediumChoicesResult> getCampaignMediumChoices(UserVisitPK userVisitPK, GetCampaignMediumChoicesForm form);
     
@@ -142,7 +142,7 @@ public interface CampaignService
     //   Campaign Terms
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignTerm(UserVisitPK userVisitPK, CreateCampaignTermForm form);
+    CommandResult<CreateCampaignTermResult> createCampaignTerm(UserVisitPK userVisitPK, CreateCampaignTermForm form);
     
     CommandResult<GetCampaignTermChoicesResult> getCampaignTermChoices(UserVisitPK userVisitPK, GetCampaignTermChoicesForm form);
     
@@ -178,7 +178,7 @@ public interface CampaignService
     //   Campaign Contents
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createCampaignContent(UserVisitPK userVisitPK, CreateCampaignContentForm form);
+    CommandResult<CreateCampaignContentResult> createCampaignContent(UserVisitPK userVisitPK, CreateCampaignContentForm form);
     
     CommandResult<GetCampaignContentChoicesResult> getCampaignContentChoices(UserVisitPK userVisitPK, GetCampaignContentChoicesForm form);
     

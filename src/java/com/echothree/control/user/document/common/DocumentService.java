@@ -130,7 +130,7 @@ public interface DocumentService
     //   Party Documents
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form);
+    CommandResult<CreatePartyDocumentResult> createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form);
 
     CommandResult<GetPartyDocumentResult> getPartyDocument(UserVisitPK userVisitPK, GetPartyDocumentForm form);
 

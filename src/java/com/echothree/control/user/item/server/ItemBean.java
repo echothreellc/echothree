@@ -176,7 +176,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItemCategory(UserVisitPK userVisitPK, CreateItemCategoryForm form) {
+    public CommandResult<CreateItemCategoryResult> createItemCategory(UserVisitPK userVisitPK, CreateItemCategoryForm form) {
         return CDI.current().select(CreateItemCategoryCommand.class).get().run(userVisitPK, form);
     }
 
@@ -345,7 +345,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createItemDescriptionType(UserVisitPK userVisitPK, CreateItemDescriptionTypeForm form) {
+    public CommandResult<CreateItemDescriptionTypeResult> createItemDescriptionType(UserVisitPK userVisitPK, CreateItemDescriptionTypeForm form) {
         return CDI.current().select(CreateItemDescriptionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -670,7 +670,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItemDescription(UserVisitPK userVisitPK, CreateItemDescriptionForm form) {
+    public CommandResult<CreateItemDescriptionResult> createItemDescription(UserVisitPK userVisitPK, CreateItemDescriptionForm form) {
         return CDI.current().select(CreateItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1143,7 +1143,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createRelatedItemType(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form) {
+    public CommandResult<CreateRelatedItemTypeResult> createRelatedItemType(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form) {
         return CDI.current().select(CreateRelatedItemTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1211,7 +1211,7 @@ public class ItemBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createRelatedItem(UserVisitPK userVisitPK, CreateRelatedItemForm form) {
+    public CommandResult<CreateRelatedItemResult> createRelatedItem(UserVisitPK userVisitPK, CreateRelatedItemForm form) {
         return CDI.current().select(CreateRelatedItemCommand.class).get().run(userVisitPK, form);
     }
     

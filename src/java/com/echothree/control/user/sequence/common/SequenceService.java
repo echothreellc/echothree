@@ -34,7 +34,7 @@ public interface SequenceService
     //   Sequence Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequenceType(UserVisitPK userVisitPK, CreateSequenceTypeForm form);
+    CommandResult<CreateSequenceTypeResult> createSequenceType(UserVisitPK userVisitPK, CreateSequenceTypeForm form);
     
     CommandResult<GetSequenceTypesResult> getSequenceTypes(UserVisitPK userVisitPK, GetSequenceTypesForm form);
     
@@ -100,7 +100,7 @@ public interface SequenceService
     //   Sequences
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createSequence(UserVisitPK userVisitPK, CreateSequenceForm form);
+    CommandResult<CreateSequenceResult> createSequence(UserVisitPK userVisitPK, CreateSequenceForm form);
     
     CommandResult<GetSequencesResult> getSequences(UserVisitPK userVisitPK, GetSequencesForm form);
     

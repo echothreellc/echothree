@@ -190,7 +190,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createPrinterGroupJob(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form) {
+    public CommandResult<CreatePrinterGroupJobResult> createPrinterGroupJob(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form) {
         return CDI.current().select(CreatePrinterGroupJobCommand.class).get().run(userVisitPK, form);
     }
 

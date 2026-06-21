@@ -44,7 +44,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> generateBaseKeys(UserVisitPK userVisitPK) {
+    public CommandResult<GenerateBaseKeysResult> generateBaseKeys(UserVisitPK userVisitPK) {
         return CDI.current().select(GenerateBaseKeysCommand.class).get().run(userVisitPK);
     }
     
@@ -54,7 +54,7 @@ public class CoreBean
     }
     
     @Override
-    public CommandResult<?> changeBaseKeys(UserVisitPK userVisitPK, ChangeBaseKeysForm form) {
+    public CommandResult<ChangeBaseKeysResult> changeBaseKeys(UserVisitPK userVisitPK, ChangeBaseKeysForm form) {
         return CDI.current().select(ChangeBaseKeysCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2120,7 +2120,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createAppearance(UserVisitPK userVisitPK, CreateAppearanceForm form) {
+    public CommandResult<CreateAppearanceResult> createAppearance(UserVisitPK userVisitPK, CreateAppearanceForm form) {
         return CDI.current().select(CreateAppearanceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2236,7 +2236,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createColor(UserVisitPK userVisitPK, CreateColorForm form) {
+    public CommandResult<CreateColorResult> createColor(UserVisitPK userVisitPK, CreateColorForm form) {
         return CDI.current().select(CreateColorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2600,17 +2600,17 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> encrypt(UserVisitPK userVisitPK, EncryptForm form) {
+    public CommandResult<EncryptResult> encrypt(UserVisitPK userVisitPK, EncryptForm form) {
         return CDI.current().select(EncryptCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> decrypt(UserVisitPK userVisitPK, DecryptForm form) {
+    public CommandResult<DecryptResult> decrypt(UserVisitPK userVisitPK, DecryptForm form) {
         return CDI.current().select(DecryptCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult<?> validate(UserVisitPK userVisitPK, ValidateForm form) {
+    public CommandResult<ValidateResult> validate(UserVisitPK userVisitPK, ValidateForm form) {
         return CDI.current().select(ValidateCommand.class).get().run(userVisitPK, form);
     }
 

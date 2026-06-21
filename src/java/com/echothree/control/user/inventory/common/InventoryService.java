@@ -310,7 +310,7 @@ public interface InventoryService
     //   Inventory Transaction Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createInventoryTransactionType(UserVisitPK userVisitPK, CreateInventoryTransactionTypeForm form);
+    CommandResult<CreateInventoryTransactionTypeResult> createInventoryTransactionType(UserVisitPK userVisitPK, CreateInventoryTransactionTypeForm form);
 
     CommandResult<GetInventoryTransactionTypesResult> getInventoryTransactionTypes(UserVisitPK userVisitPK, GetInventoryTransactionTypesForm form);
 

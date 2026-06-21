@@ -44,7 +44,7 @@ public class VendorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form) {
+    public CommandResult<CreateVendorTypeResult> createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form) {
         return CDI.current().select(CreateVendorTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -131,7 +131,7 @@ public class VendorBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form) {
+    public CommandResult<CreateVendorItemResult> createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form) {
         return CDI.current().select(CreateVendorItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -199,7 +199,7 @@ public class VendorBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form) {
+    public CommandResult<CreateItemPurchasingCategoryResult> createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form) {
         return CDI.current().select(CreateItemPurchasingCategoryCommand.class).get().run(userVisitPK, form);
     }
     

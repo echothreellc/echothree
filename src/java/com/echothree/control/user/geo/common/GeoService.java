@@ -98,7 +98,7 @@ public interface GeoService
     //   Geo Code Alias Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createGeoCodeAliasType(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeForm form);
+    CommandResult<CreateGeoCodeAliasTypeResult> createGeoCodeAliasType(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeForm form);
 
     CommandResult<GetGeoCodeAliasTypeChoicesResult> getGeoCodeAliasTypeChoices(UserVisitPK userVisitPK, GetGeoCodeAliasTypeChoicesForm form);
 

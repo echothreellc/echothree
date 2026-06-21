@@ -354,7 +354,7 @@ public class TrainingBean
     }
 
     @Override
-    public CommandResult<?> setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form) {
+    public CommandResult<SetPartyTrainingClassStatusResult> setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form) {
         return CDI.current().select(SetPartyTrainingClassStatusCommand.class).get().run(userVisitPK, form);
     }
 

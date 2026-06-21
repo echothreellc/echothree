@@ -94,7 +94,7 @@ public interface PeriodService
     //   Fiscal Periods
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form);
+    CommandResult<CreateFiscalYearResult> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form);
     
     CommandResult<GetFiscalPeriodStatusChoicesResult> getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form);
     

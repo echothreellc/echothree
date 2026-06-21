@@ -52,7 +52,7 @@ public interface TermService
     //   Terms
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createTerm(UserVisitPK userVisitPK, CreateTermForm form);
+    CommandResult<CreateTermResult> createTerm(UserVisitPK userVisitPK, CreateTermForm form);
     
     CommandResult<GetTermsResult> getTerms(UserVisitPK userVisitPK, GetTermsForm form);
     

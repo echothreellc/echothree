@@ -44,7 +44,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequenceType(UserVisitPK userVisitPK, CreateSequenceTypeForm form) {
+    public CommandResult<CreateSequenceTypeResult> createSequenceType(UserVisitPK userVisitPK, CreateSequenceTypeForm form) {
         return CDI.current().select(CreateSequenceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -173,7 +173,7 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSequence(UserVisitPK userVisitPK, CreateSequenceForm form) {
+    public CommandResult<CreateSequenceResult> createSequence(UserVisitPK userVisitPK, CreateSequenceForm form) {
         return CDI.current().select(CreateSequenceCommand.class).get().run(userVisitPK, form);
     }
     

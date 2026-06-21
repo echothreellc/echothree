@@ -170,7 +170,7 @@ public class RatingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createRating(UserVisitPK userVisitPK, CreateRatingForm form) {
+    public CommandResult<CreateRatingResult> createRating(UserVisitPK userVisitPK, CreateRatingForm form) {
         return CDI.current().select(CreateRatingCommand.class).get().run(userVisitPK, form);
     }
     

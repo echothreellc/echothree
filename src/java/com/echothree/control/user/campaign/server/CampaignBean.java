@@ -44,7 +44,7 @@ public class CampaignBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCampaign(UserVisitPK userVisitPK, CreateCampaignForm form) {
+    public CommandResult<CreateCampaignResult> createCampaign(UserVisitPK userVisitPK, CreateCampaignForm form) {
         return CDI.current().select(CreateCampaignCommand.class).get().run(userVisitPK, form);
     }
     
@@ -122,7 +122,7 @@ public class CampaignBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCampaignSource(UserVisitPK userVisitPK, CreateCampaignSourceForm form) {
+    public CommandResult<CreateCampaignSourceResult> createCampaignSource(UserVisitPK userVisitPK, CreateCampaignSourceForm form) {
         return CDI.current().select(CreateCampaignSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -200,7 +200,7 @@ public class CampaignBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCampaignMedium(UserVisitPK userVisitPK, CreateCampaignMediumForm form) {
+    public CommandResult<CreateCampaignMediumResult> createCampaignMedium(UserVisitPK userVisitPK, CreateCampaignMediumForm form) {
         return CDI.current().select(CreateCampaignMediumCommand.class).get().run(userVisitPK, form);
     }
     
@@ -278,7 +278,7 @@ public class CampaignBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCampaignTerm(UserVisitPK userVisitPK, CreateCampaignTermForm form) {
+    public CommandResult<CreateCampaignTermResult> createCampaignTerm(UserVisitPK userVisitPK, CreateCampaignTermForm form) {
         return CDI.current().select(CreateCampaignTermCommand.class).get().run(userVisitPK, form);
     }
     
@@ -356,7 +356,7 @@ public class CampaignBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCampaignContent(UserVisitPK userVisitPK, CreateCampaignContentForm form) {
+    public CommandResult<CreateCampaignContentResult> createCampaignContent(UserVisitPK userVisitPK, CreateCampaignContentForm form) {
         return CDI.current().select(CreateCampaignContentCommand.class).get().run(userVisitPK, form);
     }
     

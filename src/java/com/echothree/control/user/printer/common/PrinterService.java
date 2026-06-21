@@ -102,7 +102,7 @@ public interface PrinterService
     //   Printer Group Jobs
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createPrinterGroupJob(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form);
+    CommandResult<CreatePrinterGroupJobResult> createPrinterGroupJob(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form);
 
     CommandResult<GetPrinterGroupJobResult> getPrinterGroupJob(UserVisitPK userVisitPK, GetPrinterGroupJobForm form);
 

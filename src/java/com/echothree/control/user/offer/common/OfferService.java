@@ -94,7 +94,7 @@ public interface OfferService
     //   Offer Uses
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferUse(UserVisitPK userVisitPK, CreateOfferUseForm form);
+    CommandResult<CreateOfferUseResult> createOfferUse(UserVisitPK userVisitPK, CreateOfferUseForm form);
     
     CommandResult<GetOfferUsesResult> getOfferUses(UserVisitPK userVisitPK, GetOfferUsesForm form);
     
@@ -126,7 +126,7 @@ public interface OfferService
     //   Offer Items
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferItem(UserVisitPK userVisitPK, CreateOfferItemForm form);
+    CommandResult<CreateOfferItemResult> createOfferItem(UserVisitPK userVisitPK, CreateOfferItemForm form);
     
     CommandResult<GetOfferItemsResult> getOfferItems(UserVisitPK userVisitPK, GetOfferItemsForm form);
     
@@ -184,7 +184,7 @@ public interface OfferService
     //   Use Name Elements
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createUseNameElement(UserVisitPK userVisitPK, CreateUseNameElementForm form);
+    CommandResult<CreateUseNameElementResult> createUseNameElement(UserVisitPK userVisitPK, CreateUseNameElementForm form);
 
     CommandResult<GetUseNameElementsResult> getUseNameElements(UserVisitPK userVisitPK, GetUseNameElementsForm form);
 
@@ -242,7 +242,7 @@ public interface OfferService
     //   Offer Name Elements
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createOfferNameElement(UserVisitPK userVisitPK, CreateOfferNameElementForm form);
+    CommandResult<CreateOfferNameElementResult> createOfferNameElement(UserVisitPK userVisitPK, CreateOfferNameElementForm form);
 
     CommandResult<GetOfferNameElementsResult> getOfferNameElements(UserVisitPK userVisitPK, GetOfferNameElementsForm form);
 

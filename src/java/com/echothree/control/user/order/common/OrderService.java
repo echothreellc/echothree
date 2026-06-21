@@ -46,7 +46,7 @@ public interface OrderService
     //   Order Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderType(UserVisitPK userVisitPK, CreateOrderTypeForm form);
+    CommandResult<CreateOrderTypeResult> createOrderType(UserVisitPK userVisitPK, CreateOrderTypeForm form);
 
     CommandResult<GetOrderTypeChoicesResult> getOrderTypeChoices(UserVisitPK userVisitPK, GetOrderTypeChoicesForm form);
 
@@ -78,7 +78,7 @@ public interface OrderService
     //   Order Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderTimeType(UserVisitPK userVisitPK, CreateOrderTimeTypeForm form);
+    CommandResult<CreateOrderTimeTypeResult> createOrderTimeType(UserVisitPK userVisitPK, CreateOrderTimeTypeForm form);
 
     CommandResult<GetOrderTimeTypeChoicesResult> getOrderTimeTypeChoices(UserVisitPK userVisitPK, GetOrderTimeTypeChoicesForm form);
 
@@ -156,7 +156,7 @@ public interface OrderService
     //   Order Priorities
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createOrderPriority(UserVisitPK userVisitPK, CreateOrderPriorityForm form);
+    CommandResult<CreateOrderPriorityResult> createOrderPriority(UserVisitPK userVisitPK, CreateOrderPriorityForm form);
 
     CommandResult<GetOrderPriorityChoicesResult> getOrderPriorityChoices(UserVisitPK userVisitPK, GetOrderPriorityChoicesForm form);
 

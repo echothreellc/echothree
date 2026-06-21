@@ -34,7 +34,7 @@ public interface VendorService
     //   Vendor Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form);
+    CommandResult<CreateVendorTypeResult> createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form);
     
     CommandResult<GetVendorTypeChoicesResult> getVendorTypeChoices(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form);
     
@@ -76,7 +76,7 @@ public interface VendorService
     //   Vendor Items
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form);
+    CommandResult<CreateVendorItemResult> createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form);
     
     CommandResult<GetVendorItemResult> getVendorItem(UserVisitPK userVisitPK, GetVendorItemForm form);
 
@@ -108,7 +108,7 @@ public interface VendorService
     //   Item Purchasing Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form);
+    CommandResult<CreateItemPurchasingCategoryResult> createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form);
     
     CommandResult<GetItemPurchasingCategoryChoicesResult> getItemPurchasingCategoryChoices(UserVisitPK userVisitPK, GetItemPurchasingCategoryChoicesForm form);
     

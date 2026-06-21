@@ -170,7 +170,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferUse(UserVisitPK userVisitPK, CreateOfferUseForm form) {
+    public CommandResult<CreateOfferUseResult> createOfferUse(UserVisitPK userVisitPK, CreateOfferUseForm form) {
         return CDI.current().select(CreateOfferUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -238,7 +238,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferItem(UserVisitPK userVisitPK, CreateOfferItemForm form) {
+    public CommandResult<CreateOfferItemResult> createOfferItem(UserVisitPK userVisitPK, CreateOfferItemForm form) {
         return CDI.current().select(CreateOfferItemCommand.class).get().run(userVisitPK, form);
     }
     
@@ -359,7 +359,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createUseNameElement(UserVisitPK userVisitPK, CreateUseNameElementForm form) {
+    public CommandResult<CreateUseNameElementResult> createUseNameElement(UserVisitPK userVisitPK, CreateUseNameElementForm form) {
         return CDI.current().select(CreateUseNameElementCommand.class).get().run(userVisitPK, form);
     }
 
@@ -480,7 +480,7 @@ public class OfferBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createOfferNameElement(UserVisitPK userVisitPK, CreateOfferNameElementForm form) {
+    public CommandResult<CreateOfferNameElementResult> createOfferNameElement(UserVisitPK userVisitPK, CreateOfferNameElementForm form) {
         return CDI.current().select(CreateOfferNameElementCommand.class).get().run(userVisitPK, form);
     }
 

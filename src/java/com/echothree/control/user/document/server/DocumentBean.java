@@ -248,7 +248,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form) {
+    public CommandResult<CreatePartyDocumentResult> createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form) {
         return CDI.current().select(CreatePartyDocumentCommand.class).get().run(userVisitPK, form);
     }
 

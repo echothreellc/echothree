@@ -316,7 +316,7 @@ public class EmployeeBean
     }
 
     @Override
-    public CommandResult<?> setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form) {
+    public CommandResult<SetLeaveStatusResult> setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form) {
         return CDI.current().select(SetLeaveStatusCommand.class).get().run(userVisitPK, form);
     }
 

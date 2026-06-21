@@ -58,7 +58,7 @@ public interface AccountingService
     //   Item Accounting Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form);
+    CommandResult<CreateItemAccountingCategoryResult> createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form);
     
     CommandResult<GetItemAccountingCategoryChoicesResult> getItemAccountingCategoryChoices(UserVisitPK userVisitPK, GetItemAccountingCategoryChoicesForm form);
     
@@ -204,7 +204,7 @@ public interface AccountingService
     //   Gl Accounts
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form);
+    CommandResult<CreateGlAccountResult> createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form);
     
     CommandResult<GetGlAccountChoicesResult> getGlAccountChoices(UserVisitPK userVisitPK, GetGlAccountChoicesForm form);
     
@@ -234,7 +234,7 @@ public interface AccountingService
     //   Transaction Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form);
+    CommandResult<CreateTransactionTimeTypeResult> createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form);
 
     CommandResult<GetTransactionTimeTypeChoicesResult> getTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetTransactionTimeTypeChoicesForm form);
 

@@ -52,7 +52,7 @@ public interface CustomerService
     //   Customer Types
     // -------------------------------------------------------------------------
     
-    CommandResult<?> createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form);
+    CommandResult<CreateCustomerTypeResult> createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form);
     
     CommandResult<GetCustomerTypesResult> getCustomerTypes(UserVisitPK userVisitPK, GetCustomerTypesForm form);
     

@@ -52,7 +52,7 @@ public interface ContentService
     //   Content Page Layouts
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form);
+    CommandResult<CreateContentPageLayoutResult> createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form);
 
     CommandResult<GetContentPageLayoutChoicesResult> getContentPageLayoutChoices(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form);
 
@@ -100,7 +100,7 @@ public interface ContentService
     //   Content Collections
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContentCollection(UserVisitPK userVisitPK, CreateContentCollectionForm form);
+    CommandResult<CreateContentCollectionResult> createContentCollection(UserVisitPK userVisitPK, CreateContentCollectionForm form);
     
     CommandResult<GetContentCollectionResult> getContentCollection(UserVisitPK userVisitPK, GetContentCollectionForm form);
     
@@ -192,7 +192,7 @@ public interface ContentService
     //   Content Catalogs
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContentCatalog(UserVisitPK userVisitPK, CreateContentCatalogForm form);
+    CommandResult<CreateContentCatalogResult> createContentCatalog(UserVisitPK userVisitPK, CreateContentCatalogForm form);
     
     CommandResult<GetContentCatalogResult> getContentCatalog(UserVisitPK userVisitPK, GetContentCatalogForm form);
     
@@ -230,7 +230,7 @@ public interface ContentService
     //   Content Categories
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createContentCategory(UserVisitPK userVisitPK, CreateContentCategoryForm form);
+    CommandResult<CreateContentCategoryResult> createContentCategory(UserVisitPK userVisitPK, CreateContentCategoryForm form);
 
     CommandResult<GetContentCategoryResult> getContentCategory(UserVisitPK userVisitPK, GetContentCategoryForm form);
 
@@ -292,7 +292,7 @@ public interface ContentService
     //   Content Web Addresses
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createContentWebAddress(UserVisitPK userVisitPK, CreateContentWebAddressForm form);
+    CommandResult<CreateContentWebAddressResult> createContentWebAddress(UserVisitPK userVisitPK, CreateContentWebAddressForm form);
     
     CommandResult<GetContentWebAddressResult> getContentWebAddress(UserVisitPK userVisitPK, GetContentWebAddressForm form);
     

@@ -34,7 +34,7 @@ public interface ShipmentService
     //   Free On Boards
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form);
+    CommandResult<CreateFreeOnBoardResult> createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form);
 
     CommandResult<GetFreeOnBoardsResult> getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form);
 

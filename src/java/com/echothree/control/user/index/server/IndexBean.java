@@ -248,7 +248,7 @@ public class IndexBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form) {
+    public CommandResult<UpdateIndexesResult> updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form) {
         return CDI.current().select(UpdateIndexesCommand.class).get().run(userVisitPK, form);
     }
     

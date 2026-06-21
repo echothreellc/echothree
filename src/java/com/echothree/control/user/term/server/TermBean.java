@@ -77,7 +77,7 @@ public class TermBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTerm(UserVisitPK userVisitPK, CreateTermForm form) {
+    public CommandResult<CreateTermResult> createTerm(UserVisitPK userVisitPK, CreateTermForm form) {
         return CDI.current().select(CreateTermCommand.class).get().run(userVisitPK, form);
     }
     

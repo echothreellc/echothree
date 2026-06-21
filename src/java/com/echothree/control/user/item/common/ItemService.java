@@ -106,7 +106,7 @@ public interface ItemService
     //   Item Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItemCategory(UserVisitPK userVisitPK, CreateItemCategoryForm form);
+    CommandResult<CreateItemCategoryResult> createItemCategory(UserVisitPK userVisitPK, CreateItemCategoryForm form);
 
     CommandResult<GetItemCategoryChoicesResult> getItemCategoryChoices(UserVisitPK userVisitPK, GetItemCategoryChoicesForm form);
 
@@ -188,7 +188,7 @@ public interface ItemService
     //   Item Description Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createItemDescriptionType(UserVisitPK userVisitPK, CreateItemDescriptionTypeForm form);
+    CommandResult<CreateItemDescriptionTypeResult> createItemDescriptionType(UserVisitPK userVisitPK, CreateItemDescriptionTypeForm form);
 
     CommandResult<GetItemDescriptionTypeChoicesResult> getItemDescriptionTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeChoicesForm form);
 
@@ -342,7 +342,7 @@ public interface ItemService
     //   Item Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createItemDescription(UserVisitPK userVisitPK, CreateItemDescriptionForm form);
+    CommandResult<CreateItemDescriptionResult> createItemDescription(UserVisitPK userVisitPK, CreateItemDescriptionForm form);
     
     CommandResult<GetItemDescriptionResult> getItemDescription(UserVisitPK userVisitPK, GetItemDescriptionForm form);
     
@@ -572,7 +572,7 @@ public interface ItemService
     //   Related Item Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<?> createRelatedItemType(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form);
+    CommandResult<CreateRelatedItemTypeResult> createRelatedItemType(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form);
 
     CommandResult<GetRelatedItemTypeChoicesResult> getRelatedItemTypeChoices(UserVisitPK userVisitPK, GetRelatedItemTypeChoicesForm form);
 
@@ -604,7 +604,7 @@ public interface ItemService
     //   Related Items
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createRelatedItem(UserVisitPK userVisitPK, CreateRelatedItemForm form);
+    CommandResult<CreateRelatedItemResult> createRelatedItem(UserVisitPK userVisitPK, CreateRelatedItemForm form);
     
     CommandResult<GetRelatedItemResult> getRelatedItem(UserVisitPK userVisitPK, GetRelatedItemForm form);
 

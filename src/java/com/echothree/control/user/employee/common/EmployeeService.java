@@ -156,7 +156,7 @@ public interface EmployeeService
 
     CommandResult<GetLeaveStatusChoicesResult> getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form);
 
-    CommandResult<?> setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form);
+    CommandResult<SetLeaveStatusResult> setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form);
 
     CommandResult<GetLeavesResult> getLeaves(UserVisitPK userVisitPK, GetLeavesForm form);
 

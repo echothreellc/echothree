@@ -83,7 +83,7 @@ public class CustomerBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form) {
+    public CommandResult<CreateCustomerTypeResult> createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form) {
         return CDI.current().select(CreateCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     

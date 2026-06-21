@@ -176,7 +176,7 @@ public interface TrainingService
 
     CommandResult<GetPartyTrainingClassStatusChoicesResult> getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form);
 
-    CommandResult<?> setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form);
+    CommandResult<SetPartyTrainingClassStatusResult> setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form);
 
     CommandResult<GetPartyTrainingClassResult> getPartyTrainingClass(UserVisitPK userVisitPK, GetPartyTrainingClassForm form);
 

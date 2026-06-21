@@ -170,7 +170,7 @@ public class PeriodBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form) {
+    public CommandResult<CreateFiscalYearResult> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form) {
         return CDI.current().select(CreateFiscalYearCommand.class).get().run(userVisitPK, form);
     }
     

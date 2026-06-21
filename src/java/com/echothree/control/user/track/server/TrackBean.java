@@ -44,7 +44,7 @@ public class TrackBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createTrack(UserVisitPK userVisitPK, CreateTrackForm form) {
+    public CommandResult<CreateTrackResult> createTrack(UserVisitPK userVisitPK, CreateTrackForm form) {
         return CDI.current().select(CreateTrackCommand.class).get().run(userVisitPK, form);
     }
     

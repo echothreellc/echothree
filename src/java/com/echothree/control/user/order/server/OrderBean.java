@@ -62,7 +62,7 @@ public class OrderBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createOrderType(UserVisitPK userVisitPK, CreateOrderTypeForm form) {
+    public CommandResult<CreateOrderTypeResult> createOrderType(UserVisitPK userVisitPK, CreateOrderTypeForm form) {
         return CDI.current().select(CreateOrderTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -130,7 +130,7 @@ public class OrderBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createOrderTimeType(UserVisitPK userVisitPK, CreateOrderTimeTypeForm form) {
+    public CommandResult<CreateOrderTimeTypeResult> createOrderTimeType(UserVisitPK userVisitPK, CreateOrderTimeTypeForm form) {
         return CDI.current().select(CreateOrderTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -295,7 +295,7 @@ public class OrderBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createOrderPriority(UserVisitPK userVisitPK, CreateOrderPriorityForm form) {
+    public CommandResult<CreateOrderPriorityResult> createOrderPriority(UserVisitPK userVisitPK, CreateOrderPriorityForm form) {
         return CDI.current().select(CreateOrderPriorityCommand.class).get().run(userVisitPK, form);
     }
 

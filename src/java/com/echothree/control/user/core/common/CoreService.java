@@ -34,11 +34,11 @@ public interface CoreService
     //   Base Keys
     // -------------------------------------------------------------------------
     
-    CommandResult<?> generateBaseKeys(UserVisitPK userVisitPK);
+    CommandResult<GenerateBaseKeysResult> generateBaseKeys(UserVisitPK userVisitPK);
     
     CommandResult<?> loadBaseKeys(UserVisitPK userVisitPK, LoadBaseKeysForm form);
     
-    CommandResult<?> changeBaseKeys(UserVisitPK userVisitPK, ChangeBaseKeysForm form);
+    CommandResult<ChangeBaseKeysResult> changeBaseKeys(UserVisitPK userVisitPK, ChangeBaseKeysForm form);
     
     // -------------------------------------------------------------------------
     //   Base Encryption Keys
@@ -1066,7 +1066,7 @@ public interface CoreService
     //   Appearances
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createAppearance(UserVisitPK userVisitPK, CreateAppearanceForm form);
+    CommandResult<CreateAppearanceResult> createAppearance(UserVisitPK userVisitPK, CreateAppearanceForm form);
     
     CommandResult<GetAppearanceChoicesResult> getAppearanceChoices(UserVisitPK userVisitPK, GetAppearanceChoicesForm form);
     
@@ -1122,7 +1122,7 @@ public interface CoreService
     //   Colors
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createColor(UserVisitPK userVisitPK, CreateColorForm form);
+    CommandResult<CreateColorResult> createColor(UserVisitPK userVisitPK, CreateColorForm form);
     
     CommandResult<GetColorChoicesResult> getColorChoices(UserVisitPK userVisitPK, GetColorChoicesForm form);
     
@@ -1294,10 +1294,10 @@ public interface CoreService
     //   Utilities
     // -------------------------------------------------------------------------
 
-    CommandResult<?> encrypt(UserVisitPK userVisitPK, EncryptForm form);
+    CommandResult<EncryptResult> encrypt(UserVisitPK userVisitPK, EncryptForm form);
 
-    CommandResult<?> decrypt(UserVisitPK userVisitPK, DecryptForm form);
+    CommandResult<DecryptResult> decrypt(UserVisitPK userVisitPK, DecryptForm form);
 
-    CommandResult<?> validate(UserVisitPK userVisit, ValidateForm form);
+    CommandResult<ValidateResult> validate(UserVisitPK userVisit, ValidateForm form);
 
 }

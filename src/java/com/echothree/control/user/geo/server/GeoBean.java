@@ -180,7 +180,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createGeoCodeAliasType(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeForm form) {
+    public CommandResult<CreateGeoCodeAliasTypeResult> createGeoCodeAliasType(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeForm form) {
         return CDI.current().select(CreateGeoCodeAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 

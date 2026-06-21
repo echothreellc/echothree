@@ -44,7 +44,7 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form) {
+    public CommandResult<CreateWishlistTypeResult> createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form) {
         return CDI.current().select(CreateWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -107,7 +107,7 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
+    public CommandResult<CreateWishlistPriorityResult> createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
         return CDI.current().select(CreateWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     

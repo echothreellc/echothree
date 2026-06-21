@@ -44,7 +44,7 @@ public class SecurityBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form) {
+    public CommandResult<CreateSecurityRoleGroupResult> createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form) {
         return CDI.current().select(CreateSecurityRoleGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -112,12 +112,12 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form) {
+    public CommandResult<CheckSecurityRolesResult> checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form) {
         return CDI.current().select(CheckSecurityRolesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult<?> createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form) {
+    public CommandResult<CreateSecurityRoleResult> createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form) {
         return CDI.current().select(CreateSecurityRoleCommand.class).get().run(userVisitPK, form);
     }
     

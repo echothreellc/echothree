@@ -73,7 +73,7 @@ public class CancellationPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createCancellationKind(UserVisitPK userVisitPK, CreateCancellationKindForm form) {
+    public CommandResult<CreateCancellationKindResult> createCancellationKind(UserVisitPK userVisitPK, CreateCancellationKindForm form) {
         return CDI.current().select(CreateCancellationKindCommand.class).get().run(userVisitPK, form);
     }
     

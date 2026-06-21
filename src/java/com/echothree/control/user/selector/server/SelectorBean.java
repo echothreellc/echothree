@@ -416,7 +416,7 @@ public class SelectorBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> evaluateSelectors(UserVisitPK userVisitPK, EvaluateSelectorsForm form) {
+    public CommandResult<EvaluateSelectorsResult> evaluateSelectors(UserVisitPK userVisitPK, EvaluateSelectorsForm form) {
         return CDI.current().select(EvaluateSelectorsCommand.class).get().run(userVisitPK, form);
     }
     

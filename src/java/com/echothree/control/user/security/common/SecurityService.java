@@ -34,7 +34,7 @@ public interface SecurityService
     //   Security Role Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form);
+    CommandResult<CreateSecurityRoleGroupResult> createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form);
     
     CommandResult<GetSecurityRoleGroupChoicesResult> getSecurityRoleGroupChoices(UserVisitPK userVisitPK, GetSecurityRoleGroupChoicesForm form);
     
@@ -66,9 +66,9 @@ public interface SecurityService
     //   Security Roles
     // -------------------------------------------------------------------------
     
-    CommandResult<?> checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form);
+    CommandResult<CheckSecurityRolesResult> checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form);
     
-    CommandResult<?> createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form);
+    CommandResult<CreateSecurityRoleResult> createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form);
     
     CommandResult<GetSecurityRolesResult> getSecurityRoles(UserVisitPK userVisitPK, GetSecurityRolesForm form);
     

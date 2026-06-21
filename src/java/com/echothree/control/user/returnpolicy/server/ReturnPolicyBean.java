@@ -73,7 +73,7 @@ public class ReturnPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<?> createReturnKind(UserVisitPK userVisitPK, CreateReturnKindForm form) {
+    public CommandResult<CreateReturnKindResult> createReturnKind(UserVisitPK userVisitPK, CreateReturnKindForm form) {
         return CDI.current().select(CreateReturnKindCommand.class).get().run(userVisitPK, form);
     }
     

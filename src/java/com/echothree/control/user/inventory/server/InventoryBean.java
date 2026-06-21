@@ -614,7 +614,7 @@ public class InventoryBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createInventoryTransactionType(UserVisitPK userVisitPK, CreateInventoryTransactionTypeForm form) {
+    public CommandResult<CreateInventoryTransactionTypeResult> createInventoryTransactionType(UserVisitPK userVisitPK, CreateInventoryTransactionTypeForm form) {
         return CDI.current().select(CreateInventoryTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
 

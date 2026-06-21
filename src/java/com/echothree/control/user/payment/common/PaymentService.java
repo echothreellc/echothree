@@ -46,7 +46,7 @@ public interface PaymentService
     //   Payment Method Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form);
+    CommandResult<CreatePaymentMethodTypeResult> createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form);
 
     CommandResult<GetPaymentMethodTypesResult> getPaymentMethodTypes(UserVisitPK userVisitPK, GetPaymentMethodTypesForm form);
 
@@ -76,7 +76,7 @@ public interface PaymentService
     //   Payment Method Type Party Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form);
+    CommandResult<CreatePaymentMethodTypePartyTypeResult> createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form);
 
 //    CommandResult<GetPaymentMethodTypePartyTypesResult> getPaymentMethodTypePartyTypes(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypesForm form);
 //
@@ -94,7 +94,7 @@ public interface PaymentService
     //   Payment Processor Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentProcessorType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form);
+    CommandResult<CreatePaymentProcessorTypeResult> createPaymentProcessorType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form);
 
     CommandResult<GetPaymentProcessorTypesResult> getPaymentProcessorTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypesForm form);
 
@@ -124,7 +124,7 @@ public interface PaymentService
     //   Payment Processor Type Code Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeTypeForm form);
+    CommandResult<CreatePaymentProcessorTypeCodeTypeResult> createPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeTypeForm form);
 
 //    CommandResult<GetPaymentProcessorTypeCodeTypesResult> getPaymentProcessorTypeCodeTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypesForm form);
 
@@ -156,7 +156,7 @@ public interface PaymentService
     //   Payment Processor Type Codes
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form);
+    CommandResult<CreatePaymentProcessorTypeCodeResult> createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form);
 
 //    CommandResult<GetPaymentProcessorTypeCodesResult> getPaymentProcessorTypeCodes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodesForm form);
 
@@ -188,7 +188,7 @@ public interface PaymentService
     //   Payment Processor Type Actions
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form);
+    CommandResult<CreatePaymentProcessorTypeActionResult> createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form);
 
 //    CommandResult<GetPaymentProcessorTypeActionsResult> getPaymentProcessorTypeActions(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionsForm form);
 //
@@ -314,7 +314,7 @@ public interface PaymentService
     //   Payment Processor Action Types
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentProcessorActionType(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeForm form);
+    CommandResult<CreatePaymentProcessorActionTypeResult> createPaymentProcessorActionType(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeForm form);
 
     CommandResult<GetPaymentProcessorActionTypesResult> getPaymentProcessorActionTypes(UserVisitPK userVisitPK, GetPaymentProcessorActionTypesForm form);
 
@@ -344,7 +344,7 @@ public interface PaymentService
     //   Payment Processor Result Codes
     // -------------------------------------------------------------------------
 
-    CommandResult<?> createPaymentProcessorResultCode(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeForm form);
+    CommandResult<CreatePaymentProcessorResultCodeResult> createPaymentProcessorResultCode(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeForm form);
 
     CommandResult<GetPaymentProcessorResultCodesResult> getPaymentProcessorResultCodes(UserVisitPK userVisitPK, GetPaymentProcessorResultCodesForm form);
 

@@ -34,7 +34,7 @@ public interface TrackService
     //   Tracks
     // --------------------------------------------------------------------------------
     
-    CommandResult<?> createTrack(UserVisitPK userVisitPK, CreateTrackForm form);
+    CommandResult<CreateTrackResult> createTrack(UserVisitPK userVisitPK, CreateTrackForm form);
     
     CommandResult<GetTrackChoicesResult> getTrackChoices(UserVisitPK userVisitPK, GetTrackChoicesForm form);
     

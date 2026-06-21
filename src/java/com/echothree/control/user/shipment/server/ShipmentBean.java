@@ -44,7 +44,7 @@ public class ShipmentBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<?> createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form) {
+    public CommandResult<CreateFreeOnBoardResult> createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form) {
         return CDI.current().select(CreateFreeOnBoardCommand.class).get().run(userVisitPK, form);
     }
 
