@@ -20,10 +20,6 @@ import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.control.user.geo.common.result.CreateCityResult;
 import com.echothree.control.user.geo.common.result.CreateCountyResult;
 import com.echothree.control.user.geo.common.result.CreateZipCodeResult;
-import com.echothree.control.user.geo.common.result.GetCityResult;
-import com.echothree.control.user.geo.common.result.GetCountyResult;
-import com.echothree.control.user.geo.common.result.GetStateResult;
-import com.echothree.control.user.geo.common.result.GetZipCodeResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.collection.SmartQueue;
 import com.echothree.util.common.message.Message;
@@ -76,7 +72,7 @@ public class ConsumerThread
 
             var commandResult = zipCodeParser.getGeoService().getZipCode(getUserVisit(), getZipCodeForm);
             var executionResult = commandResult.getExecutionResult();
-            var getZipCodeResult = (GetZipCodeResult)executionResult.getResult();
+            var getZipCodeResult = executionResult.getResult();
             var postalCode = getZipCodeResult.getPostalCode();
             zipCodeGeoCodeName = postalCode == null ? null : postalCode.getGeoCodeName();
 
@@ -88,10 +84,10 @@ public class ConsumerThread
                 createZipCodeForm.setSortOrder("1");
                 createZipCodeForm.setIsDefault(String.valueOf(false));
                 createZipCodeForm.setDescription(zipCodeName);
-                
-                commandResult = zipCodeParser.getGeoService().createZipCode(getUserVisit(), createZipCodeForm);
-                executionResult = commandResult.getExecutionResult();
-                var createZipCodeResult = (CreateZipCodeResult)executionResult.getResult();
+
+                var createZipCodeCommandResult = zipCodeParser.getGeoService().createZipCode(getUserVisit(), createZipCodeForm);
+                var createZipCodeExecutionResult = createZipCodeCommandResult.getExecutionResult();
+                var createZipCodeResult = (CreateZipCodeResult)createZipCodeExecutionResult.getResult();
                 zipCodeGeoCodeName = createZipCodeResult.getGeoCodeName();
             }
             
@@ -128,9 +124,9 @@ public class ConsumerThread
                 getCountyForm.setStateGeoCodeName(stateGeoCodeName);
                 getCountyForm.setCountyName(countyName);
 
-                var commandResult = zipCodeParser.getGeoService().getCounty(getUserVisit(), getCountyForm);
-                var executionResult = commandResult.getExecutionResult();
-                var getCountyResult = (GetCountyResult)executionResult.getResult();
+                var getCountyCommandResult = zipCodeParser.getGeoService().getCounty(getUserVisit(), getCountyForm);
+                var getCountyExecutionResult = getCountyCommandResult.getExecutionResult();
+                var getCountyResult = getCountyExecutionResult.getResult();
                 var country = getCountyResult.getCounty();
                 countyGeoCodeName = country == null ? null : country.getGeoCodeName();
                 
@@ -144,9 +140,9 @@ public class ConsumerThread
                     createCountyForm.setSortOrder("1");
                     createCountyForm.setDescription(zipCodeData.getCountyName());
                     
-                    commandResult = zipCodeParser.getGeoService().createCounty(getUserVisit(), createCountyForm);
-                    executionResult = commandResult.getExecutionResult();
-                    var createCountyResult = (CreateCountyResult)executionResult.getResult();
+                    var createCountyCommandResult = zipCodeParser.getGeoService().createCounty(getUserVisit(), createCountyForm);
+                    var createCountyExecutionResult = createCountyCommandResult.getExecutionResult();
+                    var createCountyResult = (CreateCountyResult)createCountyExecutionResult.getResult();
                     countyGeoCodeName = createCountyResult.getGeoCodeName();
                 }
                 
@@ -182,7 +178,7 @@ public class ConsumerThread
 
             var commandResult = zipCodeParser.getGeoService().getCity(getUserVisit(), getCityForm);
             var executionResult = commandResult.getExecutionResult();
-            var getCityResult = (GetCityResult)executionResult.getResult();
+            var getCityResult = executionResult.getResult();
             var city = getCityResult.getCity();
             cityGeoCodeName = city == null ? null : city.getGeoCodeName();
             
@@ -195,9 +191,9 @@ public class ConsumerThread
                 createCityForm.setSortOrder("1");
                 createCityForm.setDescription(description);
                 
-                commandResult = zipCodeParser.getGeoService().createCity(getUserVisit(), createCityForm);
-                executionResult = commandResult.getExecutionResult();
-                var createCityResult = (CreateCityResult)executionResult.getResult();
+                var createCityCommandResult = zipCodeParser.getGeoService().createCity(getUserVisit(), createCityForm);
+                var createCityExecutionResult = createCityCommandResult.getExecutionResult();
+                var createCityResult = (CreateCityResult)createCityExecutionResult.getResult();
                 cityGeoCodeName = createCityResult.getGeoCodeName();
             }
             
@@ -224,7 +220,7 @@ public class ConsumerThread
 
             var commandResult = zipCodeParser.getGeoService().getState(getUserVisit(), getStateForm);
             var executionResult = commandResult.getExecutionResult();
-            var getStateResult = (GetStateResult)executionResult.getResult();
+            var getStateResult = executionResult.getResult();
             var state = getStateResult.getState();
             stateGeoCodeName = state == null ? null : state.getGeoCodeName();
             

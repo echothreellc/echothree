@@ -67,10 +67,10 @@ public class SecurityRoleGroupsHandler
 
                     createForm.set(spec.get());
 
-                    commandResult = securityService.createSecurityRoleGroup(initialDataParser.getUserVisit(), createForm);
+                    var createSecurityRoleGroupCommandResult = securityService.createSecurityRoleGroup(initialDataParser.getUserVisit(), createForm);
                     
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createSecurityRoleGroupCommandResult.hasErrors()) {
+                        getLogger().error(createSecurityRoleGroupCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

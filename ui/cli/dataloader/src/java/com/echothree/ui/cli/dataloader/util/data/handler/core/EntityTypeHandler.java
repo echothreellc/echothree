@@ -97,10 +97,10 @@ public class EntityTypeHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getEntityTypeName());
-                            commandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);
+                            var createEntityTypeDescriptionCommandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createEntityTypeDescriptionCommandResult.hasErrors()) {
+                                getLogger().error(createEntityTypeDescriptionCommandResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());

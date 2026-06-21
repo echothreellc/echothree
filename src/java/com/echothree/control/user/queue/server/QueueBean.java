@@ -18,9 +18,11 @@ package com.echothree.control.user.queue.server;
 
 import com.echothree.control.user.queue.common.QueueRemote;
 import com.echothree.control.user.queue.common.form.*;
+import com.echothree.control.user.queue.common.result.*;
 import com.echothree.control.user.queue.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -43,37 +45,37 @@ public class QueueBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
+    public CommandResult<VoidResult> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
         return CDI.current().select(CreateQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getQueueTypeChoices(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form) {
+    public CommandResult<GetQueueTypeChoicesResult> getQueueTypeChoices(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form) {
         return CDI.current().select(GetQueueTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getQueueType(UserVisitPK userVisitPK, GetQueueTypeForm form) {
+    public CommandResult<GetQueueTypeResult> getQueueType(UserVisitPK userVisitPK, GetQueueTypeForm form) {
         return CDI.current().select(GetQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getQueueTypes(UserVisitPK userVisitPK, GetQueueTypesForm form) {
+    public CommandResult<GetQueueTypesResult> getQueueTypes(UserVisitPK userVisitPK, GetQueueTypesForm form) {
         return CDI.current().select(GetQueueTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultQueueType(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form) {
+    public CommandResult<VoidResult> setDefaultQueueType(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form) {
         return CDI.current().select(SetDefaultQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editQueueType(UserVisitPK userVisitPK, EditQueueTypeForm form) {
+    public CommandResult<EditQueueTypeResult> editQueueType(UserVisitPK userVisitPK, EditQueueTypeForm form) {
         return CDI.current().select(EditQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteQueueType(UserVisitPK userVisitPK, DeleteQueueTypeForm form) {
+    public CommandResult<VoidResult> deleteQueueType(UserVisitPK userVisitPK, DeleteQueueTypeForm form) {
         return CDI.current().select(DeleteQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -82,27 +84,27 @@ public class QueueBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult createQueueTypeDescription(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form) {
+    public CommandResult<VoidResult> createQueueTypeDescription(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form) {
         return CDI.current().select(CreateQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getQueueTypeDescription(UserVisitPK userVisitPK, GetQueueTypeDescriptionForm form) {
+    public CommandResult<GetQueueTypeDescriptionResult> getQueueTypeDescription(UserVisitPK userVisitPK, GetQueueTypeDescriptionForm form) {
         return CDI.current().select(GetQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getQueueTypeDescriptions(UserVisitPK userVisitPK, GetQueueTypeDescriptionsForm form) {
+    public CommandResult<GetQueueTypeDescriptionsResult> getQueueTypeDescriptions(UserVisitPK userVisitPK, GetQueueTypeDescriptionsForm form) {
         return CDI.current().select(GetQueueTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editQueueTypeDescription(UserVisitPK userVisitPK, EditQueueTypeDescriptionForm form) {
+    public CommandResult<EditQueueTypeDescriptionResult> editQueueTypeDescription(UserVisitPK userVisitPK, EditQueueTypeDescriptionForm form) {
         return CDI.current().select(EditQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteQueueTypeDescription(UserVisitPK userVisitPK, DeleteQueueTypeDescriptionForm form) {
+    public CommandResult<VoidResult> deleteQueueTypeDescription(UserVisitPK userVisitPK, DeleteQueueTypeDescriptionForm form) {
         return CDI.current().select(DeleteQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     

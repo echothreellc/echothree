@@ -72,10 +72,10 @@ public class SequenceTypeHandler
                     createForm.setSequenceTypeName(sequenceTypeName);
                     createForm.set(getAttrsMap(attrs));
 
-                    commandResult = sequenceService.createSequenceTypeDescription(initialDataParser.getUserVisit(), createForm);
+                    var createSequenceTypeDescriptionCommandResult = sequenceService.createSequenceTypeDescription(initialDataParser.getUserVisit(), createForm);
                     
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createSequenceTypeDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createSequenceTypeDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

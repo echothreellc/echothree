@@ -13813,7 +13813,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCustomerTypePaymentMethodResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13913,7 +13913,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCustomerTypeShippingMethodResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 

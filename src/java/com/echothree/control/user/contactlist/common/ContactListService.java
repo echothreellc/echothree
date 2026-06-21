@@ -17,8 +17,10 @@
 package com.echothree.control.user.contactlist.common;
 
 import com.echothree.control.user.contactlist.common.form.*;
+import com.echothree.control.user.contactlist.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface ContactListService
         extends ContactListForms {
@@ -33,220 +35,220 @@ public interface ContactListService
     //   Contact List Types
     // -------------------------------------------------------------------------
 
-    CommandResult createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form);
+    CommandResult<VoidResult> createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form);
 
-    CommandResult getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form);
+    CommandResult<GetContactListTypesResult> getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form);
 
-    CommandResult getContactListType(UserVisitPK userVisitPK, GetContactListTypeForm form);
+    CommandResult<GetContactListTypeResult> getContactListType(UserVisitPK userVisitPK, GetContactListTypeForm form);
 
-    CommandResult getContactListTypeChoices(UserVisitPK userVisitPK, GetContactListTypeChoicesForm form);
+    CommandResult<GetContactListTypeChoicesResult> getContactListTypeChoices(UserVisitPK userVisitPK, GetContactListTypeChoicesForm form);
 
-    CommandResult setDefaultContactListType(UserVisitPK userVisitPK, SetDefaultContactListTypeForm form);
+    CommandResult<VoidResult> setDefaultContactListType(UserVisitPK userVisitPK, SetDefaultContactListTypeForm form);
 
-    CommandResult editContactListType(UserVisitPK userVisitPK, EditContactListTypeForm form);
+    CommandResult<EditContactListTypeResult> editContactListType(UserVisitPK userVisitPK, EditContactListTypeForm form);
 
-    CommandResult deleteContactListType(UserVisitPK userVisitPK, DeleteContactListTypeForm form);
+    CommandResult<VoidResult> deleteContactListType(UserVisitPK userVisitPK, DeleteContactListTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Contact List Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createContactListTypeDescription(UserVisitPK userVisitPK, CreateContactListTypeDescriptionForm form);
+    CommandResult<VoidResult> createContactListTypeDescription(UserVisitPK userVisitPK, CreateContactListTypeDescriptionForm form);
 
-    CommandResult getContactListTypeDescriptions(UserVisitPK userVisitPK, GetContactListTypeDescriptionsForm form);
+    CommandResult<GetContactListTypeDescriptionsResult> getContactListTypeDescriptions(UserVisitPK userVisitPK, GetContactListTypeDescriptionsForm form);
 
-    CommandResult getContactListTypeDescription(UserVisitPK userVisitPK, GetContactListTypeDescriptionForm form);
+    CommandResult<GetContactListTypeDescriptionResult> getContactListTypeDescription(UserVisitPK userVisitPK, GetContactListTypeDescriptionForm form);
 
-    CommandResult editContactListTypeDescription(UserVisitPK userVisitPK, EditContactListTypeDescriptionForm form);
+    CommandResult<EditContactListTypeDescriptionResult> editContactListTypeDescription(UserVisitPK userVisitPK, EditContactListTypeDescriptionForm form);
 
-    CommandResult deleteContactListTypeDescription(UserVisitPK userVisitPK, DeleteContactListTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListTypeDescription(UserVisitPK userVisitPK, DeleteContactListTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Groups
     // --------------------------------------------------------------------------------
 
-    CommandResult createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form);
+    CommandResult<VoidResult> createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form);
 
-    CommandResult getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form);
+    CommandResult<GetContactListGroupsResult> getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form);
 
-    CommandResult getContactListGroup(UserVisitPK userVisitPK, GetContactListGroupForm form);
+    CommandResult<GetContactListGroupResult> getContactListGroup(UserVisitPK userVisitPK, GetContactListGroupForm form);
 
-    CommandResult getContactListGroupChoices(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form);
+    CommandResult<GetContactListGroupChoicesResult> getContactListGroupChoices(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form);
 
-    CommandResult setDefaultContactListGroup(UserVisitPK userVisitPK, SetDefaultContactListGroupForm form);
+    CommandResult<VoidResult> setDefaultContactListGroup(UserVisitPK userVisitPK, SetDefaultContactListGroupForm form);
 
-    CommandResult editContactListGroup(UserVisitPK userVisitPK, EditContactListGroupForm form);
+    CommandResult<EditContactListGroupResult> editContactListGroup(UserVisitPK userVisitPK, EditContactListGroupForm form);
 
-    CommandResult deleteContactListGroup(UserVisitPK userVisitPK, DeleteContactListGroupForm form);
+    CommandResult<VoidResult> deleteContactListGroup(UserVisitPK userVisitPK, DeleteContactListGroupForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Group Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createContactListGroupDescription(UserVisitPK userVisitPK, CreateContactListGroupDescriptionForm form);
+    CommandResult<VoidResult> createContactListGroupDescription(UserVisitPK userVisitPK, CreateContactListGroupDescriptionForm form);
 
-    CommandResult getContactListGroupDescriptions(UserVisitPK userVisitPK, GetContactListGroupDescriptionsForm form);
+    CommandResult<GetContactListGroupDescriptionsResult> getContactListGroupDescriptions(UserVisitPK userVisitPK, GetContactListGroupDescriptionsForm form);
 
-    CommandResult getContactListGroupDescription(UserVisitPK userVisitPK, GetContactListGroupDescriptionForm form);
+    CommandResult<GetContactListGroupDescriptionResult> getContactListGroupDescription(UserVisitPK userVisitPK, GetContactListGroupDescriptionForm form);
 
-    CommandResult editContactListGroupDescription(UserVisitPK userVisitPK, EditContactListGroupDescriptionForm form);
+    CommandResult<EditContactListGroupDescriptionResult> editContactListGroupDescription(UserVisitPK userVisitPK, EditContactListGroupDescriptionForm form);
 
-    CommandResult deleteContactListGroupDescription(UserVisitPK userVisitPK, DeleteContactListGroupDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListGroupDescription(UserVisitPK userVisitPK, DeleteContactListGroupDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Frequencies
     // --------------------------------------------------------------------------------
 
-    CommandResult createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form);
+    CommandResult<VoidResult> createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form);
 
-    CommandResult getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form);
+    CommandResult<GetContactListFrequenciesResult> getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form);
 
-    CommandResult getContactListFrequency(UserVisitPK userVisitPK, GetContactListFrequencyForm form);
+    CommandResult<GetContactListFrequencyResult> getContactListFrequency(UserVisitPK userVisitPK, GetContactListFrequencyForm form);
 
-    CommandResult getContactListFrequencyChoices(UserVisitPK userVisitPK, GetContactListFrequencyChoicesForm form);
+    CommandResult<GetContactListFrequencyChoicesResult> getContactListFrequencyChoices(UserVisitPK userVisitPK, GetContactListFrequencyChoicesForm form);
 
-    CommandResult setDefaultContactListFrequency(UserVisitPK userVisitPK, SetDefaultContactListFrequencyForm form);
+    CommandResult<VoidResult> setDefaultContactListFrequency(UserVisitPK userVisitPK, SetDefaultContactListFrequencyForm form);
 
-    CommandResult editContactListFrequency(UserVisitPK userVisitPK, EditContactListFrequencyForm form);
+    CommandResult<EditContactListFrequencyResult> editContactListFrequency(UserVisitPK userVisitPK, EditContactListFrequencyForm form);
 
-    CommandResult deleteContactListFrequency(UserVisitPK userVisitPK, DeleteContactListFrequencyForm form);
+    CommandResult<VoidResult> deleteContactListFrequency(UserVisitPK userVisitPK, DeleteContactListFrequencyForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Frequency Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createContactListFrequencyDescription(UserVisitPK userVisitPK, CreateContactListFrequencyDescriptionForm form);
+    CommandResult<VoidResult> createContactListFrequencyDescription(UserVisitPK userVisitPK, CreateContactListFrequencyDescriptionForm form);
 
-    CommandResult getContactListFrequencyDescriptions(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionsForm form);
+    CommandResult<GetContactListFrequencyDescriptionsResult> getContactListFrequencyDescriptions(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionsForm form);
 
-    CommandResult getContactListFrequencyDescription(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionForm form);
+    CommandResult<GetContactListFrequencyDescriptionResult> getContactListFrequencyDescription(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionForm form);
 
-    CommandResult editContactListFrequencyDescription(UserVisitPK userVisitPK, EditContactListFrequencyDescriptionForm form);
+    CommandResult<EditContactListFrequencyDescriptionResult> editContactListFrequencyDescription(UserVisitPK userVisitPK, EditContactListFrequencyDescriptionForm form);
 
-    CommandResult deleteContactListFrequencyDescription(UserVisitPK userVisitPK, DeleteContactListFrequencyDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListFrequencyDescription(UserVisitPK userVisitPK, DeleteContactListFrequencyDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact Lists
     // --------------------------------------------------------------------------------
 
-    CommandResult createContactList(UserVisitPK userVisitPK, CreateContactListForm form);
+    CommandResult<VoidResult> createContactList(UserVisitPK userVisitPK, CreateContactListForm form);
 
-    CommandResult getContactLists(UserVisitPK userVisitPK, GetContactListsForm form);
+    CommandResult<GetContactListsResult> getContactLists(UserVisitPK userVisitPK, GetContactListsForm form);
 
-    CommandResult getContactList(UserVisitPK userVisitPK, GetContactListForm form);
+    CommandResult<GetContactListResult> getContactList(UserVisitPK userVisitPK, GetContactListForm form);
 
-    CommandResult getContactListChoices(UserVisitPK userVisitPK, GetContactListChoicesForm form);
+    CommandResult<GetContactListChoicesResult> getContactListChoices(UserVisitPK userVisitPK, GetContactListChoicesForm form);
 
-    CommandResult setDefaultContactList(UserVisitPK userVisitPK, SetDefaultContactListForm form);
+    CommandResult<VoidResult> setDefaultContactList(UserVisitPK userVisitPK, SetDefaultContactListForm form);
 
-    CommandResult editContactList(UserVisitPK userVisitPK, EditContactListForm form);
+    CommandResult<EditContactListResult> editContactList(UserVisitPK userVisitPK, EditContactListForm form);
 
-    CommandResult deleteContactList(UserVisitPK userVisitPK, DeleteContactListForm form);
+    CommandResult<VoidResult> deleteContactList(UserVisitPK userVisitPK, DeleteContactListForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createContactListDescription(UserVisitPK userVisitPK, CreateContactListDescriptionForm form);
+    CommandResult<VoidResult> createContactListDescription(UserVisitPK userVisitPK, CreateContactListDescriptionForm form);
 
-    CommandResult getContactListDescriptions(UserVisitPK userVisitPK, GetContactListDescriptionsForm form);
+    CommandResult<GetContactListDescriptionsResult> getContactListDescriptions(UserVisitPK userVisitPK, GetContactListDescriptionsForm form);
 
-    CommandResult getContactListDescription(UserVisitPK userVisitPK, GetContactListDescriptionForm form);
+    CommandResult<GetContactListDescriptionResult> getContactListDescription(UserVisitPK userVisitPK, GetContactListDescriptionForm form);
 
-    CommandResult editContactListDescription(UserVisitPK userVisitPK, EditContactListDescriptionForm form);
+    CommandResult<EditContactListDescriptionResult> editContactListDescription(UserVisitPK userVisitPK, EditContactListDescriptionForm form);
 
-    CommandResult deleteContactListDescription(UserVisitPK userVisitPK, DeleteContactListDescriptionForm form);
+    CommandResult<VoidResult> deleteContactListDescription(UserVisitPK userVisitPK, DeleteContactListDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Type Contact Lists
     // --------------------------------------------------------------------------------
     
-    CommandResult createPartyTypeContactList(UserVisitPK userVisitPK, CreatePartyTypeContactListForm form);
+    CommandResult<VoidResult> createPartyTypeContactList(UserVisitPK userVisitPK, CreatePartyTypeContactListForm form);
     
-    CommandResult getPartyTypeContactLists(UserVisitPK userVisitPK, GetPartyTypeContactListsForm form);
+    CommandResult<GetPartyTypeContactListsResult> getPartyTypeContactLists(UserVisitPK userVisitPK, GetPartyTypeContactListsForm form);
 
-    CommandResult getPartyTypeContactList(UserVisitPK userVisitPK, GetPartyTypeContactListForm form);
+    CommandResult<GetPartyTypeContactListResult> getPartyTypeContactList(UserVisitPK userVisitPK, GetPartyTypeContactListForm form);
 
-    CommandResult editPartyTypeContactList(UserVisitPK userVisitPK, EditPartyTypeContactListForm form);
+    CommandResult<EditPartyTypeContactListResult> editPartyTypeContactList(UserVisitPK userVisitPK, EditPartyTypeContactListForm form);
     
-    CommandResult deletePartyTypeContactList(UserVisitPK userVisitPK, DeletePartyTypeContactListForm form);
+    CommandResult<VoidResult> deletePartyTypeContactList(UserVisitPK userVisitPK, DeletePartyTypeContactListForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Type Contact List Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult createPartyTypeContactListGroup(UserVisitPK userVisitPK, CreatePartyTypeContactListGroupForm form);
+    CommandResult<VoidResult> createPartyTypeContactListGroup(UserVisitPK userVisitPK, CreatePartyTypeContactListGroupForm form);
     
-    CommandResult getPartyTypeContactListGroups(UserVisitPK userVisitPK, GetPartyTypeContactListGroupsForm form);
+    CommandResult<GetPartyTypeContactListGroupsResult> getPartyTypeContactListGroups(UserVisitPK userVisitPK, GetPartyTypeContactListGroupsForm form);
 
-    CommandResult getPartyTypeContactListGroup(UserVisitPK userVisitPK, GetPartyTypeContactListGroupForm form);
+    CommandResult<GetPartyTypeContactListGroupResult> getPartyTypeContactListGroup(UserVisitPK userVisitPK, GetPartyTypeContactListGroupForm form);
 
-    CommandResult editPartyTypeContactListGroup(UserVisitPK userVisitPK, EditPartyTypeContactListGroupForm form);
+    CommandResult<EditPartyTypeContactListGroupResult> editPartyTypeContactListGroup(UserVisitPK userVisitPK, EditPartyTypeContactListGroupForm form);
     
-    CommandResult deletePartyTypeContactListGroup(UserVisitPK userVisitPK, DeletePartyTypeContactListGroupForm form);
+    CommandResult<VoidResult> deletePartyTypeContactListGroup(UserVisitPK userVisitPK, DeletePartyTypeContactListGroupForm form);
     
     // --------------------------------------------------------------------------------
     //   Customer Type Contact Lists
     // --------------------------------------------------------------------------------
 
-    CommandResult createCustomerTypeContactList(UserVisitPK userVisitPK, CreateCustomerTypeContactListForm form);
+    CommandResult<VoidResult> createCustomerTypeContactList(UserVisitPK userVisitPK, CreateCustomerTypeContactListForm form);
 
-    CommandResult getCustomerTypeContactLists(UserVisitPK userVisitPK, GetCustomerTypeContactListsForm form);
+    CommandResult<GetCustomerTypeContactListsResult> getCustomerTypeContactLists(UserVisitPK userVisitPK, GetCustomerTypeContactListsForm form);
 
-    CommandResult getCustomerTypeContactList(UserVisitPK userVisitPK, GetCustomerTypeContactListForm form);
+    CommandResult<GetCustomerTypeContactListResult> getCustomerTypeContactList(UserVisitPK userVisitPK, GetCustomerTypeContactListForm form);
 
-    CommandResult editCustomerTypeContactList(UserVisitPK userVisitPK, EditCustomerTypeContactListForm form);
+    CommandResult<EditCustomerTypeContactListResult> editCustomerTypeContactList(UserVisitPK userVisitPK, EditCustomerTypeContactListForm form);
 
-    CommandResult deleteCustomerTypeContactList(UserVisitPK userVisitPK, DeleteCustomerTypeContactListForm form);
+    CommandResult<VoidResult> deleteCustomerTypeContactList(UserVisitPK userVisitPK, DeleteCustomerTypeContactListForm form);
 
     // --------------------------------------------------------------------------------
     //   Customer Type Contact List Groups
     // --------------------------------------------------------------------------------
 
-    CommandResult createCustomerTypeContactListGroup(UserVisitPK userVisitPK, CreateCustomerTypeContactListGroupForm form);
+    CommandResult<VoidResult> createCustomerTypeContactListGroup(UserVisitPK userVisitPK, CreateCustomerTypeContactListGroupForm form);
 
-    CommandResult getCustomerTypeContactListGroups(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupsForm form);
+    CommandResult<GetCustomerTypeContactListGroupsResult> getCustomerTypeContactListGroups(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupsForm form);
 
-    CommandResult getCustomerTypeContactListGroup(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupForm form);
+    CommandResult<GetCustomerTypeContactListGroupResult> getCustomerTypeContactListGroup(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupForm form);
 
-    CommandResult editCustomerTypeContactListGroup(UserVisitPK userVisitPK, EditCustomerTypeContactListGroupForm form);
+    CommandResult<EditCustomerTypeContactListGroupResult> editCustomerTypeContactListGroup(UserVisitPK userVisitPK, EditCustomerTypeContactListGroupForm form);
 
-    CommandResult deleteCustomerTypeContactListGroup(UserVisitPK userVisitPK, DeleteCustomerTypeContactListGroupForm form);
+    CommandResult<VoidResult> deleteCustomerTypeContactListGroup(UserVisitPK userVisitPK, DeleteCustomerTypeContactListGroupForm form);
 
     // --------------------------------------------------------------------------------
     //   Contact List Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
     
-    CommandResult createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form);
+    CommandResult<VoidResult> createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form);
     
-    CommandResult getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form);
+    CommandResult<GetContactListContactMechanismPurposeChoicesResult> getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form);
     
-    CommandResult getContactListContactMechanismPurpose(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeForm form);
+    CommandResult<GetContactListContactMechanismPurposeResult> getContactListContactMechanismPurpose(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeForm form);
     
-    CommandResult getContactListContactMechanismPurposes(UserVisitPK userVisitPK, GetContactListContactMechanismPurposesForm form);
+    CommandResult<GetContactListContactMechanismPurposesResult> getContactListContactMechanismPurposes(UserVisitPK userVisitPK, GetContactListContactMechanismPurposesForm form);
     
-    CommandResult setDefaultContactListContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultContactListContactMechanismPurposeForm form);
+    CommandResult<VoidResult> setDefaultContactListContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultContactListContactMechanismPurposeForm form);
     
-    CommandResult editContactListContactMechanismPurpose(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form);
+    CommandResult<EditContactListContactMechanismPurposeResult> editContactListContactMechanismPurpose(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form);
     
-    CommandResult deleteContactListContactMechanismPurpose(UserVisitPK userVisitPK, DeleteContactListContactMechanismPurposeForm form);
+    CommandResult<VoidResult> deleteContactListContactMechanismPurpose(UserVisitPK userVisitPK, DeleteContactListContactMechanismPurposeForm form);
     
     // --------------------------------------------------------------------------------
     //   Party Contact Lists
     // --------------------------------------------------------------------------------
     
-    CommandResult createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form);
+    CommandResult<VoidResult> createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form);
 
-    CommandResult getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form);
+    CommandResult<GetPartyContactListsResult> getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form);
 
-    CommandResult getPartyContactList(UserVisitPK userVisitPK, GetPartyContactListForm form);
+    CommandResult<GetPartyContactListResult> getPartyContactList(UserVisitPK userVisitPK, GetPartyContactListForm form);
 
-    CommandResult getPartyContactListStatusChoices(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form);
+    CommandResult<GetPartyContactListStatusChoicesResult> getPartyContactListStatusChoices(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form);
 
-    CommandResult setPartyContactListStatus(UserVisitPK userVisitPK, SetPartyContactListStatusForm form);
+    CommandResult<VoidResult> setPartyContactListStatus(UserVisitPK userVisitPK, SetPartyContactListStatusForm form);
 
-    CommandResult editPartyContactList(UserVisitPK userVisitPK, EditPartyContactListForm form);
+    CommandResult<EditPartyContactListResult> editPartyContactList(UserVisitPK userVisitPK, EditPartyContactListForm form);
     
-    CommandResult deletePartyContactList(UserVisitPK userVisitPK, DeletePartyContactListForm form);
+    CommandResult<VoidResult> deletePartyContactList(UserVisitPK userVisitPK, DeletePartyContactListForm form);
     
 }

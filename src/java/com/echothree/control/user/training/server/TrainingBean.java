@@ -18,9 +18,11 @@ package com.echothree.control.user.training.server;
 
 import com.echothree.control.user.training.common.TrainingRemote;
 import com.echothree.control.user.training.common.form.*;
+import com.echothree.control.user.training.common.result.*;
 import com.echothree.control.user.training.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -43,37 +45,37 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form) {
+    public CommandResult<VoidResult> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form) {
         return CDI.current().select(CreateTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form) {
+    public CommandResult<GetTrainingClassesResult> getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form) {
         return CDI.current().select(GetTrainingClassesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClass(UserVisitPK userVisitPK, GetTrainingClassForm form) {
+    public CommandResult<GetTrainingClassResult> getTrainingClass(UserVisitPK userVisitPK, GetTrainingClassForm form) {
         return CDI.current().select(GetTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassChoices(UserVisitPK userVisitPK, GetTrainingClassChoicesForm form) {
+    public CommandResult<GetTrainingClassChoicesResult> getTrainingClassChoices(UserVisitPK userVisitPK, GetTrainingClassChoicesForm form) {
         return CDI.current().select(GetTrainingClassChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form) {
+    public CommandResult<VoidResult> setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form) {
         return CDI.current().select(SetDefaultTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClass(UserVisitPK userVisitPK, EditTrainingClassForm form) {
+    public CommandResult<EditTrainingClassResult> editTrainingClass(UserVisitPK userVisitPK, EditTrainingClassForm form) {
         return CDI.current().select(EditTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form) {
+    public CommandResult<VoidResult> deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form) {
         return CDI.current().select(DeleteTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     
@@ -82,27 +84,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form) {
+    public CommandResult<VoidResult> createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form) {
         return CDI.current().select(CreateTrainingClassTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassTranslation(UserVisitPK userVisitPK, GetTrainingClassTranslationForm form) {
+    public CommandResult<GetTrainingClassTranslationResult> getTrainingClassTranslation(UserVisitPK userVisitPK, GetTrainingClassTranslationForm form) {
         return CDI.current().select(GetTrainingClassTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassTranslations(UserVisitPK userVisitPK, GetTrainingClassTranslationsForm form) {
+    public CommandResult<GetTrainingClassTranslationsResult> getTrainingClassTranslations(UserVisitPK userVisitPK, GetTrainingClassTranslationsForm form) {
         return CDI.current().select(GetTrainingClassTranslationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassTranslation(UserVisitPK userVisitPK, EditTrainingClassTranslationForm form) {
+    public CommandResult<EditTrainingClassTranslationResult> editTrainingClassTranslation(UserVisitPK userVisitPK, EditTrainingClassTranslationForm form) {
         return CDI.current().select(EditTrainingClassTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form) {
         return CDI.current().select(DeleteTrainingClassTranslationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -111,27 +113,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form) {
+    public CommandResult<VoidResult> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form) {
         return CDI.current().select(CreateTrainingClassSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form) {
+    public CommandResult<GetTrainingClassSectionsResult> getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form) {
         return CDI.current().select(GetTrainingClassSectionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassSection(UserVisitPK userVisitPK, GetTrainingClassSectionForm form) {
+    public CommandResult<GetTrainingClassSectionResult> getTrainingClassSection(UserVisitPK userVisitPK, GetTrainingClassSectionForm form) {
         return CDI.current().select(GetTrainingClassSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassSection(UserVisitPK userVisitPK, EditTrainingClassSectionForm form) {
+    public CommandResult<EditTrainingClassSectionResult> editTrainingClassSection(UserVisitPK userVisitPK, EditTrainingClassSectionForm form) {
         return CDI.current().select(EditTrainingClassSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form) {
         return CDI.current().select(DeleteTrainingClassSectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -140,27 +142,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form) {
+    public CommandResult<VoidResult> createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form) {
         return CDI.current().select(CreateTrainingClassSectionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassSectionTranslation(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationForm form) {
+    public CommandResult<GetTrainingClassSectionTranslationResult> getTrainingClassSectionTranslation(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationForm form) {
         return CDI.current().select(GetTrainingClassSectionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassSectionTranslations(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationsForm form) {
+    public CommandResult<GetTrainingClassSectionTranslationsResult> getTrainingClassSectionTranslations(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationsForm form) {
         return CDI.current().select(GetTrainingClassSectionTranslationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassSectionTranslation(UserVisitPK userVisitPK, EditTrainingClassSectionTranslationForm form) {
+    public CommandResult<EditTrainingClassSectionTranslationResult> editTrainingClassSectionTranslation(UserVisitPK userVisitPK, EditTrainingClassSectionTranslationForm form) {
         return CDI.current().select(EditTrainingClassSectionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form) {
         return CDI.current().select(DeleteTrainingClassSectionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -169,27 +171,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form) {
+    public CommandResult<VoidResult> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form) {
         return CDI.current().select(CreateTrainingClassPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form) {
+    public CommandResult<GetTrainingClassPagesResult> getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form) {
         return CDI.current().select(GetTrainingClassPagesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassPage(UserVisitPK userVisitPK, GetTrainingClassPageForm form) {
+    public CommandResult<GetTrainingClassPageResult> getTrainingClassPage(UserVisitPK userVisitPK, GetTrainingClassPageForm form) {
         return CDI.current().select(GetTrainingClassPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassPage(UserVisitPK userVisitPK, EditTrainingClassPageForm form) {
+    public CommandResult<EditTrainingClassPageResult> editTrainingClassPage(UserVisitPK userVisitPK, EditTrainingClassPageForm form) {
         return CDI.current().select(EditTrainingClassPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form) {
         return CDI.current().select(DeleteTrainingClassPageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -198,27 +200,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form) {
+    public CommandResult<VoidResult> createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form) {
         return CDI.current().select(CreateTrainingClassPageTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassPageTranslation(UserVisitPK userVisitPK, GetTrainingClassPageTranslationForm form) {
+    public CommandResult<GetTrainingClassPageTranslationResult> getTrainingClassPageTranslation(UserVisitPK userVisitPK, GetTrainingClassPageTranslationForm form) {
         return CDI.current().select(GetTrainingClassPageTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassPageTranslations(UserVisitPK userVisitPK, GetTrainingClassPageTranslationsForm form) {
+    public CommandResult<GetTrainingClassPageTranslationsResult> getTrainingClassPageTranslations(UserVisitPK userVisitPK, GetTrainingClassPageTranslationsForm form) {
         return CDI.current().select(GetTrainingClassPageTranslationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassPageTranslation(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form) {
+    public CommandResult<EditTrainingClassPageTranslationResult> editTrainingClassPageTranslation(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form) {
         return CDI.current().select(EditTrainingClassPageTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form) {
         return CDI.current().select(DeleteTrainingClassPageTranslationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -227,27 +229,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form) {
+    public CommandResult<VoidResult> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form) {
         return CDI.current().select(CreateTrainingClassQuestionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form) {
+    public CommandResult<GetTrainingClassQuestionsResult> getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form) {
         return CDI.current().select(GetTrainingClassQuestionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassQuestion(UserVisitPK userVisitPK, GetTrainingClassQuestionForm form) {
+    public CommandResult<GetTrainingClassQuestionResult> getTrainingClassQuestion(UserVisitPK userVisitPK, GetTrainingClassQuestionForm form) {
         return CDI.current().select(GetTrainingClassQuestionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassQuestion(UserVisitPK userVisitPK, EditTrainingClassQuestionForm form) {
+    public CommandResult<EditTrainingClassQuestionResult> editTrainingClassQuestion(UserVisitPK userVisitPK, EditTrainingClassQuestionForm form) {
         return CDI.current().select(EditTrainingClassQuestionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form) {
         return CDI.current().select(DeleteTrainingClassQuestionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -256,27 +258,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form) {
+    public CommandResult<VoidResult> createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form) {
         return CDI.current().select(CreateTrainingClassQuestionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassQuestionTranslation(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationForm form) {
+    public CommandResult<GetTrainingClassQuestionTranslationResult> getTrainingClassQuestionTranslation(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationForm form) {
         return CDI.current().select(GetTrainingClassQuestionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassQuestionTranslations(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationsForm form) {
+    public CommandResult<GetTrainingClassQuestionTranslationsResult> getTrainingClassQuestionTranslations(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationsForm form) {
         return CDI.current().select(GetTrainingClassQuestionTranslationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassQuestionTranslation(UserVisitPK userVisitPK, EditTrainingClassQuestionTranslationForm form) {
+    public CommandResult<EditTrainingClassQuestionTranslationResult> editTrainingClassQuestionTranslation(UserVisitPK userVisitPK, EditTrainingClassQuestionTranslationForm form) {
         return CDI.current().select(EditTrainingClassQuestionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form) {
         return CDI.current().select(DeleteTrainingClassQuestionTranslationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -285,27 +287,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form) {
+    public CommandResult<VoidResult> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form) {
         return CDI.current().select(CreateTrainingClassAnswerCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form) {
+    public CommandResult<GetTrainingClassAnswersResult> getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form) {
         return CDI.current().select(GetTrainingClassAnswersCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassAnswer(UserVisitPK userVisitPK, GetTrainingClassAnswerForm form) {
+    public CommandResult<GetTrainingClassAnswerResult> getTrainingClassAnswer(UserVisitPK userVisitPK, GetTrainingClassAnswerForm form) {
         return CDI.current().select(GetTrainingClassAnswerCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassAnswer(UserVisitPK userVisitPK, EditTrainingClassAnswerForm form) {
+    public CommandResult<EditTrainingClassAnswerResult> editTrainingClassAnswer(UserVisitPK userVisitPK, EditTrainingClassAnswerForm form) {
         return CDI.current().select(EditTrainingClassAnswerCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form) {
         return CDI.current().select(DeleteTrainingClassAnswerCommand.class).get().run(userVisitPK, form);
     }
     
@@ -314,27 +316,27 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form) {
+    public CommandResult<VoidResult> createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form) {
         return CDI.current().select(CreateTrainingClassAnswerTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassAnswerTranslation(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form) {
+    public CommandResult<GetTrainingClassAnswerTranslationResult> getTrainingClassAnswerTranslation(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form) {
         return CDI.current().select(GetTrainingClassAnswerTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getTrainingClassAnswerTranslations(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationsForm form) {
+    public CommandResult<GetTrainingClassAnswerTranslationsResult> getTrainingClassAnswerTranslations(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationsForm form) {
         return CDI.current().select(GetTrainingClassAnswerTranslationsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editTrainingClassAnswerTranslation(UserVisitPK userVisitPK, EditTrainingClassAnswerTranslationForm form) {
+    public CommandResult<EditTrainingClassAnswerTranslationResult> editTrainingClassAnswerTranslation(UserVisitPK userVisitPK, EditTrainingClassAnswerTranslationForm form) {
         return CDI.current().select(EditTrainingClassAnswerTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form) {
+    public CommandResult<VoidResult> deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form) {
         return CDI.current().select(DeleteTrainingClassAnswerTranslationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -343,37 +345,37 @@ public class TrainingBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form) {
+    public CommandResult<VoidResult> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form) {
         return CDI.current().select(CreatePartyTrainingClassCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form) {
+    public CommandResult<GetPartyTrainingClassStatusChoicesResult> getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form) {
         return CDI.current().select(GetPartyTrainingClassStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form) {
+    public CommandResult<SetPartyTrainingClassStatusResult> setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form) {
         return CDI.current().select(SetPartyTrainingClassStatusCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyTrainingClass(UserVisitPK userVisitPK, GetPartyTrainingClassForm form) {
+    public CommandResult<GetPartyTrainingClassResult> getPartyTrainingClass(UserVisitPK userVisitPK, GetPartyTrainingClassForm form) {
         return CDI.current().select(GetPartyTrainingClassCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyTrainingClasses(UserVisitPK userVisitPK, GetPartyTrainingClassesForm form) {
+    public CommandResult<GetPartyTrainingClassesResult> getPartyTrainingClasses(UserVisitPK userVisitPK, GetPartyTrainingClassesForm form) {
         return CDI.current().select(GetPartyTrainingClassesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult editPartyTrainingClass(UserVisitPK userVisitPK, EditPartyTrainingClassForm form) {
+    public CommandResult<EditPartyTrainingClassResult> editPartyTrainingClass(UserVisitPK userVisitPK, EditPartyTrainingClassForm form) {
         return CDI.current().select(EditPartyTrainingClassCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form) {
+    public CommandResult<VoidResult> deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form) {
         return CDI.current().select(DeletePartyTrainingClassCommand.class).get().run(userVisitPK, form);
     }
 
@@ -382,17 +384,17 @@ public class TrainingBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult getPartyTrainingClassSession(UserVisitPK userVisitPK, GetPartyTrainingClassSessionForm form) {
+    public CommandResult<GetPartyTrainingClassSessionResult> getPartyTrainingClassSession(UserVisitPK userVisitPK, GetPartyTrainingClassSessionForm form) {
         return CDI.current().select(GetPartyTrainingClassSessionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult getPartyTrainingClassSessions(UserVisitPK userVisitPK, GetPartyTrainingClassSessionsForm form) {
+    public CommandResult<GetPartyTrainingClassSessionsResult> getPartyTrainingClassSessions(UserVisitPK userVisitPK, GetPartyTrainingClassSessionsForm form) {
         return CDI.current().select(GetPartyTrainingClassSessionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
-    public CommandResult deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form) {
+    public CommandResult<VoidResult> deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form) {
         return CDI.current().select(DeletePartyTrainingClassSessionCommand.class).get().run(userVisitPK, form);
     }
 
@@ -401,7 +403,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult editPartyTrainingClassSessionPage(UserVisitPK userVisitPK, EditPartyTrainingClassSessionPageForm form) {
+    public CommandResult<EditPartyTrainingClassSessionPageResult> editPartyTrainingClassSessionPage(UserVisitPK userVisitPK, EditPartyTrainingClassSessionPageForm form) {
         return CDI.current().select(EditPartyTrainingClassSessionPageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -410,7 +412,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult editPartyTrainingClassSessionAnswer(UserVisitPK userVisitPK, EditPartyTrainingClassSessionAnswerForm form) {
+    public CommandResult<EditPartyTrainingClassSessionAnswerResult> editPartyTrainingClassSessionAnswer(UserVisitPK userVisitPK, EditPartyTrainingClassSessionAnswerForm form) {
         return CDI.current().select(EditPartyTrainingClassSessionAnswerCommand.class).get().run(userVisitPK, form);
     }
 

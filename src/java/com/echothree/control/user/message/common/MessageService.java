@@ -17,8 +17,10 @@
 package com.echothree.control.user.message.common;
 
 import com.echothree.control.user.message.common.form.*;
+import com.echothree.control.user.message.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface MessageService
         extends MessageForms {
@@ -27,63 +29,63 @@ public interface MessageService
     //   Message Types
     // -------------------------------------------------------------------------
     
-    CommandResult createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form);
+    CommandResult<CreateMessageTypeResult> createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form);
     
-    CommandResult getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form);
+    CommandResult<GetMessageTypeResult> getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form);
     
-    CommandResult getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form);
+    CommandResult<GetMessageTypesResult> getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form);
     
-    CommandResult editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form);
+    CommandResult<EditMessageTypeResult> editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form);
     
-    CommandResult deleteMessageType(UserVisitPK userVisitPK, DeleteMessageTypeForm form);
+    CommandResult<VoidResult> deleteMessageType(UserVisitPK userVisitPK, DeleteMessageTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Message Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createMessageTypeDescription(UserVisitPK userVisitPK, CreateMessageTypeDescriptionForm form);
+    CommandResult<VoidResult> createMessageTypeDescription(UserVisitPK userVisitPK, CreateMessageTypeDescriptionForm form);
     
-    CommandResult getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form);
+    CommandResult<GetMessageTypeDescriptionsResult> getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form);
     
-    CommandResult editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form);
+    CommandResult<EditMessageTypeDescriptionResult> editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form);
     
-    CommandResult deleteMessageTypeDescription(UserVisitPK userVisitPK, DeleteMessageTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteMessageTypeDescription(UserVisitPK userVisitPK, DeleteMessageTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Messages
     // -------------------------------------------------------------------------
     
-    CommandResult createMessage(UserVisitPK userVisitPK, CreateMessageForm form);
+    CommandResult<VoidResult> createMessage(UserVisitPK userVisitPK, CreateMessageForm form);
     
-    CommandResult getMessage(UserVisitPK userVisitPK, GetMessageForm form);
+    CommandResult<GetMessageResult> getMessage(UserVisitPK userVisitPK, GetMessageForm form);
     
-    CommandResult getMessages(UserVisitPK userVisitPK, GetMessagesForm form);
+    CommandResult<GetMessagesResult> getMessages(UserVisitPK userVisitPK, GetMessagesForm form);
     
-    CommandResult deleteMessage(UserVisitPK userVisitPK, DeleteMessageForm form);
+    CommandResult<VoidResult> deleteMessage(UserVisitPK userVisitPK, DeleteMessageForm form);
     
     // -------------------------------------------------------------------------
     //   Message Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createMessageDescription(UserVisitPK userVisitPK, CreateMessageDescriptionForm form);
+    CommandResult<VoidResult> createMessageDescription(UserVisitPK userVisitPK, CreateMessageDescriptionForm form);
     
-    CommandResult getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form);
+    CommandResult<GetMessageDescriptionsResult> getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form);
     
-    CommandResult editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form);
+    CommandResult<EditMessageDescriptionResult> editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form);
     
-    CommandResult deleteMessageDescription(UserVisitPK userVisitPK, DeleteMessageDescriptionForm form);
+    CommandResult<VoidResult> deleteMessageDescription(UserVisitPK userVisitPK, DeleteMessageDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Entity Messages
     // -------------------------------------------------------------------------
     
-    CommandResult createEntityMessage(UserVisitPK userVisitPK, CreateEntityMessageForm form);
+    CommandResult<VoidResult> createEntityMessage(UserVisitPK userVisitPK, CreateEntityMessageForm form);
     
-    CommandResult getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form);
+    CommandResult<GetEntityMessageResult> getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form);
     
-    CommandResult getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form);
+    CommandResult<GetEntityMessagesResult> getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form);
     
-    CommandResult deleteEntityMessage(UserVisitPK userVisitPK, DeleteEntityMessageForm form);
+    CommandResult<VoidResult> deleteEntityMessage(UserVisitPK userVisitPK, DeleteEntityMessageForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

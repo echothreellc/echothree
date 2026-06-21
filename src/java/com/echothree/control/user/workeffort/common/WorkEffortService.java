@@ -17,8 +17,10 @@
 package com.echothree.control.user.workeffort.common;
 
 import com.echothree.control.user.workeffort.common.form.*;
+import com.echothree.control.user.workeffort.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface WorkEffortService
         extends WorkEffortForms {
@@ -27,63 +29,63 @@ public interface WorkEffortService
     //   Work Effort Types
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
+    CommandResult<VoidResult> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
     
-    CommandResult getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form);
+    CommandResult<GetWorkEffortTypesResult> getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form);
     
-    CommandResult getWorkEffortType(UserVisitPK userVisitPK, GetWorkEffortTypeForm form);
+    CommandResult<GetWorkEffortTypeResult> getWorkEffortType(UserVisitPK userVisitPK, GetWorkEffortTypeForm form);
     
-    CommandResult deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form);
+    CommandResult<VoidResult> deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Work Effort Type Descriptions
     // -------------------------------------------------------------------------
 
-    CommandResult createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form);
+    CommandResult<VoidResult> createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form);
 
-    CommandResult getWorkEffortTypeDescriptions(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form);
+    CommandResult<GetWorkEffortTypeDescriptionsResult> getWorkEffortTypeDescriptions(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form);
 
-    CommandResult editWorkEffortTypeDescription(UserVisitPK userVisitPK, EditWorkEffortTypeDescriptionForm form);
+    CommandResult<EditWorkEffortTypeDescriptionResult> editWorkEffortTypeDescription(UserVisitPK userVisitPK, EditWorkEffortTypeDescriptionForm form);
 
-    CommandResult deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Work Effort Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
+    CommandResult<VoidResult> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
     
-    CommandResult getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form);
+    CommandResult<GetWorkEffortScopesResult> getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form);
     
-    CommandResult getWorkEffortScope(UserVisitPK userVisitPK, GetWorkEffortScopeForm form);
+    CommandResult<GetWorkEffortScopeResult> getWorkEffortScope(UserVisitPK userVisitPK, GetWorkEffortScopeForm form);
     
-    CommandResult getWorkEffortScopeChoices(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form);
+    CommandResult<GetWorkEffortScopeChoicesResult> getWorkEffortScopeChoices(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form);
     
-    CommandResult setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form);
+    CommandResult<VoidResult> setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form);
     
-    CommandResult editWorkEffortScope(UserVisitPK userVisitPK, EditWorkEffortScopeForm form);
+    CommandResult<EditWorkEffortScopeResult> editWorkEffortScope(UserVisitPK userVisitPK, EditWorkEffortScopeForm form);
 
-    CommandResult deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form);
+    CommandResult<VoidResult> deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form);
 
     // -------------------------------------------------------------------------
     //   Work Effort Scope Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form);
+    CommandResult<VoidResult> createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form);
     
-    CommandResult getWorkEffortScopeDescription(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionForm form);
+    CommandResult<GetWorkEffortScopeDescriptionResult> getWorkEffortScopeDescription(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionForm form);
 
-    CommandResult getWorkEffortScopeDescriptions(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionsForm form);
+    CommandResult<GetWorkEffortScopeDescriptionsResult> getWorkEffortScopeDescriptions(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionsForm form);
 
-    CommandResult editWorkEffortScopeDescription(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form);
+    CommandResult<EditWorkEffortScopeDescriptionResult> editWorkEffortScopeDescription(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form);
     
-    CommandResult deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form);
+    CommandResult<VoidResult> deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Work Effort
     // -------------------------------------------------------------------------
     
-    CommandResult getWorkEffort(UserVisitPK userVisitPK, GetWorkEffortForm form);
+    CommandResult<GetWorkEffortResult> getWorkEffort(UserVisitPK userVisitPK, GetWorkEffortForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

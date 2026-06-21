@@ -25,7 +25,6 @@ import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
-import java.util.Objects;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -67,10 +66,10 @@ public class ItemWeightTypesHandler
 
                     createForm.set(spec.get());
 
-                    commandResult = itemService.createItemWeightType(initialDataParser.getUserVisit(), createForm);
+                    var createItemWeightTypeCommandResult = itemService.createItemWeightType(initialDataParser.getUserVisit(), createForm);
 
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createItemWeightTypeCommandResult.hasErrors()) {
+                        getLogger().error(createItemWeightTypeCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

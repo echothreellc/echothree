@@ -17,8 +17,10 @@
 package com.echothree.control.user.document.common;
 
 import com.echothree.control.user.document.common.form.*;
+import com.echothree.control.user.document.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface DocumentService
         extends DocumentForms {
@@ -33,126 +35,126 @@ public interface DocumentService
     //   Document Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form);
+    CommandResult<VoidResult> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form);
 
-    CommandResult getDocumentTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeChoicesForm form);
+    CommandResult<GetDocumentTypeChoicesResult> getDocumentTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeChoicesForm form);
 
-    CommandResult getDocumentType(UserVisitPK userVisitPK, GetDocumentTypeForm form);
+    CommandResult<GetDocumentTypeResult> getDocumentType(UserVisitPK userVisitPK, GetDocumentTypeForm form);
 
-    CommandResult getDocumentTypes(UserVisitPK userVisitPK, GetDocumentTypesForm form);
+    CommandResult<GetDocumentTypesResult> getDocumentTypes(UserVisitPK userVisitPK, GetDocumentTypesForm form);
 
-    CommandResult setDefaultDocumentType(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form);
+    CommandResult<VoidResult> setDefaultDocumentType(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form);
 
-    CommandResult editDocumentType(UserVisitPK userVisitPK, EditDocumentTypeForm form);
+    CommandResult<EditDocumentTypeResult> editDocumentType(UserVisitPK userVisitPK, EditDocumentTypeForm form);
 
-    CommandResult deleteDocumentType(UserVisitPK userVisitPK, DeleteDocumentTypeForm form);
+    CommandResult<VoidResult> deleteDocumentType(UserVisitPK userVisitPK, DeleteDocumentTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Document Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createDocumentTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeDescriptionForm form);
+    CommandResult<VoidResult> createDocumentTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeDescriptionForm form);
 
-    CommandResult getDocumentTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeDescriptionForm form);
+    CommandResult<GetDocumentTypeDescriptionResult> getDocumentTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeDescriptionForm form);
 
-    CommandResult getDocumentTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeDescriptionsForm form);
+    CommandResult<GetDocumentTypeDescriptionsResult> getDocumentTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeDescriptionsForm form);
 
-    CommandResult editDocumentTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeDescriptionForm form);
+    CommandResult<EditDocumentTypeDescriptionResult> editDocumentTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeDescriptionForm form);
 
-    CommandResult deleteDocumentTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteDocumentTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Document Type Usage Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form);
+    CommandResult<VoidResult> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form);
 
-    CommandResult getDocumentTypeUsageTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeChoicesForm form);
+    CommandResult<GetDocumentTypeUsageTypeChoicesResult> getDocumentTypeUsageTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeChoicesForm form);
 
-    CommandResult getDocumentTypeUsageType(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeForm form);
+    CommandResult<GetDocumentTypeUsageTypeResult> getDocumentTypeUsageType(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeForm form);
 
-    CommandResult getDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetDocumentTypeUsageTypesForm form);
+    CommandResult<GetDocumentTypeUsageTypesResult> getDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetDocumentTypeUsageTypesForm form);
 
-    CommandResult setDefaultDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageTypeForm form);
+    CommandResult<VoidResult> setDefaultDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageTypeForm form);
 
-    CommandResult editDocumentTypeUsageType(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeForm form);
+    CommandResult<EditDocumentTypeUsageTypeResult> editDocumentTypeUsageType(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeForm form);
 
-    CommandResult deleteDocumentTypeUsageType(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeForm form);
+    CommandResult<VoidResult> deleteDocumentTypeUsageType(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Document Type Usage Type Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeDescriptionForm form);
+    CommandResult<VoidResult> createDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeDescriptionForm form);
 
-    CommandResult getDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionForm form);
+    CommandResult<GetDocumentTypeUsageTypeDescriptionResult> getDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionForm form);
 
-    CommandResult getDocumentTypeUsageTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionsForm form);
+    CommandResult<GetDocumentTypeUsageTypeDescriptionsResult> getDocumentTypeUsageTypeDescriptions(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeDescriptionsForm form);
 
-    CommandResult editDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeDescriptionForm form);
+    CommandResult<EditDocumentTypeUsageTypeDescriptionResult> editDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeDescriptionForm form);
 
-    CommandResult deleteDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteDocumentTypeUsageTypeDescription(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form);
 
     // --------------------------------------------------------------------------------
     //   Document Type Usage Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createDocumentTypeUsage(UserVisitPK userVisitPK, CreateDocumentTypeUsageForm form);
+    CommandResult<VoidResult> createDocumentTypeUsage(UserVisitPK userVisitPK, CreateDocumentTypeUsageForm form);
 
-    CommandResult getDocumentTypeUsage(UserVisitPK userVisitPK, GetDocumentTypeUsageForm form);
+    CommandResult<GetDocumentTypeUsageResult> getDocumentTypeUsage(UserVisitPK userVisitPK, GetDocumentTypeUsageForm form);
 
-    CommandResult getDocumentTypeUsages(UserVisitPK userVisitPK, GetDocumentTypeUsagesForm form);
+    CommandResult<GetDocumentTypeUsagesResult> getDocumentTypeUsages(UserVisitPK userVisitPK, GetDocumentTypeUsagesForm form);
 
-    CommandResult setDefaultDocumentTypeUsage(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageForm form);
+    CommandResult<VoidResult> setDefaultDocumentTypeUsage(UserVisitPK userVisitPK, SetDefaultDocumentTypeUsageForm form);
 
-    CommandResult editDocumentTypeUsage(UserVisitPK userVisitPK, EditDocumentTypeUsageForm form);
+    CommandResult<EditDocumentTypeUsageResult> editDocumentTypeUsage(UserVisitPK userVisitPK, EditDocumentTypeUsageForm form);
 
-    CommandResult deleteDocumentTypeUsage(UserVisitPK userVisitPK, DeleteDocumentTypeUsageForm form);
+    CommandResult<VoidResult> deleteDocumentTypeUsage(UserVisitPK userVisitPK, DeleteDocumentTypeUsageForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Type Document Type Usage Types
     // --------------------------------------------------------------------------------
 
-    CommandResult createPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form);
+    CommandResult<VoidResult> createPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form);
 
-    CommandResult getPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypeForm form);
+    CommandResult<GetPartyTypeDocumentTypeUsageTypeResult> getPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypeForm form);
 
-    CommandResult getPartyTypeDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypesForm form);
+    CommandResult<GetPartyTypeDocumentTypeUsageTypesResult> getPartyTypeDocumentTypeUsageTypes(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypesForm form);
 
-    CommandResult setDefaultPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form);
+    CommandResult<VoidResult> setDefaultPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form);
 
-    CommandResult editPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, EditPartyTypeDocumentTypeUsageTypeForm form);
+    CommandResult<EditPartyTypeDocumentTypeUsageTypeResult> editPartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, EditPartyTypeDocumentTypeUsageTypeForm form);
 
-    CommandResult deletePartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form);
+    CommandResult<VoidResult> deletePartyTypeDocumentTypeUsageType(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form);
 
     // --------------------------------------------------------------------------------
     //   Party Documents
     // --------------------------------------------------------------------------------
 
-    CommandResult createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form);
+    CommandResult<CreatePartyDocumentResult> createPartyDocument(UserVisitPK userVisitPK, CreatePartyDocumentForm form);
 
-    CommandResult getPartyDocument(UserVisitPK userVisitPK, GetPartyDocumentForm form);
+    CommandResult<GetPartyDocumentResult> getPartyDocument(UserVisitPK userVisitPK, GetPartyDocumentForm form);
 
-    CommandResult getPartyDocuments(UserVisitPK userVisitPK, GetPartyDocumentsForm form);
+    CommandResult<GetPartyDocumentsResult> getPartyDocuments(UserVisitPK userVisitPK, GetPartyDocumentsForm form);
 
-    CommandResult setDefaultPartyDocument(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form);
+    CommandResult<VoidResult> setDefaultPartyDocument(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form);
 
-    CommandResult editPartyDocument(UserVisitPK userVisitPK, EditPartyDocumentForm form);
+    CommandResult<EditPartyDocumentResult> editPartyDocument(UserVisitPK userVisitPK, EditPartyDocumentForm form);
 
-    CommandResult deletePartyDocument(UserVisitPK userVisitPK, DeletePartyDocumentForm form);
+    CommandResult<VoidResult> deletePartyDocument(UserVisitPK userVisitPK, DeletePartyDocumentForm form);
 
     // --------------------------------------------------------------------------------
     //   Document Descriptions
     // --------------------------------------------------------------------------------
 
-    CommandResult createDocumentDescription(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form);
+    CommandResult<VoidResult> createDocumentDescription(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form);
 
-    CommandResult getDocumentDescription(UserVisitPK userVisitPK, GetDocumentDescriptionForm form);
+    CommandResult<GetDocumentDescriptionResult> getDocumentDescription(UserVisitPK userVisitPK, GetDocumentDescriptionForm form);
 
-    CommandResult getDocumentDescriptions(UserVisitPK userVisitPK, GetDocumentDescriptionsForm form);
+    CommandResult<GetDocumentDescriptionsResult> getDocumentDescriptions(UserVisitPK userVisitPK, GetDocumentDescriptionsForm form);
 
-    CommandResult editDocumentDescription(UserVisitPK userVisitPK, EditDocumentDescriptionForm form);
+    CommandResult<EditDocumentDescriptionResult> editDocumentDescription(UserVisitPK userVisitPK, EditDocumentDescriptionForm form);
 
-    CommandResult deleteDocumentDescription(UserVisitPK userVisitPK, DeleteDocumentDescriptionForm form);
+    CommandResult<VoidResult> deleteDocumentDescription(UserVisitPK userVisitPK, DeleteDocumentDescriptionForm form);
 
 }
