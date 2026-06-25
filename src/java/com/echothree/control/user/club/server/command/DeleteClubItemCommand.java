@@ -19,12 +19,17 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.DeleteClubItemForm;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -32,10 +37,18 @@ import javax.enterprise.context.Dependent;
 @Dependent
 public class DeleteClubItemCommand
         extends BaseSimpleCommand<DeleteClubItemForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ClubItem.name(), SecurityRoles.Delete.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("ClubItemTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -45,7 +58,7 @@ public class DeleteClubItemCommand
     
     /** Creates a new instance of DeleteClubItemCommand */
     public DeleteClubItemCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
