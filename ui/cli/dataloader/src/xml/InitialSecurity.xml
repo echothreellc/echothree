@@ -309,8 +309,71 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Club" parentSecurityRoleGroupName="ClubComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Club" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Club List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ClubItemType" parentSecurityRoleGroupName="ClubComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Club Item Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ClubItem" parentSecurityRoleGroupName="ClubComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Club Item" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Review" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Club Item Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="CommunicationComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -8068,7 +8131,26 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="AssociatePartyContactMechanism" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="AssociateReferral" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="City" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Club" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItemType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItem" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItem" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItem" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItem" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItem" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ClubItem" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommunicationEventPurpose" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommunicationSource" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommunicationEvent" securityRoleName="List" />
