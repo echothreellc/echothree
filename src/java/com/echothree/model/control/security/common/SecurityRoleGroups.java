@@ -342,6 +342,7 @@ public enum SecurityRoleGroups {
     State,
     SubscriptionKind,
     SubscriptionType,
+    SubscriptionTypeChain,
     SymbolPosition,
     Tag,
     TagScope,
