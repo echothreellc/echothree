@@ -2314,12 +2314,6 @@
         <securityRoleGroup securityRoleGroupName="SubscriptionComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Subscription Component" />
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="Subscription" parentSecurityRoleGroupName="SubscriptionComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Subscription" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Subscription List" />
-            </securityRole>
-        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SubscriptionKind" parentSecurityRoleGroupName="SubscriptionComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Subscription Kind" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -2342,6 +2336,36 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Subscription Kind Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="SubscriptionType" parentSecurityRoleGroupName="SubscriptionComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Subscription Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Subscription" parentSecurityRoleGroupName="SubscriptionComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Subscription" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription List" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SurveyComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -8820,7 +8844,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethodCarrierService" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SkillType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="State" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionKind" securityRoleName="Delete" />
@@ -8828,6 +8851,14 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionKind" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionKind" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionKind" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Survey" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveType" securityRoleName="Edit" />
