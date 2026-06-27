@@ -340,6 +340,7 @@ public enum SecurityRoleGroups {
     ShippingMethodCarrierService,
     Source,
     State,
+    Subscription,
     SubscriptionKind,
     SubscriptionType,
     SubscriptionTypeChain,

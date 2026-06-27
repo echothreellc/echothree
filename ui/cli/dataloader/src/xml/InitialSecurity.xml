@@ -2382,9 +2382,22 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Subscription" parentSecurityRoleGroupName="SubscriptionComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Subscription" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Subscription List" />
             </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Subscription Review" />
+            </securityRole>
+        </securityRoleGroup>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SurveyComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Survey Component" />
@@ -8880,8 +8893,12 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Survey" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveType" securityRoleName="Edit" />
