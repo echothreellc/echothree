@@ -17,11 +17,17 @@
 package com.echothree.model.control.subscription.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.subscription.common.SubscriptionConstants;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +35,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("subscription type object")
 @GraphQLName("SubscriptionType")
@@ -99,24 +108,24 @@ public class SubscriptionTypeObject
         return subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("subscriptions")
-//    @GraphQLNonNull
-//    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-//    public CountingPaginatedData<SubscriptionObject> getSubscriptions(final DataFetchingEnvironment env) {
-//        if(SubscriptionSecurityUtils.getHasSubscriptionsAccess(env)) {
-//            var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-//            var totalCount = subscriptionControl.countSubscriptionsBySubscriptionType(subscriptionType);
-//
-//            try(var objectLimiter = new ObjectLimiter(env, SubscriptionConstants.COMPONENT_VENDOR_NAME, SubscriptionConstants.ENTITY_TYPE_NAME, totalCount)) {
-//                var entities = subscriptionControl.getSubscriptions(subscriptionType);
-//                var subscriptions = entities.stream().map(SubscriptionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
-//
-//                return new CountedObjects<>(objectLimiter, subscriptions);
-//            }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
-//    }
+    @GraphQLField
+    @GraphQLDescription("subscriptions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SubscriptionObject> getSubscriptions(final DataFetchingEnvironment env) {
+        if(SubscriptionSecurityUtils.getHasSubscriptionsAccess(env)) {
+            var subscriptionControl = Session.getModelController(SubscriptionControl.class);
+            var totalCount = subscriptionControl.countSubscriptionsBySubscriptionType(subscriptionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, SubscriptionConstants.COMPONENT_VENDOR_NAME, SubscriptionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = subscriptionControl.getSubscriptionsBySubscriptionType(subscriptionType);
+                var subscriptions = entities.stream().map(SubscriptionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, subscriptions);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
 }
