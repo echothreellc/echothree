@@ -26,7 +26,10 @@ public interface GetQueuedLettersResult
     
     LetterTransfer getLetter();
     void setLetter(LetterTransfer letter);
-    
+
+    Long getQueuedLetterCount();
+    void setQueuedLetterCount(Long queuedLetterCount);
+
     List<QueuedLetterTransfer> getQueuedLetters();
     void setQueuedLetters(List<QueuedLetterTransfer> queuedLetters);
     
