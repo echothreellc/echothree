@@ -386,10 +386,12 @@ import com.echothree.control.user.shipping.common.ShippingUtil;
 import com.echothree.control.user.shipping.server.command.GetShippingMethodCommand;
 import com.echothree.control.user.shipping.server.command.GetShippingMethodsCommand;
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
+import com.echothree.control.user.subscription.server.command.GetSubscriptionCommand;
 import com.echothree.control.user.subscription.server.command.GetSubscriptionKindCommand;
 import com.echothree.control.user.subscription.server.command.GetSubscriptionKindsCommand;
 import com.echothree.control.user.subscription.server.command.GetSubscriptionTypeCommand;
 import com.echothree.control.user.subscription.server.command.GetSubscriptionTypesCommand;
+import com.echothree.control.user.subscription.server.command.GetSubscriptionsCommand;
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.server.command.GetEntityTagCommand;
 import com.echothree.control.user.tag.server.command.GetEntityTagsCommand;
@@ -669,6 +671,7 @@ import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.control.shipping.server.graphql.ShippingMethodObject;
 import com.echothree.model.control.subscription.server.graphql.SubscriptionKindObject;
+import com.echothree.model.control.subscription.server.graphql.SubscriptionObject;
 import com.echothree.model.control.subscription.server.graphql.SubscriptionTypeObject;
 import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
@@ -1024,8 +1027,10 @@ import com.echothree.model.data.shipment.common.FreeOnBoardConstants;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.ShippingMethodConstants;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
+import com.echothree.model.data.subscription.common.SubscriptionConstants;
 import com.echothree.model.data.subscription.common.SubscriptionKindConstants;
 import com.echothree.model.data.subscription.common.SubscriptionTypeConstants;
+import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.tag.common.EntityTagConstants;
@@ -13265,5 +13270,63 @@ public interface GraphQlQueries {
 
         return data;
     }
-    
+
+    @GraphQLField
+    @GraphQLName("subscription")
+    static SubscriptionObject subscription(final DataFetchingEnvironment env,
+            @GraphQLName("subscriptionName") final String subscriptionName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Subscription subscription;
+
+        try {
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionForm();
+
+            commandForm.setSubscriptionName(subscriptionName);
+            commandForm.setUuid(id);
+
+            subscription = CDI.current().select(GetSubscriptionCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return subscription == null ? null : new SubscriptionObject(subscription);
+    }
+
+    @GraphQLField
+    @GraphQLName("subscriptions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SubscriptionObject> subscriptions(final DataFetchingEnvironment env,
+            @GraphQLName("subscriptionKindName") @GraphQLNonNull final String subscriptionKindName,
+            @GraphQLName("subscriptionTypeName") @GraphQLNonNull final String subscriptionTypeName) {
+        CountingPaginatedData<SubscriptionObject> data;
+
+        try {
+            var commandForm = SubscriptionUtil.getHome().getGetSubscriptionsForm();
+            var command = CDI.current().select(GetSubscriptionsCommand.class).get();
+
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.setSubscriptionTypeName(subscriptionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SubscriptionConstants.COMPONENT_VENDOR_NAME, SubscriptionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var subscriptions = entities.stream()
+                            .map(SubscriptionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, subscriptions);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
 }
