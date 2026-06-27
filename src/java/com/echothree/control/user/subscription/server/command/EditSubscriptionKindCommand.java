@@ -18,7 +18,6 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.edit.SubscriptionEditFactory;
 import com.echothree.control.user.subscription.common.edit.SubscriptionKindEdit;
-import com.echothree.control.user.subscription.common.form.EditSubscriptionKindForm;
 import com.echothree.control.user.subscription.common.result.EditSubscriptionKindResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.control.user.subscription.common.spec.SubscriptionKindSpec;
@@ -27,11 +26,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,19 +51,19 @@ public class EditSubscriptionKindCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SubscriptionKind.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     /** Creates a new instance of EditSubscriptionKindCommand */

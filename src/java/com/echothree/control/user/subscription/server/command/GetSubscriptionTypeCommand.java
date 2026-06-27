@@ -19,6 +19,9 @@ package com.echothree.control.user.subscription.server.command;
 import com.echothree.control.user.subscription.common.form.GetSubscriptionTypeForm;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.subscription.server.logic.SubscriptionTypeLogic;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
@@ -26,6 +29,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -34,9 +40,17 @@ import javax.inject.Inject;
 public class GetSubscriptionTypeCommand
         extends BaseSingleEntityCommand<SubscriptionType, GetSubscriptionTypeForm> {
 
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.SubscriptionType.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SubscriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -53,7 +67,7 @@ public class GetSubscriptionTypeCommand
 
     /** Creates a new instance of GetSubscriptionTypeCommand */
     public GetSubscriptionTypeCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -18,7 +18,6 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.edit.SubscriptionEditFactory;
 import com.echothree.control.user.subscription.common.edit.SubscriptionKindDescriptionEdit;
-import com.echothree.control.user.subscription.common.form.EditSubscriptionKindDescriptionForm;
 import com.echothree.control.user.subscription.common.result.EditSubscriptionKindDescriptionResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.control.user.subscription.common.spec.SubscriptionKindDescriptionSpec;
@@ -29,11 +28,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKindDescription;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -55,17 +53,17 @@ public class EditSubscriptionKindDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SubscriptionKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
 
     /** Creates a new instance of EditSubscriptionKindDescriptionCommand */
