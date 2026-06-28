@@ -20,25 +20,26 @@ import com.echothree.control.user.invoice.common.form.GetInvoiceLineTypeForm;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
+import com.echothree.model.control.invoice.server.logic.InvoiceLineTypeLogic;
+import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInvoiceLineTypeCommand
-        extends BaseSimpleCommand<GetInvoiceLineTypeForm> {
+        extends BaseSingleEntityCommand<InvoiceLineType, GetInvoiceLineTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,15 +48,24 @@ public class GetInvoiceLineTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.InvoiceLineType.name(), SecurityRoles.Review.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.InvoiceLineType.name(), SecurityRoles.Review.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InvoiceLineTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+    
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    InvoiceLineTypeLogic invoiceLineTypeLogic;
+
+    @Inject
+    InvoiceLogic invoiceLogic;
     
     /** Creates a new instance of GetInvoiceLineTypeCommand */
     public GetInvoiceLineTypeCommand() {
@@ -63,27 +73,31 @@ public class GetInvoiceLineTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
-        var result = InvoiceResultFactory.getGetInvoiceLineTypeResult();
-        var invoiceTypeName = form.getInvoiceTypeName();
-        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
-        
-        if(invoiceType != null) {
+    protected InvoiceLineType getEntity() {
+        InvoiceLineType invoiceLineType = null;
+        var invoiceType = invoiceLogic.getInvoiceTypeByName(this, form.getInvoiceTypeName());
+
+        if(!hasExecutionErrors()) {
             var invoiceLineTypeName = form.getInvoiceLineTypeName();
-            var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
-            
+
+            invoiceLineType = invoiceLineTypeLogic.getInvoiceLineTypeByName(this, invoiceType, invoiceLineTypeName);
+
             if(invoiceLineType != null) {
-                result.setInvoiceLineType(invoiceControl.getInvoiceLineTypeTransfer(getUserVisit(), invoiceLineType));
-                
                 sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInvoiceLineTypeName.name(), invoiceLineTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
         }
-        
+
+        return invoiceLineType;
+    }
+    
+    @Override
+    protected BaseResult getResult(InvoiceLineType invoiceLineType) {
+        var result = InvoiceResultFactory.getGetInvoiceLineTypeResult();
+
+        if(invoiceLineType != null) {
+            result.setInvoiceLineType(invoiceControl.getInvoiceLineTypeTransfer(getUserVisit(), invoiceLineType));
+        }
+
         return result;
     }
     
