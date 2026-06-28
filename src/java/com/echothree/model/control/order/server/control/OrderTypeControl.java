@@ -35,6 +35,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -44,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class OrderTypeControl
@@ -91,30 +91,26 @@ public class OrderTypeControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderType */
-    public OrderType getOrderTypeByEntityInstance(final EntityInstance entityInstance,
-            final EntityPermission entityPermission) {
+    public OrderType getOrderTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderTypePK(entityInstance.getEntityUniqueId());
 
         return OrderTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    public OrderType getOrderTypeByEntityInstance(final EntityInstance entityInstance) {
+    public OrderType getOrderTypeByEntityInstance(EntityInstance entityInstance) {
         return getOrderTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
 
-    public OrderType getOrderTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+    public OrderType getOrderTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getOrderTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public OrderType getOrderTypeByPK(OrderTypePK pk) {
-        return OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-    }
-
     public long countOrderTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ordertypes
+                        JOIN ordertypedetails ON ordtypdt_ordertypedetailid = ordtyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getOrderTypeByNameQueries;
@@ -123,16 +119,20 @@ public class OrderTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid " +
-                "AND ordtypdt_ordertypename = ?");
+                """
+                SELECT _ALL_
+                FROM ordertypes, ordertypedetails
+                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
+                AND ordtypdt_ordertypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid " +
-                "AND ordtypdt_ordertypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordertypes, ordertypedetails
+                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
+                AND ordtypdt_ordertypename = ?
+                FOR UPDATE
+                """);
         getOrderTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -162,16 +162,20 @@ public class OrderTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid " +
-                "AND ordtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM ordertypes, ordertypedetails
+                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
+                AND ordtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid " +
-                "AND ordtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordertypes, ordertypedetails
+                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
+                AND ordtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultOrderTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -197,16 +201,20 @@ public class OrderTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid " +
-                "ORDER BY ordtypdt_sortorder, ordtypdt_ordertypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM ordertypes, ordertypedetails
+                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
+                ORDER BY ordtypdt_sortorder, ordtypdt_ordertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordertypes, ordertypedetails
+                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
+                FOR UPDATE
+                """);
         getOrderTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -388,14 +396,18 @@ public class OrderTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertypedescriptions " +
-                "WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_lang_languageid = ? AND ordtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM ordertypedescriptions
+                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_lang_languageid = ? AND ordtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertypedescriptions " +
-                "WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_lang_languageid = ? AND ordtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordertypedescriptions
+                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_lang_languageid = ? AND ordtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -426,15 +438,20 @@ public class OrderTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertypedescriptions, languages " +
-                "WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_thrutime = ? AND ordtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM ordertypedescriptions, languages
+                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_thrutime = ? AND ordtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertypedescriptions " +
-                "WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordertypedescriptions
+                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderTypeDescriptionsByOrderTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
