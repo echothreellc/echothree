@@ -22,22 +22,25 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
+import com.echothree.model.data.picklist.server.entity.PicklistType;
+import com.echothree.model.data.picklist.server.factory.PicklistAliasTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistAliasTypesCommand
-        extends BaseSimpleCommand<GetPicklistAliasTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PicklistAliasType, GetPicklistAliasTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -55,25 +58,51 @@ public class GetPicklistAliasTypesCommand
                 );
     }
 
+    @Inject
+    PicklistControl picklistControl;
+
     /** Creates a new instance of GetPicklistAliasTypesCommand */
     public GetPicklistAliasTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Override
-    protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-        var result = PicklistResultFactory.getGetPicklistAliasTypesResult();
-        var picklistTypeName = form.getPicklistTypeName();
-        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+    private PicklistType picklistType;
 
-        if(picklistType != null) {
-            result.setPicklistType(picklistControl.getPicklistTypeTransfer(getUserVisit(), picklistType));
-            result.setPicklistAliasTypes(picklistControl.getPicklistAliasTypeTransfers(getUserVisit(), picklistType));
-        } else {
+    @Override
+    protected void handleForm() {
+        var picklistTypeName = form.getPicklistTypeName();
+
+        picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+
+        if(picklistType == null) {
             addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);
         }
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : picklistControl.countPicklistAliasTypesByPicklistType(picklistType);
+    }
+
+    @Override
+    protected Collection<PicklistAliasType> getEntities() {
+        return hasExecutionErrors() ? null : picklistControl.getPicklistAliasTypes(picklistType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PicklistAliasType> entities) {
+        var result = PicklistResultFactory.getGetPicklistAliasTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(PicklistAliasTypeFactory.class)) {
+                result.setPicklistAliasTypeCount(getTotalEntities());
+            }
+
+            result.setPicklistType(picklistControl.getPicklistTypeTransfer(userVisit, picklistType));
+            result.setPicklistAliasTypes(picklistControl.getPicklistAliasTypeTransfers(userVisit, entities));
+        }
 
         return result;
     }
