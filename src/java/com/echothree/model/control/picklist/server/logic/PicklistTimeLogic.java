@@ -22,12 +22,15 @@ import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PicklistTimeLogic {
+
+    @Inject
+    PicklistControl picklistControl;
 
     protected PicklistTimeLogic() {
         super();
@@ -50,7 +53,6 @@ public class PicklistTimeLogic {
 
     public void createOrUpdatePicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistDetail = picklist.getLastDetail();
         var picklistType = picklistDetail.getPicklistType();
         var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
@@ -72,7 +74,6 @@ public class PicklistTimeLogic {
     }
 
     public Long getPicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistDetail = picklist.getLastDetail();
         var picklistType = picklistDetail.getPicklistType();
         var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
@@ -98,7 +99,6 @@ public class PicklistTimeLogic {
     }
 
     public void deletePicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName, final BasePK deletedBy) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistDetail = picklist.getLastDetail();
         var picklistType = picklistDetail.getPicklistType();
         var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);

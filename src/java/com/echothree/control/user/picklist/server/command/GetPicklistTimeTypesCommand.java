@@ -31,17 +31,17 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTimeTypesCommand
         extends BaseSimpleCommand<GetPicklistTimeTypesForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -54,7 +54,10 @@ public class GetPicklistTimeTypesCommand
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
+    @Inject
+    PicklistControl picklistControl;
+
     /** Creates a new instance of GetPicklistTimeTypesCommand */
     public GetPicklistTimeTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -62,7 +65,6 @@ public class GetPicklistTimeTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var result = PicklistResultFactory.getGetPicklistTimeTypesResult();
         var picklistTypeName = form.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
