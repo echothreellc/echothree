@@ -26,6 +26,9 @@ public interface GetInvoiceLineTypesResult
     
     InvoiceTypeTransfer getInvoiceType();
     void setInvoiceType(InvoiceTypeTransfer invoiceType);
+
+    Long getInvoiceLineTypeCount();
+    void setInvoiceLineTypeCount(Long invoiceLineTypeCount);
     
     List<InvoiceLineTypeTransfer> getInvoiceLineTypes();
     void setInvoiceLineTypes(List<InvoiceLineTypeTransfer> invoiceLineTypes);

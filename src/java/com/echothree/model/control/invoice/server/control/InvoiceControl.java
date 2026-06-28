@@ -60,6 +60,13 @@ import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.invoice.common.pk.InvoiceAliasTypePK;
+import com.echothree.model.data.invoice.common.pk.InvoiceLinePK;
+import com.echothree.model.data.invoice.common.pk.InvoiceLineTypePK;
+import com.echothree.model.data.invoice.common.pk.InvoiceLineUseTypePK;
+import com.echothree.model.data.invoice.common.pk.InvoicePK;
+import com.echothree.model.data.invoice.common.pk.InvoiceRoleTypePK;
+import com.echothree.model.data.invoice.common.pk.InvoiceTimeTypePK;
 import com.echothree.model.data.invoice.common.pk.InvoiceTypePK;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceAlias;
@@ -218,12 +225,37 @@ public class InvoiceControl
     public InvoiceLineUseType createInvoiceLineUseType(String invoiceLineUseTypeName) {
         return InvoiceLineUseTypeFactory.getInstance().create(invoiceLineUseTypeName);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceLineUseType */
+    public InvoiceLineUseType getInvoiceLineUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceLineUseTypePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceLineUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceLineUseType getInvoiceLineUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceLineUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceLineUseType getInvoiceLineUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceLineUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceLineUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelineusetypes
+                        """);
+    }
+
     public List<InvoiceLineUseType> getInvoiceLineUseTypes() {
         var ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM invoicelineusetypes " +
-                "ORDER BY invclut_invoicelineusetypename");
+                """
+                SELECT _ALL_
+                FROM invoicelineusetypes
+                ORDER BY invclut_invoicelineusetypename
+                _LIMIT_
+                """);
         
         return InvoiceLineUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -233,13 +265,14 @@ public class InvoiceControl
         
         try {
             var ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM invoicelineusetypes " +
-                    "WHERE invclut_invoicelineusetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM invoicelineusetypes
+                    WHERE invclut_invoicelineusetypename = ?
+                    """);
             
             ps.setString(1, invoiceLineUseTypeName);
-            
-            
+
             invoiceLineUseType = InvoiceLineUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -280,9 +313,11 @@ public class InvoiceControl
         
         try {
             var ps = InvoiceLineUseTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM invoicelineusetypedescriptions " +
-                    "WHERE invclutd_invclut_invoicelineusetypeid = ? AND invclutd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM invoicelineusetypedescriptions
+                    WHERE invclutd_invclut_invoicelineusetypeid = ? AND invclutd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, invoiceLineUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -319,12 +354,37 @@ public class InvoiceControl
     public InvoiceRoleType createInvoiceRoleType(String invoiceRoleTypeName, Integer sortOrder) {
         return InvoiceRoleTypeFactory.getInstance().create(invoiceRoleTypeName, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceRoleType */
+    public InvoiceRoleType getInvoiceRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceRoleTypePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceRoleType getInvoiceRoleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceRoleType getInvoiceRoleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceRoleTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoiceroletypes
+                        """);
+    }
+
     public List<InvoiceRoleType> getInvoiceRoleTypes() {
         var ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM invoiceroletypes " +
-                "ORDER BY invcrtyp_sortorder, invcrtyp_invoiceroletypename");
+                """
+                SELECT _ALL_
+                FROM invoiceroletypes
+                ORDER BY invcrtyp_sortorder, invcrtyp_invoiceroletypename
+                _LIMIT_
+                """);
         
         return InvoiceRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -334,9 +394,11 @@ public class InvoiceControl
         
         try {
             var ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM invoiceroletypes " +
-                    "WHERE invcrtyp_invoiceroletypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM invoiceroletypes
+                    WHERE invcrtyp_invoiceroletypename = ?
+                    """);
             
             ps.setString(1, invoiceRoleTypeName);
             
@@ -381,9 +443,11 @@ public class InvoiceControl
         
         try {
             var ps = InvoiceRoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM invoiceroletypedescriptions " +
-                    "WHERE invcrtypd_invcrtyp_invoiceroletypeid = ? AND invcrtypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM invoiceroletypedescriptions
+                    WHERE invcrtypd_invcrtyp_invoiceroletypeid = ? AND invcrtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, invoiceRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -476,16 +540,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid " +
-                "AND invctypdt_invoicetypename = ?");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid
+                AND invctypdt_invoicetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid " +
-                "AND invctypdt_invoicetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid
+                AND invctypdt_invoicetypename = ?
+                FOR UPDATE
+                """);
         getInvoiceTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -515,16 +583,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid " +
-                "AND invctypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid
+                AND invctypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid " +
-                "AND invctypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid
+                AND invctypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultInvoiceTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -550,16 +622,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid " +
-                "ORDER BY invctypdt_sortorder, invctypdt_invoicetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid
+                ORDER BY invctypdt_sortorder, invctypdt_invoicetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid
+                FOR UPDATE
+                """);
         getInvoiceTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -581,16 +657,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid AND invctypdt_parentinvoicetypeid = ? " +
-                "ORDER BY invctypdt_sortorder, invctypdt_invoicetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid AND invctypdt_parentinvoicetypeid = ?
+                ORDER BY invctypdt_sortorder, invctypdt_invoicetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetypes, invoicetypedetails " +
-                "WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid AND invctypdt_parentinvoicetypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetypes, invoicetypedetails
+                WHERE invctyp_activedetailid = invctypdt_invoicetypedetailid AND invctypdt_parentinvoicetypeid = ?
+                FOR UPDATE
+                """);
         getInvoiceTypesByParentInvoiceTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -800,14 +880,18 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicetypedescriptions " +
-                        "WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_lang_languageid = ? AND invctypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicetypedescriptions
+                        WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_lang_languageid = ? AND invctypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicetypedescriptions " +
-                        "WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_lang_languageid = ? AND invctypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicetypedescriptions
+                        WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_lang_languageid = ? AND invctypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -847,15 +931,20 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicetypedescriptions, languages " +
-                        "WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_thrutime = ? AND invctypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicetypedescriptions, languages
+                        WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_thrutime = ? AND invctypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicetypedescriptions " +
-                        "WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicetypedescriptions
+                        WHERE invctypd_invctyp_invoicetypeid = ? AND invctypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -948,8 +1037,8 @@ public class InvoiceControl
     //   Invoice Alias Types
     // --------------------------------------------------------------------------------
     
-    public InvoiceAliasType createInvoiceAliasType(InvoiceType invoiceType, String invoiceAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
-            BasePK createdBy) {
+    public InvoiceAliasType createInvoiceAliasType(InvoiceType invoiceType, String invoiceAliasTypeName, String validationPattern,
+            Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
         var defaultFound = defaultInvoiceAliasType != null;
         
@@ -976,23 +1065,51 @@ public class InvoiceControl
         
         return invoiceAliasType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceAliasType */
+    public InvoiceAliasType getInvoiceAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceAliasType getInvoiceAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceAliasType getInvoiceAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceAliasTypesByInvoiceType(final InvoiceType invoiceType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicealiastypes
+                        JOIN invoicealiastypedetails ON invcatdt_invoicealiastypedetailid = invcat_activedetailid
+                        WHERE invcatdt_geot_invoicetypeid = ?
+                        """, invoiceType);
+    }
+
     private static final Map<EntityPermission, String> getInvoiceAliasTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ? " +
-                "AND invcatdt_invoicealiastypename = ?");
+                """
+                SELECT _ALL_
+                FROM invoicealiastypes, invoicealiastypedetails
+                WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ?
+                AND invcatdt_invoicealiastypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ? " +
-                "AND invcatdt_invoicealiastypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicealiastypes, invoicealiastypedetails
+                WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ?
+                AND invcatdt_invoicealiastypename = ?
+                FOR UPDATE
+                """);
         getInvoiceAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1024,16 +1141,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ? " +
-                "AND invcatdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM invoicealiastypes, invoicealiastypedetails
+                WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ?
+                AND invcatdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ? " +
-                "AND invcatdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicealiastypes, invoicealiastypedetails
+                WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ?
+                AND invcatdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultInvoiceAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1059,15 +1180,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ? " +
-                "ORDER BY invcatdt_sortorder, invcatdt_invoicealiastypename");
+                """
+                SELECT _ALL_
+                FROM invoicealiastypes, invoicealiastypedetails
+                WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ?
+                ORDER BY invcatdt_sortorder, invcatdt_invoicealiastypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicealiastypes, invoicealiastypedetails
+                WHERE invcat_activedetailid = invcatdt_invoicealiastypedetailid AND invcatdt_geot_invoicetypeid = ?
+                FOR UPDATE
+                """);
         getInvoiceAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1220,12 +1346,170 @@ public class InvoiceControl
     public void deleteInvoiceAliasTypesByInvoiceType(InvoiceType invoiceType, BasePK deletedBy) {
         deleteInvoiceAliasTypes(getInvoiceAliasTypesForUpdate(invoiceType), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Invoice Alias Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    public InvoiceAliasTypeDescription createInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, String description, BasePK createdBy) {
+        var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language,
+                description, session.getStartTime(), Session.MAX_TIME);
+
+        sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return invoiceAliasTypeDescription;
+    }
+
+    private static final Map<EntityPermission, String> getInvoiceAliasTypeDescriptionQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                """
+                SELECT _ALL_
+                FROM invoicealiastypedescriptions
+                WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_lang_languageid = ? AND invcatd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE,
+                """
+                SELECT _ALL_
+                FROM invoicealiastypedescriptions
+                WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_lang_languageid = ? AND invcatd_thrutime = ?
+                FOR UPDATE
+                """);
+        getInvoiceAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private InvoiceAliasTypeDescription getInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, EntityPermission entityPermission) {
+        return InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceAliasTypeDescriptionQueries,
+                invoiceAliasType, language, Session.MAX_TIME);
+    }
+
+    public InvoiceAliasTypeDescription getInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language) {
+        return getInvoiceAliasTypeDescription(invoiceAliasType, language, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceAliasTypeDescription getInvoiceAliasTypeDescriptionForUpdate(InvoiceAliasType invoiceAliasType, Language language) {
+        return getInvoiceAliasTypeDescription(invoiceAliasType, language, EntityPermission.READ_WRITE);
+    }
+
+    public InvoiceAliasTypeDescriptionValue getInvoiceAliasTypeDescriptionValue(InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
+        return invoiceAliasTypeDescription == null? null: invoiceAliasTypeDescription.getInvoiceAliasTypeDescriptionValue().clone();
+    }
+
+    public InvoiceAliasTypeDescriptionValue getInvoiceAliasTypeDescriptionValueForUpdate(InvoiceAliasType invoiceAliasType, Language language) {
+        return getInvoiceAliasTypeDescriptionValue(getInvoiceAliasTypeDescriptionForUpdate(invoiceAliasType, language));
+    }
+
+    private static final Map<EntityPermission, String> getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                """
+                SELECT _ALL_
+                FROM invoicealiastypedescriptions, languages
+                WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_thrutime = ? AND invcatd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE,
+                """
+                SELECT _ALL_
+                FROM invoicealiastypedescriptions
+                WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_thrutime = ?
+                FOR UPDATE
+                """);
+        getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, EntityPermission entityPermission) {
+        return InvoiceAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries,
+                invoiceAliasType, Session.MAX_TIME);
+    }
+
+    public List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType) {
+        return getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType, EntityPermission.READ_ONLY);
+    }
+
+    public List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(InvoiceAliasType invoiceAliasType) {
+        return getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language) {
+        String description;
+        var invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, language);
+
+        if(invoiceAliasTypeDescription == null && !language.getIsDefault()) {
+            invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, partyControl.getDefaultLanguage());
+        }
+
+        if(invoiceAliasTypeDescription == null) {
+            description = invoiceAliasType.getLastDetail().getInvoiceAliasTypeName();
+        } else {
+            description = invoiceAliasTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(UserVisit userVisit, InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
+        return invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription);
+    }
+
+    public List<InvoiceAliasTypeDescriptionTransfer> getInvoiceAliasTypeDescriptionTransfersByInvoiceAliasType(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
+        var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType);
+        List<InvoiceAliasTypeDescriptionTransfer> invoiceAliasTypeDescriptionTransfers = new ArrayList<>(invoiceAliasTypeDescriptions.size());
+
+        invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) ->
+                invoiceAliasTypeDescriptionTransfers.add(invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription))
+        );
+
+        return invoiceAliasTypeDescriptionTransfers;
+    }
+
+    public void updateInvoiceAliasTypeDescriptionFromValue(InvoiceAliasTypeDescriptionValue invoiceAliasTypeDescriptionValue, BasePK updatedBy) {
+        if(invoiceAliasTypeDescriptionValue.hasBeenModified()) {
+            var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    invoiceAliasTypeDescriptionValue.getPrimaryKey());
+
+            invoiceAliasTypeDescription.setThruTime(session.getStartTime());
+            invoiceAliasTypeDescription.store();
+
+            var invoiceAliasType = invoiceAliasTypeDescription.getInvoiceAliasType();
+            var language = invoiceAliasTypeDescription.getLanguage();
+            var description = invoiceAliasTypeDescriptionValue.getDescription();
+
+            invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language, description,
+                    session.getStartTime(), Session.MAX_TIME);
+
+            sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteInvoiceAliasTypeDescription(InvoiceAliasTypeDescription invoiceAliasTypeDescription, BasePK deletedBy) {
+        invoiceAliasTypeDescription.setThruTime(session.getStartTime());
+
+        sendEvent(invoiceAliasTypeDescription.getInvoiceAliasTypePK(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+
+    }
+
+    public void deleteInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
+        var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(invoiceAliasType);
+
+        invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) ->
+                deleteInvoiceAliasTypeDescription(invoiceAliasTypeDescription, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Invoice Time Types
     // --------------------------------------------------------------------------------
 
-    public InvoiceTimeType createInvoiceTimeType(InvoiceType invoiceType, String invoiceTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+    public InvoiceTimeType createInvoiceTimeType(InvoiceType invoiceType, String invoiceTimeTypeName, Boolean isDefault,
+            Integer sortOrder, BasePK createdBy) {
         var defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
         var defaultFound = defaultInvoiceTimeType != null;
 
@@ -1254,22 +1538,50 @@ public class InvoiceControl
         return invoiceTimeType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceTimeType */
+    public InvoiceTimeType getInvoiceTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceTimeTypePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceTimeType getInvoiceTimeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceTimeType getInvoiceTimeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceTimeTypesByInvoiceType(final InvoiceType invoiceType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicetimetypes
+                        JOIN invoicetimetypedetails ON invctimtypdt_invoicetimetypedetailid = invctimtyp_activedetailid
+                        WHERE invctimtypdt_invctyp_invoicetypeid = ?
+                        """, invoiceType);
+    }
+
     private static final Map<EntityPermission, String> getInvoiceTimeTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_invoicetimetypename = ?");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypes, invoicetimetypedetails
+                WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_invoicetimetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_invoicetimetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypes, invoicetimetypedetails
+                WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_invoicetimetypename = ?
+                FOR UPDATE
+                """);
         getInvoiceTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1300,16 +1612,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypes, invoicetimetypedetails
+                WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypes, invoicetimetypedetails
+                WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                AND invctimtypdt_invctyp_invoicetypeid = ? AND invctimtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultInvoiceTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1336,17 +1652,22 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "AND invctimtypdt_invctyp_invoicetypeid = ? " +
-                "ORDER BY invctimtypdt_sortorder, invctimtypdt_invoicetimetypename");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypes, invoicetimetypedetails
+                WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                AND invctimtypdt_invctyp_invoicetypeid = ?
+                ORDER BY invctimtypdt_sortorder, invctimtypdt_invoicetimetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "AND invctimtypdt_invctyp_invoicetypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypes, invoicetimetypedetails
+                WHERE invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                AND invctimtypdt_invctyp_invoicetypeid = ?
+                FOR UPDATE
+                """);
         getInvoiceTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1509,14 +1830,18 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypedescriptions " +
-                "WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_lang_languageid = ? AND invctimtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypedescriptions
+                WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_lang_languageid = ? AND invctimtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypedescriptions " +
-                "WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_lang_languageid = ? AND invctimtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypedescriptions
+                WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_lang_languageid = ? AND invctimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1547,15 +1872,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypedescriptions, languages " +
-                "WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_thrutime = ? AND invctimtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypedescriptions, languages
+                WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_thrutime = ? AND invctimtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimetypedescriptions " +
-                "WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimetypedescriptions
+                WHERE invctimtypd_invctimtyp_invoicetimetypeid = ? AND invctimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceTimeTypeDescriptionsByInvoiceTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1639,154 +1969,6 @@ public class InvoiceControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Invoice Alias Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public InvoiceAliasTypeDescription createInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, String description, BasePK createdBy) {
-        var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language,
-                description, session.getStartTime(), Session.MAX_TIME);
-        
-        sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
-        return invoiceAliasTypeDescription;
-    }
-    
-    private static final Map<EntityPermission, String> getInvoiceAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypedescriptions " +
-                "WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_lang_languageid = ? AND invcatd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypedescriptions " +
-                "WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_lang_languageid = ? AND invcatd_thrutime = ? " +
-                "FOR UPDATE");
-        getInvoiceAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-    private InvoiceAliasTypeDescription getInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, EntityPermission entityPermission) {
-        return InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceAliasTypeDescriptionQueries,
-                invoiceAliasType, language, Session.MAX_TIME);
-    }
-    
-    public InvoiceAliasTypeDescription getInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language) {
-        return getInvoiceAliasTypeDescription(invoiceAliasType, language, EntityPermission.READ_ONLY);
-    }
-    
-    public InvoiceAliasTypeDescription getInvoiceAliasTypeDescriptionForUpdate(InvoiceAliasType invoiceAliasType, Language language) {
-        return getInvoiceAliasTypeDescription(invoiceAliasType, language, EntityPermission.READ_WRITE);
-    }
-    
-    public InvoiceAliasTypeDescriptionValue getInvoiceAliasTypeDescriptionValue(InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
-        return invoiceAliasTypeDescription == null? null: invoiceAliasTypeDescription.getInvoiceAliasTypeDescriptionValue().clone();
-    }
-    
-    public InvoiceAliasTypeDescriptionValue getInvoiceAliasTypeDescriptionValueForUpdate(InvoiceAliasType invoiceAliasType, Language language) {
-        return getInvoiceAliasTypeDescriptionValue(getInvoiceAliasTypeDescriptionForUpdate(invoiceAliasType, language));
-    }
-    
-    private static final Map<EntityPermission, String> getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypedescriptions, languages " +
-                "WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_thrutime = ? AND invcatd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiastypedescriptions " +
-                "WHERE invcatd_invcat_invoicealiastypeid = ? AND invcatd_thrutime = ? " +
-                "FOR UPDATE");
-        getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-    private List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, EntityPermission entityPermission) {
-        return InvoiceAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries,
-                invoiceAliasType, Session.MAX_TIME);
-    }
-    
-    public List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType) {
-        return getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType, EntityPermission.READ_ONLY);
-    }
-    
-    public List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(InvoiceAliasType invoiceAliasType) {
-        return getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType, EntityPermission.READ_WRITE);
-    }
-    
-    public String getBestInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language) {
-        String description;
-        var invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, language);
-        
-        if(invoiceAliasTypeDescription == null && !language.getIsDefault()) {
-            invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, partyControl.getDefaultLanguage());
-        }
-        
-        if(invoiceAliasTypeDescription == null) {
-            description = invoiceAliasType.getLastDetail().getInvoiceAliasTypeName();
-        } else {
-            description = invoiceAliasTypeDescription.getDescription();
-        }
-        
-        return description;
-    }
-    
-    public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(UserVisit userVisit, InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
-        return invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription);
-    }
-    
-    public List<InvoiceAliasTypeDescriptionTransfer> getInvoiceAliasTypeDescriptionTransfersByInvoiceAliasType(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
-        var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType);
-        List<InvoiceAliasTypeDescriptionTransfer> invoiceAliasTypeDescriptionTransfers = new ArrayList<>(invoiceAliasTypeDescriptions.size());
-        
-        invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) ->
-                invoiceAliasTypeDescriptionTransfers.add(invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription))
-        );
-        
-        return invoiceAliasTypeDescriptionTransfers;
-    }
-    
-    public void updateInvoiceAliasTypeDescriptionFromValue(InvoiceAliasTypeDescriptionValue invoiceAliasTypeDescriptionValue, BasePK updatedBy) {
-        if(invoiceAliasTypeDescriptionValue.hasBeenModified()) {
-            var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     invoiceAliasTypeDescriptionValue.getPrimaryKey());
-            
-            invoiceAliasTypeDescription.setThruTime(session.getStartTime());
-            invoiceAliasTypeDescription.store();
-
-            var invoiceAliasType = invoiceAliasTypeDescription.getInvoiceAliasType();
-            var language = invoiceAliasTypeDescription.getLanguage();
-            var description = invoiceAliasTypeDescriptionValue.getDescription();
-            
-            invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language, description,
-                    session.getStartTime(), Session.MAX_TIME);
-            
-            sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
-        }
-    }
-    
-    public void deleteInvoiceAliasTypeDescription(InvoiceAliasTypeDescription invoiceAliasTypeDescription, BasePK deletedBy) {
-        invoiceAliasTypeDescription.setThruTime(session.getStartTime());
-        
-        sendEvent(invoiceAliasTypeDescription.getInvoiceAliasTypePK(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
-        
-    }
-    
-    public void deleteInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
-        var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(invoiceAliasType);
-        
-        invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) -> 
-                deleteInvoiceAliasTypeDescription(invoiceAliasTypeDescription, deletedBy)
-        );
-    }
-    
-    // --------------------------------------------------------------------------------
     //   Invoice Line Types
     // --------------------------------------------------------------------------------
     
@@ -1820,7 +2002,31 @@ public class InvoiceControl
         
         return invoiceLineType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceLineType */
+    public InvoiceLineType getInvoiceLineTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceLineTypePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceLineTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceLineType getInvoiceLineTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceLineTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceLineType getInvoiceLineTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceLineTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceLineTypesByInvoiceType(final InvoiceType invoiceType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelinetypes
+                        JOIN invoicelinetypedetails ON invcltypdt_invoicelinetypedetailid = invcltyp_activedetailid
+                        WHERE invcltypdt_invctyp_invoicetypeid = ?
+                        """, invoiceType);
+    }
+
     public InvoiceLineType getInvoiceLineTypeByName(InvoiceType invoiceType, String invoiceLineTypeName,
             EntityPermission entityPermission) {
         InvoiceLineType invoiceLineType;
@@ -1829,16 +2035,20 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypes, invoicelinetypedetails " +
-                        "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid " +
-                        "AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_invoicelinetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypes, invoicelinetypedetails
+                        WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid
+                        AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_invoicelinetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypes, invoicelinetypedetails " +
-                        "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid " +
-                        "AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_invoicelinetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypes, invoicelinetypedetails
+                        WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid
+                        AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_invoicelinetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
@@ -1878,16 +2088,20 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypes, invoicelinetypedetails " +
-                        "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid " +
-                        "AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypes, invoicelinetypedetails
+                        WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid
+                        AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypes, invoicelinetypedetails " +
-                        "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid " +
-                        "AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypes, invoicelinetypedetails
+                        WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid
+                        AND invcltypdt_invctyp_invoicetypeid = ? AND invcltypdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
@@ -1921,17 +2135,22 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM invoicelinetypes, invoicelinetypedetails " +
-                    "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid " +
-                    "AND invcltypdt_invctyp_invoicetypeid = ? " +
-                    "ORDER BY invcltypdt_sortorder, invcltypdt_invoicelinetypename";
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM invoicelinetypes, invoicelinetypedetails " +
-                    "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid " +
-                    "AND invcltypdt_invctyp_invoicetypeid = ? " +
-                    "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypes, invoicelinetypedetails
+                        WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid
+                        AND invcltypdt_invctyp_invoicetypeid = ?
+                        ORDER BY invcltypdt_sortorder, invcltypdt_invoicelinetypename
+                        _LIMIT_
+                        """;
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypes, invoicelinetypedetails
+                        WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid
+                        AND invcltypdt_invctyp_invoicetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
@@ -1960,16 +2179,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicelinetypes, invoicelinetypedetails " +
-                "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid AND invcltypdt_parentinvoicelinetypeid = ? " +
-                "ORDER BY invcltypdt_sortorder, invcltypdt_invoicelinetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM invoicelinetypes, invoicelinetypedetails
+                WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid AND invcltypdt_parentinvoicelinetypeid = ?
+                ORDER BY invcltypdt_sortorder, invcltypdt_invoicelinetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicelinetypes, invoicelinetypedetails " +
-                "WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid AND invcltypdt_parentinvoicelinetypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicelinetypes, invoicelinetypedetails
+                WHERE invcltyp_activedetailid = invcltypdt_invoicelinetypedetailid AND invcltypdt_parentinvoicelinetypeid = ?
+                FOR UPDATE
+                """);
         getInvoiceLineTypesByParentInvoiceLineTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2187,14 +2410,18 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypedescriptions " +
-                        "WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_lang_languageid = ? AND invcltypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypedescriptions
+                        WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_lang_languageid = ? AND invcltypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypedescriptions " +
-                        "WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_lang_languageid = ? AND invcltypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypedescriptions
+                        WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_lang_languageid = ? AND invcltypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -2235,15 +2462,20 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypedescriptions, languages " +
-                        "WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_thrutime = ? AND invcltypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypedescriptions, languages
+                        WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_thrutime = ? AND invcltypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicelinetypedescriptions " +
-                        "WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicelinetypedescriptions
+                        WHERE invcltypd_invcltyp_invoicelinetypeid = ? AND invcltypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -2351,7 +2583,39 @@ public class InvoiceControl
         
         return invoiceRole;
     }
-    
+
+    public long countInvoiceRolesByInvoice(final Invoice invoice) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoiceroles
+                        WHERE invcr_invc_invoiceid = ? AND invcr_thrutime = ?
+                        """, invoice, Session.MAX_TIME);
+    }
+
+    public long countInvoiceRolesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoiceroles
+                        WHERE invcr_par_partyid = ? AND invcr_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countInvoiceRolesByPartyContactMechanism(final PartyContactMechanism partyContactMechanism) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoiceroles
+                        WHERE invcr_pcm_partycontactmechanismid = ? AND invcr_thrutime = ?
+                        """, partyContactMechanism, Session.MAX_TIME);
+    }
+
+    public long countInvoiceRolesByInvoiceRoleType(final InvoiceRoleType invoiceRoleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoiceroles
+                        WHERE invcr_invcrtyp_invoiceroletypeid = ? AND invcr_thrutime = ?
+                        """, invoiceRoleType, Session.MAX_TIME);
+    }
+
     private InvoiceRole getInvoiceRole(Invoice invoice, InvoiceRoleType invoiceRoleType, EntityPermission entityPermission) {
         InvoiceRole invoiceRole;
         
@@ -2359,14 +2623,18 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoiceroles " +
-                        "WHERE invcr_invc_invoiceid = ? AND invcr_invcrtyp_invoiceroletypeid = ? AND invcr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM invoiceroles
+                        WHERE invcr_invc_invoiceid = ? AND invcr_invcrtyp_invoiceroletypeid = ? AND invcr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoiceroles " +
-                        "WHERE invcr_invc_invoiceid = ? AND invcr_invcrtyp_invoiceroletypeid = ? AND invcr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoiceroles
+                        WHERE invcr_invc_invoiceid = ? AND invcr_invcrtyp_invoiceroletypeid = ? AND invcr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
@@ -2412,17 +2680,22 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoiceroles, invoiceroletypes, parties, partydetails " +
-                        "WHERE invcr_invc_invoiceid = ? AND invcr_thrutime = ? " +
-                        "AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid " +
-                        "AND invcr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY invcrtyp_sortorder, pardt_partyname";
+                query = """
+                        SELECT _ALL_
+                        FROM invoiceroles, invoiceroletypes, parties, partydetails
+                        WHERE invcr_invc_invoiceid = ? AND invcr_thrutime = ?
+                        AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid
+                        AND invcr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        ORDER BY invcrtyp_sortorder, pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoiceroles " +
-                        "WHERE invcr_invc_invoiceid = ? AND invcr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoiceroles
+                        WHERE invcr_invc_invoiceid = ? AND invcr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
@@ -2453,18 +2726,23 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoiceroles, invoices, invoicedetails, parties, partydetails, invoiceroletypes " +
-                        "WHERE invcr_pcm_partycontactmechanismid = ? AND invcr_thrutime = ? " +
-                        "AND invcr_invc_invoiceid = invc_invoiceid AND invc_lastdetailid = invcdt_invoicedetailid " +
-                        "AND invcr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid " +
-                        "ORDER BY invcdt_invoicename, pardt_partyname, invcrtyp_sortorder, invcrtyp_invoiceroletypename";
+                query = """
+                        SELECT _ALL_
+                        FROM invoiceroles, invoices, invoicedetails, parties, partydetails, invoiceroletypes
+                        WHERE invcr_pcm_partycontactmechanismid = ? AND invcr_thrutime = ?
+                        AND invcr_invc_invoiceid = invc_invoiceid AND invc_lastdetailid = invcdt_invoicedetailid
+                        AND invcr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid
+                        ORDER BY invcdt_invoicename, pardt_partyname, invcrtyp_sortorder, invcrtyp_invoiceroletypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoiceroles " +
-                        "WHERE invcr_pcm_partycontactmechanismid = ? AND invcr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoiceroles
+                        WHERE invcr_pcm_partycontactmechanismid = ? AND invcr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
@@ -2562,27 +2840,91 @@ public class InvoiceControl
         
         return invoice;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Invoice */
+    public Invoice getInvoiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoicePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Invoice getInvoiceByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Invoice getInvoiceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoicesByInvoiceType(final InvoiceType invoiceType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoices
+                        JOIN invoicedetails ON invcdt_invoicedetailid = invc_activedetailid
+                        AND invcdt_invctyp_invoicetypeid = ?
+                        """, invoiceType);
+    }
+
+    public long countInvoicesByBillingAccount(final BillingAccount billingAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoices
+                        JOIN invoicedetails ON invcdt_invoicedetailid = invc_activedetailid
+                        AND invcdt_bllact_billingaccountid = ?
+                        """, billingAccount);
+    }
+
+    public long countInvoicesByGlAccount(final GlAccount glAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoices
+                        JOIN invoicedetails ON invcdt_invoicedetailid = invc_activedetailid
+                        AND invcdt_gla_glaccountid = ?
+                        """, glAccount);
+    }
+
+    public long countInvoicesByTerm(final Term term) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoices
+                        JOIN invoicedetails ON invcdt_invoicedetailid = invc_activedetailid
+                        AND invcdt_trm_termid = ?
+                        """, term);
+    }
+
+    public long countInvoicesByFreeOnBoard(final FreeOnBoard freeOnBoard) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoices
+                        JOIN invoicedetails ON invcdt_invoicedetailid = invc_activedetailid
+                        AND invcdt_fob_freeonboardid = ?
+                        """, freeOnBoard);
+    }
+
     private static final Map<EntityPermission, String> getInvoicesByInvoiceFromQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoices, invoicedetails, invoiceroletypes, invoiceroles " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
-                "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ? " +
-                "ORDER BY invcdt_invoicename DESC " + // TODO: should use the entity instance's created time for ordering
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM invoices, invoicedetails, invoiceroletypes, invoiceroles
+                WHERE invc_activedetailid = invcdt_invoicedetailid
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ?
+                AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?
+                ORDER BY invcdt_invoicename DESC
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoices, invoicedetails, invoiceroletypes, invoiceroles " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
-                "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoices, invoicedetails, invoiceroletypes, invoiceroles
+                WHERE invc_activedetailid = invcdt_invoicedetailid
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ?
+                AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoicesByInvoiceFromQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2601,11 +2943,13 @@ public class InvoiceControl
     
     public long countInvoicesByInvoiceFrom(Party invoiceFrom) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM invoices, invoicedetails, invoiceroletypes, invoiceroles " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
-                "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM invoices, invoicedetails, invoiceroletypes, invoiceroles
+                WHERE invc_activedetailid = invcdt_invoicedetailid
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ?
+                AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?
+                """,
                 invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.name(), Session.MAX_TIME);
     }
     
@@ -2615,20 +2959,24 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoices, invoicedetails, invoiceroletypes, invoiceroles " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
-                "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ? " +
-                "ORDER BY invcdt_invoicename DESC " + // TODO: should use the entity instance's created time for ordering
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM invoices, invoicedetails, invoiceroletypes, invoiceroles
+                WHERE invc_activedetailid = invcdt_invoicedetailid
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ?
+                AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?
+                ORDER BY invcdt_invoicename DESC
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoices, invoicedetails, invoiceroletypes, invoiceroles " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
-                "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoices, invoicedetails, invoiceroletypes, invoiceroles
+                WHERE invc_activedetailid = invcdt_invoicedetailid
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ?
+                AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoicesByInvoiceToQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2647,11 +2995,13 @@ public class InvoiceControl
     
     public long countInvoicesByInvoiceTo(Party invoiceTo) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM invoices, invoicedetails, invoiceroletypes, invoiceroles " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
-                "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM invoices, invoicedetails, invoiceroletypes, invoiceroles
+                WHERE invc_activedetailid = invcdt_invoicedetailid
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ?
+                AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?
+                """,
                 invoiceTo, InvoiceRoleTypes.INVOICE_TO.name(), Session.MAX_TIME);
     }
     
@@ -2661,14 +3011,18 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoices, invoicedetails " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_invctyp_invoicetypeid = ? AND invcdt_invoicename = ?");
+                """
+                SELECT _ALL_
+                FROM invoices, invoicedetails
+                WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_invctyp_invoicetypeid = ? AND invcdt_invoicename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoices, invoicedetails " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_invctyp_invoicetypeid = ? AND invcdt_invoicename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoices, invoicedetails
+                WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_invctyp_invoicetypeid = ? AND invcdt_invoicename = ?
+                FOR UPDATE
+                """);
         getInvoiceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2701,11 +3055,13 @@ public class InvoiceControl
     
     public long countInvoicesByInvoiceFromAndReference(Party invoiceFrom, String reference) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM invoices, invoicedetails, invoiceroles, invoiceroletypes " +
-                "WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_reference = ? " +
-                "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_thrutime = ? AND invcr_par_partyid = ? " +
-                "AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid AND invcrtyp_invoiceroletypename = ?",
+                """
+                SELECT COUNT(*)
+                FROM invoices, invoicedetails, invoiceroles, invoiceroletypes
+                WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_reference = ?
+                AND invc_invoiceid = invcr_invc_invoiceid AND invcr_thrutime = ? AND invcr_par_partyid = ?
+                AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid AND invcrtyp_invoiceroletypename = ?
+                """,
                 reference, Session.MAX_TIME, invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.name());
     }
     
@@ -2746,14 +3102,18 @@ public class InvoiceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicestatuses " +
-                        "WHERE invcst_invc_invoiceid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicestatuses
+                        WHERE invcst_invc_invoiceid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM invoicestatuses " +
-                        "WHERE invcst_invc_invoiceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM invoicestatuses
+                        WHERE invcst_invc_invoiceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InvoiceStatusFactory.getInstance().prepareStatement(query);
@@ -2798,18 +3158,20 @@ public class InvoiceControl
 
     public long countInvoiceTimesByInvoice(Invoice invoice) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM invoicetimes " +
-                "WHERE invctim_invc_invoiceid = ? AND invctim_thrutime = ?",
-                invoice, Session.MAX_TIME);
+                """
+                SELECT COUNT(*)
+                FROM invoicetimes
+                WHERE invctim_invc_invoiceid = ? AND invctim_thrutime = ?
+                """, invoice, Session.MAX_TIME);
     }
 
     public long countInvoiceTimesByInvoiceTimeType(InvoiceTimeType invoiceTimeType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM invoicetimes " +
-                "WHERE invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?",
-                invoiceTimeType, Session.MAX_TIME);
+                """
+                SELECT COUNT(*)
+                FROM invoicetimes
+                WHERE invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?
+                """, invoiceTimeType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getInvoiceTimeQueries;
@@ -2818,14 +3180,18 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimes " +
-                "WHERE invctim_invc_invoiceid = ? AND invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM invoicetimes
+                WHERE invctim_invc_invoiceid = ? AND invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimes " +
-                "WHERE invctim_invc_invoiceid = ? AND invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimes
+                WHERE invctim_invc_invoiceid = ? AND invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceTimeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2855,16 +3221,21 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimes, invoicetimetypes, invoicetimetypedetails " +
-                "WHERE invctim_invc_invoiceid = ? AND invctim_thrutime = ? " +
-                "AND invctim_invctimtyp_invoicetimetypeid = invctimtyp_invoicetimetypeid AND invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid " +
-                "ORDER BY invctimtypdt_sortorder, invctimtypdt_invoicetimetypename");
+                """
+                SELECT _ALL_
+                FROM invoicetimes, invoicetimetypes, invoicetimetypedetails
+                WHERE invctim_invc_invoiceid = ? AND invctim_thrutime = ?
+                AND invctim_invctimtyp_invoicetimetypeid = invctimtyp_invoicetimetypeid AND invctimtyp_activedetailid = invctimtypdt_invoicetimetypedetailid
+                ORDER BY invctimtypdt_sortorder, invctimtypdt_invoicetimetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimes " +
-                "WHERE invctim_invc_invoiceid = ? AND invctim_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimes
+                WHERE invctim_invc_invoiceid = ? AND invctim_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceTimesByInvoiceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2886,16 +3257,21 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicetimes, invoices, invoicedetails " +
-                "WHERE invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ? " +
-                "AND invctim_invc_invoiceid = invctim_invc_invoiceid AND inv_activedetailid = invdt_invoicedetailid " +
-                "ORDER BY invdt_invoicename");
+                """
+                SELECT _ALL_
+                FROM invoicetimes, invoices, invoicedetails
+                WHERE invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?
+                AND invctim_invc_invoiceid = invc_invoiceid AND invc_lastdetailid = invcdt_invoicedetailid
+                ORDER BY invcdt_invoicename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicetimes " +
-                "WHERE invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicetimes
+                WHERE invctim_invctimtyp_invoicetimetypeid = ? AND invctim_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceTimesByInvoiceTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2983,21 +3359,41 @@ public class InvoiceControl
         
         return invoiceAlias;
     }
-    
+
+    public long countInvoiceAliasesByInvoice(final Invoice invoice) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicealiases
+                        WHERE invcal_invc_invoiceid = ? AND invcal_thrutime = ?
+                        """, invoice, Session.MAX_TIME);
+    }
+
+    public long countInvoiceAliasesByInvoiceAliasType(final InvoiceAliasType invoiceAliasType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicealiases
+                        WHERE invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ?
+                        """, invoiceAliasType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getInvoiceAliasQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiases " +
-                "WHERE invcal_invc_invoiceid = ? AND invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM invoicealiases
+                WHERE invcal_invc_invoiceid = ? AND invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiases " +
-                "WHERE invcal_invc_invoiceid = ? AND invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicealiases
+                WHERE invcal_invc_invoiceid = ? AND invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceAliasQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3028,16 +3424,21 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiases, invoicealiastypes, invoicealiastypedetails " +
-                "WHERE invcal_invc_invoiceid = ? AND invcal_thrutime = ? " +
-                "AND invcal_invcat_invoicealiastypeid = invcat_invoicealiastypeid AND invcat_lastdetailid = invcatdt_invoicealiastypedetailid" +
-                "ORDER BY invcatdt_sortorder, invcatdt_invoicealiastypename");
+                """
+                SELECT _ALL_
+                FROM invoicealiases, invoicealiastypes, invoicealiastypedetails
+                WHERE invcal_invc_invoiceid = ? AND invcal_thrutime = ?
+                AND invcal_invcat_invoicealiastypeid = invcat_invoicealiastypeid AND invcat_lastdetailid = invcatdt_invoicealiastypedetailid
+                ORDER BY invcatdt_sortorder, invcatdt_invoicealiastypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiases " +
-                "WHERE invcal_invc_invoiceid = ? AND invcal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicealiases
+                WHERE invcal_invc_invoiceid = ? AND invcal_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceAliasesByInvoiceQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3060,16 +3461,21 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicealiases, invoicees, invoicedetails " +
-                "WHERE invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ? " +
-                "AND invcal_invc_invoiceid = invc_invoiceid AND invc_lastdetailid = invcdt_invoicedetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM invoicealiases, invoices, invoicedetails
+                WHERE invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ?
+                AND invcal_invc_invoiceid = invc_invoiceid AND invc_lastdetailid = invcdt_invoicedetailid
+                ORDER BY invcdt_invoicename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicealiases " +
-                "WHERE invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicealiases
+                WHERE invcal_invcat_invoicealiastypeid = ? AND invcal_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceAliasesByInvoiceAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3170,13 +3576,65 @@ public class InvoiceControl
         
         return invoiceLine;
     }
-    
-    public boolean invoiceLineExists(Invoice invoice, Integer invoiceLineSequence) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM invoicelines, invoicelinedetails " +
-                "WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ?",
-                invoice, invoiceLineSequence) == 1;
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceLine */
+    public InvoiceLine getInvoiceLineByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceLinePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceLineFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceLine getInvoiceLineByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceLineByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceLine getInvoiceLineByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceLineByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceLinesByInvoice(final Invoice invoice) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelines
+                        JOIN invoicelinedetails ON invcldt_invoicelinedetailid = invcl_activedetailid
+                        WHERE invcldt_invc_invoiceid = ?
+                        """, invoice);
+    }
+
+    public long countInvoiceLinesByParentInvoiceLine(final InvoiceLine parentInvoiceLine) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelines
+                        JOIN invoicelinedetails ON invcldt_invoicelinedetailid = invcl_activedetailid
+                        WHERE invcldt_invc_invoiceid = ?
+                        """, parentInvoiceLine);
+    }
+
+    public long countInvoiceLinesByInvoiceLineType(final InvoiceLineType invoiceLineType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelines
+                        JOIN invoicelinedetails ON invcldt_invoicelinedetailid = invcl_activedetailid
+                        WHERE invcldt_invc_invoiceid = ?
+                        """, invoiceLineType);
+    }
+
+    public long countInvoiceLinesByInvoiceLineUseType(final InvoiceLineUseType invoiceLineUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelines
+                        JOIN invoicelinedetails ON invcldt_invoicelinedetailid = invcl_activedetailid
+                        WHERE invcldt_invc_invoiceid = ?
+                        """, invoiceLineUseType);
+    }
+
+    public boolean invoiceLineExists(final Invoice invoice, final Integer invoiceLineSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelines
+                        JOIN invoicelinedetails ON invcldt_invoicelinedetailid = invcl_activedetailid
+                        WHERE invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ?
+                        """, invoice, invoiceLineSequence) == 1;
     }
     
     private static final Map<EntityPermission, String> getInvoiceLineQueries;
@@ -3185,14 +3643,18 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicelines, invoicelinedetails " +
-                "WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ?");
+                """
+                SELECT _ALL_
+                FROM invoicelines, invoicelinedetails
+                WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicelines, invoicelinedetails " +
-                "WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicelines, invoicelinedetails
+                WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ?
+                FOR UPDATE
+                """);
         getInvoiceLineQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3215,15 +3677,20 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicelines, invoicelinedetails " +
-                "WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? " +
-                "ORDER BY invcldt_invoicelinesequence");
+                """
+                SELECT _ALL_
+                FROM invoicelines, invoicelinedetails
+                WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ?
+                ORDER BY invcldt_invoicelinesequence
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicelines, invoicelinedetails " +
-                "WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicelines, invoicelinedetails
+                WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ?
+                FOR UPDATE
+                """);
         getInvoiceLinesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3277,14 +3744,18 @@ public class InvoiceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicelineitems " +
-                "WHERE invclitm_invcl_invoicelineid = ? AND invclitm_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM invoicelineitems
+                WHERE invclitm_invcl_invoicelineid = ? AND invclitm_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicelineitems " +
-                "WHERE invclitm_invcl_invoicelineid = ? AND invclitm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicelineitems
+                WHERE invclitm_invcl_invoicelineid = ? AND invclitm_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceLineItemQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3358,21 +3829,41 @@ public class InvoiceControl
         
         return invoiceLineGlAccount;
     }
-    
+
+    public long countInvoiceLineGlAccountsByInvoiceLine(final InvoiceLine invoiceLine) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelineglaccounts
+                        WHERE invclgla_invcl_invoicelineid = ?
+                        """, invoiceLine, Session.MAX_TIME);
+    }
+
+    public long countInvoiceLineGlAccountsByGlAccount(final GlAccount glAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicelineglaccounts
+                        WHERE invclgla_thrutime = ?
+                        """, glAccount, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getInvoiceLineGlAccountQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM invoicelineglaccounts " +
-                "WHERE invclgla_invcl_invoicelineid = ? AND invclgla_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM invoicelineglaccounts
+                WHERE invclgla_invcl_invoicelineid = ? AND invclgla_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM invoicelineglaccounts " +
-                "WHERE invclgla_invcl_invoicelineid = ? AND invclgla_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM invoicelineglaccounts
+                WHERE invclgla_invcl_invoicelineid = ? AND invclgla_thrutime = ?
+                FOR UPDATE
+                """);
         getInvoiceLineGlAccountQueries = Collections.unmodifiableMap(queryMap);
     }
     
