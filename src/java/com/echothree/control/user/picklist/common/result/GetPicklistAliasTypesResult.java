@@ -29,5 +29,8 @@ public interface GetPicklistAliasTypesResult
     
     List<PicklistAliasTypeTransfer> getPicklistAliasTypes();
     void setPicklistAliasTypes(List<PicklistAliasTypeTransfer> picklistAliasTypes);
-    
+
+    Long getPicklistAliasTypeCount();
+    void setPicklistAliasTypeCount(Long picklistAliasTypeCount);
+
 }
