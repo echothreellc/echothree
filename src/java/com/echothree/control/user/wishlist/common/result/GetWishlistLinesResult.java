@@ -16,14 +16,25 @@
 
 package com.echothree.control.user.wishlist.common.result;
 
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetWishlistLinesResult
         extends BaseResult {
-    
+
+    WishlistTransfer getWishlist();
+    void setWishlist(WishlistTransfer wishlist);
+
+    ItemTransfer getItem();
+    void setItem(ItemTransfer item);
+
+    Long getWishlistLineCount();
+    void setWishlistLineCount(Long wishlistLineCount);
+
     List<WishlistLineTransfer> getWishlistLines();
     void setWishlistLines(List<WishlistLineTransfer> wishlistLines);
-    
+
 }

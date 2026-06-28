@@ -73,6 +73,7 @@ import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
 import com.echothree.model.data.wishlist.server.value.WishlistValue;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -81,7 +82,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -169,26 +169,31 @@ public class WishlistControl
     }
 
     public long countWishlistTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM wishlisttypes, wishlisttypedetails " +
-                "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM wishlisttypes
+                        JOIN wishlisttypedetails ON wshltydt_wishlisttypedetailid = wshlty_activedetailid
+                        """);
     }
 
     private List<WishlistType> getWishlistTypes(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM wishlisttypes, wishlisttypedetails " +
-                    "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid " +
-                    "ORDER BY wshltydt_sortorder, wshltydt_wishlisttypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM wishlisttypes, wishlisttypedetails
+                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid
+                    ORDER BY wshltydt_sortorder, wshltydt_wishlisttypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM wishlisttypes, wishlisttypedetails " +
-                    "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM wishlisttypes, wishlisttypedetails
+                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
@@ -208,14 +213,18 @@ public class WishlistControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM wishlisttypes, wishlisttypedetails " +
-                    "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM wishlisttypes, wishlisttypedetails
+                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM wishlisttypes, wishlisttypedetails " +
-                    "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM wishlisttypes, wishlisttypedetails
+                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
@@ -242,14 +251,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlisttypes, wishlisttypedetails " +
-                        "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlisttypes, wishlisttypedetails
+                        WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlisttypes, wishlisttypedetails " +
-                        "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlisttypes, wishlisttypedetails
+                        WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
@@ -432,14 +445,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlisttypedescriptions " +
-                        "WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlisttypedescriptions
+                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlisttypedescriptions " +
-                        "WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlisttypedescriptions
+                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -479,16 +496,21 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlisttypedescriptions, languages " +
-                        "WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ? " +
-                        "AND wshltyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlisttypedescriptions, languages
+                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ?
+                        AND wshltyd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlisttypedescriptions " +
-                        "WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlisttypedescriptions
+                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -628,17 +650,13 @@ public class WishlistControl
         return getWishlistPriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public WishlistPriority getWishlistPriorityByPK(WishlistPriorityPK pk) {
-        return WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-    }
-
     public long countWishlistPrioritiesByWishlistType(final WishlistType wishlistType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM wishlistpriorities, wishlistprioritydetails " +
-                "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
-                "AND wshlprtydt_wshlty_wishlisttypeid = ?",
-                wishlistType);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM wishlistpriorities
+                        JOIN wishlistprioritydetails ON wshlprtydt_wishlistprioritydetailid = wshlprty_activedetailid
+                        WHERE wshlprtydt_wshlty_wishlisttypeid = ?
+                        """, wishlistType);
     }
 
     private List<WishlistPriority> getWishlistPriorities(WishlistType wishlistType, EntityPermission entityPermission) {
@@ -648,16 +666,20 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistpriorities, wishlistprioritydetails " +
-                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ? " +
-                        "ORDER BY wshlprtydt_sortorder, wshlprtydt_wishlistpriorityname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistpriorities, wishlistprioritydetails
+                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ?
+                        ORDER BY wshlprtydt_sortorder, wshlprtydt_wishlistpriorityname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistpriorities, wishlistprioritydetails " +
-                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistpriorities, wishlistprioritydetails
+                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
@@ -687,16 +709,20 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistpriorities, wishlistprioritydetails " +
-                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
-                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistpriorities, wishlistprioritydetails
+                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
+                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistpriorities, wishlistprioritydetails " +
-                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
-                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistpriorities, wishlistprioritydetails
+                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
+                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
@@ -730,16 +756,20 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistpriorities, wishlistprioritydetails " +
-                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
-                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistpriorities, wishlistprioritydetails
+                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
+                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistpriorities, wishlistprioritydetails " +
-                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
-                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistpriorities, wishlistprioritydetails
+                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
+                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
@@ -929,14 +959,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistprioritydescriptions " +
-                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistprioritydescriptions
+                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistprioritydescriptions " +
-                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistprioritydescriptions
+                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
@@ -976,16 +1010,21 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistprioritydescriptions, languages " +
-                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ? " +
-                        "AND wshlprtyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistprioritydescriptions, languages
+                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ?
+                        AND wshlprtyd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistprioritydescriptions " +
-                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistprioritydescriptions
+                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
@@ -1088,19 +1127,19 @@ public class WishlistControl
     }
 
     public long countWishlistsByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM wishlists " +
-                        "WHERE wshl_ofruse_offeruseid = ? AND wshl_thrutime = ?",
-                offerUse, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM wishlists
+                WHERE wshl_ofruse_offeruseid = ? AND wshl_thrutime = ?
+                """, offerUse, Session.MAX_TIME);
     }
 
     public long countWishlistsByWishlistType(final WishlistType wishlistType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM wishlists " +
-                        "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?",
-                wishlistType, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM wishlists
+                WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                """, wishlistType, Session.MAX_TIME);
     }
 
     private Wishlist getWishlist(Order order, EntityPermission entityPermission) {
@@ -1110,14 +1149,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists " +
-                        "WHERE wshl_ord_orderid = ? AND wshl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists
+                        WHERE wshl_ord_orderid = ? AND wshl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists " +
-                        "WHERE wshl_ord_orderid = ? AND wshl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists
+                        WHERE wshl_ord_orderid = ? AND wshl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistFactory.getInstance().prepareStatement(query);
@@ -1156,16 +1199,21 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists, orders, orderdetails " +
-                        "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
-                        "AND wshl_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid " +
-                        "ORDER BY orddt_ordername";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists, orders, orderdetails
+                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                        AND wshl_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
+                        ORDER BY orddt_ordername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists " +
-                        "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists
+                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistFactory.getInstance().prepareStatement(query);
@@ -1233,27 +1281,27 @@ public class WishlistControl
     }
 
     public long countWishlistLinesByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM wishlistlines " +
-                        "WHERE wshll_ofruse_offeruseid = ? AND wshll_thrutime = ?",
-                offerUse, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM wishlistlines
+                WHERE wshll_ofruse_offeruseid = ? AND wshll_thrutime = ?
+                """, offerUse, Session.MAX_TIME);
     }
 
     public long countWishlistLinesByWishlistPriority(final WishlistPriority wishlistPriority) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM wishlistlines " +
-                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?",
-                wishlistPriority, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM wishlistlines
+                WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
+                """, wishlistPriority, Session.MAX_TIME);
     }
 
     public long countWishlistLinesByAssociateReferral(final AssociateReferral associateReferral) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM wishlistlines " +
-                        "WHERE wshll_ascrfr_associatereferralid = ? AND wshll_thrutime = ?",
-                associateReferral, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM wishlistlines
+                WHERE wshll_ascrfr_associatereferralid = ? AND wshll_thrutime = ?
+                """, associateReferral, Session.MAX_TIME);
     }
 
     private List<WishlistLine> getWishlistLinesByWishlistPriority(WishlistPriority wishlistPriority,
@@ -1264,17 +1312,22 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists, orderlines, orderlinedetails, orders, orderdetails " +
-                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
-                        "AND wshll_ordl_orderlineid = ordl_orderlineid AND ordl_activedetailid = ordldt_orderlinedetailid " +
-                        "AND ordldt_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid " +
-                        "ORDER BY orddt_ordername, ordldt_orderlinesequence";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists, orderlines, orderlinedetails, orders, orderdetails
+                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
+                        AND wshll_ordl_orderlineid = ordl_orderlineid AND ordl_activedetailid = ordldt_orderlinedetailid
+                        AND ordldt_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
+                        ORDER BY orddt_ordername, ordldt_orderlinesequence
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistlines " +
-                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistlines
+                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistLineFactory.getInstance().prepareStatement(query);
@@ -1305,14 +1358,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistlines " +
-                        "WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistlines
+                        WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistlines " +
-                        "WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistlines
+                        WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WishlistLineFactory.getInstance().prepareStatement(query);
@@ -1387,30 +1444,34 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora, " +
-                        "orderroletypes ortb, orderroles orb " +
-                        "WHERE ord_activedetailid = orddt_orderdetailid " +
-                        "AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid " +
-                        "AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? AND orddt_cur_currencyid = ? " +
-                        "AND ord_orderid = wshl_ord_orderid AND wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
-                        "AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ? " +
-                        "AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ? " +
-                        "AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ? " +
-                        "AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
+                        orderroletypes ortb, orderroles orb
+                        WHERE ord_activedetailid = orddt_orderdetailid
+                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
+                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? AND orddt_cur_currencyid = ?
+                        AND ord_orderid = wshl_ord_orderid AND wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
+                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
+                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
+                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora, " +
-                        "orderroletypes ortb, orderroles orb " +
-                        "WHERE ord_activedetailid = orddt_orderdetailid " +
-                        "AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid " +
-                        "AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? AND orddt_cur_currencyid = ? " +
-                        "AND ord_orderid = wshl_ord_orderid AND wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
-                        "AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ? " +
-                        "AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ? " +
-                        "AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ? " +
-                        "AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
+                        orderroletypes ortb, orderroles orb
+                        WHERE ord_activedetailid = orddt_orderdetailid
+                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
+                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? AND orddt_cur_currencyid = ?
+                        AND ord_orderid = wshl_ord_orderid AND wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
+                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
+                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
+                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderFactory.getInstance().prepareStatement(query);
@@ -1449,31 +1510,36 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora, " +
-                        "orderroletypes ortb, orderroles orb " +
-                        "WHERE ord_activedetailid = orddt_orderdetailid " +
-                        "AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid " +
-                        "AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? " +
-                        "AND ord_orderid = wshl_ord_orderid AND wshl_thrutime = ? " +
-                        "AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ? " +
-                        "AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ? " +
-                        "AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ? " +
-                        "AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
+                        orderroletypes ortb, orderroles orb
+                        WHERE ord_activedetailid = orddt_orderdetailid
+                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
+                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ?
+                        AND ord_orderid = wshl_ord_orderid AND wshl_thrutime = ?
+                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
+                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
+                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
+                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
+                        _LIMIT_
+                        """;
                 // TODO: "ORDER BY" needed, probably by the order's created time
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora, " +
-                        "orderroletypes ortb, orderroles orb " +
-                        "WHERE ord_activedetailid = orddt_orderdetailid " +
-                        "AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid " +
-                        "AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? " +
-                        "AND ord_orderid = wshl_ord_orderid AND wshl_thrutime = ? " +
-                        "AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ? " +
-                        "AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ? " +
-                        "AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ? " +
-                        "AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
+                        orderroletypes ortb, orderroles orb
+                        WHERE ord_activedetailid = orddt_orderdetailid
+                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
+                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ?
+                        AND ord_orderid = wshl_ord_orderid AND wshl_thrutime = ?
+                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
+                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
+                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
+                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderFactory.getInstance().prepareStatement(query);
@@ -1514,16 +1580,20 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists, orders " +
-                        "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
-                        "AND wshl_ord_orderid = ord_orderid";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists, orders
+                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                        AND wshl_ord_orderid = ord_orderid
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlists, orders " +
-                        "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ? " +
-                        "AND wshl_ord_orderid = ord_orderid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlists, orders
+                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
+                        AND wshl_ord_orderid = ord_orderid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderFactory.getInstance().prepareStatement(query);
@@ -1578,16 +1648,20 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "AND ordldt_orderlinesequence = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        AND ordldt_orderlinesequence = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "AND ordldt_orderlinesequence = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        AND ordldt_orderlinesequence = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -1619,18 +1693,22 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "AND ordldt_itm_itemid = ? AND ordldt_invcon_inventoryconditionid = ? " +
-                        "AND ordldt_uomt_unitofmeasuretypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        AND ordldt_itm_itemid = ? AND ordldt_invcon_inventoryconditionid = ?
+                        AND ordldt_uomt_unitofmeasuretypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "AND ordldt_itm_itemid = ? AND ordldt_invcon_inventoryconditionid = ? " +
-                        "AND ordldt_uomt_unitofmeasuretypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        AND ordldt_itm_itemid = ? AND ordldt_invcon_inventoryconditionid = ?
+                        AND ordldt_uomt_unitofmeasuretypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -1665,14 +1743,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -1695,6 +1777,14 @@ public class WishlistControl
         return getWishlistLinesByOrder(order, EntityPermission.READ_WRITE);
     }
     
+    public long countWishlistLinesByOrder(Order order) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM orderlines, orderlinedetails " +
+                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?",
+                order);
+    }
+
     private List<OrderLine> getWishlistLinesByItem(Item item, EntityPermission entityPermission) {
         List<OrderLine> orderLines;
         
@@ -1702,14 +1792,18 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -1732,6 +1826,14 @@ public class WishlistControl
         return getWishlistLinesByItem(item, EntityPermission.READ_WRITE);
     }
     
+    public long countWishlistLinesByItem(Item item) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM orderlines, orderlinedetails " +
+                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?",
+                item);
+    }
+
     private List<OrderLine> getOrderLinesByWishlistPriority(WishlistPriority wishlistPriority,
             EntityPermission entityPermission) {
         List<OrderLine> orderLines;
@@ -1740,16 +1842,20 @@ public class WishlistControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistlines, orderlines " +
-                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
-                        "AND wshll_ordl_orderlineid = ordl_orderlineid";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistlines, orderlines
+                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
+                        AND wshll_ordl_orderlineid = ordl_orderlineid
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM wishlistlines, orderlines " +
-                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
-                        "AND wshll_ordl_orderlineid = ordl_orderlineid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM wishlistlines, orderlines
+                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
+                        AND wshll_ordl_orderlineid = ordl_orderlineid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
