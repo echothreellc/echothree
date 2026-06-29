@@ -1,4 +1,4 @@
-<div class="form-group form-row">
+<div class="row mb-3">
     <label for="modifiedSince" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;">
         <fmt:message key="label.modifiedSince" />:
     </label>

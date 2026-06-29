@@ -1,4 +1,4 @@
-<div class="form-group form-row">
+<div class="row mb-3">
     <div class="col-sm-2">
     </div>
     <div class="col-sm-1">

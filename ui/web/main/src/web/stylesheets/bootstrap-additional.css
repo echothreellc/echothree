@@ -148,7 +148,14 @@ body {
 }
 
 body > .container {
-  padding-top: 70px;
+  padding-top: 1rem;
+}
+
+.breadcrumb {
+    --bs-breadcrumb-bg: #eeeeee;
+    --bs-breadcrumb-padding-x: 1rem;
+    --bs-breadcrumb-padding-y: 0.75rem;
+    --bs-breadcrumb-border-radius: var(--bs-border-radius);
 }
 
 .container > footer p {

@@ -26,8 +26,10 @@
     </head>
     <body>
         <header>
-            <nav class="navbar navbar-dark bg-dark fixed-top">
-                <a class="navbar-brand">Echo Three</a>
+            <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand">Echo Three</a>
+                </div>
             </nav>
         </header>
         <main role="main" class="container">

@@ -1,4 +1,4 @@
-<div class="form-group form-row">
+<div class="row mb-3">
     <label for="name" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;"><fmt:message key="label.company" />:</label>
     <div class="col-sm-5">
         <html:text styleClass="form-control form-control-sm" styleId="name" property="name" size="40" maxlength="40" />

@@ -182,19 +182,14 @@
             <fileset dir="${lib.dir}/jquery">
                 <include name="jquery.min.js" />
             </fileset>
-            <!-- Popper.js -->
-            <fileset dir="${lib.dir}/popper/dist/umd">
-                <include name="popper.min.js" />
-                <include name="popper.min.js.map" />
-            </fileset>
             <!-- Bootstrap -->
             <fileset dir="${lib.dir}/bootstrap/css">
                 <include name="bootstrap.min.css" />
                 <include name="bootstrap.min.css.map" />
             </fileset>
             <fileset dir="${lib.dir}/bootstrap/js">
-                <include name="bootstrap.min.js" />
-                <include name="bootstrap.min.js.map" />
+                <include name="bootstrap.bundle.min.js" />
+                <include name="bootstrap.bundle.min.js.map" />
             </fileset>
         </war>
     </target>
@@ -213,4 +208,3 @@
     </target>
 
 </project>
-
