@@ -55,7 +55,11 @@
 </header>
 <script type="text/javascript">
     $(document).keypress(function(e) {
-        if(e.charCode === 96) {
+        var originalEvent = e.originalEvent || e;
+        var isAltGraph = originalEvent.getModifierState && originalEvent.getModifierState("AltGraph");
+        var hasShortcutModifier = e.metaKey || (!isAltGraph && (e.altKey || e.ctrlKey));
+
+        if(e.charCode === 96 && !hasShortcutModifier) {
             var tagName = document.activeElement.tagName;
 
             if(tagName !== 'INPUT' && tagName !== 'TEXTAREA') {
