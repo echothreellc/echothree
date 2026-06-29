@@ -143,6 +143,10 @@ span.rtf {
 }
 
 /* Override some defaults from bootstrap */
+html {
+    scrollbar-gutter: stable;
+}
+
 body {
     background-color: #eeeeee !important;
 }
