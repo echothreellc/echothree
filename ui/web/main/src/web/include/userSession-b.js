@@ -10,16 +10,18 @@ $(jumpTarget).on("focus", function() {
 }).on("blur", setJumpPlaceholder);
 
 $(document).keypress(function(e) {
-    const originalEvent = e.originalEvent || e;
-    const isAltGraph = originalEvent.getModifierState && originalEvent.getModifierState("AltGraph");
-    const hasShortcutModifier = e.metaKey || (!isAltGraph && (e.altKey || e.ctrlKey));
+    if(e.charCode === 96) {
+        const originalEvent = e.originalEvent || e;
+        const isAltGraph = originalEvent.getModifierState && originalEvent.getModifierState("AltGraph");
+        const hasShortcutModifier = e.metaKey || (!isAltGraph && (e.altKey || e.ctrlKey));
 
-    if(e.charCode === 96 && !hasShortcutModifier) {
-        const tagName = document.activeElement.tagName;
+        if(!hasShortcutModifier) {
+            const tagName = document.activeElement.tagName;
 
-        if(tagName !== 'INPUT' && tagName !== 'TEXTAREA') {
-            jumpTarget.focus();
-            e.preventDefault();
+            if(tagName !== 'INPUT' && tagName !== 'TEXTAREA') {
+                jumpTarget.focus();
+                e.preventDefault();
+            }
         }
     }
 });
