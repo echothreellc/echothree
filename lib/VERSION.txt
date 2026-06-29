@@ -1,5 +1,5 @@
 Apache Ivy 2.5.2
-Bootstrap 4.6.2
+Bootstrap 5.3.8
 cross-revalidator 1.0a
 displaytag 1.2
 Jakarta POI 3.2 (used by displaytag)
@@ -8,7 +8,6 @@ jQuery 3.7.1
 log4j 1.2.8
 logkit 1.2
 PMD 7.17.0
-Popper.js 2.6.0
 Prism 1.6.0
 Prototype 1.6.0.3
 Struts 1.3.10
