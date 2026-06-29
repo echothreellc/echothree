@@ -162,6 +162,11 @@ span.pagelinks {
         margin-bottom: -5px;
 }
 
+#jumpbox::placeholder {
+    color: var(--bs-gray-500);
+    opacity: 1;
+}
+
 /* Override some defaults from bootstrap */
 html {
     scrollbar-gutter: stable;

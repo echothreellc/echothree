@@ -47,23 +47,34 @@
                     </li>
                 </ul>
                 <html:form styleClass="d-flex flex-grow-1 justify-content-end my-2 my-lg-0" action="/Portal/Jump" method="POST">
-                    <html:text styleClass="form-control w-auto bg-light text-dark border-secondary" styleId="target" property="target" size="40" maxlength="80" />
+                    <html:text styleClass="form-control w-auto bg-light text-dark border-secondary" styleId="jumpbox" property="target" size="40" maxlength="80" />
                 </html:form>
             </div>
         </div>
     </nav>
 </header>
 <script type="text/javascript">
+    const jumpTarget = document.forms["Jump"].elements["target"];
+
+    function setJumpPlaceholder() {
+        jumpTarget.setAttribute("placeholder", "Search...");
+    }
+
+    setJumpPlaceholder();
+    $(jumpTarget).on("focus", function() {
+        this.setAttribute("placeholder", "");
+    }).on("blur", setJumpPlaceholder);
+
     $(document).keypress(function(e) {
-        var originalEvent = e.originalEvent || e;
-        var isAltGraph = originalEvent.getModifierState && originalEvent.getModifierState("AltGraph");
-        var hasShortcutModifier = e.metaKey || (!isAltGraph && (e.altKey || e.ctrlKey));
+        const originalEvent = e.originalEvent || e;
+        const isAltGraph = originalEvent.getModifierState && originalEvent.getModifierState("AltGraph");
+        const hasShortcutModifier = e.metaKey || (!isAltGraph && (e.altKey || e.ctrlKey));
 
         if(e.charCode === 96 && !hasShortcutModifier) {
-            var tagName = document.activeElement.tagName;
+            const tagName = document.activeElement.tagName;
 
             if(tagName !== 'INPUT' && tagName !== 'TEXTAREA') {
-                document.forms["Jump"].elements["target"].focus();
+                jumpTarget.focus();
                 e.preventDefault();
             }
         }
