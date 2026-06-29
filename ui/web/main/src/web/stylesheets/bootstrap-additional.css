@@ -142,6 +142,26 @@ span.rtf {
 	background-image: url(../stylesheets/ico_file_rtf.png);
 }
 
+span.pagebanner {
+        background-color: #eee;
+        border: 1px dotted #999;
+        font-size: 0.875rem;
+        padding: 2px 4px 2px 4px;
+        margin-top: 10px;
+        display: block;
+        border-bottom: none;
+}
+
+span.pagelinks {
+        background-color: #eee;
+        border: 1px dotted #999;
+        font-size: 0.875rem;
+        padding: 2px 4px 2px 4px;
+        display: block;
+        border-top: none;
+        margin-bottom: -5px;
+}
+
 /* Override some defaults from bootstrap */
 html {
     scrollbar-gutter: stable;
