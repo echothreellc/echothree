@@ -18,8 +18,14 @@ package com.echothree.model.control.chain.server.graphql;
 
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.chain.common.ChainConstants;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.chain.server.entity.ChainTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("chain type object")
 @GraphQLName("ChainType")
@@ -89,24 +98,24 @@ public class ChainTypeObject
         return chainControl.getBestChainTypeDescription(chainType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("chains")
-//    @GraphQLNonNull
-//    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-//    public CountingPaginatedData<ChainObject> getChains(final DataFetchingEnvironment env) {
-//        if(ChainSecurityUtils.getHasChainsAccess(env)) {
-//            var chainControl = Session.getModelController(ChainControl.class);
-//            var totalCount = chainControl.countChainsByChainType(chainType);
-//
-//            try(var objectLimiter = new ObjectLimiter(env, ChainConstants.COMPONENT_VENDOR_NAME, ChainConstants.ENTITY_TYPE_NAME, totalCount)) {
-//                var entities = chainControl.getChains(chainType);
-//                var chains = entities.stream().map(ChainObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
-//
-//                return new CountedObjects<>(objectLimiter, chains);
-//            }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
-//    }
+    @GraphQLField
+    @GraphQLDescription("chains")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ChainObject> getChains(final DataFetchingEnvironment env) {
+        if(ChainSecurityUtils.getHasChainsAccess(env)) {
+            var chainControl = Session.getModelController(ChainControl.class);
+            var totalCount = chainControl.countChainsByChainType(chainType);
+
+            try(var objectLimiter = new ObjectLimiter(env, ChainConstants.COMPONENT_VENDOR_NAME, ChainConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getChainsByChainType(chainType);
+                var chains = entities.stream().map(ChainObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, chains);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
 }
