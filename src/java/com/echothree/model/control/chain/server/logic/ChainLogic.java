@@ -157,8 +157,8 @@ public class ChainLogic
         var chainKindName = universalSpec.getChainKindName();
         var chainTypeName = universalSpec.getChainTypeName();
         var chainName = universalSpec.getChainName();
-        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(chainKindName, chainTypeName, chainName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(chainKindName, chainTypeName, chainName);
+        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         Chain chain = null;
 
         if(nameParameterCount < 4 && possibleEntitySpecs == 0) {

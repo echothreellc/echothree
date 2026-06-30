@@ -24,20 +24,22 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetChainActionSetCommand
-        extends BaseSimpleCommand<GetChainActionSetForm> {
+        extends BaseSingleEntityCommand<ChainActionSet, GetChainActionSetForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -51,40 +53,44 @@ public class GetChainActionSetCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ChainActionSetName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ChainName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ChainActionSetName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ChainActionSetLogic chainActionSetLogic;
     
     /** Creates a new instance of GetChainActionSetCommand */
     public GetChainActionSetCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Inject
-    ChainControl chainControl;
-
-    @Inject
-    ChainActionSetLogic chainActionSetLogic;
-    
     @Override
-    protected BaseResult execute() {
-        var result = ChainResultFactory.getGetChainActionSetResult();
-        var chainKindName = form.getChainKindName();
-        var chainTypeName = form.getChainTypeName();
-        var chainName = form.getChainName();
-        var chainActionSetName = form.getChainActionSetName();
-        var chainActionSet = chainActionSetLogic.getChainActionSetByName(this, chainKindName, chainTypeName, chainName,
-                chainActionSetName);
+    protected ChainActionSet getEntity() {
+        var chainActionSet = chainActionSetLogic.getChainActionSetByUniversalSpec(this, form, true);
 
-        if(!hasExecutionErrors()) {
-            result.setChainActionSet(chainControl.getChainActionSetTransfer(getUserVisit(), chainActionSet));
-
+        if(chainActionSet != null) {
             sendEvent(chainActionSet.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return chainActionSet;
+    }
+
+    @Override
+    protected BaseResult getResult(ChainActionSet chainActionSet) {
+        var result = ChainResultFactory.getGetChainActionSetResult();
+
+        if(chainActionSet != null) {
+            var chainControl = Session.getModelController(ChainControl.class);
+
+            result.setChainActionSet(chainControl.getChainActionSetTransfer(getUserVisit(), chainActionSet));
+        }
+
         return result;
     }
     
