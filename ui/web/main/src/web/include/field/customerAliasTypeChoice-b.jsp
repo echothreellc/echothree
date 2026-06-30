@@ -1,9 +1,9 @@
-<div class="form-group form-row">
+<div class="row mb-3">
     <label for="customerAliasType" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;">
         <fmt:message key="label.customerAliasType" />:
     </label>
     <div class="col-sm-3">
-        <html:select styleClass="form-control form-control-sm" styleId="partyAliasTypeChoice" property="partyAliasTypeChoice">
+        <html:select styleClass="form-select form-select-sm" styleId="partyAliasTypeChoice" property="partyAliasTypeChoice">
             <html:optionsCollection property="partyAliasTypeChoices" />
         </html:select>
         <et:validationErrors id="errorMessage" property="PartyAliasTypeName">
