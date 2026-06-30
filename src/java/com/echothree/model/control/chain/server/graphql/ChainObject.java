@@ -18,10 +18,16 @@ package com.echothree.model.control.chain.server.graphql;
 
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.chain.common.ChainActionSetConstants;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +35,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("chain object")
 @GraphQLName("Chain")
@@ -97,6 +106,26 @@ public class ChainObject
         var userControl = Session.getModelController(UserControl.class);
 
         return chainControl.getBestChainDescription(chain, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("chain action sets")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ChainActionSetObject> getChainActionSets(final DataFetchingEnvironment env) {
+        if(ChainSecurityUtils.getHasChainActionSetsAccess(env)) {
+            var chainControl = Session.getModelController(ChainControl.class);
+            var totalCount = chainControl.countChainActionSetsByChain(chain);
+
+            try(var objectLimiter = new ObjectLimiter(env, ChainActionSetConstants.COMPONENT_VENDOR_NAME, ChainActionSetConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getChainActionSetsByChain(chain);
+                var chainActionSets = entities.stream().map(ChainActionSetObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, chainActionSets);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
