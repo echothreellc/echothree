@@ -2380,6 +2380,7 @@ public enum ExecutionErrors {
     CannotDeleteChainActionTypeInUse,
     UnknownDefaultChainActionType,
     UnknownDefaultChain,
+    UnknownDefaultChainActionSet,
     CannotDeleteChainInUse,
     UnknownWorkRequirementScope,
 
