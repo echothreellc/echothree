@@ -2115,7 +2115,7 @@ public class ChainControl
         getDefaultChainActionSetQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainActionSet getDefaultChainActionSet(Chain chain, EntityPermission entityPermission) {
+    public ChainActionSet getDefaultChainActionSet(Chain chain, EntityPermission entityPermission) {
         return ChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainActionSetQueries,
                 chain);
     }
@@ -2151,7 +2151,7 @@ public class ChainControl
         getChainActionSetByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainActionSet getChainActionSetByName(Chain chain, String chainActionSetName, EntityPermission entityPermission) {
+    public ChainActionSet getChainActionSetByName(Chain chain, String chainActionSetName, EntityPermission entityPermission) {
         return ChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionSetByNameQueries,
                 chain, chainActionSetName);
     }
