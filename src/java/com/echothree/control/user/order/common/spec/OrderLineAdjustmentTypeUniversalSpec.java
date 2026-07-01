@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.order.common.form;
+package com.echothree.control.user.order.common.spec;
 
-import com.echothree.control.user.order.common.spec.OrderLineAdjustmentTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetOrderLineAdjustmentTypeForm
-        extends OrderLineAdjustmentTypeUniversalSpec {
-    
-    // Nothing additional beyond OrderLineAdjustmentTypeUniversalSpec
-    
+public interface OrderLineAdjustmentTypeUniversalSpec
+        extends OrderLineAdjustmentTypeSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond OrderLineAdjustmentTypeSpec, UniversalEntitySpec
+
 }

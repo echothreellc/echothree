@@ -21,7 +21,6 @@ import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -31,6 +30,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteOrderTypeCommand
@@ -44,27 +44,30 @@ public class DeleteOrderTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of DeleteOrderTypeCommand */
     public DeleteOrderTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
     
     @Override
     protected BaseResult execute() {
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpecForUpdate(this, form, false);
+        var orderType = orderTypeLogic.getOrderTypeByUniversalSpecForUpdate(this, form, false);
         
         if(!hasExecutionErrors()) {
-            OrderTypeLogic.getInstance().deleteOrderType(this, orderType, getPartyPK());
+            orderTypeLogic.deleteOrderType(this, orderType, getPartyPK());
         }
         
         return null;

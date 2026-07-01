@@ -20,13 +20,12 @@ import com.echothree.control.user.order.common.form.GetOrderLineAdjustmentTypeFo
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
-import com.echothree.model.control.order.server.logic.OrderTypeLogic;
+import com.echothree.model.control.order.server.logic.OrderLineAdjustmentTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -53,8 +52,10 @@ public class GetOrderLineAdjustmentTypeCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("OrderLineAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("OrderLineAdjustmentTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
     
@@ -62,7 +63,7 @@ public class GetOrderLineAdjustmentTypeCommand
     OrderLineAdjustmentControl orderLineAdjustmentControl;
 
     @Inject
-    OrderTypeLogic orderTypeLogic;
+    OrderLineAdjustmentTypeLogic orderLineAdjustmentTypeLogic;
 
     /** Creates a new instance of GetOrderLineAdjustmentTypeCommand */
     public GetOrderLineAdjustmentTypeCommand() {
@@ -71,20 +72,10 @@ public class GetOrderLineAdjustmentTypeCommand
     
     @Override
     protected OrderLineAdjustmentType getEntity() {
-        var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
-        OrderLineAdjustmentType orderLineAdjustmentType = null;
+        var orderLineAdjustmentType = orderLineAdjustmentTypeLogic.getOrderLineAdjustmentTypeByUniversalSpec(this, form, true);
 
-        if(!hasExecutionErrors()) {
-            var orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
-
-            orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
-
-            if(orderLineAdjustmentType != null) {
-                sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderLineAdjustmentTypeName.name(), orderLineAdjustmentTypeName);
-            }
+        if(orderLineAdjustmentType != null) {
+            sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return orderLineAdjustmentType;
