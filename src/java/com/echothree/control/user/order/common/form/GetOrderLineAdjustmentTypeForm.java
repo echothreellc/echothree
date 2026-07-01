@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.order.common.form;
 
-import com.echothree.control.user.order.common.spec.OrderLineAdjustmentTypeSpec;
+import com.echothree.control.user.order.common.spec.OrderLineAdjustmentTypeUniversalSpec;
 
 public interface GetOrderLineAdjustmentTypeForm
-        extends OrderLineAdjustmentTypeSpec {
+        extends OrderLineAdjustmentTypeUniversalSpec {
     
-    // Nothing additional beyond OrderLineAdjustmentTypeSpec
+    // Nothing additional beyond OrderLineAdjustmentTypeUniversalSpec
     
 }
