@@ -1688,8 +1688,7 @@ public class InvoiceControl
         return invoiceTimeTypeTransferCache.getInvoiceTimeTypeTransfer(userVisit, invoiceTimeType);
     }
 
-    public List<InvoiceTimeTypeTransfer> getInvoiceTimeTypeTransfers(UserVisit userVisit, InvoiceType invoiceType) {
-        var invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
+    public List<InvoiceTimeTypeTransfer> getInvoiceTimeTypeTransfers(UserVisit userVisit, Collection<InvoiceTimeType> invoiceTimeTypes) {
         List<InvoiceTimeTypeTransfer> invoiceTimeTypeTransfers = new ArrayList<>(invoiceTimeTypes.size());
 
         invoiceTimeTypes.forEach((invoiceTimeType) ->
@@ -1697,6 +1696,10 @@ public class InvoiceControl
         );
 
         return invoiceTimeTypeTransfers;
+    }
+
+    public List<InvoiceTimeTypeTransfer> getInvoiceTimeTypeTransfers(UserVisit userVisit, InvoiceType invoiceType) {
+        return getInvoiceTimeTypeTransfers(userVisit, getInvoiceTimeTypes(invoiceType));
     }
 
     public InvoiceTimeTypeChoicesBean getInvoiceTimeTypeChoices(String defaultInvoiceTimeTypeChoice, Language language, boolean allowNullChoice,
