@@ -852,8 +852,7 @@ public class PicklistControl
         return picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(userVisit, picklistTimeType);
     }
 
-    public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
-        var picklistTimeTypes = getPicklistTimeTypes(picklistType);
+    public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, Collection<PicklistTimeType> picklistTimeTypes) {
         List<PicklistTimeTypeTransfer> picklistTimeTypeTransfers = new ArrayList<>(picklistTimeTypes.size());
 
         picklistTimeTypes.forEach((picklistTimeType) ->
@@ -861,6 +860,10 @@ public class PicklistControl
         );
 
         return picklistTimeTypeTransfers;
+    }
+
+    public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
+        return getPicklistTimeTypeTransfers(userVisit, getPicklistTimeTypes(picklistType));
     }
 
     public PicklistTimeTypeChoicesBean getPicklistTimeTypeChoices(String defaultPicklistTimeTypeChoice, Language language, boolean allowNullChoice,

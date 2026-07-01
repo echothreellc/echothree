@@ -17,13 +17,20 @@
 package com.echothree.control.user.picklist.common.result;
 
 import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTransfer;
+import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetPicklistTimeTypesResult
         extends BaseResult {
-    
+
+    PicklistTypeTransfer getPicklistType();
+    void setPicklistType(PicklistTypeTransfer picklistType);
+
+    Long getPicklistTimeTypeCount();
+    void setPicklistTimeTypeCount(Long picklistTimeTypeCount);
+
     List<PicklistTimeTypeTransfer> getPicklistTimeTypes();
     void setPicklistTimeTypes(List<PicklistTimeTypeTransfer> picklistTimeTypes);
-    
+
 }
