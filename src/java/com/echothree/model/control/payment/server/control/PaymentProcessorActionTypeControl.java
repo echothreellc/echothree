@@ -99,6 +99,14 @@ public class PaymentProcessorActionTypeControl
         return getPaymentProcessorActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPaymentProcessorActionTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessoractiontypes
+                        JOIN paymentprocessoractiontypedetails ON pprcacttypdt_paymentprocessoractiontypedetailid = pprcacttyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getPaymentProcessorActionTypeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
@@ -161,7 +169,8 @@ public class PaymentProcessorActionTypeControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " + "FROM paymentprocessoractiontypes, paymentprocessoractiontypedetails " +
                     "WHERE pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
-                    "ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename",
+                    "ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM paymentprocessoractiontypes, paymentprocessoractiontypedetails " +
                     "WHERE pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
@@ -368,7 +377,8 @@ public class PaymentProcessorActionTypeControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessoractiontypedescriptions, languages " +
                     "WHERE pprcacttypd_pprcacttyp_paymentprocessoractiontypeid = ? AND pprcacttypd_thrutime = ? AND pprcacttypd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+                    "ORDER BY lang_sortorder, lang_languageisoname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessoractiontypedescriptions " +

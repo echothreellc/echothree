@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetTaxesResult
         extends BaseResult {
     
+    Long getTaxCount();
+    void setTaxCount(Long taxCount);
+
     List<TaxTransfer> getTaxes();
     void setTaxes(List<TaxTransfer> taxes);
     

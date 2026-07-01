@@ -24,22 +24,22 @@ import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.AppearanceTextTransformation;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearanceTextTransformationCommand
-        extends BaseSimpleCommand<GetAppearanceTextTransformationForm> {
+        extends BaseSingleEntityCommand<AppearanceTextTransformation, GetAppearanceTextTransformationForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -49,13 +49,23 @@ public class GetAppearanceTextTransformationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.AppearanceTextTransformation.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("TextTransformationName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
+    @Inject
+    TextLogic textLogic;
     
     /** Creates a new instance of GetAppearanceTextTransformationCommand */
     public GetAppearanceTextTransformationCommand() {
@@ -63,25 +73,33 @@ public class GetAppearanceTextTransformationCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetAppearanceTextTransformationResult();
+    protected AppearanceTextTransformation getEntity() {
+        AppearanceTextTransformation appearanceTextTransformation = null;
         var appearanceName = form.getAppearanceName();
-        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
-        
+        var appearance = appearanceLogic.getAppearanceByName(this, appearanceName);
+
         if(!hasExecutionErrors()) {
             var textTransformationName = form.getTextTransformationName();
-            var textTransformation = TextLogic.getInstance().getTextTransformationByName(this, textTransformationName);
-            
-            if(!hasExecutionErrors()) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
-                var appearanceTextTransformation = appearanceControl.getAppearanceTextTransformation(appearance, textTransformation);
+            var textTransformation = textLogic.getTextTransformationByName(this, textTransformationName);
 
-                if(appearanceTextTransformation != null) {
-                    result.setAppearanceTextTransformation(appearanceControl.getAppearanceTextTransformationTransfer(getUserVisit(), appearanceTextTransformation));
-                } else {
+            if(!hasExecutionErrors()) {
+                appearanceTextTransformation = appearanceControl.getAppearanceTextTransformation(appearance, textTransformation);
+
+                if(appearanceTextTransformation == null) {
                     addExecutionError(ExecutionErrors.UnknownAppearanceTextTransformation.name(), appearanceName, textTransformationName);
                 }
             }
+        }
+
+        return appearanceTextTransformation;
+    }
+
+    @Override
+    protected BaseResult getResult(AppearanceTextTransformation appearanceTextTransformation) {
+        var result = CoreResultFactory.getGetAppearanceTextTransformationResult();
+
+        if(appearanceTextTransformation != null) {
+            result.setAppearanceTextTransformation(appearanceControl.getAppearanceTextTransformationTransfer(getUserVisit(), appearanceTextTransformation));
         }
 
         return result;

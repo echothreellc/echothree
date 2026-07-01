@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetChainKindsResult
         extends BaseResult {
     
+    Long getChainKindCount();
+    void setChainKindCount(Long chainKindCount);
+
     List<ChainKindTransfer> getChainKinds();
     void setChainKinds(List<ChainKindTransfer> chainKinds);
     

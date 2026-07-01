@@ -60,7 +60,7 @@ public class GetItemsCommand
 
     @Override
     protected void handleForm() {
-        // No additional form fields to handle.
+        // No form fields.
     }
 
     @Override

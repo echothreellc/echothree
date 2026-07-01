@@ -26,6 +26,9 @@ public interface GetChainsResult
     
     ChainTypeTransfer getChainType();
     void setChainType(ChainTypeTransfer chainType);
+
+    Long getChainCount();
+    void setChainCount(Long chainCount);
     
     List<ChainTransfer> getChains();
     void setChains(List<ChainTransfer> chains);

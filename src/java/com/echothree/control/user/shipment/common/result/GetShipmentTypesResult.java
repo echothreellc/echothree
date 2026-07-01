@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetShipmentTypesResult
         extends BaseResult {
     
+    Long getShipmentTypeCount();
+    void setShipmentTypeCount(Long shipmentTypeCount);
+
     List<ShipmentTypeTransfer> getShipmentTypes();
     void setShipmentTypes(List<ShipmentTypeTransfer> shipmentTypes);
     

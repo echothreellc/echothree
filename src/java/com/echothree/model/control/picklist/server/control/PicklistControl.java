@@ -37,7 +37,11 @@ import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeDesc
 import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeTransferCache;
 import com.echothree.model.control.picklist.server.transfer.PicklistTypeDescriptionTransferCache;
 import com.echothree.model.control.picklist.server.transfer.PicklistTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.picklist.common.pk.PicklistAliasTypePK;
+import com.echothree.model.data.picklist.common.pk.PicklistTimeTypePK;
+import com.echothree.model.data.picklist.common.pk.PicklistTypePK;
 import com.echothree.model.data.picklist.server.entity.Picklist;
 import com.echothree.model.data.picklist.server.entity.PicklistAlias;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
@@ -71,6 +75,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -83,7 +88,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -158,22 +162,49 @@ public class PicklistControl
         return picklistType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PicklistType */
+    public PicklistType getPicklistTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PicklistTypePK(entityInstance.getEntityUniqueId());
+
+        return PicklistTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PicklistType getPicklistTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPicklistTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PicklistType getPicklistTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPicklistTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPicklistTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM picklisttypes
+                        JOIN picklisttypedetails ON pcklsttypdt_picklisttypedetailid = pcklsttyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getPicklistTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid " +
-                "AND pcklsttypdt_picklisttypename = ?");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
+                AND pcklsttypdt_picklisttypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid " +
-                "AND pcklsttypdt_picklisttypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
+                AND pcklsttypdt_picklisttypename = ?
+                FOR UPDATE
+                """);
         getPicklistTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -203,16 +234,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid " +
-                "AND pcklsttypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
+                AND pcklsttypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid " +
-                "AND pcklsttypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
+                AND pcklsttypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPicklistTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -238,16 +273,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid " +
-                "ORDER BY pcklsttypdt_sortorder, pcklsttypdt_picklisttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
+                ORDER BY pcklsttypdt_sortorder, pcklsttypdt_picklisttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
+                FOR UPDATE
+                """);
         getPicklistTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -269,16 +308,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid AND pcklsttypdt_parentpicklisttypeid = ? " +
-                "ORDER BY pcklsttypdt_sortorder, pcklsttypdt_picklisttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid AND pcklsttypdt_parentpicklisttypeid = ?
+                ORDER BY pcklsttypdt_sortorder, pcklsttypdt_picklisttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttypes, picklisttypedetails " +
-                "WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid AND pcklsttypdt_parentpicklisttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttypes, picklisttypedetails
+                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid AND pcklsttypdt_parentpicklisttypeid = ?
+                FOR UPDATE
+                """);
         getPicklistTypesByParentPicklistTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -296,12 +339,11 @@ public class PicklistControl
         return getPicklistTypesByParentPicklistType(parentPicklistType, EntityPermission.READ_WRITE);
     }
 
-   public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
+    public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
         return picklistTypeTransferCache.getPicklistTypeTransfer(userVisit, picklistType);
     }
 
-    public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit) {
-        var picklistTypes = getPicklistTypes();
+    public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit, Collection<PicklistType> picklistTypes) {
         List<PicklistTypeTransfer> picklistTypeTransfers = new ArrayList<>(picklistTypes.size());
 
         picklistTypes.forEach((picklistType) ->
@@ -309,6 +351,10 @@ public class PicklistControl
         );
 
         return picklistTypeTransfers;
+    }
+
+    public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit) {
+        return getPicklistTypeTransfers(userVisit, getPicklistTypes());
     }
 
     public PicklistTypeChoicesBean getPicklistTypeChoices(String defaultPicklistTypeChoice,
@@ -487,14 +533,18 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttypedescriptions " +
-                "WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_lang_languageid = ? AND pcklsttypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM picklisttypedescriptions
+                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_lang_languageid = ? AND pcklsttypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttypedescriptions " +
-                "WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_lang_languageid = ? AND pcklsttypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttypedescriptions
+                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_lang_languageid = ? AND pcklsttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -525,15 +575,19 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttypedescriptions, languages " +
-                "WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_thrutime = ? AND pcklsttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM picklisttypedescriptions, languages
+                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_thrutime = ? AND pcklsttypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttypedescriptions " +
-                "WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttypedescriptions
+                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTypeDescriptionsByPicklistTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -649,22 +703,50 @@ public class PicklistControl
         return picklistTimeType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PicklistTimeType */
+    public PicklistTimeType getPicklistTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PicklistTimeTypePK(entityInstance.getEntityUniqueId());
+
+        return PicklistTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PicklistTimeType getPicklistTimeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPicklistTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PicklistTimeType getPicklistTimeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPicklistTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPicklistTimeTypesByPicklistType(final PicklistType picklistType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM picklisttimetypes
+                        JOIN picklisttimetypedetails ON pcklsttimtypdt_picklisttimetypedetailid = pcklsttimtyp_activedetailid
+                        WHERE pcklsttimtypdt_pcklsttyp_picklisttypeid = ?
+                        """, picklistType);
+    }
+
     private static final Map<EntityPermission, String> getPicklistTimeTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_picklisttimetypename = ?");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_picklisttimetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_picklisttimetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_picklisttimetypename = ?
+                FOR UPDATE
+                """);
         getPicklistTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -695,16 +777,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPicklistTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -731,17 +817,21 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? " +
-                "ORDER BY pcklsttimtypdt_sortorder, pcklsttimtypdt_picklisttimetypename");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ?
+                ORDER BY pcklsttimtypdt_sortorder, pcklsttimtypdt_picklisttimetypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ?
+                FOR UPDATE
+                """);
         getPicklistTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -762,8 +852,7 @@ public class PicklistControl
         return picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(userVisit, picklistTimeType);
     }
 
-    public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
-        var picklistTimeTypes = getPicklistTimeTypes(picklistType);
+    public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, Collection<PicklistTimeType> picklistTimeTypes) {
         List<PicklistTimeTypeTransfer> picklistTimeTypeTransfers = new ArrayList<>(picklistTimeTypes.size());
 
         picklistTimeTypes.forEach((picklistTimeType) ->
@@ -771,6 +860,10 @@ public class PicklistControl
         );
 
         return picklistTimeTypeTransfers;
+    }
+
+    public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
+        return getPicklistTimeTypeTransfers(userVisit, getPicklistTimeTypes(picklistType));
     }
 
     public PicklistTimeTypeChoicesBean getPicklistTimeTypeChoices(String defaultPicklistTimeTypeChoice, Language language, boolean allowNullChoice,
@@ -904,14 +997,18 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypedescriptions " +
-                "WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_lang_languageid = ? AND pcklsttimtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypedescriptions
+                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_lang_languageid = ? AND pcklsttimtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypedescriptions " +
-                "WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_lang_languageid = ? AND pcklsttimtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypedescriptions
+                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_lang_languageid = ? AND pcklsttimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -942,15 +1039,19 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypedescriptions, languages " +
-                "WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_thrutime = ? AND pcklsttimtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypedescriptions, languages
+                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_thrutime = ? AND pcklsttimtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimetypedescriptions " +
-                "WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimetypedescriptions
+                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTimeTypeDescriptionsByPicklistTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1066,22 +1167,50 @@ public class PicklistControl
         return picklistAliasType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PicklistAliasType */
+    public PicklistAliasType getPicklistAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PicklistAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return PicklistAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PicklistAliasType getPicklistAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPicklistAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PicklistAliasType getPicklistAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPicklistAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPicklistAliasTypesByPicklistType(final PicklistType picklistType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM picklistaliastypes
+                        JOIN picklistaliastypedetails ON pcklstaltypdt_picklistaliastypedetailid = pcklstaltyp_activedetailid
+                        WHERE pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getPicklistAliasTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ? " +
-                "AND pcklstaltypdt_picklistaliastypename = ?");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                AND pcklstaltypdt_picklistaliastypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ? " +
-                "AND pcklstaltypdt_picklistaliastypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                AND pcklstaltypdt_picklistaliastypename = ?
+                FOR UPDATE
+                """);
         getPicklistAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1113,16 +1242,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ? " +
-                "AND pcklstaltypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                AND pcklstaltypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ? " +
-                "AND pcklstaltypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                AND pcklstaltypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPicklistAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1148,15 +1281,19 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ? " +
-                "ORDER BY pcklstaltypdt_sortorder, pcklstaltypdt_picklistaliastypename");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                ORDER BY pcklstaltypdt_sortorder, pcklstaltypdt_picklistaliastypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
+                FOR UPDATE
+                """);
         getPicklistAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1176,8 +1313,7 @@ public class PicklistControl
         return picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(userVisit, picklistAliasType);
     }
 
-    public List<PicklistAliasTypeTransfer> getPicklistAliasTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
-        var picklistAliasTypes = getPicklistAliasTypes(picklistType);
+    public List<PicklistAliasTypeTransfer> getPicklistAliasTypeTransfers(UserVisit userVisit, Collection<PicklistAliasType> picklistAliasTypes) {
         List<PicklistAliasTypeTransfer> picklistAliasTypeTransfers = new ArrayList<>(picklistAliasTypes.size());
 
         picklistAliasTypes.forEach((picklistAliasType) ->
@@ -1185,6 +1321,10 @@ public class PicklistControl
         );
 
         return picklistAliasTypeTransfers;
+    }
+
+    public List<PicklistAliasTypeTransfer> getPicklistAliasTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
+        return getPicklistAliasTypeTransfers(userVisit, getPicklistAliasTypes(picklistType));
     }
 
     public PicklistAliasTypeChoicesBean getPicklistAliasTypeChoices(String defaultPicklistAliasTypeChoice, Language language,
@@ -1329,14 +1469,18 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypedescriptions " +
-                "WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_lang_languageid = ? AND pcklstaltypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypedescriptions
+                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_lang_languageid = ? AND pcklstaltypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypedescriptions " +
-                "WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_lang_languageid = ? AND pcklstaltypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypedescriptions
+                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_lang_languageid = ? AND pcklstaltypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1367,15 +1511,19 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypedescriptions, languages " +
-                "WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_thrutime = ? AND pcklstaltypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypedescriptions, languages
+                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_thrutime = ? AND pcklstaltypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliastypedescriptions " +
-                "WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliastypedescriptions
+                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistAliasTypeDescriptionsByPicklistAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1471,19 +1619,19 @@ public class PicklistControl
     }
 
     public long countPicklistTimesByPicklist(Picklist picklist) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM picklisttimes " +
-                "WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?",
-                picklist, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM picklisttimes
+                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?
+                """, picklist, Session.MAX_TIME);
     }
 
     public long countPicklistTimesByPicklistTimeType(PicklistTimeType picklistTimeType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM picklisttimes " +
-                "WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?",
-                picklistTimeType, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM picklisttimes
+                WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
+                """, picklistTimeType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getPicklistTimeQueries;
@@ -1492,14 +1640,18 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimes " +
-                "WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM picklisttimes
+                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimes " +
-                "WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimes
+                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTimeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1529,16 +1681,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimes, picklisttimetypes, picklisttimetypedetails " +
-                "WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ? " +
-                "AND pcklsttim_pcklsttimtyp_picklisttimetypeid = pcklsttimtyp_picklisttimetypeid AND pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid " +
-                "ORDER BY pcklsttimtypdt_sortorder, pcklsttimtypdt_picklisttimetypename");
+                """
+                SELECT _ALL_
+                FROM picklisttimes, picklisttimetypes, picklisttimetypedetails
+                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?
+                AND pcklsttim_pcklsttimtyp_picklisttimetypeid = pcklsttimtyp_picklisttimetypeid AND pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
+                ORDER BY pcklsttimtypdt_sortorder, pcklsttimtypdt_picklisttimetypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimes " +
-                "WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimes
+                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTimesByPicklistQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1560,16 +1716,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklisttimes, picklists, picklistdetails " +
-                "WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ? " +
-                "AND pcklsttim_pcklst_picklistid = pcklsttim_pcklst_picklistid AND pcklst_activedetailid = pcklstdt_picklistdetailid " +
-                "ORDER BY pcklstdt_picklistname");
+                """
+                SELECT _ALL_
+                FROM picklisttimes, picklists, picklistdetails
+                WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
+                AND pcklsttim_pcklst_picklistid = pcklsttim_pcklst_picklistid AND pcklst_activedetailid = pcklstdt_picklistdetailid
+                ORDER BY pcklstdt_picklistname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklisttimes " +
-                "WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklisttimes
+                WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistTimesByPicklistTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1658,20 +1818,40 @@ public class PicklistControl
         return picklistAlias;
     }
 
+    public long countPicklistAliasesBy(final Picklist picklist) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM picklistaliases
+                        WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ?
+                        """, picklist, Session.MAX_TIME);
+    }
+
+    public long countPicklistAliasesBy(final PicklistAliasType picklistAliasType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM picklistaliases
+                        WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
+                        """, picklistAliasType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPicklistAliasQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases " +
-                "WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM picklistaliases
+                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases " +
-                "WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliases
+                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1702,14 +1882,18 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases " +
-                "WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_alias = ? AND pcklstal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM picklistaliases
+                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_alias = ? AND pcklstal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases " +
-                "WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_alias = ? AND pcklstal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliases
+                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_alias = ? AND pcklstal_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1731,16 +1915,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases, picklistaliastypes, picklistaliastypedetails " +
-                "WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ? " +
-                "AND pcklstal_pcklstaltyp_picklistaliastypeid = pcklstaltyp_picklistaliastypeid AND pcklstaltyp_lastdetailid = pcklstaltypdt_picklistaliastypedetailid" +
-                "ORDER BY pcklstaltypdt_sortorder, pcklstaltypdt_picklistaliastypename");
+                """
+                SELECT _ALL_
+                FROM picklistaliases, picklistaliastypes, picklistaliastypedetails
+                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ?
+                AND pcklstal_pcklstaltyp_picklistaliastypeid = pcklstaltyp_picklistaliastypeid AND pcklstaltyp_lastdetailid = pcklstaltypdt_picklistaliastypedetailid
+                ORDER BY pcklstaltypdt_sortorder, pcklstaltypdt_picklistaliastypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases " +
-                "WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliases
+                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistAliasesByPicklistQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1763,16 +1951,20 @@ public class PicklistControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases, picklistes, picklistdetails " +
-                "WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ? " +
-                "AND pcklstal_pcklst_picklistid = pcklst_picklistid AND pcklst_lastdetailid = pcklstdt_picklistdetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM picklistaliases, picklistes, picklistdetails
+                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
+                AND pcklstal_pcklst_picklistid = pcklst_picklistid AND pcklst_lastdetailid = pcklstdt_picklistdetailid
+                ORDER BY pcklstdt_picklistname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM picklistaliases " +
-                "WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM picklistaliases
+                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
+                FOR UPDATE
+                """);
         getPicklistAliasesByPicklistAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

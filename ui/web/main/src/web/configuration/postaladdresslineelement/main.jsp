@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/PostalAddressFormat/Main" />">Postal Address Formats</a> &gt;&gt;
                 <c:url var="postalAddressLinesUrl" value="/action/Configuration/PostalAddressLine/Main">
-                    <c:param name="PostalAddressFormatName" value="${postalAddressFormat.postalAddressFormatName}" />
+                    <c:param name="PostalAddressFormatName" value="${postalAddressLine.postalAddressFormat.postalAddressFormatName}" />
                 </c:url>
                 <a href="${postalAddressLinesUrl}">Lines</a> &gt;&gt;
                 Elements
@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Configuration/PostalAddressLineElement/Add">
-                <c:param name="PostalAddressFormatName" value="${postalAddressFormat.postalAddressFormatName}" />
+                <c:param name="PostalAddressFormatName" value="${postalAddressLine.postalAddressFormat.postalAddressFormatName}" />
                 <c:param name="PostalAddressLineSortOrder" value="${postalAddressLine.postalAddressLineSortOrder}" />
             </c:url>
             <p><a href="${addUrl}">Add Element.</a></p>

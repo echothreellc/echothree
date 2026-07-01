@@ -27,6 +27,9 @@ public interface GetCustomerTypePaymentMethodsResult
     CustomerTypeTransfer getCustomerType();
     void setCustomerType(CustomerTypeTransfer customerType);
     
+    Long getCustomerTypePaymentMethodCount();
+    void setCustomerTypePaymentMethodCount(Long customerTypePaymentMethodCount);
+
     List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethods();
     void setCustomerTypePaymentMethods(List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethods);
     

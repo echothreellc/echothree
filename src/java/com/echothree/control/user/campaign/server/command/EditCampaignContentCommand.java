@@ -18,31 +18,29 @@ package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.edit.CampaignContentEdit;
 import com.echothree.control.user.campaign.common.edit.CampaignEditFactory;
-import com.echothree.control.user.campaign.common.form.EditCampaignContentForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignContentResult;
-import com.echothree.control.user.campaign.common.spec.CampaignContentSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignContentUniversalSpec;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.campaign.server.logic.CampaignContentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignContentCommand
-        extends BaseAbstractEditCommand<CampaignContentSpec, CampaignContentEdit, EditCampaignContentResult, CampaignContent, CampaignContent> {
+        extends BaseAbstractEditCommand<CampaignContentUniversalSpec, CampaignContentEdit, EditCampaignContentResult, CampaignContent, CampaignContent> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -53,21 +51,28 @@ public class EditCampaignContentCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignContent.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+                new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Value", FieldType.STRING, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
-    
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    CampaignContentLogic campaignContentLogic;
+
     /** Creates a new instance of EditCampaignContentCommand */
     public EditCampaignContentCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,21 +90,7 @@ public class EditCampaignContentCommand
 
     @Override
     public CampaignContent getEntity(EditCampaignContentResult result) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignContent campaignContent;
-        var campaignContentName = spec.getCampaignContentName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
-        } else { // EditMode.UPDATE
-            campaignContent = campaignControl.getCampaignContentByNameForUpdate(campaignContentName);
-        }
-
-        if(campaignContent == null) {
-            addExecutionError(ExecutionErrors.UnknownCampaignContentName.name(), campaignContentName);
-        }
-
-        return campaignContent;
+        return campaignContentLogic.getCampaignContentByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -109,14 +100,11 @@ public class EditCampaignContentCommand
 
     @Override
     public void fillInResult(EditCampaignContentResult result, CampaignContent campaignContent) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-
         result.setCampaignContent(campaignControl.getCampaignContentTransfer(getUserVisit(), campaignContent));
     }
 
     @Override
     public void doLock(CampaignContentEdit edit, CampaignContent campaignContent) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignContentDescription = campaignControl.getCampaignContentDescription(campaignContent, getPreferredLanguage());
         var campaignContentDetail = campaignContent.getLastDetail();
 
@@ -131,7 +119,6 @@ public class EditCampaignContentCommand
 
     @Override
     public void canUpdate(CampaignContent campaignContent) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var value = edit.getValue();
         var duplicateCampaignContent = campaignControl.getCampaignContentByValue(value);
 
@@ -142,7 +129,6 @@ public class EditCampaignContentCommand
 
     @Override
     public void doUpdate(CampaignContent campaignContent) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         var campaignContentDetailValue = campaignControl.getCampaignContentDetailValueForUpdate(campaignContent);
         var campaignContentDescription = campaignControl.getCampaignContentDescriptionForUpdate(campaignContent, getPreferredLanguage());

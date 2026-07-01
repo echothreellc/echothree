@@ -19,37 +19,61 @@ package com.echothree.control.user.communication.server.server;
 import com.echothree.control.user.communication.common.form.GetCommunicationEventPurposesForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
+import com.echothree.model.data.communication.server.factory.CommunicationEventPurposeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommunicationEventPurposesCommand
-        extends BaseSimpleCommand<GetCommunicationEventPurposesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CommunicationEventPurpose, GetCommunicationEventPurposesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+    
+    @Inject
+    CommunicationControl communicationControl;
     
     /** Creates a new instance of GetCommunicationEventPurposesCommand */
     public GetCommunicationEventPurposesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return communicationControl.countCommunicationEventPurposes();
+    }
+
+    @Override
+    protected Collection<CommunicationEventPurpose> getEntities() {
+        return communicationControl.getCommunicationEventPurposes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CommunicationEventPurpose> entities) {
         var result = CommunicationResultFactory.getGetCommunicationEventPurposesResult();
-        var communicationControl = Session.getModelController(CommunicationControl.class);
-        
-        result.setCommunicationEventPurposes(communicationControl.getCommunicationEventPurposeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(CommunicationEventPurposeFactory.class)) {
+                result.setCommunicationEventPurposeCount(getTotalEntities());
+            }
+
+            result.setCommunicationEventPurposes(communicationControl.getCommunicationEventPurposeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

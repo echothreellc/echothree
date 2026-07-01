@@ -18,47 +18,69 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.edit.CustomerEditFactory;
 import com.echothree.control.user.customer.common.edit.CustomerTypePaymentMethodEdit;
-import com.echothree.control.user.customer.common.form.EditCustomerTypePaymentMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.EditCustomerTypePaymentMethodResult;
 import com.echothree.control.user.customer.common.spec.CustomerTypePaymentMethodSpec;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
+import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerTypePaymentMethodCommand
         extends BaseAbstractEditCommand<CustomerTypePaymentMethodSpec, CustomerTypePaymentMethodEdit, EditCustomerTypePaymentMethodResult, CustomerTypePaymentMethod, CustomerType> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CustomerTypePaymentMethod.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultSelectionPriority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
     /** Creates a new instance of EditCustomerTypePaymentMethodCommand */
     public EditCustomerTypePaymentMethodCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -73,31 +95,21 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Override
     public CustomerTypePaymentMethod getEntity(EditCustomerTypePaymentMethodResult result) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypePaymentMethod customerTypePaymentMethod = null;
         var customerTypeName = spec.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
 
-        if(customerType != null) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+        if(!hasExecutionErrors()) {
             var paymentMethodName = spec.getPaymentMethodName();
-            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethod = paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
 
-            if(paymentMethod != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
-                } else { // EditMode.UPDATE
-                    customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethodForUpdate(customerType, paymentMethod);
-                }
+            if(!hasExecutionErrors()) {
+                customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod, editModeToEntityPermission(editMode));
 
                 if(customerTypePaymentMethod == null) {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypePaymentMethod.name(), customerTypeName, paymentMethodName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
 
         return customerTypePaymentMethod;
@@ -110,8 +122,6 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Override
     public void fillInResult(EditCustomerTypePaymentMethodResult result, CustomerTypePaymentMethod customerTypePaymentMethod) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));
     }
 
@@ -124,7 +134,6 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Override
     public void doUpdate(CustomerTypePaymentMethod customerTypePaymentMethod) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypePaymentMethodValue = customerControl.getCustomerTypePaymentMethodValue(customerTypePaymentMethod);
         
         customerTypePaymentMethodValue.setDefaultSelectionPriority(Integer.valueOf(edit.getDefaultSelectionPriority()));

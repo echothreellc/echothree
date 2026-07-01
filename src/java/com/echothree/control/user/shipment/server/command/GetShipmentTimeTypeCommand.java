@@ -23,21 +23,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShipmentTimeTypeCommand
-        extends BaseSimpleCommand<GetShipmentTimeTypeForm> {
+        extends BaseSingleEntityCommand<ShipmentTimeType, GetShipmentTimeTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,40 +48,52 @@ public class GetShipmentTimeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShipmentTimeType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    ShipmentControl shipmentControl;
+
     /** Creates a new instance of GetShipmentTimeTypeCommand */
     public GetShipmentTimeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-        var result = ShipmentResultFactory.getGetShipmentTimeTypeResult();
+    protected ShipmentTimeType getEntity() {
+        ShipmentTimeType shipmentTimeType = null;
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
             var shipmentTimeTypeName = form.getShipmentTimeTypeName();
-            var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+
+            shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
-                result.setShipmentTimeType(shipmentControl.getShipmentTimeTypeTransfer(getUserVisit(), shipmentTimeType));
-
                 sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownShipmentTimeTypeName.name(), shipmentTimeTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
+        }
+
+        return shipmentTimeType;
+    }
+
+    @Override
+    protected BaseResult getResult(ShipmentTimeType shipmentTimeType) {
+        var result = ShipmentResultFactory.getGetShipmentTimeTypeResult();
+
+        if(shipmentTimeType != null) {
+            result.setShipmentTimeType(shipmentControl.getShipmentTimeTypeTransfer(getUserVisit(), shipmentTimeType));
         }
 
         return result;

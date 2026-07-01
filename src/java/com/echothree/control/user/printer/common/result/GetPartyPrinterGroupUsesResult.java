@@ -29,5 +29,8 @@ public interface GetPartyPrinterGroupUsesResult
     
     List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUses();
     void setPartyPrinterGroupUses(List<PartyPrinterGroupUseTransfer> partyPrinterGroupUses);
+
+    Long getPartyPrinterGroupUseCount();
+    void setPartyPrinterGroupUseCount(Long partyPrinterGroupUseCount);
     
 }

@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LocationSteps implements En {
 
     public LocationSteps() {
-        When("^the user begins entering a new location",
+        When("^the user begins entering a new location$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -60,7 +60,7 @@ public class LocationSteps implements En {
                     persona.createLocationForm = null;
                 });
 
-        When("^the user begins setting the status of a location",
+        When("^the user begins setting the status of a location$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -84,7 +84,7 @@ public class LocationSteps implements En {
                     persona.setLocationStatusForm = null;
                 });
 
-        When("^the user begins deleting a location",
+        When("^the user begins deleting a location$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -120,7 +120,7 @@ public class LocationSteps implements En {
                     persona.locationSpec = WarehouseUtil.getHome().getLocationSpec();
                 });
 
-        When("^the user begins editing the location",
+        When("^the user begins editing the location$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;

@@ -30,6 +30,9 @@ public interface GetInventoryConditionUsesResult
     
     InventoryConditionUseTypeTransfer getInventoryConditionUseType();
     void setInventoryConditionUseType(InventoryConditionUseTypeTransfer inventoryConditionUseType);
+
+    Long getInventoryConditionUseCount();
+    void setInventoryConditionUseCount(Long inventoryConditionUseCount);
     
     List<InventoryConditionUseTransfer> getInventoryConditionUses();
     void setInventoryConditionUses(List<InventoryConditionUseTransfer> inventoryConditionUses);

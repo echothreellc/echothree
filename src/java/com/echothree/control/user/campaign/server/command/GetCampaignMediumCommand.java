@@ -19,88 +19,76 @@ package com.echothree.control.user.campaign.server.command;
 import com.echothree.control.user.campaign.common.form.GetCampaignMediumForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.campaign.server.logic.CampaignMediumLogic;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCampaignMediumCommand
-        extends BaseSimpleCommand<GetCampaignMediumForm> {
-    
+        extends BaseSingleEntityCommand<CampaignMedium, GetCampaignMediumForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignMedium.name(), SecurityRoles.Review.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CampaignMediumName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    CampaignMediumLogic campaignMediumLogic;
+
     /** Creates a new instance of GetCampaignMediumCommand */
     public GetCampaignMediumCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CampaignResultFactory.getGetCampaignMediumResult();
-        var campaignMediumName = form.getCampaignMediumName();
-        var parameterCount = (campaignMediumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+    protected CampaignMedium getEntity() {
+        var campaignMedium = campaignMediumLogic.getCampaignMediumByUniversalSpec(this, form);
 
-        if(parameterCount == 1) {
-            var campaignControl = Session.getModelController(CampaignControl.class);
-            CampaignMedium campaignMedium = null;
-
-            if(campaignMediumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
-                        EntityTypes.CampaignMedium.name());
-                
-                if(!hasExecutionErrors()) {
-                    campaignMedium = campaignControl.getCampaignMediumByEntityInstance(entityInstance);
-                }
-            } else {
-                campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
-
-                if(campaignMedium == null) {
-                    addExecutionError(ExecutionErrors.UnknownCampaignMediumName.name(), campaignMediumName);
-                }
-            }
-
-            if(!hasExecutionErrors()) {
-                result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
-                sendEvent(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            sendEvent(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return campaignMedium;
+    }
+
+    @Override
+    protected BaseResult getResult(CampaignMedium campaignMedium) {
+        var result = CampaignResultFactory.getGetCampaignMediumResult();
+
+        if(campaignMedium != null) {
+            result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
+        }
+
         return result;
     }
-    
+
 }

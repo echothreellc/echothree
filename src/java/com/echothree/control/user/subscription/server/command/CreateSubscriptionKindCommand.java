@@ -21,11 +21,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -45,16 +44,16 @@ public class CreateSubscriptionKindCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SubscriptionKind.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SubscriptionKind.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
     
     /** Creates a new instance of CreateSubscriptionKindCommand */

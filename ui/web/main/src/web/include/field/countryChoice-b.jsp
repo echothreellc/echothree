@@ -1,7 +1,7 @@
-<div class="form-group form-row">
+<div class="row mb-3">
     <label for="countryChoice" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;"><fmt:message key="label.country" />:</label>
     <div class="col-sm-3">
-        <html:select styleClass="form-control form-control-sm" styleId="countryChoice" property="countryChoice">
+        <html:select styleClass="form-select form-select-sm" styleId="countryChoice" property="countryChoice">
             <html:optionsCollection property="countryChoices" />
         </html:select>
         <et:validationErrors id="errorMessage" property="CompanyName">

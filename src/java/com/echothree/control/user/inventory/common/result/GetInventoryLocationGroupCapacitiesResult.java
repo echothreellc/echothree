@@ -26,6 +26,9 @@ public interface GetInventoryLocationGroupCapacitiesResult
     
     InventoryLocationGroupTransfer getInventoryLocationGroup();
     void setInventoryLocationGroup(InventoryLocationGroupTransfer inventoryLocationGroup);
+
+    Long getInventoryLocationGroupCapacityCount();
+    void setInventoryLocationGroupCapacityCount(Long inventoryLocationGroupCapacityCount);
     
     List<InventoryLocationGroupCapacityTransfer> getInventoryLocationGroupCapacities();
     void setInventoryLocationGroupCapacities(List<InventoryLocationGroupCapacityTransfer> inventoryLocationGroupCapacities);

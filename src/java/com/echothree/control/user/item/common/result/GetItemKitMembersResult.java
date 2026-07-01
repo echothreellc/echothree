@@ -26,8 +26,11 @@ public interface GetItemKitMembersResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
+
+    Long getItemKitMemberCount();
+    void setItemKitMemberCount(Long itemKitMemberCount);
+
     List<ItemKitMemberTransfer> getItemKitMembers();
     void setItemKitMembers(List<ItemKitMemberTransfer> itemItemKitMembers);
-    
+
 }

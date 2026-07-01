@@ -22,21 +22,23 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.chain.server.entity.ChainActionType;
+import com.echothree.model.data.chain.server.factory.ChainActionTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainActionTypesCommand
-        extends BaseSimpleCommand<GetChainActionTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<ChainActionType, GetChainActionTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -44,27 +46,49 @@ public class GetChainActionTypesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ChainActionType.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ChainActionType.name(), SecurityRoles.List.name())
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ChainControl chainControl;
 
     /** Creates a new instance of GetChainActionTypesCommand */
     public GetChainActionTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return chainControl.countChainActionTypes();
+    }
+
+    @Override
+    protected Collection<ChainActionType> getEntities() {
+        return chainControl.getChainActionTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ChainActionType> entities) {
         var result = ChainResultFactory.getGetChainActionTypesResult();
-        
-        result.setChainActionTypes(chainControl.getChainActionTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(ChainActionTypeFactory.class)) {
+                result.setChainActionTypeCount(getTotalEntities());
+            }
+
+            result.setChainActionTypes(chainControl.getChainActionTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

@@ -144,7 +144,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.party.DateTimeFormatsHa
 import com.echothree.ui.cli.dataloader.util.data.handler.party.EmployeesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.party.GendersHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.party.LanguagesHandler;
-import com.echothree.ui.cli.dataloader.util.data.handler.party.MoodsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.party.NameSuffixesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.party.PartyRelationshipTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.party.PartyTypeUseTypesHandler;
@@ -560,8 +559,6 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new EntityAttributeGroupsHandler(initialDataParser, this));
         } else if(localName.equals("genders")) {
             initialDataParser.pushHandler(new GendersHandler(initialDataParser, this));
-        } else if(localName.equals("moods")) {
-            initialDataParser.pushHandler(new MoodsHandler(initialDataParser, this));
         } else if(localName.equals("birthdayFormats")) {
             initialDataParser.pushHandler(new BirthdayFormatsHandler(initialDataParser, this));
         } else if(localName.equals("commandMessageTypes")) {

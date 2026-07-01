@@ -16,11 +16,10 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 
-import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceDescriptionResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowStepDescriptionResult;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -82,10 +81,10 @@ public class WorkflowEntranceHandler
                             createForm.set(spec.get());
 
                             getLogger().debug("Creating: {}", spec.getWorkflowName());
-                            commandResult = workflowService.createWorkflowEntranceDescription(initialDataParser.getUserVisit(), createForm);
+                            var createWorkflowEntranceDescriptionCommandResult = workflowService.createWorkflowEntranceDescription(initialDataParser.getUserVisit(), createForm);
 
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                            if(createWorkflowEntranceDescriptionCommandResult.hasErrors()) {
+                                getLogger().error(createWorkflowEntranceDescriptionCommandResult.toString());
                             }
                         } else {
                             getLogger().error(commandResult.toString());

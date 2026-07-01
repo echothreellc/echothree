@@ -108,6 +108,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -121,7 +122,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -218,11 +218,26 @@ public class CampaignControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Campaign */
-    public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
+    public Campaign getCampaignByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignPK(entityInstance.getEntityUniqueId());
-        var campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return campaign;
+        return CampaignFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
+        return getCampaignByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Campaign getCampaignByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCampaignByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCampaigns() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigns
+                        JOIN campaigndetails ON cmpgndt_campaigndetailid = cmpgn_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCampaignByNameQueries;
@@ -244,7 +259,7 @@ public class CampaignControl
         getCampaignByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Campaign getCampaignByName(String campaignName, EntityPermission entityPermission) {
+    public Campaign getCampaignByName(String campaignName, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByNameQueries, campaignName);
     }
 
@@ -275,7 +290,7 @@ public class CampaignControl
         getCampaignByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
+    public Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
@@ -400,8 +415,7 @@ public class CampaignControl
         return campaignTransferCache.getCampaignTransfer(userVisit, campaign);
     }
 
-    public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
-        var campaigns = getCampaigns();
+    public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit, Collection<Campaign> campaigns) {
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
 
         campaigns.forEach((campaign) ->
@@ -409,6 +423,10 @@ public class CampaignControl
         );
 
         return campaignTransfers;
+    }
+
+    public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
+        return getCampaignTransfers(userVisit, getCampaigns());
     }
 
     public CampaignChoicesBean getCampaignChoices(String defaultCampaignChoice, Language language, boolean allowNullChoice) {
@@ -732,11 +750,26 @@ public class CampaignControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignSource */
-    public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
+    public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
-        var campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return campaignSource;
+        return CampaignSourceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
+        return getCampaignSourceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignSource getCampaignSourceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCampaignSourceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCampaignSources() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaignsources
+                        JOIN campaignsourcedetails ON cmpgnsrcdt_campaignsourcedetailid = cmpgnsrc_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCampaignSourceByNameQueries;
@@ -758,7 +791,7 @@ public class CampaignControl
         getCampaignSourceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignSource getCampaignSourceByName(String campaignSourceName, EntityPermission entityPermission) {
+    public CampaignSource getCampaignSourceByName(String campaignSourceName, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByNameQueries, campaignSourceName);
     }
 
@@ -789,7 +822,7 @@ public class CampaignControl
         getCampaignSourceByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
+    public CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
@@ -829,7 +862,7 @@ public class CampaignControl
         getDefaultCampaignSourceQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignSource getDefaultCampaignSource(EntityPermission entityPermission) {
+    public CampaignSource getDefaultCampaignSource(EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignSourceQueries);
     }
 
@@ -864,7 +897,7 @@ public class CampaignControl
         getCampaignSourcesQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private List<CampaignSource> getCampaignSources(EntityPermission entityPermission) {
+    public List<CampaignSource> getCampaignSources(EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignSourcesQueries);
     }
 
@@ -912,6 +945,16 @@ public class CampaignControl
     
    public CampaignSourceTransfer getCampaignSourceTransfer(UserVisit userVisit, CampaignSource campaignSource) {
         return campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource);
+    }
+
+    public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit, Collection<CampaignSource> campaignSources) {
+        var campaignSourceTransfers = new ArrayList<CampaignSourceTransfer>(campaignSources.size());
+
+        campaignSources.forEach((campaignSource) -> {
+            campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource));
+        });
+
+        return campaignSourceTransfers;
     }
 
     public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit) {
@@ -1246,11 +1289,26 @@ public class CampaignControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignMedium */
-    public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
+    public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
-        var campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return campaignMedium;
+        return CampaignMediumFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
+        return getCampaignMediumByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignMedium getCampaignMediumByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCampaignMediumByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCampaignMediums() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaignmediums
+                        JOIN campaignmediumdetails ON cmpgnmdmdt_campaignmediumdetailid = cmpgnmdm_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCampaignMediumByNameQueries;
@@ -1272,7 +1330,7 @@ public class CampaignControl
         getCampaignMediumByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignMedium getCampaignMediumByName(String campaignMediumName, EntityPermission entityPermission) {
+    public CampaignMedium getCampaignMediumByName(String campaignMediumName, EntityPermission entityPermission) {
         return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByNameQueries, campaignMediumName);
     }
 
@@ -1303,7 +1361,7 @@ public class CampaignControl
         getCampaignMediumByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignMedium getCampaignMediumByValue(String value, EntityPermission entityPermission) {
+    public CampaignMedium getCampaignMediumByValue(String value, EntityPermission entityPermission) {
         return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
@@ -1428,8 +1486,7 @@ public class CampaignControl
         return campaignMediumTransferCache.getCampaignMediumTransfer(userVisit, campaignMedium);
     }
 
-    public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
-        var campaignMediums = getCampaignMediums();
+    public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit, Collection<CampaignMedium> campaignMediums) {
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
 
         campaignMediums.forEach((campaignMedium) ->
@@ -1437,6 +1494,10 @@ public class CampaignControl
         );
 
         return campaignMediumTransfers;
+    }
+
+    public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
+        return getCampaignMediumTransfers(userVisit, getCampaignMediums());
     }
 
     public CampaignMediumChoicesBean getCampaignMediumChoices(String defaultCampaignMediumChoice, Language language, boolean allowNullChoice) {
@@ -1760,11 +1821,26 @@ public class CampaignControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignTerm */
-    public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
+    public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
-        var campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return campaignTerm;
+        return CampaignTermFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
+        return getCampaignTermByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignTerm getCampaignTermByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCampaignTermByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCampaignTerms() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaignterms
+                        JOIN campaigntermdetails ON cmpgntrmdt_campaigntermdetailid = cmpgntrm_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCampaignTermByNameQueries;
@@ -1786,7 +1862,7 @@ public class CampaignControl
         getCampaignTermByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignTerm getCampaignTermByName(String campaignTermName, EntityPermission entityPermission) {
+    public CampaignTerm getCampaignTermByName(String campaignTermName, EntityPermission entityPermission) {
         return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByNameQueries, campaignTermName);
     }
 
@@ -1817,7 +1893,7 @@ public class CampaignControl
         getCampaignTermByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignTerm getCampaignTermByValue(String value, EntityPermission entityPermission) {
+    public CampaignTerm getCampaignTermByValue(String value, EntityPermission entityPermission) {
         return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
@@ -1942,8 +2018,7 @@ public class CampaignControl
         return campaignTermTransferCache.getCampaignTermTransfer(userVisit, campaignTerm);
     }
 
-    public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
-        var campaignTerms = getCampaignTerms();
+    public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit, Collection<CampaignTerm> campaignTerms) {
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
 
         campaignTerms.forEach((campaignTerm) ->
@@ -1951,6 +2026,10 @@ public class CampaignControl
         );
 
         return campaignTermTransfers;
+    }
+
+    public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
+        return getCampaignTermTransfers(userVisit, getCampaignTerms());
     }
 
     public CampaignTermChoicesBean getCampaignTermChoices(String defaultCampaignTermChoice, Language language, boolean allowNullChoice) {
@@ -2274,11 +2353,26 @@ public class CampaignControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignContent */
-    public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
+    public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
-        var campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return campaignContent;
+        return CampaignContentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
+        return getCampaignContentByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignContent getCampaignContentByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCampaignContentByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCampaignContents() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigncontents
+                        JOIN campaigncontentdetails ON cmpgncntdt_campaigncontentdetailid = cmpgncnt_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCampaignContentByNameQueries;
@@ -2300,7 +2394,7 @@ public class CampaignControl
         getCampaignContentByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignContent getCampaignContentByName(String campaignContentName, EntityPermission entityPermission) {
+    public CampaignContent getCampaignContentByName(String campaignContentName, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByNameQueries, campaignContentName);
     }
 
@@ -2331,7 +2425,7 @@ public class CampaignControl
         getCampaignContentByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
+    public CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
@@ -2456,8 +2550,7 @@ public class CampaignControl
         return campaignContentTransferCache.getCampaignContentTransfer(userVisit, campaignContent);
     }
 
-    public List<CampaignContentTransfer> getCampaignContentTransfers(UserVisit userVisit) {
-        var campaignContents = getCampaignContents();
+    public List<CampaignContentTransfer> getCampaignContentTransfers(UserVisit userVisit, Collection<CampaignContent> campaignContents) {
         List<CampaignContentTransfer> campaignContentTransfers = new ArrayList<>(campaignContents.size());
 
         campaignContents.forEach((campaignContent) ->
@@ -2465,6 +2558,10 @@ public class CampaignControl
         );
 
         return campaignContentTransfers;
+    }
+
+    public List<CampaignContentTransfer> getCampaignContentTransfers(UserVisit userVisit) {
+        return getCampaignContentTransfers(userVisit, getCampaignContents());
     }
 
     public CampaignContentChoicesBean getCampaignContentChoices(String defaultCampaignContentChoice, Language language, boolean allowNullChoice) {
@@ -2762,7 +2859,55 @@ public class CampaignControl
 
         return userVisitCampaign;
     }
-    
+
+    public long countUserVisitCampaignsByUserVisit(final UserVisit userVisit) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ?
+                        """, userVisit, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaign(final Campaign campaign) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgn_campaignid = ? AND uviscmpgn_thrutime = ?
+                        """, campaign, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignSource(final CampaignSource campaignSource) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgnsrc_campaignsourceid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignSource, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignMedium(final CampaignMedium campaignMedium) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgnmdm_campaignmediumid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignMedium, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignTerm(final CampaignTerm campaignTerm) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgntrm_campaigntermid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignTerm, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignContent(final CampaignContent campaignContent) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgncnt_campaigncontentid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignContent, Session.MAX_TIME);
+    }
+
     public Integer getMinimumUserVisitCampaignSequence(UserVisit userVisit) {
         return session.queryForInteger(
                 "SELECT MIN(uviscmpgn_uservisitcampaignsequence) " +

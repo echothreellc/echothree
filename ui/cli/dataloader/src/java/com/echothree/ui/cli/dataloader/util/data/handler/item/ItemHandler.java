@@ -16,11 +16,11 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
-import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
+import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
-import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
+import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
@@ -32,8 +32,8 @@ import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAliasesHandl
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
 import java.io.File;
 import java.io.FileInputStream;
@@ -285,10 +285,10 @@ public class ItemHandler
                         }
                     }
 
-                    commandResult = itemService.createItemDescription(initialDataParser.getUserVisit(), createForm);
+                    var createItemDescriptionCommandResult = itemService.createItemDescription(initialDataParser.getUserVisit(), createForm);
                     
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createItemDescriptionCommandResult.hasErrors()) {
+                        getLogger().error(createItemDescriptionCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetInvoiceTypesResult
         extends BaseResult {
     
+    Long getInvoiceTypeCount();
+    void setInvoiceTypeCount(Long invoiceTypeCount);
+
     List<InvoiceTypeTransfer> getInvoiceTypes();
     void setInvoiceTypes(List<InvoiceTypeTransfer> invoiceTypes);
     

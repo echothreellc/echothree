@@ -90,7 +90,7 @@ public class ItemPriceSteps implements En {
                     persona.itemPriceSpec = ItemUtil.getHome().getItemPriceSpec();
                 });
 
-        When("^the user begins editing the item price",
+        When("^the user begins editing the item price$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemPriceSpec;
@@ -113,7 +113,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item price",
+        When("^the user finishes editing the item price$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemPriceSpec;

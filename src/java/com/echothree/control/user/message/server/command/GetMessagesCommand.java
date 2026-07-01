@@ -18,69 +18,94 @@ package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetMessagesForm;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
+import com.echothree.model.control.core.server.logic.ComponentVendorLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.message.server.entity.Message;
+import com.echothree.model.data.message.server.entity.MessageType;
+import com.echothree.model.data.message.server.factory.MessageFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMessagesCommand
-        extends BaseSimpleCommand<GetMessagesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Message, GetMessagesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
+    @Inject
+    MessageControl messageControl;
+
+    @Inject
+    ComponentVendorLogic componentVendorLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetMessagesCommand */
     public GetMessagesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    MessageType messageType;
+
     @Override
-    protected BaseResult execute() {
-        var result = MessageResultFactory.getGetMessagesResult();
+    protected void handleForm() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
-            
-            if(entityType != null) {
-                var messageControl = Session.getModelController(MessageControl.class);
-                var messageTypeName = form.getMessageTypeName();
-                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
-                
-                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
-                
-                if(messageType != null) {
-                    result.setMessageType(messageControl.getMessageTypeTransfer(userVisit, messageType));
-                    result.setMessages(messageControl.getMessageTransfers(userVisit, messageType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownMessageTypeName.name(), messageTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
+
+        if(!hasExecutionErrors()) {
+            var messageTypeName = form.getMessageTypeName();
+
+            messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+
+            if(messageType == null) {
+                addExecutionError(com.echothree.util.common.message.ExecutionErrors.UnknownMessageTypeName.name(), messageTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : messageControl.countMessagesByMessageType(messageType);
+    }
+
+    @Override
+    protected Collection<Message> getEntities() {
+        return hasExecutionErrors() ? null : messageControl.getMessagesByMessageType(messageType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Message> entities) {
+        var result = MessageResultFactory.getGetMessagesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setMessageType(messageControl.getMessageTypeTransfer(userVisit, messageType));
+
+            if(session.hasLimit(MessageFactory.class)) {
+                result.setMessageCount(getTotalEntities());
+            }
+
+            result.setMessages(messageControl.getMessageTransfers(userVisit, entities));
+        }
+
         return result;
     }
     

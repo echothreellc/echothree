@@ -17,11 +17,18 @@
 package com.echothree.control.user.invoice.common.result;
 
 import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTypeTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetInvoiceTimeTypesResult
         extends BaseResult {
+
+    InvoiceTypeTransfer getInvoiceType();
+    void setInvoiceType(InvoiceTypeTransfer invoiceType);
+
+    Long getInvoiceTimeTypeCount();
+    void setInvoiceTimeTypeCount(Long invoiceTimeTypeCount);
     
     List<InvoiceTimeTypeTransfer> getInvoiceTimeTypes();
     void setInvoiceTimeTypes(List<InvoiceTimeTypeTransfer> invoiceTimeTypes);

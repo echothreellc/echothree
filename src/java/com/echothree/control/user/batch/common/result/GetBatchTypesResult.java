@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetBatchTypesResult
         extends BaseResult {
     
+    Long getBatchTypeCount();
+    void setBatchTypeCount(Long batchTypeCount);
+
     List<BatchTypeTransfer> getBatchTypes();
     void setBatchTypes(List<BatchTypeTransfer> batchTypes);
     

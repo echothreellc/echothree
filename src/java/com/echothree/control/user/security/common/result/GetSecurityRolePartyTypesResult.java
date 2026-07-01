@@ -26,6 +26,9 @@ public interface GetSecurityRolePartyTypesResult
     
     SecurityRoleTransfer getSecurityRole();
     void setSecurityRole(SecurityRoleTransfer securityRole);
+
+    Long getSecurityRolePartyTypeCount();
+    void setSecurityRolePartyTypeCount(Long securityRolePartyTypeCount);
     
     List<SecurityRolePartyTypeTransfer> getSecurityRolePartyTypes();
     void setSecurityRolePartyTypes(List<SecurityRolePartyTypeTransfer> securityRolePartyTypes);

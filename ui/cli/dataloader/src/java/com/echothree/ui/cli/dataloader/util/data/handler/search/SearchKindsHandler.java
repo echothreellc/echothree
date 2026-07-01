@@ -16,16 +16,16 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.search;
 
-import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.SearchService;
+import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.edit.SearchKindEdit;
 import com.echothree.control.user.search.common.form.SearchFormFactory;
 import com.echothree.control.user.search.common.result.EditSearchKindResult;
 import com.echothree.control.user.search.common.spec.SearchSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -67,10 +67,10 @@ public class SearchKindsHandler
 
                     createForm.set(getAttrsMap(attrs));
 
-                    commandResult = searchService.createSearchKind(initialDataParser.getUserVisit(), createForm);
+                    var createSearchKindCommandResult = searchService.createSearchKind(initialDataParser.getUserVisit(), createForm);
                     
-                    if(commandResult.hasErrors()) {
-                        getLogger().error(commandResult.toString());
+                    if(createSearchKindCommandResult.hasErrors()) {
+                        getLogger().error(createSearchKindCommandResult.toString());
                     }
                 } else {
                     getLogger().error(commandResult.toString());

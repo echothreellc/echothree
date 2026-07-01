@@ -30,6 +30,9 @@ public interface GetCustomerTypeContactListGroupsResult
     
     ContactListGroupTransfer getContactListGroup();
     void setContactListGroup(ContactListGroupTransfer contactListGroup);
+
+    Long getCustomerTypeContactListGroupCount();
+    void setCustomerTypeContactListGroupCount(Long customerTypeContactListGroupCount);
     
     List<CustomerTypeContactListGroupTransfer> getCustomerTypeContactListGroups();
     void setCustomerTypeContactListGroups(List<CustomerTypeContactListGroupTransfer> customerTypeContactListGroups);

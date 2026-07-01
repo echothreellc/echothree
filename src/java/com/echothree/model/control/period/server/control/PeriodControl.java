@@ -34,8 +34,11 @@ import com.echothree.model.control.period.server.transfer.PeriodKindTransferCach
 import com.echothree.model.control.period.server.transfer.PeriodTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodTypeDescriptionTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.period.common.pk.PeriodKindPK;
+import com.echothree.model.data.period.common.pk.PeriodTypePK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodDescription;
 import com.echothree.model.data.period.server.entity.PeriodKind;
@@ -62,17 +65,18 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -138,8 +142,31 @@ public class PeriodControl
         
         return periodKind;
     }
-    
-    private PeriodKind getPeriodKindByName(String periodKindName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PeriodKind */
+    public PeriodKind getPeriodKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PeriodKindPK(entityInstance.getEntityUniqueId());
+
+        return PeriodKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PeriodKind getPeriodKindByEntityInstance(EntityInstance entityInstance) {
+        return getPeriodKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PeriodKind getPeriodKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPeriodKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPeriodKinds() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM periodkinds
+                        JOIN periodkinddetails ON prdkdt_periodkinddetailid = prdk_activedetailid
+                        """);
+    }
+
+    public PeriodKind getPeriodKindByName(String periodKindName, EntityPermission entityPermission) {
         PeriodKind periodKind;
         
         try {
@@ -184,7 +211,7 @@ public class PeriodControl
         return getPeriodKindDetailValueForUpdate(getPeriodKindByNameForUpdate(periodKindName));
     }
     
-    private PeriodKind getDefaultPeriodKind(EntityPermission entityPermission) {
+    public PeriodKind getDefaultPeriodKind(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -222,7 +249,8 @@ public class PeriodControl
             query = "SELECT _ALL_ " +
                     "FROM periodkinds, periodkinddetails " +
                     "WHERE prdk_activedetailid = prdkdt_periodkinddetailid " +
-                    "ORDER BY prdkdt_sortorder, prdkdt_periodkindname";
+                    "ORDER BY prdkdt_sortorder, prdkdt_periodkindname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM periodkinds, periodkinddetails " +
@@ -281,15 +309,18 @@ public class PeriodControl
         return periodKindTransferCache.getPeriodKindTransfer(userVisit, periodKind);
     }
     
-    public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit) {
-        var periodKinds = getPeriodKinds();
+    public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit, Collection<PeriodKind> periodKinds) {
         List<PeriodKindTransfer> periodKindTransfers = new ArrayList<>(periodKinds.size());
-        
+
         periodKinds.forEach((periodKind) ->
                 periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(userVisit, periodKind))
         );
-        
+
         return periodKindTransfers;
+    }
+
+    public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit) {
+        return getPeriodKindTransfers(userVisit, getPeriodKinds());
     }
     
     private void updatePeriodKindFromValue(PeriodKindDetailValue periodKindDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -563,7 +594,31 @@ public class PeriodControl
         
         return periodType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PeriodType */
+    public PeriodType getPeriodTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PeriodTypePK(entityInstance.getEntityUniqueId());
+
+        return PeriodTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PeriodType getPeriodTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPeriodTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PeriodType getPeriodTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPeriodTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPeriodTypes(final PeriodKind periodKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM periodtypes
+                        JOIN periodtypedetails ON prdtdt_periodtypedetailid = prdt_activedetailid
+                        WHERE prdtdt_prdk_periodkindid = ?
+                        """, periodKind);
+    }
+
     private List<PeriodType> getPeriodTypes(PeriodKind periodKind, EntityPermission entityPermission) {
         List<PeriodType> periodTypes;
         

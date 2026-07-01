@@ -99,6 +99,14 @@ public class PaymentProcessorResultCodeControl
         return getPaymentProcessorResultCodeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPaymentProcessorResultCodes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessorresultcodes
+                        JOIN paymentprocessorresultcodedetails ON pprcrcdt_paymentprocessorresultcodedetailid = pprcrc_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getPaymentProcessorResultCodeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
@@ -161,7 +169,8 @@ public class PaymentProcessorResultCodeControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " + "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
                     "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid " +
-                    "ORDER BY pprcrcdt_sortorder, pprcrcdt_paymentprocessorresultcodename",
+                    "ORDER BY pprcrcdt_sortorder, pprcrcdt_paymentprocessorresultcodename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
                     "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid " +
@@ -366,7 +375,8 @@ public class PaymentProcessorResultCodeControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessorresultcodedescriptions, languages " +
                     "WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ? AND pprcrcd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+                    "ORDER BY lang_sortorder, lang_languageisoname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessorresultcodedescriptions " +

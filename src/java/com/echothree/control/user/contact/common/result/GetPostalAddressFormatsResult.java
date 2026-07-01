@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetPostalAddressFormatsResult
         extends BaseResult {
-    
+
+    Long getPostalAddressFormatCount();
+    void setPostalAddressFormatCount(Long postalAddressFormatCount);
+
     List<PostalAddressFormatTransfer> getPostalAddressFormats();
     void setPostalAddressFormats(List<PostalAddressFormatTransfer> postalAddressFormats);
-    
+
 }

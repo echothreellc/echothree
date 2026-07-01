@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (${carrierService.carrierServiceName}, ${carrierOption.carrierOptionName})</title>
+        <title>Review (${carrierServiceOption.carrierService.carrierServiceName}, ${carrierServiceOption.carrierOption.carrierOptionName})</title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -31,22 +31,22 @@
                 <a href="<c:url value="/action/Shipping/Main" />">Shipping</a> &gt;&gt;
                 <a href="<c:url value="/action/Shipping/Carrier/Main" />">Carriers</a> &gt;&gt;
                 <c:url var="carrierServicesUrl" value="/action/Shipping/CarrierService/Main">
-                    <c:param name="CarrierName" value="${carrier.carrierName}" />
+                    <c:param name="CarrierName" value="${carrierServiceOption.carrierService.carrier.carrierName}" />
                 </c:url>
                 <a href="${carrierServicesUrl}">Carrier Services</a> &gt;&gt;
                 <c:url var="carrierServiceOptionsUrl" value="/action/Shipping/CarrierServiceOption/Main">
-                    <c:param name="CarrierName" value="${carrier.carrierName}" />
-                    <c:param name="CarrierServiceName" value="${carrierService.carrierServiceName}" />
+                    <c:param name="CarrierName" value="${carrierServiceOption.carrierService.carrier.carrierName}" />
+                    <c:param name="CarrierServiceName" value="${carrierServiceOption.carrierService.carrierServiceName}" />
                 </c:url>
                 <a href="${carrierServiceOptionsUrl}">Carrier Service Options</a> &gt;&gt;
-                Review (${carrierService.carrierServiceName}, ${carrierOption.carrierOptionName})
+                Review (${carrierServiceOption.carrierService.carrierServiceName}, ${carrierServiceOption.carrierOption.carrierOptionName})
             </h2>
         </div>
         <div id="Content">
-            <p><font size="+2"><b><c:out value="${carrierService.description}, ${carrierOption.description}" /></b></font></p>
+            <p><font size="+2"><b><c:out value="${carrierServiceOption.carrierService.description}, ${carrierServiceOption.carrierOption.description}" /></b></font></p>
             <br />
-            Carrier Service Name: ${carrierService.carrierServiceName}<br />
-            Carrier Option Name: ${carrierOption.carrierOptionName}<br />
+            Carrier Service Name: ${carrierServiceOption.carrierService.carrierServiceName}<br />
+            Carrier Option Name: ${carrierServiceOption.carrierOption.carrierOptionName}<br />
             <br />
             <br />
             <br />

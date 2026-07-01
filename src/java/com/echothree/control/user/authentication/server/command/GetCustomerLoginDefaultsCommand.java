@@ -20,15 +20,16 @@ import com.echothree.control.user.authentication.common.form.AuthenticationFormF
 import com.echothree.control.user.authentication.common.form.GetCustomerLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetCustomerLoginDefaultsCommand
-        extends BaseSimpleCommand<GetCustomerLoginDefaultsForm> {
+        extends BaseSingleEntityCommand<UserLogin, GetCustomerLoginDefaultsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -42,28 +43,32 @@ public class GetCustomerLoginDefaultsCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = AuthenticationResultFactory.getGetCustomerLoginDefaultsResult();
-        var userControl = getUserControl();
+    protected UserLogin getEntity() {
+        UserLogin userLogin = null;
         var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
-        String username = null;
-        
+
         if(userSession != null) {
             var party = userSession.getParty();
-            
+
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
-                    var userLogin = userControl.getUserLogin(party);
-                    
-                    username = userLogin.getUsername();
+                    userLogin = userControl.getUserLogin(party);
                 }
             }
         }
 
+        return userLogin;
+    }
+
+    @Override
+    protected BaseResult getResult(UserLogin userLogin) {
+        var result = AuthenticationResultFactory.getGetCustomerLoginDefaultsResult();
+        var username = userLogin == null ? null : userLogin.getUsername();
         var customerLoginForm = AuthenticationFormFactory.getCustomerLoginForm();
+
         customerLoginForm.setUsername(username);
         result.setCustomerLoginForm(customerLoginForm);
-        
+
         return result;
     }
     

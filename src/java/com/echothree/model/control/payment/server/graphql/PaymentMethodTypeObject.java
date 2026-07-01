@@ -17,9 +17,16 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.payment.common.PaymentMethodConstants;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +34,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("payment method type object")
 @GraphQLName("PaymentMethodType")
@@ -83,4 +93,24 @@ public class PaymentMethodTypeObject
         return paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
+    @GraphQLField
+    @GraphQLDescription("payment methods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PaymentMethodObject> getPaymentMethods(final DataFetchingEnvironment env) {
+        if(PaymentSecurityUtils.getHasPaymentMethodsAccess(env)) {
+            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+            var totalCount = paymentMethodControl.countPaymentMethodsByPaymentMethodType(paymentMethodType);
+
+            try(var objectLimiter = new ObjectLimiter(env, PaymentMethodConstants.COMPONENT_VENDOR_NAME, PaymentMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = paymentMethodControl.getPaymentMethodsByPaymentMethodType(paymentMethodType);
+                var paymentMethods = entities.stream().map(PaymentMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, paymentMethods);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

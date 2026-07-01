@@ -17,13 +17,24 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionCodeControl;
+import com.echothree.model.data.payment.common.PaymentProcessorTransactionCodeConstants;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionDetail;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("payment processor transaction object")
 @GraphQLName("PaymentProcessorTransaction")
@@ -72,5 +83,26 @@ public class PaymentProcessorTransactionObject
     public PaymentProcessorResultCodeObject getPaymentProcessorResultCode(final DataFetchingEnvironment env) {
         return PaymentSecurityUtils.getHasPaymentProcessorResultCodeAccess(env) ? new PaymentProcessorResultCodeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorResultCode()) : null;
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("payment processor transaction codes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PaymentProcessorTransactionCodeObject> getPaymentProcessorTransactionCodes(final DataFetchingEnvironment env) {
+        if(PaymentSecurityUtils.getHasPaymentProcessorTransactionCodesAccess(env)) {
+            var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+            var paymentProcessorTransaction = getPaymentProcessorTransactionDetail().getPaymentProcessorTransaction();
+            var totalCount = paymentProcessorTransactionCodeControl.countPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction);
+
+            try(var objectLimiter = new ObjectLimiter(env, PaymentProcessorTransactionCodeConstants.COMPONENT_VENDOR_NAME, PaymentProcessorTransactionCodeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction);
+                var paymentProcessorTransactionCodes = entities.stream().map(PaymentProcessorTransactionCodeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, paymentProcessorTransactionCodes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

@@ -32,11 +32,15 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
+import com.echothree.model.control.subscription.server.graphql.SubscriptionObject;
+import com.echothree.model.control.subscription.server.graphql.SubscriptionSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contact.common.PartyContactMechanismConstants;
 import com.echothree.model.data.party.common.PartyAliasConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
+import com.echothree.model.data.subscription.common.SubscriptionConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -199,6 +203,26 @@ public abstract class BasePartyObject
             return partyContactMechanismPurpose == null ? null : new PartyContactMechanismPurposeObject(partyContactMechanismPurpose);
         } else {
             return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("subscriptions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SubscriptionObject> getSubscriptions(final DataFetchingEnvironment env) {
+        if(SubscriptionSecurityUtils.getHasSubscriptionsAccess(env)) {
+            var subscriptionControl = Session.getModelController(SubscriptionControl.class);
+            var totalCount = subscriptionControl.countSubscriptionsByParty(party);
+
+            try(var objectLimiter = new ObjectLimiter(env, SubscriptionConstants.COMPONENT_VENDOR_NAME, SubscriptionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = subscriptionControl.getSubscriptionsByParty(party);
+                var subscriptions = entities.stream().map(SubscriptionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, subscriptions);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
     }
 

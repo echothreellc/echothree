@@ -20,26 +20,26 @@ import com.echothree.control.user.order.common.form.GetOrderAdjustmentTypeForm;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderAdjustmentTypeCommand
-        extends BaseSimpleCommand<GetOrderAdjustmentTypeForm> {
+        extends BaseSingleEntityCommand<OrderAdjustmentType, GetOrderAdjustmentTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -49,41 +49,54 @@ public class GetOrderAdjustmentTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderAdjustmentType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    OrderAdjustmentControl orderAdjustmentControl;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     /** Creates a new instance of GetOrderAdjustmentTypeCommand */
     public GetOrderAdjustmentTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        var result = OrderResultFactory.getGetOrderAdjustmentTypeResult();
+    protected OrderAdjustmentType getEntity() {
         var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
+        OrderAdjustmentType orderAdjustmentType = null;
 
-        if(orderType != null) {
-            var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
+        if(!hasExecutionErrors()) {
             var orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+
+            orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
-                result.setOrderAdjustmentType(orderAdjustmentControl.getOrderAdjustmentTypeTransfer(getUserVisit(), orderAdjustmentType));
-
                 sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownOrderAdjustmentTypeName.name(), orderAdjustmentTypeName);
+                addExecutionError(ExecutionErrors.UnknownOrderAdjustmentTypeName.name(),
+                        orderType.getLastDetail().getOrderTypeName(), orderAdjustmentTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+        }
+
+        return orderAdjustmentType;
+    }
+
+    @Override
+    protected BaseResult getResult(OrderAdjustmentType orderAdjustmentType) {
+        var result = OrderResultFactory.getGetOrderAdjustmentTypeResult();
+
+        if(orderAdjustmentType != null) {
+            result.setOrderAdjustmentType(orderAdjustmentControl.getOrderAdjustmentTypeTransfer(getUserVisit(), orderAdjustmentType));
         }
 
         return result;

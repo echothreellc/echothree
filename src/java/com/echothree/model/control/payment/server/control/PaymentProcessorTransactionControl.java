@@ -70,6 +70,41 @@ public class PaymentProcessorTransactionControl
         return paymentProcessorTransaction;
     }
 
+    public long countPaymentProcessorTransactions() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM paymentprocessortransactions
+                JOIN paymentprocessortransactiondetails ON pprctrxdt_paymentprocessortransactiondetailid = pprctrx_activedetailid
+                """);
+    }
+
+    public long countPaymentProcessorTransactionByPaymentProcessor(PaymentProcessor paymentProcessor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessortransactions
+                        JOIN paymentprocessortransactiondetails ON pprctrxdt_paymentprocessortransactiondetailid = pprctrx_activedetailid
+                        WHERE pprctrxdt_pprc_paymentprocessorid = ?
+                        """, paymentProcessor);
+    }
+
+    public long countPaymentProcessorTransactionByPaymentProcessorActionType(PaymentProcessorActionType paymentProcessorActionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessortransactions
+                        JOIN paymentprocessortransactiondetails ON pprctrxdt_paymentprocessortransactiondetailid = pprctrx_activedetailid
+                        WHERE pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ?
+                        """, paymentProcessorActionType);
+    }
+
+    public long countPaymentProcessorTransactionByPaymentProcessorResultCode(PaymentProcessorResultCode paymentProcessorResultCode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessortransactions
+                        JOIN paymentprocessortransactiondetails ON pprctrxdt_paymentprocessortransactiondetailid = pprctrx_activedetailid
+                        WHERE pprctrxdt_pprcrc_paymentprocessorresultcodeid = ?
+                        """, paymentProcessorResultCode);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentProcessorTransaction */
     public PaymentProcessorTransaction getPaymentProcessorTransactionByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {

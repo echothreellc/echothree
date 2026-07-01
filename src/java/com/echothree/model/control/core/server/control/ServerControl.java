@@ -28,6 +28,10 @@ import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
+import com.echothree.model.data.core.common.pk.ProtocolPK;
+import com.echothree.model.data.core.common.pk.ServerPK;
+import com.echothree.model.data.core.common.pk.ServicePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.core.server.entity.ProtocolDescription;
 import com.echothree.model.data.core.server.entity.Server;
@@ -55,15 +59,16 @@ import com.echothree.model.data.core.server.value.ServiceDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class ServerControl
@@ -107,22 +112,49 @@ public class ServerControl
         return protocol;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Protocol */
+    public Protocol getProtocolByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ProtocolPK(entityInstance.getEntityUniqueId());
+
+        return ProtocolFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Protocol getProtocolByEntityInstance(EntityInstance entityInstance) {
+        return getProtocolByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Protocol getProtocolByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getProtocolByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countProtocols() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM protocols
+                        JOIN protocoldetails ON protdt_protocoldetailid = prot_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getProtocolByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM protocols, protocoldetails " +
-                        "WHERE prot_activedetailid = protdt_protocoldetailid " +
-                        "AND protdt_protocolname = ?");
+                """
+                SELECT _ALL_
+                FROM protocols, protocoldetails
+                WHERE prot_activedetailid = protdt_protocoldetailid
+                AND protdt_protocolname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM protocols, protocoldetails " +
-                        "WHERE prot_activedetailid = protdt_protocoldetailid " +
-                        "AND protdt_protocolname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM protocols, protocoldetails
+                WHERE prot_activedetailid = protdt_protocoldetailid
+                AND protdt_protocolname = ?
+                FOR UPDATE
+                """);
         getProtocolByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -152,16 +184,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM protocols, protocoldetails " +
-                        "WHERE prot_activedetailid = protdt_protocoldetailid " +
-                        "AND protdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM protocols, protocoldetails
+                WHERE prot_activedetailid = protdt_protocoldetailid
+                AND protdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM protocols, protocoldetails " +
-                        "WHERE prot_activedetailid = protdt_protocoldetailid " +
-                        "AND protdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM protocols, protocoldetails
+                WHERE prot_activedetailid = protdt_protocoldetailid
+                AND protdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultProtocolQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -187,16 +223,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM protocols, protocoldetails " +
-                        "WHERE prot_activedetailid = protdt_protocoldetailid " +
-                        "ORDER BY protdt_sortorder, protdt_protocolname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM protocols, protocoldetails
+                WHERE prot_activedetailid = protdt_protocoldetailid
+                ORDER BY protdt_sortorder, protdt_protocolname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM protocols, protocoldetails " +
-                        "WHERE prot_activedetailid = protdt_protocoldetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM protocols, protocoldetails
+                WHERE prot_activedetailid = protdt_protocoldetailid
+                FOR UPDATE
+                """);
         getProtocolsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -216,8 +256,7 @@ public class ServerControl
         return protocolTransferCache.getProtocolTransfer(userVisit, protocol);
     }
 
-    public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
-        var protocols = getProtocols();
+    public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit, Collection<Protocol> protocols) {
         List<ProtocolTransfer> protocolTransfers = new ArrayList<>(protocols.size());
 
         protocols.forEach((protocol) ->
@@ -225,6 +264,10 @@ public class ServerControl
         );
 
         return protocolTransfers;
+    }
+
+    public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
+        return getProtocolTransfers(userVisit, getProtocols());
     }
 
     public ProtocolChoicesBean getProtocolChoices(String defaultProtocolChoice, Language language, boolean allowNullChoice) {
@@ -369,14 +412,18 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM protocoldescriptions " +
-                        "WHERE protd_prot_protocolid = ? AND protd_lang_languageid = ? AND protd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM protocoldescriptions
+                WHERE protd_prot_protocolid = ? AND protd_lang_languageid = ? AND protd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM protocoldescriptions " +
-                        "WHERE protd_prot_protocolid = ? AND protd_lang_languageid = ? AND protd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM protocoldescriptions
+                WHERE protd_prot_protocolid = ? AND protd_lang_languageid = ? AND protd_thrutime = ?
+                FOR UPDATE
+                """);
         getProtocolDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -407,15 +454,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM protocoldescriptions, languages " +
-                        "WHERE protd_prot_protocolid = ? AND protd_thrutime = ? AND protd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM protocoldescriptions, languages
+                WHERE protd_prot_protocolid = ? AND protd_thrutime = ? AND protd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM protocoldescriptions " +
-                        "WHERE protd_prot_protocolid = ? AND protd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM protocoldescriptions
+                WHERE protd_prot_protocolid = ? AND protd_thrutime = ?
+                FOR UPDATE
+                """);
         getProtocolDescriptionsByProtocolQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -531,22 +583,49 @@ public class ServerControl
         return service;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Service */
+    public Service getServiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ServicePK(entityInstance.getEntityUniqueId());
+
+        return ServiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Service getServiceByEntityInstance(EntityInstance entityInstance) {
+        return getServiceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Service getServiceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getServiceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countServices() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM services
+                        JOIN servicedetails ON srvdt_servicedetailid = srv_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getServiceByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "AND srvdt_servicename = ?");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                AND srvdt_servicename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "AND srvdt_servicename = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                AND srvdt_servicename = ?
+                FOR UPDATE
+                """);
         getServiceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -576,16 +655,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "AND srvdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                AND srvdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "AND srvdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                AND srvdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultServiceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -611,16 +694,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "ORDER BY srvdt_sortorder, srvdt_servicename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                ORDER BY srvdt_sortorder, srvdt_servicename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                FOR UPDATE
+                """);
         getServicesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -642,17 +729,22 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "AND srvdt_prot_protocolid = ? " +
-                        "ORDER BY srvdt_sortorder, srvdt_servicename");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                AND srvdt_prot_protocolid = ?
+                ORDER BY srvdt_sortorder, srvdt_servicename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM services, servicedetails " +
-                        "WHERE srv_activedetailid = srvdt_servicedetailid " +
-                        "AND srvdt_prot_protocolid = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM services, servicedetails
+                WHERE srv_activedetailid = srvdt_servicedetailid
+                AND srvdt_prot_protocolid = ?
+                FOR UPDATE
+                """);
         getServicesByProtocolQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -673,8 +765,7 @@ public class ServerControl
         return serviceTransferCache.getServiceTransfer(userVisit, service);
     }
 
-    public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
-        var services = getServices();
+    public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit, Collection<Service> services) {
         List<ServiceTransfer> serviceTransfers = new ArrayList<>(services.size());
 
         services.forEach((service) ->
@@ -682,6 +773,10 @@ public class ServerControl
         );
 
         return serviceTransfers;
+    }
+
+    public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
+        return getServiceTransfers(userVisit, getServices());
     }
 
     public ServiceChoicesBean getServiceChoices(String defaultServiceChoice, Language language, boolean allowNullChoice) {
@@ -832,14 +927,18 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM servicedescriptions " +
-                        "WHERE srvd_srv_serviceid = ? AND srvd_lang_languageid = ? AND srvd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM servicedescriptions
+                WHERE srvd_srv_serviceid = ? AND srvd_lang_languageid = ? AND srvd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM servicedescriptions " +
-                        "WHERE srvd_srv_serviceid = ? AND srvd_lang_languageid = ? AND srvd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM servicedescriptions
+                WHERE srvd_srv_serviceid = ? AND srvd_lang_languageid = ? AND srvd_thrutime = ?
+                FOR UPDATE
+                """);
         getServiceDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -870,15 +969,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM servicedescriptions, languages " +
-                        "WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ? AND srvd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM servicedescriptions, languages
+                WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ? AND srvd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM servicedescriptions " +
-                        "WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM servicedescriptions
+                WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ?
+                FOR UPDATE
+                """);
         getServiceDescriptionsByServiceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -993,22 +1097,49 @@ public class ServerControl
         return server;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Server */
+    public Server getServerByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ServerPK(entityInstance.getEntityUniqueId());
+
+        return ServerFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Server getServerByEntityInstance(EntityInstance entityInstance) {
+        return getServerByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Server getServerByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getServerByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countServers() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM servers
+                        JOIN serverdetails ON servdt_serverdetailid = serv_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getServerByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM servers, serverdetails " +
-                        "WHERE serv_activedetailid = servdt_serverdetailid " +
-                        "AND servdt_servername = ?");
+                """
+                SELECT _ALL_
+                FROM servers, serverdetails
+                WHERE serv_activedetailid = servdt_serverdetailid
+                AND servdt_servername = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM servers, serverdetails " +
-                        "WHERE serv_activedetailid = servdt_serverdetailid " +
-                        "AND servdt_servername = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM servers, serverdetails
+                WHERE serv_activedetailid = servdt_serverdetailid
+                AND servdt_servername = ?
+                FOR UPDATE
+                """);
         getServerByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1038,16 +1169,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM servers, serverdetails " +
-                        "WHERE serv_activedetailid = servdt_serverdetailid " +
-                        "AND servdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM servers, serverdetails
+                WHERE serv_activedetailid = servdt_serverdetailid
+                AND servdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM servers, serverdetails " +
-                        "WHERE serv_activedetailid = servdt_serverdetailid " +
-                        "AND servdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM servers, serverdetails
+                WHERE serv_activedetailid = servdt_serverdetailid
+                AND servdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultServerQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1073,16 +1208,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM servers, serverdetails " +
-                        "WHERE serv_activedetailid = servdt_serverdetailid " +
-                        "ORDER BY servdt_sortorder, servdt_servername " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM servers, serverdetails
+                WHERE serv_activedetailid = servdt_serverdetailid
+                ORDER BY servdt_sortorder, servdt_servername
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM servers, serverdetails " +
-                        "WHERE serv_activedetailid = servdt_serverdetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM servers, serverdetails
+                WHERE serv_activedetailid = servdt_serverdetailid
+                FOR UPDATE
+                """);
         getServersQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1102,8 +1241,7 @@ public class ServerControl
         return serverTransferCache.getServerTransfer(userVisit, server);
     }
 
-    public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
-        var servers = getServers();
+    public List<ServerTransfer> getServerTransfers(UserVisit userVisit, Collection<Server> servers) {
         List<ServerTransfer> serverTransfers = new ArrayList<>(servers.size());
 
         servers.forEach((server) ->
@@ -1111,6 +1249,10 @@ public class ServerControl
         );
 
         return serverTransfers;
+    }
+
+    public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
+        return getServerTransfers(userVisit, getServers());
     }
 
     public ServerChoicesBean getServerChoices(String defaultServerChoice, Language language, boolean allowNullChoice) {
@@ -1255,14 +1397,18 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM serverdescriptions " +
-                        "WHERE servd_serv_serverid = ? AND servd_lang_languageid = ? AND servd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM serverdescriptions
+                WHERE servd_serv_serverid = ? AND servd_lang_languageid = ? AND servd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM serverdescriptions " +
-                        "WHERE servd_serv_serverid = ? AND servd_lang_languageid = ? AND servd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM serverdescriptions
+                WHERE servd_serv_serverid = ? AND servd_lang_languageid = ? AND servd_thrutime = ?
+                FOR UPDATE
+                """);
         getServerDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1293,15 +1439,20 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM serverdescriptions, languages " +
-                        "WHERE servd_serv_serverid = ? AND servd_thrutime = ? AND servd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM serverdescriptions, languages
+                WHERE servd_serv_serverid = ? AND servd_thrutime = ? AND servd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM serverdescriptions " +
-                        "WHERE servd_serv_serverid = ? AND servd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM serverdescriptions
+                WHERE servd_serv_serverid = ? AND servd_thrutime = ?
+                FOR UPDATE
+                """);
         getServerDescriptionsByServerQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1396,20 +1547,40 @@ public class ServerControl
         return serverService;
     }
 
+    public long countServerServicesByServer(final Server server) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM serverservices
+                        WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
+                        """, server, Session.MAX_TIME);
+    }
+
+    public long countServerServicesByService(final Service service) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM serverservices
+                        WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
+                        """, service, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getServerServiceQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM serverservices " +
-                        "WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM serverservices
+                WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM serverservices " +
-                        "WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM serverservices
+                WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
+                FOR UPDATE
+                """);
         getServerServiceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1440,16 +1611,21 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM serverservices, services, servicedetails " +
-                        "WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ? " +
-                        "AND servsrv_srv_serviceid = srv_serviceid AND srv_lastdetailid = srvdt_servicedetailid " +
-                        "ORDER BY srvdt_sortorder, srvdt_servicename");
+                """
+                SELECT _ALL_
+                FROM serverservices, services, servicedetails
+                WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ?
+                AND servsrv_srv_serviceid = srv_serviceid AND srv_lastdetailid = srvdt_servicedetailid
+                ORDER BY srvdt_sortorder, srvdt_servicename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM serverservices " +
-                        "WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM serverservices
+                WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ?
+                FOR UPDATE
+                """);
         getServerServicesByServerQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1472,16 +1648,21 @@ public class ServerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM serverservices, services, servicedetails " +
-                        "WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ? " +
-                        "AND servsrv_serv_serverid = serv_serverid AND serv_lastdetailid = servdt_serverdetailid " +
-                        "ORDER BY servdt_sortorder, servdt_servername");
+                """
+                SELECT _ALL_
+                FROM serverservices, services, servicedetails
+                WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
+                AND servsrv_serv_serverid = serv_serverid AND serv_lastdetailid = servdt_serverdetailid
+                ORDER BY servdt_sortorder, servdt_servername
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM serverservices " +
-                        "WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM serverservices
+                WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
+                FOR UPDATE
+                """);
         getServerServicesByServiceQueries = Collections.unmodifiableMap(queryMap);
     }
 

@@ -16,12 +16,11 @@
 
 package com.echothree.control.user.campaign.common.form;
 
-import com.echothree.control.user.campaign.common.spec.CampaignTermSpec;
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.control.user.campaign.common.spec.CampaignTermUniversalSpec;
 
 public interface GetCampaignTermForm
-        extends CampaignTermSpec, UniversalEntitySpec {
+        extends CampaignTermUniversalSpec {
     
-    // Nothing additional beyond CampaignTermSpec, UniversalEntitySpec
+    // Nothing additional beyond CampaignTermUniversalSpec
     
 }

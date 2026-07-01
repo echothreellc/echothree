@@ -34,11 +34,11 @@
             </jsp:include>
         <%@ include file="../include/breadcrumb/breadcrumbs-end.jsp" %>
         <et:checkSecurityRoles securityRoles="WarehouseType.List:Warehouse.List" />
-        <et:hasSecurityRole securityRoles="WarehouseType.List">
-            <a href="<c:url value="/action/Warehouse/WarehouseType/Main" />"><fmt:message key="navigation.warehouseTypes" /></a><br />
-        </et:hasSecurityRole>
         <et:hasSecurityRole securityRoles="Warehouse.List">
             <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a><br />
+        </et:hasSecurityRole>
+        <et:hasSecurityRole securityRoles="WarehouseType.List">
+            <a href="<c:url value="/action/Warehouse/WarehouseType/Main" />"><fmt:message key="navigation.warehouseTypes" /></a><br />
         </et:hasSecurityRole>
     <%@ include file="../include/body-end-b.jsp" %>
 </html>

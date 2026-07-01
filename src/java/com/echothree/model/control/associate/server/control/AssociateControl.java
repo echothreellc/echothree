@@ -33,6 +33,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.associate.common.pk.AssociateProgramPK;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
@@ -61,14 +62,15 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -134,7 +136,30 @@ public class AssociateControl
         
         return associateProgram;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.AssociateProgram */
+    public AssociateProgram getAssociateProgramByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new AssociateProgramPK(entityInstance.getEntityUniqueId());
+
+        return AssociateProgramFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public AssociateProgram getAssociateProgramByEntityInstance(EntityInstance entityInstance) {
+        return getAssociateProgramByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public AssociateProgram getAssociateProgramByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getAssociateProgramByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAssociatePrograms() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associateprograms
+                        JOIN associateprogramdetails ON ascprgmdt_associateprogramdetailid = ascprgm_activedetailid
+                        """);
+    }
+
     private AssociateProgram getAssociateProgramByName(String associateProgramName, EntityPermission entityPermission) {
         AssociateProgram associateProgram;
         
@@ -218,7 +243,8 @@ public class AssociateControl
             query = "SELECT _ALL_ " +
                     "FROM associateprograms, associateprogramdetails " +
                     "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid " +
-                    "ORDER BY ascprgmdt_sortorder, ascprgmdt_associateprogramname";
+                    "ORDER BY ascprgmdt_sortorder, ascprgmdt_associateprogramname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM associateprograms, associateprogramdetails " +
@@ -277,8 +303,7 @@ public class AssociateControl
         return associateProgramTransferCache.getTransfer(userVisit, associateProgram);
     }
     
-    public List<AssociateProgramTransfer> getAssociateProgramTransfers(UserVisit userVisit) {
-        var associatePrograms = getAssociatePrograms();
+    public List<AssociateProgramTransfer> getAssociateProgramTransfers(UserVisit userVisit, Collection<AssociateProgram> associatePrograms) {
         List<AssociateProgramTransfer> associateProgramTransfers = new ArrayList<>(associatePrograms.size());
         
         associatePrograms.forEach((associateProgram) ->
@@ -286,6 +311,10 @@ public class AssociateControl
         );
         
         return associateProgramTransfers;
+    }
+    
+    public List<AssociateProgramTransfer> getAssociateProgramTransfers(UserVisit userVisit) {
+        return getAssociateProgramTransfers(userVisit, getAssociatePrograms());
     }
     
     private void updateAssociateProgramFromValue(AssociateProgramDetailValue associateProgramDetailValue, boolean checkDefault, BasePK updatedBy) {

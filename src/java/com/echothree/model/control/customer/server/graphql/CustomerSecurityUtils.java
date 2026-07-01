@@ -20,6 +20,10 @@ import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.server.command.GetCustomerCommand;
 import com.echothree.control.user.customer.server.command.GetCustomerTypeCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypePaymentMethodCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypePaymentMethodsCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypeShippingMethodCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypeShippingMethodsCommand;
 import com.echothree.control.user.customer.server.command.GetCustomerTypesCommand;
 import com.echothree.control.user.customer.server.command.GetCustomersCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -35,6 +39,22 @@ public interface CustomerSecurityUtils {
 
     static boolean getHasCustomerTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypesCommand.class);
+    }
+
+    static boolean getHasCustomerTypePaymentMethodAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypePaymentMethodCommand.class);
+    }
+
+    static boolean getHasCustomerTypePaymentMethodsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypePaymentMethodsCommand.class);
+    }
+
+    static boolean getHasCustomerTypeShippingMethodAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeShippingMethodCommand.class);
+    }
+
+    static boolean getHasCustomerTypeShippingMethodsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeShippingMethodsCommand.class);
     }
 
     static boolean getHasCustomerAccess(final DataFetchingEnvironment env, final Party party) {

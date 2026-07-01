@@ -19,63 +19,94 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypePaymentMethodCommand
-        extends BaseSimpleCommand<GetCustomerTypePaymentMethodForm> {
-    
+        extends BaseSingleEntityCommand<CustomerTypePaymentMethod, GetCustomerTypePaymentMethodForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CustomerTypePaymentMethod.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
     /** Creates a new instance of GetCustomerTypePaymentMethodCommand */
     public GetCustomerTypePaymentMethodCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
+    protected CustomerTypePaymentMethod getEntity() {
+        CustomerTypePaymentMethod customerTypePaymentMethod = null;
         var customerTypeName = form.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
-        
-        if(customerType != null) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
+
+        if(!hasExecutionErrors()) {
             var paymentMethodName = form.getPaymentMethodName();
-            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
-            
-            if(paymentMethod != null) {
-                var customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
-                
-                if(customerTypePaymentMethod != null) {
-                    result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));
-                } else {
+            var paymentMethod = paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
+
+            if(!hasExecutionErrors()) {
+                customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
+
+                if(customerTypePaymentMethod == null) {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypePaymentMethod.name(), customerTypeName, paymentMethodName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
-        
+
+        return customerTypePaymentMethod;
+    }
+
+    @Override
+    protected BaseResult getResult(CustomerTypePaymentMethod customerTypePaymentMethod) {
+        var result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
+
+        if(customerTypePaymentMethod != null) {
+            result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));
+        }
+
         return result;
     }
-    
+
 }

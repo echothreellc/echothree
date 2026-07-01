@@ -19,26 +19,27 @@ package com.echothree.control.user.carrier.server.command;
 import com.echothree.control.user.carrier.common.form.GetPartyCarrierForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.carrier.server.entity.PartyCarrier;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCarrierCommand
-        extends BaseSimpleCommand<GetPartyCarrierForm> {
+        extends BaseSingleEntityCommand<PartyCarrier, GetPartyCarrierForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,44 +49,56 @@ public class GetPartyCarrierCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyCarrier.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.HOST_NAME, true, null, null)
-                );
+                new FieldDefinition("PartyName", FieldType.HOST_NAME, true, null, null),
+                new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetPartyCarrierCommand */
     public GetPartyCarrierCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var result = CarrierResultFactory.getGetPartyCarrierResult();
+    protected PartyCarrier getEntity() {
+        PartyCarrier partyCarrier = null;
         var partyName = form.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
+        var party = partyLogic.getPartyByName(this, partyName);
 
-        if(party != null) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
+        if(!hasExecutionErrors()) {
             var carrierName = form.getCarrierName();
             var carrier = carrierControl.getCarrierByName(carrierName);
 
             if(carrier != null) {
-                var partyCarrier = carrierControl.getPartyCarrier(party, carrier.getParty());
+                partyCarrier = carrierControl.getPartyCarrier(party, carrier.getParty());
 
-                if(partyCarrier != null) {
-                    result.setPartyCarrier(carrierControl.getPartyCarrierTransfer(getUserVisit(), partyCarrier));
-                } else {
+                if(partyCarrier == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyCarrier.name(), partyName, carrierName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+        }
+
+        return partyCarrier;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyCarrier partyCarrier) {
+        var result = CarrierResultFactory.getGetPartyCarrierResult();
+
+        if(partyCarrier != null) {
+            result.setPartyCarrier(carrierControl.getPartyCarrierTransfer(getUserVisit(), partyCarrier));
         }
 
         return result;

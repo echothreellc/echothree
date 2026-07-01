@@ -17,8 +17,10 @@
 package com.echothree.control.user.communication.common;
 
 import com.echothree.control.user.communication.common.form.*;
+import com.echothree.control.user.communication.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface CommunicationService
         extends CommunicationForms {
@@ -27,99 +29,99 @@ public interface CommunicationService
     //   Communication Event Role Types
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEventRoleType(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeForm form);
+    CommandResult<VoidResult> createCommunicationEventRoleType(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Event Role Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEventRoleTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeDescriptionForm form);
+    CommandResult<VoidResult> createCommunicationEventRoleTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Event Types
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEventType(UserVisitPK userVisitPK, CreateCommunicationEventTypeForm form);
+    CommandResult<VoidResult> createCommunicationEventType(UserVisitPK userVisitPK, CreateCommunicationEventTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Event Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEventTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventTypeDescriptionForm form);
+    CommandResult<VoidResult> createCommunicationEventTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Event Purposes
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form);
+    CommandResult<VoidResult> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form);
     
-    CommandResult getCommunicationEventPurposes(UserVisitPK userVisitPK, GetCommunicationEventPurposesForm form);
+    CommandResult<GetCommunicationEventPurposesResult> getCommunicationEventPurposes(UserVisitPK userVisitPK, GetCommunicationEventPurposesForm form);
     
-    CommandResult getCommunicationEventPurpose(UserVisitPK userVisitPK, GetCommunicationEventPurposeForm form);
+    CommandResult<GetCommunicationEventPurposeResult> getCommunicationEventPurpose(UserVisitPK userVisitPK, GetCommunicationEventPurposeForm form);
     
-    CommandResult getCommunicationEventPurposeChoices(UserVisitPK userVisitPK, GetCommunicationEventPurposeChoicesForm form);
+    CommandResult<GetCommunicationEventPurposeChoicesResult> getCommunicationEventPurposeChoices(UserVisitPK userVisitPK, GetCommunicationEventPurposeChoicesForm form);
     
-    CommandResult setDefaultCommunicationEventPurpose(UserVisitPK userVisitPK, SetDefaultCommunicationEventPurposeForm form);
+    CommandResult<VoidResult> setDefaultCommunicationEventPurpose(UserVisitPK userVisitPK, SetDefaultCommunicationEventPurposeForm form);
     
-    CommandResult editCommunicationEventPurpose(UserVisitPK userVisitPK, EditCommunicationEventPurposeForm form);
+    CommandResult<EditCommunicationEventPurposeResult> editCommunicationEventPurpose(UserVisitPK userVisitPK, EditCommunicationEventPurposeForm form);
     
-    CommandResult deleteCommunicationEventPurpose(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeForm form);
+    CommandResult<VoidResult> deleteCommunicationEventPurpose(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Event Purpose Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEventPurposeDescription(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form);
+    CommandResult<VoidResult> createCommunicationEventPurposeDescription(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form);
     
-    CommandResult getCommunicationEventPurposeDescriptions(UserVisitPK userVisitPK, GetCommunicationEventPurposeDescriptionsForm form);
+    CommandResult<GetCommunicationEventPurposeDescriptionsResult> getCommunicationEventPurposeDescriptions(UserVisitPK userVisitPK, GetCommunicationEventPurposeDescriptionsForm form);
     
-    CommandResult editCommunicationEventPurposeDescription(UserVisitPK userVisitPK, EditCommunicationEventPurposeDescriptionForm form);
+    CommandResult<EditCommunicationEventPurposeDescriptionResult> editCommunicationEventPurposeDescription(UserVisitPK userVisitPK, EditCommunicationEventPurposeDescriptionForm form);
     
-    CommandResult deleteCommunicationEventPurposeDescription(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form);
+    CommandResult<VoidResult> deleteCommunicationEventPurposeDescription(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Source Types
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationSourceType(UserVisitPK userVisitPK, CreateCommunicationSourceTypeForm form);
+    CommandResult<VoidResult> createCommunicationSourceType(UserVisitPK userVisitPK, CreateCommunicationSourceTypeForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Source Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationSourceTypeDescription(UserVisitPK userVisitPK, CreateCommunicationSourceTypeDescriptionForm form);
+    CommandResult<VoidResult> createCommunicationSourceTypeDescription(UserVisitPK userVisitPK, CreateCommunicationSourceTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Sources
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form);
+    CommandResult<VoidResult> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form);
     
-    CommandResult getCommunicationSources(UserVisitPK userVisitPK, GetCommunicationSourcesForm form);
+    CommandResult<GetCommunicationSourcesResult> getCommunicationSources(UserVisitPK userVisitPK, GetCommunicationSourcesForm form);
     
-    CommandResult getCommunicationSource(UserVisitPK userVisitPK, GetCommunicationSourceForm form);
+    CommandResult<GetCommunicationSourceResult> getCommunicationSource(UserVisitPK userVisitPK, GetCommunicationSourceForm form);
     
-    CommandResult deleteCommunicationSource(UserVisitPK userVisitPK, DeleteCommunicationSourceForm form);
+    CommandResult<VoidResult> deleteCommunicationSource(UserVisitPK userVisitPK, DeleteCommunicationSourceForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Source Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationSourceDescription(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form);
+    CommandResult<VoidResult> createCommunicationSourceDescription(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form);
     
-    CommandResult getCommunicationSourceDescriptions(UserVisitPK userVisitPK, GetCommunicationSourceDescriptionsForm form);
+    CommandResult<GetCommunicationSourceDescriptionsResult> getCommunicationSourceDescriptions(UserVisitPK userVisitPK, GetCommunicationSourceDescriptionsForm form);
     
-    CommandResult editCommunicationSourceDescription(UserVisitPK userVisitPK, EditCommunicationSourceDescriptionForm form);
+    CommandResult<EditCommunicationSourceDescriptionResult> editCommunicationSourceDescription(UserVisitPK userVisitPK, EditCommunicationSourceDescriptionForm form);
     
-    CommandResult deleteCommunicationSourceDescription(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form);
+    CommandResult<VoidResult> deleteCommunicationSourceDescription(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Communication Events
     // -------------------------------------------------------------------------
     
-    CommandResult createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form);
+    CommandResult<VoidResult> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form);
     
-    CommandResult getCommunicationEvent(UserVisitPK userVisitPK, GetCommunicationEventForm form);
+    CommandResult<GetCommunicationEventResult> getCommunicationEvent(UserVisitPK userVisitPK, GetCommunicationEventForm form);
     
     // -------------------------------------------------------------------------
     //   Testing

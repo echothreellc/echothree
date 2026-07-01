@@ -17,11 +17,12 @@
 package com.echothree.control.user.campaign.common.result;
 
 import com.echothree.control.user.campaign.common.spec.CampaignContentSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateCampaignContentResult
-        extends CampaignContentSpec, BaseResult {
+        extends CampaignContentSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond CampaignContentSpec, BaseResult
+    // Nothing additional beyond CampaignContentSpec, EntityRefSpec, BaseResult
     
 }

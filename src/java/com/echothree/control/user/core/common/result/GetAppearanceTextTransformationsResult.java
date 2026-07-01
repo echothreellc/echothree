@@ -26,6 +26,9 @@ public interface GetAppearanceTextTransformationsResult
     
     AppearanceTransfer getAppearance();
     void setAppearance(AppearanceTransfer appearance);
+
+    Long getAppearanceTextTransformationCount();
+    void setAppearanceTextTransformationCount(Long appearanceTextTransformationCount);
     
     List<AppearanceTextTransformationTransfer> getAppearanceTextTransformations();
     void setAppearanceTextTransformations(List<AppearanceTextTransformationTransfer> appearanceTextTransformations);

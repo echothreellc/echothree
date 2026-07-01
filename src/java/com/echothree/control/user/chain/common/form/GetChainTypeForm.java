@@ -16,11 +16,12 @@
 
 package com.echothree.control.user.chain.common.form;
 
-import com.echothree.control.user.chain.common.spec.ChainTypeSpec;
+import com.echothree.control.user.chain.common.spec.ChainTypeUniversalSpec;
+import com.echothree.util.common.form.BaseForm;
 
 public interface GetChainTypeForm
-        extends ChainTypeSpec {
+        extends BaseForm, ChainTypeUniversalSpec {
     
-    // Nothing additional beyond ChainTypeSpec
+    // Nothing additional beyond ChainTypeUniversalSpec
     
 }

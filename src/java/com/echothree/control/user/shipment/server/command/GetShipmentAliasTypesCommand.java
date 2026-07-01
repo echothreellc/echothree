@@ -22,21 +22,25 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
+import com.echothree.model.data.shipment.server.entity.ShipmentType;
+import com.echothree.model.data.shipment.server.factory.ShipmentAliasTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShipmentAliasTypesCommand
-        extends BaseSimpleCommand<GetShipmentAliasTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ShipmentAliasType, GetShipmentAliasTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,33 +50,60 @@ public class GetShipmentAliasTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShipmentAliasType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ShipmentControl shipmentControl;
 
     /** Creates a new instance of GetShipmentAliasTypesCommand */
     public GetShipmentAliasTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Override
-    protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-        var result = ShipmentResultFactory.getGetShipmentAliasTypesResult();
-        var shipmentTypeName = form.getShipmentTypeName();
-        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+    ShipmentType shipmentType;
 
-        if(shipmentType != null) {
-            result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));
-            result.setShipmentAliasTypes(shipmentControl.getShipmentAliasTypeTransfers(getUserVisit(), shipmentType));
-        } else {
+    @Override
+    protected void handleForm() {
+        var shipmentTypeName = form.getShipmentTypeName();
+
+        shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+
+        if(shipmentType == null) {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : shipmentControl.countShipmentAliasTypesByShipmentType(shipmentType);
+    }
+
+    @Override
+    protected Collection<ShipmentAliasType> getEntities() {
+        return hasExecutionErrors() ? null : shipmentControl.getShipmentAliasTypes(shipmentType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ShipmentAliasType> entities) {
+        var result = ShipmentResultFactory.getGetShipmentAliasTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setShipmentType(shipmentControl.getShipmentTypeTransfer(userVisit, shipmentType));
+
+            if(session.hasLimit(ShipmentAliasTypeFactory.class)) {
+                result.setShipmentAliasTypeCount(getTotalEntities());
+            }
+
+            result.setShipmentAliasTypes(shipmentControl.getShipmentAliasTypeTransfers(userVisit, entities));
+        }
 
         return result;
     }

@@ -19,38 +19,62 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionUseTypesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
+import com.echothree.model.data.inventory.server.factory.InventoryConditionUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInventoryConditionUseTypesCommand
-        extends BaseSimpleCommand<GetInventoryConditionUseTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<InventoryConditionUseType, GetInventoryConditionUseTypesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
     /** Creates a new instance of GetInventoryConditionUseTypesCommand */
     public GetInventoryConditionUseTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return inventoryControl.countInventoryConditionUseTypes();
+    }
+
+    @Override
+    protected Collection<InventoryConditionUseType> getEntities() {
+        return inventoryControl.getInventoryConditionUseTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<InventoryConditionUseType> entities) {
         var result = InventoryResultFactory.getGetInventoryConditionUseTypesResult();
-        
-        result.setInventoryConditionUseTypes(inventoryControl.getInventoryConditionUseTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(InventoryConditionUseTypeFactory.class)) {
+                result.setInventoryConditionUseTypeCount(getTotalEntities());
+            }
+
+            result.setInventoryConditionUseTypes(inventoryControl.getInventoryConditionUseTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

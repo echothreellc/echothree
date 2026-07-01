@@ -18,18 +18,21 @@ package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.GetSalesOrderTimeForm;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
-import com.echothree.model.control.sales.server.logic.SalesOrderTimeLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
+import com.echothree.model.control.order.server.logic.OrderTimeLogic;
+import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
+import com.echothree.model.data.order.server.entity.OrderTime;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderTimeCommand
-        extends BaseSimpleCommand<GetSalesOrderTimeForm> {
+        extends BaseSingleEntityCommand<OrderTime, GetSalesOrderTimeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -37,22 +40,46 @@ public class GetSalesOrderTimeCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTimeLogic orderTimeLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
     /** Creates a new instance of GetSalesOrderTimeCommand */
     public GetSalesOrderTimeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = SalesResultFactory.getGetSalesOrderTimeResult();
+    protected OrderTime getEntity() {
         var orderName = form.getOrderName();
-        var orderTimeTypeName = form.getOrderTimeTypeName();
-        
-        result.setOrderTime(SalesOrderTimeLogic.getInstance().getOrderTimeTransfer(this, getUserVisit(), orderName, orderTimeTypeName));
-        
+        var order = salesOrderLogic.getOrderByName(this, orderName);
+        OrderTime orderTime = null;
+
+        if(!hasExecutionErrors()) {
+            var orderTimeTypeName = form.getOrderTimeTypeName();
+
+            orderTime = orderTimeLogic.getOrderTimeEntity(this, order, orderTimeTypeName);
+        }
+
+        return orderTime;
+    }
+
+    @Override
+    protected BaseResult getResult(OrderTime orderTime) {
+        var result = SalesResultFactory.getGetSalesOrderTimeResult();
+
+        if(orderTime != null) {
+            result.setOrderTime(orderTimeControl.getOrderTimeTransfer(getUserVisit(), orderTime));
+        }
+
         return result;
     }
     

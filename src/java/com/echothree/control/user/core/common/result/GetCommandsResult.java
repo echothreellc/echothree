@@ -17,13 +17,20 @@
 package com.echothree.control.user.core.common.result;
 
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
+import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetCommandsResult
         extends BaseResult {
-    
+
+    ComponentVendorTransfer getComponentVendor();
+    void setComponentVendor(ComponentVendorTransfer componentVendor);
+
+    Long getCommandCount();
+    void setCommandCount(Long commandCount);
+
     List<CommandTransfer> getCommands();
     void setCommands(List<CommandTransfer> commands);
-    
+
 }

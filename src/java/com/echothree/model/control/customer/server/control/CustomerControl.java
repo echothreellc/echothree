@@ -80,6 +80,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -92,7 +93,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -976,7 +976,7 @@ public class CustomerControl
         getCustomerTypePaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CustomerTypePaymentMethod getCustomerTypePaymentMethod(CustomerType customerType, PaymentMethod paymentMethod,
+    public CustomerTypePaymentMethod getCustomerTypePaymentMethod(CustomerType customerType, PaymentMethod paymentMethod,
             EntityPermission entityPermission) {
         return CustomerTypePaymentMethodFactory.getInstance().getEntityFromQuery(entityPermission, getCustomerTypePaymentMethodQueries,
                 customerType, paymentMethod, Session.MAX_TIME);
@@ -1101,8 +1101,8 @@ public class CustomerControl
         return customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(userVisit, customerTypePaymentMethod);
     }
     
-    private List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit,
-            List<CustomerTypePaymentMethod> customerTypePaymentMethods) {
+    public List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfers(UserVisit userVisit,
+            Collection<CustomerTypePaymentMethod> customerTypePaymentMethods) {
         List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
 
         for(var customerTypePaymentMethod : customerTypePaymentMethods) {
@@ -1113,11 +1113,11 @@ public class CustomerControl
     }
     
     public List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit, PaymentMethod paymentMethod) {
-        return getCustomerTypePaymentMethodTransfersByPaymentMethod(userVisit, getCustomerTypePaymentMethodsByPaymentMethod(paymentMethod));
+        return getCustomerTypePaymentMethodTransfers(userVisit, getCustomerTypePaymentMethodsByPaymentMethod(paymentMethod));
     }
     
     public List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
-        return getCustomerTypePaymentMethodTransfersByPaymentMethod(userVisit, getCustomerTypePaymentMethodsByCustomerType(customerType));
+        return getCustomerTypePaymentMethodTransfers(userVisit, getCustomerTypePaymentMethodsByCustomerType(customerType));
     }
     
     private void updateCustomerTypePaymentMethodFromValue(CustomerTypePaymentMethodValue customerTypePaymentMethodValue,
@@ -1269,7 +1269,7 @@ public class CustomerControl
         getCustomerTypeShippingMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CustomerTypeShippingMethod getCustomerTypeShippingMethod(CustomerType customerType, ShippingMethod shippingMethod,
+    public CustomerTypeShippingMethod getCustomerTypeShippingMethod(CustomerType customerType, ShippingMethod shippingMethod,
             EntityPermission entityPermission) {
         return CustomerTypeShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, getCustomerTypeShippingMethodQueries,
                 customerType, shippingMethod, Session.MAX_TIME);
@@ -1396,8 +1396,8 @@ public class CustomerControl
         return customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(userVisit, customerTypeShippingMethod);
     }
     
-    private List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit,
-            List<CustomerTypeShippingMethod> customerTypeShippingMethods) {
+    public List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfers(UserVisit userVisit,
+            Collection<CustomerTypeShippingMethod> customerTypeShippingMethods) {
         List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
 
         for(var customerTypeShippingMethod : customerTypeShippingMethods) {
@@ -1408,11 +1408,11 @@ public class CustomerControl
     }
     
     public List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit, ShippingMethod shippingMethod) {
-        return getCustomerTypeShippingMethodTransfersByShippingMethod(userVisit, getCustomerTypeShippingMethodsByShippingMethod(shippingMethod));
+        return getCustomerTypeShippingMethodTransfers(userVisit, getCustomerTypeShippingMethodsByShippingMethod(shippingMethod));
     }
     
     public List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
-        return getCustomerTypeShippingMethodTransfersByShippingMethod(userVisit, getCustomerTypeShippingMethodsByCustomerType(customerType));
+        return getCustomerTypeShippingMethodTransfers(userVisit, getCustomerTypeShippingMethodsByCustomerType(customerType));
     }
     
     private void updateCustomerTypeShippingMethodFromValue(CustomerTypeShippingMethodValue customerTypeShippingMethodValue,

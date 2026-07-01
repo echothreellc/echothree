@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetPaymentProcessorActionTypesResult
         extends BaseResult {
     
+    Long getPaymentProcessorActionTypeCount();
+    void setPaymentProcessorActionTypeCount(Long paymentProcessorActionTypeCount);
+
     List<PaymentProcessorActionTypeTransfer> getPaymentProcessorActionTypes();
     void setPaymentProcessorActionTypes(List<PaymentProcessorActionTypeTransfer> paymentProcessorActionTypes);
     

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetMimeTypeFileExtensionsResult
         extends BaseResult {
     
+    Long getMimeTypeFileExtensionCount();
+    void setMimeTypeFileExtensionCount(Long mimeTypeFileExtensionCount);
+
     List<MimeTypeFileExtensionTransfer> getMimeTypeFileExtensions();
     void setMimeTypeFileExtensions(List<MimeTypeFileExtensionTransfer> mimeTypeFileExtension);
     

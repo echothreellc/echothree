@@ -65,8 +65,6 @@ public class PartyAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetSelectorPartiesResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.SELECTOR_KIND, result.getSelectorKind());
-            request.setAttribute(AttributeConstants.SELECTOR_TYPE, result.getSelectorType());
             request.setAttribute(AttributeConstants.SELECTOR, result.getSelector());
             request.setAttribute(AttributeConstants.SELECTOR_PARTIES, result.getSelectorParties());
             forwardKey = ForwardConstants.DISPLAY;

@@ -17,8 +17,10 @@
 package com.echothree.control.user.vendor.common;
 
 import com.echothree.control.user.vendor.common.form.*;
+import com.echothree.control.user.vendor.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface VendorService
         extends VendorForms {
@@ -33,106 +35,106 @@ public interface VendorService
     //   Vendor Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form);
+    CommandResult<CreateVendorTypeResult> createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form);
     
-    CommandResult getVendorTypeChoices(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form);
+    CommandResult<GetVendorTypeChoicesResult> getVendorTypeChoices(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form);
     
-    CommandResult getVendorType(UserVisitPK userVisitPK, GetVendorTypeForm form);
+    CommandResult<GetVendorTypeResult> getVendorType(UserVisitPK userVisitPK, GetVendorTypeForm form);
     
-    CommandResult getVendorTypes(UserVisitPK userVisitPK, GetVendorTypesForm form);
+    CommandResult<GetVendorTypesResult> getVendorTypes(UserVisitPK userVisitPK, GetVendorTypesForm form);
     
-    CommandResult setDefaultVendorType(UserVisitPK userVisitPK, SetDefaultVendorTypeForm form);
+    CommandResult<VoidResult> setDefaultVendorType(UserVisitPK userVisitPK, SetDefaultVendorTypeForm form);
     
-    CommandResult editVendorType(UserVisitPK userVisitPK, EditVendorTypeForm form);
+    CommandResult<EditVendorTypeResult> editVendorType(UserVisitPK userVisitPK, EditVendorTypeForm form);
     
-    CommandResult deleteVendorType(UserVisitPK userVisitPK, DeleteVendorTypeForm form);
+    CommandResult<VoidResult> deleteVendorType(UserVisitPK userVisitPK, DeleteVendorTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Vendor Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createVendorTypeDescription(UserVisitPK userVisitPK, CreateVendorTypeDescriptionForm form);
+    CommandResult<VoidResult> createVendorTypeDescription(UserVisitPK userVisitPK, CreateVendorTypeDescriptionForm form);
     
-    CommandResult getVendorTypeDescription(UserVisitPK userVisitPK, GetVendorTypeDescriptionForm form);
+    CommandResult<GetVendorTypeDescriptionResult> getVendorTypeDescription(UserVisitPK userVisitPK, GetVendorTypeDescriptionForm form);
     
-    CommandResult getVendorTypeDescriptions(UserVisitPK userVisitPK, GetVendorTypeDescriptionsForm form);
+    CommandResult<GetVendorTypeDescriptionsResult> getVendorTypeDescriptions(UserVisitPK userVisitPK, GetVendorTypeDescriptionsForm form);
     
-    CommandResult editVendorTypeDescription(UserVisitPK userVisitPK, EditVendorTypeDescriptionForm form);
+    CommandResult<EditVendorTypeDescriptionResult> editVendorTypeDescription(UserVisitPK userVisitPK, EditVendorTypeDescriptionForm form);
     
-    CommandResult deleteVendorTypeDescription(UserVisitPK userVisitPK, DeleteVendorTypeDescriptionForm form);
+    CommandResult<VoidResult> deleteVendorTypeDescription(UserVisitPK userVisitPK, DeleteVendorTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Vendors
     // -------------------------------------------------------------------------
 
-    CommandResult getVendor(UserVisitPK userVisitPK, GetVendorForm form);
+    CommandResult<GetVendorResult> getVendor(UserVisitPK userVisitPK, GetVendorForm form);
 
-    CommandResult getVendors(UserVisitPK userVisitPK, GetVendorsForm form);
+    CommandResult<GetVendorsResult> getVendors(UserVisitPK userVisitPK, GetVendorsForm form);
 
-    CommandResult editVendor(UserVisitPK userVisitPK, EditVendorForm form);
+    CommandResult<EditVendorResult> editVendor(UserVisitPK userVisitPK, EditVendorForm form);
     
     // -------------------------------------------------------------------------
     //   Vendor Items
     // -------------------------------------------------------------------------
     
-    CommandResult createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form);
+    CommandResult<CreateVendorItemResult> createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form);
     
-    CommandResult getVendorItem(UserVisitPK userVisitPK, GetVendorItemForm form);
+    CommandResult<GetVendorItemResult> getVendorItem(UserVisitPK userVisitPK, GetVendorItemForm form);
 
-    CommandResult getVendorItems(UserVisitPK userVisitPK, GetVendorItemsForm form);
+    CommandResult<GetVendorItemsResult> getVendorItems(UserVisitPK userVisitPK, GetVendorItemsForm form);
 
-    CommandResult getVendorItemStatusChoices(UserVisitPK userVisitPK, GetVendorItemStatusChoicesForm form);
+    CommandResult<GetVendorItemStatusChoicesResult> getVendorItemStatusChoices(UserVisitPK userVisitPK, GetVendorItemStatusChoicesForm form);
 
-    CommandResult setVendorItemStatus(UserVisitPK userVisitPK, SetVendorItemStatusForm form);
+    CommandResult<VoidResult> setVendorItemStatus(UserVisitPK userVisitPK, SetVendorItemStatusForm form);
 
-    CommandResult editVendorItem(UserVisitPK userVisitPK, EditVendorItemForm form);
+    CommandResult<EditVendorItemResult> editVendorItem(UserVisitPK userVisitPK, EditVendorItemForm form);
     
-    CommandResult deleteVendorItem(UserVisitPK userVisitPK, DeleteVendorItemForm form);
+    CommandResult<VoidResult> deleteVendorItem(UserVisitPK userVisitPK, DeleteVendorItemForm form);
     
     // -------------------------------------------------------------------------
     //   Vendor Item Costs
     // -------------------------------------------------------------------------
     
-    CommandResult createVendorItemCost(UserVisitPK userVisitPK, CreateVendorItemCostForm form);
+    CommandResult<VoidResult> createVendorItemCost(UserVisitPK userVisitPK, CreateVendorItemCostForm form);
     
-    CommandResult getVendorItemCost(UserVisitPK userVisitPK, GetVendorItemCostForm form);
+    CommandResult<GetVendorItemCostResult> getVendorItemCost(UserVisitPK userVisitPK, GetVendorItemCostForm form);
     
-    CommandResult getVendorItemCosts(UserVisitPK userVisitPK, GetVendorItemCostsForm form);
+    CommandResult<GetVendorItemCostsResult> getVendorItemCosts(UserVisitPK userVisitPK, GetVendorItemCostsForm form);
     
-    CommandResult editVendorItemCost(UserVisitPK userVisitPK, EditVendorItemCostForm form);
+    CommandResult<EditVendorItemCostResult> editVendorItemCost(UserVisitPK userVisitPK, EditVendorItemCostForm form);
     
-    CommandResult deleteVendorItemCost(UserVisitPK userVisitPK, DeleteVendorItemCostForm form);
+    CommandResult<VoidResult> deleteVendorItemCost(UserVisitPK userVisitPK, DeleteVendorItemCostForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Purchasing Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form);
+    CommandResult<CreateItemPurchasingCategoryResult> createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form);
     
-    CommandResult getItemPurchasingCategoryChoices(UserVisitPK userVisitPK, GetItemPurchasingCategoryChoicesForm form);
+    CommandResult<GetItemPurchasingCategoryChoicesResult> getItemPurchasingCategoryChoices(UserVisitPK userVisitPK, GetItemPurchasingCategoryChoicesForm form);
     
-    CommandResult getItemPurchasingCategory(UserVisitPK userVisitPK, GetItemPurchasingCategoryForm form);
+    CommandResult<GetItemPurchasingCategoryResult> getItemPurchasingCategory(UserVisitPK userVisitPK, GetItemPurchasingCategoryForm form);
     
-    CommandResult getItemPurchasingCategories(UserVisitPK userVisitPK, GetItemPurchasingCategoriesForm form);
+    CommandResult<GetItemPurchasingCategoriesResult> getItemPurchasingCategories(UserVisitPK userVisitPK, GetItemPurchasingCategoriesForm form);
     
-    CommandResult setDefaultItemPurchasingCategory(UserVisitPK userVisitPK, SetDefaultItemPurchasingCategoryForm form);
+    CommandResult<VoidResult> setDefaultItemPurchasingCategory(UserVisitPK userVisitPK, SetDefaultItemPurchasingCategoryForm form);
     
-    CommandResult editItemPurchasingCategory(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form);
+    CommandResult<EditItemPurchasingCategoryResult> editItemPurchasingCategory(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form);
     
-    CommandResult deleteItemPurchasingCategory(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryForm form);
+    CommandResult<VoidResult> deleteItemPurchasingCategory(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryForm form);
     
     // --------------------------------------------------------------------------------
     //   Item Vendor Category Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createItemPurchasingCategoryDescription(UserVisitPK userVisitPK, CreateItemPurchasingCategoryDescriptionForm form);
+    CommandResult<VoidResult> createItemPurchasingCategoryDescription(UserVisitPK userVisitPK, CreateItemPurchasingCategoryDescriptionForm form);
     
-    CommandResult getItemPurchasingCategoryDescription(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionForm form);
+    CommandResult<GetItemPurchasingCategoryDescriptionResult> getItemPurchasingCategoryDescription(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionForm form);
     
-    CommandResult getItemPurchasingCategoryDescriptions(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionsForm form);
+    CommandResult<GetItemPurchasingCategoryDescriptionsResult> getItemPurchasingCategoryDescriptions(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionsForm form);
     
-    CommandResult editItemPurchasingCategoryDescription(UserVisitPK userVisitPK, EditItemPurchasingCategoryDescriptionForm form);
+    CommandResult<EditItemPurchasingCategoryDescriptionResult> editItemPurchasingCategoryDescription(UserVisitPK userVisitPK, EditItemPurchasingCategoryDescriptionForm form);
     
-    CommandResult deleteItemPurchasingCategoryDescription(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryDescriptionForm form);
+    CommandResult<VoidResult> deleteItemPurchasingCategoryDescription(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryDescriptionForm form);
     
 }

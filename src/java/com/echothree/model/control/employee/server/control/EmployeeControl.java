@@ -79,6 +79,14 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.common.pk.EmployeeTypePK;
+import com.echothree.model.data.employee.common.pk.EmploymentPK;
+import com.echothree.model.data.employee.common.pk.LeavePK;
+import com.echothree.model.data.employee.common.pk.LeaveReasonPK;
+import com.echothree.model.data.employee.common.pk.LeaveTypePK;
+import com.echothree.model.data.employee.common.pk.ResponsibilityTypePK;
+import com.echothree.model.data.employee.common.pk.SkillTypePK;
+import com.echothree.model.data.employee.common.pk.TerminationReasonPK;
+import com.echothree.model.data.employee.common.pk.TerminationTypePK;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.employee.server.entity.EmployeeTypeDescription;
 import com.echothree.model.data.employee.server.entity.Employment;
@@ -153,6 +161,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -166,7 +175,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -270,7 +278,30 @@ public class EmployeeControl
         
         return responsibilityType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ResponsibilityType */
+    public ResponsibilityType getResponsibilityTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ResponsibilityTypePK(entityInstance.getEntityUniqueId());
+
+        return ResponsibilityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ResponsibilityType getResponsibilityTypeByEntityInstance(EntityInstance entityInstance) {
+        return getResponsibilityTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ResponsibilityType getResponsibilityTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getResponsibilityTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countResponsibilityTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM responsibilitytypes
+                        JOIN responsibilitytypedetails ON rsptypdt_responsibilitytypedetailid = rsptyp_activedetailid
+                        """);
+    }
+
     private ResponsibilityType getResponsibilityTypeByName(String responsibilityTypeName, EntityPermission entityPermission) {
         ResponsibilityType responsibilityType;
         
@@ -354,7 +385,8 @@ public class EmployeeControl
             query = "SELECT _ALL_ " +
                     "FROM responsibilitytypes, responsibilitytypedetails " +
                     "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid " +
-                    "ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename";
+                    "ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM responsibilitytypes, responsibilitytypedetails " +
@@ -379,15 +411,18 @@ public class EmployeeControl
         return responsibilityTypeTransferCache.getResponsibilityTypeTransfer(userVisit, responsibilityType);
     }
     
-    public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit) {
-        var responsibilityTypes = getResponsibilityTypes();
+    public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit, Collection<ResponsibilityType> responsibilityTypes) {
         List<ResponsibilityTypeTransfer> responsibilityTypeTransfers = new ArrayList<>(responsibilityTypes.size());
-        
+
         responsibilityTypes.forEach((responsibilityType) ->
                 responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(userVisit, responsibilityType))
         );
-        
+
         return responsibilityTypeTransfers;
+    }
+
+    public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit) {
+        return getResponsibilityTypeTransfers(userVisit, getResponsibilityTypes());
     }
     
     public ResponsibilityTypeChoicesBean getResponsibilityTypeChoices(String defaultResponsibilityTypeChoice, Language language,
@@ -571,7 +606,8 @@ public class EmployeeControl
                 query = "SELECT _ALL_ " +
                         "FROM responsibilitytypedescriptions, languages " +
                         "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_thrutime = ? AND rsptypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM responsibilitytypedescriptions " +
@@ -696,7 +732,30 @@ public class EmployeeControl
         
         return skillType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SkillType */
+    public SkillType getSkillTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SkillTypePK(entityInstance.getEntityUniqueId());
+
+        return SkillTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SkillType getSkillTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSkillTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SkillType getSkillTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSkillTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSkillTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM skilltypes
+                        JOIN skilltypedetails ON skltypdt_skilltypedetailid = skltyp_activedetailid
+                        """);
+    }
+
     private SkillType getSkillTypeByName(String skillTypeName, EntityPermission entityPermission) {
         SkillType skillType;
         
@@ -775,12 +834,13 @@ public class EmployeeControl
     
     private List<SkillType> getSkillTypes(EntityPermission entityPermission) {
         String query = null;
-        
+
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
             query = "SELECT _ALL_ " +
                     "FROM skilltypes, skilltypedetails " +
                     "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid " +
-                    "ORDER BY skltypdt_sortorder, skltypdt_skilltypename";
+                    "ORDER BY skltypdt_sortorder, skltypdt_skilltypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM skilltypes, skilltypedetails " +
@@ -789,7 +849,7 @@ public class EmployeeControl
         }
 
         var ps = SkillTypeFactory.getInstance().prepareStatement(query);
-        
+
         return SkillTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
     
@@ -805,15 +865,18 @@ public class EmployeeControl
         return skillTypeTransferCache.getSkillTypeTransfer(userVisit, skillType);
     }
     
-    public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit) {
-        var skillTypes = getSkillTypes();
+    public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit, Collection<SkillType> skillTypes) {
         List<SkillTypeTransfer> skillTypeTransfers = new ArrayList<>(skillTypes.size());
-        
+
         skillTypes.forEach((skillType) ->
                 skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(userVisit, skillType))
         );
-        
+
         return skillTypeTransfers;
+    }
+
+    public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit) {
+        return getSkillTypeTransfers(userVisit, getSkillTypes());
     }
     
     public SkillTypeChoicesBean getSkillTypeChoices(String defaultSkillTypeChoice, Language language, boolean allowNullChoice) {
@@ -996,7 +1059,8 @@ public class EmployeeControl
                 query = "SELECT _ALL_ " +
                         "FROM skilltypedescriptions, languages " +
                         "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_thrutime = ? AND skltypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM skilltypedescriptions " +
@@ -1121,6 +1185,29 @@ public class EmployeeControl
         sendEvent(leaveType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return leaveType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LeaveType */
+    public LeaveType getLeaveTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LeaveTypePK(entityInstance.getEntityUniqueId());
+
+        return LeaveTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public LeaveType getLeaveTypeByEntityInstance(EntityInstance entityInstance) {
+        return getLeaveTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public LeaveType getLeaveTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLeaveTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLeaveTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM leavetypes
+                        JOIN leavetypedetails ON lvtypdt_leavetypedetailid = lvtyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getLeaveTypeByNameQueries;
@@ -1538,6 +1625,29 @@ public class EmployeeControl
         return leaveReason;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LeaveReason */
+    public LeaveReason getLeaveReasonByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LeaveReasonPK(entityInstance.getEntityUniqueId());
+
+        return LeaveReasonFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public LeaveReason getLeaveReasonByEntityInstance(EntityInstance entityInstance) {
+        return getLeaveReasonByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public LeaveReason getLeaveReasonByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLeaveReasonByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLeaveReasons() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM leavereasons
+                        JOIN leavereasondetails ON lvrsndt_leavereasondetailid = lvrsn_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getLeaveReasonByNameQueries;
 
     static {
@@ -1952,6 +2062,21 @@ public class EmployeeControl
         return leave;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Leave */
+    public Leave getLeaveByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LeavePK(entityInstance.getEntityUniqueId());
+
+        return LeaveFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Leave getLeaveByEntityInstance(EntityInstance entityInstance) {
+        return getLeaveByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Leave getLeaveByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLeaveByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countLeavesByParty(Party party) {
         return session.queryForLong(
                 "SELECT COUNT(*) "
@@ -2035,7 +2160,8 @@ public class EmployeeControl
                 "SELECT _ALL_ "
                 + "FROM leaves, leavedetails "
                 + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = ? "
-                + "ORDER BY lvdt_leavename");
+                + "ORDER BY lvdt_leavename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM leaves, leavedetails "
@@ -2067,7 +2193,8 @@ public class EmployeeControl
                 + "FROM leaves, leavedetails, parties, partydetails "
                 + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND lvdt_companypartyid = ? "
-                + "ORDER BY lvdt_leavename");
+                + "ORDER BY lvdt_leavename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM leaves, leavedetails "
@@ -2099,7 +2226,8 @@ public class EmployeeControl
                 + "FROM leaves, leavedetails, parties, partydetails "
                 + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND lvdt_lvtyp_leavetypeid = ? "
-                + "ORDER BY lvdt_leavename");
+                + "ORDER BY lvdt_leavename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM leaves, leavedetails "
@@ -2131,7 +2259,8 @@ public class EmployeeControl
                 + "FROM leaves, leavedetails, parties, partydetails "
                 + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND lvdt_lvrsn_leavereasonid = ? "
-                + "ORDER BY lvdt_leavename");
+                + "ORDER BY lvdt_leavename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM leaves, leavedetails "
@@ -2295,7 +2424,30 @@ public class EmployeeControl
         
         return terminationReason;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TerminationReason */
+    public TerminationReason getTerminationReasonByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TerminationReasonPK(entityInstance.getEntityUniqueId());
+
+        return TerminationReasonFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TerminationReason getTerminationReasonByEntityInstance(EntityInstance entityInstance) {
+        return getTerminationReasonByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TerminationReason getTerminationReasonByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTerminationReasonByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTerminationReasons() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM terminationreasons
+                        JOIN terminationreasondetails ON trmnrsndt_terminationreasondetailid = trmnrsn_activedetailid
+                        """);
+    }
+
     private TerminationReason getTerminationReasonByName(String terminationReasonName, EntityPermission entityPermission) {
         TerminationReason terminationReason;
         
@@ -2379,7 +2531,8 @@ public class EmployeeControl
             query = "SELECT _ALL_ " +
                     "FROM terminationreasons, terminationreasondetails " +
                     "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid " +
-                    "ORDER BY trmnrsndt_sortorder, trmnrsndt_terminationreasonname";
+                    "ORDER BY trmnrsndt_sortorder, trmnrsndt_terminationreasonname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM terminationreasons, terminationreasondetails " +
@@ -2404,8 +2557,7 @@ public class EmployeeControl
         return terminationReasonTransferCache.getTerminationReasonTransfer(userVisit, terminationReason);
     }
     
-    public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit) {
-        var terminationReasons = getTerminationReasons();
+    public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit, Collection<TerminationReason> terminationReasons) {
         List<TerminationReasonTransfer> terminationReasonTransfers = new ArrayList<>(terminationReasons.size());
         
         terminationReasons.forEach((terminationReason) ->
@@ -2413,6 +2565,10 @@ public class EmployeeControl
         );
         
         return terminationReasonTransfers;
+    }
+    
+    public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit) {
+        return getTerminationReasonTransfers(userVisit, getTerminationReasons());
     }
     
     public TerminationReasonChoicesBean getTerminationReasonChoices(String defaultTerminationReasonChoice, Language language,
@@ -2596,7 +2752,8 @@ public class EmployeeControl
                 query = "SELECT _ALL_ " +
                         "FROM terminationreasondescriptions, languages " +
                         "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_thrutime = ? AND trmnrsnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM terminationreasondescriptions " +
@@ -2721,7 +2878,30 @@ public class EmployeeControl
         
         return terminationType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TerminationType */
+    public TerminationType getTerminationTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TerminationTypePK(entityInstance.getEntityUniqueId());
+
+        return TerminationTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TerminationType getTerminationTypeByEntityInstance(EntityInstance entityInstance) {
+        return getTerminationTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TerminationType getTerminationTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTerminationTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTerminationTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM terminationtypes
+                        JOIN terminationtypedetails ON trmntypdt_terminationtypedetailid = trmntyp_activedetailid
+                        """);
+    }
+
     private TerminationType getTerminationTypeByName(String terminationTypeName, EntityPermission entityPermission) {
         TerminationType terminationType;
         
@@ -2805,7 +2985,8 @@ public class EmployeeControl
             query = "SELECT _ALL_ " +
                     "FROM terminationtypes, terminationtypedetails " +
                     "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid " +
-                    "ORDER BY trmntypdt_sortorder, trmntypdt_terminationtypename";
+                    "ORDER BY trmntypdt_sortorder, trmntypdt_terminationtypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM terminationtypes, terminationtypedetails " +
@@ -2830,15 +3011,18 @@ public class EmployeeControl
         return terminationTypeTransferCache.getTerminationTypeTransfer(userVisit, terminationType);
     }
     
-    public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit) {
-        var terminationTypes = getTerminationTypes();
+    public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit, Collection<TerminationType> terminationTypes) {
         List<TerminationTypeTransfer> terminationTypeTransfers = new ArrayList<>(terminationTypes.size());
-        
+
         terminationTypes.forEach((terminationType) ->
                 terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(userVisit, terminationType))
         );
-        
+
         return terminationTypeTransfers;
+    }
+
+    public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit) {
+        return getTerminationTypeTransfers(userVisit, getTerminationTypes());
     }
     
     public TerminationTypeChoicesBean getTerminationTypeChoices(String defaultTerminationTypeChoice, Language language,
@@ -3022,7 +3206,8 @@ public class EmployeeControl
                 query = "SELECT _ALL_ " +
                         "FROM terminationtypedescriptions, languages " +
                         "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_thrutime = ? AND trmntypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM terminationtypedescriptions " +
@@ -3148,6 +3333,21 @@ public class EmployeeControl
         return employment;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Employment */
+    public Employment getEmploymentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EmploymentPK(entityInstance.getEntityUniqueId());
+
+        return EmploymentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Employment getEmploymentByEntityInstance(EntityInstance entityInstance) {
+        return getEmploymentByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Employment getEmploymentByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEmploymentByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countEmploymentsByParty(Party party) {
         return session.queryForLong(
                 "SELECT COUNT(*) "
@@ -3231,7 +3431,8 @@ public class EmployeeControl
                 "SELECT _ALL_ "
                 + "FROM employments, employmentdetails "
                 + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = ? "
-                + "ORDER BY empmntdt_employmentname");
+                + "ORDER BY empmntdt_employmentname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM employments, employmentdetails "
@@ -3263,7 +3464,8 @@ public class EmployeeControl
                 + "FROM employments, employmentdetails, parties, partydetails "
                 + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND empmntdt_companypartyid = ? "
-                + "ORDER BY empmntdt_employmentname");
+                + "ORDER BY empmntdt_employmentname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM employments, employmentdetails "
@@ -3295,7 +3497,8 @@ public class EmployeeControl
                 + "FROM employments, employmentdetails, parties, partydetails "
                 + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND empmntdt_trmntyp_terminationtypeid = ? "
-                + "ORDER BY empmntdt_employmentname");
+                + "ORDER BY empmntdt_employmentname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM employments, employmentdetails "
@@ -3327,7 +3530,8 @@ public class EmployeeControl
                 + "FROM employments, employmentdetails, parties, partydetails "
                 + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND empmntdt_trmnrsn_terminationreasonid = ? "
-                + "ORDER BY empmntdt_employmentname");
+                + "ORDER BY empmntdt_employmentname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM employments, employmentdetails "
@@ -3785,7 +3989,8 @@ public class EmployeeControl
                 query = "SELECT _ALL_ " +
                         "FROM employeetypedescriptions, languages " +
                         "WHERE emptyd_empty_employeetypeid = ? AND emptyd_thrutime = ? AND emptyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM employeetypedescriptions " +
@@ -4134,7 +4339,23 @@ public class EmployeeControl
         
         return partyResponsibility;
     }
-    
+
+    public long countPartyResponsibilitiesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyresponsibilities
+                        WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyResponsibilitiesByResponsibilityType(final ResponsibilityType responsibilityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyresponsibilities
+                        WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?
+                        """, responsibilityType, Session.MAX_TIME);
+    }
+
     private PartyResponsibility getPartyResponsibility(Party party, ResponsibilityType responsibilityType, EntityPermission entityPermission) {
         PartyResponsibility partyResponsibility;
         
@@ -4193,7 +4414,8 @@ public class EmployeeControl
                         "FROM partyresponsibilities, responsibilitytypes, responsibilitytypedetails " +
                         "WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ? " +
                         "AND parrsp_rsptyp_responsibilitytypeid = rsptyp_responsibilitytypeid AND rsptyp_lastdetailid = rsptypdt_responsibilitytypedetailid " +
-                        "ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename";
+                        "ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyresponsibilities " +
@@ -4233,7 +4455,8 @@ public class EmployeeControl
                         "FROM partyresponsibilities, parties, partydetails " +
                         "WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ? " +
                         "AND parrsp_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname";
+                        "ORDER BY pardt_partyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyresponsibilities " +
@@ -4324,7 +4547,23 @@ public class EmployeeControl
         
         return partySkill;
     }
-    
+
+    public long countPartySkillsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyskills
+                        WHERE parskl_par_partyid = ? AND parskl_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartySkillsBySkillType(final SkillType skillType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyskills
+                        WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?
+                        """, skillType, Session.MAX_TIME);
+    }
+
     private PartySkill getPartySkill(Party party, SkillType skillType, EntityPermission entityPermission) {
         PartySkill partySkill;
         
@@ -4383,7 +4622,8 @@ public class EmployeeControl
                         "FROM partyskills, skilltypes, skilltypedetails " +
                         "WHERE parskl_par_partyid = ? AND parskl_thrutime = ? " +
                         "AND parskl_skltyp_skilltypeid = skltyp_skilltypeid AND skltyp_lastdetailid = skltypdt_skilltypedetailid " +
-                        "ORDER BY skltypdt_sortorder, skltypdt_skilltypename";
+                        "ORDER BY skltypdt_sortorder, skltypdt_skilltypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyskills " +
@@ -4423,7 +4663,8 @@ public class EmployeeControl
                         "FROM partyskills, parties, partydetails " +
                         "WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ? " +
                         "AND parskl_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname";
+                        "ORDER BY pardt_partyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyskills " +

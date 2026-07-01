@@ -19,38 +19,62 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.GetScalesForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.scale.server.entity.Scale;
+import com.echothree.model.data.scale.server.factory.ScaleFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetScalesCommand
-        extends BaseSimpleCommand<GetScalesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<Scale, GetScalesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ScaleControl scaleControl;
 
     /** Creates a new instance of GetScalesCommand */
     public GetScalesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return scaleControl.countScales();
+    }
+
+    @Override
+    protected Collection<Scale> getEntities() {
+        return scaleControl.getScales();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Scale> entities) {
         var result = ScaleResultFactory.getGetScalesResult();
 
-        result.setScales(scaleControl.getScaleTransfers(getUserVisit()));
-        
+        if(entities != null) {
+            if(session.hasLimit(ScaleFactory.class)) {
+                result.setScaleCount(getTotalEntities());
+            }
+
+            result.setScales(scaleControl.getScaleTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

@@ -16,12 +16,11 @@
 
 package com.echothree.control.user.campaign.common.form;
 
-import com.echothree.control.user.campaign.common.spec.CampaignMediumSpec;
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.control.user.campaign.common.spec.CampaignMediumUniversalSpec;
 
 public interface GetCampaignMediumForm
-        extends CampaignMediumSpec, UniversalEntitySpec {
+        extends CampaignMediumUniversalSpec {
     
-    // Nothing additional beyond CampaignMediumSpec, UniversalEntitySpec
+    // Nothing additional beyond CampaignMediumUniversalSpec
     
 }

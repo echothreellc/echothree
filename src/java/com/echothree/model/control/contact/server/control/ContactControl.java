@@ -83,8 +83,12 @@ import com.echothree.model.control.order.server.control.OrderShipmentGroupContro
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.contact.common.pk.ContactMechanismAliasTypePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
+import com.echothree.model.data.contact.common.pk.ContactMechanismTypePK;
+import com.echothree.model.data.contact.common.pk.PostalAddressFormatPK;
+import com.echothree.model.data.contact.common.pk.PostalAddressLinePK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactInet6Address;
@@ -170,6 +174,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -182,7 +187,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -267,7 +271,29 @@ public class ContactControl
         return ContactMechanismTypeFactory.getInstance().create(contactMechanismTypeName, parentContactMechanismType,
                 isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanismType */
+    public ContactMechanismType getContactMechanismTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactMechanismTypePK(entityInstance.getEntityUniqueId());
+
+        return ContactMechanismTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactMechanismType getContactMechanismTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContactMechanismTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanismType getContactMechanismTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactMechanismTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactMechanismTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactmechanismtypes
+                        """);
+    }
+
     public ContactMechanismType getContactMechanismTypeByName(String contactMechanismTypeName) {
         ContactMechanismType contactMechanismType;
         
@@ -291,7 +317,8 @@ public class ContactControl
         var ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM contactmechanismtypes " +
-                "ORDER BY cmt_sortorder, cmt_contactmechanismtypename");
+                "ORDER BY cmt_sortorder, cmt_contactmechanismtypename " +
+                "_LIMIT_");
         
         return ContactMechanismTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -328,15 +355,18 @@ public class ContactControl
         return contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, contactMechanismType);
     }
     
-    public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
-        var entities = getContactMechanismTypes();
-        List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(entities.size());
+    public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit, Collection<ContactMechanismType> contactMechanismTypes) {
+        List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(contactMechanismTypes.size());
 
-        entities.forEach((entity) ->
-                transfers.add(contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, entity))
-        );
-        
+        contactMechanismTypes.forEach((contactMechanismType) -> {
+            transfers.add(contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, contactMechanismType));
+        });
+
         return transfers;
+    }
+
+    public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
+        return getContactMechanismTypeTransfers(userVisit, getContactMechanismTypes());
     }
     
     // --------------------------------------------------------------------------------
@@ -418,6 +448,29 @@ public class ContactControl
         sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return contactMechanismAliasType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanismAliasType */
+    public ContactMechanismAliasType getContactMechanismAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactMechanismAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return ContactMechanismAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContactMechanismAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactMechanismAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactMechanismAliasTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactmechanismaliastypes
+                        JOIN contactmechanismaliastypedetails ON cmchaltypdt_contactmechanismaliastypedetailid = cmchaltyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getContactMechanismAliasTypeByNameQueries;
@@ -3680,7 +3733,30 @@ public class ContactControl
         
         return postalAddressFormat;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PostalAddressFormat */
+    public PostalAddressFormat getPostalAddressFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PostalAddressFormatPK(entityInstance.getEntityUniqueId());
+
+        return PostalAddressFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByEntityInstance(EntityInstance entityInstance) {
+        return getPostalAddressFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPostalAddressFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPostalAddressFormats() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdressformats
+                        JOIN postaladdressformatdetails ON pstafmtdt_postaladdressformatdetailid = pstafmt_activedetailid
+                        """);
+    }
+
     private List<PostalAddressFormat> getPostalAddressFormats(EntityPermission entityPermission) {
         String query = null;
         
@@ -3688,7 +3764,8 @@ public class ContactControl
             query = "SELECT _ALL_ " +
                     "FROM postaladdressformats, postaladdressformatdetails " +
                     "WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid " +
-                    "ORDER BY pstafmtdt_sortorder, pstafmtdt_postaladdressformatname";
+                    "ORDER BY pstafmtdt_sortorder, pstafmtdt_postaladdressformatname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM postaladdressformats, postaladdressformatdetails " +
@@ -3823,15 +3900,18 @@ public class ContactControl
         return postalAddressFormatTransferCache.getPostalAddressFormatTransfer(userVisit, postalAddressFormat);
     }
     
-    public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit) {
-        var postalAddressFormats = getPostalAddressFormats();
+    public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit, Collection<PostalAddressFormat> postalAddressFormats) {
         List<PostalAddressFormatTransfer> postalAddressFormatTransfers = new ArrayList<>(postalAddressFormats.size());
-        
+
         postalAddressFormats.forEach((postalAddressFormat) ->
                 postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(userVisit, postalAddressFormat))
         );
-        
+
         return postalAddressFormatTransfers;
+    }
+
+    public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit) {
+        return getPostalAddressFormatTransfers(userVisit, getPostalAddressFormats());
     }
     
     private void updatePostalAddressFormatFromValue(PostalAddressFormatDetailValue postalAddressFormatDetailValue, boolean checkDefault,
@@ -4096,7 +4176,31 @@ public class ContactControl
         
         return postalAddressLine;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PostalAddressLine */
+    public PostalAddressLine getPostalAddressLineByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PostalAddressLinePK(entityInstance.getEntityUniqueId());
+
+        return PostalAddressLineFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PostalAddressLine getPostalAddressLineByEntityInstance(EntityInstance entityInstance) {
+        return getPostalAddressLineByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PostalAddressLine getPostalAddressLineByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPostalAddressLineByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPostalAddressLinesByPostalAddressFormat(final PostalAddressFormat postalAddressFormat) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdresslines
+                        JOIN postaladdresslinedetails ON pstaldt_postaladdresslinedetailid = pstal_activedetailid
+                        WHERE pstaldt_pstafmt_postaladdressformatid = ?
+                        """, postalAddressFormat);
+    }
+
     private PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             EntityPermission entityPermission) {
         PostalAddressLine postalAddressLine;
@@ -4190,16 +4294,19 @@ public class ContactControl
     public PostalAddressLineTransfer getPostalAddressLineTransfer(UserVisit userVisit, PostalAddressLine postalAddressLine) {
         return postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine);
     }
-    
-    public List<PostalAddressLineTransfer> getPostalAddressLineTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
-        var postalAddressLines = getPostalAddressLinesByPostalAddressFormat(postalAddressFormat);
+
+    public List<PostalAddressLineTransfer> getPostalAddressLineTransfers(UserVisit userVisit, Collection<PostalAddressLine> postalAddressLines) {
         List<PostalAddressLineTransfer> postalAddressLineTransfers = new ArrayList<>(postalAddressLines.size());
-        
-        postalAddressLines.forEach((postalAddressLine) ->
-                postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine))
-        );
-        
+
+        postalAddressLines.forEach((postalAddressLine) -> {
+            postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine));
+        });
+
         return postalAddressLineTransfers;
+    }
+
+    public List<PostalAddressLineTransfer> getPostalAddressLineTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
+        return getPostalAddressLineTransfers(userVisit, getPostalAddressLinesByPostalAddressFormat(postalAddressFormat));
     }
     
     public void updatePostalAddressLineFromValue(PostalAddressLineDetailValue postalAddressLineDetailValue, BasePK updatedBy) {
@@ -4266,7 +4373,23 @@ public class ContactControl
         
         return postalAddressLineElement;
     }
-    
+
+    public long countPostalAddressLineElementsByPostalAddressLine(final PostalAddressLine postalAddressLine) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdresslineelements
+                        WHERE pstale_pstal_postaladdresslineid = ? AND pstale_thrutime = ?
+                        """, postalAddressLine, Session.MAX_TIME);
+    }
+
+    public long countPostalAddressLineElementsByPostalAddressElementType(final PostalAddressElementType postalAddressElementType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdresslineelements
+                        WHERE pstale_pstaetyp_postaladdresselementtypeid = ? AND pstale_thrutime = ?
+                        """, postalAddressElementType, Session.MAX_TIME);
+    }
+
     private PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, EntityPermission entityPermission) {
         PostalAddressLineElement postalAddressLineElement;

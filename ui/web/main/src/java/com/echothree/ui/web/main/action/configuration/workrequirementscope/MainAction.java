@@ -75,7 +75,6 @@ public class MainAction
                 request.setAttribute(AttributeConstants.WORK_EFFORT_SCOPE, workEffortScope);
             }
             
-            request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, result.getWorkEffortType());
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_SCOPES, result.getWorkRequirementScopes());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {

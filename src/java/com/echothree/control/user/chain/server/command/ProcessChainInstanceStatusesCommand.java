@@ -24,13 +24,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class ProcessChainInstanceStatusesCommand
         extends BaseSimpleCommand {
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainInstanceStatusLogic chainInstanceStatusLogic;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     
@@ -47,18 +53,14 @@ public class ProcessChainInstanceStatusesCommand
 
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
-        var chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
         BasePK processedBy = getPartyPK();
-        long chainInstanceStatusesProcessed = 0;
         var remainingTime = 2L * 60 * 1000; // 2 minutes
         
         for(var chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.getStartTime())) {
             var startTime = System.currentTimeMillis();
 
-            chainInstanceStatusLogic.processChainInstanceStatus(session, chainControl, chainInstanceStatus, processedBy);
+            chainInstanceStatusLogic.processChainInstanceStatus(session, chainInstanceStatus, processedBy);
             
-            chainInstanceStatusesProcessed++;
             remainingTime -= System.currentTimeMillis() - startTime;
             if(remainingTime < 0) {
                 break;

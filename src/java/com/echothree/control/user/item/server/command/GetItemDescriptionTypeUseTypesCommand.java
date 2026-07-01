@@ -60,7 +60,7 @@ public class GetItemDescriptionTypeUseTypesCommand
 
     @Override
     protected void handleForm() {
-        // No form fields to handle for this command.
+        // No form fields.
     }
 
     @Override

@@ -18,8 +18,15 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.core.common.MimeTypeFileExtensionConstants;
+import com.echothree.model.data.core.common.MimeTypeUsageConstants;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,9 +34,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("mime type object")
 @GraphQLName("MimeType")
@@ -95,43 +104,41 @@ public class MimeTypeObject
     @GraphQLField
     @GraphQLDescription("mime type usages")
     @GraphQLNonNull
-    public List<MimeTypeUsageObject> getMimeTypeUsages(final DataFetchingEnvironment env) {
-        List<MimeTypeUsageObject> mimeTypeUsages = null;
-        
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<MimeTypeUsageObject> getMimeTypeUsages(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasMimeTypeUsagesAccess(env)) {
             var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-            var entities = mimeTypeControl.getMimeTypeUsagesByMimeType(mimeType);
-            List<MimeTypeUsageObject> objects = new ArrayList<>(entities.size());
+            var totalCount = mimeTypeControl.countMimeTypeUsagesByMimeType(mimeType);
 
-            entities.forEach((entity) -> {
-                objects.add(new MimeTypeUsageObject(entity));
-            });
-            
-            mimeTypeUsages = objects;
+            try(var objectLimiter = new ObjectLimiter(env, MimeTypeUsageConstants.COMPONENT_VENDOR_NAME, MimeTypeUsageConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = mimeTypeControl.getMimeTypeUsagesByMimeType(mimeType);
+                var mimeTypeUsages = entities.stream().map(MimeTypeUsageObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, mimeTypeUsages);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return mimeTypeUsages;
     }
     
     @GraphQLField
     @GraphQLDescription("mime type file extensions")
     @GraphQLNonNull
-    public List<MimeTypeFileExtensionObject> getMimeTypeFileExtensions(final DataFetchingEnvironment env) {
-        List<MimeTypeFileExtensionObject> mimeTypeFileExtensions = null;
-        
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<MimeTypeFileExtensionObject> getMimeTypeFileExtensions(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasMimeTypeFileExtensionsAccess(env)) {
             var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-            var entities = mimeTypeControl.getMimeTypeFileExtensionsByMimeType(mimeType);
-            List<MimeTypeFileExtensionObject> objects = new ArrayList<>(entities.size());
+            var totalCount = mimeTypeControl.countMimeTypeFileExtensionsByMimeType(mimeType);
 
-            entities.forEach((entity) -> {
-                objects.add(new MimeTypeFileExtensionObject(entity));
-            });
-            
-            mimeTypeFileExtensions = objects;
+            try(var objectLimiter = new ObjectLimiter(env, MimeTypeFileExtensionConstants.COMPONENT_VENDOR_NAME, MimeTypeFileExtensionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = mimeTypeControl.getMimeTypeFileExtensionsByMimeType(mimeType);
+                var mimeTypeFileExtensions = entities.stream().map(MimeTypeFileExtensionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, mimeTypeFileExtensions);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return mimeTypeFileExtensions;
     }
     
 }

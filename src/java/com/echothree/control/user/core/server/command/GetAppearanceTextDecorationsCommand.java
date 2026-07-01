@@ -23,21 +23,24 @@ import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.Appearance;
+import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
+import com.echothree.model.data.core.server.factory.AppearanceTextDecorationFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearanceTextDecorationsCommand
-        extends BaseSimpleCommand<GetAppearanceTextDecorationsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<AppearanceTextDecoration, GetAppearanceTextDecorationsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,32 +50,58 @@ public class GetAppearanceTextDecorationsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.AppearanceTextDecoration.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
     /** Creates a new instance of GetAppearanceTextDecorationsCommand */
     public GetAppearanceTextDecorationsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    Appearance appearance;
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        appearance = appearanceLogic.getAppearanceByName(this, form.getAppearanceName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : appearanceControl.countAppearanceTextDecorationsByAppearance(appearance);
+    }
+
+    @Override
+    protected Collection<AppearanceTextDecoration> getEntities() {
+        return hasExecutionErrors() ? null : appearanceControl.getAppearanceTextDecorationsByAppearance(appearance);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<AppearanceTextDecoration> entities) {
         var result = CoreResultFactory.getGetAppearanceTextDecorationsResult();
-        var appearanceName = form.getAppearanceName();
-        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
-        
-        if(!hasExecutionErrors()) {
-            var appearanceControl = Session.getModelController(AppearanceControl.class);
-            
-            result.setAppearance(appearanceControl.getAppearanceTransfer(getUserVisit(), appearance));
-            result.setAppearanceTextDecorations(appearanceControl.getAppearanceTextDecorationTransfersByAppearance(getUserVisit(), appearance));
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setAppearance(appearanceControl.getAppearanceTransfer(userVisit, appearance));
+
+            if(session.hasLimit(AppearanceTextDecorationFactory.class)) {
+                result.setAppearanceTextDecorationCount(getTotalEntities());
+            }
+
+            result.setAppearanceTextDecorations(appearanceControl.getAppearanceTextDecorationTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     

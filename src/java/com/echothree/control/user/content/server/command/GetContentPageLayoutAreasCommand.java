@@ -51,7 +51,7 @@ public class GetContentPageLayoutAreasCommand
     
     /** Creates a new instance of GetContentPageLayoutAreasCommand */
     public GetContentPageLayoutAreasCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     ContentPage contentPage;

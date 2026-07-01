@@ -51,7 +51,7 @@ public class OrderTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var orderControl = Session.getModelController(OrderControl.class);
-        var order = orderControl.convertEntityInstanceToOrderForUpdate(getEntityInstance(workflowEntityStatus));
+        var order = orderControl.getOrderByEntityInstanceForUpdate(getEntityInstance(workflowEntityStatus));
         var orderTypeTrigger = locateTrigger(eea, order);
         
         if(!eea.hasExecutionErrors()) {

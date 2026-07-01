@@ -26,8 +26,11 @@ public interface GetReturnReasonsResult
     
     ReturnKindTransfer getReturnKind();
     void setReturnKind(ReturnKindTransfer returnKind);
-    
+
+    Long getReturnReasonCount();
+    void setReturnReasonCount(Long returnReasonCount);
+
     List<ReturnReasonTransfer> getReturnReasons();
     void setReturnReasons(List<ReturnReasonTransfer> returnReasons);
-    
+
 }

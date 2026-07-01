@@ -16,31 +16,11 @@
 
 package com.echothree.control.user.message.common.result;
 
-import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.message.common.transfer.EntityMessageTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetEntityMessageResult
         extends BaseResult {
-    
-    EntityInstanceTransfer getEntityInstance();
-    void setEntityInstance(EntityInstanceTransfer entityInstance);
-    
-    EntityTypeTransfer getEntityType();
-    void setEntityType(EntityTypeTransfer entityType);
-    
-    ComponentVendorTransfer getComponentVendor();
-    void setComponentVendor(ComponentVendorTransfer componentVendor);
-    
-    MessageTypeTransfer getMessageType();
-    void setMessageType(MessageTypeTransfer messageType);
-    
-    MessageTransfer getMessage();
-    void setMessage(MessageTransfer message);
     
     EntityMessageTransfer getEntityMessage();
     void setEntityMessage(EntityMessageTransfer entityMessage);

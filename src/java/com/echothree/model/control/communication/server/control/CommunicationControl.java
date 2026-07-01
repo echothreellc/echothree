@@ -42,6 +42,11 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
+import com.echothree.model.data.communication.common.pk.CommunicationEventPurposePK;
+import com.echothree.model.data.communication.common.pk.CommunicationEventRoleTypePK;
+import com.echothree.model.data.communication.common.pk.CommunicationEventTypePK;
+import com.echothree.model.data.communication.common.pk.CommunicationSourcePK;
+import com.echothree.model.data.communication.common.pk.CommunicationSourceTypePK;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
@@ -88,6 +93,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -98,7 +104,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -147,7 +152,7 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Purposes
     // --------------------------------------------------------------------------------
-    
+
     public CommunicationEventPurpose createCommunicationEventPurpose(String communicationEventPurposeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
         var defaultFound = defaultCommunicationEventPurpose != null;
@@ -175,7 +180,30 @@ public class CommunicationControl
         
         return communicationEventPurpose;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEventPurpose */
+    public CommunicationEventPurpose getCommunicationEventPurposeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommunicationEventPurposePK(entityInstance.getEntityUniqueId());
+
+        return CommunicationEventPurposeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommunicationEventPurpose getCommunicationEventPurposeByEntityInstance(EntityInstance entityInstance) {
+        return getCommunicationEventPurposeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommunicationEventPurpose getCommunicationEventPurposeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommunicationEventPurposeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommunicationEventPurposes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationeventpurposes
+                        JOIN communicationeventpurposedetails ON cmmnevprdt_communicationeventpurposedetailid = cmmnevpr_activedetailid
+                        """);
+    }
+
     private CommunicationEventPurpose getCommunicationEventPurposeByName(String communicationEventPurposeName, EntityPermission entityPermission) {
         CommunicationEventPurpose communicationEventPurpose;
         
@@ -259,7 +287,8 @@ public class CommunicationControl
             query = "SELECT _ALL_ " +
                     "FROM communicationeventpurposes, communicationeventpurposedetails " +
                     "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid " +
-                    "ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename";
+                    "ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM communicationeventpurposes, communicationeventpurposedetails " +
@@ -284,15 +313,18 @@ public class CommunicationControl
         return communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(userVisit, communicationEventPurpose);
     }
     
-    public List<CommunicationEventPurposeTransfer> getCommunicationEventPurposeTransfers(UserVisit userVisit) {
-        var communicationEventPurposes = getCommunicationEventPurposes();
+    public List<CommunicationEventPurposeTransfer> getCommunicationEventPurposeTransfers(UserVisit userVisit, Collection<CommunicationEventPurpose> communicationEventPurposes) {
         List<CommunicationEventPurposeTransfer> communicationEventPurposeTransfers = new ArrayList<>(communicationEventPurposes.size());
-        
+
         communicationEventPurposes.forEach((communicationEventPurpose) ->
                 communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(userVisit, communicationEventPurpose))
         );
-        
+
         return communicationEventPurposeTransfers;
+    }
+
+    public List<CommunicationEventPurposeTransfer> getCommunicationEventPurposeTransfers(UserVisit userVisit) {
+        return getCommunicationEventPurposeTransfers(userVisit, getCommunicationEventPurposes());
     }
     
     public CommunicationEventPurposeChoicesBean getCommunicationEventPurposeChoices(String defaultCommunicationEventPurposeChoice, Language language,
@@ -475,7 +507,8 @@ public class CommunicationControl
                 query = "SELECT _ALL_ " +
                         "FROM communicationeventpurposedescriptions, languages " +
                         "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? AND cmmnevprd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM communicationeventpurposedescriptions " +
@@ -576,7 +609,29 @@ public class CommunicationControl
     public CommunicationEventRoleType createCommunicationEventRoleType(String communicationEventRoleTypeName, Integer sortOrder) {
         return CommunicationEventRoleTypeFactory.getInstance().create(communicationEventRoleTypeName, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEventRoleType */
+    public CommunicationEventRoleType getCommunicationEventRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommunicationEventRoleTypePK(entityInstance.getEntityUniqueId());
+
+        return CommunicationEventRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommunicationEventRoleType getCommunicationEventRoleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCommunicationEventRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommunicationEventRoleType getCommunicationEventRoleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommunicationEventRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommunicationEventRoleTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationeventroletypes
+                        """);
+    }
+
     public CommunicationEventRoleType getCommunicationEventRoleTypeByName(String communicationEventRoleTypeName) {
         CommunicationEventRoleType communicationEventRoleType;
         
@@ -601,7 +656,8 @@ public class CommunicationControl
         var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM communicationeventroletypes " +
-                "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename");
+                "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename " +
+                "_LIMIT_");
         
         return CommunicationEventRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -667,7 +723,29 @@ public class CommunicationControl
             Integer sortOrder) {
         return CommunicationEventTypeFactory.getInstance().create(communicationEventTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEventType */
+    public CommunicationEventType getCommunicationEventTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommunicationEventTypePK(entityInstance.getEntityUniqueId());
+
+        return CommunicationEventTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommunicationEventType getCommunicationEventTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCommunicationEventTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommunicationEventType getCommunicationEventTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommunicationEventTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommunicationEventTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationeventtypes
+                        """);
+    }
+
     public CommunicationEventType getCommunicationEventTypeByName(String communicationEventTypeName) {
         CommunicationEventType communicationEventType;
         
@@ -692,7 +770,8 @@ public class CommunicationControl
         var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM communicationeventtypes " +
-                "ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename");
+                "ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename " +
+                "_LIMIT_");
         
         return CommunicationEventTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -988,7 +1067,8 @@ public class CommunicationControl
                         "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
                         "AND cmmnevr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
                         "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = cmmnevrtyp_communicationeventroletypeid " +
-                        "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname";
+                        "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM communicationeventroles " +
@@ -1031,7 +1111,8 @@ public class CommunicationControl
                         "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
                         "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
                         "AND cmmnev_lastdetailid = cmmnevdt_communicationeventdetailid " +
-                        "ORDER BY cmmnevdt_communicationeventname";
+                        "ORDER BY cmmnevdt_communicationeventname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM communicationeventroles " +
@@ -1086,7 +1167,29 @@ public class CommunicationControl
             Integer sortOrder) {
         return CommunicationSourceTypeFactory.getInstance().create(communicationSourceTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationSourceType */
+    public CommunicationSourceType getCommunicationSourceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommunicationSourceTypePK(entityInstance.getEntityUniqueId());
+
+        return CommunicationSourceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommunicationSourceType getCommunicationSourceTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCommunicationSourceTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommunicationSourceType getCommunicationSourceTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommunicationSourceTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommunicationSourceTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationsourcetypes
+                        """);
+    }
+
     public CommunicationSourceType getCommunicationSourceTypeByName(String communicationSourceTypeName) {
         CommunicationSourceType communicationSourceType;
         
@@ -1111,7 +1214,8 @@ public class CommunicationControl
         var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM communicationsourcetypes " +
-                "ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename");
+                "ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename " +
+                "_LIMIT_");
         
         return CommunicationSourceTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1190,7 +1294,39 @@ public class CommunicationControl
         
         return communicationSource;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationSource */
+    public CommunicationSource getCommunicationSourceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommunicationSourcePK(entityInstance.getEntityUniqueId());
+
+        return CommunicationSourceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommunicationSource getCommunicationSourceByEntityInstance(EntityInstance entityInstance) {
+        return getCommunicationSourceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommunicationSource getCommunicationSourceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommunicationSourceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommunicationSources() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationsources
+                        JOIN communicationsourcedetails ON cmmnsrcdt_communicationsourcedetailid = cmmnsrc_activedetailid
+                        """);
+    }
+
+    public long countCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationsources
+                        JOIN communicationsourcedetails ON cmmnsrcdt_communicationsourcedetailid = cmmnsrc_activedetailid
+                        WHERE cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
+                        """, communicationSourceType);
+    }
+
     private CommunicationSource getCommunicationSourceByName(String communicationSourceName, EntityPermission entityPermission) {
         CommunicationSource communicationSource;
         
@@ -1243,7 +1379,8 @@ public class CommunicationControl
             query = "SELECT _ALL_ " +
                     "FROM communicationsources, communicationsourcedetails " +
                     "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid " +
-                    "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename";
+                    "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM communicationsources, communicationsourcedetails " +
@@ -1275,7 +1412,8 @@ public class CommunicationControl
                 query = "SELECT _ALL_ " +
                         "FROM communicationsources, communicationsourcedetails " +
                         "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ? " +
-                        "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename";
+                        "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM communicationsources, communicationsourcedetails " +
@@ -1434,7 +1572,8 @@ public class CommunicationControl
                 query = "SELECT _ALL_ " +
                         "FROM communicationsourcedescriptions, languages " +
                         "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? AND cmmnsrcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM communicationsourcedescriptions " +

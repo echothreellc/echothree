@@ -26,8 +26,11 @@ public interface GetItemUnitCustomerTypeLimitsResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
+
+    Long getItemUnitCustomerTypeLimitCount();
+    void setItemUnitCustomerTypeLimitCount(Long itemUnitCustomerTypeLimitCount);
+
     List<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimits();
     void setItemUnitCustomerTypeLimits(List<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimits);
-    
+
 }

@@ -26,7 +26,10 @@ public interface GetSubscriptionTypesResult
 
     SubscriptionKindTransfer getSubscriptionKind();
     void setSubscriptionKind(SubscriptionKindTransfer subscriptionKind);
-    
+
+    Long getSubscriptionTypeCount();
+    void setSubscriptionTypeCount(Long subscriptionTypeCount);
+
     List<SubscriptionTypeTransfer> getSubscriptionTypes();
     void setSubscriptionTypes(List<SubscriptionTypeTransfer> subscriptionTypes);
     

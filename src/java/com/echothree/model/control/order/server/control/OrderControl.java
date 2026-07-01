@@ -16,10 +16,7 @@
 
 package com.echothree.model.control.order.server.control;
 
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.common.transfer.OrderContentCatalogTransfer;
@@ -104,64 +101,52 @@ public class OrderControl
     public Order getOrderByPK(OrderPK orderPK) {
         return OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
     }
-    
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Order */
-    public Order getOrderByEntityInstance(EntityInstance entityInstance) {
+    public Order getOrderByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderPK(entityInstance.getEntityUniqueId());
-        var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return order;
+        return OrderFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    private Order convertEntityInstanceToOrder(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        Order order = null;
-
-        if(entityInstanceControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.Order.name())) {
-            order = OrderFactory.getInstance().getEntityFromPK(entityPermission, new OrderPK(entityInstance.getEntityUniqueId()));
-        }
-
-        return order;
+    public Order getOrderByEntityInstance(EntityInstance entityInstance) {
+        return getOrderByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
 
-    public Order convertEntityInstanceToOrder(final EntityInstance entityInstance) {
-        return convertEntityInstanceToOrder(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public Order convertEntityInstanceToOrderForUpdate(final EntityInstance entityInstance) {
-        return convertEntityInstanceToOrder(entityInstance, EntityPermission.READ_WRITE);
+    public Order getOrderByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOrderByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countOrdersByOrderType(final OrderType orderType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orders, orderdetails " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ?",
-                orderType);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM orders, orderdetails
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ?
+                """, orderType);
     }
 
     public long countOrdersByOrderPriority(final OrderPriority orderPriority) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orders, orderdetails " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordpr_orderpriorityid = ?",
-                orderPriority);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM orders, orderdetails
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordpr_orderpriorityid = ?
+                """, orderPriority);
     }
 
     public long countOrdersByCancellationPolicy(final CancellationPolicy cancellationPolicy) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orders, orderdetails " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_cnclplcy_cancellationpolicyid = ?",
-                cancellationPolicy);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM orders, orderdetails
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_cnclplcy_cancellationpolicyid = ?
+                """, cancellationPolicy);
     }
 
     public long countOrdersByReturnPolicy(final ReturnPolicy returnPolicy) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orders, orderdetails " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_rtnplcy_returnpolicyid = ?",
-                returnPolicy);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM orders, orderdetails
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_rtnplcy_returnpolicyid = ?
+                """, returnPolicy);
     }
 
     private static final Map<EntityPermission, String> getOrderByNameQueries;
@@ -170,14 +155,18 @@ public class OrderControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orders, orderdetails " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ? AND orddt_ordername = ?");
+                """
+                SELECT _ALL_
+                FROM orders, orderdetails
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ? AND orddt_ordername = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orders, orderdetails " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ? AND orddt_ordername = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orders, orderdetails
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ? AND orddt_ordername = ?
+                FOR UPDATE
+                """);
         getOrderByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -220,11 +209,13 @@ public class OrderControl
     
     public long countOrdersByBillToAndReference(final Party billToParty, final String reference) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orders, orderdetails, orderroles, orderroletypes " +
-                "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_reference = ? " +
-                "AND ord_orderid = ordr_ord_orderid AND ordr_thrutime = ? AND ordr_par_partyid = ? " +
-                "AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid AND ordrtyp_orderroletypename = ?",
+                """
+                SELECT COUNT(*)
+                FROM orders, orderdetails, orderroles, orderroletypes
+                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_reference = ?
+                AND ord_orderid = ordr_ord_orderid AND ordr_thrutime = ? AND ordr_par_partyid = ?
+                AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid AND ordrtyp_orderroletypename = ?
+                """,
                 reference, Session.MAX_TIME, billToParty, OrderRoleTypes.BILL_TO.name());
     }
 
@@ -328,14 +319,18 @@ public class OrderControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderstatuses " +
-                        "WHERE ordst_ord_orderid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderstatuses
+                        WHERE ordst_ord_orderid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderstatuses " +
-                        "WHERE ordst_ord_orderid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderstatuses
+                        WHERE ordst_ord_orderid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderStatusFactory.getInstance().prepareStatement(query);
@@ -373,21 +368,41 @@ public class OrderControl
     public OrderUserVisit createOrderUserVisit(Order order, UserVisit userVisit) {
         return OrderUserVisitFactory.getInstance().create(order, userVisit, session.getStartTime(), Session.MAX_TIME);
     }
-    
+
+    public long countOrderUserVisitByOrder(final Order order) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderuservisits
+                        WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
+                        """, order, Session.MAX_TIME);
+    }
+
+    public long countOrderUserVisitByUserVisit(final UserVisit userVisit) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderuservisits
+                        WHERE orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?
+                        """, userVisit, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getOrderUserVisitQueries;
     
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM orderuservisits "
-                + "WHERE orduvis_ord_orderid = ? AND orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderuservisits
+                WHERE orduvis_ord_orderid = ? AND orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM orderuservisits "
-                + "WHERE orduvis_ord_orderid = ? AND orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderuservisits
+                WHERE orduvis_ord_orderid = ? AND orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderUserVisitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -418,16 +433,21 @@ public class OrderControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM orderuservisits, uservisits "
-                + "WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ? "
-                + "AND orduvis_uvis_uservisitid = uvis_uservisitid "
-                + "ORDER BY uvis_fromtime");
+                """
+                SELECT _ALL_
+                FROM orderuservisits, uservisits
+                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
+                AND orduvis_uvis_uservisitid = uvis_uservisitid
+                ORDER BY uvis_fromtime
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM orderuservisits "
-                + "WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderuservisits
+                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderUserVisitsByOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -450,16 +470,21 @@ public class OrderControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM orderuservisits, orders, orderdetails "
-                + "WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ? "
-                + "AND orduvis_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid "
-                + "ORDER BY orddt_ordername");
+                """
+                SELECT _ALL_
+                FROM orderuservisits, orders, orderdetails
+                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
+                AND orduvis_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
+                ORDER BY orddt_ordername
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM orderuservisits "
-                + "WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderuservisits
+                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderUserVisitsByUserVisitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -541,17 +566,17 @@ public class OrderControl
 
     public long countOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog) {
         return session.queryForLong("""
-                        SELECT COUNT(*) " +
-                        "FROM ordercontentcatalogs " +
-                        "WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        SELECT COUNT(*)
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
                         """, contentCatalog, Session.MAX_TIME);
     }
 
     public boolean orderContentCatalogExists(Order order, ContentCatalog contentCatalog) {
         return session.queryForLong("""
-                        SELECT COUNT(*) " +
-                        "FROM ordercontentcatalogs " +
-                        "WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        SELECT COUNT(*)
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
                         """, order, contentCatalog, Session.MAX_TIME) == 1;
     }
 
@@ -608,6 +633,7 @@ public class OrderControl
                         JOIN contentcollectiondetails ON cntcdt_contentcollectiondetailid = cntc_lastdetailid
                         WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
                         ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname
+                        _LIMIT_
                         """);
         queryMap.put(EntityPermission.READ_WRITE, """
                         SELECT _ALL_
@@ -642,6 +668,7 @@ public class OrderControl
                         JOIN orderdetails ON ord_lastdetailid = orddt_orderdetailid
                         WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
                         ORDER BY orddt_ordername
+                        _LIMIT_
                         """);
         queryMap.put(EntityPermission.READ_WRITE, """
                         SELECT _ALL_

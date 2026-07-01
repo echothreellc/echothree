@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetAssociateProgramsResult
         extends BaseResult {
     
+    Long getAssociateProgramCount();
+    void setAssociateProgramCount(Long associateProgramCount);
+
     List<AssociateProgramTransfer> getAssociatePrograms();
     void setAssociatePrograms(List<AssociateProgramTransfer> associatePrograms);
     

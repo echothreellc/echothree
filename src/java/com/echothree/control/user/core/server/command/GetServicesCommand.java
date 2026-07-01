@@ -22,20 +22,22 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.Service;
+import com.echothree.model.data.core.server.factory.ServiceFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetServicesCommand
-        extends BaseSimpleCommand<GetServicesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Service, GetServicesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,25 +47,47 @@ public class GetServicesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Service.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+    
+    @Inject
+    ServerControl serverControl;
     
     /** Creates a new instance of GetServicesCommand */
     public GetServicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return serverControl.countServices();
+    }
+
+    @Override
+    protected Collection<Service> getEntities() {
+        return serverControl.getServices();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Service> entities) {
         var result = CoreResultFactory.getGetServicesResult();
-        
-        result.setServices(serverControl.getServiceTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(ServiceFactory.class)) {
+                result.setServiceCount(getTotalEntities());
+            }
+
+            result.setServices(serverControl.getServiceTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

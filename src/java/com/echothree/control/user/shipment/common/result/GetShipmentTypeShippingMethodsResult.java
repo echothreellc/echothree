@@ -33,5 +33,8 @@ public interface GetShipmentTypeShippingMethodsResult
     
     List<ShipmentTypeShippingMethodTransfer> getShipmentTypeShippingMethods();
     void setShipmentTypeShippingMethods(List<ShipmentTypeShippingMethodTransfer> shipmentTypeShippingMethods);
+
+    Long getShipmentTypeShippingMethodCount();
+    void setShipmentTypeShippingMethodCount(Long shipmentTypeShippingMethodCount);
     
 }

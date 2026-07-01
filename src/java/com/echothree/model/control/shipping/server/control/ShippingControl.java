@@ -42,13 +42,13 @@ import com.echothree.model.data.shipping.server.value.ShippingMethodDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class ShippingControl
@@ -105,19 +105,42 @@ public class ShippingControl
                         """);
     }
 
+    public long countShippingMethodsByGeoCodeSelector(final Selector geoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM shippingmethods
+                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
+                        WHERE shmdt_geocodeselectorid = ?
+                        """, geoCodeSelector);
+    }
+
+    public long countShippingMethodsByItemSelector(final Selector itemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM shippingmethods
+                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
+                        WHERE shmdt_itemselectorid = ?
+                        """, itemSelector);
+    }
+
     private List<ShippingMethod> getShippingMethods(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM shippingmethods, shippingmethoddetails " +
-                    "WHERE shm_activedetailid = shmdt_shippingmethoddetailid " +
-                    "ORDER BY shmdt_sortorder, shmdt_shippingmethodname";
+            query = """
+                    SELECT _ALL_
+                    FROM shippingmethods, shippingmethoddetails
+                    WHERE shm_activedetailid = shmdt_shippingmethoddetailid
+                    ORDER BY shmdt_sortorder, shmdt_shippingmethodname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM shippingmethods, carrierservicedetails " +
-                    "WHERE shm_activedetailid = shmdt_shippingmethoddetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM shippingmethods, carrierservicedetails
+                    WHERE shm_activedetailid = shmdt_shippingmethoddetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = ShippingMethodFactory.getInstance().prepareStatement(query);
@@ -140,16 +163,20 @@ public class ShippingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethods, shippingmethoddetails " +
-                        "WHERE shm_activedetailid = shmdt_shippingmethoddetailid " +
-                        "AND shmdt_shippingmethodname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethods, shippingmethoddetails
+                        WHERE shm_activedetailid = shmdt_shippingmethoddetailid
+                        AND shmdt_shippingmethodname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethods, shippingmethoddetails " +
-                        "WHERE shm_activedetailid = shmdt_shippingmethoddetailid " +
-                        "AND shmdt_shippingmethodname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethods, shippingmethoddetails
+                        WHERE shm_activedetailid = shmdt_shippingmethoddetailid
+                        AND shmdt_shippingmethodname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ShippingMethodFactory.getInstance().prepareStatement(query);
@@ -336,14 +363,18 @@ public class ShippingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethoddescriptions " +
-                        "WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethoddescriptions
+                        WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethoddescriptions " +
-                        "WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethoddescriptions
+                        WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
@@ -383,15 +414,20 @@ public class ShippingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethoddescriptions, languages " +
-                        "WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ? AND shmd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethoddescriptions, languages
+                        WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ? AND shmd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethoddescriptions " +
-                        "WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethoddescriptions
+                        WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
@@ -496,7 +532,25 @@ public class ShippingControl
         
         return shippingMethodCarrierService;
     }
-    
+
+    public long countShippingMethodCarrierServicesByShippingMethod(final ShippingMethod shippingMethod) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigns
+                        JOIN campaigndetails ON cmpgndt_campaigndetailid = cmpgn_activedetailid
+                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ?
+                        """, shippingMethod, Session.MAX_TIME);
+    }
+
+    public long countShippingMethodCarrierServicesByCarrierService(final CarrierService carrierService) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigns
+                        JOIN campaigndetails ON cmpgndt_campaigndetailid = cmpgn_activedetailid
+                        WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
+                        """, carrierService, Session.MAX_TIME);
+    }
+
     private ShippingMethodCarrierService getShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             EntityPermission entityPermission) {
         ShippingMethodCarrierService shippingMethodCarrierService;
@@ -505,14 +559,18 @@ public class ShippingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethodcarrierservices " +
-                        "WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethodcarrierservices
+                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethodcarrierservices " +
-                        "WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethodcarrierservices
+                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
@@ -552,16 +610,21 @@ public class ShippingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethodcarrierservices, carrierservices, carrierservicedetails " +
-                        "WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ? " +
-                        "AND shmcrrsrv_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid " +
-                        "ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethodcarrierservices, carrierservices, carrierservicedetails
+                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ?
+                        AND shmcrrsrv_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
+                        ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethodcarrierservices " +
-                        "WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethodcarrierservices
+                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
@@ -592,16 +655,21 @@ public class ShippingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethodcarrierservices, shippingmethods, shippingmethoddetails " +
-                        "WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ? " +
-                        "AND shmcrrsrv_shm_shippingmethodid = shm_shippingmethodid AND shm_activedetailid = shmdt_shippingmethoddetailid " +
-                        "ORDER BY shmdt_sortorder, shmdt_shippingmethodname";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethodcarrierservices, shippingmethods, shippingmethoddetails
+                        WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
+                        AND shmcrrsrv_shm_shippingmethodid = shm_shippingmethodid AND shm_activedetailid = shmdt_shippingmethoddetailid
+                        ORDER BY shmdt_sortorder, shmdt_shippingmethodname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM shippingmethodcarrierservices " +
-                        "WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM shippingmethodcarrierservices
+                        WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);

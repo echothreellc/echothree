@@ -31,7 +31,6 @@ import com.echothree.model.control.party.common.choice.DepartmentChoicesBean;
 import com.echothree.model.control.party.common.choice.DivisionChoicesBean;
 import com.echothree.model.control.party.common.choice.GenderChoicesBean;
 import com.echothree.model.control.party.common.choice.LanguageChoicesBean;
-import com.echothree.model.control.party.common.choice.MoodChoicesBean;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.control.party.common.choice.PartyAliasTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.PartyTypeChoicesBean;
@@ -47,8 +46,6 @@ import com.echothree.model.control.party.common.transfer.DivisionTransfer;
 import com.echothree.model.control.party.common.transfer.GenderDescriptionTransfer;
 import com.echothree.model.control.party.common.transfer.GenderTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.common.transfer.MoodDescriptionTransfer;
-import com.echothree.model.control.party.common.transfer.MoodTransfer;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PartyAliasTransfer;
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeDescriptionTransfer;
@@ -84,8 +81,10 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;
+import com.echothree.model.data.party.common.pk.BirthdayFormatPK;
 import com.echothree.model.data.party.common.pk.DateTimeFormatDetailPK;
 import com.echothree.model.data.party.common.pk.DateTimeFormatPK;
+import com.echothree.model.data.party.common.pk.GenderPK;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.common.pk.PartyAliasTypePK;
@@ -103,8 +102,6 @@ import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.LanguageDescription;
-import com.echothree.model.data.party.server.entity.Mood;
-import com.echothree.model.data.party.server.entity.MoodDescription;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.NameSuffixDetail;
 import com.echothree.model.data.party.server.entity.Party;
@@ -146,9 +143,6 @@ import com.echothree.model.data.party.server.factory.GenderDetailFactory;
 import com.echothree.model.data.party.server.factory.GenderFactory;
 import com.echothree.model.data.party.server.factory.LanguageDescriptionFactory;
 import com.echothree.model.data.party.server.factory.LanguageFactory;
-import com.echothree.model.data.party.server.factory.MoodDescriptionFactory;
-import com.echothree.model.data.party.server.factory.MoodDetailFactory;
-import com.echothree.model.data.party.server.factory.MoodFactory;
 import com.echothree.model.data.party.server.factory.NameSuffixDetailFactory;
 import com.echothree.model.data.party.server.factory.NameSuffixFactory;
 import com.echothree.model.data.party.server.factory.PartyAliasFactory;
@@ -190,8 +184,6 @@ import com.echothree.model.data.party.server.value.BirthdayFormatDetailValue;
 import com.echothree.model.data.party.server.value.DateTimeFormatDescriptionValue;
 import com.echothree.model.data.party.server.value.GenderDescriptionValue;
 import com.echothree.model.data.party.server.value.GenderDetailValue;
-import com.echothree.model.data.party.server.value.MoodDescriptionValue;
-import com.echothree.model.data.party.server.value.MoodDetailValue;
 import com.echothree.model.data.party.server.value.NameSuffixDetailValue;
 import com.echothree.model.data.party.server.value.PartyAliasTypeDescriptionValue;
 import com.echothree.model.data.party.server.value.PartyAliasTypeDetailValue;
@@ -5209,7 +5201,30 @@ public class PartyControl
         
         return gender;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Gender */
+    public Gender getGenderByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GenderPK(entityInstance.getEntityUniqueId());
+
+        return GenderFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Gender getGenderByEntityInstance(EntityInstance entityInstance) {
+        return getGenderByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Gender getGenderByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGenderByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGenders() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM genders
+                        JOIN genderdetails ON gndrdt_genderdetailid = gndr_activedetailid
+                        """);
+    }
+
     private Gender getGenderByName(String genderName, EntityPermission entityPermission) {
         Gender gender;
         
@@ -5353,15 +5368,18 @@ public class PartyControl
         return genderTransferCache.getTransfer(userVisit, gender);
     }
     
-    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
-        var genders = getGenders();
+    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit, Collection<Gender> genders) {
         List<GenderTransfer> genderTransfers = new ArrayList<>(genders.size());
-        
-        genders.forEach((gender) ->
-                genderTransfers.add(genderTransferCache.getTransfer(userVisit, gender))
+
+        genders.forEach(gender ->
+                genderTransfers.add(getGenderTransfer(userVisit, gender))
         );
-        
+
         return genderTransfers;
+    }
+
+    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
+        return getGenderTransfers(userVisit, getGenders());
     }
     
     private void updateGenderFromValue(GenderDetailValue genderDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -5600,430 +5618,7 @@ public class PartyControl
                 deleteGenderDescription(genderDescription, deletedBy)
         );
     }
-    
-    // --------------------------------------------------------------------------------
-    //   Moods
-    // --------------------------------------------------------------------------------
-    
-    public Mood createMood(String moodName, Icon icon, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var defaultMood = getDefaultMood();
-        var defaultFound = defaultMood != null;
-        
-        if(defaultFound && isDefault) {
-            var defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
-            
-            defaultMoodDetailValue.setIsDefault(false);
-            updateMoodFromValue(defaultMoodDetailValue, false, createdBy);
-        } else if(!defaultFound) {
-            isDefault = true;
-        }
 
-        var mood = MoodFactory.getInstance().create();
-        var moodDetail = MoodDetailFactory.getInstance().create(mood, moodName, icon, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
-        
-        // Convert to R/W
-        mood = MoodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, mood.getPrimaryKey());
-        mood.setActiveDetail(moodDetail);
-        mood.setLastDetail(moodDetail);
-        mood.store();
-        
-        sendEvent(mood.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-        
-        return mood;
-    }
-    
-    private Mood getMoodByName(String moodName, EntityPermission entityPermission) {
-        Mood mood;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM moods, mooddetails " +
-                        "WHERE md_activedetailid = mddt_mooddetailid AND mddt_moodname = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM moods, mooddetails " +
-                        "WHERE md_activedetailid = mddt_mooddetailid AND mddt_moodname = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = MoodFactory.getInstance().prepareStatement(query);
-            
-            ps.setString(1, moodName);
-            
-            mood = MoodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return mood;
-    }
-    
-    public Mood getMoodByName(String moodName) {
-        return getMoodByName(moodName, EntityPermission.READ_ONLY);
-    }
-    
-    public Mood getMoodByNameForUpdate(String moodName) {
-        return getMoodByName(moodName, EntityPermission.READ_WRITE);
-    }
-    
-    public MoodDetailValue getMoodDetailValueForUpdate(Mood mood) {
-        return mood == null? null: mood.getLastDetailForUpdate().getMoodDetailValue().clone();
-    }
-    
-    public MoodDetailValue getMoodDetailValueByNameForUpdate(String moodName) {
-        return getMoodDetailValueForUpdate(getMoodByNameForUpdate(moodName));
-    }
-    
-    private Mood getDefaultMood(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM moods, mooddetails " +
-                    "WHERE md_activedetailid = mddt_mooddetailid AND mddt_isdefault = 1";
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM moods, mooddetails " +
-                    "WHERE md_activedetailid = mddt_mooddetailid AND mddt_isdefault = 1 " +
-                    "FOR UPDATE";
-        }
-
-        var ps = MoodFactory.getInstance().prepareStatement(query);
-        
-        return MoodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-    }
-    
-    public Mood getDefaultMood() {
-        return getDefaultMood(EntityPermission.READ_ONLY);
-    }
-    
-    public Mood getDefaultMoodForUpdate() {
-        return getDefaultMood(EntityPermission.READ_WRITE);
-    }
-    
-    public MoodDetailValue getDefaultMoodDetailValueForUpdate() {
-        return getDefaultMood(EntityPermission.READ_WRITE).getLastDetailForUpdate().getMoodDetailValue();
-    }
-    
-    private List<Mood> getMoods(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM moods, mooddetails " +
-                    "WHERE md_activedetailid = mddt_mooddetailid " +
-                    "ORDER BY mddt_sortorder, mddt_moodname " +
-                    "_LIMIT_";
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM moods, mooddetails " +
-                    "WHERE md_activedetailid = mddt_mooddetailid " +
-                    "FOR UPDATE";
-        }
-
-        var ps = MoodFactory.getInstance().prepareStatement(query);
-        
-        return MoodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-    }
-    
-    public List<Mood> getMoods() {
-        return getMoods(EntityPermission.READ_ONLY);
-    }
-    
-    public List<Mood> getMoodsForUpdate() {
-        return getMoods(EntityPermission.READ_WRITE);
-    }
-    
-    public MoodChoicesBean getMoodChoices(String defaultMoodChoice, Language language, boolean allowNullChoice) {
-        var moods = getMoods();
-        var size = moods.size();
-        var labels = new ArrayList<String>(size);
-        var values = new ArrayList<String>(size);
-        String defaultValue = null;
-        
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-            
-            if(defaultMoodChoice == null) {
-                defaultValue = "";
-            }
-        }
-        
-        for(var mood : moods) {
-            var moodDetail = mood.getLastDetail();
-            
-            var label = getBestMoodDescription(mood, language);
-            var value = moodDetail.getMoodName();
-            
-            labels.add(label == null? value: label);
-            values.add(value);
-            
-            var usingDefaultChoice = defaultMoodChoice != null && defaultMoodChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && moodDetail.getIsDefault())) {
-                defaultValue = value;
-            }
-        }
-        
-        return new MoodChoicesBean(labels, values, defaultValue);
-    }
-    
-    public MoodTransfer getMoodTransfer(UserVisit userVisit, Mood mood) {
-        return moodTransferCache.getTransfer(userVisit, mood);
-    }
-    
-    public List<MoodTransfer> getMoodTransfers(UserVisit userVisit) {
-        var moods = getMoods();
-        List<MoodTransfer> moodTransfers = new ArrayList<>(moods.size());
-        
-        moods.forEach((mood) ->
-                moodTransfers.add(moodTransferCache.getTransfer(userVisit, mood))
-        );
-        
-        return moodTransfers;
-    }
-    
-    private void updateMoodFromValue(MoodDetailValue moodDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var mood = MoodFactory.getInstance().getEntityFromPK(
-                EntityPermission.READ_WRITE, moodDetailValue.getMoodPK());
-        var moodDetail = mood.getActiveDetailForUpdate();
-        
-        moodDetail.setThruTime(session.getStartTime());
-        moodDetail.store();
-
-        var moodPK = moodDetail.getMoodPK();
-        var moodName = moodDetailValue.getMoodName();
-        var iconPK = moodDetailValue.getIconPK();
-        var isDefault = moodDetailValue.getIsDefault();
-        var sortOrder = moodDetailValue.getSortOrder();
-        
-        if(checkDefault) {
-            var defaultMood = getDefaultMood();
-            var defaultFound = defaultMood != null && !defaultMood.equals(mood);
-            
-            if(isDefault && defaultFound) {
-                // If I'm the default, and a default already existed...
-                var defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
-                
-                defaultMoodDetailValue.setIsDefault(false);
-                updateMoodFromValue(defaultMoodDetailValue, false, updatedBy);
-            } else if(!isDefault && !defaultFound) {
-                // If I'm not the default, and no other default exists...
-                isDefault = true;
-            }
-        }
-        
-        moodDetail = MoodDetailFactory.getInstance().create(moodPK, moodName, iconPK, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME);
-        
-        mood.setActiveDetail(moodDetail);
-        mood.setLastDetail(moodDetail);
-        mood.store();
-        
-        sendEvent(moodPK, EventTypes.MODIFY, null, null, updatedBy);
-    }
-    
-    public void updateMoodFromValue(MoodDetailValue moodDetailValue, BasePK updatedBy) {
-        updateMoodFromValue(moodDetailValue, true, updatedBy);
-    }
-    
-    public void deleteMood(Mood mood, BasePK deletedBy) {
-        deleteMoodDescriptionsByMood(mood, deletedBy);
-
-        var moodDetail = mood.getLastDetailForUpdate();
-        moodDetail.setThruTime(session.getStartTime());
-        mood.setActiveDetail(null);
-        mood.store();
-        
-        // Check for default, and pick one if necessary
-        var defaultMood = getDefaultMood();
-        if(defaultMood == null) {
-            var moods = getMoodsForUpdate();
-            
-            if(!moods.isEmpty()) {
-                var iter = moods.iterator();
-                if(iter.hasNext()) {
-                    defaultMood = iter.next();
-                }
-                var moodDetailValue = Objects.requireNonNull(defaultMood).getLastDetailForUpdate().getMoodDetailValue().clone();
-                
-                moodDetailValue.setIsDefault(true);
-                updateMoodFromValue(moodDetailValue, false, deletedBy);
-            }
-        }
-        
-        sendEvent(mood.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Mood Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public MoodDescription createMoodDescription(Mood mood, Language language, String description, BasePK createdBy) {
-        var moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
-                session.getStartTime(), Session.MAX_TIME);
-        
-        sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
-        return moodDescription;
-    }
-    
-    private MoodDescription getMoodDescription(Mood mood, Language language, EntityPermission entityPermission) {
-        MoodDescription moodDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM mooddescriptions " +
-                        "WHERE mdd_md_moodid = ? AND mdd_lang_languageid = ? AND mdd_thrutime = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM mooddescriptions " +
-                        "WHERE mdd_md_moodid = ? AND mdd_lang_languageid = ? AND mdd_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, mood.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            moodDescription = MoodDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return moodDescription;
-    }
-    
-    public MoodDescription getMoodDescription(Mood mood, Language language) {
-        return getMoodDescription(mood, language, EntityPermission.READ_ONLY);
-    }
-    
-    public MoodDescription getMoodDescriptionForUpdate(Mood mood, Language language) {
-        return getMoodDescription(mood, language, EntityPermission.READ_WRITE);
-    }
-    
-    public MoodDescriptionValue getMoodDescriptionValue(MoodDescription moodDescription) {
-        return moodDescription == null? null: moodDescription.getMoodDescriptionValue().clone();
-    }
-    
-    public MoodDescriptionValue getMoodDescriptionValueForUpdate(Mood mood, Language language) {
-        return getMoodDescriptionValue(getMoodDescriptionForUpdate(mood, language));
-    }
-    
-    private List<MoodDescription> getMoodDescriptionsByMood(Mood mood, EntityPermission entityPermission) {
-        List<MoodDescription> moodDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM mooddescriptions, languages " +
-                        "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? AND mdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM mooddescriptions " +
-                        "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, mood.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            moodDescriptions = MoodDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return moodDescriptions;
-    }
-    
-    public List<MoodDescription> getMoodDescriptionsByMood(Mood mood) {
-        return getMoodDescriptionsByMood(mood, EntityPermission.READ_ONLY);
-    }
-    
-    public List<MoodDescription> getMoodDescriptionsByMoodForUpdate(Mood mood) {
-        return getMoodDescriptionsByMood(mood, EntityPermission.READ_WRITE);
-    }
-    
-    public String getBestMoodDescription(Mood mood, Language language) {
-        String description;
-        var moodDescription = getMoodDescription(mood, language);
-        
-        if(moodDescription == null && !language.getIsDefault()) {
-            moodDescription = getMoodDescription(mood, partyControl.getDefaultLanguage());
-        }
-        
-        if(moodDescription == null) {
-            description = mood.getLastDetail().getMoodName();
-        } else {
-            description = moodDescription.getDescription();
-        }
-        
-        return description;
-    }
-    
-    public MoodDescriptionTransfer getMoodDescriptionTransfer(UserVisit userVisit, MoodDescription moodDescription) {
-        return moodDescriptionTransferCache.getTransfer(userVisit, moodDescription);
-    }
-    
-    public List<MoodDescriptionTransfer> getMoodDescriptionTransfersByMood(UserVisit userVisit, Mood mood) {
-        var moodDescriptions = getMoodDescriptionsByMood(mood);
-        List<MoodDescriptionTransfer> moodDescriptionTransfers = new ArrayList<>(moodDescriptions.size());
-        
-        moodDescriptions.forEach((moodDescription) ->
-                moodDescriptionTransfers.add(moodDescriptionTransferCache.getTransfer(userVisit, moodDescription))
-        );
-        
-        return moodDescriptionTransfers;
-    }
-    
-    public void updateMoodDescriptionFromValue(MoodDescriptionValue moodDescriptionValue, BasePK updatedBy) {
-        if(moodDescriptionValue.hasBeenModified()) {
-            var moodDescription = MoodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     moodDescriptionValue.getPrimaryKey());
-            
-            moodDescription.setThruTime(session.getStartTime());
-            moodDescription.store();
-
-            var mood = moodDescription.getMood();
-            var language = moodDescription.getLanguage();
-            var description = moodDescriptionValue.getDescription();
-            
-            moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
-                    session.getStartTime(), Session.MAX_TIME);
-            
-            sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
-        }
-    }
-    
-    public void deleteMoodDescription(MoodDescription moodDescription, BasePK deletedBy) {
-        moodDescription.setThruTime(session.getStartTime());
-        
-        sendEvent(moodDescription.getMoodPK(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
-        
-    }
-    
-    public void deleteMoodDescriptionsByMood(Mood mood, BasePK deletedBy) {
-        var moodDescriptions = getMoodDescriptionsByMoodForUpdate(mood);
-        
-        moodDescriptions.forEach((moodDescription) -> 
-                deleteMoodDescription(moodDescription, deletedBy)
-        );
-    }
-    
     // --------------------------------------------------------------------------------
     //   Birthday Formats
     // --------------------------------------------------------------------------------
@@ -6055,6 +5650,29 @@ public class PartyControl
         sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return birthdayFormat;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.BirthdayFormat */
+    public BirthdayFormat getBirthdayFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BirthdayFormatPK(entityInstance.getEntityUniqueId());
+
+        return BirthdayFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public BirthdayFormat getBirthdayFormatByEntityInstance(EntityInstance entityInstance) {
+        return getBirthdayFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public BirthdayFormat getBirthdayFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBirthdayFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBirthdayFormats() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM birthdayformats
+                        JOIN birthdayformatdetails ON bdyfdt_birthdayformatdetailid = bdyf_activedetailid
+                        """);
     }
 
     private List<BirthdayFormat> getBirthdayFormats(EntityPermission entityPermission) {

@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetTracksResult
         extends BaseResult {
-    
+
+    Long getTrackCount();
+    void setTrackCount(Long trackCount);
+
     List<TrackTransfer> getTracks();
     void setTracks(List<TrackTransfer> tracks);
-    
+
 }

@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.subscription.common.form;
 
-import com.echothree.control.user.subscription.common.spec.SubscriptionKindSpec;
+import com.echothree.control.user.subscription.common.spec.SubscriptionKindUniversalSpec;
 
 public interface GetSubscriptionKindForm
-        extends SubscriptionKindSpec {
+        extends SubscriptionKindUniversalSpec {
     
     // Nothing additional beyond SubscriptionKindSpec
     

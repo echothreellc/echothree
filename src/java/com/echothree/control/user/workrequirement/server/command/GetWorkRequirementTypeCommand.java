@@ -21,49 +21,52 @@ import com.echothree.control.user.workrequirement.common.result.WorkRequirementR
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkRequirementTypeCommand
-        extends BaseSimpleCommand<GetWorkRequirementTypeForm> {
+        extends BaseSingleEntityCommand<WorkRequirementType, GetWorkRequirementTypeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
     /** Creates a new instance of GetWorkRequirementTypeCommand */
     public GetWorkRequirementTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        var result = WorkRequirementResultFactory.getGetWorkRequirementTypeResult();
+    protected WorkRequirementType getEntity() {
+        WorkRequirementType workRequirementType = null;
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
-        
+
         if(workEffortType != null) {
-        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
             var workRequirementTypeName = form.getWorkRequirementTypeName();
-            var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
-            
+
+            workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+
             if(workRequirementType != null) {
-                result.setWorkRequirementType(workRequirementControl.getWorkRequirementTypeTransfer(getUserVisit(), workRequirementType));
-                
                 sendEvent(workRequirementType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
@@ -71,8 +74,19 @@ public class GetWorkRequirementTypeCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
         }
-        
+
+        return workRequirementType;
+    }
+
+    @Override
+    protected BaseResult getResult(WorkRequirementType workRequirementType) {
+        var result = WorkRequirementResultFactory.getGetWorkRequirementTypeResult();
+
+        if(workRequirementType != null) {
+            result.setWorkRequirementType(workRequirementControl.getWorkRequirementTypeTransfer(getUserVisit(), workRequirementType));
+        }
+
         return result;
     }
-    
+
 }

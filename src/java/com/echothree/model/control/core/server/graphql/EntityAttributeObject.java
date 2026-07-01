@@ -19,7 +19,12 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
@@ -27,6 +32,10 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.core.common.EntityAttributeEntityAttributeGroupConstants;
+import com.echothree.model.data.core.common.EntityIntegerRangeConstants;
+import com.echothree.model.data.core.common.EntityListItemConstants;
+import com.echothree.model.data.core.common.EntityLongRangeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -42,9 +51,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("entity attribute object")
 @GraphQLName("EntityAttribute")
@@ -530,20 +540,22 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity list items")
-    public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         var entityAttributeType = getEntityAttributeTypeEnum();
-        Collection<EntityListItemObject> entityListItemObjects = null;
+        CountingPaginatedData<EntityListItemObject> entityListItemObjects = null;
 
         if((entityAttributeType == EntityAttributeTypes.LISTITEM
                 || entityAttributeType == EntityAttributeTypes.MULTIPLELISTITEM)
                 && CoreSecurityUtils.getHasEntityListItemsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityListItems = coreControl.getEntityListItems(entityAttribute);
+            var totalCount = coreControl.countEntityListItems(entityAttribute);
 
-            entityListItemObjects = new ArrayList<>(entityListItems.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityListItemConstants.COMPONENT_VENDOR_NAME, EntityListItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityListItems(entityAttribute);
+                var entityListItems = entities.stream().map(EntityListItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityListItem : entityListItems) {
-                entityListItemObjects.add(new EntityListItemObject(entityListItem));
+                entityListItemObjects = new CountedObjects<>(objectLimiter, entityListItems);
             }
         }
 
@@ -552,18 +564,20 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity long ranges")
-    public Collection<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
-        Collection<EntityLongRangeObject> entityLongRangeObjects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityLongRangeObject> entityLongRangeObjects = null;
 
         if(getEntityAttributeTypeEnum() == EntityAttributeTypes.LONG
                 && CoreSecurityUtils.getHasEntityLongRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
+            var totalCount = coreControl.countEntityLongRanges(entityAttribute);
 
-            entityLongRangeObjects = new ArrayList<>(entityLongRanges.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityLongRangeConstants.COMPONENT_VENDOR_NAME, EntityLongRangeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityLongRanges(entityAttribute);
+                var entityLongRanges = entities.stream().map(EntityLongRangeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityLongRange : entityLongRanges) {
-                entityLongRangeObjects.add(new EntityLongRangeObject(entityLongRange));
+                entityLongRangeObjects = new CountedObjects<>(objectLimiter, entityLongRanges);
             }
         }
 
@@ -572,18 +586,20 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity integer ranges")
-    public Collection<EntityIntegerRangeObject> getEntityIntegerRanges(final DataFetchingEnvironment env) {
-        Collection<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityIntegerRangeObject> getEntityIntegerRanges(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
 
         if(getEntityAttributeTypeEnum() == EntityAttributeTypes.INTEGER
                 && CoreSecurityUtils.getHasEntityIntegerRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
+            var totalCount = coreControl.countEntityIntegerRanges(entityAttribute);
 
-            entityIntegerRangeObjects = new ArrayList<>(entityIntegerRanges.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityIntegerRangeConstants.COMPONENT_VENDOR_NAME, EntityIntegerRangeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityIntegerRanges(entityAttribute);
+                var entityIntegerRanges = entities.stream().map(EntityIntegerRangeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityIntegerRange : entityIntegerRanges) {
-                entityIntegerRangeObjects.add(new EntityIntegerRangeObject(entityIntegerRange));
+                entityIntegerRangeObjects = new CountedObjects<>(objectLimiter, entityIntegerRanges);
             }
         }
 
@@ -592,21 +608,22 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity attribute entity attribute groups")
-    public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
-        Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+            var totalCount = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
 
-            entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeEntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeEntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+                var entityAttributeEntityAttributeGroups = entities.stream().map(EntityAttributeEntityAttributeGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityAttributeEntityAttributeGroup : entityAttributeEntityAttributeGroups) {
-                entityAttributeEntityAttributeGroupObjects.add(new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup));
+                return new CountedObjects<>(objectLimiter, entityAttributeEntityAttributeGroups);
             }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return entityAttributeEntityAttributeGroupObjects;
     }
 
 }

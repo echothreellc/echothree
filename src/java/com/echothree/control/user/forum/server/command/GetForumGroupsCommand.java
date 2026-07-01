@@ -19,43 +19,62 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.GetForumGroupsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.factory.ForumGroupFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumGroupsCommand
-        extends BaseSimpleCommand<GetForumGroupsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<ForumGroup, GetForumGroupsForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ForumControl forumControl;
 
     /** Creates a new instance of GetForumGroupsCommand */
     public GetForumGroupsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return forumControl.countForumGroups();
+    }
+
+    @Override
+    protected Collection<ForumGroup> getEntities() {
+        return forumControl.getForumGroups();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ForumGroup> entities) {
         var result = ForumResultFactory.getGetForumGroupsResult();
-        
-        if(session.hasLimit(ForumGroupFactory.class)) {
-            result.setForumGroupCount(forumControl.countForumGroups());
+
+        if(entities != null) {
+            if(session.hasLimit(ForumGroupFactory.class)) {
+                result.setForumGroupCount(getTotalEntities());
+            }
+
+            result.setForumGroups(forumControl.getForumGroupTransfers(getUserVisit(), entities));
         }
 
-        result.setForumGroups(forumControl.getForumGroupTransfers(getUserVisit()));
-        
         return result;
     }
-    
+
 }

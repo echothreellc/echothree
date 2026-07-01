@@ -30,8 +30,11 @@ public interface GetPartySkillsResult
     
     SkillTypeTransfer getSkillType();
     void setSkillType(SkillTypeTransfer skillType);
-    
+
+    Long getPartySkillCount();
+    void setPartySkillCount(Long partySkillCount);
+
     List<PartySkillTransfer> getPartySkills();
     void setPartySkills(List<PartySkillTransfer> partySkills);
-    
+
 }

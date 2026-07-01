@@ -19,15 +19,16 @@ package com.echothree.control.user.batch.server.command;
 import com.echothree.control.user.batch.common.form.GetBatchTypeEntityTypeForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.batch.server.logic.BatchLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBatchTypeEntityTypeCommand
@@ -40,9 +41,18 @@ public class GetBatchTypeEntityTypeCommand
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    BatchLogic batchLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetBatchTypeEntityTypeCommand */
     public GetBatchTypeEntityTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -50,35 +60,24 @@ public class GetBatchTypeEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var result = BatchResultFactory.getGetBatchTypeEntityTypeResult();
         var batchTypeName = form.getBatchTypeName();
-        var batchType = batchControl.getBatchTypeByName(batchTypeName);
+        var batchType = batchLogic.getBatchTypeByName(this, batchTypeName);
         
-        if(batchType != null) {
+        if(!hasExecutionErrors()) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
 
-            if(componentVendor != null) {
-                var entityTypeName = form.getEntityTypeName();
-                var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
+            if(!hasExecutionErrors()) {
+                var batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);
 
-                if(entityType != null) {
-                    var batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);
-
-                    if(batchTypeEntityType != null) {
-                        result.setBatchTypeEntityType(batchControl.getBatchTypeEntityTypeTransfer(getUserVisit(), batchTypeEntityType));
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateBatchTypeEntityType.name(), batchTypeName, componentVendorName, entityTypeName);
-                    }
+                if(batchTypeEntityType != null) {
+                    result.setBatchTypeEntityType(batchControl.getBatchTypeEntityTypeTransfer(getUserVisit(), batchTypeEntityType));
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
+                    addExecutionError(ExecutionErrors.UnknownBatchTypeEntityType.name(), batchTypeName, componentVendorName, entityTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
         }
         
         return result;

@@ -21,20 +21,20 @@ import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
+import com.echothree.model.control.picklist.server.logic.PicklistTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTimeTypeCommand
@@ -48,15 +48,21 @@ public class GetPicklistTimeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PicklistTimeType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    PicklistControl picklistControl;
+
+    @Inject
+    PicklistTypeLogic picklistTypeLogic;
+
     /** Creates a new instance of GetPicklistTimeTypeCommand */
     public GetPicklistTimeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -64,12 +70,10 @@ public class GetPicklistTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var result = PicklistResultFactory.getGetPicklistTimeTypeResult();
-        var picklistTypeName = form.getPicklistTypeName();
-        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistType = picklistTypeLogic.getPicklistTypeByName(this, form.getPicklistTypeName());
 
-        if(picklistType != null) {
+        if(!hasExecutionErrors()) {
             var picklistTimeTypeName = form.getPicklistTimeTypeName();
             var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
@@ -80,8 +84,6 @@ public class GetPicklistTimeTypeCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), picklistTimeTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);
         }
 
         return result;

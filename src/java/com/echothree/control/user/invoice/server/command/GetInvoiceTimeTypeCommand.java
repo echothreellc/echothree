@@ -20,21 +20,21 @@ import com.echothree.control.user.invoice.common.form.GetInvoiceTimeTypeForm;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
+import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInvoiceTimeTypeCommand
@@ -57,6 +57,12 @@ public class GetInvoiceTimeTypeCommand
                 );
     }
     
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    InvoiceLogic invoiceLogic;
+
     /** Creates a new instance of GetInvoiceTimeTypeCommand */
     public GetInvoiceTimeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -64,12 +70,11 @@ public class GetInvoiceTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var result = InvoiceResultFactory.getGetInvoiceTimeTypeResult();
         var invoiceTypeName = form.getInvoiceTypeName();
-        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+        var invoiceType = invoiceLogic.getInvoiceTypeByName(this, invoiceTypeName);
 
-        if(invoiceType != null) {
+        if(!hasExecutionErrors()) {
             var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
             var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
@@ -80,8 +85,6 @@ public class GetInvoiceTimeTypeCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), invoiceTimeTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
         }
 
         return result;

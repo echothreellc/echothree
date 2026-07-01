@@ -37,29 +37,32 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPicklistAliasCommand
         extends BaseAbstractEditCommand<PicklistAliasSpec, PicklistAliasEdit, EditPicklistAliasResult, PicklistAlias, PicklistAlias> {
-    
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
+    @Inject
+    PicklistControl picklistControl;
+
     /** Creates a new instance of EditPicklistAliasCommand */
     public EditPicklistAliasCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -89,7 +92,6 @@ public class EditPicklistAliasCommand
     
     @Override
     public PicklistAlias getEntity(EditPicklistAliasResult result) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAlias picklistAlias = null;
         var picklistTypeName = spec.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -135,8 +137,6 @@ public class EditPicklistAliasCommand
 
     @Override
     public void fillInResult(EditPicklistAliasResult result, PicklistAlias picklistAlias) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-
         result.setPicklistAlias(picklistControl.getPicklistAliasTransfer(getUserVisit(), picklistAlias));
     }
 
@@ -147,7 +147,6 @@ public class EditPicklistAliasCommand
 
     @Override
     public void canUpdate(PicklistAlias picklistAlias) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var alias = edit.getAlias();
         var duplicatePicklistAlias = picklistControl.getPicklistAliasByAlias(picklistAliasType, alias);
 
@@ -161,7 +160,6 @@ public class EditPicklistAliasCommand
 
     @Override
     public void doUpdate(PicklistAlias picklistAlias) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistAliasValue = picklistControl.getPicklistAliasValue(picklistAlias);
 
         picklistAliasValue.setAlias(edit.getAlias());

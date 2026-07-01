@@ -173,7 +173,8 @@ public class PaymentProcessorTypeActionControl
                     "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
                     "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
                     "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? " +
-                    "ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename",
+                    "ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
@@ -201,7 +202,8 @@ public class PaymentProcessorTypeActionControl
                     "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
                     "AND pprctypactdt_pprctyp_paymentprocessortypeid = pprctyp_paymentprocessortypeid AND pprctyp_activedetailid = pprctypdt_paymentprocessortypedetailid " +
                     "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename",
+                    "ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +

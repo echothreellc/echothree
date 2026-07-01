@@ -22,21 +22,22 @@ import com.echothree.model.control.core.server.control.CacheEntryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.CacheEntry;
 import com.echothree.model.data.core.server.factory.CacheEntryFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCacheEntriesCommand
-        extends BaseSimpleCommand<GetCacheEntriesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CacheEntry, GetCacheEntriesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,29 +47,47 @@ public class GetCacheEntriesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CacheEntry.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    CacheEntryControl cacheEntryControl;
 
     /** Creates a new instance of GetCacheEntriesCommand */
     public GetCacheEntriesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return cacheEntryControl.countCacheEntries();
+    }
+
+    @Override
+    protected Collection<CacheEntry> getEntities() {
+        return cacheEntryControl.getCacheEntries();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CacheEntry> entities) {
         var result = CoreResultFactory.getGetCacheEntriesResult();
 
-        if(session.hasLimit(CacheEntryFactory.class)) {
-            result.setCacheEntryCount(cacheEntryControl.countCacheEntries());
+        if(entities != null) {
+            if(session.hasLimit(CacheEntryFactory.class)) {
+                result.setCacheEntryCount(getTotalEntities());
+            }
+
+            result.setCacheEntries(cacheEntryControl.getCacheEntryTransfers(getUserVisit(), entities));
         }
 
-        result.setCacheEntries(cacheEntryControl.getCacheEntryTransfers(getUserVisit()));
-        
         return result;
     }
     

@@ -26,8 +26,11 @@ public interface GetMimeTypeUsagesResult
     
     MimeTypeTransfer getMimeType();
     void setMimeType(MimeTypeTransfer mimeType);
-    
+
+    Long getMimeTypeUsageCount();
+    void setMimeTypeUsageCount(Long mimeTypeUsageCount);
+
     List<MimeTypeUsageTransfer> getMimeTypeUsages();
     void setMimeTypeUsages(List<MimeTypeUsageTransfer> mimeTypeUsages);
-    
+
 }

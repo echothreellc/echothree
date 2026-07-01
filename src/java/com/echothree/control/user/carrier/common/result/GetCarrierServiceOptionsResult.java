@@ -30,8 +30,11 @@ public interface GetCarrierServiceOptionsResult
     
     CarrierOptionTransfer getCarrierOption();
     void setCarrierOption(CarrierOptionTransfer carrierOption);
-    
+
+    Long getCarrierServiceOptionCount();
+    void setCarrierServiceOptionCount(Long carrierServiceOptionCount);
+
     List<CarrierServiceOptionTransfer> getCarrierServiceOptions();
     void setCarrierServiceOptions(List<CarrierServiceOptionTransfer> carrierServiceOptions);
-    
+
 }

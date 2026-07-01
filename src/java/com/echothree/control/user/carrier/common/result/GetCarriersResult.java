@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetCarriersResult
         extends BaseResult {
     
+    Long getCarrierCount();
+    void setCarrierCount(Long carrierCount);
+
     List<CarrierTransfer> getCarriers();
     void setCarriers(List<CarrierTransfer> carriers);
     

@@ -26,6 +26,9 @@ public interface GetLetterContactMechanismPurposesResult
     
     LetterTransfer getLetter();
     void setLetter(LetterTransfer letter);
+
+    Long getLetterContactMechanismPurposeCount();
+    void setLetterContactMechanismPurposeCount(Long letterContactMechanismPurposeCount);
     
     List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposes();
     void setLetterContactMechanismPurposes(List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposes);

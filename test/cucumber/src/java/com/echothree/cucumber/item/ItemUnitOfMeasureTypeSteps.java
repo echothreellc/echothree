@@ -90,7 +90,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     persona.itemUnitOfMeasureTypeSpec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
                 });
 
-        When("^the user begins editing the item unit of measure type",
+        When("^the user begins editing the item unit of measure type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemUnitOfMeasureTypeSpec;
@@ -113,7 +113,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item unit of measure type",
+        When("^the user finishes editing the item unit of measure type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemUnitOfMeasureTypeSpec;

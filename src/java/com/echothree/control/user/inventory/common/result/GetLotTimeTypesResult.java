@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetLotTimeTypesResult
         extends BaseResult {
     
+    Long getLotTimeTypeCount();
+    void setLotTimeTypeCount(Long lotTimeTypeCount);
+
     List<LotTimeTypeTransfer> getLotTimeTypes();
     void setLotTimeTypes(List<LotTimeTypeTransfer> lotTimeTypes);
     

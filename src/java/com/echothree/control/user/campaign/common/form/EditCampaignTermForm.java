@@ -17,11 +17,11 @@
 package com.echothree.control.user.campaign.common.form;
 
 import com.echothree.control.user.campaign.common.edit.CampaignTermEdit;
-import com.echothree.control.user.campaign.common.spec.CampaignTermSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignTermUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditCampaignTermForm
-        extends BaseEditForm<CampaignTermSpec, CampaignTermEdit> {
+        extends BaseEditForm<CampaignTermUniversalSpec, CampaignTermEdit> {
     
     // Nothing additional beyond BaseEditForm
     

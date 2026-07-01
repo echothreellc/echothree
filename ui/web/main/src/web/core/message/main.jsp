@@ -31,12 +31,12 @@
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
                 </c:url>
                 <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
                 <c:url var="messageTypesUrl" value="/action/Core/MessageType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityTypeName}" />
+                    <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
+                    <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
                 </c:url>
                 <a href="${messageTypesUrl}">Message Types</a> &gt;&gt;
                 Messages
@@ -44,9 +44,9 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Core/Message/Add">
-                <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                <c:param name="EntityTypeName" value="${entityTypeName}" />
-                <c:param name="MessageTypeName" value="${messageTypeName}" />
+                <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
+                <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
+                <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Message.</a></p>
             <et:checkSecurityRoles securityRoles="Event.List" />

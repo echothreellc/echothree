@@ -19,18 +19,17 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemVolumeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.item.server.logic.ItemVolumeTypeLogic;
-import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemVolumeCommand
@@ -47,6 +46,18 @@ public class GetItemVolumeCommand
         );
     }
     
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of GetItemVolumeCommand */
     public GetItemVolumeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -54,19 +65,16 @@ public class GetItemVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemVolumeResult();
-        var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
-        var uomControl = Session.getModelController(UomControl.class);
+        var item = itemLogic.getItemByName(this, form.getItemName());
+
+        if(!hasExecutionErrors()) {
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-            
-            if(unitOfMeasureType != null) {
-                var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
+            var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKind, unitOfMeasureTypeName);
+
+            if(!hasExecutionErrors()) {
+                var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
 
                 if(!hasExecutionErrors()) {
                     var itemVolume = itemControl.getItemVolume(item, unitOfMeasureType, itemVolumeType);
@@ -79,13 +87,9 @@ public class GetItemVolumeCommand
                                 itemVolumeType.getLastDetail().getItemVolumeTypeName());
                     }
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
-        
+
         return result;
     }
     

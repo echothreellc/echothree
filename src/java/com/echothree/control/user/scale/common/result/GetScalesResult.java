@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetScalesResult
         extends BaseResult {
     
+    Long getScaleCount();
+    void setScaleCount(Long scaleCount);
+
     List<ScaleTransfer> getScales();
     void setScales(List<ScaleTransfer> scales);
     

@@ -27,6 +27,9 @@ public interface GetLotAliasesResult
     LotTransfer getLot();
     void setLot(LotTransfer lot);
 
+    Long getLotAliasCount();
+    void setLotAliasCount(Long lotAliasCount);
+
     List<LotAliasTransfer> getLotAliases();
     void setLotAliases(List<LotAliasTransfer> lotAliases);
     

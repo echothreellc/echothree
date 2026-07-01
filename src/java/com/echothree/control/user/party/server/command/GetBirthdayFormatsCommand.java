@@ -22,20 +22,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.party.server.entity.BirthdayFormat;
+import com.echothree.model.data.party.server.factory.BirthdayFormatFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBirthdayFormatsCommand
-        extends BaseSimpleCommand<GetBirthdayFormatsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<BirthdayFormat, GetBirthdayFormatsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,25 +47,47 @@ public class GetBirthdayFormatsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BirthdayFormat.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of GetBirthdayFormatsCommand */
     public GetBirthdayFormatsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countBirthdayFormats();
+    }
+
+    @Override
+    protected Collection<BirthdayFormat> getEntities() {
+        return partyControl.getBirthdayFormats();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<BirthdayFormat> entities) {
         var result = PartyResultFactory.getGetBirthdayFormatsResult();
-        var partyControl = Session.getModelController(PartyControl.class);
-        
-        result.setBirthdayFormats(partyControl.getBirthdayFormatTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(BirthdayFormatFactory.class)) {
+                result.setBirthdayFormatCount(getTotalEntities());
+            }
+
+            result.setBirthdayFormats(partyControl.getBirthdayFormatTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetCampaignsResult
         extends BaseResult {
     
+    Long getCampaignCount();
+    void setCampaignCount(Long campaignCount);
+    
     List<CampaignTransfer> getCampaigns();
     void setCampaigns(List<CampaignTransfer> campaigns);
     

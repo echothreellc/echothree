@@ -20,26 +20,28 @@ import com.echothree.control.user.payment.common.form.GetPaymentProcessorTransac
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionCodeControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.payment.server.logic.PaymentProcessorTransactionLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionCodeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorTransactionCodesCommand
-        extends BaseMultipleEntitiesCommand<PaymentProcessorTransactionCode, GetPaymentProcessorTransactionCodesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PaymentProcessorTransactionCode, GetPaymentProcessorTransactionCodesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,27 +63,49 @@ public class GetPaymentProcessorTransactionCodesCommand
     public GetPaymentProcessorTransactionCodesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl;
+
+    @Inject
+    PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+
+    @Inject
+    PaymentProcessorTransactionLogic paymentProcessorTransactionLogic;
+
+    private PaymentProcessorTransaction paymentProcessorTransaction;
+
+    @Override
+    protected void handleForm() {
+        paymentProcessorTransaction = paymentProcessorTransactionLogic.getPaymentProcessorTransactionByName(this, form.getPaymentProcessorTransactionName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : paymentProcessorTransactionCodeControl.countPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction);
+    }
+
     @Override
     protected Collection<PaymentProcessorTransactionCode> getEntities() {
-        Collection<PaymentProcessorTransactionCode> paymentProcessorTransactionCodes = null;
-        var paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByName(this, form.getPaymentProcessorTransactionName());
-
-        if(!hasExecutionErrors()) {
-            var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
-
-            paymentProcessorTransactionCodes = paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction);
-        }
-        return paymentProcessorTransactionCodes;
+        return hasExecutionErrors() ? null : paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction);
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorTransactionCode> entities) {
         var result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
-        var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
-        
-        result.setPaymentProcessorTransactionCodes(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setPaymentProcessorTransaction(paymentProcessorTransactionControl.getPaymentProcessorTransactionTransfer(userVisit, paymentProcessorTransaction));
+
+            if(session.hasLimit(PaymentProcessorTransactionCodeFactory.class)) {
+                result.setPaymentProcessorTransactionCodeCount(getTotalEntities());
+            }
+
+            result.setPaymentProcessorTransactionCodes(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfers(userVisit, entities));
+        }
+
         return result;
     }
     

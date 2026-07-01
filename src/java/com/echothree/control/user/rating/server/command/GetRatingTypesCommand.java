@@ -18,20 +18,25 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.GetRatingTypesForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
+import com.echothree.model.control.core.server.control.ComponentControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.rating.server.entity.RatingType;
+import com.echothree.model.data.rating.server.factory.RatingTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypesCommand
-        extends BaseSimpleCommand<GetRatingTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<RatingType, GetRatingTypesForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -39,40 +44,53 @@ public class GetRatingTypesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetRatingTypesCommand */
     public GetRatingTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private EntityType entityType;
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : ratingControl.countRatingTypesByEntityType(entityType);
+    }
+
+    @Override
+    protected Collection<RatingType> getEntities() {
+        return hasExecutionErrors() ? null : ratingControl.getRatingTypes(entityType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<RatingType> entities) {
         var result = RatingResultFactory.getGetRatingTypesResult();
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
-            
-            if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
-                
-                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
-                result.setRatingTypes(ratingControl.getRatingTypeTransfers(userVisit, entityType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+
+            if(session.hasLimit(RatingTypeFactory.class)) {
+                result.setRatingTypeCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+
+            result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
+            result.setRatingTypes(ratingControl.getRatingTypeTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
-    
+
 }

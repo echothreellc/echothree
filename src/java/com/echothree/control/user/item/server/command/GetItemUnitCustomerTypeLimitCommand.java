@@ -18,19 +18,19 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemUnitCustomerTypeLimitForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemUnitCustomerTypeLimitCommand
@@ -40,12 +40,27 @@ public class GetItemUnitCustomerTypeLimitCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("UnitOfMeasureTypeName", FieldType.PERCENT, true, null, null),
-            new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.PERCENT, true, null, null),
+                new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
         );
     }
+    
+    @Inject
+    ItemControl itemControl;
+    
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+    
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+    
+    @Inject
+    ItemLogic itemLogic;
+    
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
     
     /** Creates a new instance of GetItemUnitCustomerTypeLimitCommand */
     public GetItemUnitCustomerTypeLimitCommand() {
@@ -54,28 +69,24 @@ public class GetItemUnitCustomerTypeLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemUnitCustomerTypeLimitResult();
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
+        var item = itemLogic.getItemByName(this, itemName);
         
-        if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
+        if(!hasExecutionErrors()) {
             var inventoryConditionName = form.getInventoryConditionName();
-            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
             
-            if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
+            if(!hasExecutionErrors()) {
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKind, unitOfMeasureTypeName);
                 
-                if(unitOfMeasureType != null) {
-                    var customerControl = Session.getModelController(CustomerControl.class);
+                if(!hasExecutionErrors()) {
                     var customerTypeName = form.getCustomerTypeName();
-                    var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+                    var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
                     
-                    if(customerType != null) {
+                    if(!hasExecutionErrors()) {
                         var itemUnitCustomerTypeLimit = itemControl.getItemUnitCustomerTypeLimit(item,
                                 inventoryCondition, unitOfMeasureType, customerType);
                         
@@ -85,17 +96,9 @@ public class GetItemUnitCustomerTypeLimitCommand
                             addExecutionError(ExecutionErrors.UnknownItemUnitCustomerTypeLimit.name(), itemName, inventoryConditionName, unitOfMeasureTypeName,
                                     customerTypeName);
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
         
         return result;

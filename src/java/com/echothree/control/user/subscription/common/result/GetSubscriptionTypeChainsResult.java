@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.subscription.common.result;
 
-import com.echothree.model.control.subscription.common.transfer.SubscriptionKindTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeChainTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
@@ -25,13 +24,13 @@ import java.util.List;
 public interface GetSubscriptionTypeChainsResult
         extends BaseResult {
     
-    SubscriptionKindTransfer getSubscriptionKind();
-    void setSubscriptionKind(SubscriptionKindTransfer subscriptionKind);
-    
     SubscriptionTypeTransfer getSubscriptionType();
     void setSubscriptionType(SubscriptionTypeTransfer subscriptionType);
-    
+
+    Long getSubscriptionTypeChainCount();
+    void setSubscriptionTypeChainCount(Long subscriptionTypeChainCount);
+
     List<SubscriptionTypeChainTransfer> getSubscriptionTypeChains();
     void setSubscriptionTypeChains(List<SubscriptionTypeChainTransfer> subscriptionTypeChains);
-    
+
 }

@@ -67,6 +67,14 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.data.chain.common.pk.ChainActionPK;
+import com.echothree.model.data.chain.common.pk.ChainActionSetPK;
+import com.echothree.model.data.chain.common.pk.ChainActionTypePK;
+import com.echothree.model.data.chain.common.pk.ChainEntityRoleTypePK;
+import com.echothree.model.data.chain.common.pk.ChainInstancePK;
+import com.echothree.model.data.chain.common.pk.ChainKindPK;
+import com.echothree.model.data.chain.common.pk.ChainPK;
+import com.echothree.model.data.chain.common.pk.ChainTypePK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
@@ -144,6 +152,7 @@ import com.echothree.model.data.survey.server.entity.Survey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -155,7 +164,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -267,6 +275,29 @@ public class ChainControl
         return chainKind;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainKind */
+    public ChainKind getChainKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainKindPK(entityInstance.getEntityUniqueId());
+
+        return ChainKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainKind getChainKindByEntityInstance(EntityInstance entityInstance) {
+        return getChainKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainKind getChainKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainKinds() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainkinds
+                        JOIN chainkinddetails ON chnkdt_chainkinddetailid = chnk_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getChainKindByNameQueries;
 
     static {
@@ -284,7 +315,7 @@ public class ChainControl
         getChainKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainKind getChainKindByName(String chainKindName, EntityPermission entityPermission) {
+    public ChainKind getChainKindByName(String chainKindName, EntityPermission entityPermission) {
         return ChainKindFactory.getInstance().getEntityFromQuery(entityPermission, getChainKindByNameQueries,
                 chainKindName);
     }
@@ -322,7 +353,7 @@ public class ChainControl
         getDefaultChainKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainKind getDefaultChainKind(EntityPermission entityPermission) {
+    public ChainKind getDefaultChainKind(EntityPermission entityPermission) {
         return ChainKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainKindQueries);
     }
 
@@ -347,7 +378,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainkinds, chainkinddetails "
                 + "WHERE chnk_activedetailid = chnkdt_chainkinddetailid "
-                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname");
+                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainkinds, chainkinddetails "
@@ -406,8 +438,7 @@ public class ChainControl
         return chainKindTransferCache.getChainKindTransfer(userVisit, chainKind);
     }
 
-    public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit) {
-        var chainKinds = getChainKinds();
+    public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit, Collection<ChainKind> chainKinds) {
         List<ChainKindTransfer> chainKindTransfers = new ArrayList<>(chainKinds.size());
 
         chainKinds.forEach((chainKind) ->
@@ -415,6 +446,10 @@ public class ChainControl
         );
 
         return chainKindTransfers;
+    }
+
+    public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit) {
+        return getChainKindTransfers(userVisit, getChainKinds());
     }
 
     private void updateChainKindFromValue(ChainKindDetailValue chainKindDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -550,7 +585,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainkinddescriptions, languages "
                 + "WHERE chnkd_chnk_chainkindid = ? AND chnkd_thrutime = ? AND chnkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainkinddescriptions "
@@ -671,6 +707,30 @@ public class ChainControl
         return chainType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainType */
+    public ChainType getChainTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainTypePK(entityInstance.getEntityUniqueId());
+
+        return ChainTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainType getChainTypeByEntityInstance(EntityInstance entityInstance) {
+        return getChainTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainType getChainTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainTypesByChainKind(final ChainKind chainKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chaintypes
+                        JOIN chaintypedetails ON chntypdt_chaintypedetailid = chntyp_activedetailid
+                        WHERE chntypdt_chnk_chainkindid = ?
+                        """, chainKind);
+    }
+
     private static final Map<EntityPermission, String> getChainTypesByChainKindQueries;
 
     static {
@@ -680,7 +740,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chaintypes, chaintypedetails "
                 + "WHERE chntyp_activedetailid = chntypdt_chaintypedetailid AND chntypdt_chnk_chainkindid = ? "
-                + "ORDER BY chntypdt_sortorder, chntypdt_chaintypename");
+                + "ORDER BY chntypdt_sortorder, chntypdt_chaintypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chaintypes, chaintypedetails "
@@ -712,7 +773,8 @@ public class ChainControl
                 + "FROM chainkinds, chainkinddetails, chaintypes, chaintypedetails "
                 + "WHERE chntyp_activedetailid = chntypdt_chaintypedetailid AND chnertypdt_ent_entitytypeid = ? "
                 + "AND chntypdt_chnk_chainkindid = chnk_chainkindid AND chnk_lastdetailid = chnkdt_chainkinddetailid "
-                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname, chntypdt_sortorder, chntypdt_chaintypename");
+                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname, chntypdt_sortorder, chntypdt_chaintypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chaintypes, chaintypedetails "
@@ -753,7 +815,7 @@ public class ChainControl
         getDefaultChainTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainType getDefaultChainType(ChainKind chainKind, EntityPermission entityPermission) {
+    public ChainType getDefaultChainType(ChainKind chainKind, EntityPermission entityPermission) {
         return ChainTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainTypeQueries,
                 chainKind);
     }
@@ -789,7 +851,7 @@ public class ChainControl
         getChainTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainType getChainTypeByName(ChainKind chainKind, String chainTypeName, EntityPermission entityPermission) {
+    public ChainType getChainTypeByName(ChainKind chainKind, String chainTypeName, EntityPermission entityPermission) {
         return ChainTypeFactory.getInstance().getEntityFromQuery(entityPermission, getChainTypeByNameQueries,
                 chainKind, chainTypeName);
     }
@@ -849,7 +911,10 @@ public class ChainControl
     }
 
     public List<ChainTypeTransfer> getChainTypeTransfersByChainKind(UserVisit userVisit, ChainKind chainKind) {
-        var chainTypes = getChainTypesByChainKind(chainKind);
+        return getChainTypeTransfers(userVisit, getChainTypesByChainKind(chainKind));
+    }
+
+    public List<ChainTypeTransfer> getChainTypeTransfers(UserVisit userVisit, Collection<ChainType> chainTypes) {
         List<ChainTypeTransfer> chainTypeTransfers = new ArrayList<>(chainTypes.size());
 
         chainTypes.forEach((chainType) ->
@@ -1012,7 +1077,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chaintypedescriptions, languages "
                 + "WHERE chntypd_chntyp_chaintypeid = ? AND chntypd_thrutime = ? AND chntypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chaintypedescriptions "
@@ -1122,6 +1188,39 @@ public class ChainControl
         return chainEntityRoleType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainEntityRoleType */
+    public ChainEntityRoleType getChainEntityRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainEntityRoleTypePK(entityInstance.getEntityUniqueId());
+
+        return ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainEntityRoleType getChainEntityRoleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getChainEntityRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainEntityRoleType getChainEntityRoleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainEntityRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainEntityRoleTypesByChainType(final ChainType chainType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainentityroletypes
+                        JOIN chainentityroletypedetails ON chnertypdt_chainentityroletypedetailid = chnertyp_activedetailid
+                        WHERE chnertypdt_chntyp_chaintypeid = ?
+                        """, chainType);
+    }
+
+    public long countChainEntityRoleTypesByEntityType(final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainentityroletypes
+                        JOIN chainentityroletypedetails ON chnertypdt_chainentityroletypedetailid = chnertyp_activedetailid
+                        WHERE chnertypdt_ent_entitytypeid = ?
+                        """, entityType);
+    }
+
     private static final Map<EntityPermission, String> getChainEntityRoleTypesQueries;
 
     static {
@@ -1131,7 +1230,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainentityroletypes, chainentityroletypedetails "
                 + "WHERE chnertyp_activedetailid = chnertypdt_chainentityroletypedetailid AND chnertypdt_chntyp_chaintypeid = ? "
-                + "ORDER BY chnertypdt_sortorder, chnertypdt_chainentityroletypename");
+                + "ORDER BY chnertypdt_sortorder, chnertypdt_chainentityroletypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainentityroletypes, chainentityroletypedetails "
@@ -1315,7 +1415,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainentityroletypedescriptions, languages "
                 + "WHERE chnertypd_chnertyp_chainentityroletypeid = ? AND chnertypd_thrutime = ? AND chnertypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainentityroletypedescriptions "
@@ -1435,6 +1536,39 @@ public class ChainControl
         return chain;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Chain */
+    public Chain getChainByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainPK(entityInstance.getEntityUniqueId());
+
+        return ChainFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Chain getChainByEntityInstance(EntityInstance entityInstance) {
+        return getChainByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Chain getChainByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainsByChainType(final ChainType chainType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chains
+                        JOIN chaindetails ON chndt_chaindetailid = chn_activedetailid
+                        WHERE chndt_chntyp_chaintypeid = ?
+                        """, chainType);
+    }
+
+    public long countChainsByChainInstanceSequence(final Sequence chainInstanceSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chains
+                        JOIN chaindetails ON chndt_chaindetailid = chn_activedetailid
+                        WHERE chndt_chaininstancesequenceid = ?
+                        """, chainInstanceSequence);
+    }
+
     private static final Map<EntityPermission, String> getChainsByChainTypeQueries;
 
     static {
@@ -1444,7 +1578,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chains, chaindetails "
                 + "WHERE chn_activedetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ? "
-                + "ORDER BY chndt_sortorder, chndt_chainname");
+                + "ORDER BY chndt_sortorder, chndt_chainname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chains, chaindetails "
@@ -1477,7 +1612,8 @@ public class ChainControl
                 + "WHERE chn_activedetailid = chndt_chaindetailid AND chndt_chaininstancesequenceid = ? "
                 + "AND chndt_chntyp_chaintypeid = chntyp_chaintypeid AND chntyp_lastdetailid = chntypdt_chaintypedetailid "
                 + "AND chntypdt_chnk_chainkindid = chnk_chainkindid AND chnk_lastdetailid = chnkdt_chainkinddetailid "
-                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname, chntypdt_sortorder, chntypdt_chaintypename, chndt_sortorder, chndt_chainname");
+                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname, chntypdt_sortorder, chntypdt_chaintypename, chndt_sortorder, chndt_chainname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chains, chaindetails "
@@ -1518,7 +1654,7 @@ public class ChainControl
         getDefaultChainQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Chain getDefaultChain(ChainType chainType, EntityPermission entityPermission) {
+    public Chain getDefaultChain(ChainType chainType, EntityPermission entityPermission) {
         return ChainFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainQueries,
                 chainType);
     }
@@ -1554,7 +1690,7 @@ public class ChainControl
         getChainByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Chain getChainByName(ChainType chainType, String chainName, EntityPermission entityPermission) {
+    public Chain getChainByName(ChainType chainType, String chainName, EntityPermission entityPermission) {
         return ChainFactory.getInstance().getEntityFromQuery(entityPermission, getChainByNameQueries,
                 chainType, chainName);
     }
@@ -1783,7 +1919,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chaindescriptions, languages "
                 + "WHERE chnd_chn_chainid = ? AND chnd_thrutime = ? AND chnd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chaindescriptions "
@@ -1903,6 +2040,30 @@ public class ChainControl
         return chainActionSet;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainActionSet */
+    public ChainActionSet getChainActionSetByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainActionSetPK(entityInstance.getEntityUniqueId());
+
+        return ChainActionSetFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainActionSet getChainActionSetByEntityInstance(EntityInstance entityInstance) {
+        return getChainActionSetByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainActionSet getChainActionSetByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainActionSetByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainActionSetsByChain(final Chain chain) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionsets
+                        JOIN chainactionsetdetails ON chnactstdt_chainactionsetdetailid = chnactst_activedetailid
+                        WHERE chnactstdt_chn_chainid = ?
+                        """, chain);
+    }
+
     private static final Map<EntityPermission, String> getChainActionSetsByChainQueries;
 
     static {
@@ -1912,7 +2073,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactionsets, chainactionsetdetails "
                 + "WHERE chnactst_activedetailid = chnactstdt_chainactionsetdetailid AND chnactstdt_chn_chainid = ? "
-                + "ORDER BY chnactstdt_sortorder, chnactstdt_chainactionsetname");
+                + "ORDER BY chnactstdt_sortorder, chnactstdt_chainactionsetname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactionsets, chainactionsetdetails "
@@ -1953,7 +2115,7 @@ public class ChainControl
         getDefaultChainActionSetQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainActionSet getDefaultChainActionSet(Chain chain, EntityPermission entityPermission) {
+    public ChainActionSet getDefaultChainActionSet(Chain chain, EntityPermission entityPermission) {
         return ChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainActionSetQueries,
                 chain);
     }
@@ -1989,7 +2151,7 @@ public class ChainControl
         getChainActionSetByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainActionSet getChainActionSetByName(Chain chain, String chainActionSetName, EntityPermission entityPermission) {
+    public ChainActionSet getChainActionSetByName(Chain chain, String chainActionSetName, EntityPermission entityPermission) {
         return ChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionSetByNameQueries,
                 chain, chainActionSetName);
     }
@@ -2206,7 +2368,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactionsetdescriptions, languages "
                 + "WHERE chnactstd_chnactst_chainactionsetid = ? AND chnactstd_thrutime = ? AND chnactstd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactionsetdescriptions "
@@ -2295,7 +2458,7 @@ public class ChainControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Chain ActionTypes
+    //   Chain Action Types
     // --------------------------------------------------------------------------------
 
     public ChainActionType createChainActionType(String chainActionTypeName, Boolean allowMultiple, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -2327,6 +2490,29 @@ public class ChainControl
         return chainActionType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainActionType */
+    public ChainActionType getChainActionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainActionTypePK(entityInstance.getEntityUniqueId());
+
+        return ChainActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainActionType getChainActionTypeByEntityInstance(EntityInstance entityInstance) {
+        return getChainActionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainActionType getChainActionTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainActionTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactiontypes
+                        JOIN chainactiontypedetails ON chnacttypdt_chainactiontypedetailid = chnacttyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getChainActionTypeByNameQueries;
 
     static {
@@ -2344,7 +2530,7 @@ public class ChainControl
         getChainActionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainActionType getChainActionTypeByName(String chainActionTypeName, EntityPermission entityPermission) {
+    public ChainActionType getChainActionTypeByName(String chainActionTypeName, EntityPermission entityPermission) {
         return ChainActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionTypeByNameQueries,
                 chainActionTypeName);
     }
@@ -2382,7 +2568,7 @@ public class ChainControl
         getDefaultChainActionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainActionType getDefaultChainActionType(EntityPermission entityPermission) {
+    public ChainActionType getDefaultChainActionType(EntityPermission entityPermission) {
         return ChainActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainActionTypeQueries);
     }
 
@@ -2407,7 +2593,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactiontypes, chainactiontypedetails "
                 + "WHERE chnacttyp_activedetailid = chnacttypdt_chainactiontypedetailid "
-                + "ORDER BY chnacttypdt_sortorder, chnacttypdt_chainactiontypename");
+                + "ORDER BY chnacttypdt_sortorder, chnacttypdt_chainactiontypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactiontypes, chainactiontypedetails "
@@ -2466,8 +2653,7 @@ public class ChainControl
         return chainActionTypeTransferCache.getChainActionTypeTransfer(userVisit, chainActionType);
     }
 
-    public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit) {
-        var chainActionTypes = getChainActionTypes();
+    public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit, Collection<ChainActionType> chainActionTypes) {
         List<ChainActionTypeTransfer> chainActionTypeTransfers = new ArrayList<>(chainActionTypes.size());
 
         chainActionTypes.forEach((chainActionType) ->
@@ -2475,6 +2661,10 @@ public class ChainControl
         );
 
         return chainActionTypeTransfers;
+    }
+
+    public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit) {
+        return getChainActionTypeTransfers(userVisit, getChainActionTypes());
     }
 
     private void updateChainActionTypeFromValue(ChainActionTypeDetailValue chainActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -2550,7 +2740,7 @@ public class ChainControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Chain ActionType Descriptions
+    //   Chain Action Type Descriptions
     // --------------------------------------------------------------------------------
 
     public ChainActionTypeDescription createChainActionTypeDescription(ChainActionType chainActionType, Language language, String description,
@@ -2610,7 +2800,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactiontypedescriptions, languages "
                 + "WHERE chnacttypd_chnacttyp_chainactiontypeid = ? AND chnacttypd_thrutime = ? AND chnacttypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactiontypedescriptions "
@@ -2706,7 +2897,23 @@ public class ChainControl
             Boolean isDefault) {
         return ChainActionTypeUseFactory.getInstance().create(chainKind, chainActionType, isDefault);
     }
-    
+
+    public long countChainActionTypeUsesByChainKind(final ChainKind chainKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactiontypeuses
+                        WHERE chnacttypu_chnk_chainkindid = ?
+                        """, chainKind);
+    }
+
+    public long countChainActionTypeUsesByChainActionType(final ChainActionType chainActionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactiontypeuses
+                        WHERE chnacttypu_chnacttyp_chainactiontypeid = ?
+                        """, chainActionType);
+    }
+
     public ChainActionTypeUse getChainActionTypeUse(ChainKind chainKind, ChainActionType chainActionType) {
         ChainActionTypeUse chainActionTypeUse;
         
@@ -2746,6 +2953,39 @@ public class ChainControl
         sendEvent(chainAction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return chainAction;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainAction */
+    public ChainAction getChainActionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainActionPK(entityInstance.getEntityUniqueId());
+
+        return ChainActionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainAction getChainActionByEntityInstance(EntityInstance entityInstance) {
+        return getChainActionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainAction getChainActionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainActionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainActionsByChainActionSet(final ChainActionSet chainActionSet) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactions
+                        JOIN chainactiondetails ON chnactdt_chainactiondetailid = chnact_activedetailid
+                        WHERE chnactdt_chnactst_chainactionsetid = ?
+                        """, chainActionSet);
+    }
+
+    public long countChainActionsByChainActionType(final ChainActionType chainActionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactions
+                        JOIN chainactiondetails ON chnactdt_chainactiondetailid = chnact_activedetailid
+                        WHERE chnactdt_chnacttyp_chainactiontypeid = ?
+                        """, chainActionType);
     }
 
     private static final Map<EntityPermission, String> getChainActionByNameQueries;
@@ -2795,7 +3035,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactions, chainactiondetails "
                 + "WHERE chnact_activedetailid = chnactdt_chainactiondetailid AND chnactdt_chnactst_chainactionsetid = ? "
-                + "ORDER BY chnactdt_sortorder, chnactdt_chainactionname");
+                + "ORDER BY chnactdt_sortorder, chnactdt_chainactionname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactions, chainactiondetails "
@@ -2948,7 +3189,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactiondescriptions, languages "
                 + "WHERE chnactd_chnact_chainactionid = ? AND chnactd_thrutime = ? AND chnactd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactiondescriptions "
@@ -3049,6 +3291,22 @@ public class ChainControl
         return chainActionLetter;
     }
 
+    public long countChainActionSetsByChainAction(final ChainAction chainAction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionletters
+                        WHERE chnactlttr_chnact_chainactionid = ? AND chnactlttr_thrutime = ?
+                        """, chainAction, Session.MAX_TIME);
+    }
+
+    public long countChainActionSetsByLetter(final Letter letter) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionletters
+                        WHERE chnactlttr_lttr_letterid = ? AND chnactlttr_thrutime = ?
+                        """, letter, Session.MAX_TIME);
+    }
+
     private ChainActionLetter getChainActionLetter(ChainAction chainAction, EntityPermission entityPermission) {
         ChainActionLetter chainActionLetter;
 
@@ -3127,7 +3385,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Action Surveys
     // --------------------------------------------------------------------------------
-    
+
     public ChainActionSurvey createChainActionSurvey(ChainAction chainAction, Survey survey, BasePK createdBy) {
         var chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction, survey, session.getStartTime(),
                 Session.MAX_TIME);
@@ -3135,6 +3393,22 @@ public class ChainControl
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return chainActionSurvey;
+    }
+
+    public long countChainActionSurverysByChainAction(final ChainAction chainAction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionsurveys
+                        WHERE chnactsrvy_chnact_chainactionid = ? AND chnactsrvy_thrutime = ?
+                        """, chainAction, Session.MAX_TIME);
+    }
+
+    public long countChainActionSurverysBySurvey(final Survey survey) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionsurveys
+                        WHERE chnactsrvy_srvy_surveyid = ? AND chnactsrvy_thrutime = ?
+                        """, survey, Session.MAX_TIME);
     }
 
     private ChainActionSurvey getChainActionSurvey(ChainAction chainAction, EntityPermission entityPermission) {
@@ -3223,6 +3497,22 @@ public class ChainControl
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return chainActionChainActionSet;
+    }
+
+    public long countChainActionChainActionSetsByChainAction(final ChainAction chainAction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionchainactionsets
+                        WHERE chnactchnactst_chnact_chainactionid = ? AND chnactchnactst_thrutime = ?
+                        """, chainAction, Session.MAX_TIME);
+    }
+
+    public long countChainActionChainActionSetsByNextChainAction(final ChainAction nextChainActionSet) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactionchainactionsets
+                        WHERE chnactchnactst_nextchainactionsetid = ? AND chnactchnactst_thrutime = ?
+                        """, nextChainActionSet, Session.MAX_TIME);
     }
 
     private ChainActionChainActionSet getChainActionChainActionSet(ChainAction chainAction, EntityPermission entityPermission) {
@@ -3325,6 +3615,30 @@ public class ChainControl
         return chainInstance;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainInstance */
+    public ChainInstance getChainInstanceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainInstancePK(entityInstance.getEntityUniqueId());
+
+        return ChainInstanceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainInstance getChainInstanceByEntityInstance(EntityInstance entityInstance) {
+        return getChainInstanceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainInstance getChainInstanceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainInstanceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainInstancesByChain(final Chain chain) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chaininstances
+                        JOIN chaininstancedetails ON chnidt_chaininstancedetailid = chni_activedetailid
+                        WHERE chnidt_chn_chainid = ?
+                        """, chain);
+    }
+
     public boolean isChainInstanceUsed(ChainInstance chainInstance) {
         var letterControl = Session.getModelController(LetterControl.class);
 
@@ -3386,7 +3700,8 @@ public class ChainControl
                 query = "SELECT _ALL_ " +
                         "FROM chaininstances, chaininstancedetails " +
                         "WHERE chni_activedetailid = chnidt_chaininstancedetailid AND chnidt_chn_chainid = ? " +
-                        "ORDER BY chnidt_chaininstancename";
+                        "ORDER BY chnidt_chaininstancename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM chaininstances, chaininstancedetails " +
@@ -3529,7 +3844,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chaininstancestatuses "
                 + "WHERE chnist_nextchainactionsetid = ? "
-                + "ORDER BY chnist_nextchainactionsettime");
+                + "ORDER BY chnist_nextchainactionsettime " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chaininstancestatuses "
@@ -3560,7 +3876,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chaininstancestatuses "
                 + "WHERE chnist_nextchainactionsettime < ? "
-                + "ORDER BY chnist_nextchainactionsettime");
+                + "ORDER BY chnist_nextchainactionsettime " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chaininstancestatuses "
@@ -3678,7 +3995,8 @@ public class ChainControl
                 query = "SELECT _ALL_ " +
                         "FROM chaininstanceentityroles " +
                         "WHERE chnier_chnertyp_chainentityroletypeid = ? AND chnier_eni_entityinstanceid = ? AND chnier_thrutime = ? " +
-                        "ORDER BY chnier_chni_chaininstanceid"; // TODO: this isn't quite right
+                        "ORDER BY chnier_chni_chaininstanceid " + // TODO: this isn't quite right
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM chaininstanceentityroles " +
@@ -3721,7 +4039,8 @@ public class ChainControl
                         + "WHERE chnier_chni_chaininstanceid = ? AND chnier_thrutime = ? "
                         + "AND chnier_chnertyp_chainentityroletypeid = chnertyp_chainentityroletypeid "
                         + "AND chnertyp_lastdetailid = chnertypdt_chainentityroletypedetailid "
-                        + "ORDER BY chnertypdt_sortorder, chnertypdt_chainentityroletypename";
+                        + "ORDER BY chnertypdt_sortorder, chnertypdt_chainentityroletypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM chaininstanceentityroles "
@@ -3761,7 +4080,8 @@ public class ChainControl
                 query = "SELECT _ALL_ " +
                         "FROM chaininstanceentityroles " +
                         "WHERE chnier_chnertyp_chainentityroletypeid = ? AND chnier_thrutime = ? " +
-                        "ORDER BY chnier_chaininstanceentityroleid"; // TODO: this should probably be ordered by something else
+                        "ORDER BY chnier_chaininstanceentityroleid " + // TODO: this should probably be ordered by something else
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM chaininstanceentityroles " +
@@ -3800,7 +4120,8 @@ public class ChainControl
                 query = "SELECT _ALL_ " +
                         "FROM chaininstanceentityroles " +
                         "WHERE chnier_eni_entityinstanceid = ? AND chnier_thrutime = ? " +
-                        "ORDER BY chnier_chaininstanceentityroleid"; // TODO: this should probably be ordered by something else
+                        "ORDER BY chnier_chaininstanceentityroleid " + // TODO: this should probably be ordered by something else
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM chaininstanceentityroles " +

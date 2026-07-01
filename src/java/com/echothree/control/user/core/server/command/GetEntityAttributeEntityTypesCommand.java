@@ -18,24 +18,31 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityAttributeEntityType;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.factory.EntityAttributeEntityTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeEntityTypesCommand
-        extends BaseSimpleCommand<GetEntityAttributeEntityTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityAttributeEntityType, GetEntityAttributeEntityTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,8 +52,8 @@ public class GetEntityAttributeEntityTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttributeEntityType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
@@ -54,58 +61,51 @@ public class GetEntityAttributeEntityTypesCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowedComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowedEntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null)
-                );
+        );
     }
     
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetEntityAttributeEntityTypesCommand */
     public GetEntityAttributeEntityTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private EntityAttribute entityAttribute;
+    private EntityType allowedEntityType;
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEntityAttributeEntityTypesResult();
+    protected void handleForm() {
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var entityAttributeName = form.getEntityAttributeName();
         var allowedComponentVendorName = form.getAllowedComponentVendorName();
         var allowedEntityTypeName = form.getAllowedEntityTypeName();
-        var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null && allowedComponentVendorName != null && allowedEntityTypeName != null ? 0 : 1)
-                + (componentVendorName != null && entityTypeName != null && entityAttributeName != null && allowedComponentVendorName == null && allowedEntityTypeName == null ? 0 : 1);
+        var parameterCount = (componentVendorName != null && entityTypeName != null && entityAttributeName != null && allowedComponentVendorName == null && allowedEntityTypeName == null ? 1 : 0)
+                + (componentVendorName == null && entityTypeName == null && entityAttributeName == null && allowedComponentVendorName != null && allowedEntityTypeName != null ? 1 : 0);
 
         if(parameterCount == 1) {
-
             if(componentVendorName != null) {
-                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
+                var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
 
-                if(componentVendor != null) {
-                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
+                if(entityType != null) {
+                    entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, entityType, entityAttributeName);
 
-                    if(entityType != null) {
-                        var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-
-                        if(entityAttribute != null) {
-                            result.setEntityAttribute(coreControl.getEntityAttributeTransfer(getUserVisit(), entityAttribute, null));
-                            result.setEntityAttributeEntityTypes(coreControl.getEntityAttributeEntityTypeTransfersByEntityAttribute(getUserVisit(), entityAttribute, null));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityAttributeName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
+                    if(entityAttribute == null) {
+                        addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityAttributeName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
                 var allowedComponentVendor = componentControl.getComponentVendorByName(allowedComponentVendorName);
 
                 if(allowedComponentVendor != null) {
-                    var allowedEntityType = entityTypeControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                    allowedEntityType = entityTypeControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
-                    if(allowedEntityType != null) {
-                        result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), allowedEntityType));
-                        result.setEntityAttributeEntityTypes(coreControl.getEntityAttributeEntityTypeTransfersByAllowedEntityType(getUserVisit(), allowedEntityType, null));
-                    } else {
+                    if(allowedEntityType == null) {
                         addExecutionError(ExecutionErrors.UnknownAllowedEntityTypeName.name(), allowedComponentVendorName, allowedEntityTypeName);
                     }
                 } else {
@@ -115,7 +115,44 @@ public class GetEntityAttributeEntityTypesCommand
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null :
+                entityAttribute != null ? coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) :
+                        coreControl.countEntityAttributeEntityTypesByAllowedEntityType(allowedEntityType);
+    }
+
+    @Override
+    protected Collection<EntityAttributeEntityType> getEntities() {
+        return hasExecutionErrors() ? null :
+                entityAttribute != null ? coreControl.getEntityAttributeEntityTypesByEntityAttribute(entityAttribute) :
+                        coreControl.getEntityAttributeEntityTypesByAllowedEntityType(allowedEntityType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<EntityAttributeEntityType> entities) {
+        var result = CoreResultFactory.getGetEntityAttributeEntityTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(entityAttribute != null) {
+                result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
+            }
+
+            if(allowedEntityType != null) {
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, allowedEntityType));
+            }
+
+            if(session.hasLimit(EntityAttributeEntityTypeFactory.class)) {
+                result.setEntityAttributeEntityTypeCount(getTotalEntities());
+            }
+
+            result.setEntityAttributeEntityTypes(coreControl.getEntityAttributeEntityTypeTransfers(userVisit, entities, null));
+        }
+
         return result;
     }
     

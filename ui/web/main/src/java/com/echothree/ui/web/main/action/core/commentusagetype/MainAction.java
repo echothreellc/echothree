@@ -64,16 +64,8 @@ public class MainAction
             var commandResult = CommentUtil.getHome().getCommentUsageTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
             var result = (GetCommentUsageTypesResult)executionResult.getResult();
-            var componentVendorTransfer = result.getComponentVendor();
-            var entityTypeTransfer = result.getEntityType();
-            var commentTypeTransfer = result.getCommentType();
-            
-            request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
-            request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());
-            request.setAttribute(AttributeConstants.ENTITY_TYPE, entityTypeTransfer);
-            request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeTransfer.getEntityTypeName());
-            request.setAttribute(AttributeConstants.COMMENT_TYPE, commentTypeTransfer);
-            request.setAttribute(AttributeConstants.COMMENT_TYPE_NAME, commentTypeTransfer.getCommentTypeName());
+
+            request.setAttribute(AttributeConstants.COMMENT_TYPE, result.getCommentType());
             request.setAttribute(AttributeConstants.COMMENT_USAGE_TYPES, result.getCommentUsageTypes());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {

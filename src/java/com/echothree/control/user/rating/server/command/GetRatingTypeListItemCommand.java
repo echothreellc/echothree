@@ -20,15 +20,14 @@ import com.echothree.control.user.rating.common.form.GetRatingTypeListItemForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.rating.server.logic.RatingTypeListItemLogic;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypeListItemCommand
@@ -42,9 +41,15 @@ public class GetRatingTypeListItemCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    RatingTypeListItemLogic ratingTypeListItemLogic;
+
     /** Creates a new instance of GetRatingTypeListItemCommand */
     public GetRatingTypeListItemCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -54,38 +59,17 @@ public class GetRatingTypeListItemCommand
     protected BaseResult execute() {
         var result = RatingResultFactory.getGetRatingTypeListItemResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
-                var ratingTypeName = form.getRatingTypeName();
-                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
-                
-                if(ratingType != null) {
-                    var ratingTypeListItemName = form.getRatingTypeListItemName();
-                    var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
-                    
-                    if(ratingTypeListItem != null) {
-                        result.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(getUserVisit(), ratingTypeListItem));
+        var entityTypeName = form.getEntityTypeName();
+        var ratingTypeName = form.getRatingTypeName();
+        var ratingTypeListItemName = form.getRatingTypeListItemName();
+        var ratingTypeListItem = ratingTypeListItemLogic.getRatingTypeListItemByName(this, componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName);
 
-                        sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownRatingTypeListItemName.name(), ratingTypeListItemName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+        if(!hasExecutionErrors()) {
+            result.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(getUserVisit(), ratingTypeListItem));
+
+            sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
         return result;
     }
     

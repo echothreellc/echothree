@@ -23,7 +23,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -31,7 +30,6 @@ import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -493,11 +491,12 @@ public abstract class BaseCommand
         session = null;
     }
 
-    public Future<CommandResult> runAsync(UserVisitPK userVisitPK) {
+    public <R extends BaseResult> Future<CommandResult<R>> runAsync(UserVisitPK userVisitPK) {
         return new AsyncResult<>(run(userVisitPK));
     }
 
-    public CommandResult run(UserVisitPK userVisitPK)
+    @SuppressWarnings("unchecked")
+    public <R extends BaseResult> CommandResult<R> run(UserVisitPK userVisitPK)
             throws BaseException {
         if(ControlDebugFlags.LogBaseCommands) {
             log.info(">>> run()");
@@ -514,8 +513,8 @@ public abstract class BaseCommand
 
         SecurityResult securityResult;
         ValidationResult validationResult = null;
-        ExecutionResult executionResult;
-        CommandResult commandResult;
+        ExecutionResult<R> executionResult;
+        CommandResult<R> commandResult;
 
         try {
             BaseResult baseResult = null;
@@ -535,7 +534,7 @@ public abstract class BaseCommand
 //                addExecutionError(ExecutionErrors.LicenseCheckFailed.name());
 //            }
 
-            executionResult = new ExecutionResult(executionWarnings, executionErrors, baseResult == null ? getBaseResultAfterErrors() : baseResult);
+            executionResult = new ExecutionResult<>(executionWarnings, executionErrors, (R)(baseResult == null ? getBaseResultAfterErrors() : baseResult));
 
             // Don't waste time getting the preferredLanguage if we don't need to.
             if((securityResult != null && securityResult.getHasMessages())
@@ -614,7 +613,7 @@ public abstract class BaseCommand
         }
 
         // The Session for this Thread must NOT be utilized by anything after teardownSession() has been called.
-        commandResult = new CommandResult(securityResult, validationResult, executionResult);
+        commandResult = new CommandResult<>(securityResult, validationResult, executionResult);
 
         if(commandResult.hasSecurityMessages() || commandResult.hasValidationErrors()) {
             getLog().info("commandResult = " + commandResult);

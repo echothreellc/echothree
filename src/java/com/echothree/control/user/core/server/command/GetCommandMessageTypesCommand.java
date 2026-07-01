@@ -18,24 +18,24 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandMessageTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.CommandMessageType;
+import com.echothree.model.data.core.server.factory.CommandMessageTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetCommandMessageTypesCommand
-        extends BaseSimpleCommand<GetCommandMessageTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CommandMessageType, GetCommandMessageTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,11 +45,10 @@ public class GetCommandMessageTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CommandMessageType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetCommandMessageTypesCommand */
@@ -58,12 +57,32 @@ public class GetCommandMessageTypesCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var commandControl = Session.getModelController(CommandControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return commandControl.countCommandMessageTypes();
+    }
+
+    @Override
+    protected Collection<CommandMessageType> getEntities() {
+        return commandControl.getCommandMessageTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CommandMessageType> entities) {
         var result = CoreResultFactory.getGetCommandMessageTypesResult();
-        
-        result.setCommandMessageTypes(commandControl.getCommandMessageTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(CommandMessageTypeFactory.class)) {
+                result.setCommandMessageTypeCount(getTotalEntities());
+            }
+
+            result.setCommandMessageTypes(commandControl.getCommandMessageTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

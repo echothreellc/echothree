@@ -26,8 +26,11 @@ public interface GetAppearanceTextDecorationsResult
     
     AppearanceTransfer getAppearance();
     void setAppearance(AppearanceTransfer appearance);
-    
+
+    Long getAppearanceTextDecorationCount();
+    void setAppearanceTextDecorationCount(Long appearanceTextDecorationCount);
+
     List<AppearanceTextDecorationTransfer> getAppearanceTextDecorations();
     void setAppearanceTextDecorations(List<AppearanceTextDecorationTransfer> appearanceTextDecorations);
-    
+
 }

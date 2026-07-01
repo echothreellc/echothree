@@ -33,6 +33,7 @@ import com.echothree.model.data.core.server.factory.CacheEntryFactory;
 import com.echothree.model.data.core.server.value.CacheEntryDependencyValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class CacheEntryControl
@@ -80,9 +80,10 @@ public class CacheEntryControl
     }
 
     public long countCacheEntries() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM cacheentries");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cacheentries
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCacheEntryByCacheEntryKeyQueries;
@@ -90,15 +91,17 @@ public class CacheEntryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM cacheentries " +
-                        "WHERE cent_cacheentrykey = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM cacheentries " +
-                        "WHERE cent_cacheentrykey = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM cacheentries
+                        WHERE cent_cacheentrykey = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM cacheentries
+                        WHERE cent_cacheentrykey = ?
+                        FOR UPDATE
+                        """);
         getCacheEntryByCacheEntryKeyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -120,15 +123,17 @@ public class CacheEntryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM cacheentries " +
-                        "ORDER BY cent_cacheentrykey " +
-                        "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM cacheentries " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM cacheentries
+                        ORDER BY cent_cacheentrykey
+                        _LIMIT_
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM cacheentries
+                        FOR UPDATE
+                        """);
         getCacheEntriesByCacheEntryKeyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -195,12 +200,12 @@ public class CacheEntryControl
         final var instance = CacheEntryFactory.getInstance();
 
         return instance.getPKsFromQueryAsList(
-                instance.prepareStatement(
-                        "SELECT _PK_ "
-                                + "FROM cacheentrydependencies, cacheentries "
-                                + "WHERE centd_eni_entityinstanceid = ? "
-                                + "AND centd_cent_cacheentryid = cent_cacheentryid"),
-                entityInstance);
+                instance.prepareStatement("""
+                                SELECT _PK_
+                                FROM cacheentrydependencies, cacheentries
+                                WHERE centd_eni_entityinstanceid = ?
+                                AND centd_cent_cacheentryid = cent_cacheentryid
+                                """), entityInstance);
     }
 
     public void removeCacheEntriesByEntityInstance(final EntityInstance entityInstance) {
@@ -220,15 +225,17 @@ public class CacheEntryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM cacheclobentries " +
-                        "WHERE ccent_cent_cacheentryid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM cacheclobentries " +
-                        "WHERE ccent_cent_cacheentryid = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM cacheclobentries
+                        WHERE ccent_cent_cacheentryid = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM cacheclobentries
+                        WHERE ccent_cent_cacheentryid = ?
+                        FOR UPDATE
+                        """);
         getCacheClobEntryByCacheEntryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -258,15 +265,17 @@ public class CacheEntryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM cacheblobentries " +
-                        "WHERE ccent_cent_cacheentryid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM cacheblobentries " +
-                        "WHERE ccent_cent_cacheentryid = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM cacheblobentries
+                        WHERE ccent_cent_cacheentryid = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM cacheblobentries
+                        WHERE ccent_cent_cacheentryid = ?
+                        FOR UPDATE
+                        """);
         getCacheBlobEntryByCacheEntryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -302,6 +311,22 @@ public class CacheEntryControl
         CacheEntryDependencyFactory.getInstance().create(cacheEntryDependencyValues);
     }
 
+    public long countCacheEntryDependenciesByCacheEntry(final CacheEntry cacheEntry) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cacheentrydependencies
+                        WHERE centd_cent_cacheentryid = ?
+                        """, cacheEntry);
+    }
+
+    public long countCacheEntryDependenciesByEntityInstance(final EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cacheentrydependencies
+                        WHERE centd_eni_entityinstanceid = ?
+                        """, entityInstance);
+    }
+
     public CacheEntryDependency createCacheEntryDependency(CacheEntry cacheEntry, EntityInstance entityInstance) {
         return CacheEntryDependencyFactory.getInstance().create(cacheEntry, entityInstance);
     }
@@ -311,17 +336,19 @@ public class CacheEntryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM cacheentrydependencies, cacheentries "
-                        + "WHERE centd_eni_entityinstanceid = ? "
-                        + "AND centd_cent_cacheentryid = cent_cacheentryid "
-                        + "ORDER BY cent_cacheentrykey");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM cacheentrydependencies "
-                        + "WHERE centd_eni_entityinstanceid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM cacheentrydependencies, cacheentries
+                        WHERE centd_eni_entityinstanceid = ?
+                        AND centd_cent_cacheentryid = cent_cacheentryid
+                        ORDER BY cent_cacheentrykey
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM cacheentrydependencies
+                        WHERE centd_eni_entityinstanceid = ?
+                        FOR UPDATE
+                        """);
         getCacheEntryDependenciesByEntityInstanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -343,19 +370,21 @@ public class CacheEntryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM cacheentrydependencies, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails "
-                        + "WHERE centd_cent_cacheentryid = ? "
-                        + "AND centd_eni_entityinstanceid = eni_entityinstanceid "
-                        + "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid "
-                        + "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid "
-                        + "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM cacheentrydependencies "
-                        + "WHERE centd_cent_cacheentryid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM cacheentrydependencies, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                        WHERE centd_cent_cacheentryid = ?
+                        AND centd_eni_entityinstanceid = eni_entityinstanceid
+                        AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                        ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM cacheentrydependencies
+                        WHERE centd_cent_cacheentryid = ?
+                        FOR UPDATE
+                        """);
         getCacheEntryDependenciesByCacheEntryQueries = Collections.unmodifiableMap(queryMap);
     }
 

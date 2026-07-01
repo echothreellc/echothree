@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryAdjustmentTypeSteps implements En {
 
     public InventoryAdjustmentTypeSteps() {
-        When("^the user begins entering a new inventory adjustment type",
+        When("^the user begins entering a new inventory adjustment type$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -59,7 +59,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.createInventoryAdjustmentTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory adjustment type",
+        When("^the user begins deleting an inventory adjustment type$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.inventoryAdjustmentTypeSpec = InventoryUtil.getHome().getInventoryAdjustmentTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory adjustment type",
+        When("^the user begins editing the inventory adjustment type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryAdjustmentTypeSpec;

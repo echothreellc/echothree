@@ -26,6 +26,9 @@ public interface GetPeriodTypesResult
     
     PeriodKindTransfer getPeriodKind();
     void setPeriodKind(PeriodKindTransfer periodKind);
+
+    Long getPeriodTypeCount();
+    void setPeriodTypeCount(Long periodTypeCount);
     
     List<PeriodTypeTransfer> getPeriodTypes();
     void setPeriodTypes(List<PeriodTypeTransfer> periodTypes);

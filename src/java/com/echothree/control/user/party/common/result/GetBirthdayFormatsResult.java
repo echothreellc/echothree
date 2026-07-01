@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetBirthdayFormatsResult
         extends BaseResult {
-    
+
+    Long getBirthdayFormatCount();
+    void setBirthdayFormatCount(Long birthdayFormatCount);
+
     List<BirthdayFormatTransfer> getBirthdayFormats();
     void setBirthdayFormats(List<BirthdayFormatTransfer> birthdayFormats);
-    
+
 }

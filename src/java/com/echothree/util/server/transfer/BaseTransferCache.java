@@ -415,6 +415,10 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     protected EntityInstance setupComments(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance,
             final V transfer, final String commentTypeName) {
+        if(commentedEntityInstance == null) {
+            commentedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
+        }
+
         var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(), commentTypeName);
 
         return setupComments(userVisit, commentedEntity, commentedEntityInstance, transfer, commentType);
@@ -449,6 +453,10 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance,
             final V transfer, final String ratingTypeName) {
+        if(ratedEntityInstance == null) {
+            ratedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
+        }
+
         var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(), ratingTypeName);
 
         return setupRatings(userVisit, ratedEntity, ratedEntityInstance, transfer, ratingType);

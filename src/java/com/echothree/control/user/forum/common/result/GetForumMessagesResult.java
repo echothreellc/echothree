@@ -17,13 +17,20 @@
 package com.echothree.control.user.forum.common.result;
 
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetForumMessagesResult
         extends BaseResult {
-    
+
+    ForumThreadTransfer getForumThread();
+    void setForumThread(ForumThreadTransfer forumThread);
+
+    Long getForumMessageCount();
+    void setForumMessageCount(Long forumMessageCount);
+
     List<ForumMessageTransfer> getForumMessages();
     void setForumMessages(List<ForumMessageTransfer> forumMessages);
-    
+
 }

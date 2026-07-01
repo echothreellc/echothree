@@ -22,6 +22,9 @@ import java.util.List;
 
 public interface GetGendersResult
         extends BaseResult {
+
+    Long getGenderCount();
+    void setGenderCount(Long genderCount);
     
     List<GenderTransfer> getGenders();
     void setGenders(List<GenderTransfer> genders);

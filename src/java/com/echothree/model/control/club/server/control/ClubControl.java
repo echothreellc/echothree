@@ -27,6 +27,7 @@ import com.echothree.model.control.club.server.transfer.ClubItemTypeTransferCach
 import com.echothree.model.control.club.server.transfer.ClubTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.club.common.pk.ClubPK;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.model.data.club.server.entity.ClubItem;
@@ -41,6 +42,7 @@ import com.echothree.model.data.club.server.factory.ClubItemTypeFactory;
 import com.echothree.model.data.club.server.value.ClubDescriptionValue;
 import com.echothree.model.data.club.server.value.ClubDetailValue;
 import com.echothree.model.data.club.server.value.ClubItemValue;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
@@ -48,6 +50,7 @@ import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -56,7 +59,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -118,6 +120,21 @@ public class ClubControl
         return club;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Club */
+    public Club getClubByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ClubPK(entityInstance.getEntityUniqueId());
+
+        return ClubFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Club getClubByEntityInstance(EntityInstance entityInstance) {
+        return getClubByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Club getClubByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getClubByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countClubs() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -148,7 +165,8 @@ public class ClubControl
             query = "SELECT _ALL_ " +
                     "FROM clubs, clubdetails " +
                     "WHERE clb_activedetailid = clbdt_clubdetailid " +
-                    "ORDER BY clbdt_sortorder, clbdt_clubname";
+                    "ORDER BY clbdt_sortorder, clbdt_clubname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM clubs, clubdetails " +
@@ -200,7 +218,7 @@ public class ClubControl
         return getDefaultClubForUpdate().getLastDetailForUpdate().getClubDetailValue().clone();
     }
     
-    private Club getClubByName(String clubName, EntityPermission entityPermission) {
+    public Club getClubByName(String clubName, EntityPermission entityPermission) {
         Club club;
         
         try {
@@ -286,15 +304,18 @@ public class ClubControl
         return clubTransferCache.getClubTransfer(userVisit, club);
     }
     
-    public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
-        var clubs = getClubs();
+    public List<ClubTransfer> getClubTransfers(UserVisit userVisit, Collection<Club> clubs) {
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
-        
+
         clubs.forEach((club) ->
                 clubTransfers.add(clubTransferCache.getClubTransfer(userVisit, club))
         );
-        
+
         return clubTransfers;
+    }
+
+    public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
+        return getClubTransfers(userVisit, getClubs());
     }
     
     private void updateClubFromValue(ClubDetailValue clubDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -687,7 +708,31 @@ public class ClubControl
         
         return clubItem;
     }
-    
+
+    public long countClubItemsByClub(final Club club) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM clubitems
+                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
+                        """, club, Session.MAX_TIME);
+    }
+
+    public long countClubItemsByClubItemType(final ClubItemType clubItemType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM clubitems
+                        WHERE clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_thrutime = ?
+                        """, clubItemType, Session.MAX_TIME);
+    }
+
+    public long countClubItemsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM clubitems
+                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
     private ClubItem getClubItem(Club club, ClubItemType clubItemType, Item item, EntityPermission entityPermission) {
         ClubItem clubItem;
         
@@ -816,7 +861,7 @@ public class ClubControl
         return clubItemTransferCache.getClubItemTransfer(userVisit, clubItem);
     }
     
-    private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
+    public List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
         
         clubItems.forEach((clubItem) ->

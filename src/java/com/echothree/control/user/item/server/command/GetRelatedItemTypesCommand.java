@@ -47,7 +47,7 @@ public class GetRelatedItemTypesCommand
 
     @Override
     protected void handleForm() {
-        // no form fields to handle
+        // No form fields.
     }
 
     @Override

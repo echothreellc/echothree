@@ -82,33 +82,36 @@ public class LotControl
     }
 
     public long countLots() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM lots " +
-                "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid ");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM lots
+                JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid
+                """);
     }
 
     public long countLotsByItem(Item item) {
-        return session.queryForLong(
-            "SELECT COUNT(*) " +
-                "FROM lots " +
-                "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
-                "WHERE ltdt_itm_itemid = ?",
-                item);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM lots
+                JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid
+                WHERE ltdt_itm_itemid = ?
+                """, item);
     }
 
     private static final Map<EntityPermission, String> getLotByIdentifierQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots " +
-                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
-                    "WHERE ltdt_itm_itemid = ? AND ltdt_lotidentifier = ?",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots " +
-                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
-                    "WHERE ltdt_itm_itemid = ? AND ltdt_lotidentifier = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM lots
+                    JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid
+                    WHERE ltdt_itm_itemid = ? AND ltdt_lotidentifier = ?
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM lots
+                    JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid
+                    WHERE ltdt_itm_itemid = ? AND ltdt_lotidentifier = ?
+                    FOR UPDATE
+                    """);
 
     public Lot getLotByIdentifier(final Item item, final String lotIdentifier, final EntityPermission entityPermission) {
         return LotFactory.getInstance().getEntityFromQuery(entityPermission, getLotByIdentifierQueries,
@@ -132,19 +135,21 @@ public class LotControl
     }
 
     private static final Map<EntityPermission, String> getLotsByItemQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots " +
-                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
-                    "WHERE ltdt_itm_itemid = ? " +
-                    "ORDER BY ltdt_lotidentifier " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots " +
-                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
-                    "WHERE ltdt_itm_itemid = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM lots
+                    JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid
+                    WHERE ltdt_itm_itemid = ?
+                    ORDER BY ltdt_lotidentifier
+                    _LIMIT_
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM lots
+                    JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid
+                    WHERE ltdt_itm_itemid = ?
+                    FOR UPDATE
+                    """);
 
     private List<Lot> getLotsByItem(final Item item,
             final EntityPermission entityPermission) {

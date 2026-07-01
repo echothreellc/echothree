@@ -17,8 +17,10 @@
 package com.echothree.control.user.user.common;
 
 import com.echothree.control.user.user.common.form.*;
+import com.echothree.control.user.user.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface UserService
         extends UserForms {
@@ -33,110 +35,110 @@ public interface UserService
     //   Recovery Questions
     // -------------------------------------------------------------------------
     
-    CommandResult createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form);
+    CommandResult<VoidResult> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form);
     
-    CommandResult getRecoveryQuestions(UserVisitPK userVisitPK, GetRecoveryQuestionsForm form);
+    CommandResult<GetRecoveryQuestionsResult> getRecoveryQuestions(UserVisitPK userVisitPK, GetRecoveryQuestionsForm form);
     
-    CommandResult getRecoveryQuestion(UserVisitPK userVisitPK, GetRecoveryQuestionForm form);
+    CommandResult<GetRecoveryQuestionResult> getRecoveryQuestion(UserVisitPK userVisitPK, GetRecoveryQuestionForm form);
     
-    CommandResult getRecoveryQuestionChoices(UserVisitPK userVisitPK, GetRecoveryQuestionChoicesForm form);
+    CommandResult<GetRecoveryQuestionChoicesResult> getRecoveryQuestionChoices(UserVisitPK userVisitPK, GetRecoveryQuestionChoicesForm form);
     
-    CommandResult setDefaultRecoveryQuestion(UserVisitPK userVisitPK, SetDefaultRecoveryQuestionForm form);
+    CommandResult<VoidResult> setDefaultRecoveryQuestion(UserVisitPK userVisitPK, SetDefaultRecoveryQuestionForm form);
     
-    CommandResult editRecoveryQuestion(UserVisitPK userVisitPK, EditRecoveryQuestionForm form);
+    CommandResult<EditRecoveryQuestionResult> editRecoveryQuestion(UserVisitPK userVisitPK, EditRecoveryQuestionForm form);
     
-    CommandResult deleteRecoveryQuestion(UserVisitPK userVisitPK, DeleteRecoveryQuestionForm form);
+    CommandResult<VoidResult> deleteRecoveryQuestion(UserVisitPK userVisitPK, DeleteRecoveryQuestionForm form);
     
     // -------------------------------------------------------------------------
     //   Recovery Question Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createRecoveryQuestionDescription(UserVisitPK userVisitPK, CreateRecoveryQuestionDescriptionForm form);
+    CommandResult<VoidResult> createRecoveryQuestionDescription(UserVisitPK userVisitPK, CreateRecoveryQuestionDescriptionForm form);
     
-    CommandResult getRecoveryQuestionDescriptions(UserVisitPK userVisitPK, GetRecoveryQuestionDescriptionsForm form);
+    CommandResult<GetRecoveryQuestionDescriptionsResult> getRecoveryQuestionDescriptions(UserVisitPK userVisitPK, GetRecoveryQuestionDescriptionsForm form);
     
-    CommandResult editRecoveryQuestionDescription(UserVisitPK userVisitPK, EditRecoveryQuestionDescriptionForm form);
+    CommandResult<EditRecoveryQuestionDescriptionResult> editRecoveryQuestionDescription(UserVisitPK userVisitPK, EditRecoveryQuestionDescriptionForm form);
     
-    CommandResult deleteRecoveryQuestionDescription(UserVisitPK userVisitPK, DeleteRecoveryQuestionDescriptionForm form);
+    CommandResult<VoidResult> deleteRecoveryQuestionDescription(UserVisitPK userVisitPK, DeleteRecoveryQuestionDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Recovery Answers
     // -------------------------------------------------------------------------
     
-    CommandResult getRecoveryAnswer(UserVisitPK userVisitPK, GetRecoveryAnswerForm form);
+    CommandResult<GetRecoveryAnswerResult> getRecoveryAnswer(UserVisitPK userVisitPK, GetRecoveryAnswerForm form);
     
-    CommandResult editRecoveryAnswer(UserVisitPK userVisitPK, EditRecoveryAnswerForm form);
+    CommandResult<EditRecoveryAnswerResult> editRecoveryAnswer(UserVisitPK userVisitPK, EditRecoveryAnswerForm form);
     
     // -------------------------------------------------------------------------
     //   User Login Password Encoder Types
     // -------------------------------------------------------------------------
     
-    CommandResult createUserLoginPasswordEncoderType(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeForm form);
+    CommandResult<VoidResult> createUserLoginPasswordEncoderType(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeForm form);
     
     // -------------------------------------------------------------------------
     //   User Login Password Encoder Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createUserLoginPasswordEncoderTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeDescriptionForm form);
+    CommandResult<VoidResult> createUserLoginPasswordEncoderTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   User Login Password Types
     // -------------------------------------------------------------------------
     
-    CommandResult createUserLoginPasswordType(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeForm form);
+    CommandResult<VoidResult> createUserLoginPasswordType(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeForm form);
     
     // -------------------------------------------------------------------------
     //   User Login Password Type Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createUserLoginPasswordTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeDescriptionForm form);
+    CommandResult<VoidResult> createUserLoginPasswordTypeDescription(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   User Logins
     // -------------------------------------------------------------------------
     
-    CommandResult createUserLogin(UserVisitPK userVisitPK, CreateUserLoginForm form);
+    CommandResult<VoidResult> createUserLogin(UserVisitPK userVisitPK, CreateUserLoginForm form);
     
-    CommandResult getUserLogin(UserVisitPK userVisitPK, GetUserLoginForm form);
+    CommandResult<GetUserLoginResult> getUserLogin(UserVisitPK userVisitPK, GetUserLoginForm form);
     
-    CommandResult editUserLogin(UserVisitPK userVisitPK, EditUserLoginForm form);
+    CommandResult<EditUserLoginResult> editUserLogin(UserVisitPK userVisitPK, EditUserLoginForm form);
     
-    CommandResult deleteUserLogin(UserVisitPK userVisitPK, DeleteUserLoginForm form);
+    CommandResult<VoidResult> deleteUserLogin(UserVisitPK userVisitPK, DeleteUserLoginForm form);
     
     // -------------------------------------------------------------------------
     //   User Login Statuses
     // -------------------------------------------------------------------------
     
-    CommandResult resetLockout(UserVisitPK userVisitPK, ResetLockoutForm form);
+    CommandResult<VoidResult> resetLockout(UserVisitPK userVisitPK, ResetLockoutForm form);
     
     // --------------------------------------------------------------------------------
     //   User Visit Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult getUserVisitGroup(UserVisitPK userVisitPK, GetUserVisitGroupForm form);
+    CommandResult<GetUserVisitGroupResult> getUserVisitGroup(UserVisitPK userVisitPK, GetUserVisitGroupForm form);
     
-    CommandResult getUserVisitGroups(UserVisitPK userVisitPK, GetUserVisitGroupsForm form);
+    CommandResult<GetUserVisitGroupsResult> getUserVisitGroups(UserVisitPK userVisitPK, GetUserVisitGroupsForm form);
     
-    CommandResult getUserVisitGroupStatusChoices(UserVisitPK userVisitPK, GetUserVisitGroupStatusChoicesForm form);
+    CommandResult<GetUserVisitGroupStatusChoicesResult> getUserVisitGroupStatusChoices(UserVisitPK userVisitPK, GetUserVisitGroupStatusChoicesForm form);
     
-    CommandResult setUserVisitGroupStatus(UserVisitPK userVisitPK, SetUserVisitGroupStatusForm form);
+    CommandResult<VoidResult> setUserVisitGroupStatus(UserVisitPK userVisitPK, SetUserVisitGroupStatusForm form);
     
     // -------------------------------------------------------------------------
     //   User Visits
     // -------------------------------------------------------------------------
     
-    CommandResult setUserVisitPreferredLanguage(UserVisitPK userVisitPK, SetUserVisitPreferredLanguageForm form);
+    CommandResult<VoidResult> setUserVisitPreferredLanguage(UserVisitPK userVisitPK, SetUserVisitPreferredLanguageForm form);
 
-    CommandResult setUserVisitPreferredCurrency(UserVisitPK userVisitPK, SetUserVisitPreferredCurrencyForm form);
+    CommandResult<VoidResult> setUserVisitPreferredCurrency(UserVisitPK userVisitPK, SetUserVisitPreferredCurrencyForm form);
 
-    CommandResult setUserVisitPreferredTimeZone(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form);
+    CommandResult<VoidResult> setUserVisitPreferredTimeZone(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form);
 
-    CommandResult setUserVisitPreferredDateTimeFormat(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form);
+    CommandResult<VoidResult> setUserVisitPreferredDateTimeFormat(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form);
 
     // -------------------------------------------------------------------------
     //   User Sessions
     // -------------------------------------------------------------------------
 
-    CommandResult getUserSession(UserVisitPK userVisitPK, GetUserSessionForm form);
+    CommandResult<GetUserSessionResult> getUserSession(UserVisitPK userVisitPK, GetUserSessionForm form);
     
 }

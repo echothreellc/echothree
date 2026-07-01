@@ -17,12 +17,19 @@
 package com.echothree.control.user.party.common.result;
 
 import com.echothree.model.control.party.common.transfer.PartyApplicationEditorUseTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetPartyApplicationEditorUsesResult
         extends BaseResult {
     
+    PartyTransfer getParty();
+    void setParty(PartyTransfer party);
+
+    Long getPartyApplicationEditorUseCount();
+    void setPartyApplicationEditorUseCount(Long partyApplicationEditorUseCount);
+
     List<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUses();
     void setPartyApplicationEditorUses(List<PartyApplicationEditorUseTransfer> partyApplicationEditorUses);
     

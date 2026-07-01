@@ -17,8 +17,10 @@
 package com.echothree.control.user.purchase.common;
 
 import com.echothree.control.user.purchase.common.form.*;
+import com.echothree.control.user.purchase.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface PurchaseService
         extends PurchaseForms {
@@ -33,26 +35,26 @@ public interface PurchaseService
     //   Purchase Orders
     // --------------------------------------------------------------------------------
 
-    CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
+    CommandResult<CreatePurchaseOrderResult> createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
 
-    CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
+    CommandResult<GetPurchaseOrderStatusChoicesResult> getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
 
-    CommandResult setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form);
+    CommandResult<VoidResult> setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Purchase Invoices
     // --------------------------------------------------------------------------------
 
-    CommandResult createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
+    CommandResult<CreatePurchaseInvoiceResult> createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form);
 
-    CommandResult getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
+    CommandResult<GetPurchaseInvoiceStatusChoicesResult> getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form);
 
-    CommandResult setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form);
+    CommandResult<VoidResult> setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form);
 
     // --------------------------------------------------------------------------------
     //   Purchase Invoice Lines
     // --------------------------------------------------------------------------------
     
-    CommandResult createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form);
+    CommandResult<CreatePurchaseInvoiceLineResult> createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form);
 
 }

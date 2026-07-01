@@ -60,7 +60,7 @@ public class GetItemAliasTypesCommand
 
     @Override
     protected void handleForm() {
-        // No additional form fields to process.
+        // No form fields.
     }
 
     @Override

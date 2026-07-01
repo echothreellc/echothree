@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetSalesOrderLineTimesResult
         extends BaseResult {
     
+    Long getOrderLineTimeCount();
+    void setOrderLineTimeCount(Long orderLineTimeCount);
+
     List<OrderLineTimeTransfer> getOrderLineTimes();
     void setOrderLineTimes(List<OrderLineTimeTransfer> orderLineTimes);
     

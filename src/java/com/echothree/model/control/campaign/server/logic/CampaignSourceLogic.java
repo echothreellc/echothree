@@ -16,12 +16,17 @@
 
 package com.echothree.model.control.campaign.server.logic;
 
+import com.echothree.control.user.campaign.common.spec.CampaignSourceUniversalSpec;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignSourceNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignSourceStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignSourceValueException;
 import com.echothree.model.control.campaign.common.workflow.CampaignSourceStatusConstants;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -30,9 +35,11 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CampaignSourceLogic
@@ -45,10 +52,13 @@ public class CampaignSourceLogic
     public static CampaignSourceLogic getInstance() {
         return CDI.current().select(CampaignSourceLogic.class).get();
     }
-    
-    public CampaignSource getCampaignSourceByName(final ExecutionErrorAccumulator eea, final String campaignSourceName) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        var campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
+
+    @Inject
+    CampaignControl campaignControl;
+
+    public CampaignSource getCampaignSourceByName(final ExecutionErrorAccumulator eea, final String campaignSourceName,
+            final EntityPermission entityPermission) {
+        var campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName, entityPermission);
 
         if(campaignSource == null) {
             handleExecutionError(UnknownCampaignSourceNameException.class, eea, ExecutionErrors.UnknownCampaignSourceName.name(), campaignSourceName);
@@ -56,16 +66,68 @@ public class CampaignSourceLogic
 
         return campaignSource;
     }
-    
-    public CampaignSource getCampaignSourceByValue(final ExecutionErrorAccumulator eea, final String campaignSourceValue) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        var campaignSource = campaignControl.getCampaignSourceByValue(campaignSourceValue);
+
+    public CampaignSource getCampaignSourceByName(final ExecutionErrorAccumulator eea, final String campaignSourceName) {
+        return getCampaignSourceByName(eea, campaignSourceName, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignSource getCampaignSourceByNameForUpdate(final ExecutionErrorAccumulator eea, final String campaignSourceName) {
+        return getCampaignSourceByName(eea, campaignSourceName, EntityPermission.READ_WRITE);
+    }
+
+    public CampaignSource getCampaignSourceByValue(final ExecutionErrorAccumulator eea, final String campaignSourceValue,
+            final EntityPermission entityPermission) {
+        var campaignSource = campaignControl.getCampaignSourceByValue(campaignSourceValue, entityPermission);
 
         if(campaignSource == null) {
             handleExecutionError(UnknownCampaignSourceValueException.class, eea, ExecutionErrors.UnknownCampaignSourceValue.name(), campaignSourceValue);
         }
 
         return campaignSource;
+    }
+
+    public CampaignSource getCampaignSourceByValue(final ExecutionErrorAccumulator eea, final String campaignSourceValue) {
+        return getCampaignSourceByValue(eea, campaignSourceValue, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignSource getCampaignSourceByValueForUpdate(final ExecutionErrorAccumulator eea, final String campaignSourceValue) {
+        return getCampaignSourceByValue(eea, campaignSourceValue, EntityPermission.READ_WRITE);
+    }
+
+    public CampaignSource getCampaignSourceByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final CampaignSourceUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        CampaignSource campaignSource = null;
+        var campaignSourceName = universalSpec.getCampaignSourceName();
+        var parameterCount = (campaignSourceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(campaignSourceName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignSource.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        campaignSource = campaignControl.getCampaignSourceByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    campaignSource = getCampaignSourceByName(eea, campaignSourceName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return campaignSource;
+    }
+
+    public CampaignSource getCampaignSourceByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final CampaignSourceUniversalSpec universalSpec) {
+        return getCampaignSourceByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignSource getCampaignSourceByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final CampaignSourceUniversalSpec universalSpec) {
+        return getCampaignSourceByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
     
     public void setCampaignSourceStatus(final Session session, ExecutionErrorAccumulator eea, CampaignSource campaignSource, String campaignSourceStatusChoice, PartyPK modifiedBy) {

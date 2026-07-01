@@ -26,8 +26,11 @@ public interface GetWorkRequirementTypesResult
     
     WorkEffortTypeTransfer getWorkEffortType();
     void setWorkEffortType(WorkEffortTypeTransfer workEffortType);
-    
+
+    Long getWorkRequirementTypeCount();
+    void setWorkRequirementTypeCount(Long workRequirementTypeCount);
+
     List<WorkRequirementTypeTransfer> getWorkRequirementTypes();
     void setWorkRequirementTypes(List<WorkRequirementTypeTransfer> workRequirementTypes);
-    
+
 }

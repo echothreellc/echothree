@@ -17,8 +17,10 @@
 package com.echothree.control.user.icon.common;
 
 import com.echothree.control.user.icon.common.form.*;
+import com.echothree.control.user.icon.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface IconService
         extends IconForms {
@@ -33,18 +35,18 @@ public interface IconService
     //   Icon Usage Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form);
+    CommandResult<VoidResult> createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Icon Usage Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createIconUsageTypeDescription(UserVisitPK userVisitPK, CreateIconUsageTypeDescriptionForm form);
+    CommandResult<VoidResult> createIconUsageTypeDescription(UserVisitPK userVisitPK, CreateIconUsageTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Icons
     // --------------------------------------------------------------------------------
     
-    CommandResult getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form);
+    CommandResult<GetIconChoicesResult> getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form);
     
 }

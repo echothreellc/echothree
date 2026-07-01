@@ -54,6 +54,9 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.common.pk.PrinterGroupJobPK;
+import com.echothree.model.data.printer.common.pk.PrinterGroupPK;
+import com.echothree.model.data.printer.common.pk.PrinterGroupUseTypePK;
+import com.echothree.model.data.printer.common.pk.PrinterPK;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.printer.server.entity.PrinterDescription;
@@ -86,6 +89,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -97,7 +101,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -168,6 +171,29 @@ public class PrinterControl
         sendEvent(printerGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroup;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroup */
+    public PrinterGroup getPrinterGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PrinterGroupPK(entityInstance.getEntityUniqueId());
+
+        return PrinterGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PrinterGroup getPrinterGroupByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PrinterGroup getPrinterGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPrinterGroups() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printergroups
+                        JOIN printergroupdetails ON prngrpdt_printergroupdetailid = prngrp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getPrinterGroupByNameQueries;
@@ -604,13 +630,36 @@ public class PrinterControl
         return printer;
     }
 
-    public long countPrintersByPrinterGroup(PrinterGroup printerGroup) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "AND prngrpdt_prngrp_printergroupid = ?",
-                printerGroup);
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Printer */
+    public Printer getPrinterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PrinterPK(entityInstance.getEntityUniqueId());
+
+        return PrinterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Printer getPrinterByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Printer getPrinterByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPrinters() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printers
+                        JOIN printerdetails ON prndt_printerdetailid = prn_activedetailid
+                        """);
+    }
+
+    public long countPrintersByPrinterGroup(final PrinterGroup printerGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printers
+                        JOIN printerdetails ON prndt_printerdetailid = prn_activedetailid
+                        AND prndt_prngrp_printergroupid = ?
+                        """, printerGroup);
     }
 
     private static final Map<EntityPermission, String> getPrinterByNameQueries;
@@ -1024,39 +1073,35 @@ public class PrinterControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupJob */
-    public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
+    public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
-        var printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return printerGroupJob;
+        return PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    private PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        PrinterGroupJob printerGroupJob = null;
-
-        if(entityInstanceControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name())) {
-            printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, new PrinterGroupJobPK(entityInstance.getEntityUniqueId()));
-        }
-
-        return printerGroupJob;
+    public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterGroupJobByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
 
-    public PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance) {
-        return convertEntityInstanceToPrinterGroupJob(entityInstance, EntityPermission.READ_ONLY);
+    public PrinterGroupJob getPrinterGroupJobByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterGroupJobByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public PrinterGroupJob convertEntityInstanceToPrinterGroupJobForUpdate(final EntityInstance entityInstance) {
-        return convertEntityInstanceToPrinterGroupJob(entityInstance, EntityPermission.READ_WRITE);
+    public long countPrinterGroupJobsByPrinterGroup(final PrinterGroup printerGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printergroupjobs
+                        JOIN printergroupjobdetails ON prngrpjdt_printergroupjobdetailid = prngrpj_activedetailid
+                        WHERE prngrpjdt_prngrp_printergroupid = ?
+                        """);
     }
 
-    public long countPrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_prngrp_printergroupid = ?",
-                printerGroup);
+    public long countPrinterGroupJobsByPrinterGroupJobStatus(final WorkflowStep workflowStep) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitystatuses
+                        WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                        """, workflowStep, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getPrinterGroupJobByNameQueries;
@@ -1409,6 +1454,29 @@ public class PrinterControl
         sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroupUseType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupUseType */
+    public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PrinterGroupUseTypePK(entityInstance.getEntityUniqueId());
+
+        return PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterGroupUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterGroupUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPrinterGroupUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printergroupusetypes
+                        JOIN printergroupusetypedetails ON prngrpusetypdt_printergroupusetypedetailid = prngrpusetyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getPrinterGroupUseTypeByNameQueries;
@@ -1806,7 +1874,31 @@ public class PrinterControl
         
         return partyPrinterGroupUse;
     }
-    
+
+    public long countPartyPrinterGroupUsesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyprintergroupuses
+                        WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyPrinterGroupUsesByPrinterGroupUseType(final PrinterGroupUseType printerGroupUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyprintergroupuses
+                        WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
+                        """, printerGroupUseType, Session.MAX_TIME);
+    }
+
+    public long countPartyPrinterGroupUsesByPrinterGroup(final PrinterGroup printerGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyprintergroupuses
+                        WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
+                        """, printerGroup, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyPrinterGroupUseQueries;
 
     static {

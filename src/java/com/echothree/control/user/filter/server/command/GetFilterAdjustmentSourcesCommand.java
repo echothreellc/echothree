@@ -63,7 +63,7 @@ public class GetFilterAdjustmentSourcesCommand
 
     @Override
     protected void handleForm() {
-        // No form fields to process.
+        // No form fields.
     }
 
     @Override

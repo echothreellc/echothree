@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.payment.common.result;
 
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
@@ -23,6 +24,12 @@ import java.util.List;
 public interface GetPartyPaymentMethodsResult
         extends BaseResult {
     
+    PartyTransfer getParty();
+    void setParty(PartyTransfer party);
+
+    Long getPartyPaymentMethodCount();
+    void setPartyPaymentMethodCount(Long partyPaymentMethodCount);
+
     List<PartyPaymentMethodTransfer> getPartyPaymentMethods();
     void setPartyPaymentMethods(List<PartyPaymentMethodTransfer> partyPaymentMethods);
     

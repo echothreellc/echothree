@@ -22,6 +22,9 @@ import java.util.List;
 
 public interface GetLotAliasTypesResult
         extends BaseResult {
+
+    Long getLotAliasTypeCount();
+    void setLotAliasTypeCount(Long lotAliasTypeCount);
     
     List<LotAliasTypeTransfer> getLotAliasTypes();
     void setLotAliasTypes(List<LotAliasTypeTransfer> lotAliasTypes);

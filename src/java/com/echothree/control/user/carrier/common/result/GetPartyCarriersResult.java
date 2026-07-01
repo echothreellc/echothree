@@ -26,6 +26,9 @@ public interface GetPartyCarriersResult
     
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
+
+    Long getPartyCarrierCount();
+    void setPartyCarrierCount(Long partyCarrierCount);
     
     List<PartyCarrierTransfer> getPartyCarriers();
     void setPartyCarriers(List<PartyCarrierTransfer> partyCarriers);

@@ -17,12 +17,19 @@
 package com.echothree.control.user.order.common.result;
 
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
+import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetOrderLineAdjustmentTypesResult
         extends BaseResult {
     
+    OrderTypeTransfer getOrderType();
+    void setOrderType(OrderTypeTransfer orderType);
+
+    Long getOrderLineAdjustmentTypeCount();
+    void setOrderLineAdjustmentTypeCount(Long orderLineAdjustmentTypeCount);
+
     List<OrderLineAdjustmentTypeTransfer> getOrderLineAdjustmentTypes();
     void setOrderLineAdjustmentTypes(List<OrderLineAdjustmentTypeTransfer> orderLineAdjustmentTypes);
     

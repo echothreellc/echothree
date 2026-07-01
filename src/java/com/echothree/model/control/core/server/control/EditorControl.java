@@ -20,8 +20,10 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.EditorChoicesBean;
 import com.echothree.model.control.core.common.transfer.EditorDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EditorTransfer;
+import com.echothree.model.data.core.common.pk.EditorPK;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.core.server.entity.EditorDescription;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.EditorDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EditorDetailFactory;
 import com.echothree.model.data.core.server.factory.EditorFactory;
@@ -30,15 +32,16 @@ import com.echothree.model.data.core.server.value.EditorDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -92,22 +95,49 @@ public class EditorControl
         return editor;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Editor */
+    public Editor getEditorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EditorPK(entityInstance.getEntityUniqueId());
+
+        return EditorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Editor getEditorByEntityInstance(EntityInstance entityInstance) {
+        return getEditorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Editor getEditorByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEditorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countEditors() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM editors
+                        JOIN editordetails ON edtrdt_editordetailid = edtr_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getEditorByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM editors, editordetails " +
-                        "WHERE edtr_activedetailid = edtrdt_editordetailid " +
-                        "AND edtrdt_editorname = ?");
+                """
+                SELECT _ALL_
+                FROM editors, editordetails
+                WHERE edtr_activedetailid = edtrdt_editordetailid
+                AND edtrdt_editorname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM editors, editordetails " +
-                        "WHERE edtr_activedetailid = edtrdt_editordetailid " +
-                        "AND edtrdt_editorname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM editors, editordetails
+                WHERE edtr_activedetailid = edtrdt_editordetailid
+                AND edtrdt_editorname = ?
+                FOR UPDATE
+                """);
         getEditorByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -137,16 +167,20 @@ public class EditorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM editors, editordetails " +
-                        "WHERE edtr_activedetailid = edtrdt_editordetailid " +
-                        "AND edtrdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM editors, editordetails
+                WHERE edtr_activedetailid = edtrdt_editordetailid
+                AND edtrdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM editors, editordetails " +
-                        "WHERE edtr_activedetailid = edtrdt_editordetailid " +
-                        "AND edtrdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM editors, editordetails
+                WHERE edtr_activedetailid = edtrdt_editordetailid
+                AND edtrdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultEditorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -172,16 +206,20 @@ public class EditorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM editors, editordetails " +
-                        "WHERE edtr_activedetailid = edtrdt_editordetailid " +
-                        "ORDER BY edtrdt_sortorder, edtrdt_editorname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM editors, editordetails
+                WHERE edtr_activedetailid = edtrdt_editordetailid
+                ORDER BY edtrdt_sortorder, edtrdt_editorname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM editors, editordetails " +
-                        "WHERE edtr_activedetailid = edtrdt_editordetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM editors, editordetails
+                WHERE edtr_activedetailid = edtrdt_editordetailid
+                FOR UPDATE
+                """);
         getEditorsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -201,8 +239,7 @@ public class EditorControl
         return editorTransferCache.getEditorTransfer(userVisit, editor);
     }
 
-    public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
-        var editors = getEditors();
+    public List<EditorTransfer> getEditorTransfers(UserVisit userVisit, Collection<Editor> editors) {
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
 
         editors.forEach((editor) ->
@@ -210,6 +247,10 @@ public class EditorControl
         );
 
         return editorTransfers;
+    }
+
+    public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
+        return getEditorTransfers(userVisit, getEditors());
     }
 
     public EditorChoicesBean getEditorChoices(String defaultEditorChoice, Language language, boolean allowNullChoice) {
@@ -364,14 +405,18 @@ public class EditorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM editordescriptions " +
-                        "WHERE edtrd_edtr_editorid = ? AND edtrd_lang_languageid = ? AND edtrd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM editordescriptions
+                WHERE edtrd_edtr_editorid = ? AND edtrd_lang_languageid = ? AND edtrd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM editordescriptions " +
-                        "WHERE edtrd_edtr_editorid = ? AND edtrd_lang_languageid = ? AND edtrd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM editordescriptions
+                WHERE edtrd_edtr_editorid = ? AND edtrd_lang_languageid = ? AND edtrd_thrutime = ?
+                FOR UPDATE
+                """);
         getEditorDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -402,15 +447,20 @@ public class EditorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM editordescriptions, languages " +
-                        "WHERE edtrd_edtr_editorid = ? AND edtrd_thrutime = ? AND edtrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM editordescriptions, languages
+                WHERE edtrd_edtr_editorid = ? AND edtrd_thrutime = ? AND edtrd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM editordescriptions " +
-                        "WHERE edtrd_edtr_editorid = ? AND edtrd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM editordescriptions
+                WHERE edtrd_edtr_editorid = ? AND edtrd_thrutime = ?
+                FOR UPDATE
+                """);
         getEditorDescriptionsByEditorQueries = Collections.unmodifiableMap(queryMap);
     }
 

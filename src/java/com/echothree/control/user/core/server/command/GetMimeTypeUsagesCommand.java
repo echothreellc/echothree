@@ -18,54 +18,54 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeUsagesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
+import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.factory.MimeTypeUsageFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeUsagesCommand
-        extends BaseMultipleEntitiesCommand<MimeTypeUsage, GetMimeTypeUsagesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<MimeTypeUsage, GetMimeTypeUsagesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     /** Creates a new instance of GetMimeTypeUsagesCommand */
     public GetMimeTypeUsagesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-
-    MimeType mimeType;
     
+    private MimeType mimeType;
+
+    @Override
+    protected void handleForm() {
+        mimeType = mimeTypeLogic.getMimeTypeByName(this, form.getMimeTypeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : mimeTypeControl.countMimeTypeUsagesByMimeType(mimeType);
+    }
+
     @Override
     protected Collection<MimeTypeUsage> getEntities() {
-        Collection<MimeTypeUsage> mimeTypeUsages = null;
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-        var mimeTypeName = form.getMimeTypeName();
-        
-        mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
-        
-        if(mimeType != null) {
-            mimeTypeUsages = mimeTypeControl.getMimeTypeUsagesByMimeType(mimeType);
-        } else {
-            addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
-        }
-        
-        return mimeTypeUsages;
+        return hasExecutionErrors() ? null : mimeTypeControl.getMimeTypeUsagesByMimeType(mimeType);
     }
 
     @Override
@@ -73,10 +73,14 @@ public class GetMimeTypeUsagesCommand
         var result = CoreResultFactory.getGetMimeTypeUsagesResult();
 
         if(entities != null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var userVisit = getUserVisit();
 
             result.setMimeType(mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType));
+
+            if(session.hasLimit(MimeTypeUsageFactory.class)) {
+                result.setMimeTypeUsageCount(getTotalEntities());
+            }
+
             result.setMimeTypeUsages(mimeTypeControl.getMimeTypeUsageTransfersByMimeType(userVisit, entities));
         }
         

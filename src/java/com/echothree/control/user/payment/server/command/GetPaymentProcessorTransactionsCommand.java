@@ -23,21 +23,21 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTransa
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorTransactionsCommand
-        extends BaseMultipleEntitiesCommand<PaymentProcessorTransaction, GetPaymentProcessorTransactionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PaymentProcessorTransaction, GetPaymentProcessorTransactionsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -50,29 +50,46 @@ public class GetPaymentProcessorTransactionsCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetPaymentProcessorTransactionsCommand */
     public GetPaymentProcessorTransactionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return paymentProcessorTransactionControl.countPaymentProcessorTransactions();
+    }
+
     @Override
     protected Collection<PaymentProcessorTransaction> getEntities() {
-        var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        
         return paymentProcessorTransactionControl.getPaymentProcessorTransactions();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorTransaction> entities) {
         var result = PaymentResultFactory.getGetPaymentProcessorTransactionsResult();
-        var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-        
-        result.setPaymentProcessorTransactions(paymentProcessorTransactionControl.getPaymentProcessorTransactionTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(PaymentProcessorTransactionFactory.class)) {
+                result.setPaymentProcessorTransactionCount(paymentProcessorTransactionControl.countPaymentProcessorTransactions());
+            }
+
+            result.setPaymentProcessorTransactions(paymentProcessorTransactionControl.getPaymentProcessorTransactionTransfers(userVisit, entities));
+        }
+
         return result;
     }
     

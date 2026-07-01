@@ -18,9 +18,11 @@ package com.echothree.control.user.associate.server;
 
 import com.echothree.control.user.associate.common.AssociateRemote;
 import com.echothree.control.user.associate.common.form.*;
+import com.echothree.control.user.associate.common.result.*;
 import com.echothree.control.user.associate.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 
@@ -43,37 +45,37 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
+    public CommandResult<VoidResult> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
         return CDI.current().select(CreateAssociateProgramCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form) {
+    public CommandResult<GetAssociateProgramResult> getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form) {
         return CDI.current().select(GetAssociateProgramCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociatePrograms(UserVisitPK userVisitPK, GetAssociateProgramsForm form) {
+    public CommandResult<GetAssociateProgramsResult> getAssociatePrograms(UserVisitPK userVisitPK, GetAssociateProgramsForm form) {
         return CDI.current().select(GetAssociateProgramsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociateProgramChoices(UserVisitPK userVisitPK, GetAssociateProgramChoicesForm form) {
+    public CommandResult<GetAssociateProgramChoicesResult> getAssociateProgramChoices(UserVisitPK userVisitPK, GetAssociateProgramChoicesForm form) {
         return CDI.current().select(GetAssociateProgramChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form) {
+    public CommandResult<VoidResult> setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form) {
         return CDI.current().select(SetDefaultAssociateProgramCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editAssociateProgram(UserVisitPK userVisitPK, EditAssociateProgramForm form) {
+    public CommandResult<EditAssociateProgramResult> editAssociateProgram(UserVisitPK userVisitPK, EditAssociateProgramForm form) {
         return CDI.current().select(EditAssociateProgramCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form) {
+    public CommandResult<VoidResult> deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form) {
         return CDI.current().select(DeleteAssociateProgramCommand.class).get().run(userVisitPK, form);
     }
     
@@ -82,22 +84,22 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form) {
+    public CommandResult<VoidResult> createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form) {
         return CDI.current().select(CreateAssociateProgramDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociateProgramDescriptions(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form) {
+    public CommandResult<GetAssociateProgramDescriptionsResult> getAssociateProgramDescriptions(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form) {
         return CDI.current().select(GetAssociateProgramDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult editAssociateProgramDescription(UserVisitPK userVisitPK, EditAssociateProgramDescriptionForm form) {
+    public CommandResult<EditAssociateProgramDescriptionResult> editAssociateProgramDescription(UserVisitPK userVisitPK, EditAssociateProgramDescriptionForm form) {
         return CDI.current().select(EditAssociateProgramDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form) {
+    public CommandResult<VoidResult> deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form) {
         return CDI.current().select(DeleteAssociateProgramDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -106,27 +108,27 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form) {
+    public CommandResult<VoidResult> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form) {
         return CDI.current().select(CreateAssociateCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociate(UserVisitPK userVisitPK, GetAssociateForm form) {
+    public CommandResult<GetAssociateResult> getAssociate(UserVisitPK userVisitPK, GetAssociateForm form) {
         return CDI.current().select(GetAssociateCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociates(UserVisitPK userVisitPK, GetAssociatesForm form) {
+    public CommandResult<GetAssociatesResult> getAssociates(UserVisitPK userVisitPK, GetAssociatesForm form) {
         return CDI.current().select(GetAssociatesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociateChoices(UserVisitPK userVisitPK, GetAssociateChoicesForm form) {
+    public CommandResult<GetAssociateChoicesResult> getAssociateChoices(UserVisitPK userVisitPK, GetAssociateChoicesForm form) {
         return CDI.current().select(GetAssociateChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form) {
+    public CommandResult<VoidResult> deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form) {
         return CDI.current().select(DeleteAssociateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -135,32 +137,32 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form) {
+    public CommandResult<VoidResult> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form) {
         return CDI.current().select(CreateAssociatePartyContactMechanismCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form) {
+    public CommandResult<GetAssociatePartyContactMechanismResult> getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form) {
         return CDI.current().select(GetAssociatePartyContactMechanismCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociatePartyContactMechanisms(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismsForm form) {
+    public CommandResult<GetAssociatePartyContactMechanismsResult> getAssociatePartyContactMechanisms(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismsForm form) {
         return CDI.current().select(GetAssociatePartyContactMechanismsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociatePartyContactMechanismChoices(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismChoicesForm form) {
+    public CommandResult<GetAssociatePartyContactMechanismChoicesResult> getAssociatePartyContactMechanismChoices(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismChoicesForm form) {
         return CDI.current().select(GetAssociatePartyContactMechanismChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form) {
+    public CommandResult<VoidResult> setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form) {
         return CDI.current().select(SetDefaultAssociatePartyContactMechanismCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form) {
+    public CommandResult<VoidResult> deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form) {
         return CDI.current().select(DeleteAssociatePartyContactMechanismCommand.class).get().run(userVisitPK, form);
     }
     
@@ -169,17 +171,17 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult getAssociateReferral(UserVisitPK userVisitPK, GetAssociateReferralForm form) {
+    public CommandResult<GetAssociateReferralResult> getAssociateReferral(UserVisitPK userVisitPK, GetAssociateReferralForm form) {
         return CDI.current().select(GetAssociateReferralCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult getAssociateReferrals(UserVisitPK userVisitPK, GetAssociateReferralsForm form) {
+    public CommandResult<GetAssociateReferralsResult> getAssociateReferrals(UserVisitPK userVisitPK, GetAssociateReferralsForm form) {
         return CDI.current().select(GetAssociateReferralsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
-    public CommandResult deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form) {
+    public CommandResult<VoidResult> deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form) {
         return CDI.current().select(DeleteAssociateReferralCommand.class).get().run(userVisitPK, form);
     }
     

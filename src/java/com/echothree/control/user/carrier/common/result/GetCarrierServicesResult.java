@@ -26,6 +26,9 @@ public interface GetCarrierServicesResult
     
     CarrierTransfer getCarrier();
     void setCarrier(CarrierTransfer carrier);
+
+    Long getCarrierServiceCount();
+    void setCarrierServiceCount(Long carrierServiceCount);
     
     List<CarrierServiceTransfer> getCarrierServices();
     void setCarrierServices(List<CarrierServiceTransfer> carrierServices);

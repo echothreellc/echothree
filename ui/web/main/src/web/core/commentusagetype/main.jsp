@@ -31,12 +31,12 @@
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
                 </c:url>
                 <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
                 <c:url var="commentTypesUrl" value="/action/Core/CommentType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityTypeName}" />
+                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                    <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
                 </c:url>
                 <a href="${commentTypesUrl}">Comment Types</a> &gt;&gt;
                 Comment Usage Types
@@ -44,9 +44,9 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Core/CommentUsageType/Add">
-                <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                <c:param name="EntityTypeName" value="${entityTypeName}" />
-                <c:param name="CommentTypeName" value="${commentTypeName}" />
+                <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
+                <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Comment Usage Type.</a></p>
             <et:checkSecurityRoles securityRoles="Event.List" />

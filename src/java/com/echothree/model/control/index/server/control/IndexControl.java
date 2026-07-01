@@ -35,6 +35,7 @@ import com.echothree.model.control.index.server.transfer.IndexTypeTransferCache;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.index.common.pk.IndexFieldPK;
 import com.echothree.model.data.index.common.pk.IndexPK;
 import com.echothree.model.data.index.common.pk.IndexTypePK;
 import com.echothree.model.data.index.server.entity.Index;
@@ -63,6 +64,7 @@ import com.echothree.model.data.index.server.value.IndexTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -73,7 +75,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -139,6 +140,29 @@ public class IndexControl
         return indexType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
+    public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
+
+        return IndexTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
+        return getIndexTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public IndexType getIndexTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getIndexTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countIndexTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM indextypes
+                        JOIN indextypedetails ON idxtdt_indextypedetailid = idxt_activedetailid
+                        """);
+    }
+
     public long countIndexTypesByEntityType(EntityType entityType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -149,14 +173,6 @@ public class IndexControl
 
     public boolean isEntityTypeUsedByIndexTypes(EntityType entityType) {
         return countIndexTypesByEntityType(entityType) != 0;
-    }
-
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
-    public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
-        var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
-        var indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-
-        return indexType;
     }
 
     private static final Map<EntityPermission, String> getIndexTypeByNameQueries;
@@ -596,7 +612,7 @@ public class IndexControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Search Types
+    //   Index Fields
     // --------------------------------------------------------------------------------
 
     public IndexField createIndexField(IndexType indexType, String indexFieldName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -626,6 +642,30 @@ public class IndexControl
         sendEvent(indexField.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return indexField;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexField */
+    public IndexField getIndexFieldByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new IndexFieldPK(entityInstance.getEntityUniqueId());
+
+        return IndexFieldFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public IndexField getIndexFieldByEntityInstance(EntityInstance entityInstance) {
+        return getIndexFieldByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public IndexField getIndexFieldByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getIndexFieldByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countIndexFieldsByIndexType(final IndexType indexType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM indexfields
+                        JOIN indexfielddetails ON idxflddt_indexfielddetailid = idxfld_activedetailid
+                        WHERE idxflddt_idxt_indextypeid = ?
+                        """, indexType);
     }
 
     private static final Map<EntityPermission, String> getIndexFieldsQueries;
@@ -871,7 +911,7 @@ public class IndexControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Search Type Descriptions
+    //   Index Field Descriptions
     // --------------------------------------------------------------------------------
 
     public IndexFieldDescription createIndexFieldDescription(IndexField indexField, Language language, String description,
@@ -1054,11 +1094,18 @@ public class IndexControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Index */
-    public Index getIndexByEntityInstance(EntityInstance entityInstance) {
+    public Index getIndexByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new IndexPK(entityInstance.getEntityUniqueId());
-        var index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return index;
+        return IndexFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Index getIndexByEntityInstance(EntityInstance entityInstance) {
+        return getIndexByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Index getIndexByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getIndexByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countIndexes() {
@@ -1290,8 +1337,7 @@ public class IndexControl
         return indexTransferCache.getIndexTransfer(userVisit, index);
     }
 
-    public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
-        var indexes = getIndexes();
+    public List<IndexTransfer> getIndexTransfers(UserVisit userVisit, Collection<Index> indexes) {
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
 
         indexes.forEach((index) ->
@@ -1299,6 +1345,10 @@ public class IndexControl
         );
 
         return indexTransfers;
+    }
+
+    public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
+        return getIndexTransfers(userVisit, getIndexes());
     }
 
     public IndexChoicesBean getIndexChoices(String defaultIndexChoice, Language language, boolean allowNullChoice) {

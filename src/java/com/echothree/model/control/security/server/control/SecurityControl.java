@@ -88,6 +88,7 @@ import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -101,7 +102,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -187,17 +187,21 @@ public class SecurityControl
 
     public long countSecurityRoleGroups() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM securityrolegroups, securityrolegroupdetails " +
-                        "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid");
+                """
+                SELECT COUNT(*)
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                """);
     }
 
     public long countSecurityRoleGroupsByParentSecurityRoleGroup(SecurityRoleGroup parentSecurityRoleGroup) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM securityrolegroups, securityrolegroupdetails " +
-                        "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                        "AND srgdt_parentsecurityrolegroupid = ?",
+                """
+                SELECT COUNT(*)
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                AND srgdt_parentsecurityrolegroupid = ?
+                """,
                 parentSecurityRoleGroup);
     }
 
@@ -222,16 +226,20 @@ public class SecurityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                "AND srgdt_securityrolegroupname = ?");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                AND srgdt_securityrolegroupname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                "AND srgdt_securityrolegroupname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                AND srgdt_securityrolegroupname = ?
+                FOR UPDATE
+                """);
         getSecurityRoleGroupByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -261,16 +269,20 @@ public class SecurityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                "AND srgdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                AND srgdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                "AND srgdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                AND srgdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultSecurityRoleGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -296,16 +308,20 @@ public class SecurityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                "ORDER BY srgdt_sortorder, srgdt_securityrolegroupname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                ORDER BY srgdt_sortorder, srgdt_securityrolegroupname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid
+                FOR UPDATE
+                """);
         getSecurityRoleGroupsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -327,16 +343,20 @@ public class SecurityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid AND srgdt_parentsecurityrolegroupid = ? " +
-                "ORDER BY srgdt_sortorder, srgdt_securityrolegroupname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid AND srgdt_parentsecurityrolegroupid = ?
+                ORDER BY srgdt_sortorder, srgdt_securityrolegroupname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid AND srgdt_parentsecurityrolegroupid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolegroups, securityrolegroupdetails
+                WHERE srg_activedetailid = srgdt_securityrolegroupdetailid AND srgdt_parentsecurityrolegroupid = ?
+                FOR UPDATE
+                """);
         getSecurityRoleGroupsByParentSecurityRoleGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -556,14 +576,18 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityrolegroupdescriptions " +
-                        "WHERE srgd_srg_securityrolegroupid = ? AND srgd_lang_languageid = ? AND srgd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM securityrolegroupdescriptions
+                        WHERE srgd_srg_securityrolegroupid = ? AND srgd_lang_languageid = ? AND srgd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityrolegroupdescriptions " +
-                        "WHERE srgd_srg_securityrolegroupid = ? AND srgd_lang_languageid = ? AND srgd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityrolegroupdescriptions
+                        WHERE srgd_srg_securityrolegroupid = ? AND srgd_lang_languageid = ? AND srgd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleGroupDescriptionFactory.prepareStatement(query);
@@ -603,15 +627,20 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityrolegroupdescriptions, languages " +
-                        "WHERE srgd_srg_securityrolegroupid = ? AND srgd_thrutime = ? AND srgd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM securityrolegroupdescriptions, languages
+                        WHERE srgd_srg_securityrolegroupid = ? AND srgd_thrutime = ? AND srgd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityrolegroupdescriptions " +
-                        "WHERE srgd_srg_securityrolegroupid = ? AND srgd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityrolegroupdescriptions
+                        WHERE srgd_srg_securityrolegroupid = ? AND srgd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleGroupDescriptionFactory.prepareStatement(query);
@@ -743,16 +772,20 @@ public class SecurityControl
     
     public long countSecurityRoles() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM securityroles, securityroledetails " +
-                "WHERE srol_activedetailid = sroldt_securityroledetailid");
+                """
+                SELECT COUNT(*)
+                FROM securityroles, securityroledetails
+                WHERE srol_activedetailid = sroldt_securityroledetailid
+                """);
     }
 
     public long countSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM securityroles, securityroledetails "
-                + "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ?",
+                """
+                SELECT COUNT(*)
+                FROM securityroles, securityroledetails
+                WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ?
+                """,
                 securityRoleGroup);
     }
 
@@ -778,16 +811,20 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroles, securityroledetails " +
-                        "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ? " +
-                        "ORDER BY sroldt_sortorder, sroldt_securityrolename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroles, securityroledetails
+                        WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ?
+                        ORDER BY sroldt_sortorder, sroldt_securityrolename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroles, securityroledetails " +
-                        "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroles, securityroledetails
+                        WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleFactory.prepareStatement(query);
@@ -812,10 +849,12 @@ public class SecurityControl
     
     public boolean securityRoleExists(SecurityRoleGroup securityRoleGroup, String securityRoleName) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM securityroles, securityroledetails "
-                + "WHERE srol_activedetailid = sroldt_securityroledetailid "
-                + "AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ?",
+                """
+                SELECT COUNT(*)
+                FROM securityroles, securityroledetails
+                WHERE srol_activedetailid = sroldt_securityroledetailid
+                AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ?
+                """,
                 securityRoleGroup, securityRoleName) == 1;
     }
     
@@ -826,16 +865,20 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroles, securityroledetails " +
-                        "WHERE srol_activedetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = ? AND sroldt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroles, securityroledetails
+                        WHERE srol_activedetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = ? AND sroldt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroles, securityroledetails " +
-                        "WHERE srol_activedetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = ? AND sroldt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroles, securityroledetails
+                        WHERE srol_activedetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = ? AND sroldt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleFactory.prepareStatement(query);
@@ -869,16 +912,20 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroles, securityroledetails " +
-                        "WHERE srol_activedetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroles, securityroledetails
+                        WHERE srol_activedetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroles, securityroledetails " +
-                        "WHERE srol_activedetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroles, securityroledetails
+                        WHERE srol_activedetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = ? AND sroldt_securityrolename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleFactory.prepareStatement(query);
@@ -1073,14 +1120,18 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroledescriptions " +
-                        "WHERE srold_srol_securityroleid = ? AND srold_lang_languageid = ? AND srold_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroledescriptions
+                        WHERE srold_srol_securityroleid = ? AND srold_lang_languageid = ? AND srold_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroledescriptions " +
-                        "WHERE srold_srol_securityroleid = ? AND srold_lang_languageid = ? AND srold_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroledescriptions
+                        WHERE srold_srol_securityroleid = ? AND srold_lang_languageid = ? AND srold_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleDescriptionFactory.prepareStatement(query);
@@ -1120,15 +1171,20 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroledescriptions, languages " +
-                        "WHERE srold_srol_securityroleid = ? AND srold_thrutime = ? AND srold_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroledescriptions, languages
+                        WHERE srold_srol_securityroleid = ? AND srold_thrutime = ? AND srold_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM securityroledescriptions " +
-                        "WHERE srold_srol_securityroleid = ? AND srold_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM securityroledescriptions
+                        WHERE srold_srol_securityroleid = ? AND srold_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = securityRoleDescriptionFactory.prepareStatement(query);
@@ -1218,7 +1274,7 @@ public class SecurityControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Training Class Party Types
+    //   Security Role Party Types
     // --------------------------------------------------------------------------------
     
     @Inject
@@ -1232,21 +1288,49 @@ public class SecurityControl
         
         return securityRolePartyType;
     }
-    
+
+    public long countSecurityRolePartyTypesBySecurityRole(final SecurityRole securityRole) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM securityrolepartytypes
+                        WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ?
+                        """, securityRole, Session.MAX_TIME);
+    }
+
+    public long countSecurityRolePartyTypesByPartyType(final PartyType partyType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM securityrolepartytypes
+                        WHERE srolptyp_ptyp_partytypeid = ? AND srolptyp_thrutime = ?
+                        """, partyType, Session.MAX_TIME);
+    }
+
+    public long countSecurityRolePartyTypesByPartySelector(final Selector partySelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM securityrolepartytypes
+                        WHERE srolptyp_partyselectorid = ? AND srolptyp_thrutime = ?
+                        """, partySelector, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getSecurityRolePartyTypeQueries;
     
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolepartytypes " +
-                "WHERE srolptyp_srol_securityroleid = ? AND srolptyp_ptyp_partytypeid = ? AND srolptyp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM securityrolepartytypes
+                WHERE srolptyp_srol_securityroleid = ? AND srolptyp_ptyp_partytypeid = ? AND srolptyp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolepartytypes " +
-                "WHERE srolptyp_srol_securityroleid = ? AND srolptyp_ptyp_partytypeid = ? AND srolptyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolepartytypes
+                WHERE srolptyp_srol_securityroleid = ? AND srolptyp_ptyp_partytypeid = ? AND srolptyp_thrutime = ?
+                FOR UPDATE
+                """);
         getSecurityRolePartyTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1277,16 +1361,20 @@ public class SecurityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolepartytypes, partytypes " +
-                "WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ? AND srolptyp_ptyp_partytypeid = ptyp_partytypeid " +
-                "ORDER BY ptyp_partytypename, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM securityrolepartytypes, partytypes
+                WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ? AND srolptyp_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_partytypename, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolepartytypes " +
-                "WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolepartytypes
+                WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ?
+                FOR UPDATE
+                """);
         getSecurityRolePartyTypesBySecurityRoleQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1309,16 +1397,20 @@ public class SecurityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM securityrolepartytypes, partytypes " +
-                "WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ? AND srolptyp_ptyp_partytypeid = ptyp_partytypeid " +
-                "ORDER BY ptyp_partytypename, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM securityrolepartytypes, partytypes
+                WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ? AND srolptyp_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_partytypename, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM securityrolepartytypes " +
-                "WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM securityrolepartytypes
+                WHERE srolptyp_srol_securityroleid = ? AND srolptyp_thrutime = ?
+                FOR UPDATE
+                """);
         getSecurityRolePartyTypesByPartySelectorQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1407,7 +1499,8 @@ public class SecurityControl
     @Inject
     PartySecurityRoleTemplateDetailFactory partySecurityRoleTemplateDetailFactory;
     
-    public PartySecurityRoleTemplate createPartySecurityRoleTemplate(String partySecurityRoleTemplateName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+    public PartySecurityRoleTemplate createPartySecurityRoleTemplate(String partySecurityRoleTemplateName, Boolean isDefault,
+            Integer sortOrder, BasePK createdBy) {
         var defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
         var defaultFound = defaultPartySecurityRoleTemplate != null;
         
@@ -1435,20 +1528,48 @@ public class SecurityControl
         
         return partySecurityRoleTemplate;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartySecurityRoleTemplate */
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartySecurityRoleTemplatePK(entityInstance.getEntityUniqueId());
+
+        return PartySecurityRoleTemplateFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByEntityInstance(EntityInstance entityInstance) {
+        return getPartySecurityRoleTemplateByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartySecurityRoleTemplateByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartySecurityRoleTemplates() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplates
+                        JOIN partysecurityroletemplatedetails ON psrtdt_partysecurityroletemplatedetailid = psrt_activedetailid
+                        """);
+    }
+
     private List<PartySecurityRoleTemplate> getPartySecurityRoleTemplates(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplates, partysecurityroletemplatedetails " +
-                    "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid " +
-                    "ORDER BY psrtdt_sortorder, psrtdt_partysecurityroletemplatename";
+            query = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplates, partysecurityroletemplatedetails
+                    WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid
+                    ORDER BY psrtdt_sortorder, psrtdt_partysecurityroletemplatename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplates, partysecurityroletemplatedetails " +
-                    "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplates, partysecurityroletemplatedetails
+                    WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = partySecurityRoleTemplateFactory.prepareStatement(query);
@@ -1468,14 +1589,18 @@ public class SecurityControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplates, partysecurityroletemplatedetails " +
-                    "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid AND psrtdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplates, partysecurityroletemplatedetails
+                    WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid AND psrtdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplates, partysecurityroletemplatedetails " +
-                    "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid AND psrtdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplates, partysecurityroletemplatedetails
+                    WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid AND psrtdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = partySecurityRoleTemplateFactory.prepareStatement(query);
@@ -1495,23 +1620,27 @@ public class SecurityControl
         return getDefaultPartySecurityRoleTemplateForUpdate().getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
     }
     
-    private PartySecurityRoleTemplate getPartySecurityRoleTemplateByName(String partySecurityRoleTemplateName, EntityPermission entityPermission) {
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByName(String partySecurityRoleTemplateName, EntityPermission entityPermission) {
         PartySecurityRoleTemplate partySecurityRoleTemplate;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplates, partysecurityroletemplatedetails " +
-                        "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid " +
-                        "AND psrtdt_partysecurityroletemplatename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplates, partysecurityroletemplatedetails
+                        WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid
+                        AND psrtdt_partysecurityroletemplatename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplates, partysecurityroletemplatedetails " +
-                        "WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid " +
-                        "AND psrtdt_partysecurityroletemplatename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplates, partysecurityroletemplatedetails
+                        WHERE psrt_activedetailid = psrtdt_partysecurityroletemplatedetailid
+                        AND psrtdt_partysecurityroletemplatename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateFactory.prepareStatement(query);
@@ -1584,15 +1713,18 @@ public class SecurityControl
         return partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate);
     }
     
-    public List<PartySecurityRoleTemplateTransfer> getPartySecurityRoleTemplateTransfers(UserVisit userVisit) {
-        var partySecurityRoleTemplates = getPartySecurityRoleTemplates();
+    public List<PartySecurityRoleTemplateTransfer> getPartySecurityRoleTemplateTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplate> partySecurityRoleTemplates) {
         List<PartySecurityRoleTemplateTransfer> partySecurityRoleTemplateTransfers = new ArrayList<>(partySecurityRoleTemplates.size());
-        
+
         partySecurityRoleTemplates.forEach((partySecurityRoleTemplate) ->
                 partySecurityRoleTemplateTransfers.add(partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate))
         );
-        
+
         return partySecurityRoleTemplateTransfers;
+    }
+
+    public List<PartySecurityRoleTemplateTransfer> getPartySecurityRoleTemplateTransfers(UserVisit userVisit) {
+        return getPartySecurityRoleTemplateTransfers(userVisit, getPartySecurityRoleTemplates());
     }
     
     private void updatePartySecurityRoleTemplateFromValue(PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue, boolean checkDefault,
@@ -1695,14 +1827,18 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatedescriptions " +
-                        "WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_lang_languageid = ? AND psrtd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatedescriptions
+                        WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_lang_languageid = ? AND psrtd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatedescriptions " +
-                        "WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_lang_languageid = ? AND psrtd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatedescriptions
+                        WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_lang_languageid = ? AND psrtd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateDescriptionFactory.prepareStatement(query);
@@ -1743,15 +1879,20 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatedescriptions, languages " +
-                        "WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_thrutime = ? AND psrtd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatedescriptions, languages
+                        WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_thrutime = ? AND psrtd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatedescriptions " +
-                        "WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatedescriptions
+                        WHERE psrtd_psrt_partysecurityroletemplateid = ? AND psrtd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateDescriptionFactory.prepareStatement(query);
@@ -1858,7 +1999,23 @@ public class SecurityControl
         
         return partySecurityRoleTemplateRole;
     }
-    
+
+    public long countPartySecurityRoleTemplateRolesByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_thrutime = ?
+                        """, partySecurityRoleTemplate, Session.MAX_TIME);
+    }
+
+    public long countPartySecurityRoleTemplateRolesBySecurityRole(final SecurityRole securityRole) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?
+                        """, securityRole, Session.MAX_TIME);
+    }
+
     private PartySecurityRoleTemplateRole getPartySecurityRoleTemplateRole(PartySecurityRoleTemplate partySecurityRoleTemplate,
             SecurityRole securityRole, EntityPermission entityPermission) {
         PartySecurityRoleTemplateRole partySecurityRoleTemplateRole;
@@ -1867,14 +2024,18 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplateroles " +
-                        "WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplateroles " +
-                        "WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_srol_securityroleid = ? AND psrtr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateRoleFactory.prepareStatement(query);
@@ -1911,17 +2072,22 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplateroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
-                        "WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_thrutime = ? " +
-                        "AND psrtr_srol_securityroleid = srol_securityroleid AND srol_lastdetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
-                        "ORDER BY srgdt_sortorder, srgdt_securityrolegroupname, sroldt_sortorder, sroldt_securityrolename";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplateroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails
+                        WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_thrutime = ?
+                        AND psrtr_srol_securityroleid = srol_securityroleid AND srol_lastdetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_lastdetailid = srgdt_securityrolegroupdetailid
+                        ORDER BY srgdt_sortorder, srgdt_securityrolegroupname, sroldt_sortorder, sroldt_securityrolename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplateroles " +
-                        "WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_psrt_partysecurityroletemplateid = ? AND psrtr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateRoleFactory.prepareStatement(query);
@@ -1953,14 +2119,18 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplateroles " +
-                        "WHERE psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplateroles " +
-                        "WHERE psrtr_srol_securityroleid = ? AND psrtr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplateroles
+                        WHERE psrtr_srol_securityroleid = ? AND psrtr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateRoleFactory.prepareStatement(query);
@@ -2025,7 +2195,23 @@ public class SecurityControl
         
         return partySecurityRoleTemplateTrainingClass;
     }
-    
+
+    public long countPartySecurityRoleTemplateTrainingClassesByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplatetrainingclasses
+                        WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_thrutime = ?
+                        """, partySecurityRoleTemplate, Session.MAX_TIME);
+    }
+
+    public long countPartySecurityRoleTemplateTrainingClassesByByTrainingClass(final TrainingClass trainingClass) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplatetrainingclasses
+                        WHERE psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ?
+                        """, trainingClass, Session.MAX_TIME);
+    }
+
     private PartySecurityRoleTemplateTrainingClass getPartySecurityRoleTemplateTrainingClass(PartySecurityRoleTemplate partySecurityRoleTemplate,
             TrainingClass trainingClass, EntityPermission entityPermission) {
         PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass;
@@ -2034,14 +2220,18 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatetrainingclasses " +
-                        "WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatetrainingclasses
+                        WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatetrainingclasses " +
-                        "WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatetrainingclasses
+                        WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateTrainingClassFactory.prepareStatement(query);
@@ -2078,16 +2268,21 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatetrainingclasses, trainingclasses, trainingclassdetails " +
-                        "WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_thrutime = ? " +
-                        "AND psrtrncls_trncls_trainingclassid = trncls_trainingclassid AND trncls_lastdetailid = trnclsdt_trainingclassdetailid " +
-                        "ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatetrainingclasses, trainingclasses, trainingclassdetails
+                        WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_thrutime = ?
+                        AND psrtrncls_trncls_trainingclassid = trncls_trainingclassid AND trncls_lastdetailid = trnclsdt_trainingclassdetailid
+                        ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatetrainingclasses " +
-                        "WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatetrainingclasses
+                        WHERE psrtrncls_psrt_partysecurityroletemplateid = ? AND psrtrncls_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateTrainingClassFactory.prepareStatement(query);
@@ -2119,16 +2314,21 @@ public class SecurityControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatetrainingclasses, partysecurityroletemplates, partysecurityroletemplatedetails " +
-                        "WHERE psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ? " +
-                        "AND psrtrncls_psrt_partysecurityroletemplateid = psrt_partysecurityroletemplateid AND psrt_lastdetailid = psrtdt_partysecurityroletemplatedetailid " +
-                        "ORDER BY psrtdt_sortorder, psrtdt_partysecurityroletemplatename";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatetrainingclasses, partysecurityroletemplates, partysecurityroletemplatedetails
+                        WHERE psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ?
+                        AND psrtrncls_psrt_partysecurityroletemplateid = psrt_partysecurityroletemplateid AND psrt_lastdetailid = psrtdt_partysecurityroletemplatedetailid
+                        ORDER BY psrtdt_sortorder, psrtdt_partysecurityroletemplatename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partysecurityroletemplatetrainingclasses " +
-                        "WHERE psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partysecurityroletemplatetrainingclasses
+                        WHERE psrtrncls_trncls_trainingclassid = ? AND psrtrncls_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = partySecurityRoleTemplateTrainingClassFactory.prepareStatement(query);
@@ -2198,18 +2398,38 @@ public class SecurityControl
         
         return partySecurityRoleTemplateUse;
     }
-    
+
+    public long countPartySecurityRoleTemplateUsesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplateuses
+                        WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartySecurityRoleTemplateUsesByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroletemplateuses
+                        WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ?
+                        """, partySecurityRoleTemplate, Session.MAX_TIME);
+    }
+
     private PartySecurityRoleTemplateUse getPartySecurityRoleTemplateUse(Party party, EntityPermission entityPermission) {
         PartySecurityRoleTemplateUse partySecurityRoleTemplateUse;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplateuses " +
-                    "WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ?";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplateuses " +
-                    "WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplateuses
+                    WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ?
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplateuses
+                    WHERE psrtu_par_partyid = ? AND psrtu_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partySecurityRoleTemplateUseFactory.prepareStatement(
                     entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
@@ -2263,13 +2483,17 @@ public class SecurityControl
         List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplateuses " +
-                    "WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ?";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partysecurityroletemplateuses " +
-                    "WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplateuses
+                    WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ?
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partysecurityroletemplateuses
+                    WHERE psrtu_psrt_partysecurityroletemplateid = ? AND psrtu_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partySecurityRoleTemplateUseFactory.prepareStatement(
                     entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
@@ -2356,18 +2580,38 @@ public class SecurityControl
         
         return partySecurityRole;
     }
-    
+
+    public long countPartySecurityRolesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroles
+                        WHERE psrol_par_partyid = ? AND psrol_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartySecurityRolesBySecurityRole(final SecurityRole securityRole) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partysecurityroles
+                        WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ?
+                        """, securityRole, Session.MAX_TIME);
+    }
+
     private PartySecurityRole getPartySecurityRole(Party party, SecurityRole securityRole, EntityPermission entityPermission) {
         PartySecurityRole partySecurityRole;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partysecurityroles " +
-                    "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partysecurityroles " +
-                    "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partysecurityroles
+                    WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partysecurityroles
+                    WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?
+                    FOR UPDATE
+                    """;
             var ps = partySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
@@ -2392,9 +2636,11 @@ public class SecurityControl
     
     public boolean partySecurityRoleExists(PartyPK partyPK, SecurityRolePK securityRolePK) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partysecurityroles " +
-                "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partysecurityroles
+                WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?
+                """,
                 partyPK, securityRolePK, Session.MAX_TIME) == 1;
     }
     
@@ -2402,16 +2648,21 @@ public class SecurityControl
         List<PartySecurityRole> partySecurityRoles;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partysecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
-                    "WHERE psrol_par_partyid = ? AND psrol_thrutime = ? " +
-                    "AND psrol_srol_securityroleid = srol_securityroleid AND srol_lastdetailid = sroldt_securityroledetailid " +
-                    "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
-                    "ORDER BY srgdt_sortorder, srgdt_securityrolegroupname, sroldt_sortorder, sroldt_securityrolename";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partysecurityroles " +
-                    "WHERE psrol_par_partyid = ? AND psrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partysecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails
+                    WHERE psrol_par_partyid = ? AND psrol_thrutime = ?
+                    AND psrol_srol_securityroleid = srol_securityroleid AND srol_lastdetailid = sroldt_securityroledetailid
+                    AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_lastdetailid = srgdt_securityrolegroupdetailid
+                    ORDER BY srgdt_sortorder, srgdt_securityrolegroupname, sroldt_sortorder, sroldt_securityrolename
+                    _LIMIT_
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partysecurityroles
+                    WHERE psrol_par_partyid = ? AND psrol_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
@@ -2438,16 +2689,21 @@ public class SecurityControl
         List<PartySecurityRole> partySecurityRoles;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partysecurityroles, parties, partydetails, partytypes " +
-                    "WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ? " +
-                    "AND psrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                    "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                    "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partysecurityroles " +
-                    "WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partysecurityroles, parties, partydetails, partytypes
+                    WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ?
+                    AND psrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                    AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                    ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname
+                    _LIMIT_
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partysecurityroles
+                    WHERE psrol_srol_securityroleid = ? AND psrol_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
@@ -2503,19 +2759,47 @@ public class SecurityControl
         
         return partyEntitySecurityRole;
     }
-    
+
+    public long countPartyEntitySecurityRolesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyentitysecurityroles
+                        WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyEntitySecurityRolesByEntityInstance(final EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyentitysecurityroles
+                        WHERE pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ?
+                        """, entityInstance, Session.MAX_TIME);
+    }
+
+    public long countPartyEntitySecurityRolesBySecurityRole(final SecurityRole securityRole) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyentitysecurityroles
+                        WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                        """, securityRole, Session.MAX_TIME);
+    }
+
     private PartyEntitySecurityRole getPartyEntitySecurityRole(Party party, EntityInstance entityInstance, SecurityRole securityRole,
             EntityPermission entityPermission) {
         PartyEntitySecurityRole partyEntitySecurityRole;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles " +
-                    "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles " +
-                    "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles
+                    WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles
+                    WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                    FOR UPDATE
+                    """;
             var ps = partyEntitySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
@@ -2541,9 +2825,11 @@ public class SecurityControl
     
     public boolean partyEntitySecurityRoleExists(PartyPK partyPK, EntityInstance entityInstancePK, SecurityRolePK securityRolePK) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyentitysecurityroles " +
-                "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partyentitysecurityroles
+                WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                """,
                 partyPK, entityInstancePK, securityRolePK, Session.MAX_TIME) == 1;
     }
     
@@ -2551,24 +2837,29 @@ public class SecurityControl
         List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
-                    "WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ? " +
-                    "AND pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ? " +
-                    "AND pensrol_eni_entityinstanceid = eni_entityinstanceid " +
-                    "AND eni_ent_entitytypeid = ent_entitytypeid " +
-                    "AND ent_lastdetailid = entdt_entitytypedetailid " +
-                    "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
-                    "AND cvnd_lastdetailid = cvndd_componentvendordetailid " + 
-                    "AND pensrol_srol_securityroleid = srol_securityroleid " +
-                    "AND srol_lastdetailid = sroldt_securityroledetailid " +
-                    "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid " +
-                    "AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
-                    "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles " +
-                    "WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails
+                    WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ?
+                    AND pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ?
+                    AND pensrol_eni_entityinstanceid = eni_entityinstanceid
+                    AND eni_ent_entitytypeid = ent_entitytypeid
+                    AND ent_lastdetailid = entdt_entitytypedetailid
+                    AND entdt_cvnd_componentvendorid = cvnd_componentvendorid
+                    AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                    AND pensrol_srol_securityroleid = srol_securityroleid
+                    AND srol_lastdetailid = sroldt_securityroledetailid
+                    AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid
+                    AND srg_lastdetailid = srgdt_securityrolegroupdetailid
+                    ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname
+                    _LIMIT_
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles
+                    WHERE pensrol_par_partyid = ? AND pensrol_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partyEntitySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
@@ -2595,20 +2886,25 @@ public class SecurityControl
         List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles, parties, partydetails, partytypes, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
-                    "WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
-                    "AND pensrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                    "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                    "AND pensrol_srol_securityroleid = srol_securityroleid " +
-                    "AND srol_lastdetailid = sroldt_securityroledetailid " +
-                    "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid " +
-                    "AND srg_lastdetailid = srgdt_securityrolegroupdetailid " +
-                    "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles " +
-                    "WHERE pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles, parties, partydetails, partytypes, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails
+                    WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                    AND pensrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                    AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                    AND pensrol_srol_securityroleid = srol_securityroleid
+                    AND srol_lastdetailid = sroldt_securityroledetailid
+                    AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid
+                    AND srg_lastdetailid = srgdt_securityrolegroupdetailid
+                    ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname
+                    _LIMIT_
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles
+                    WHERE pensrol_eni_entityinstanceid = ? AND pensrol_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partyEntitySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             
@@ -2635,21 +2931,26 @@ public class SecurityControl
         List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
-            final var queryReadOnly = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles, parties, partydetails, partytypes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails " +
-                    "WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
-                    "AND pensrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                    "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                    "AND pensrol_eni_entityinstanceid = eni_entityinstanceid " +
-                    "AND eni_ent_entitytypeid = ent_entitytypeid " +
-                    "AND ent_lastdetailid = entdt_entitytypedetailid " +
-                    "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
-                    "AND cvnd_lastdetailid = cvndd_componentvendordetailid " + 
-                    "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename";
-            final var queryReadWrite = "SELECT _ALL_ " +
-                    "FROM partyentitysecurityroles " +
-                    "WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ? " +
-                    "FOR UPDATE";
+            final var queryReadOnly = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles, parties, partydetails, partytypes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                    WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                    AND pensrol_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                    AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                    AND pensrol_eni_entityinstanceid = eni_entityinstanceid
+                    AND eni_ent_entitytypeid = ent_entitytypeid
+                    AND ent_lastdetailid = entdt_entitytypedetailid
+                    AND entdt_cvnd_componentvendorid = cvnd_componentvendorid
+                    AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                    ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename
+                    _LIMIT_
+                    """;
+            final var queryReadWrite = """
+                    SELECT _ALL_
+                    FROM partyentitysecurityroles
+                    WHERE pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?
+                    FOR UPDATE
+                    """;
 
             var ps = partyEntitySecurityRoleFactory.prepareStatement(entityPermission.equals(EntityPermission.READ_ONLY)? queryReadOnly: queryReadWrite);
             

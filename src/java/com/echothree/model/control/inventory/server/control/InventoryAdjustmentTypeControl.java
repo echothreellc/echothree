@@ -107,10 +107,11 @@ public class InventoryAdjustmentTypeControl
     }
 
     public long countInventoryAdjustmentTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getInventoryAdjustmentTypeByNameQueries;
@@ -118,17 +119,19 @@ public class InventoryAdjustmentTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid " +
-                "AND invadjtypdt_inventoryadjustmenttypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid " +
-                "AND invadjtypdt_inventoryadjustmenttypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                AND invadjtypdt_inventoryadjustmenttypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                AND invadjtypdt_inventoryadjustmenttypename = ?
+                FOR UPDATE
+                """);
         getInventoryAdjustmentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -157,17 +160,19 @@ public class InventoryAdjustmentTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid " +
-                "AND invadjtypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid " +
-                "AND invadjtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                AND invadjtypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                AND invadjtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultInventoryAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -192,17 +197,19 @@ public class InventoryAdjustmentTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid " +
-                "ORDER BY invadjtypdt_sortorder, invadjtypdt_inventoryadjustmenttypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails " +
-                "WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                ORDER BY invadjtypdt_sortorder, invadjtypdt_inventoryadjustmenttypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
+                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
+                FOR UPDATE
+                """);
         getInventoryAdjustmentTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -378,15 +385,17 @@ public class InventoryAdjustmentTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypedescriptions " +
-                "WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_lang_languageid = ? AND invadjtypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypedescriptions " +
-                "WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_lang_languageid = ? AND invadjtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypedescriptions
+                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_lang_languageid = ? AND invadjtypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypedescriptions
+                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_lang_languageid = ? AND invadjtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getInventoryAdjustmentTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -416,16 +425,19 @@ public class InventoryAdjustmentTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypedescriptions, languages " +
-                "WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ? AND invadjtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventoryadjustmenttypedescriptions " +
-                "WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypedescriptions, languages
+                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ? AND invadjtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventoryadjustmenttypedescriptions
+                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

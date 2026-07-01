@@ -26,6 +26,9 @@ public interface GetClubItemsResult
     
     ClubTransfer getClub();
     void setClub(ClubTransfer club);
+
+    Long getClubItemCount();
+    void setClubItemCount(Long clubItemCount);
     
     List<ClubItemTransfer> getClubItems();
     void setClubItems(List<ClubItemTransfer> clubItems);

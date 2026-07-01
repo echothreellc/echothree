@@ -29,5 +29,8 @@ public interface GetItemWeightsResult
     
     List<ItemWeightTransfer> getItemWeights();
     void setItemWeights(List<ItemWeightTransfer> itemWeights);
+
+    Long getItemWeightCount();
+    void setItemWeightCount(Long itemWeightCount);
     
 }

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetClubsResult
         extends BaseResult {
     
+    Long getClubCount();
+    void setClubCount(Long clubCount);
+
     List<ClubTransfer> getClubs();
     void setClubs(List<ClubTransfer> clubs);
     

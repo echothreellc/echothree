@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.campaign.common.form;
 
-import com.echothree.control.user.campaign.common.spec.CampaignContentSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignContentUniversalSpec;
 
 public interface DeleteCampaignContentForm
-        extends CampaignContentSpec {
+        extends CampaignContentUniversalSpec {
     
-    // Nothing additional beyond CampaignContentSpec
+    // Nothing additional beyond CampaignContentUniversalSpec
     
 }

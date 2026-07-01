@@ -1,4 +1,4 @@
-<div class="form-group form-row">
+<div class="row mb-3">
     <label for="password" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;"><fmt:message key="label.password" />:</label>
     <div class="col-sm-3">
         <html:password styleClass="form-control form-control-sm" styleId="password" property="password" size="20" maxlength="40" />

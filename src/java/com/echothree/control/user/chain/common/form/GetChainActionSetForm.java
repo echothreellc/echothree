@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.chain.common.form;
 
-import com.echothree.control.user.chain.common.spec.ChainActionSetSpec;
+import com.echothree.control.user.chain.common.spec.ChainActionSetUniversalSpec;
 
 public interface GetChainActionSetForm
-        extends ChainActionSetSpec {
+        extends ChainActionSetUniversalSpec {
     
-    // Nothing additional beyond ChainActionSetSpec
+    // Nothing additional beyond ChainActionSetUniversalSpec
     
 }

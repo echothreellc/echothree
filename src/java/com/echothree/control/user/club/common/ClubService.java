@@ -17,8 +17,10 @@
 package com.echothree.control.user.club.common;
 
 import com.echothree.control.user.club.common.form.*;
+import com.echothree.control.user.club.common.result.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 
 public interface ClubService
         extends ClubForms {
@@ -33,52 +35,52 @@ public interface ClubService
     //   Clubs
     // --------------------------------------------------------------------------------
     
-    CommandResult createClub(UserVisitPK userVisitPK, CreateClubForm form);
+    CommandResult<VoidResult> createClub(UserVisitPK userVisitPK, CreateClubForm form);
     
-    CommandResult getClubs(UserVisitPK userVisitPK, GetClubsForm form);
+    CommandResult<GetClubsResult> getClubs(UserVisitPK userVisitPK, GetClubsForm form);
     
-    CommandResult getClub(UserVisitPK userVisitPK, GetClubForm form);
+    CommandResult<GetClubResult> getClub(UserVisitPK userVisitPK, GetClubForm form);
     
-    CommandResult setDefaultClub(UserVisitPK userVisitPK, SetDefaultClubForm form);
+    CommandResult<VoidResult> setDefaultClub(UserVisitPK userVisitPK, SetDefaultClubForm form);
     
-    CommandResult editClub(UserVisitPK userVisitPK, EditClubForm form);
+    CommandResult<EditClubResult> editClub(UserVisitPK userVisitPK, EditClubForm form);
     
-    CommandResult deleteClub(UserVisitPK userVisitPK, DeleteClubForm form);
+    CommandResult<VoidResult> deleteClub(UserVisitPK userVisitPK, DeleteClubForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubDescription(UserVisitPK userVisitPK, CreateClubDescriptionForm form);
+    CommandResult<VoidResult> createClubDescription(UserVisitPK userVisitPK, CreateClubDescriptionForm form);
     
-    CommandResult getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form);
+    CommandResult<GetClubDescriptionsResult> getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form);
     
-    CommandResult editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form);
+    CommandResult<EditClubDescriptionResult> editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form);
     
-    CommandResult deleteClubDescription(UserVisitPK userVisitPK, DeleteClubDescriptionForm form);
+    CommandResult<VoidResult> deleteClubDescription(UserVisitPK userVisitPK, DeleteClubDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Item Types
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubItemType(UserVisitPK userVisitPK, CreateClubItemTypeForm form);
+    CommandResult<VoidResult> createClubItemType(UserVisitPK userVisitPK, CreateClubItemTypeForm form);
     
-    CommandResult getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form);
+    CommandResult<GetClubItemTypeChoicesResult> getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Item Type Descriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubItemTypeDescription(UserVisitPK userVisitPK, CreateClubItemTypeDescriptionForm form);
+    CommandResult<VoidResult> createClubItemTypeDescription(UserVisitPK userVisitPK, CreateClubItemTypeDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Club Items
     // --------------------------------------------------------------------------------
     
-    CommandResult createClubItem(UserVisitPK userVisitPK, CreateClubItemForm form);
+    CommandResult<VoidResult> createClubItem(UserVisitPK userVisitPK, CreateClubItemForm form);
     
-    CommandResult getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form);
+    CommandResult<GetClubItemsResult> getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form);
     
-    CommandResult deleteClubItem(UserVisitPK userVisitPK, DeleteClubItemForm form);
+    CommandResult<VoidResult> deleteClubItem(UserVisitPK userVisitPK, DeleteClubItemForm form);
     
 }

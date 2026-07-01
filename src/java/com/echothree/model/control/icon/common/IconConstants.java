@@ -22,7 +22,6 @@ public interface IconConstants {
     String IconUsageType_FORUM_MESSAGE = "FORUM_MESSAGE";
     String IconUsageType_FORUM_THREAD  = "FORUM_THREAD";
     String IconUsageType_FORUM         = "FORUM";
-    String IconUsageType_MOOD          = "MOOD";
     String IconUsageType_PROFILE       = "PROFILE";
     
 }

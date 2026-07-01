@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetTerminationReasonsResult
         extends BaseResult {
     
+    Long getTerminationReasonCount();
+    void setTerminationReasonCount(Long terminationReasonCount);
+
     List<TerminationReasonTransfer> getTerminationReasons();
     void setTerminationReasons(List<TerminationReasonTransfer> terminationReasons);
     

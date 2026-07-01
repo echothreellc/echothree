@@ -38,6 +38,8 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
+import com.echothree.model.data.message.common.pk.MessagePK;
+import com.echothree.model.data.message.common.pk.MessageTypePK;
 import com.echothree.model.data.message.server.entity.EntityMessage;
 import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.model.data.message.server.entity.MessageBlob;
@@ -68,6 +70,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -76,7 +79,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -137,7 +139,31 @@ public class MessageControl
         
         return messageType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.MessageType */
+    public MessageType getMessageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new MessageTypePK(entityInstance.getEntityUniqueId());
+
+        return MessageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public MessageType getMessageTypeByEntityInstance(EntityInstance entityInstance) {
+        return getMessageTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public MessageType getMessageTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getMessageTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countMessageTypesByEntityType(final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM messagetypes
+                        JOIN messagetypedetails ON mssgtypdt_messagetypedetailid = mssgtyp_activedetailid
+                        WHERE mssgtypdt_ent_entitytypeid = ?
+                        """, entityType);
+    }
+
     private List<MessageType> getMessageTypes(EntityType entityType, EntityPermission entityPermission) {
         List<MessageType> messageTypes;
         
@@ -145,15 +171,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypes, messagetypedetails " +
-                        "WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ? " +
-                        "ORDER BY mssgtypdt_sortorder, mssgtypdt_messagetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypes, messagetypedetails
+                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
+                        ORDER BY mssgtypdt_sortorder, mssgtypdt_messagetypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypes, messagetypedetails " +
-                        "WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypes, messagetypedetails
+                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageTypeFactory.getInstance().prepareStatement(query);
@@ -183,16 +214,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypes, messagetypedetails " +
-                        "WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ? " +
-                        "AND mssgtypdt_messagetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypes, messagetypedetails
+                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
+                        AND mssgtypdt_messagetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypes, messagetypedetails " +
-                        "WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ? " +
-                        "AND mssgtypdt_messagetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypes, messagetypedetails
+                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
+                        AND mssgtypdt_messagetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageTypeFactory.getInstance().prepareStatement(query);
@@ -228,15 +263,18 @@ public class MessageControl
         return messageTypeTransferCache.getMessageTypeTransfer(userVisit, messageType);
     }
     
-    public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, EntityType entityType) {
-        var messageTypes = getMessageTypes(entityType);
+    public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, Collection<MessageType> messageTypes) {
         List<MessageTypeTransfer> messageTypeTransfers = new ArrayList<>(messageTypes.size());
-        
+
         messageTypes.forEach((messageType) ->
                 messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(userVisit, messageType))
         );
-        
+
         return messageTypeTransfers;
+    }
+
+    public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, EntityType entityType) {
+        return getMessageTypeTransfers(userVisit, getMessageTypes(entityType));
     }
     
     public void updateMessageTypeFromValue(MessageTypeDetailValue messageTypeDetailValue, BasePK updatedBy) {
@@ -306,14 +344,18 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypedescriptions " +
-                        "WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypedescriptions
+                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypedescriptions " +
-                        "WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypedescriptions
+                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -353,15 +395,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypedescriptions, languages " +
-                        "WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ? AND mssgtypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypedescriptions, languages
+                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ? AND mssgtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagetypedescriptions " +
-                        "WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagetypedescriptions
+                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -484,7 +531,31 @@ public class MessageControl
         
         return message;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Message */
+    public Message getMessageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new MessagePK(entityInstance.getEntityUniqueId());
+
+        return MessageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Message getMessageByEntityInstance(EntityInstance entityInstance) {
+        return getMessageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Message getMessageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getMessageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countMessagesByMessageType(final MessageType messageType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM messages
+                        JOIN messagedetails ON mssgdt_messagedetailid = mssg_activedetailid
+                        WHERE mssgdt_mssgtyp_messagetypeid = ?
+                        """, messageType);
+    }
+
     private List<Message> getMessagesByMessageType(MessageType messageType, EntityPermission entityPermission) {
         List<Message> messages;
         
@@ -492,15 +563,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messages, messagedetails " +
-                        "WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ? " +
-                        "ORDER BY mssgdt_sortorder, mssgdt_messagename";
+                query = """
+                        SELECT _ALL_
+                        FROM messages, messagedetails
+                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
+                        ORDER BY mssgdt_sortorder, mssgdt_messagename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messages, messagedetails " +
-                        "WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messages, messagedetails
+                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageFactory.getInstance().prepareStatement(query);
@@ -530,16 +606,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messages, messagedetails " +
-                        "WHERE mssg_activedetailid = mssgdt_messagedetailid " +
-                        "AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM messages, messagedetails
+                        WHERE mssg_activedetailid = mssgdt_messagedetailid
+                        AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messages, messagedetails " +
-                        "WHERE mssg_activedetailid = mssgdt_messagedetailid " +
-                        "AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messages, messagedetails
+                        WHERE mssg_activedetailid = mssgdt_messagedetailid
+                        AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageFactory.getInstance().prepareStatement(query);
@@ -573,16 +653,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messages, messagedetails " +
-                        "WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ? " +
-                        "AND mssgdt_messagename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messages, messagedetails
+                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
+                        AND mssgdt_messagename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messages, messagedetails " +
-                        "WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ? " +
-                        "AND mssgdt_messagename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messages, messagedetails
+                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
+                        AND mssgdt_messagename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageFactory.getInstance().prepareStatement(query);
@@ -652,8 +736,7 @@ public class MessageControl
         return messageTransferCache.getMessageTransfer(userVisit, message);
     }
     
-    public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
-        var messages = getMessagesByMessageType(messageType);
+    public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, Collection<Message> messages) {
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
         
         messages.forEach((message) ->
@@ -661,6 +744,10 @@ public class MessageControl
         );
         
         return messageTransfers;
+    }
+    
+    public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
+        return getMessageTransfers(userVisit, getMessagesByMessageType(messageType));
     }
     
     private void updateMessageFromValue(MessageDetailValue messageDetailValue, boolean checkDefault,
@@ -774,14 +861,18 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagedescriptions " +
-                        "WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messagedescriptions
+                        WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagedescriptions " +
-                        "WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagedescriptions
+                        WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
@@ -821,15 +912,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagedescriptions, languages " +
-                        "WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ? AND mssgd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM messagedescriptions, languages
+                        WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ? AND mssgd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagedescriptions " +
-                        "WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagedescriptions
+                        WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
@@ -937,16 +1033,21 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagestrings, languages " +
-                        "WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ? " +
-                        "AND mssgs_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM messagestrings, languages
+                        WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ?
+                        AND mssgs_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagestrings " +
-                        "WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagestrings
+                        WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageStringFactory.getInstance().prepareStatement(query);
@@ -977,14 +1078,18 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagestrings " +
-                        "WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messagestrings
+                        WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messagestrings " +
-                        "WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messagestrings
+                        WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageStringFactory.getInstance().prepareStatement(query);
@@ -1088,16 +1193,21 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageblobs, languages " +
-                        "WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ? " +
-                        "AND mssgb_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM messageblobs, languages
+                        WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ?
+                        AND mssgb_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageblobs " +
-                        "WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messageblobs
+                        WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageBlobFactory.getInstance().prepareStatement(query);
@@ -1128,14 +1238,18 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageblobs " +
-                        "WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messageblobs
+                        WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageblobs " +
-                        "WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messageblobs
+                        WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageBlobFactory.getInstance().prepareStatement(query);
@@ -1240,16 +1354,21 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageclobs, languages " +
-                        "WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ? " +
-                        "AND mssgc_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM messageclobs, languages
+                        WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ?
+                        AND mssgc_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageclobs " +
-                        "WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messageclobs
+                        WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageClobFactory.getInstance().prepareStatement(query);
@@ -1280,14 +1399,18 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageclobs " +
-                        "WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM messageclobs
+                        WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM messageclobs " +
-                        "WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM messageclobs
+                        WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = MessageClobFactory.getInstance().prepareStatement(query);
@@ -1373,7 +1496,7 @@ public class MessageControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Message Descriptions
+    //   Entity Messages
     // --------------------------------------------------------------------------------
     
     public EntityMessage createEntityMessage(EntityInstance entityInstance, Message message, BasePK createdBy) {
@@ -1384,7 +1507,23 @@ public class MessageControl
         
         return entityMessage;
     }
-    
+
+    public long countEntityMessageByEntityInstance(final EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM entitymessages
+                        WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ?
+                        """, entityInstance, Session.MAX_TIME);
+    }
+
+    public long countEntityMessageByMessage(final Message message) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM entitymessages
+                        WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ?
+                        """, message, Session.MAX_TIME);
+    }
+
     private EntityMessage getEntityMessage(EntityInstance entityInstance, Message message, EntityPermission entityPermission) {
         EntityMessage entityMessage;
         
@@ -1392,14 +1531,18 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymessages " +
-                        "WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymessages
+                        WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymessages " +
-                        "WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymessages
+                        WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityMessageFactory.getInstance().prepareStatement(query);
@@ -1431,16 +1574,21 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymessages, messages, messagedetails " +
-                        "WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ? " +
-                        "AND emssg_mssg_messageid = mssg_messageid AND mssg_lastdetailid = mssgdt_messagedetailid " +
-                        "ORDER BY mssgdt_sortorder, mssgdt_messagename";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymessages, messages, messagedetails
+                        WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ?
+                        AND emssg_mssg_messageid = mssg_messageid AND mssg_lastdetailid = mssgdt_messagedetailid
+                        ORDER BY mssgdt_sortorder, mssgdt_messagename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymessages " +
-                        "WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymessages
+                        WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityMessageFactory.getInstance().prepareStatement(query);
@@ -1471,15 +1619,20 @@ public class MessageControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymessages, entityinstances " +
-                        "WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ? AND emssg_eni_entityinstanceid = eni_entityinstanceid " +
-                        "ORDER BY eni_entityuniqueid";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymessages, entityinstances
+                        WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ? AND emssg_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY eni_entityuniqueid
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymessages " +
-                        "WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymessages
+                        WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityMessageFactory.getInstance().prepareStatement(query);

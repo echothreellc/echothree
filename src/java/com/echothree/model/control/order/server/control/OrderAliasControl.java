@@ -21,6 +21,8 @@ import com.echothree.model.control.order.common.choice.OrderAliasTypeChoicesBean
 import com.echothree.model.control.order.common.transfer.OrderAliasTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.order.common.pk.OrderAliasTypePK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
@@ -36,15 +38,16 @@ import com.echothree.model.data.order.server.value.OrderAliasValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class OrderAliasControl
@@ -88,22 +91,50 @@ public class OrderAliasControl
         return orderAliasType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderAliasType */
+    public OrderAliasType getOrderAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new OrderAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return OrderAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public OrderAliasType getOrderAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getOrderAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OrderAliasType getOrderAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOrderAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countOrderAliasTypesByOrderType(final OrderType orderType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderaliastypes
+                        JOIN orderaliastypedetails ON ordaltypdt_orderaliastypedetailid = ordaltyp_activedetailid
+                        WHERE ordaltypdt_ordtyp_ordertypeid = ?
+                        """, orderType);
+    }
+
     private static final Map<EntityPermission, String> getOrderAliasTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypes, orderaliastypedetails " +
-                "WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ? " +
-                "AND ordaltypdt_orderaliastypename = ?");
+                """
+                SELECT _ALL_
+                FROM orderaliastypes, orderaliastypedetails
+                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
+                AND ordaltypdt_orderaliastypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypes, orderaliastypedetails " +
-                "WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ? " +
-                "AND ordaltypdt_orderaliastypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliastypes, orderaliastypedetails
+                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
+                AND ordaltypdt_orderaliastypename = ?
+                FOR UPDATE
+                """);
         getOrderAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -135,16 +166,20 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypes, orderaliastypedetails " +
-                "WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ? " +
-                "AND ordaltypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM orderaliastypes, orderaliastypedetails
+                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
+                AND ordaltypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypes, orderaliastypedetails " +
-                "WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ? " +
-                "AND ordaltypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliastypes, orderaliastypedetails
+                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
+                AND ordaltypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultOrderAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -170,15 +205,20 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypes, orderaliastypedetails " +
-                "WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ? " +
-                "ORDER BY ordaltypdt_sortorder, ordaltypdt_orderaliastypename");
+                """
+                SELECT _ALL_
+                FROM orderaliastypes, orderaliastypedetails
+                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
+                ORDER BY ordaltypdt_sortorder, ordaltypdt_orderaliastypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypes, orderaliastypedetails " +
-                "WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliastypes, orderaliastypedetails
+                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
+                FOR UPDATE
+                """);
         getOrderAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -198,8 +238,7 @@ public class OrderAliasControl
         return orderAliasTypeTransferCache.getOrderAliasTypeTransfer(userVisit, orderAliasType);
     }
 
-    public List<OrderAliasTypeTransfer> getOrderAliasTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        var orderAliasTypes = getOrderAliasTypes(orderType);
+    public List<OrderAliasTypeTransfer> getOrderAliasTypeTransfers(UserVisit userVisit, Collection<OrderAliasType> orderAliasTypes) {
         List<OrderAliasTypeTransfer> orderAliasTypeTransfers = new ArrayList<>(orderAliasTypes.size());
 
         orderAliasTypes.forEach((orderAliasType) ->
@@ -207,6 +246,10 @@ public class OrderAliasControl
         );
 
         return orderAliasTypeTransfers;
+    }
+
+    public List<OrderAliasTypeTransfer> getOrderAliasTypeTransfers(UserVisit userVisit, OrderType orderType) {
+        return getOrderAliasTypeTransfers(userVisit, getOrderAliasTypes(orderType));
     }
 
     public OrderAliasTypeChoicesBean getOrderAliasTypeChoices(String defaultOrderAliasTypeChoice, Language language,
@@ -351,14 +394,18 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypedescriptions " +
-                "WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_lang_languageid = ? AND ordaltypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderaliastypedescriptions
+                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_lang_languageid = ? AND ordaltypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypedescriptions " +
-                "WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_lang_languageid = ? AND ordaltypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliastypedescriptions
+                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_lang_languageid = ? AND ordaltypd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -389,15 +436,20 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypedescriptions, languages " +
-                "WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_thrutime = ? AND ordaltypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM orderaliastypedescriptions, languages
+                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_thrutime = ? AND ordaltypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliastypedescriptions " +
-                "WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliastypedescriptions
+                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderAliasTypeDescriptionsByOrderAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -492,20 +544,40 @@ public class OrderAliasControl
         return orderAlias;
     }
 
+    public long countOrderAliasByOrder(final Order order) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderaliases
+                        WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
+                        """, order, Session.MAX_TIME);
+    }
+
+    public long countOrderAliasByOrderAliasType(final OrderAliasType orderAliasType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM orderaliases
+                        WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
+                        """, orderAliasType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getOrderAliasQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliases " +
-                "WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderaliases
+                WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliases " +
-                "WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliases
+                WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -536,14 +608,18 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliases " +
-                "WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_alias = ? AND ordal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderaliases
+                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_alias = ? AND ordal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliases " +
-                "WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_alias = ? AND ordal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliases
+                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_alias = ? AND ordal_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -565,16 +641,21 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliases, orderaliastypes, orderaliastypedetails " +
-                "WHERE ordal_ord_orderid = ? AND ordal_thrutime = ? " +
-                "AND ordal_ordaltyp_orderaliastypeid = ordaltyp_orderaliastypeid AND ordaltyp_lastdetailid = ordaltypdt_orderaliastypedetailid" +
-                "ORDER BY ordaltypdt_sortorder, ordaltypdt_orderaliastypename");
+                """
+                SELECT _ALL_
+                FROM orderaliases, orderaliastypes, orderaliastypedetails
+                WHERE ordal_ord_orderid = ? AND ordal_thrutime = ?
+                AND ordal_ordaltyp_orderaliastypeid = ordaltyp_orderaliastypeid AND ordaltyp_lastdetailid = ordaltypdt_orderaliastypedetailid
+                ORDER BY ordaltypdt_sortorder, ordaltypdt_orderaliastypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliases " +
-                "WHERE ordal_ord_orderid = ? AND ordal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliases
+                WHERE ordal_ord_orderid = ? AND ordal_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderAliasesByOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -597,16 +678,21 @@ public class OrderAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderaliases, orderes, orderdetails " +
-                "WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ? " +
-                "AND ordal_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM orderaliases, orders, orderdetails
+                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
+                AND ordal_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderaliases " +
-                "WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderaliases
+                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderAliasesByOrderAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

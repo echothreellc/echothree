@@ -43,6 +43,8 @@ import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.AllocationPriorityPK;
 import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;
+import com.echothree.model.data.inventory.common.pk.InventoryConditionUseTypePK;
+import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -150,13 +152,28 @@ public class InventoryControl
         return inventoryLocationGroup;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryLocationGroup */
+    public InventoryLocationGroup getInventoryLocationGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InventoryLocationGroupPK(entityInstance.getEntityUniqueId());
+
+        return InventoryLocationGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InventoryLocationGroup getInventoryLocationGroupByEntityInstance(EntityInstance entityInstance) {
+        return getInventoryLocationGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryLocationGroup getInventoryLocationGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInventoryLocationGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countInventoryLocationGroupsByWarehouseParty(Party warehouseParty) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                "AND invlocgrpdt_warehousepartyid = ?",
-                warehouseParty);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM inventorylocationgroups, inventorylocationgroupdetails
+                WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                AND invlocgrpdt_warehousepartyid = ?
+                """, warehouseParty);
     }
 
     private InventoryLocationGroup getInventoryLocationGroupByName(Party warehouseParty, String inventoryLocationGroupName, EntityPermission entityPermission) {
@@ -166,16 +183,20 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroups, inventorylocationgroupdetails
+                        WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                        AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroups, inventorylocationgroupdetails
+                        WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                        AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
@@ -216,16 +237,20 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroups, inventorylocationgroupdetails
+                        WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                        AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroups, inventorylocationgroupdetails
+                        WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                        AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
@@ -259,18 +284,22 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                        "AND invlocgrpdt_warehousepartyid = ? " +
-                        "ORDER BY invlocgrpdt_sortorder, invlocgrpdt_inventorylocationgroupname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroups, inventorylocationgroupdetails
+                        WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                        AND invlocgrpdt_warehousepartyid = ?
+                        ORDER BY invlocgrpdt_sortorder, invlocgrpdt_inventorylocationgroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
-                        "AND invlocgrpdt_warehousepartyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroups, inventorylocationgroupdetails
+                        WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid
+                        AND invlocgrpdt_warehousepartyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
@@ -486,14 +515,18 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupdescriptions " +
-                        "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_lang_languageid = ? AND invlocgrpd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupdescriptions
+                        WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_lang_languageid = ? AND invlocgrpd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupdescriptions " +
-                        "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_lang_languageid = ? AND invlocgrpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupdescriptions
+                        WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_lang_languageid = ? AND invlocgrpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
@@ -533,16 +566,20 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupdescriptions, languages " +
-                        "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_thrutime = ? AND invlocgrpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupdescriptions, languages
+                        WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_thrutime = ? AND invlocgrpd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupdescriptions " +
-                        "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupdescriptions
+                        WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
@@ -648,7 +685,15 @@ public class InventoryControl
         
         return inventoryLocationGroupVolume;
     }
-    
+
+    public long countInventoryLocationGroupVolumesByInventoryLocationGroup(final InventoryLocationGroup inventoryLocationGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventorylocationgroupvolumes
+                        WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ?
+                        """, inventoryLocationGroup, Session.MAX_TIME);
+    }
+
     private InventoryLocationGroupVolume getInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
         InventoryLocationGroupVolume inventoryLocationGroupVolume;
         
@@ -656,14 +701,18 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupvolumes " +
-                        "WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ? ";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupvolumes
+                        WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupvolumes " +
-                        "WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupvolumes
+                        WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupVolumeFactory.getInstance().prepareStatement(query);
@@ -738,16 +787,24 @@ public class InventoryControl
     //   Inventory Location Group Capacities
     // --------------------------------------------------------------------------------
     
-    public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryInventoryLocationGroupGroup,
+    public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryLocationGroupGroup,
             UnitOfMeasureType unitOfMeasureType, Long capacity, BasePK createdBy) {
-        var inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryInventoryLocationGroupGroup,
+        var inventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupGroup,
                 unitOfMeasureType, capacity, session.getStartTime(), Session.MAX_TIME);
         
-        sendEvent(inventoryInventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
+        sendEvent(inventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
         
-        return inventoryInventoryLocationGroupGroupCapacity;
+        return inventoryLocationGroupGroupCapacity;
     }
-    
+
+    public long countInventoryLocationGroupCapacitiesByInventoryLocationGroup(final InventoryLocationGroup inventoryLocationGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventorylocationgroupcapacities
+                        WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ?
+                        """, inventoryLocationGroup, Session.MAX_TIME);
+    }
+
     private List<InventoryLocationGroupCapacity> getInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup, EntityPermission entityPermission) {
         List<InventoryLocationGroupCapacity> inventoryInventoryLocationGroupGroupCapacities;
         
@@ -755,18 +812,22 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupcapacities, unitofmeasuretypedetails, unitofmeasurekinddetails " +
-                        "WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ? " +
-                        "AND invlocgrpcap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupcapacities, unitofmeasuretypedetails, unitofmeasurekinddetails
+                        WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ?
+                        AND invlocgrpcap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupcapacities " +
-                        "WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupcapacities
+                        WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
@@ -802,16 +863,20 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupcapacities " +
-                        "WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_uomt_unitofmeasuretypeid = ? " +
-                        "AND invlocgrpcap_thrutime = ? ";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupcapacities
+                        WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_uomt_unitofmeasuretypeid = ?
+                        AND invlocgrpcap_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventorylocationgroupcapacities " +
-                        "WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_uomt_unitofmeasuretypeid = ? " +
-                        "AND invlocgrpcap_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventorylocationgroupcapacities
+                        WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_uomt_unitofmeasuretypeid = ?
+                        AND invlocgrpcap_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
@@ -940,21 +1005,25 @@ public class InventoryControl
     }
 
     public long countInventoryConditions() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM inventoryconditions, inventoryconditiondetails " +
-                "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM inventoryconditions, inventoryconditiondetails
+                WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getInventoryConditionByNameQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditions, inventoryconditiondetails " +
-                    "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ?",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM inventoryconditions, inventoryconditiondetails " +
-                    "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM inventoryconditions, inventoryconditiondetails
+                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ?
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM inventoryconditions, inventoryconditiondetails
+                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ?
+                    FOR UPDATE
+                    """);
 
     public InventoryCondition getInventoryConditionByName(final String inventoryConditionName, final EntityPermission entityPermission) {
         return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryConditionByNameQueries,
@@ -978,15 +1047,17 @@ public class InventoryControl
     }
     
     private static final Map<EntityPermission, String> getDefaultInventoryConditionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditions, inventoryconditiondetails " +
-                    "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ?",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditions, inventoryconditiondetails " +
-                    "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM inventoryconditions, inventoryconditiondetails
+                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ?
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM inventoryconditions, inventoryconditiondetails
+                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ?
+                    FOR UPDATE
+                    """);
 
     public InventoryCondition getDefaultInventoryCondition(final EntityPermission entityPermission) {
         return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInventoryConditionQueries,
@@ -1006,15 +1077,19 @@ public class InventoryControl
     }
     
     private static final Map<EntityPermission, String> getInventoryConditionsQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " + "FROM inventoryconditions, inventoryconditiondetails " +
-                    "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ? " +
-                    "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM inventoryconditions, inventoryconditiondetails " +
-                    "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM inventoryconditions, inventoryconditiondetails
+                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ?
+                    ORDER BY invcondt_sortorder, invcondt_inventoryconditionname
+                    _LIMIT_
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM inventoryconditions, inventoryconditiondetails
+                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ?
+                    FOR UPDATE
+                    """);
 
     private List<InventoryCondition> getInventoryConditions(final EntityPermission entityPermission) {
         return InventoryConditionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryConditionsQueries,
@@ -1221,15 +1296,17 @@ public class InventoryControl
     }
 
     private static final Map<EntityPermission, String> getInventoryConditionDescriptionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditiondescriptions " +
-                    "WHERE invcond_invcon_inventoryconditionid = ? AND invcond_lang_languageid = ? AND invcond_thrutime = ?",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditiondescriptions " +
-                    "WHERE invcond_invcon_inventoryconditionid = ? AND invcond_lang_languageid = ? AND invcond_thrutime = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM inventoryconditiondescriptions
+                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_lang_languageid = ? AND invcond_thrutime = ?
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM inventoryconditiondescriptions
+                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_lang_languageid = ? AND invcond_thrutime = ?
+                    FOR UPDATE
+                    """);
 
     private InventoryConditionDescription getInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language, final EntityPermission entityPermission) {
@@ -1257,17 +1334,19 @@ public class InventoryControl
     }
 
     private static final Map<EntityPermission, String> getInventoryConditionDescriptionsByInventoryConditionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditiondescriptions, languages " +
-                    "WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ? AND invcond_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM inventoryconditiondescriptions " +
-                    "WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ? " +
-                    "FOR UPDATE");
+            EntityPermission.READ_ONLY, """
+                    SELECT _ALL_
+                    FROM inventoryconditiondescriptions, languages
+                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ? AND invcond_lang_languageid = lang_languageid
+                    ORDER BY lang_sortorder, lang_languageisoname
+                    _LIMIT_
+                    """,
+            EntityPermission.READ_WRITE, """
+                    SELECT _ALL_
+                    FROM inventoryconditiondescriptions
+                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ?
+                    FOR UPDATE
+                    """);
 
     private List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition,
             final EntityPermission entityPermission) {
@@ -1360,7 +1439,29 @@ public class InventoryControl
             Integer sortOrder) {
         return InventoryConditionUseTypeFactory.getInstance().create(inventoryConditionUseTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryConditionUseType */
+    public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InventoryConditionUseTypePK(entityInstance.getEntityUniqueId());
+
+        return InventoryConditionUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInventoryConditionUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInventoryConditionUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInventoryConditionUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionusetypes
+                        """);
+    }
+
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
         var ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -1421,18 +1522,18 @@ public class InventoryControl
         return inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType);
     }
     
-    private List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
-            final List<InventoryConditionUseType> inventoryConditionUseTypes) {
+    public List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
+            final Collection<InventoryConditionUseType> inventoryConditionUseTypes) {
         List<InventoryConditionUseTypeTransfer> inventoryConditionUseTypeTransfers = null;
-        
+
         if(inventoryConditionUseTypes != null) {
-            
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
-            
+
             for(var inventoryConditionUseType : inventoryConditionUseTypes) {
                 inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType));
             }
         }
+
         return inventoryConditionUseTypeTransfers;
     }
     
@@ -1452,10 +1553,11 @@ public class InventoryControl
         InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription;
         
         try {
-            var ps = InventoryConditionUseTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM inventoryconditionusetypedescriptions " +
-                    "WHERE invconutd_invconut_inventoryconditionusetypeid = ? AND invconutd_lang_languageid = ?");
+            var ps = InventoryConditionUseTypeDescriptionFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM inventoryconditionusetypedescriptions
+                    WHERE invconutd_invconut_inventoryconditionusetypeid = ? AND invconutd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1511,7 +1613,23 @@ public class InventoryControl
         
         return inventoryConditionUse;
     }
-    
+
+    public long countInventoryConditionUsesByInventoryConditionUseType(final InventoryConditionUseType inventoryConditionUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionuses
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
+                        """, inventoryConditionUseType, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionUsesByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionuses
+                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
     private InventoryConditionUse getInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, EntityPermission entityPermission) {
         InventoryConditionUse inventoryConditionUse;
@@ -1520,16 +1638,20 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses " +
-                        "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_invcon_inventoryconditionid = ? " +
-                        "AND invconu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_invcon_inventoryconditionid = ?
+                        AND invconu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses " +
-                        "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_invcon_inventoryconditionid = ? " +
-                        "AND invconu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_invcon_inventoryconditionid = ?
+                        AND invconu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
             var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
             
@@ -1568,14 +1690,18 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses " +
-                        "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses " +
-                        "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
             var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
             
@@ -1610,17 +1736,21 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses, inventoryconditionusetypes " +
-                        "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ? " +
-                        "AND invconu_invconut_inventoryconditionusetypeid = invconut_inventoryconditionusetypeid " +
-                        "ORDER BY invconut_sortorder, invconut_inventoryconditionusetypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses, inventoryconditionusetypes
+                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
+                        AND invconu_invconut_inventoryconditionusetypeid = invconut_inventoryconditionusetypeid
+                        ORDER BY invconut_sortorder, invconut_inventoryconditionusetypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses " +
-                        "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses
+                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
@@ -1655,17 +1785,21 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ? " +
-                        "AND invconu_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_activedetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
+                        AND invconu_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_activedetailid = invcondt_inventoryconditiondetailid
+                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
@@ -1689,8 +1823,8 @@ public class InventoryControl
         return getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType, EntityPermission.READ_WRITE);
     }
     
-    private List<InventoryConditionUseTransfer> getInventoryConditionUseTransfers(final UserVisit userVisit,
-            final List<InventoryConditionUse> inventoryConditionUses) {
+    public List<InventoryConditionUseTransfer> getInventoryConditionUseTransfers(final UserVisit userVisit,
+            final Collection<InventoryConditionUse> inventoryConditionUses) {
         List<InventoryConditionUseTransfer> inventoryConditionUseTransfers = null;
         
         if(inventoryConditionUses != null) {
@@ -1713,23 +1847,7 @@ public class InventoryControl
             InventoryConditionUseType inventoryConditionUseType) {
         return getInventoryConditionUseTransfers(userVisit, getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType));
     }
-    
-    public long countInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM inventoryconditionuses " +
-                "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?",
-                inventoryConditionUseType, Session.MAX_TIME);
-    }
-    
-    public long countInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM inventoryconditionuses " +
-                "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?",
-                inventoryCondition, Session.MAX_TIME);
-    }
-    
+
     private void updateInventoryConditionUseFromValue(InventoryConditionUseValue inventoryConditionUseValue, boolean checkDefault,
             BasePK updatedBy) {
         var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(
@@ -1820,7 +1938,63 @@ public class InventoryControl
         
         return inventoryConditionGlAccount;
     }
-    
+
+    public long countInventoryConditionGlAccountByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByItemAccountingCategory(final ItemAccountingCategory itemAccountingCategory) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
+                        """, itemAccountingCategory, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByInventoryGlAccount(final GlAccount inventoryGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_inventoryglaccountid = ? AND invcongla_thrutime = ?
+                        """, inventoryGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountBySalesGlAccount(final GlAccount salesGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_salesglaccountid = ? AND invcongla_thrutime = ?
+                        """, salesGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByReturnsGlAccount(final GlAccount returnsGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_returnsglaccountid = ? AND invcongla_thrutime = ?
+                        """, returnsGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByCogsGlAccount(final GlAccount cogsGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_cogsglaccountid = ? AND invcongla_thrutime = ?
+                        """, cogsGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByReturnsCogsGlAccount(final GlAccount returnsCogsGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_returnscogsglaccountid = ? AND invcongla_thrutime = ?
+                        """, returnsCogsGlAccount, Session.MAX_TIME);
+    }
+
     private InventoryConditionGlAccount getInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
         InventoryConditionGlAccount inventoryConditionGlAccount;
@@ -1829,14 +2003,18 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionglaccounts " +
-                        "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionglaccounts " +
-                        "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
@@ -1872,18 +2050,22 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionglaccounts, itemaccountingcategories, itemaccountingcategorydetails " +
-                        "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ? " +
-                        "AND invcongla_iactgc_itemaccountingcategoryid = iactgc_itemaccountingcategoryid " +
-                        "AND iactgc_lastdetailid = iactgcdt_itemaccountingcategorydetailid " +
-                        "ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionglaccounts, itemaccountingcategories, itemaccountingcategorydetails
+                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
+                        AND invcongla_iactgc_itemaccountingcategoryid = iactgc_itemaccountingcategoryid
+                        AND iactgc_lastdetailid = iactgcdt_itemaccountingcategorydetailid
+                        ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionglaccounts " +
-                        "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
@@ -1914,18 +2096,22 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionglaccounts, inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ? " +
-                        "AND invcongla_invcon_inventoryconditionid = invcon_inventoryconditionid " +
-                        "AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionglaccounts, inventoryconditions, inventoryconditiondetails
+                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
+                        AND invcongla_invcon_inventoryconditionid = invcon_inventoryconditionid
+                        AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditionglaccounts " +
-                        "WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
@@ -2067,14 +2253,18 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels " +
-                        "WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels " +
-                        "WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
@@ -2116,18 +2306,22 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels, items, itemdetails, inventoryconditions, inventoryconditiondetails " +
-                        "WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ? " +
-                        "AND parinvlvl_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid " +
-                        "AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels, items, itemdetails, inventoryconditions, inventoryconditiondetails
+                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ?
+                        AND parinvlvl_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid
+                        AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels " +
-                        "WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
@@ -2158,19 +2352,23 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels, parties, partydetails, partytypes, inventoryconditions, inventoryconditiondetails " +
-                        "WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ? " +
-                        "AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                        "AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, invcondt_sortorder, invcondt_inventoryconditionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels, parties, partydetails, partytypes, inventoryconditions, inventoryconditiondetails
+                        WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ?
+                        AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                        AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, invcondt_sortorder, invcondt_inventoryconditionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels " +
-                        "WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
@@ -2201,19 +2399,23 @@ public class InventoryControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels, parties, partydetails, partytypes, item, itemdetails " +
-                        "WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ? " +
-                        "AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                        "AND parinvlvl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, itmdt_itemname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels, parties, partydetails, partytypes, item, itemdetails
+                        WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
+                        AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                        AND parinvlvl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                        ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, itmdt_itemname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyinventorylevels " +
-                        "WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
@@ -2361,10 +2563,11 @@ public class InventoryControl
     }
 
     public long countAllocationPriorities() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getAllocationPriorityByNameQueries;
@@ -2372,17 +2575,19 @@ public class InventoryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "AND allocprdt_allocationpriorityname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "AND allocprdt_allocationpriorityname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                AND allocprdt_allocationpriorityname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                AND allocprdt_allocationpriorityname = ?
+                FOR UPDATE
+                """);
         getAllocationPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2412,17 +2617,19 @@ public class InventoryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "AND allocprdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "AND allocprdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                AND allocprdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                AND allocprdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultAllocationPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2447,17 +2654,19 @@ public class InventoryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "ORDER BY allocprdt_sortorder, allocprdt_allocationpriorityname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM allocationpriorities, allocationprioritydetails " +
-                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                ORDER BY allocprdt_sortorder, allocprdt_allocationpriorityname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM allocationpriorities, allocationprioritydetails
+                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
+                FOR UPDATE
+                """);
         getAllocationPrioritiesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2617,15 +2826,17 @@ public class InventoryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM allocationprioritydescriptions " +
-                "WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_lang_languageid = ? AND allocprd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM allocationprioritydescriptions " +
-                "WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_lang_languageid = ? AND allocprd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM allocationprioritydescriptions
+                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_lang_languageid = ? AND allocprd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM allocationprioritydescriptions
+                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_lang_languageid = ? AND allocprd_thrutime = ?
+                FOR UPDATE
+                """);
         getAllocationPriorityDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2655,17 +2866,19 @@ public class InventoryControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM allocationprioritydescriptions, languages " +
-                "WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ? AND allocprd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortallocation, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM allocationprioritydescriptions " +
-                "WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM allocationprioritydescriptions, languages
+                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ? AND allocprd_lang_languageid = lang_languageid
+                ORDER BY lang_sortallocation, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM allocationprioritydescriptions
+                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ?
+                FOR UPDATE
+                """);
         getAllocationPriorityDescriptionsByAllocationPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetPaymentProcessorTransactionsResult
         extends BaseResult {
     
+    Long getPaymentProcessorTransactionCount();
+    void setPaymentProcessorTransactionCount(Long paymentProcessorTransactionCount);
+
     List<PaymentProcessorTransactionTransfer> getPaymentProcessorTransactions();
     void setPaymentProcessorTransactions(List<PaymentProcessorTransactionTransfer> paymentProcessorTransactions);
     

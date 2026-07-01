@@ -23,90 +23,143 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
+import com.echothree.model.data.carrier.server.entity.CarrierService;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
+import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
+import com.echothree.model.data.shipping.server.factory.ShippingMethodCarrierServiceFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShippingMethodCarrierServicesCommand
-        extends BaseSimpleCommand<GetShippingMethodCarrierServicesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<ShippingMethodCarrierService, GetShippingMethodCarrierServicesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShippingMethodCarrierService.name(), SecurityRoles.List.name())
-                        ))
-                ));
-    }
+                ))
+        ));
 
-    static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CarrierServiceName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
+    @Inject
+    ShippingMethodLogic shippingMethodLogic;
+
     /** Creates a new instance of GetShippingMethodCarrierServicesCommand */
     public GetShippingMethodCarrierServicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private ShippingMethod shippingMethod;
+    private CarrierService carrierService;
+
     @Override
-    protected BaseResult execute() {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-        var result = ShippingResultFactory.getGetShippingMethodCarrierServicesResult();
+    protected void handleForm() {
         var shippingMethodName = form.getShippingMethodName();
         var carrierName = form.getCarrierName();
         var carrierServiceName = form.getCarrierServiceName();
-        
-        if(shippingMethodName != null && carrierName == null && carrierServiceName == null) {
-            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
-            
-            if(shippingMethod != null) {
-                result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));
-                result.setShippingMethodCarrierServices(shippingControl.getShippingMethodCarrierServiceTransfersByShippingMethod(getUserVisit(),
-                        shippingMethod));
+        var parameterCount = (shippingMethodName == null ? 0 : 1) + (carrierName == null && carrierServiceName == null ? 0 : 1);
+
+        if(parameterCount == 1) {
+            if(shippingMethodName != null) {
+                shippingMethod = shippingMethodLogic.getShippingMethodByName(this, shippingMethodName);
             } else {
-                addExecutionError(ExecutionErrors.UnknownShippingMethodName.name(), shippingMethodName);
-            }
-        } else if(shippingMethodName == null && carrierName != null && carrierServiceName != null) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
-            var carrier = carrierControl.getCarrierByName(carrierName);
-            
-            if(carrier != null) {
-                var carrierParty = carrier.getParty();
-                var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
-                
-                if(carrierService != null) {
-                    result.setCarrierService(carrierControl.getCarrierServiceTransfer(getUserVisit(), carrierService));
-                    result.setShippingMethodCarrierServices(shippingControl.getShippingMethodCarrierServiceTransfersByCarrierService(getUserVisit(),
-                            carrierService));
+                var carrier = carrierControl.getCarrierByName(carrierName);
+
+                if(carrier != null) {
+                    var carrierParty = carrier.getParty();
+                    carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+
+                    if(carrierService == null) {
+                        addExecutionError(ExecutionErrors.UnknownCarrierServiceName.name(), carrierServiceName);
+                    }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCarrierServiceName.name(), carrierServiceName);
+                    addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
             }
-            
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(shippingMethod != null) {
+                total = shippingControl.countShippingMethodCarrierServicesByShippingMethod(shippingMethod);
+            } else {
+                total = shippingControl.countShippingMethodCarrierServicesByCarrierService(carrierService);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<ShippingMethodCarrierService> getEntities() {
+        Collection<ShippingMethodCarrierService> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(shippingMethod != null) {
+                entities = shippingControl.getShippingMethodCarrierServicesByShippingMethod(shippingMethod);
+            } else {
+                entities = shippingControl.getShippingMethodCarrierServicesByCarrierService(carrierService);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ShippingMethodCarrierService> entities) {
+        var result = ShippingResultFactory.getGetShippingMethodCarrierServicesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(shippingMethod != null) {
+                result.setShippingMethod(shippingControl.getShippingMethodTransfer(userVisit, shippingMethod));
+            } else {
+                result.setCarrierService(carrierControl.getCarrierServiceTransfer(userVisit, carrierService));
+            }
+
+            if(session.hasLimit(ShippingMethodCarrierServiceFactory.class)) {
+                result.setShippingMethodCarrierServiceCount(getTotalEntities());
+            }
+
+            result.setShippingMethodCarrierServices(shippingControl.getShippingMethodCarrierServiceTransfers(userVisit, (List<ShippingMethodCarrierService>)entities));
+        }
+
         return result;
     }
-    
+
 }

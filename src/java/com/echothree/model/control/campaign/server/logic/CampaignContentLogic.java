@@ -16,12 +16,17 @@
 
 package com.echothree.model.control.campaign.server.logic;
 
+import com.echothree.control.user.campaign.common.spec.CampaignContentUniversalSpec;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignContentNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignContentStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignContentValueException;
 import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -30,9 +35,11 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CampaignContentLogic
@@ -45,10 +52,13 @@ public class CampaignContentLogic
     public static CampaignContentLogic getInstance() {
         return CDI.current().select(CampaignContentLogic.class).get();
     }
-    
-    public CampaignContent getCampaignContentByName(final ExecutionErrorAccumulator eea, final String campaignContentName) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
+
+    @Inject
+    CampaignControl campaignControl;
+
+    public CampaignContent getCampaignContentByName(final ExecutionErrorAccumulator eea, final String campaignContentName,
+            final EntityPermission entityPermission) {
+        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName, entityPermission);
 
         if(campaignContent == null) {
             handleExecutionError(UnknownCampaignContentNameException.class, eea, ExecutionErrors.UnknownCampaignContentName.name(), campaignContentName);
@@ -56,10 +66,18 @@ public class CampaignContentLogic
 
         return campaignContent;
     }
-    
-    public CampaignContent getCampaignContentByValue(final ExecutionErrorAccumulator eea, final String campaignContentValue) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        var campaignContent = campaignControl.getCampaignContentByValue(campaignContentValue);
+
+    public CampaignContent getCampaignContentByName(final ExecutionErrorAccumulator eea, final String campaignContentName) {
+        return getCampaignContentByName(eea, campaignContentName, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignContent getCampaignContentByNameForUpdate(final ExecutionErrorAccumulator eea, final String campaignContentName) {
+        return getCampaignContentByName(eea, campaignContentName, EntityPermission.READ_WRITE);
+    }
+
+    public CampaignContent getCampaignContentByValue(final ExecutionErrorAccumulator eea, final String campaignContentValue,
+            final EntityPermission entityPermission) {
+        var campaignContent = campaignControl.getCampaignContentByValue(campaignContentValue, entityPermission);
 
         if(campaignContent == null) {
             handleExecutionError(UnknownCampaignContentValueException.class, eea, ExecutionErrors.UnknownCampaignContentValue.name(), campaignContentValue);
@@ -67,7 +85,51 @@ public class CampaignContentLogic
 
         return campaignContent;
     }
-    
+
+    public CampaignContent getCampaignContentByValue(final ExecutionErrorAccumulator eea, final String campaignContentValue) {
+        return getCampaignContentByValue(eea, campaignContentValue, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignContent getCampaignContentByValueForUpdate(final ExecutionErrorAccumulator eea, final String campaignContentValue) {
+        return getCampaignContentByValue(eea, campaignContentValue, EntityPermission.READ_WRITE);
+    }
+
+    public CampaignContent getCampaignContentByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final CampaignContentUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        CampaignContent campaignContent = null;
+        var campaignContentName = universalSpec.getCampaignContentName();
+        var parameterCount = (campaignContentName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(campaignContentName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignContent.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        campaignContent = campaignControl.getCampaignContentByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    campaignContent = getCampaignContentByName(eea, campaignContentName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return campaignContent;
+    }
+
+    public CampaignContent getCampaignContentByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final CampaignContentUniversalSpec universalSpec) {
+        return getCampaignContentByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignContent getCampaignContentByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final CampaignContentUniversalSpec universalSpec) {
+        return getCampaignContentByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
     public void setCampaignContentStatus(final Session session, ExecutionErrorAccumulator eea, CampaignContent campaignContent, String campaignContentStatusChoice, PartyPK modifiedBy) {
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);

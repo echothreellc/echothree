@@ -22,20 +22,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.training.server.entity.TrainingClass;
+import com.echothree.model.data.training.server.factory.TrainingClassFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassesCommand
-        extends BaseSimpleCommand<GetTrainingClassesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<TrainingClass, GetTrainingClassesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,25 +47,47 @@ public class GetTrainingClassesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClass.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
+    @Inject
+    TrainingControl trainingControl;
+
     /** Creates a new instance of GetTrainingClassesCommand */
     public GetTrainingClassesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return trainingControl.countTrainingClasses();
+    }
+
+    @Override
+    protected Collection<TrainingClass> getEntities() {
+        return trainingControl.getTrainingClasses();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<TrainingClass> entities) {
         var result = TrainingResultFactory.getGetTrainingClassesResult();
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        
-        result.setTrainingClasses(trainingControl.getTrainingClassTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(TrainingClassFactory.class)) {
+                result.setTrainingClassCount(getTotalEntities());
+            }
+
+            result.setTrainingClasses(trainingControl.getTrainingClassTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

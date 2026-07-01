@@ -35,7 +35,9 @@ import com.echothree.model.control.batch.server.transfer.BatchTypeDescriptionTra
 import com.echothree.model.control.batch.server.transfer.BatchTypeEntityTypeTransferCache;
 import com.echothree.model.control.batch.server.transfer.BatchTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.batch.common.pk.BatchAliasTypePK;
 import com.echothree.model.data.batch.common.pk.BatchPK;
+import com.echothree.model.data.batch.common.pk.BatchTypePK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
@@ -69,6 +71,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -81,7 +84,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 @CommandScope
@@ -155,23 +158,48 @@ public class BatchControl
         
         return batchType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.BatchType */
+    public BatchType getBatchTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BatchTypePK(entityInstance.getEntityUniqueId());
+
+        return BatchTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public BatchType getBatchTypeByEntityInstance(EntityInstance entityInstance) {
+        return getBatchTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public BatchType getBatchTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBatchTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBatchTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM batchtypes
+                        JOIN batchtypedetails ON btchtypdt_batchtypedetailid = btchtyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getBatchTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid " +
-                "AND btchtypdt_batchtypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid " +
-                "AND btchtypdt_batchtypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid
+                AND btchtypdt_batchtypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid
+                AND btchtypdt_batchtypename = ?
+                FOR UPDATE
+                """);
         getBatchTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -200,17 +228,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid " +
-                "AND btchtypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid " +
-                "AND btchtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid
+                AND btchtypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid
+                AND btchtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultBatchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -235,17 +265,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid " +
-                "ORDER BY btchtypdt_sortorder, btchtypdt_batchtypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid
+                ORDER BY btchtypdt_sortorder, btchtypdt_batchtypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid
+                FOR UPDATE
+                """);
         getBatchTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -266,17 +298,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid AND btchtypdt_parentbatchtypeid = ? " +
-                "ORDER BY btchtypdt_sortorder, btchtypdt_batchtypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypes, batchtypedetails " +
-                "WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid AND btchtypdt_parentbatchtypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid AND btchtypdt_parentbatchtypeid = ?
+                ORDER BY btchtypdt_sortorder, btchtypdt_batchtypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypes, batchtypedetails
+                WHERE btchtyp_activedetailid = btchtypdt_batchtypedetailid AND btchtypdt_parentbatchtypeid = ?
+                FOR UPDATE
+                """);
         getBatchTypesByParentBatchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -298,15 +332,18 @@ public class BatchControl
         return batchTypeTransferCache.getTransfer(userVisit, batchType);
     }
     
-    public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
-        var batchTypes = getBatchTypes();
+    public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit, Collection<BatchType> batchTypes) {
         List<BatchTypeTransfer> batchTypeTransfers = new ArrayList<>(batchTypes.size());
-        
+
         batchTypes.forEach((batchType) ->
                 batchTypeTransfers.add(batchTypeTransferCache.getTransfer(userVisit, batchType))
         );
-        
+
         return batchTypeTransfers;
+    }
+
+    public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
+        return getBatchTypeTransfers(userVisit, getBatchTypes());
     }
     
     public BatchTypeChoicesBean getBatchTypeChoices(String defaultBatchTypeChoice,
@@ -485,15 +522,17 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypedescriptions " +
-                "WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_lang_languageid = ? AND btchtypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypedescriptions " +
-                "WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_lang_languageid = ? AND btchtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypedescriptions
+                WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_lang_languageid = ? AND btchtypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypedescriptions
+                WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_lang_languageid = ? AND btchtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -523,16 +562,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypedescriptions, languages " +
-                "WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_thrutime = ? AND btchtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypedescriptions " +
-                "WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypedescriptions, languages
+                WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_thrutime = ? AND btchtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypedescriptions
+                WHERE btchtypd_btchtyp_batchtypeid = ? AND btchtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchTypeDescriptionsByBatchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -629,18 +671,29 @@ public class BatchControl
     }
 
     public long countBatchTypeEntityTypesByBatchType(BatchType batchType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM batchtypeentitytypes " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM batchtypeentitytypes
+                WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ?
+                """,
                 batchType, Session.MAX_TIME);
     }
 
+    public long countBatchTypeEntityTypesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM batchtypeentitytypes
+                WHERE btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                """,
+                entityType, Session.MAX_TIME);
+    }
+
     public boolean getBatchTypeEntityTypeExists(BatchType batchType, EntityType entityType) {
-        return 1 == session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM batchtypeentitytypes " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?",
+        return 1 == session.queryForLong("""
+                SELECT COUNT(*)
+                FROM batchtypeentitytypes
+                WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                """,
                 batchType, entityType, Session.MAX_TIME);
     }
 
@@ -649,15 +702,17 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypeentitytypes " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypeentitytypes " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypeentitytypes
+                WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypeentitytypes
+                WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchTypeEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -679,17 +734,20 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypeentitytypes, entitytypes, entitytypedetails " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ? " +
-                "AND btchtypent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                "ORDER BY entdt_sortorder, entdt_entitytypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypeentitytypes " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypeentitytypes, entitytypes, entitytypedetails
+                WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ?
+                AND btchtypent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                ORDER BY entdt_sortorder, entdt_entitytypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypeentitytypes
+                WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchTypeEntityTypesByBatchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -711,17 +769,20 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchtypeentitytypes, batchtypes, batchtypedetails " +
-                "WHERE btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ? " +
-                "AND btchtypent_btchtyp_batchtypeid = btchtyp_batchtypeid AND btchtyp_lastdetailid = btchtypdt_batchtypedetailid " +
-                "ORDER BY btchtypdt_sortorder, btchtypdt_batchtypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchtypeentitytypes " +
-                "WHERE btchtypent_btchtyp_batchtypeid = ? AND btchtypent_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchtypeentitytypes, batchtypes, batchtypedetails
+                WHERE btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                AND btchtypent_btchtyp_batchtypeid = btchtyp_batchtypeid AND btchtyp_lastdetailid = btchtypdt_batchtypedetailid
+                ORDER BY btchtypdt_sortorder, btchtypdt_batchtypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchtypeentitytypes
+                WHERE btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchTypeEntityTypesByEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -812,23 +873,49 @@ public class BatchControl
         
         return batchAliasType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.BatchAliasType */
+    public BatchAliasType getBatchAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BatchAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return BatchAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public BatchAliasType getBatchAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getBatchAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public BatchAliasType getBatchAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBatchAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBatchAliasTypesByBatchType(final BatchType batchType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM batchaliastypes
+                        JOIN batchaliastypedetails ON btchatdt_batchaliastypedetailid = btchat_activedetailid
+                        WHERE btchatdt_btchtyp_batchtypeid = ?
+                        """, batchType);
+    }
+
     private static final Map<EntityPermission, String> getBatchAliasTypeByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypes, batchaliastypedetails " +
-                "WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ? " +
-                "AND btchatdt_batchaliastypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypes, batchaliastypedetails " +
-                "WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ? " +
-                "AND btchatdt_batchaliastypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliastypes, batchaliastypedetails
+                WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ?
+                AND btchatdt_batchaliastypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliastypes, batchaliastypedetails
+                WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ?
+                AND btchatdt_batchaliastypename = ?
+                FOR UPDATE
+                """);
         getBatchAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -859,17 +946,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypes, batchaliastypedetails " +
-                "WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ? " +
-                "AND btchatdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypes, batchaliastypedetails " +
-                "WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ? " +
-                "AND btchatdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliastypes, batchaliastypedetails
+                WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ?
+                AND btchatdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliastypes, batchaliastypedetails
+                WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ?
+                AND btchatdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultBatchAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -894,16 +983,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypes, batchaliastypedetails " +
-                "WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ? " +
-                "ORDER BY btchatdt_sortorder, btchatdt_batchaliastypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypes, batchaliastypedetails " +
-                "WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliastypes, batchaliastypedetails
+                WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ?
+                ORDER BY btchatdt_sortorder, btchatdt_batchaliastypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliastypes, batchaliastypedetails
+                WHERE btchat_activedetailid = btchatdt_batchaliastypedetailid AND btchatdt_btchtyp_batchtypeid = ?
+                FOR UPDATE
+                """);
         getBatchAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -923,15 +1015,14 @@ public class BatchControl
         return batchAliasTypeTransferCache.getTransfer(userVisit, batchAliasType);
     }
     
+    public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, Collection<BatchAliasType> batchAliasTypes) {
+        return batchAliasTypes.stream()
+                .map((batchAliasType) -> getBatchAliasTypeTransfer(userVisit, batchAliasType))
+                .collect(Collectors.toList());
+    }
+
     public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, BatchType batchType) {
-        var batchAliasTypes = getBatchAliasTypes(batchType);
-        List<BatchAliasTypeTransfer> batchAliasTypeTransfers = new ArrayList<>(batchAliasTypes.size());
-        
-        batchAliasTypes.forEach((batchAliasType) ->
-                batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(userVisit, batchAliasType))
-        );
-        
-        return batchAliasTypeTransfers;
+        return getBatchAliasTypeTransfers(userVisit, getBatchAliasTypes(batchType));
     }
     
     public BatchAliasTypeChoicesBean getBatchAliasTypeChoices(String defaultBatchAliasTypeChoice, Language language,
@@ -1075,15 +1166,17 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypedescriptions " +
-                "WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_lang_languageid = ? AND btchatd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypedescriptions " +
-                "WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_lang_languageid = ? AND btchatd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliastypedescriptions
+                WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_lang_languageid = ? AND btchatd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliastypedescriptions
+                WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_lang_languageid = ? AND btchatd_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1113,16 +1206,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypedescriptions, languages " +
-                "WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_thrutime = ? AND btchatd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliastypedescriptions " +
-                "WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliastypedescriptions, languages
+                WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_thrutime = ? AND btchatd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliastypedescriptions
+                WHERE btchatd_btchat_batchaliastypeid = ? AND btchatd_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchAliasTypeDescriptionsByBatchAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1223,7 +1319,31 @@ public class BatchControl
         
         return batch;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Batch */
+    public Batch getBatchByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BatchPK(entityInstance.getEntityUniqueId());
+
+        return BatchFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Batch getBatchByEntityInstance(EntityInstance entityInstance) {
+        return getBatchByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Batch getBatchByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBatchByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBatchesByBatchType(final BatchType batchType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM batches
+                        JOIN batchdetails ON btchdt_batchdetailid = btch_activedetailid
+                        WHERE btchdt_btchtyp_batchtypeid = ?
+                        """, batchType);
+    }
+
     public Batch getBatchByPK(BatchPK batchPK) {
         return BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, batchPK);
     }
@@ -1233,17 +1353,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batches, batchdetails " +
-                "WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ? " +
-                "AND btchdt_batchname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batches, batchdetails " +
-                "WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ? " +
-                "AND btchdt_batchname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batches, batchdetails
+                WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ?
+                AND btchdt_batchname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batches, batchdetails
+                WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ?
+                AND btchdt_batchname = ?
+                FOR UPDATE
+                """);
         getBatchByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1274,19 +1396,21 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliases, batch, batchdetails " +
-                "WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ? " +
-                "AND btchal_btchar_batchid = btchar_batchid " +
-                "AND btchar_activedetailid = btchardt_batchdetailid");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliases, batch, batchdetails " +
-                "WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ? " +
-                "AND btchal_btchar_batchid = btchar_batchid " +
-                "AND btchar_activedetailid = btchardt_batchdetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliases, batchs, batchdetails
+                WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ?
+                AND btchal_btch_batchid = btch_batchid
+                AND btch_activedetailid = btchdt_batchdetailid
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliases, batchs, batchdetails
+                WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ?
+                AND btchal_btch_batchid = btch_batchid
+                AND btch_activedetailid = btchdt_batchdetailid
+                FOR UPDATE
+                """);
         getBatchByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1303,20 +1427,22 @@ public class BatchControl
     }
 
     private static final Map<EntityPermission, String> getBatchesQueries;
-
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batches, batchdetails " +
-                "WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ? " +
-                "ORDER BY btchdt_batchname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batches, batchdetails " +
-                "WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batches, batchdetails
+                WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ?
+                ORDER BY btchdt_batchname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batches, batchdetails
+                WHERE btch_activedetailid = btchdt_batchdetailid AND btchdt_btchtyp_batchtypeid = ?
+                FOR UPDATE
+                """);
         getBatchesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1410,21 +1536,39 @@ public class BatchControl
         
         return batchAlias;
     }
-    
+
+    public long countBatchAliasesByBatch(final Batch batch) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM batchaliases
+                        WHERE btchal_btch_batchid = ? AND btchal_thrutime = ?
+                        """, batch, Session.MAX_TIME);
+    }
+
+    public long countBatchAliasesByBatchAliasType(final BatchAliasType batchAliasType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM batchaliases
+                        WHERE btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ?
+                        """, batchAliasType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getBatchAliasQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliases " +
-                "WHERE btchal_btch_batchid = ? AND btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliases " +
-                "WHERE btchal_btch_batchid = ? AND btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliases
+                WHERE btchal_btch_batchid = ? AND btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliases
+                WHERE btchal_btch_batchid = ? AND btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchAliasQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1454,15 +1598,17 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliases " +
-                "WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliases " +
-                "WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliases
+                WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliases
+                WHERE btchal_btchat_batchaliastypeid = ? AND btchal_alias = ? AND btchal_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1483,18 +1629,20 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliases, batchaliastypes, batchaliastypedetails " +
-                "WHERE btchal_btch_batchid = ? AND btchal_thrutime = ? " +
-                "AND btchal_btchat_batchaliastypeid = btchat_batchaliastypeid AND btchat_lastdetailid = btchatdt_batchaliastypedetailid" +
-                "ORDER BY btchatdt_sortorder, btchatdt_batchaliastypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliases " +
-                "WHERE btchal_btch_batchid = ? AND btchal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliases, batchaliastypes, batchaliastypedetails
+                WHERE btchal_btch_batchid = ? AND btchal_thrutime = ?
+                AND btchal_btchat_batchaliastypeid = btchat_batchaliastypeid AND btchat_lastdetailid = btchatdt_batchaliastypedetailid
+                ORDER BY btchatdt_sortorder, btchatdt_batchaliastypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliases
+                WHERE btchal_btch_batchid = ? AND btchal_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchAliasesByBatchQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1516,17 +1664,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchaliases, batches, batchdetails " +
-                "WHERE btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ? " +
-                "AND btchal_btch_batchid = btch_batchid AND btch_lastdetailid = btchdt_batchdetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchaliases " +
-                "WHERE btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchaliases, batches, batchdetails
+                WHERE btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ?
+                AND btchal_btch_batchid = btch_batchid AND btch_lastdetailid = btchdt_batchdetailid
+                ORDER BY btchdt_sortorder, btchdt_batchname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchaliases
+                WHERE btchal_btchat_batchaliastypeid = ? AND btchal_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchAliasesByBatchAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1598,7 +1748,7 @@ public class BatchControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Batch Type Entity Types
+    //   Batch Entities
     // --------------------------------------------------------------------------------
 
     public BatchEntity createBatchEntity(EntityInstance entityInstance, Batch batch, BasePK createdBy) {
@@ -1610,19 +1760,19 @@ public class BatchControl
     }
 
     public long countBatchEntitiesByBatch(Batch batch) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM batchentities " +
-                "WHERE btche_btch_batchid = ? AND btche_thrutime = ?",
-                batch, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM batchentities
+                WHERE btche_btch_batchid = ? AND btche_thrutime = ?
+                """, batch, Session.MAX_TIME);
     }
 
     public boolean batchEntityExists(EntityInstance entityInstance, Batch batch) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM batchentities " +
-                "WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ?",
-                entityInstance, batch, Session.MAX_TIME) == 1;
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM batchentities
+                WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ?
+                """, entityInstance, batch, Session.MAX_TIME) == 1;
     }
     
     private static final Map<EntityPermission, String> getBatchEntityQueries;
@@ -1630,15 +1780,17 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchentities " +
-                "WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchentities " +
-                "WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchentities
+                WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchentities
+                WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchEntityQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1660,17 +1812,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchentities, batchs, batchdetails " +
-                "WHERE btche_eni_entityinstanceid = ? AND btche_thrutime = ? " +
-                "AND btche_btch_batchid = btch_batchid AND btch_lastdetailid = entdt_batchdetailid " +
-                "ORDER BY entdt_sortorder, entdt_batchname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchentities " +
-                "WHERE btche_eni_entityinstanceid = ? AND btche_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchentities, batchs, batchdetails
+                WHERE btche_eni_entityinstanceid = ? AND btche_thrutime = ?
+                AND btche_btch_batchid = btch_batchid AND btch_lastdetailid = btchdt_batchdetailid
+                ORDER BY btchdt_sortorder, btchdt_batchname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchentities
+                WHERE btche_eni_entityinstanceid = ? AND btche_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchEntitiesByEntityInstanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1692,17 +1846,19 @@ public class BatchControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM batchentities, entityinstances " +
-                "WHERE btche_btch_batchid = ? AND btche_thrutime = ? " +
-                "AND btche_eni_entityinstanceid = eni_entityinstanceid " +
-                "ORDER BY eni_entityuniqueid");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM batchentities " +
-                "WHERE btche_eni_entityinstanceid = ? AND btche_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM batchentities, entityinstances
+                WHERE btche_btch_batchid = ? AND btche_thrutime = ?
+                AND btche_eni_entityinstanceid = eni_entityinstanceid
+                ORDER BY eni_entityuniqueid
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM batchentities
+                WHERE btche_eni_entityinstanceid = ? AND btche_thrutime = ?
+                FOR UPDATE
+                """);
         getBatchEntitiesByBatchQueries = Collections.unmodifiableMap(queryMap);
     }
 

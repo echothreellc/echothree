@@ -376,7 +376,8 @@ public class PaymentMethodTypeControl
             "SELECT _ALL_ " +
                     "FROM paymentmethodtypedescriptions, languages " +
                     "WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_thrutime = ? AND pmtypd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+                    "ORDER BY lang_sortorder, lang_languageisoname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentmethodtypedescriptions " +

@@ -26,6 +26,9 @@ public interface GetCustomerTypeShippingMethodsResult
     
     CustomerTypeTransfer getCustomerType();
     void setCustomerType(CustomerTypeTransfer customerType);
+
+    Long getCustomerTypeShippingMethodCount();
+    void setCustomerTypeShippingMethodCount(Long customerTypeShippingMethodCount);
     
     List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethods();
     void setCustomerTypeShippingMethods(List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethods);

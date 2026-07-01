@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetServicesResult
         extends BaseResult {
     
+    Long getServiceCount();
+    void setServiceCount(Long serviceCount);
+
     List<ServiceTransfer> getServices();
     void setServices(List<ServiceTransfer> services);
     

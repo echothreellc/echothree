@@ -19,16 +19,16 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemPackCheckRequirementForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemPackCheckRequirementCommand
@@ -40,7 +40,7 @@ public class GetItemPackCheckRequirementCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetItemPackCheckRequirementCommand */
@@ -48,19 +48,26 @@ public class GetItemPackCheckRequirementCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemPackCheckRequirementResult();
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
+        var item = itemLogic.getItemByName(this, itemName);
 
-        if(item != null) {
-            var uomControl = Session.getModelController(UomControl.class);
+        if(!hasExecutionErrors()) {
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+            var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
-            if(unitOfMeasureType != null) {
+            if(!hasExecutionErrors()) {
                 var itemPackCheckRequirement = itemControl.getItemPackCheckRequirement(item, unitOfMeasureType);
 
                 if(itemPackCheckRequirement != null) {
@@ -68,11 +75,7 @@ public class GetItemPackCheckRequirementCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownItemPackCheckRequirement.name(), itemName, unitOfMeasureTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
         
         return result;

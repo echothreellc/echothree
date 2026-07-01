@@ -19,8 +19,6 @@ package com.echothree.ui.cli.mailtransfer.util.blogentry;
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
-import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -280,13 +278,13 @@ public class BlogEntryTransfer {
         createBlogEntryForm.setContentMimeTypeName(MimeTypes.TEXT_HTML.mimeTypeName());
         createBlogEntryForm.setContent("placeholder");
 
-        var commandResult = ForumUtil.getHome().createBlogEntry(getUserVisit(), createBlogEntryForm);
+        var createBlogEntryCommandResult = ForumUtil.getHome().createBlogEntry(getUserVisit(), createBlogEntryForm);
 
-        if(!commandResult.hasErrors()) {
-            var executionResult = commandResult.getExecutionResult();
-            var result = (CreateBlogEntryResult)executionResult.getResult();
-            var forumThreadName = result.getForumThreadName();
-            var forumMessageName = result.getForumMessageName();
+        if(!createBlogEntryCommandResult.hasErrors()) {
+            var createBlogEntryExecutionResult = createBlogEntryCommandResult.getExecutionResult();
+            var createBlogEntryResult = createBlogEntryExecutionResult.getResult();
+            var forumThreadName = createBlogEntryResult.getForumThreadName();
+            var forumMessageName = createBlogEntryResult.getForumMessageName();
             var html = rewriteImageUrls(cmsServlet, collectedParts.getCapturedHtml(), forumMessageName, collectedParts.capturedMessageAttachmentsByCid);
             
             log.info("Captured HTML: " + html);
@@ -307,10 +305,10 @@ public class BlogEntryTransfer {
                 createForumMessageAttachmentForm.setMimeTypeName(mimeTypeName);
                 createForumMessageAttachmentForm.setBlob(capturedMessageAttachment.blob);
 
-                commandResult = ForumUtil.getHome().createForumMessageAttachment(getUserVisit(), createForumMessageAttachmentForm);
+                var createForumMessageAttachmentCommandResult = ForumUtil.getHome().createForumMessageAttachment(getUserVisit(), createForumMessageAttachmentForm);
 
-                if(commandResult.hasErrors()) {
-                    log.error(commandResult);
+                if(createForumMessageAttachmentCommandResult.hasErrors()) {
+                    log.error(createForumMessageAttachmentCommandResult);
                 } else if(description != null) {
                     var createForumMessageAttachmentDescriptionForm = ForumUtil.getHome().getCreateForumMessageAttachmentDescriptionForm();
 
@@ -319,12 +317,12 @@ public class BlogEntryTransfer {
                     createForumMessageAttachmentDescriptionForm.setLanguageIsoName(Languages.en.name());
                     createForumMessageAttachmentDescriptionForm.setDescription(description);
 
-                    commandResult = ForumUtil.getHome().createForumMessageAttachmentDescription(getUserVisit(), createForumMessageAttachmentDescriptionForm);
+                    var createForumMessageAttachmentDescriptionCommandResult = ForumUtil.getHome().createForumMessageAttachmentDescription(getUserVisit(), createForumMessageAttachmentDescriptionForm);
 
-                    if(commandResult.hasErrors()) {
-                        log.error(commandResult);
+                    if(createForumMessageAttachmentDescriptionCommandResult.hasErrors()) {
+                        log.error(createForumMessageAttachmentDescriptionCommandResult);
 
-                        finalContent = commandResultToHtmlDocument(commandResult);
+                        finalContent = commandResultToHtmlDocument(createForumMessageAttachmentDescriptionCommandResult);
                     }
                 }
             }
@@ -338,9 +336,9 @@ public class BlogEntryTransfer {
 
                 commandForm.setEditMode(EditMode.LOCK);
 
-                commandResult = ForumUtil.getHome().editBlogEntry(getUserVisit(), commandForm);
-                executionResult = commandResult.getExecutionResult();
-                var editBlogEntryResult = (EditBlogEntryResult)executionResult.getResult();
+                var editBlogEntryCommandResult = ForumUtil.getHome().editBlogEntry(getUserVisit(), commandForm);
+                var editBlogEntryExecutionResult = editBlogEntryCommandResult.getExecutionResult();
+                var editBlogEntryResult = editBlogEntryExecutionResult.getResult();
 
                 if(editBlogEntryResult != null) {
                     var edit = editBlogEntryResult.getEdit();
@@ -350,12 +348,12 @@ public class BlogEntryTransfer {
                     commandForm.setEdit(edit);
                     commandForm.setEditMode(EditMode.UPDATE);
 
-                    commandResult = ForumUtil.getHome().editBlogEntry(getUserVisit(), commandForm);
+                    editBlogEntryCommandResult = ForumUtil.getHome().editBlogEntry(getUserVisit(), commandForm);
 
-                    if(commandResult.hasErrors()) {
-                        log.error(commandResult);
+                    if(editBlogEntryCommandResult.hasErrors()) {
+                        log.error(editBlogEntryCommandResult);
 
-                        finalContent = commandResultToHtmlDocument(commandResult);
+                        finalContent = commandResultToHtmlDocument(editBlogEntryCommandResult);
                     }
                 }
             }
@@ -369,19 +367,19 @@ public class BlogEntryTransfer {
                     commandForm.setIsDefault(String.valueOf(false));
                     commandForm.setSortOrder("1");
 
-                    commandResult = ForumUtil.getHome().createForumForumThread(getUserVisit(), commandForm);
+                    var createForumForumThreadCommandResult = ForumUtil.getHome().createForumForumThread(getUserVisit(), commandForm);
 
-                    if(commandResult.hasErrors()) {
-                        log.error(commandResult);
+                    if(createForumForumThreadCommandResult.hasErrors()) {
+                        log.error(createForumForumThreadCommandResult);
 
-                        finalContent = commandResultToHtmlDocument(commandResult);
+                        finalContent = commandResultToHtmlDocument(createForumForumThreadCommandResult);
                     }
                 }
             }
         } else {
-            log.error(commandResult);
+            log.error(createBlogEntryCommandResult);
 
-            finalContent = commandResultToHtmlDocument(commandResult);
+            finalContent = commandResultToHtmlDocument(createBlogEntryCommandResult);
         }
 
         return finalContent;
@@ -733,12 +731,8 @@ public class BlogEntryTransfer {
                 } else {
                     log.error("connection to " + pop3ServerName + " failed");
                 }
-            } catch(NamingException ne) {
-                throw ne;
-            } catch(SocketException se) {
-                throw se;
-            } catch(IOException ioe) {
-                throw ioe;
+            } catch(NamingException | IOException e) {
+                throw e;
             } finally {
                 if(pop3sClient != null) {
                     if(pop3sClient.getState() == POP3.TRANSACTION_STATE) {

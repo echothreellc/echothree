@@ -26,6 +26,9 @@ public interface GetItemCountryOfOriginsResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
+
+    Long getItemCountryOfOriginCount();
+    void setItemCountryOfOriginCount(Long itemCountryOfOriginCount);
     
     List<ItemCountryOfOriginTransfer> getItemCountryOfOrigins();
     void setItemCountryOfOrigins(List<ItemCountryOfOriginTransfer> itemCountryOfOrigins);
