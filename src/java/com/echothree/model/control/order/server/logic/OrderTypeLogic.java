@@ -36,9 +36,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class OrderTypeLogic
@@ -52,11 +52,16 @@ public class OrderTypeLogic
         return CDI.current().select(OrderTypeLogic.class).get();
     }
 
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     public OrderType createOrderType(final ExecutionErrorAccumulator eea, final String orderTypeName,
             final SequenceType orderSequenceType, final Workflow orderWorkflow,
             final WorkflowEntrance orderWorkflowEntrance, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
@@ -75,7 +80,6 @@ public class OrderTypeLogic
 
     public OrderType getOrderTypeByName(final ExecutionErrorAccumulator eea, final String orderTypeName,
             final EntityPermission entityPermission) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName, entityPermission);
 
         if(orderType == null) {
@@ -96,9 +100,8 @@ public class OrderTypeLogic
     public OrderType getOrderTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final OrderTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         OrderType orderType = null;
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = universalSpec.getOrderTypeName();
-        var parameterCount = (orderTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (orderTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -114,7 +117,7 @@ public class OrderTypeLogic
             }
             case 1 -> {
                 if(orderTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderType.name());
 
                     if(!eea.hasExecutionErrors()) {
@@ -143,15 +146,11 @@ public class OrderTypeLogic
 
     public void updateOrderTypeFromValue(final OrderTypeDetailValue orderTypeDetailValue,
             final BasePK updatedBy) {
-        final var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
         orderTypeControl.updateOrderTypeFromValue(orderTypeDetailValue, updatedBy);
     }
     
     public void deleteOrderType(final ExecutionErrorAccumulator eea, final OrderType orderType,
             final BasePK deletedBy) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
         orderTypeControl.deleteOrderType(orderType, deletedBy);
     }
 
