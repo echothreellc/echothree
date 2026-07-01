@@ -26,8 +26,11 @@ public interface GetOrderAliasTypesResult
     
     OrderTypeTransfer getOrderType();
     void setOrderType(OrderTypeTransfer orderType);
-    
+
+    Long getOrderAliasTypeCount();
+    void setOrderAliasTypeCount(Long orderAliasTypeCount);
+
     List<OrderAliasTypeTransfer> getOrderAliasTypes();
     void setOrderAliasTypes(List<OrderAliasTypeTransfer> orderAliasTypes);
-    
+
 }
