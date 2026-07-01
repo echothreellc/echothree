@@ -179,19 +179,21 @@ public class ChainLogic
                 chainKind = ChainKindLogic.getInstance().getChainKindByName(eea, chainKindName);
             }
 
-            if(chainTypeName == null && !eea.hasExecutionErrors()) {
-                if(allowDefault) {
-                    chainType = chainControl.getDefaultChainType(chainKind);
+            if(!eea.hasExecutionErrors()) {
+                if(chainTypeName == null) {
+                    if(allowDefault) {
+                        chainType = chainControl.getDefaultChainType(chainKind);
 
-                    if(chainType == null) {
-                        handleExecutionError(UnknownDefaultChainTypeException.class, eea, ExecutionErrors.UnknownDefaultChainKind.name(),
-                                chainKind.getLastDetail().getChainKindName());
+                        if(chainType == null) {
+                            handleExecutionError(UnknownDefaultChainTypeException.class, eea, ExecutionErrors.UnknownDefaultChainType.name(),
+                                    chainKind.getLastDetail().getChainKindName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    chainType = chainTypeLogic.getChainTypeByName(eea, chainKind, chainTypeName);
                 }
-            } else {
-                chainType = chainTypeLogic.getChainTypeByName(eea, chainKind, chainTypeName);
             }
 
             if(!eea.hasExecutionErrors()) {
