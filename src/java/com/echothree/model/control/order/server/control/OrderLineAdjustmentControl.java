@@ -141,7 +141,7 @@ public class OrderLineAdjustmentControl
         getOrderLineAdjustmentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderLineAdjustmentType getOrderLineAdjustmentTypeByName(OrderType orderType, String orderLineAdjustmentTypeName, EntityPermission entityPermission) {
+    public OrderLineAdjustmentType getOrderLineAdjustmentTypeByName(OrderType orderType, String orderLineAdjustmentTypeName, EntityPermission entityPermission) {
         return OrderLineAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderLineAdjustmentTypeByNameQueries,
                 orderType, orderLineAdjustmentTypeName);
     }
@@ -185,7 +185,7 @@ public class OrderLineAdjustmentControl
         getDefaultOrderLineAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderLineAdjustmentType getDefaultOrderLineAdjustmentType(OrderType orderType, EntityPermission entityPermission) {
+    public OrderLineAdjustmentType getDefaultOrderLineAdjustmentType(OrderType orderType, EntityPermission entityPermission) {
         return OrderLineAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderLineAdjustmentTypeQueries,
                 orderType);
     }

@@ -30,6 +30,7 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderTypeCommand
@@ -51,9 +52,15 @@ public class GetOrderTypeCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     @Override
     protected OrderType getEntity() {
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpec(this, form, true);
+        var orderType = orderTypeLogic.getOrderTypeByUniversalSpec(this, form, true);
 
         if(orderType != null) {
             sendEvent(orderType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetOrderTypeCommand
 
     @Override
     protected BaseResult getResult(OrderType itemAliasType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderTypeResult();
 
         if(itemAliasType != null) {

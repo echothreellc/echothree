@@ -19,6 +19,9 @@ package com.echothree.model.control.chain.server.logic;
 import com.echothree.control.user.chain.common.spec.ChainActionSetUniversalSpec;
 import com.echothree.model.control.chain.common.exception.UnknownChainActionSetNameException;
 import com.echothree.model.control.chain.common.exception.UnknownDefaultChainActionSetException;
+import com.echothree.model.control.chain.common.exception.UnknownDefaultChainException;
+import com.echothree.model.control.chain.common.exception.UnknownDefaultChainKindException;
+import com.echothree.model.control.chain.common.exception.UnknownDefaultChainTypeException;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -26,6 +29,8 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
+import com.echothree.model.data.chain.server.entity.ChainKind;
+import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -43,7 +48,13 @@ public class ChainActionSetLogic
     ChainControl chainControl;
 
     @Inject
+    ChainKindLogic chainKindLogic;
+
+    @Inject
     ChainLogic chainLogic;
+
+    @Inject
+    ChainTypeLogic chainTypeLogic;
 
     protected ChainActionSetLogic() {
         super();
@@ -106,7 +117,58 @@ public class ChainActionSetLogic
         ChainActionSet chainActionSet = null;
 
         if(possibleEntitySpecs == 0) {
-            var chain = chainLogic.getChainByUniversalSpec(eea, universalSpec, allowDefault, entityPermission);
+            ChainKind chainKind = null;
+            ChainType chainType = null;
+            Chain chain = null;
+
+            if(chainKindName == null) {
+                if(allowDefault) {
+                    chainKind = chainControl.getDefaultChainKind();
+
+                    if(chainKind == null) {
+                        handleExecutionError(UnknownDefaultChainKindException.class, eea, ExecutionErrors.UnknownDefaultChainKind.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            } else {
+                chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(chainTypeName == null) {
+                    if(allowDefault) {
+                        chainType = chainControl.getDefaultChainType(chainKind);
+
+                        if(chainType == null) {
+                            handleExecutionError(UnknownDefaultChainTypeException.class, eea, ExecutionErrors.UnknownDefaultChainType.name(),
+                                    chainKind.getLastDetail().getChainKindName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    chainType = chainTypeLogic.getChainTypeByName(eea, chainKind, chainTypeName);
+                }
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(chainName == null) {
+                    if(allowDefault) {
+                        chain = chainControl.getDefaultChain(chainType, entityPermission);
+
+                        if(chain == null) {
+                            handleExecutionError(UnknownDefaultChainException.class, eea, ExecutionErrors.UnknownDefaultChain.name(),
+                                    chainKind.getLastDetail().getChainKindName(),
+                                    chainType.getLastDetail().getChainTypeName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    chain = chainLogic.getChainByName(eea, chainType, chainName, entityPermission);
+                }
+            }
 
             if(!eea.hasExecutionErrors()) {
                 if(chainActionSetName == null) {

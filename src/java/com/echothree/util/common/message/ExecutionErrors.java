@@ -2277,6 +2277,7 @@ public enum ExecutionErrors {
     UnknownDefaultWishlistType,
     UnknownDefaultOrderType,
     UnknownDefaultWishlistPriority,
+    UnknownDefaultOrderLineAdjustmentType,
     UnknownDefaultOrderPriority,
     UnknownDefaultWorkflowEntrance,
     UnknownDefaultWorkflowDestination,
