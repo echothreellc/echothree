@@ -20,11 +20,10 @@ import com.echothree.control.user.order.common.form.GetOrderAliasTypeForm;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -33,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderAliasTypeCommand
@@ -49,15 +48,21 @@ public class GetOrderAliasTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderAliasType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     /** Creates a new instance of GetOrderAliasTypeCommand */
     public GetOrderAliasTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,13 +70,11 @@ public class GetOrderAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderAliasTypeResult();
         var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
 
-        if(orderType != null) {
-            var orderAliasControl = Session.getModelController(OrderAliasControl.class);
+        if(!hasExecutionErrors()) {
             var orderAliasTypeName = form.getOrderAliasTypeName();
             var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
@@ -82,8 +85,6 @@ public class GetOrderAliasTypeCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderAliasTypeName.name(), orderTypeName, orderAliasTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
         
         return result;
