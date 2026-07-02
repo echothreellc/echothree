@@ -2040,6 +2040,11 @@ public class PicklistControl
     //   Picklists
     // --------------------------------------------------------------------------------
 
+    public Picklist getPicklistByName(PicklistType picklistType, String picklistName, EntityPermission entityPermission) {
+        // TODO
+        return null;
+    }
+
     public Picklist getPicklistByName(PicklistType picklistType, String picklistName) {
         // TODO
         return null;
