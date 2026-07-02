@@ -21,37 +21,49 @@ import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.server.command.util.OrderAliasUtil;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.Order;
+import com.echothree.model.data.order.server.entity.OrderAlias;
+import com.echothree.model.data.order.server.factory.OrderAliasFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderAliasesCommand
-        extends BaseSimpleCommand<GetOrderAliasesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<OrderAlias, GetOrderAliasesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderLogic orderLogic;
+
     /** Creates a new instance of GetOrderAliasesCommand */
     public GetOrderAliasesCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
@@ -64,32 +76,43 @@ public class GetOrderAliasesCommand
         ));
     }
 
+    Order order;
+
     @Override
-    protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        var result = OrderResultFactory.getGetOrderAliasesResult();
+    protected void handleForm() {
         var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderName = form.getOrderName();
 
-        if(orderType != null) {
-            var orderControl = Session.getModelController(OrderControl.class);
-            var orderName = form.getOrderName();
-            var order = orderControl.getOrderByName(orderType, orderName);
+        order = orderLogic.getOrderByName(this, orderTypeName, orderName);
+    }
 
-            if(order != null) {
-                var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-                var userVisit = getUserVisit();
+    @Override
+    protected Long getTotalEntities() {
+        return order == null ? null : orderAliasControl.countOrderAliasByOrder(order);
+    }
 
-                result.setOrder(orderControl.getOrderTransfer(userVisit, order));
-                result.setOrderAliases(orderAliasControl.getOrderAliasTransfersByOrder(userVisit, order));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderName.name(), orderTypeName, orderName);
+    @Override
+    protected Collection<OrderAlias> getEntities() {
+        return order == null ? null : orderAliasControl.getOrderAliasesByOrder(order);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<OrderAlias> entities) {
+        var result = OrderResultFactory.getGetOrderAliasesResult();
+
+        if(order != null) {
+            var userVisit = getUserVisit();
+
+            result.setOrder(orderControl.getOrderTransfer(userVisit, order));
+
+            if(session.hasLimit(OrderAliasFactory.class)) {
+                result.setOrderAliasCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+
+            result.setOrderAliases(orderAliasControl.getOrderAliasTransfersByOrder(userVisit, order));
         }
 
         return result;
     }
-    
+
 }
