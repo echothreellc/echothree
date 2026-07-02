@@ -27,7 +27,10 @@ public interface GetOrderAliasesResult
     OrderTransfer getOrder();
     void setOrder(OrderTransfer order);
 
+    Long getOrderAliasCount();
+    void setOrderAliasCount(Long orderAliasCount);
+
     List<OrderAliasTransfer> getOrderAliases();
     void setOrderAliases(List<OrderAliasTransfer> orderAliases);
-    
+
 }
