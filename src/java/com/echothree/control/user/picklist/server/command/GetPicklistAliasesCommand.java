@@ -21,36 +21,45 @@ import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
+import com.echothree.model.control.picklist.server.logic.PicklistLogic;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.picklist.server.entity.Picklist;
+import com.echothree.model.data.picklist.server.entity.PicklistAlias;
+import com.echothree.model.data.picklist.server.factory.PicklistAliasFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistAliasesCommand
-        extends BaseSimpleCommand<GetPicklistAliasesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<PicklistAlias, GetPicklistAliasesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    PicklistControl picklistControl;
+
+    @Inject
+    PicklistLogic picklistLogic;
+
     /** Creates a new instance of GetPicklistAliasesCommand */
     public GetPicklistAliasesCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
@@ -63,30 +72,43 @@ public class GetPicklistAliasesCommand
         ));
     }
 
+    Picklist picklist;
+
     @Override
-    protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-        var result = PicklistResultFactory.getGetPicklistAliasesResult();
+    protected void handleForm() {
         var picklistTypeName = form.getPicklistTypeName();
-        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+        var picklistName = form.getPicklistName();
 
-        if(picklistType != null) {
-            var picklistName = form.getPicklistName();
-            var picklist = picklistControl.getPicklistByName(picklistType, picklistName);
+        picklist = picklistLogic.getPicklistByName(this, picklistTypeName, picklistName);
+    }
 
-            if(picklist != null) {
-                var userVisit = getUserVisit();
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : picklistControl.countPicklistAliasesBy(picklist);
+    }
 
-                result.setPicklist(picklistControl.getPicklistTransfer(userVisit, picklist));
-                result.setPicklistAliases(picklistControl.getPicklistAliasTransfersByPicklist(userVisit, picklist));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPicklistName.name(), picklistTypeName, picklistName);
+    @Override
+    protected Collection<PicklistAlias> getEntities() {
+        return hasExecutionErrors() ? null : picklistControl.getPicklistAliasesByPicklist(picklist);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PicklistAlias> entities) {
+        var result = PicklistResultFactory.getGetPicklistAliasesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setPicklist(picklistControl.getPicklistTransfer(userVisit, picklist));
+
+            if(session.hasLimit(PicklistAliasFactory.class)) {
+                result.setPicklistAliasCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);
+
+            result.setPicklistAliases(picklistControl.getPicklistAliasTransfersByPicklist(userVisit, picklist));
         }
 
         return result;
     }
-    
+
 }
