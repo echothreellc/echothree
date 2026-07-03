@@ -204,7 +204,11 @@ public class ChainActionLogic
             }
 
             if(!eea.hasExecutionErrors()) {
-                chainAction = getChainActionByName(eea, chainActionSet, chainActionName, entityPermission);
+                if(chainActionName != null) {
+                    chainAction = getChainActionByName(eea, chainActionSet, chainActionName, entityPermission);
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
