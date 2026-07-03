@@ -35,7 +35,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -55,6 +54,12 @@ public class ChainActionSetLogic
 
     @Inject
     ChainTypeLogic chainTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ParameterUtils parameterUtils;
 
     protected ChainActionSetLogic() {
         super();
@@ -107,16 +112,15 @@ public class ChainActionSetLogic
 
     public ChainActionSet getChainActionSetByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ChainActionSetUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = universalSpec.getChainKindName();
         var chainTypeName = universalSpec.getChainTypeName();
         var chainName = universalSpec.getChainName();
         var chainActionSetName = universalSpec.getChainActionSetName();
-        var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(chainKindName, chainTypeName, chainName, chainActionSetName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var nameParameterCount = parameterUtils.countNonNullParameters(chainKindName, chainTypeName, chainName, chainActionSetName);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         ChainActionSet chainActionSet = null;
 
-        if(possibleEntitySpecs == 0) {
+        if(nameParameterCount != 0 && possibleEntitySpecs == 0) {
             ChainKind chainKind = null;
             ChainType chainType = null;
             Chain chain = null;
@@ -189,7 +193,7 @@ public class ChainActionSetLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainActionSet.name());
 
             if(!eea.hasExecutionErrors()) {
