@@ -23,11 +23,13 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import static java.lang.Math.toIntExact;
 import java.util.Arrays;
 import java.util.Objects;
+import javax.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class ParameterUtils
         extends BaseLogic {
 
-    private ParameterUtils() {
+    protected ParameterUtils() {
         super();
     }
 
