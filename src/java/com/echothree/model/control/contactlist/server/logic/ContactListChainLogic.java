@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.contactlist.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.common.ChainTypes;
+import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
@@ -101,7 +101,7 @@ public class ContactListChainLogic
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
             
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
-                    ChainConstants.ChainEntityRoleType_PARTY_CONTACT_LIST), partyContactList.getPrimaryKey(), createdBy);
+                    ChainEntityRoleTypes.PARTY_CONTACT_LIST.name()), partyContactList.getPrimaryKey(), createdBy);
         }
         
         return chainInstance;

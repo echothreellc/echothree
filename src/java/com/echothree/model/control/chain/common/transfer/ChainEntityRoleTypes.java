@@ -14,8 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.chain.common;
+package com.echothree.model.control.chain.common.transfer;
 
-public interface ChainConstants {
+public enum ChainEntityRoleTypes {
 
+    CUSTOMER,
+    EMPLOYEE,
+    PARTY_CONTACT_LIST,
+    SUBSCRIPTION,
+    VENDOR,
+    
 }

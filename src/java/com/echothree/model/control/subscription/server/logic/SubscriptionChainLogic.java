@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.subscription.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.common.ChainTypes;
+import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
@@ -99,7 +99,7 @@ public class SubscriptionChainLogic
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
         
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
-                    ChainConstants.ChainEntityRoleType_SUBSCRIPTION), subscription.getPrimaryKey(), createdBy);
+                    ChainEntityRoleTypes.SUBSCRIPTION.name()), subscription.getPrimaryKey(), createdBy);
         }
         
         return chainInstance;
