@@ -16,12 +16,29 @@
 
 package com.echothree.model.control.chain.common;
 
-public interface ChainConstants {
+public enum ChainTypes {
 
-    String ChainEntityRoleType_CUSTOMER = "CUSTOMER";
-    String ChainEntityRoleType_EMPLOYEE = "EMPLOYEE";
-    String ChainEntityRoleType_PARTY_CONTACT_LIST = "PARTY_CONTACT_LIST";
-    String ChainEntityRoleType_SUBSCRIPTION = "SUBSCRIPTION";
-    String ChainEntityRoleType_VENDOR = "VENDOR";
-
+    BACKORDER_NOTIFICATION,
+    CC_AVS_FAILURE,
+    CC_DECLINE,
+    CONFIRMATION_REQUEST,
+    EXPIRATION,
+    EXPIRATION_WARNING,
+    INITIAL,
+    ITEM_CANCELLATION,
+    ORDER_CANCELLATION,
+    ORDER_CONFIRMATION,
+    PARTY_CREDIT_LIMIT_CHANGED,
+    PARTY_CREDIT_STATUS_CHANGED,
+    PARTY_TERM_CHANGED,
+    PASSWORD_RECOVERY,
+    RENEWAL,
+    RETURN_AUTHORIZATION,
+    RETURN_NOT_RECEIVED,
+    RETURN_RECEIVED,
+    SHIPPING_NOTIFICATION,
+    SUBSCRIBE,
+    UNSUBSCRIBE,
+    WELCOME,
+    
 }

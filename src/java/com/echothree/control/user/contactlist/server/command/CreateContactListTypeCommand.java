@@ -17,8 +17,8 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
-import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -79,17 +79,17 @@ public class CreateContactListTypeCommand
             var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = form.getConfirmationRequestChainName();
             var confirmationRequestChain = confirmationRequestChainName == null ? null
-                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);
+                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.CONFIRMATION_REQUEST.name()), confirmationRequestChainName);
 
             if(confirmationRequestChainName == null || confirmationRequestChain != null) {
                 var subscribeChainName = form.getSubscribeChainName();
                 var subscribeChain = subscribeChainName == null ? null
-                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_SUBSCRIBE), subscribeChainName);
+                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.SUBSCRIBE.name()), subscribeChainName);
 
                 if(subscribeChainName == null || subscribeChain != null) {
                     var unsubscribeChainName = form.getUnsubscribeChainName();
                     var unsubscribeChain = unsubscribeChainName == null ? null
-                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
+                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.UNSUBSCRIBE.name()), unsubscribeChainName);
 
                     if(unsubscribeChainName == null || unsubscribeChain != null) {
                         var partyPK = getPartyPK();

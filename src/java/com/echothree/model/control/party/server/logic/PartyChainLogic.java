@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainEntityRoleTypeLogic;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
@@ -84,23 +84,23 @@ public class PartyChainLogic
     }
     
     public ChainInstance createPartyWelcomeChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_WELCOME, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.WELCOME.name(), party, false, createdBy);
     }
     
     public ChainInstance createPartyPasswordRecoveryChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PASSWORD_RECOVERY, party, true, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PASSWORD_RECOVERY.name(), party, true, createdBy);
     }
     
     public ChainInstance createPartyTermChangedChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PARTY_TERM_CHANGED, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PARTY_TERM_CHANGED.name(), party, false, createdBy);
     }
     
     public ChainInstance createPartyCreditLimitChangedChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PARTY_CREDIT_LIMIT_CHANGED, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PARTY_CREDIT_LIMIT_CHANGED.name(), party, false, createdBy);
     }
     
     public ChainInstance createPartyCreditStatusChangedChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PARTY_CREDIT_STATUS_CHANGED, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PARTY_CREDIT_STATUS_CHANGED.name(), party, false, createdBy);
     }
     
 }

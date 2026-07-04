@@ -21,8 +21,8 @@ import com.echothree.control.user.contactlist.common.edit.ContactListTypeEdit;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.EditContactListTypeResult;
 import com.echothree.control.user.contactlist.common.spec.ContactListTypeSpec;
-import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -160,19 +160,19 @@ public class EditContactListTypeCommand
             var confirmationRequestChainName = edit.getConfirmationRequestChainName();
 
             confirmationRequestChain = confirmationRequestChainName == null ? null
-                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);
+                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.CONFIRMATION_REQUEST.name()), confirmationRequestChainName);
 
             if(confirmationRequestChainName == null || confirmationRequestChain != null) {
                 var subscribeChainName = edit.getSubscribeChainName();
 
                 subscribeChain = subscribeChainName == null ? null
-                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_SUBSCRIBE), subscribeChainName);
+                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.SUBSCRIBE.name()), subscribeChainName);
 
                 if(subscribeChainName == null || subscribeChain != null) {
                     var unsubscribeChainName = edit.getUnsubscribeChainName();
 
                     unsubscribeChain = unsubscribeChainName == null ? null
-                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
+                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.UNSUBSCRIBE.name()), unsubscribeChainName);
 
                     if(unsubscribeChainName != null && unsubscribeChain == null) {
                         addExecutionError(ExecutionErrors.UnknownUnsubscribeChainName.name(), unsubscribeChainName);
