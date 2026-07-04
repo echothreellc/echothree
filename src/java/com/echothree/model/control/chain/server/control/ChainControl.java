@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.chain.server.control;
 
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainActionTypes;
 import com.echothree.model.control.chain.common.choice.ChainActionSetChoicesBean;
 import com.echothree.model.control.chain.common.choice.ChainActionTypeChoicesBean;
 import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
@@ -3104,11 +3104,11 @@ public class ChainControl
         
         deleteChainActionDescriptionsByChainAction(chainAction, deletedBy);
 
-        if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
+        if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
             deleteChainActionLetter(getChainActionLetterForUpdate(chainAction), deletedBy);
-        } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+        } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
             deleteChainActionSurvey(getChainActionSurveyForUpdate(chainAction), deletedBy);
-        } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
+        } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
             deleteChainActionChainActionSet(getChainActionChainActionSetForUpdate(chainAction), deletedBy);
         }
         

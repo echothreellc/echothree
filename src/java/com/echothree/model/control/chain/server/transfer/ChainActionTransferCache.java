@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import javax.inject.Inject;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainActionTypes;
 import com.echothree.model.control.chain.common.ChainOptions;
 import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ChainActionTransferCache
@@ -63,11 +63,11 @@ public class ChainActionTransferCache
 
             if(includeRelated) {
                 var chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();
-                if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
+                if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
                     chainActionTransfer.setChainActionLetter(chainControl.getChainActionLetterTransfer(userVisit, chainAction));
-                } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+                } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
                     chainActionTransfer.setChainActionSurvey(chainControl.getChainActionSurveyTransfer(userVisit, chainAction));
-                } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
+                } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
                     chainActionTransfer.setChainActionChainActionSet(chainControl.getChainActionChainActionSetTransfer(userVisit, chainAction));
                 }
             }
