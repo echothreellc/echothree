@@ -1725,7 +1725,7 @@ public class ContactListControl
         getContactListByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactList getContactListByName(String contactListName, EntityPermission entityPermission) {
+    public ContactList getContactListByName(String contactListName, EntityPermission entityPermission) {
         return ContactListFactory.getInstance().getEntityFromQuery(entityPermission, getContactListByNameQueries,
                 contactListName);
     }
@@ -1763,7 +1763,7 @@ public class ContactListControl
         getDefaultContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactList getDefaultContactList(EntityPermission entityPermission) {
+    public ContactList getDefaultContactList(EntityPermission entityPermission) {
         return ContactListFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListQueries);
     }
 

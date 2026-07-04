@@ -16,11 +16,17 @@
 
 package com.echothree.model.control.contactlist.server.logic;
 
+import com.echothree.control.user.contactlist.common.spec.ContactListUniversalSpec;
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListContactMechanismPurposeException;
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListNameException;
+import com.echothree.model.control.contactlist.common.exception.UnknownDefaultContactListException;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -28,17 +34,22 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
+import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
+import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContactListLogic
@@ -51,10 +62,28 @@ public class ContactListLogic
     public static ContactListLogic getInstance() {
         return CDI.current().select(ContactListLogic.class).get();
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ContactListChainLogic contactListChainLogic;
+
+    @Inject
+    PartyLogic partyLogic;
     
-    public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        var contactList = contactListControl.getContactListByName(contactListName);
+    public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName,
+            final EntityPermission entityPermission) {
+        var contactList = contactListControl.getContactListByName(contactListName, entityPermission);
 
         if(contactList == null) {
             handleExecutionError(UnknownContactListNameException.class, eea, ExecutionErrors.UnknownContactListName.name(), contactListName);
@@ -62,10 +91,64 @@ public class ContactListLogic
 
         return contactList;
     }
-    
+
+    public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName) {
+        return getContactListByName(eea, contactListName, EntityPermission.READ_ONLY);
+    }
+
+    public ContactList getContactListByNameForUpdate(final ExecutionErrorAccumulator eea, final String contactListName) {
+        return getContactListByName(eea, contactListName, EntityPermission.READ_WRITE);
+    }
+
+    public ContactList getContactListByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContactListUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+        ContactList contactList = null;
+        var contactListName = universalSpec.getContactListName();
+        var parameterCount = (contactListName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0 -> {
+                if(allowDefault) {
+                    contactList = contactListControl.getDefaultContactList(entityPermission);
+
+                    if(contactList == null) {
+                        handleExecutionError(UnknownDefaultContactListException.class, eea, ExecutionErrors.UnknownDefaultContactList.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            }
+            case 1 -> {
+                if(contactListName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactList.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        contactList = contactListControl.getContactListByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    contactList = getContactListByName(eea, contactListName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return contactList;
+    }
+
+    public ContactList getContactListByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContactListUniversalSpec universalSpec, boolean allowDefault) {
+        return getContactListByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public ContactList getContactListByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ContactListUniversalSpec universalSpec, boolean allowDefault) {
+        return getContactListByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
     public ContactListContactMechanismPurpose getContactListContactMechanismPurpose(final ExecutionErrorAccumulator eea, final ContactList contactList,
             final ContactMechanismPurpose contactMechanismPurpose) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
         
         if(contactListContactMechanismPurpose == null) {
@@ -77,16 +160,11 @@ public class ContactListLogic
     }
     
     public boolean isPartyOnContactList(final Party party, final ContactList contactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        
         return contactListControl.getPartyContactList(party, contactList) != null;
     }
     
     public void addContactListToParty(final ExecutionErrorAccumulator eea, final Party party, final ContactList contactList,
             final ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose, final BasePK createdBy) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyContactList = contactListControl.createPartyContactList(party, contactList, preferredContactListContactMechanismPurpose, createdBy);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
         var workflowEntrance = contactList.getLastDetail().getDefaultPartyContactListStatus();
@@ -95,22 +173,19 @@ public class ContactListLogic
         workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
         
         if(workflowEntranceName.equals(PartyContactListStatusConstants.WorkflowEntrance_NEW_AWAITING_VERIFICATION)) {
-            ContactListChainLogic.getInstance().createContactListConfirmationChainInstance(eea, party, partyContactList, createdBy);
+            contactListChainLogic.createContactListConfirmationChainInstance(eea, party, partyContactList, createdBy);
         } else if(workflowEntranceName.equals(PartyContactListStatusConstants.WorkflowEntrance_NEW_ACTIVE)) {
-            ContactListChainLogic.getInstance().createContactListSubscribeChainInstance(eea, party, partyContactList, createdBy);
+            contactListChainLogic.createContactListSubscribeChainInstance(eea, party, partyContactList, createdBy);
         }
     }
     
     public void removeContactListFromParty(final ExecutionErrorAccumulator eea, final PartyContactList partyContactList, final BasePK deletedBy) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS, entityInstance);
         var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
         
         if(workflowStepName.equals(PartyContactListStatusConstants.WorkflowStep_ACTIVE)) {
-            ContactListChainLogic.getInstance().createContactListUnsubscribeChainInstance(eea, partyContactList.getLastDetail().getParty(), partyContactList, deletedBy);
+            contactListChainLogic.createContactListUnsubscribeChainInstance(eea, partyContactList.getLastDetail().getParty(), partyContactList, deletedBy);
         }
         
         contactListControl.deletePartyContactList(partyContactList, deletedBy);
@@ -118,27 +193,37 @@ public class ContactListLogic
     }
     
     public void setupInitialContactLists(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyType = party.getLastDetail().getPartyType();
         Set<ContactList> contactLists = new HashSet<>();
 
-        contactListControl.getPartyTypeContactListsByPartyType(partyType).stream().filter((partyTypeContactList) -> partyTypeContactList.getAddWhenCreated()).map((partyTypeContactList) -> partyTypeContactList.getContactList()).forEach((contactList) -> {
-            contactLists.add(contactList);
-        });
-        contactListControl.getPartyTypeContactListGroupsByPartyType(partyType).stream().filter((partyTypeContactListGroup) -> partyTypeContactListGroup.getAddWhenCreated()).forEach((partyTypeContactListGroup) -> {
-            contactLists.addAll(contactListControl.getContactListsByContactListGroup(partyTypeContactListGroup.getContactListGroup()));
-        });
+        contactListControl.getPartyTypeContactListsByPartyType(partyType)
+                .stream()
+                .filter(PartyTypeContactList::getAddWhenCreated)
+                .map(PartyTypeContactList::getContactList)
+                .forEach(contactLists::add);
 
-        if(PartyLogic.getInstance().isPartyType(party, PartyTypes.CUSTOMER.name())) {
-            var customerControl = Session.getModelController(CustomerControl.class);
+        contactListControl.getPartyTypeContactListGroupsByPartyType(partyType)
+                .stream()
+                .filter(PartyTypeContactListGroup::getAddWhenCreated)
+                .forEach((partyTypeContactListGroup) ->
+                        contactLists.addAll(contactListControl.getContactListsByContactListGroup(partyTypeContactListGroup.getContactListGroup()))
+                );
+
+        if(partyLogic.isPartyType(party, PartyTypes.CUSTOMER.name())) {
             var customerType = customerControl.getCustomer(party).getCustomerType();
 
-            contactListControl.getCustomerTypeContactListsByCustomerType(customerType).stream().filter((customerTypeContactList) -> customerTypeContactList.getAddWhenCreated()).map((customerTypeContactList) -> customerTypeContactList.getContactList()).forEach((contactList) -> {
-                contactLists.add(contactList);
-            });
-            contactListControl.getCustomerTypeContactListGroupsByCustomerType(customerType).stream().filter((customerTypeContactListGroup) -> customerTypeContactListGroup.getAddWhenCreated()).forEach((customerTypeContactListGroup) -> {
-                contactLists.addAll(contactListControl.getContactListsByContactListGroup(customerTypeContactListGroup.getContactListGroup()));
-            });
+            contactListControl.getCustomerTypeContactListsByCustomerType(customerType)
+                    .stream()
+                    .filter(CustomerTypeContactList::getAddWhenCreated)
+                    .map(CustomerTypeContactList::getContactList)
+                    .forEach(contactLists::add);
+
+            contactListControl.getCustomerTypeContactListGroupsByCustomerType(customerType)
+                    .stream()
+                    .filter(CustomerTypeContactListGroup::getAddWhenCreated)
+                    .forEach((customerTypeContactListGroup) ->
+                            contactLists.addAll(contactListControl.getContactListsByContactListGroup(customerTypeContactListGroup.getContactListGroup()))
+                    );
         }
 
         if(!hasExecutionErrors(eea)) {
