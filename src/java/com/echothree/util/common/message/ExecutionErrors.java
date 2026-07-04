@@ -1265,6 +1265,7 @@ public enum ExecutionErrors {
     DuplicateContactListTypeDescription,
     UnknownContactListTypeDescription,
     UnknownContactListGroupName,
+    UnknownDefaultContactListGroup,
     DuplicateContactListGroupName,
     DuplicateContactListGroupDescription,
     UnknownContactListGroupDescription,

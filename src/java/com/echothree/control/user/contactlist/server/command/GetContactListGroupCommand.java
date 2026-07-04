@@ -24,10 +24,11 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetContactListGroupCommand
-        extends BaseSimpleCommand<GetContactListGroupForm> {
+        extends BaseSingleEntityCommand<ContactListGroup, GetContactListGroupForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -51,12 +52,15 @@ public class GetContactListGroupCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ContactListGroupName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ContactListGroupName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
 
     @Inject
     ContactListControl contactListControl;
+
     @Inject
     ContactListGroupLogic contactListGroupLogic;
 
@@ -66,17 +70,24 @@ public class GetContactListGroupCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetContactListGroupResult();
-        var contactListGroupName = form.getContactListGroupName();
-        var contactListGroup = contactListGroupLogic.getContactListGroupByName(this, contactListGroupName);
-        
-        if(!hasExecutionErrors()) {
-            result.setContactListGroup(contactListControl.getContactListGroupTransfer(getUserVisit(), contactListGroup));
-            
+    protected ContactListGroup getEntity() {
+        var contactListGroup = contactListGroupLogic.getContactListGroupByUniversalSpec(this, form, true);
+
+        if(contactListGroup != null) {
             sendEvent(contactListGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return contactListGroup;
+    }
+
+    @Override
+    protected BaseResult getResult(ContactListGroup contactListGroup) {
+        var result = ContactListResultFactory.getGetContactListGroupResult();
+
+        if(contactListGroup != null) {
+            result.setContactListGroup(contactListControl.getContactListGroupTransfer(getUserVisit(), contactListGroup));
+        }
+
         return result;
     }
     
