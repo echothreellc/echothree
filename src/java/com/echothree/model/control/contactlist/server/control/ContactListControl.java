@@ -1256,7 +1256,7 @@ public class ContactListControl
         getContactListFrequencyByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactListFrequency getContactListFrequencyByName(String contactListFrequencyName, EntityPermission entityPermission) {
+    public ContactListFrequency getContactListFrequencyByName(String contactListFrequencyName, EntityPermission entityPermission) {
         return ContactListFrequencyFactory.getInstance().getEntityFromQuery(entityPermission, getContactListFrequencyByNameQueries,
                 contactListFrequencyName);
     }
@@ -1294,7 +1294,7 @@ public class ContactListControl
         getDefaultContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactListFrequency getDefaultContactListFrequency(EntityPermission entityPermission) {
+    public ContactListFrequency getDefaultContactListFrequency(EntityPermission entityPermission) {
         return ContactListFrequencyFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListFrequencyQueries);
     }
 
