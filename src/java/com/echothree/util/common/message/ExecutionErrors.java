@@ -1261,6 +1261,7 @@ public enum ExecutionErrors {
     NoItemAliasesFound,
     UnknownDefaultItemAliasTypeName,
     UnknownContactListTypeName,
+    UnknownDefaultContactListType,
     DuplicateContactListTypeName,
     DuplicateContactListTypeDescription,
     UnknownContactListTypeDescription,
