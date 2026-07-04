@@ -16,10 +16,12 @@
 
 package com.echothree.model.control.chain.server.graphql;
 
+import com.echothree.control.user.chain.server.command.GetChainActionCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetsCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypeCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypesCommand;
+import com.echothree.control.user.chain.server.command.GetChainActionsCommand;
 import com.echothree.control.user.chain.server.command.GetChainCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindsCommand;
@@ -69,6 +71,14 @@ public interface ChainSecurityUtils {
 
     static boolean getHasChainActionTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainActionTypeCommand.class);
+    }
+
+    static boolean getHasChainActionsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainActionsCommand.class);
+    }
+
+    static boolean getHasChainActionAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainActionCommand.class);
     }
 
 }

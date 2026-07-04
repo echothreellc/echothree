@@ -62,10 +62,12 @@ import com.echothree.control.user.cancellationpolicy.server.command.GetCancellat
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPoliciesCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPolicyCommand;
 import com.echothree.control.user.chain.common.ChainUtil;
+import com.echothree.control.user.chain.server.command.GetChainActionCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetsCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypeCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypesCommand;
+import com.echothree.control.user.chain.server.command.GetChainActionsCommand;
 import com.echothree.control.user.chain.server.command.GetChainCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindsCommand;
@@ -514,6 +516,7 @@ import com.echothree.model.control.campaign.server.graphql.CampaignSourceObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignTermObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
+import com.echothree.model.control.chain.server.graphql.ChainActionObject;
 import com.echothree.model.control.chain.server.graphql.ChainActionSetObject;
 import com.echothree.model.control.chain.server.graphql.ChainActionTypeObject;
 import com.echothree.model.control.chain.server.graphql.ChainKindObject;
@@ -775,12 +778,14 @@ import com.echothree.model.data.cancellationpolicy.common.CancellationKindConsta
 import com.echothree.model.data.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.chain.common.ChainActionConstants;
 import com.echothree.model.data.chain.common.ChainActionSetConstants;
 import com.echothree.model.data.chain.common.ChainActionTypeConstants;
 import com.echothree.model.data.chain.common.ChainConstants;
 import com.echothree.model.data.chain.common.ChainKindConstants;
 import com.echothree.model.data.chain.common.ChainTypeConstants;
 import com.echothree.model.data.chain.server.entity.Chain;
+import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainKind;
@@ -13638,6 +13643,76 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, chainActionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("chainAction")
+    static ChainActionObject chainAction(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") final String chainKindName,
+            @GraphQLName("chainTypeName") final String chainTypeName,
+            @GraphQLName("chainName") final String chainName,
+            @GraphQLName("chainActionSetName") final String chainActionSetName,
+            @GraphQLName("chainActionName") final String chainActionName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ChainAction chainAction;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainActionForm();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainName(chainName);
+            commandForm.setChainActionSetName(chainActionSetName);
+            commandForm.setChainActionName(chainActionName);
+            commandForm.setUuid(id);
+
+            chainAction = CDI.current().select(GetChainActionCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return chainAction == null ? null : new ChainActionObject(chainAction);
+    }
+
+    @GraphQLField
+    @GraphQLName("chainActions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ChainActionObject> chainActions(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") @GraphQLNonNull final String chainKindName,
+            @GraphQLName("chainTypeName") @GraphQLNonNull final String chainTypeName,
+            @GraphQLName("chainName") @GraphQLNonNull final String chainName,
+            @GraphQLName("chainActionSetName") @GraphQLNonNull final String chainActionSetName) {
+        CountingPaginatedData<ChainActionObject> data;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainActionsForm();
+            var command = CDI.current().select(GetChainActionsCommand.class).get();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainName(chainName);
+            commandForm.setChainActionSetName(chainActionSetName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ChainActionConstants.COMPONENT_VENDOR_NAME, ChainActionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var chainActions = entities.stream()
+                            .map(ChainActionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, chainActions);
                 }
             }
         } catch (NamingException ex) {
