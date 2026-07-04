@@ -74,6 +74,9 @@ import com.echothree.control.user.chain.server.command.GetChainKindsCommand;
 import com.echothree.control.user.chain.server.command.GetChainTypeCommand;
 import com.echothree.control.user.chain.server.command.GetChainTypesCommand;
 import com.echothree.control.user.chain.server.command.GetChainsCommand;
+import com.echothree.control.user.contactlist.common.ContactListUtil;
+import com.echothree.control.user.contactlist.server.command.GetContactListFrequenciesCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListFrequencyCommand;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
@@ -522,6 +525,7 @@ import com.echothree.model.control.chain.server.graphql.ChainActionTypeObject;
 import com.echothree.model.control.chain.server.graphql.ChainKindObject;
 import com.echothree.model.control.chain.server.graphql.ChainObject;
 import com.echothree.model.control.chain.server.graphql.ChainTypeObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListFrequencyObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
@@ -790,6 +794,8 @@ import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
+import com.echothree.model.data.contactlist.common.ContactListFrequencyConstants;
+import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.model.data.content.common.ContentCatalogConstants;
 import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCategoryConstants;
@@ -13713,6 +13719,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, chainActions);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+    
+    @GraphQLField
+    @GraphQLName("contactListFrequency")
+    static ContactListFrequencyObject contactListFrequency(final DataFetchingEnvironment env,
+            @GraphQLName("contactListFrequencyName") final String contactListFrequencyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ContactListFrequency contactListFrequency;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListFrequencyForm();
+
+            commandForm.setContactListFrequencyName(contactListFrequencyName);
+            commandForm.setUuid(id);
+
+            contactListFrequency = CDI.current().select(GetContactListFrequencyCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactListFrequency == null ? null : new ContactListFrequencyObject(contactListFrequency);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListFrequencies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactListFrequencyObject> contactListFrequencies(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContactListFrequencyObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListFrequenciesForm();
+            var command = CDI.current().select(GetContactListFrequenciesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactListFrequencyConstants.COMPONENT_VENDOR_NAME, ContactListFrequencyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactListFrequencies = entities.stream()
+                            .map(ContactListFrequencyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactListFrequencies);
                 }
             }
         } catch (NamingException ex) {
