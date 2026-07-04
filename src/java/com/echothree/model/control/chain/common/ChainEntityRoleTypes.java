@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.chain.common.transfer;
+package com.echothree.model.control.chain.common;
 
 public enum ChainEntityRoleTypes {
 

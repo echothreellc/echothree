@@ -18,7 +18,7 @@ package com.echothree.model.control.contactlist.server.logic;
 
 import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.common.ChainTypes;
-import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypes;
+import com.echothree.model.control.chain.common.ChainEntityRoleTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
