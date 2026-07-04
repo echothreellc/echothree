@@ -1936,6 +1936,7 @@ public enum ExecutionErrors {
     UnknownPartyContactListStatusChoice,
     UnknownDefaultPartyContactListStatusChoice,
     UnknownContactListFrequencyName,
+    UnknownDefaultContactListFrequency,
     DuplicateContactListFrequencyName,
     DuplicateContactListFrequencyDescription,
     UnknownContactListFrequencyDescription,

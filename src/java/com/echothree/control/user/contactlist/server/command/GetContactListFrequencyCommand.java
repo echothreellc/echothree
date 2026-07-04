@@ -19,15 +19,16 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.GetContactListFrequencyForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.logic.ContactListFrequencyLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetContactListFrequencyCommand
-        extends BaseSimpleCommand<GetContactListFrequencyForm> {
+        extends BaseSingleEntityCommand<ContactListFrequency, GetContactListFrequencyForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -51,12 +52,17 @@ public class GetContactListFrequencyCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ContactListFrequencyName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ContactListFrequencyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
     
     @Inject
     ContactListControl contactListControl;
+    
+    @Inject
+    ContactListFrequencyLogic contactListFrequencyLogic;
 
     /** Creates a new instance of GetContactListFrequencyCommand */
     public GetContactListFrequencyCommand() {
@@ -64,19 +70,24 @@ public class GetContactListFrequencyCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected ContactListFrequency getEntity() {
+        var contactListFrequency = contactListFrequencyLogic.getContactListFrequencyByUniversalSpec(this, form, true);
+
+        if(contactListFrequency != null) {
+            sendEvent(contactListFrequency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return contactListFrequency;
+    }
+
+    @Override
+    protected BaseResult getResult(ContactListFrequency contactListFrequency) {
         var result = ContactListResultFactory.getGetContactListFrequencyResult();
-        var contactListFrequencyName = form.getContactListFrequencyName();
-        var contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
-        
+
         if(contactListFrequency != null) {
             result.setContactListFrequency(contactListControl.getContactListFrequencyTransfer(getUserVisit(), contactListFrequency));
-            
-            sendEvent(contactListFrequency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownContactListFrequencyName.name(), contactListFrequencyName);
         }
-        
+
         return result;
     }
     
