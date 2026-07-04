@@ -17,7 +17,7 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.DeleteSubscriptionTypeChainForm;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -75,7 +75,7 @@ public class DeleteSubscriptionTypeChainCommand
             
             if(subscriptionType != null) {
                 var chainControl = Session.getModelController(ChainControl.class);
-                var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
+                var chainKind = chainControl.getChainKindByName(ChainKinds.SUBSCRIPTION.name());
                 var chainTypeName = form.getChainTypeName();
                 var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 

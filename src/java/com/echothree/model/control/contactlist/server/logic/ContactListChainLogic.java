@@ -17,6 +17,7 @@
 package com.echothree.model.control.contactlist.server.logic;
 
 import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
@@ -92,7 +93,7 @@ public class ContactListChainLogic
     
     protected ChainInstance createContactListChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName,
             final PartyContactList partyContactList, final BasePK createdBy) {
-        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_CONTACT_LIST, chainTypeName, partyContactList, createdBy);
+        var chainInstance = createChainInstance(eea, ChainKinds.CONTACT_LIST.name(), chainTypeName, partyContactList, createdBy);
         
         if(chainInstance != null) {
             var chainControl = Session.getModelController(ChainControl.class);

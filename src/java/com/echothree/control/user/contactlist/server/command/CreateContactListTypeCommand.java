@@ -18,16 +18,16 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
 import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,7 +76,7 @@ public class CreateContactListTypeCommand
 
         if(contactListType == null) {
             var chainControl = Session.getModelController(ChainControl.class);
-            var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
+            var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = form.getConfirmationRequestChainName();
             var confirmationRequestChain = confirmationRequestChainName == null ? null
                     : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);

@@ -17,6 +17,7 @@
 package com.echothree.model.control.subscription.server.logic;
 
 import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
@@ -90,7 +91,7 @@ public class SubscriptionChainLogic
     
     protected ChainInstance createSubscriptionChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Subscription subscription,
             final BasePK createdBy) {
-        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_SUBSCRIPTION, chainTypeName, subscription, createdBy);
+        var chainInstance = createChainInstance(eea, ChainKinds.SUBSCRIPTION.name(), chainTypeName, subscription, createdBy);
         
         if(chainInstance != null) {
             var chainControl = Session.getModelController(ChainControl.class);

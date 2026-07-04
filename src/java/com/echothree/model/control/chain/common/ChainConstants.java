@@ -18,15 +18,6 @@ package com.echothree.model.control.chain.common;
 
 public interface ChainConstants {
     
-    String ChainKind_CONTACT_LIST = "CONTACT_LIST";
-    String ChainKind_CUSTOMER = "CUSTOMER";
-    String ChainKind_CUSTOMER_RETURN = "CUSTOMER_RETURN";
-    String ChainKind_CUSTOMER_SHIPMENT = "CUSTOMER_SHIPMENT";
-    String ChainKind_PAYMENT_METHOD = "PAYMENT_METHOD";
-    String ChainKind_PURCHASE_ORDER = "PURCHASE_ORDER";
-    String ChainKind_SALES_ORDER = "SALES_ORDER";
-    String ChainKind_SUBSCRIPTION = "SUBSCRIPTION";
-    
     String ChainType_BACKORDER_NOTIFICATION = "BACKORDER_NOTIFICATION";
     String ChainType_CC_AVS_FAILURE = "CC_AVS_FAILURE";
     String ChainType_CC_DECLINE = "CC_DECLINE";

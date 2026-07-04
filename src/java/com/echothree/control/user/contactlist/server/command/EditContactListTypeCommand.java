@@ -18,11 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.edit.ContactListEditFactory;
 import com.echothree.control.user.contactlist.common.edit.ContactListTypeEdit;
-import com.echothree.control.user.contactlist.common.form.EditContactListTypeForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.EditContactListTypeResult;
 import com.echothree.control.user.contactlist.common.spec.ContactListTypeSpec;
 import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -30,11 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contactlist.server.entity.ContactListType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -157,7 +156,7 @@ public class EditContactListTypeCommand
             addExecutionError(ExecutionErrors.DuplicateContactListTypeName.name(), contactListTypeName);
         } else {
             var chainControl = Session.getModelController(ChainControl.class);
-            var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
+            var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = edit.getConfirmationRequestChainName();
 
             confirmationRequestChain = confirmationRequestChainName == null ? null
