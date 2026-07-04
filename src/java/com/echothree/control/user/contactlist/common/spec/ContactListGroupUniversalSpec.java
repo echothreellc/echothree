@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.contactlist.common.form;
+package com.echothree.control.user.contactlist.common.spec;
 
-import com.echothree.control.user.contactlist.common.spec.ContactListGroupUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetContactListGroupForm
-        extends ContactListGroupUniversalSpec {
-    
-    // Nothing additional beyond ContactListGroupUniversalSpec
-    
+public interface ContactListGroupUniversalSpec
+        extends ContactListGroupSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond ContactListGroupSpec, UniversalEntitySpec
+
 }
