@@ -17,7 +17,7 @@
 package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainActionForm;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainActionTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -33,12 +33,11 @@ import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -105,11 +104,11 @@ public class CreateChainActionCommand
         if(!validationResult.getHasErrors()) {
             var chainActionTypeName = form.getChainActionTypeName();
             
-            if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
+            if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
                 validationResult = validator.validate(form, letterFormFieldDefinitions);
-            } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+            } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
                 validationResult = validator.validate(form, surveyFormFieldDefinitions);
-            } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
+            } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
                 validationResult = validator.validate(form, chainActionSetFormFieldDefinitions);
             }
         }
@@ -149,7 +148,7 @@ public class CreateChainActionCommand
         private Letter letter = null;
         
         public LetterChainActionType(ChainControl chainControl, ChainType chainType) {
-            super(chainControl, ChainConstants.ChainActionType_LETTER);
+            super(chainControl, ChainActionTypes.LETTER.name());
             
             if(!hasExecutionErrors()) {
                 var letterName = form.getLetterName();
@@ -174,7 +173,7 @@ public class CreateChainActionCommand
         Long delayTime = null;
         
         public ChainActionSetChainActionType(ChainControl chainControl, Chain chain) {
-            super(chainControl, ChainConstants.ChainActionType_CHAIN_ACTION_SET);
+            super(chainControl, ChainActionTypes.CHAIN_ACTION_SET.name());
             
             if(!hasExecutionErrors()) {
                 var nextChainActionSetName = form.getNextChainActionSetName();
@@ -238,11 +237,11 @@ public class CreateChainActionCommand
                             if(chainActionType != null) {
                                 BaseChainActionType baseChainActionType = null;
                                 
-                                if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
+                                if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
                                     baseChainActionType = new LetterChainActionType(chainControl, chainType);
-                                } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+                                } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
                                     // TODO
-                                } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
+                                } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
                                     baseChainActionType = new ChainActionSetChainActionType(chainControl, chain);
                                 }
                                 

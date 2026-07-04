@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.chain.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainActionTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -114,11 +114,11 @@ public class ChainInstanceStatusLogic
         for(var chainAction: chainControl.getChainActionsByChainActionSet(chainActionSet)) {
             var chainActionTypeName = chainAction.getLastDetail().getChainActionType().getLastDetail().getChainActionTypeName();
             
-            if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
+            if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
                 processChainActionLetter(chainInstance, chainAction, processedBy);
-            } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+            } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
                 processChainActionSurvey(chainInstance, chainAction, processedBy);
-            } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
+            } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
                 processChainActionChainActionSet(session, chainInstanceStatus, chainAction, processedBy);
                 hasNextChainActionSet = true;
             }

@@ -55,9 +55,5 @@ public interface ChainConstants {
     String ChainEntityRoleType_PARTY_CONTACT_LIST = "PARTY_CONTACT_LIST";
     String ChainEntityRoleType_SUBSCRIPTION = "SUBSCRIPTION";
     String ChainEntityRoleType_VENDOR = "VENDOR";
-    
-    String ChainActionType_LETTER = "LETTER";
-    String ChainActionType_SURVEY = "SURVEY";
-    String ChainActionType_CHAIN_ACTION_SET = "CHAIN_ACTION_SET";
-    
+
 }
