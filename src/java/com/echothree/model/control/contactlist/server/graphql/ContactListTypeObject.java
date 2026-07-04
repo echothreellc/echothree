@@ -20,8 +20,14 @@ import com.echothree.model.control.chain.server.graphql.ChainObject;
 import com.echothree.model.control.chain.server.graphql.ChainSecurityUtils;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.contactlist.common.ContactListConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactListType;
 import com.echothree.model.data.contactlist.server.entity.ContactListTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +35,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("contact list type object")
 @GraphQLName("ContactListType")
@@ -114,6 +123,26 @@ public class ContactListTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return contactListControl.getBestContactListTypeDescription(contactListType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContactListObject> getContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasContactListsAccess(env)) {
+            var chainControl = Session.getModelController(ContactListControl.class);
+            var totalCount = chainControl.countContactListsByContactListType(contactListType);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContactListConstants.COMPONENT_VENDOR_NAME, ContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getContactListsByContactListType(contactListType);
+                var contactLists = entities.stream().map(ContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contactLists);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
