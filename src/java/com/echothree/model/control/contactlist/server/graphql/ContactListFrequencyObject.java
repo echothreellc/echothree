@@ -18,8 +18,14 @@ package com.echothree.model.control.contactlist.server.graphql;
 
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.contactlist.common.ContactListConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("contact list frequency object")
 @GraphQLName("ContactListFrequency")
@@ -81,6 +90,26 @@ public class ContactListFrequencyObject
         var userControl = Session.getModelController(UserControl.class);
 
         return contactListControl.getBestContactListFrequencyDescription(contactListFrequency, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContactListObject> getContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasContactListsAccess(env)) {
+            var chainControl = Session.getModelController(ContactListControl.class);
+            var totalCount = chainControl.countContactListsByContactListFrequency(contactListFrequency);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContactListConstants.COMPONENT_VENDOR_NAME, ContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getContactListsByContactListFrequency(contactListFrequency);
+                var contactLists = entities.stream().map(ContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contactLists);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
