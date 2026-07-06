@@ -16,8 +16,13 @@
 
 package com.echothree.model.control.chain.server.logic;
 
+import com.echothree.control.user.chain.common.spec.ChainInstanceUniversalSpec;
 import com.echothree.model.control.chain.common.exception.UnknownChainInstanceNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
@@ -30,14 +35,20 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
 public class ChainInstanceLogic
         extends BaseLogic {
+
+    public static ChainInstanceLogic getInstance() {
+        return CDI.current().select(ChainInstanceLogic.class).get();
+    }
 
     @Inject
     protected ChainControl chainControl;
@@ -95,14 +106,59 @@ public class ChainInstanceLogic
         return chainInstance;
     }
 
-    public ChainInstance getChainInstanceByName(final ExecutionErrorAccumulator eea, final String chainInstanceName) {
-        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+    public ChainInstance getChainInstanceByName(final ExecutionErrorAccumulator eea, final String chainInstanceName,
+            final EntityPermission entityPermission) {
+        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName, entityPermission);
 
         if(chainInstance == null) {
             handleExecutionError(UnknownChainInstanceNameException.class, eea, ExecutionErrors.UnknownChainInstanceName.name(), chainInstanceName);
         }
 
         return chainInstance;
+    }
+
+    public ChainInstance getChainInstanceByName(final ExecutionErrorAccumulator eea, final String chainInstanceName) {
+        return getChainInstanceByName(eea, chainInstanceName, EntityPermission.READ_ONLY);
+    }
+
+    public ChainInstance getChainInstanceByNameForUpdate(final ExecutionErrorAccumulator eea, final String chainInstanceName) {
+        return getChainInstanceByName(eea, chainInstanceName, EntityPermission.READ_WRITE);
+    }
+
+    public ChainInstance getChainInstanceByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ChainInstanceUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        ChainInstance chainInstance = null;
+        var chainInstanceName = universalSpec.getChainInstanceName();
+        var parameterCount = (chainInstanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(chainInstanceName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainInstance.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        chainInstance = chainControl.getChainInstanceByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    chainInstance = getChainInstanceByName(eea, chainInstanceName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return chainInstance;
+    }
+
+    public ChainInstance getChainInstanceByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ChainInstanceUniversalSpec universalSpec) {
+        return getChainInstanceByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public ChainInstance getChainInstanceByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ChainInstanceUniversalSpec universalSpec) {
+        return getChainInstanceByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public void deleteChainInstanceByChainEntityRoleTypeAndEntityInstance(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance,
