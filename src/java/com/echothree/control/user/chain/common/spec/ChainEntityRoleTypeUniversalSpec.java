@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.chain.common.form;
+package com.echothree.control.user.chain.common.spec;
 
-import com.echothree.control.user.chain.common.spec.ChainEntityRoleTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetChainEntityRoleTypeForm
-        extends ChainEntityRoleTypeUniversalSpec {
+public interface ChainEntityRoleTypeUniversalSpec
+        extends ChainEntityRoleTypeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond ChainEntityRoleTypeSpec
+    // Nothing additional beyond ChainEntityRoleTypeSpec, UniversalEntitySpec
     
 }

@@ -1272,7 +1272,7 @@ public class ChainControl
         getChainEntityRoleTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainEntityRoleType getChainEntityRoleTypeByName(ChainType chainType, String chainEntityRoleTypeName, EntityPermission entityPermission) {
+    public ChainEntityRoleType getChainEntityRoleTypeByName(ChainType chainType, String chainEntityRoleTypeName, EntityPermission entityPermission) {
         return ChainEntityRoleTypeFactory.getInstance().getEntityFromQuery(entityPermission, getChainEntityRoleTypeByNameQueries,
                 chainType, chainEntityRoleTypeName);
     }

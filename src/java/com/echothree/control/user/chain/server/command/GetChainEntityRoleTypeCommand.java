@@ -20,15 +20,15 @@ import com.echothree.control.user.chain.common.form.GetChainEntityRoleTypeForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainEntityRoleTypeLogic;
-import com.echothree.model.control.chain.server.logic.ChainTypeLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetChainEntityRoleTypeCommand
-        extends BaseSimpleCommand<GetChainEntityRoleTypeForm> {
+        extends BaseSingleEntityCommand<ChainEntityRoleType, GetChainEntityRoleTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,9 +52,11 @@ public class GetChainEntityRoleTypeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ChainEntityRoleTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ChainEntityRoleTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
     
@@ -64,30 +66,28 @@ public class GetChainEntityRoleTypeCommand
     @Inject
     ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
 
-    @Inject
-    ChainTypeLogic chainTypeLogic;
-
     /** Creates a new instance of GetChainEntityRoleTypeCommand */
     public GetChainEntityRoleTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
+    protected ChainEntityRoleType getEntity() {
+        var chainEntityRoleType = chainEntityRoleTypeLogic.getChainEntityRoleTypeByUniversalSpec(this, form, true);
+
+        if(chainEntityRoleType != null) {
+            sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return chainEntityRoleType;
+    }
+
+    @Override
+    protected BaseResult getResult(ChainEntityRoleType chainEntityRoleType) {
         var result = ChainResultFactory.getGetChainEntityRoleTypeResult();
-        var chainKindName = form.getChainKindName();
-        var chainTypeName = form.getChainTypeName();
-        var chainType = chainTypeLogic.getChainTypeByName(this, chainKindName, chainTypeName);
 
-        if(!hasExecutionErrors()) {
-            var chainEntityRoleTypeName = form.getChainEntityRoleTypeName();
-            var chainEntityRoleType = chainEntityRoleTypeLogic.getChainEntityRoleTypeByName(this, chainType, chainEntityRoleTypeName);
-
-            if(!hasExecutionErrors()) {
-                result.setChainEntityRoleType(chainControl.getChainEntityRoleTypeTransfer(getUserVisit(), chainEntityRoleType));
-
-                sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            }
+        if(chainEntityRoleType != null) {
+            result.setChainEntityRoleType(chainControl.getChainEntityRoleTypeTransfer(getUserVisit(), chainEntityRoleType));
         }
 
         return result;
