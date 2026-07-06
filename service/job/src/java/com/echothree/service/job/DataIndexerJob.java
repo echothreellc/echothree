@@ -17,7 +17,6 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.common.result.UpdateIndexesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
@@ -48,10 +47,10 @@ public class DataIndexerJob
         var commandResult = IndexUtil.getHome().updateIndexes(userVisitPK, updateIndexesCommandForm);
         
         if(commandResult.hasErrors()) {
-            getLog().error(commandResult.toString());
+            log.error(commandResult.toString());
         } else {
             var executionResult = commandResult.getExecutionResult();
-            var updateIndexesResult = (UpdateIndexesResult)executionResult.getResult();
+            var updateIndexesResult = executionResult.getResult();
 
             if(updateIndexesResult.getIndexingComplete()) {
                 var evaluateSelectorsCommandForm = SelectorUtil.getHome().getEvaluateSelectorsForm();
