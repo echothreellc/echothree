@@ -20,23 +20,27 @@ import com.echothree.control.user.chain.common.form.GetChainInstanceForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetChainInstanceCommand
-        extends BaseSimpleCommand<GetChainInstanceForm> {
+        extends BaseSingleEntityCommand<ChainInstance, GetChainInstanceForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ChainInstanceName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ChainInstanceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
 
@@ -52,15 +56,24 @@ public class GetChainInstanceCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected ChainInstance getEntity() {
+        var chainInstance = chainInstanceLogic.getChainInstanceByUniversalSpec(this, form);
+
+        if(chainInstance != null) {
+            sendEvent(chainInstance.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return chainInstance;
+    }
+
+    @Override
+    protected BaseResult getResult(ChainInstance chainInstance) {
         var result = ChainResultFactory.getGetChainInstanceResult();
-        var chainInstanceName = form.getChainInstanceName();
-        var chainInstance = chainInstanceLogic.getChainInstanceByName(this, chainInstanceName);
-        
-        if(!hasExecutionErrors()) {
+
+        if(chainInstance != null) {
             result.setChainInstance(chainControl.getChainInstanceTransfer(getUserVisit(), chainInstance));
         }
-        
+
         return result;
     }
     

@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.chain.common.form;
+package com.echothree.control.user.chain.common.spec;
 
-import com.echothree.control.user.chain.common.spec.ChainInstanceUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetChainInstanceForm
-        extends ChainInstanceUniversalSpec {
+public interface ChainInstanceUniversalSpec
+        extends ChainInstanceSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond ChainInstanceUniversalSpec
+    // Nothing additional beyond ChainInstanceSpec, UniversalEntitySpec
     
 }

@@ -3645,7 +3645,7 @@ public class ChainControl
         return letterControl.isChainInstanceUsedByQueuedLetters(chainInstance);
     }
 
-    private ChainInstance getChainInstanceByName(String chainInstanceName, EntityPermission entityPermission) {
+    public ChainInstance getChainInstanceByName(String chainInstanceName, EntityPermission entityPermission) {
         ChainInstance chainInstance;
         
         try {
