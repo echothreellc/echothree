@@ -69,6 +69,8 @@ import com.echothree.control.user.chain.server.command.GetChainActionTypeCommand
 import com.echothree.control.user.chain.server.command.GetChainActionTypesCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionsCommand;
 import com.echothree.control.user.chain.server.command.GetChainCommand;
+import com.echothree.control.user.chain.server.command.GetChainInstanceCommand;
+import com.echothree.control.user.chain.server.command.GetChainInstancesCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindsCommand;
 import com.echothree.control.user.chain.server.command.GetChainTypeCommand;
@@ -528,6 +530,7 @@ import com.echothree.model.control.cancellationpolicy.server.graphql.Cancellatio
 import com.echothree.model.control.chain.server.graphql.ChainActionObject;
 import com.echothree.model.control.chain.server.graphql.ChainActionSetObject;
 import com.echothree.model.control.chain.server.graphql.ChainActionTypeObject;
+import com.echothree.model.control.chain.server.graphql.ChainInstanceObject;
 import com.echothree.model.control.chain.server.graphql.ChainKindObject;
 import com.echothree.model.control.chain.server.graphql.ChainObject;
 import com.echothree.model.control.chain.server.graphql.ChainTypeObject;
@@ -795,12 +798,14 @@ import com.echothree.model.data.chain.common.ChainActionConstants;
 import com.echothree.model.data.chain.common.ChainActionSetConstants;
 import com.echothree.model.data.chain.common.ChainActionTypeConstants;
 import com.echothree.model.data.chain.common.ChainConstants;
+import com.echothree.model.data.chain.common.ChainInstanceConstants;
 import com.echothree.model.data.chain.common.ChainKindConstants;
 import com.echothree.model.data.chain.common.ChainTypeConstants;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
+import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.contactlist.common.ContactListConstants;
@@ -13742,7 +13747,67 @@ public interface GraphQlQueries {
 
         return data;
     }
-    
+
+    @GraphQLField
+    @GraphQLName("chainInstance")
+    static ChainInstanceObject chainInstance(final DataFetchingEnvironment env,
+            @GraphQLName("chainInstanceName") final String chainInstanceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ChainInstance chainInstance;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainInstanceForm();
+
+            commandForm.setChainInstanceName(chainInstanceName);
+            commandForm.setUuid(id);
+
+            chainInstance = CDI.current().select(GetChainInstanceCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return chainInstance == null ? null : new ChainInstanceObject(chainInstance);
+    }
+
+    @GraphQLField
+    @GraphQLName("chainInstances")
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ChainInstanceObject> chainInstances(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") final String chainKindName,
+            @GraphQLName("chainTypeName") final String chainTypeName,
+            @GraphQLName("chainName") final String chainName) {
+        CountingPaginatedData<ChainInstanceObject> data;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainInstancesForm();
+            var command = CDI.current().select(GetChainInstancesCommand.class).get();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainName(chainName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ChainInstanceConstants.COMPONENT_VENDOR_NAME, ChainInstanceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var chainInstances = entities.stream()
+                            .map(ChainInstanceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, chainInstances);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+
     @GraphQLField
     @GraphQLName("contactListFrequency")
     static ContactListFrequencyObject contactListFrequency(final DataFetchingEnvironment env,
