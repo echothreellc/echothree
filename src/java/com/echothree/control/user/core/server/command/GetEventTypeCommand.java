@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.logic.EventTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,7 +32,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
 @Dependent
 public class GetEventTypeCommand
@@ -61,9 +59,6 @@ public class GetEventTypeCommand
     public GetEventTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    EventControl eventControl;
 
     @Override
     protected EventType getEntity() {
