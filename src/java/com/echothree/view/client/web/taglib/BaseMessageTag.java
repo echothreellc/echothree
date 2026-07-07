@@ -24,12 +24,6 @@ public class BaseMessageTag
         extends BaseTag {
     
     /**
-     * The name of the scripting variable to be exposed.
-     */
-    // id, along with its getId()/setId() functions are provided by TagSupport
-    //protected String id = null;
-    
-    /**
      * The request attribute key for our error messages (if any).
      */
     protected String commandResultVar = TagConstants.CommandResultName;

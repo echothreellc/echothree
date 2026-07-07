@@ -21,8 +21,8 @@ import java.io.Writer;
 
 public class EscapedHTMLWriter
         extends EscapedWriter {
+
     /** Creates new EscapedXMLWriter */
-    /** Creates a new instance of EscapedHTMLWriter */
     public EscapedHTMLWriter(Writer out) {
         super(out);
     }
@@ -37,4 +37,5 @@ public class EscapedHTMLWriter
             default -> out.write(c);
         }
     }
+
 }

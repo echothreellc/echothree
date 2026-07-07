@@ -41,7 +41,6 @@ public class ApplicationContainer {
     /**
      * Constructor
      */
-    /** Creates a new instance of ApplicationContainer */
     public ApplicationContainer() {
         super();
     }

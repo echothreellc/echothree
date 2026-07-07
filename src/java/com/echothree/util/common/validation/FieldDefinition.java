@@ -29,7 +29,6 @@ public class FieldDefinition
     
     /** Creates a new instance of FieldDefinition
      */
-    /** Creates a new instance of FieldDefinition */
     public FieldDefinition(String fieldName, FieldType fieldType, Boolean isRequired, Long minimumValue, Long maximumValue) {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
@@ -40,7 +39,6 @@ public class FieldDefinition
     
     /** Creates a new instance of FieldDefinition
      */
-    /** Creates a new instance of FieldDefinition */
     public FieldDefinition(FieldDefinition fieldDefinition) {
         fieldName = fieldDefinition.getFieldName();
         fieldType = fieldDefinition.getFieldType();

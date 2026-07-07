@@ -105,15 +105,9 @@ public class PageSchemeTag
         // Get servlet context
         var servletContext = pageContext.getServletContext();
         
-        /**
-         * Determine whether we should redirect
-         */
-        var redirectString =
-        SecureRequestUtils.getRedirectString(request,
-        servletContext,
-        getSecure());
-        
-        
+        // Determine whether we should redirect
+        var redirectString = SecureRequestUtils.getRedirectString(request, servletContext, getSecure());
+
         if (redirectString != null) {
             try {
                 // Redirect the page to the desired URL

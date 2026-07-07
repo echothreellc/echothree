@@ -21,7 +21,7 @@ import java.io.Writer;
 
 public class EscapedXMLWriter
         extends EscapedWriter {
-    /** Creates new EscapedXMLWriter */
+
     /** Creates a new instance of EscapedXMLWriter */
     public EscapedXMLWriter(Writer out) {
         super(out);
@@ -38,4 +38,5 @@ public class EscapedXMLWriter
             default -> out.write(c);
         }
     }
+
 }
