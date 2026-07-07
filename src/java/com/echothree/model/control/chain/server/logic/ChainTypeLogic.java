@@ -106,7 +106,7 @@ public class ChainTypeLogic
         var chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
         ChainType chainType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             chainType = getChainTypeByName(eea, chainKind, chainTypeName, entityPermission);
         }
 
