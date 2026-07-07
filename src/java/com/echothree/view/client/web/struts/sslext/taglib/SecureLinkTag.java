@@ -90,7 +90,7 @@ public class SecureLinkTag
     /**
      * Return the complete URL to which this hyperlink will direct the user.
      *
-     * @exception JspException if an exception is thrown calculating the value
+     * @throws JspException if an exception is thrown calculating the value
      */
     @Override
     protected String calculateURL() throws JspException {

@@ -61,7 +61,7 @@ public class ToListTag
 
     /**
      * @return <CODE>SKIP_BODY</CODE>
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doStartTag()
