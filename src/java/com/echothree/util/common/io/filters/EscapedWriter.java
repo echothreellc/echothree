@@ -22,8 +22,8 @@ import java.io.Writer;
 
 public class EscapedWriter
         extends FilterWriter {
+
     /** Creates new EscapedXMLWriter */
-    /** Creates a new instance of EscapedWriter */
     public EscapedWriter(Writer out) {
         super(out);
     }
@@ -42,4 +42,5 @@ public class EscapedWriter
             write (str.charAt (off + i));
         }
     }
+
 }
