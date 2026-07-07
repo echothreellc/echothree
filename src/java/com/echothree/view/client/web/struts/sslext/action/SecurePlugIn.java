@@ -144,7 +144,7 @@ public class SecurePlugIn implements SecurePlugInInterface {
      *
      * @param servlet The Struts ActionServlet instance for the whole application
      * @param config The ApplicationConfig for our owning sub-application
-     * @exception ServletException if we cannot configure ourselves correctly
+     * @throws ServletException if we cannot configure ourselves correctly
      */
     @Override
     public void init(ActionServlet servlet, ModuleConfig config)
@@ -266,7 +266,7 @@ public class SecurePlugIn implements SecurePlugInInterface {
     /**
      * Initialize our internal MessageResources bundle.
      *
-     * @exception ServletException if we cannot initialize these resources
+     * @throws ServletException if we cannot initialize these resources
      */
     protected void initResources()
     throws ServletException {
