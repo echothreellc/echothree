@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.track.common.TrackUtil;
 import com.echothree.control.user.track.common.TrackService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class TrackServicePingTest
-        extends TestCase {
+public class TrackServicePingTest {
     private TrackService trackService;
     
-    /** Creates a new instance of TrackServiceTest */
-    public TrackServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new TrackServicePingTest("testPingTrackService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             trackService = TrackUtil.getHome();
             assertNotNull(trackService);
@@ -54,8 +37,8 @@ public class TrackServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             trackService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class TrackServicePingTest
         }
     }
     
+    @Test
     public void testPingTrackService() {
-        setUp();
         try {
             trackService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

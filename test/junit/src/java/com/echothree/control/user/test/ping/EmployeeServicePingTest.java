@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class EmployeeServicePingTest
-        extends TestCase {
+public class EmployeeServicePingTest {
     private EmployeeService employeeService;
     
-    /** Creates a new instance of EmployeeServiceTest */
-    public EmployeeServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new EmployeeServicePingTest("testPingEmployeeService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             employeeService = EmployeeUtil.getHome();
             assertNotNull(employeeService);
@@ -54,8 +37,8 @@ public class EmployeeServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             employeeService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class EmployeeServicePingTest
         }
     }
     
+    @Test
     public void testPingEmployeeService() {
-        setUp();
         try {
             employeeService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

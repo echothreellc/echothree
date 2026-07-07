@@ -18,7 +18,7 @@ package com.echothree.util.common.string.test;
 
 import com.echothree.util.common.string.StringUtils;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ToAscii7Test {
 

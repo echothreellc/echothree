@@ -3,7 +3,6 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/build/lib/antlr4-runtime.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/apiguardian-api.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/asm-analysis.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/asm-commons.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/asm-tree.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/asm.jar!/" />
@@ -183,6 +182,18 @@
       <root url="jar://$PROJECT_DIR$/build/lib/velocity-engine-core.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/xz.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/zstd-jni.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-jupiter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-platform-launcher.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/cucumber-json-formatter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-jupiter-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-jupiter-engine.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-jupiter-params.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-platform-commons.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-platform-engine.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/opentest4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/pretty-formatter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/teamcity-formatter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/usage-formatter.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -261,6 +272,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xerces2" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xni" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xs" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/junit-jupiter-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/junit-platform-launcher-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -354,6 +367,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-meta-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-backward-codecs-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/reload4j-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/junit-platform-launcher-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

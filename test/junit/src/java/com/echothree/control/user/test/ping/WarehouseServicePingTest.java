@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.WarehouseService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class WarehouseServicePingTest
-        extends TestCase {
+public class WarehouseServicePingTest {
     private WarehouseService warehouseService;
     
-    /** Creates a new instance of WarehouseServiceTest */
-    public WarehouseServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new WarehouseServicePingTest("testPingWarehouseService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             warehouseService = WarehouseUtil.getHome();
             assertNotNull(warehouseService);
@@ -54,8 +37,8 @@ public class WarehouseServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             warehouseService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class WarehouseServicePingTest
         }
     }
     
+    @Test
     public void testPingWarehouseService() {
-        setUp();
         try {
             warehouseService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

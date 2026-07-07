@@ -18,7 +18,7 @@ package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UserLoginTest
         extends GraphQlTestCase {
@@ -130,7 +130,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
-        
+
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
         var employeeLoginBody = executeUsingPost("""
                 mutation {
@@ -143,7 +143,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var editUserLoginBody = executeUsingPost("""
                 mutation {
                     editUserLogin(input: { id: "%s", username: "UnitTest1", clientMutationId: "1" }) {
@@ -155,7 +155,7 @@ public class UserLoginTest
                 """.formatted(id));
 
         assertThat(getBoolean(editUserLoginBody, "data.editUserLogin.commandResult.hasErrors")).isFalse();
-        
+
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
                     deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
@@ -196,9 +196,9 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
-        
+
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
-        
+
         var deleteUserLoginBody1 = executeUsingPost("""
                 mutation {
                     deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
@@ -224,7 +224,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var deleteUserLoginBody2 = executeUsingPost("""
                 mutation {
                     deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
@@ -265,7 +265,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
-        
+
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
 
         var employeeLoginBody = executeUsingPost("""
@@ -279,7 +279,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
                     deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
@@ -307,7 +307,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var createCustomerBody = executeUsingPost("""
                 mutation {
                     createCustomer(input: { firstName: "Unit", lastName: "Test", emailAddress: "jdoe@echothree.com", allowSolicitation: "true", clientMutationId: "1" }) {
@@ -320,7 +320,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerBody, "data.createCustomer.commandResult.hasErrors")).isFalse();
-        
+
         var id = getString(createCustomerBody, "data.createCustomer.id");
         var logoutBody = executeUsingPost("""
                 mutation {
@@ -370,7 +370,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var createCustomerBody = executeUsingPost("""
                 mutation {
                     createCustomer(input: { firstName: "Unit", lastName: "Test", emailAddress: "jdoe@echothree.com", allowSolicitation: "true", clientMutationId: "1" }) {
@@ -383,7 +383,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerBody, "data.createCustomer.commandResult.hasErrors")).isFalse();
-        
+
         var id = getString(createCustomerBody, "data.createCustomer.id");
         var createUserLoginBody = executeUsingPost("""
                 mutation {
@@ -418,7 +418,7 @@ public class UserLoginTest
 
         assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.commandResult.hasErrors")).isFalse();
     }
-    
+
     @Test
     public void userLoginQueryNoAuth()
             throws Exception {
@@ -445,7 +445,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
-        
+
         // Verify returned string matches the string passed in with createCustomerWithLogin
         var userLoginQuery1 = executeUsingPost("""
                 query {
@@ -480,7 +480,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
                     deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
@@ -493,7 +493,7 @@ public class UserLoginTest
 
         assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.commandResult.hasErrors")).isFalse();
     }
-    
+
     @Test
     public void userLoginQuery()
             throws Exception {
@@ -521,7 +521,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
-        
+
         var employeeLoginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
@@ -533,7 +533,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         // Verify returned string matches the string passed in with createCustomerWithLogin
         var userLoginQuery1 = executeUsingPost("""
                 query {
