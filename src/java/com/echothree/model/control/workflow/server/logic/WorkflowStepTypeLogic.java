@@ -109,7 +109,7 @@ public class WorkflowStepTypeLogic
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStepType.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     workflowStepType = workflowControl.getWorkflowStepTypeByEntityInstance(entityInstance, entityPermission);
                 }
             } else {

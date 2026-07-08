@@ -88,7 +88,7 @@ public class ChainEntityRoleTypeLogic
         ChainEntityRoleType chainEntityRoleType = null;
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             chainEntityRoleType = getChainEntityRoleTypeByName(eea, chainType, chainEntityRoleTypeName, entityPermission);
         }
 
@@ -132,7 +132,7 @@ public class ChainEntityRoleTypeLogic
                 chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainTypeName == null) {
                     if(allowDefault) {
                         chainType = chainControl.getDefaultChainType(chainKind);
@@ -149,7 +149,7 @@ public class ChainEntityRoleTypeLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainEntityRoleTypeName != null) {
                     chainEntityRoleType = getChainEntityRoleTypeByName(eea, chainType, chainEntityRoleTypeName, entityPermission);
                 } else {
@@ -160,7 +160,7 @@ public class ChainEntityRoleTypeLogic
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainEntityRoleType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 chainEntityRoleType = chainControl.getChainEntityRoleTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

@@ -136,7 +136,7 @@ public class ChainLogic
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
         Chain chain = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             chain = getChainByName(eea, chainType, chainName, entityPermission);
         }
 
@@ -179,7 +179,7 @@ public class ChainLogic
                 chainKind = ChainKindLogic.getInstance().getChainKindByName(eea, chainKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainTypeName == null) {
                     if(allowDefault) {
                         chainType = chainControl.getDefaultChainType(chainKind);
@@ -196,7 +196,7 @@ public class ChainLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainName == null) {
                     if(allowDefault) {
                         chain = chainControl.getDefaultChain(chainType, entityPermission);
@@ -217,7 +217,7 @@ public class ChainLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.Chain.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 chain = chainControl.getChainByEntityInstance(entityInstance, entityPermission);
             }
         } else {

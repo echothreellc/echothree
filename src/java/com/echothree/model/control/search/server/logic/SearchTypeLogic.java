@@ -106,7 +106,7 @@ public class SearchTypeLogic
         var searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
         SearchType searchType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             searchType = getSearchTypeByName(eea, searchKind, searchTypeName, entityPermission);
         }
 
@@ -147,7 +147,7 @@ public class SearchTypeLogic
                 searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(searchTypeName == null) {
                     if(allowDefault) {
                         searchType = searchControl.getDefaultSearchType(searchKind, entityPermission);
@@ -166,7 +166,7 @@ public class SearchTypeLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 searchType = searchControl.getSearchTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

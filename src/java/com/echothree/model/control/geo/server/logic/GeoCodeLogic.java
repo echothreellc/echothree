@@ -86,7 +86,7 @@ public class GeoCodeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GeoCode.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         geoCode = geoControl.getGeoCodeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

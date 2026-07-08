@@ -112,7 +112,7 @@ public class RelatedItemTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.RelatedItemType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         relatedItemType = itemControl.getRelatedItemTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

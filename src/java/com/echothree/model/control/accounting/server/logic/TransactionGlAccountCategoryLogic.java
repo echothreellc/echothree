@@ -113,7 +113,7 @@ public class TransactionGlAccountCategoryLogic
         var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
         TransactionGlAccountCategory transactionGlAccountCategory = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             transactionGlAccountCategory = getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, entityPermission);
         }
 
@@ -142,14 +142,14 @@ public class TransactionGlAccountCategoryLogic
         if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
             var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionGlAccountCategory = getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, entityPermission);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionGlAccountCategory.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByEntityInstance(entityInstance, entityPermission);
             }
         } else {

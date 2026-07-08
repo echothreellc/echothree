@@ -117,7 +117,7 @@ public class EntityTypeLogic
                 var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityType.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance, entityPermission);
                 }
             }

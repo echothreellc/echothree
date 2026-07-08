@@ -117,7 +117,7 @@ public class InventoryTransactionTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryTransactionType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

@@ -376,12 +376,12 @@ public class SalesOrderLineLogic
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
         OrderLine orderLine = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var itemDetail = item.getLastDetail();
             var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
             var unitOfMeasureType = unitOfMeasureTypeName == null ? null : UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 var orderLineSequence = strOrderLineSequence == null ? null : Integer.valueOf(strOrderLineSequence);
                 var quantity = Long.valueOf(strQuantity);
                 var unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);

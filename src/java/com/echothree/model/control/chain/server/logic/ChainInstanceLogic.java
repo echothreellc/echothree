@@ -137,7 +137,7 @@ public class ChainInstanceLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainInstance.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         chainInstance = chainControl.getChainInstanceByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

@@ -80,7 +80,7 @@ public class ComponentVendorLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ComponentVendor.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         componentVendor = componentControl.getComponentVendorByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

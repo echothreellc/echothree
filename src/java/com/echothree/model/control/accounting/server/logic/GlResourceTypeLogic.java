@@ -114,7 +114,7 @@ public class GlResourceTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GlResourceType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         glResourceType = accountingControl.getGlResourceTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

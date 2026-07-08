@@ -109,7 +109,7 @@ public class PaymentProcessorActionTypeLogic
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorActionType.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByEntityInstance(entityInstance, entityPermission);
                 }
             } else {

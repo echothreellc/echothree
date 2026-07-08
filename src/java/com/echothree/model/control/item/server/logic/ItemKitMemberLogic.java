@@ -49,7 +49,7 @@ public class ItemKitMemberLogic
         var item = itemLogic.getItemByName(eea, itemName);
         ItemKitMember itemKitMember = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var itemDetail = item.getLastDetail();
             var itemTypeName = itemDetail.getItemType().getItemTypeName();
 
@@ -57,22 +57,22 @@ public class ItemKitMemberLogic
                 var inventoryConditionLogic = InventoryConditionLogic.getInstance();
                 var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(eea, inventoryConditionName);
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
                     var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                     var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         var memberItem = itemLogic.getItemByName(eea, memberItemName);
 
-                        if(!eea.hasExecutionErrors()) {
+                        if(eea == null || !eea.hasExecutionErrors()) {
                             var memberInventoryCondition = inventoryConditionLogic.getInventoryConditionByName(eea, memberInventoryConditionName);
 
-                            if(!eea.hasExecutionErrors()) {
+                            if(eea == null || !eea.hasExecutionErrors()) {
                                 var memberUnitOfMeasureKind = memberItem.getLastDetail().getUnitOfMeasureKind();
                                 var memberUnitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea, memberUnitOfMeasureKind, memberUnitOfMeasureTypeName);
 
-                                if(!eea.hasExecutionErrors()) {
+                                if(eea == null || !eea.hasExecutionErrors()) {
                                     var itemControl = Session.getModelController(ItemControl.class);
 
                                     itemKitMember = itemControl.getItemKitMember(item, inventoryCondition, unitOfMeasureType, memberItem,

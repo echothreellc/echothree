@@ -111,7 +111,7 @@ public class SearchDefaultOperatorLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchDefaultOperator.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchDefaultOperator = searchControl.getSearchDefaultOperatorByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

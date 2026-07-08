@@ -145,7 +145,7 @@ public class WorkflowDestinationLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(workflowDestinationName == null) {
                     if(allowDefault) {
                         workflowDestination = workflowControl.getDefaultWorkflowDestination(workflowStep, entityPermission);
@@ -164,7 +164,7 @@ public class WorkflowDestinationLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowDestination.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 workflowDestination = workflowControl.getWorkflowDestinationByEntityInstance(entityInstance, entityPermission);
             }
         } else {

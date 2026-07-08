@@ -113,7 +113,7 @@ public class PartyTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         partyType = partyControl.getPartyTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

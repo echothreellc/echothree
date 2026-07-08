@@ -60,7 +60,7 @@ public class PaymentProcessorTransactionLogic
             paymentProcessorTransactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.PAYMENT_PROCESSOR_TRANSACTION.name());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
 
             paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName);
@@ -108,7 +108,7 @@ public class PaymentProcessorTransactionLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorTransaction.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

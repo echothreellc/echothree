@@ -131,7 +131,7 @@ public class CustomerTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CustomerType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         customerType = customerControl.getCustomerTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

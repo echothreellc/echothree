@@ -125,7 +125,7 @@ public class FilterStepLogic
         var filterStepType = FilterLogic.getInstance().getFilterByName(eea, filterKindName, filterTypeName, filterName);
         FilterStep filterStep = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             filterStep = getFilterStepByName(eea, filterStepType, filterStepName, entityPermission);
         }
 
@@ -201,7 +201,7 @@ public class FilterStepLogic
                 filter = FilterLogic.getInstance().getFilterByName(eea, filterType, filterName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterStepName == null) {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 } else {
@@ -212,7 +212,7 @@ public class FilterStepLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStep.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 filterStep = filterControl.getFilterStepByEntityInstance(entityInstance, entityPermission);
             }
         } else {

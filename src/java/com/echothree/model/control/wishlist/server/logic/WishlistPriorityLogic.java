@@ -108,7 +108,7 @@ public class WishlistPriorityLogic
         var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
         WishlistPriority wishlistPriority = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             wishlistPriority = getWishlistPriorityByName(eea, wishlistType, wishlistPriorityName, entityPermission);
         }
 
@@ -149,7 +149,7 @@ public class WishlistPriorityLogic
                 wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(wishlistPriorityName == null) {
                     if(allowDefault) {
                         wishlistPriority = wishlistControl.getDefaultWishlistPriority(wishlistType, entityPermission);
@@ -168,7 +168,7 @@ public class WishlistPriorityLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WishlistPriority.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 wishlistPriority = wishlistControl.getWishlistPriorityByEntityInstance(entityInstance, entityPermission);
             }
         } else {

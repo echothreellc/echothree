@@ -150,7 +150,7 @@ public class WorkflowStepLogic
                 handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(workflowStepName == null) {
                     if(allowDefault) {
                         workflowStep = workflowControl.getDefaultWorkflowStep(workflow, entityPermission);
@@ -169,7 +169,7 @@ public class WorkflowStepLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStep.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 workflowStep = workflowControl.getWorkflowStepByEntityInstance(entityInstance, entityPermission);
             }
         } else {

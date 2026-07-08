@@ -79,7 +79,7 @@ public class PaymentProcessorTypeCodeTypeLogic
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
         var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentProcessorTypeCodeType = createPaymentProcessorTypeCodeType(eea, paymentProcessorType,
                     paymentProcessorTypeCodeTypeName, isDefault, sortOrder, language, description, createdBy);
         }
@@ -117,7 +117,7 @@ public class PaymentProcessorTypeCodeTypeLogic
         var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByName(eea, paymentProcessorType, paymentProcessorTypeCodeTypeName, entityPermission);
         }
 
@@ -148,7 +148,7 @@ public class PaymentProcessorTypeCodeTypeLogic
                     if(paymentProcessorTypeName != null) {
                         var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
 
-                        if(!eea.hasExecutionErrors()) {
+                        if(eea == null || !eea.hasExecutionErrors()) {
                             paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getDefaultPaymentProcessorTypeCodeType(paymentProcessorType, entityPermission);
 
                             if(paymentProcessorTypeCodeType == null) {
@@ -166,7 +166,7 @@ public class PaymentProcessorTypeCodeTypeLogic
                 if(paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null) {
                     var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByName(eea, paymentProcessorType,
                                 paymentProcessorTypeCodeTypeName, entityPermission);
                     }
@@ -174,7 +174,7 @@ public class PaymentProcessorTypeCodeTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorTypeCodeType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 }
@@ -227,7 +227,7 @@ public class PaymentProcessorTypeCodeTypeLogic
         var language = LanguageLogic.getInstance().getLanguageByName(eea, languageIsoName);
         PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentProcessorTypeCodeTypeDescription = createPaymentProcessorTypeCodeTypeDescription(eea,
                     paymentProcessorTypeCodeType, language, description, createdBy);
         }

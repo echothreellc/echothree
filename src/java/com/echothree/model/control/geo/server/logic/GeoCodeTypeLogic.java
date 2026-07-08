@@ -113,7 +113,7 @@ public class GeoCodeTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GeoCodeType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         geoCodeType = geoControl.getGeoCodeTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -156,7 +156,7 @@ public class GeoCodeTypeLogic
     public void deleteGeoCodeType(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final BasePK deletedBy) {
         checkDeleteGeoCodeType(eea, geoCodeType);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var geoControl = Session.getModelController(GeoControl.class);
 
             geoControl.deleteGeoCodeType(geoCodeType, deletedBy);

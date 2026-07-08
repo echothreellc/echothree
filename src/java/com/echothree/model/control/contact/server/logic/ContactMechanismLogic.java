@@ -83,7 +83,7 @@ public class ContactMechanismLogic
                     contactMechanism.getLastDetail().getContactMechanismName());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             contactControl.deleteContactMechanism(contactMechanism, deletedBy);
         }
     }
@@ -92,7 +92,7 @@ public class ContactMechanismLogic
             final PartyPK deletedBy) {
         var contactMechanism = getContactMechanismByNameForUpdate(eea, contactMechanismName);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             deleteContactMechanism(eea, contactMechanism, deletedBy);
         }
     }

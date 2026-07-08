@@ -114,7 +114,7 @@ public class TransactionLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Transaction.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         transaction = accountingControl.getTransactionByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

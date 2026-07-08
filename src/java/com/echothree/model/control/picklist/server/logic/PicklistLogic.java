@@ -66,7 +66,7 @@ public class PicklistLogic
         var picklistType = picklistTypeLogic.getPicklistTypeByName(eea, picklistTypeName);
         Picklist picklist = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             picklist = getPicklistByName(eea, picklistType, picklistName, entityPermission);
         }
 

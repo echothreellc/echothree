@@ -123,7 +123,7 @@ public class ContactListLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactList.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contactList = contactListControl.getContactListByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

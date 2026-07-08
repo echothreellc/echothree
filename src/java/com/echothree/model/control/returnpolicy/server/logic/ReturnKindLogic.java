@@ -113,7 +113,7 @@ public class ReturnKindLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         returnKind = returnControl.getReturnKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

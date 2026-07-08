@@ -369,7 +369,7 @@ public class PartyPaymentMethodLogic
             final PartyPK deletedBy) {
         var partyPaymentMethod = getPartyPaymentMethodByNameForUpdate(eea, partyPaymentMethodName);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             deletePartyPaymentMethod(eea, partyPaymentMethod, deletedBy);
         }
     }

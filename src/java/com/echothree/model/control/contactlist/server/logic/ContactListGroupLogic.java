@@ -90,7 +90,7 @@ public class ContactListGroupLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, spec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactListGroup.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contactListGroup = contactListControl.getContactListGroupByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

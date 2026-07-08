@@ -106,7 +106,7 @@ public class CampaignSourceLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignSource.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         campaignSource = campaignControl.getCampaignSourceByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

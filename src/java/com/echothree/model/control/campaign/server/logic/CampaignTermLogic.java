@@ -106,7 +106,7 @@ public class CampaignTermLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignTerm.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         campaignTerm = campaignControl.getCampaignTermByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

@@ -52,7 +52,7 @@ public class OfferUseLogic
         var use = UseLogic.getInstance().getUseByName(eea, useName);
         OfferUse offerUse = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             offerUse = offerUseControl.getOfferUse(offer, use, entityPermission);

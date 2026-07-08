@@ -119,7 +119,7 @@ public class CancellationPolicyLogic
         var cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(eea, cancellationKindName);
         CancellationPolicy cancellationPolicy = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             cancellationPolicy = getCancellationPolicyByName(eea, cancellationKind, cancellationPolicyName, entityPermission);
         }
 
@@ -160,7 +160,7 @@ public class CancellationPolicyLogic
                 cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(eea, cancellationKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(cancellationPolicyName == null) {
                     if(allowDefault) {
                         cancellationPolicy = cancellationPolicyControl.getDefaultCancellationPolicy(cancellationKind, entityPermission);
@@ -179,7 +179,7 @@ public class CancellationPolicyLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.CancellationPolicy.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByEntityInstance(entityInstance, entityPermission);
             }
         } else {

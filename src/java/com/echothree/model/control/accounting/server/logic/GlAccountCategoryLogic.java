@@ -114,7 +114,7 @@ public class GlAccountCategoryLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GlAccountCategory.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         glAccountCategory = accountingControl.getGlAccountCategoryByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

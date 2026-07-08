@@ -112,7 +112,7 @@ public class FilterStepElementLogic
                 filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterTypeName == null) {
                     if(allowDefault) {
                         filterType = filterControl.getDefaultFilterType(filterKind);
@@ -129,7 +129,7 @@ public class FilterStepElementLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterName == null) {
                     if(allowDefault) {
                         filter = filterControl.getDefaultFilter(filterType);
@@ -146,7 +146,7 @@ public class FilterStepElementLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterStepName == null) {
                     // FilterStep does not have a default.
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -154,7 +154,7 @@ public class FilterStepElementLogic
                     filterStep = FilterStepLogic.getInstance().getFilterStepByName(eea, filter, filterStepName);
                 }
             }
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterStepElementName == null) {
                     // FilterStepElement does not have a default.
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -166,7 +166,7 @@ public class FilterStepElementLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStepElement.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 filterStepElement = filterControl.getFilterStepElementByEntityInstance(entityInstance, entityPermission);
             }
         } else {

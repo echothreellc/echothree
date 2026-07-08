@@ -71,7 +71,7 @@ public class SalesOrderBatchLogic
         var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
         var batch = BatchLogic.getInstance().createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var orderBatchControl = Session.getModelController(OrderBatchControl.class);
 
             orderBatchControl.createOrderBatch(batch, currency, count, amount, createdBy);

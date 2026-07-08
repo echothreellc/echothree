@@ -112,7 +112,7 @@ public class PeriodKindLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PeriodKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         periodKind = periodControl.getPeriodKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

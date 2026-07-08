@@ -145,7 +145,7 @@ public class SequenceLogic
         var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             sequence = getSequenceByName(eea, sequenceType, sequenceName, entityPermission);
         }
 
@@ -186,7 +186,7 @@ public class SequenceLogic
                 sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(sequenceName == null) {
                     if(allowDefault) {
                         sequence = sequenceControl.getDefaultSequence(sequenceType, entityPermission);
@@ -205,7 +205,7 @@ public class SequenceLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.Sequence.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 sequence = sequenceControl.getSequenceByEntityInstance(entityInstance, entityPermission);
             }
         } else {

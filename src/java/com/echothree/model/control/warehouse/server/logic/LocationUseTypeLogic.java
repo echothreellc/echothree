@@ -22,7 +22,6 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.common.exception.DuplicateLocationUseTypeNameException;
 import com.echothree.model.control.warehouse.common.exception.UnknownDefaultLocationUseTypeException;
 import com.echothree.model.control.warehouse.common.exception.UnknownLocationUseTypeNameException;
@@ -83,8 +82,6 @@ public class LocationUseTypeLogic
                 }
             }
             case 1 -> {
-                var partyControl = Session.getModelController(PartyControl.class);
-
                 if(locationUseTypeName != null) {
                     locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName, entityPermission);
 
@@ -95,7 +92,7 @@ public class LocationUseTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         locationUseType = locationUseTypeControl.getLocationUseTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 }

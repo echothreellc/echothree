@@ -127,7 +127,7 @@ public class FilterAdjustmentLogic
         var filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
         FilterAdjustment filterAdjustment = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             filterAdjustment = getFilterAdjustmentByName(eea, filterKind, filterAdjustmentName, entityPermission);
         }
 
@@ -168,7 +168,7 @@ public class FilterAdjustmentLogic
                 filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterAdjustmentName == null) {
                     if(allowDefault) {
                         filterAdjustment = filterControl.getDefaultFilterAdjustment(filterKind, entityPermission);
@@ -187,7 +187,7 @@ public class FilterAdjustmentLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterAdjustment.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 filterAdjustment = filterControl.getFilterAdjustmentByEntityInstance(entityInstance, entityPermission);
             }
         } else {

@@ -442,7 +442,7 @@ public class EntityAttributeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -748,7 +748,7 @@ public class EntityAttributeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

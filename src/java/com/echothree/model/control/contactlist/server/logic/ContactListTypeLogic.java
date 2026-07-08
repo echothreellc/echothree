@@ -85,7 +85,7 @@ public class ContactListTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, spec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactListType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contactListType = contactListControl.getContactListTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

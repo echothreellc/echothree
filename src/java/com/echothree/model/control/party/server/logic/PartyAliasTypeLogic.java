@@ -111,7 +111,7 @@ public class PartyAliasTypeLogic
         var partyType = PartyTypeLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
         PartyAliasType partyAliasType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             partyAliasType = getPartyAliasTypeByName(eea, partyType, partyAliasTypeName, entityPermission);
         }
 
@@ -152,7 +152,7 @@ public class PartyAliasTypeLogic
                 partyType = PartyTypeLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(partyAliasTypeName == null) {
                     if(allowDefault) {
                         partyAliasType = partyControl.getDefaultPartyAliasType(partyType, entityPermission);
@@ -171,7 +171,7 @@ public class PartyAliasTypeLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyAliasType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 partyAliasType = partyControl.getPartyAliasTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

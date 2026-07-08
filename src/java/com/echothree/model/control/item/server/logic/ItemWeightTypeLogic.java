@@ -112,7 +112,7 @@ public class ItemWeightTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemWeightType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemWeightType = itemControl.getItemWeightTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
