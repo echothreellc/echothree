@@ -77,7 +77,7 @@ public class GetJobUserVisitCommand
 
             if(cause instanceof SQLException se) {
                 if(se.getSQLState().equals(SQL_STATE_BASE_TABLE_OR_VIEW_NOT_FOUND)) {
-                    getLog().info("Ignoring \"" + se.getMessage() + "\"");
+                    log.info("Ignoring \"" + se.getMessage() + "\"");
 
                     // The table jobs did not exist, don't pass along exception. Tested w/ MySQL only.
                     pde = null;

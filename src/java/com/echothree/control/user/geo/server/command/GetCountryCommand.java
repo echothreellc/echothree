@@ -39,7 +39,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
-import org.apache.commons.logging.Log;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -69,15 +68,9 @@ public class GetCountryCommand
                 );
     }
     
-    Log log = null;
-    
     /** Creates a new instance of GetCountryCommand */
     public GetCountryCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-        
-        if(GeoDebugFlags.GetCountryCommand) {
-            log = getLog();
-        }
     }
 
     @Override
