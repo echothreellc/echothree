@@ -54,12 +54,12 @@ import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.queue.common.QueuedEntityConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import static java.lang.Math.toIntExact;
@@ -187,7 +187,9 @@ public class UpdateIndexesCommand
         var entityInstance = queuedEntityEntry.getKey();
         var entityType = entityInstance.getEntityType();
         var baseIndexers = indexersMap.get(entityType);
-        
+
+        log.info("indexing {}", PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance).toString());
+
         for(var baseIndexer : baseIndexers) {
             baseIndexer.updateIndex(entityInstance);
 
