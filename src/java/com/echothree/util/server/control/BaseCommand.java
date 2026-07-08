@@ -65,13 +65,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import javax.inject.Inject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
 
-    private Log log;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final CommandSecurityDefinition commandSecurityDefinition;
 
@@ -120,20 +120,12 @@ public abstract class BaseCommand
 
     protected BaseCommand(CommandSecurityDefinition commandSecurityDefinition) {
         if(ControlDebugFlags.LogBaseCommands) {
-            getLog().info("BaseCommand()");
+            log.info("BaseCommand()");
         }
 
         this.commandSecurityDefinition = commandSecurityDefinition;
     }
 
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
-    }
-    
     private void setupNames() {
         Class<? extends BaseCommand> c = this.getClass();
         var className = c.getName();
@@ -556,7 +548,7 @@ public abstract class BaseCommand
 
             if(updateLastCommandTime) {
                 if(getUserVisitForUpdate() == null) {
-                    getLog().error("Command not logged, unknown userVisit");
+                    log.error("Command not logged, unknown userVisit");
                 } else {
                     userVisit.setLastCommandTime(Math.max(session.getStartTime(), userVisit.getLastCommandTime()));
 
@@ -570,7 +562,7 @@ public abstract class BaseCommand
 
                             if(ControlDebugFlags.CheckCommandNameLength) {
                                 if(commandName.length() > 80) {
-                                    getLog().error("commandName length > 80 characters, " + commandName);
+                                    log.error("commandName length > 80 characters, " + commandName);
                                     commandName = commandName.substring(0, 79);
                                 }
                             }
@@ -596,13 +588,13 @@ public abstract class BaseCommand
                                     userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.getStartTime(),
                                             System.currentTimeMillis(), hadSecurityErrors, hadValidationErrors, hasExecutionErrors);
                                 } else {
-                                    getLog().error("Command not logged, unknown userVisitStatus for " + userVisit.getPrimaryKey());
+                                    log.error("Command not logged, unknown userVisitStatus for " + userVisit.getPrimaryKey());
                                 }
                             } else {
-                                getLog().error("Command not logged, unknown (and could not create) commandName = " + commandName);
+                                log.error("Command not logged, unknown (and could not create) commandName = " + commandName);
                             }
                         } else {
-                            getLog().error("Command not logged, unknown componentVendorName = " + componentVendorName);
+                            log.error("Command not logged, unknown componentVendorName = " + componentVendorName);
                         }
                     }
                 }
@@ -616,7 +608,7 @@ public abstract class BaseCommand
         commandResult = new CommandResult<>(securityResult, validationResult, executionResult);
 
         if(commandResult.hasSecurityMessages() || commandResult.hasValidationErrors()) {
-            getLog().info("commandResult = " + commandResult);
+            log.info("commandResult = " + commandResult);
         }
 
         if(ControlDebugFlags.LogBaseCommands) {

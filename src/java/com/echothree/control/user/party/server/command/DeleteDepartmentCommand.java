@@ -18,11 +18,10 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeleteDepartmentForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
@@ -64,7 +63,7 @@ public class DeleteDepartmentCommand
                 var partyDepartment = partyControl.getPartyDepartmentByNameForUpdate(partyDivisionParty, departmentName);
                 
                 if(partyDepartment != null) {
-                    getLog().error("unimplemented deleteDepartment called");
+                    log.error("unimplemented deleteDepartment called");
                     // TODO: partyControl.deleteParty(partyDepartment.getPartyForUpdate(), getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownDepartmentName.name(), departmentName);

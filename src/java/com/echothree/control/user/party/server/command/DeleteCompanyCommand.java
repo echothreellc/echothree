@@ -18,11 +18,10 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeleteCompanyForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
@@ -52,7 +51,7 @@ public class DeleteCompanyCommand
         var partyCompany = partyControl.getPartyCompanyByNameForUpdate(companyName);
         
         if(partyCompany != null) {
-            getLog().error("unimplemented deleteCompany called");
+            log.error("unimplemented deleteCompany called");
             // TODO: partyControl.deleteParty(partyCompany.getPartyForUpdate(), getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
