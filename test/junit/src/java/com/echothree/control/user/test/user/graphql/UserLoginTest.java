@@ -49,7 +49,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
-        
+
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
 
         var editUserLoginBody1 = executeUsingPost("""
@@ -65,7 +65,7 @@ public class UserLoginTest
 
         assertThat(getBoolean(editUserLoginBody1, "data.editUserLogin.commandResult.hasErrors")).isTrue();
         assertThat(getBoolean(editUserLoginBody1, "data.editUserLogin.commandResult.hasSecurityMessages")).isTrue();
-        
+
         var employeeLoginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
@@ -77,7 +77,7 @@ public class UserLoginTest
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
-        
+
         var editUserLoginBody2 = executeUsingPost("""
                 mutation {
                     editUserLogin(input: { id: "%s", username: "UnitTest1", clientMutationId: "1" }) {
@@ -89,7 +89,7 @@ public class UserLoginTest
                 """.formatted(id));
 
         assertThat(getBoolean(editUserLoginBody2, "data.editUserLogin.commandResult.hasErrors")).isFalse();
-        
+
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
                     deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
@@ -446,7 +446,7 @@ public class UserLoginTest
 
         assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.commandResult.hasErrors")).isFalse();
 
-        // Verify returned string matches the string passed in with createCustomerWithLogin
+        // This should fail, username is not a permitted way to look up the userLogin without proper permissions
         var userLoginQuery1 = executeUsingPost("""
                 query {
                     userLogin(username: "unittest") {
@@ -455,7 +455,7 @@ public class UserLoginTest
                 }
                 """);
 
-        assertThat("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username"))).isTrue();
+        assertThat(getObject(userLoginQuery1, "data.userLogin")).isNull();
 
         // This should fail, id is not a permitted way to look up the userLogin without proper permissions
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
