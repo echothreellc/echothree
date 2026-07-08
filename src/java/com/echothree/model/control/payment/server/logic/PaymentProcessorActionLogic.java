@@ -47,11 +47,11 @@ public class PaymentProcessorActionLogic
         var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var paymentProcessorTypeAction = PaymentProcessorTypeActionLogic.getInstance().getPaymentProcessorTypeAction(eea,
                     paymentProcessor.getLastDetail().getPaymentProcessorType(), paymentProcessorActionType);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
 
                 paymentProcessorAction = paymentProcessorActionControl.getPaymentProcessorAction(paymentProcessor, paymentProcessorTypeAction);
@@ -75,11 +75,11 @@ public class PaymentProcessorActionLogic
         var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var paymentProcessorTypeAction = PaymentProcessorTypeActionLogic.getInstance().getPaymentProcessorTypeAction(eea,
                     paymentProcessor.getLastDetail().getPaymentProcessorType(), paymentProcessorActionType);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
 
                 paymentProcessorAction = paymentProcessorActionControl.getPaymentProcessorAction(paymentProcessor, paymentProcessorTypeAction, entityPermission);

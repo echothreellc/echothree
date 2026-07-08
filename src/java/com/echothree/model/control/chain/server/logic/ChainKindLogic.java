@@ -112,7 +112,7 @@ public class ChainKindLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         chainKind = chainControl.getChainKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

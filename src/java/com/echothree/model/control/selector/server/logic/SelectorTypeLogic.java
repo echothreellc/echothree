@@ -108,7 +108,7 @@ public class SelectorTypeLogic
         var selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(eea, selectorKindName);
         SelectorType selectorType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             selectorType = getSelectorTypeByName(eea, selectorKind, selectorTypeName, entityPermission);
         }
 
@@ -149,7 +149,7 @@ public class SelectorTypeLogic
                 selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(eea, selectorKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(selectorTypeName == null) {
                     if(allowDefault) {
                         selectorType = selectorControl.getDefaultSelectorType(selectorKind, entityPermission);
@@ -168,7 +168,7 @@ public class SelectorTypeLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 selectorType = selectorControl.getSelectorTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

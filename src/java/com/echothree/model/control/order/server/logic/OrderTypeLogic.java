@@ -120,7 +120,7 @@ public class OrderTypeLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         orderType = orderTypeControl.getOrderTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

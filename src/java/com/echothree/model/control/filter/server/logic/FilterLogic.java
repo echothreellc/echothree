@@ -134,7 +134,7 @@ public class FilterLogic
         var filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKindName, filterTypeName);
         Filter filter = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             filter = getFilterByName(eea, filterType, filterName, entityPermission);
         }
 
@@ -192,7 +192,7 @@ public class FilterLogic
                 filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKind, filterTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterName == null) {
                     if(allowDefault) {
                         filter = filterControl.getDefaultFilter(filterType, entityPermission);
@@ -213,7 +213,7 @@ public class FilterLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.Filter.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 filter = filterControl.getFilterByEntityInstance(entityInstance, entityPermission);
             }
         } else {

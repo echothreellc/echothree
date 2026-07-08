@@ -111,7 +111,7 @@ public class WarehouseTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.WarehouseType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         warehouseType = warehouseControl.getWarehouseTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

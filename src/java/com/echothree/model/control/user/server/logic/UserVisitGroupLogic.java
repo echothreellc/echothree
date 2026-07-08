@@ -77,7 +77,7 @@ public class UserVisitGroupLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.UserVisitGroup.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         userVisitGroup = userControl.getUserVisitGroupByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

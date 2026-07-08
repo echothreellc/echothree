@@ -115,7 +115,7 @@ public class UseLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Use.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         use = useControl.getUseByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

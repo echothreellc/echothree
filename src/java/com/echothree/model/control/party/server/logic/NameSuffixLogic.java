@@ -76,7 +76,7 @@ public class NameSuffixLogic
                     nameSuffix.getLastDetail().getNameSuffixPK().getEntityId().toString());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             partyControl.deleteNameSuffix(nameSuffix, deletedBy);
         }
     }
@@ -84,7 +84,7 @@ public class NameSuffixLogic
     public void deleteNameSuffix(final ExecutionErrorAccumulator eea, final String nameSuffixId, final PartyPK deletedBy) {
         var nameSuffix = getNameSuffixByIdForUpdate(eea, nameSuffixId);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             deleteNameSuffix(eea, nameSuffix, deletedBy);
         }
     }

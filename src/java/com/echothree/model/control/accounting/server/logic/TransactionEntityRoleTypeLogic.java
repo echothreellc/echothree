@@ -113,7 +113,7 @@ public class TransactionEntityRoleTypeLogic
         var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
         TransactionEntityRoleType transactionEntityRoleType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             transactionEntityRoleType = getTransactionEntityRoleTypeByName(eea, transactionType, transactionEntityRoleTypeName, entityPermission);
         }
 
@@ -142,14 +142,14 @@ public class TransactionEntityRoleTypeLogic
         if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
             var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionEntityRoleType = getTransactionEntityRoleTypeByName(eea, transactionType, transactionEntityRoleTypeName, entityPermission);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionEntityRoleType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

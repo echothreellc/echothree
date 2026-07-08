@@ -76,7 +76,7 @@ public class PersonalTitleLogic
                     personalTitle.getLastDetail().getPersonalTitlePK().getEntityId().toString());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             partyControl.deletePersonalTitle(personalTitle, deletedBy);
         }
     }
@@ -84,7 +84,7 @@ public class PersonalTitleLogic
     public void deletePersonalTitle(final ExecutionErrorAccumulator eea, final String personalTitleId, final PartyPK deletedBy) {
         var personalTitle = getPersonalTitleByIdForUpdate(eea, personalTitleId);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             deletePersonalTitle(eea, personalTitle, deletedBy);
         }
     }

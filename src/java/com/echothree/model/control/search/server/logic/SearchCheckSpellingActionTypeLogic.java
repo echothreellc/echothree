@@ -86,7 +86,7 @@ public class SearchCheckSpellingActionTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchCheckSpellingActionType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

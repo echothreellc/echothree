@@ -106,7 +106,7 @@ public class CampaignMediumLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignMedium.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         campaignMedium = campaignControl.getCampaignMediumByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

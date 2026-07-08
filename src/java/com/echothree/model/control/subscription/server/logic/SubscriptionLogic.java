@@ -97,7 +97,7 @@ public class SubscriptionLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Subscription.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         subscription = subscriptionControl.getSubscriptionByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

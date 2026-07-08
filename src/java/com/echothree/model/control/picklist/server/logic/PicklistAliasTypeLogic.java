@@ -44,7 +44,7 @@ public class PicklistAliasTypeLogic
         var picklistType = picklistTypeLogic.getPicklistTypeByName(eea, picklistTypeName);
         PicklistAliasType picklistAliasType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             picklistAliasType = getPicklistAliasTypeByName(eea, picklistType, picklistAliasTypeName);
         }
 

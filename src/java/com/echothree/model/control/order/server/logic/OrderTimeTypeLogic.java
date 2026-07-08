@@ -110,7 +110,7 @@ public class OrderTimeTypeLogic
         var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
         OrderTimeType orderTimeType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName, entityPermission);
         }
 
@@ -152,7 +152,7 @@ public class OrderTimeTypeLogic
                 orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(orderTimeTypeName == null) {
                     if(allowDefault) {
                         orderTimeType = orderTimeControl.getDefaultOrderTimeType(orderType, entityPermission);
@@ -171,7 +171,7 @@ public class OrderTimeTypeLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderTimeType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 orderTimeType = orderTimeControl.getOrderTimeTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

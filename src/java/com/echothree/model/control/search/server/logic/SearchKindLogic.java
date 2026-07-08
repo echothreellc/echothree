@@ -111,7 +111,7 @@ public class SearchKindLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchKind = searchControl.getSearchKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

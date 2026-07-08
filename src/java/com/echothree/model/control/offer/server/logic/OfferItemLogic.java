@@ -161,14 +161,14 @@ public class OfferItemLogic
             var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
             var item = ItemLogic.getInstance().getItemByName(eea, itemName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 offerItem = getOfferItem(eea, offer, item);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferItem.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 var offerItemControl = Session.getModelController(OfferItemControl.class);
 
                 offerItem = offerItemControl.getOfferItemByEntityInstance(entityInstance, entityPermission);

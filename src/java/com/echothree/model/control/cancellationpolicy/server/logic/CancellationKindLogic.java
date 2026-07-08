@@ -113,7 +113,7 @@ public class CancellationKindLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CancellationKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         cancellationKind = cancellationControl.getCancellationKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

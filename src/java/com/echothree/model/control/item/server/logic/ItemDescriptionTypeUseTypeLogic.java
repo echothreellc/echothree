@@ -112,7 +112,7 @@ public class ItemDescriptionTypeUseTypeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescriptionTypeUseType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

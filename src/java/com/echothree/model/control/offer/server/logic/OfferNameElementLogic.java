@@ -100,7 +100,7 @@ public class OfferNameElementLogic
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferNameElement.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     offerNameElement = offerNameElementControl.getOfferNameElementByEntityInstance(entityInstance, entityPermission);
                 }
             } else {

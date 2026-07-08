@@ -111,7 +111,7 @@ public class SearchSortDirectionLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchSortDirection.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchSortDirection = searchControl.getSearchSortDirectionByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

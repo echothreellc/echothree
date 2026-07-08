@@ -125,7 +125,7 @@ public class WorkflowEntranceLogic
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
         WorkflowEntrance workflowEntrance = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             workflowEntrance = getWorkflowEntranceByName(UnknownWorkflowEntranceNameException.class, ExecutionErrors.UnknownWorkflowEntranceName,
                     eea, workflow, workflowEntranceName, entityPermission);
         }
@@ -159,7 +159,7 @@ public class WorkflowEntranceLogic
                 handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(workflowEntranceName == null) {
                     if(allowDefault) {
                         workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow, entityPermission);
@@ -178,7 +178,7 @@ public class WorkflowEntranceLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowEntrance.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 workflowEntrance = workflowControl.getWorkflowEntranceByEntityInstance(entityInstance, entityPermission);
             }
         } else {

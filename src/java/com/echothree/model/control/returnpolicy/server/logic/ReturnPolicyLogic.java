@@ -119,7 +119,7 @@ public class ReturnPolicyLogic
         var returnKind = ReturnKindLogic.getInstance().getReturnKindByName(eea, returnKindName);
         ReturnPolicy returnPolicy = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             returnPolicy = getReturnPolicyByName(eea, returnKind, returnPolicyName, entityPermission);
         }
 
@@ -160,7 +160,7 @@ public class ReturnPolicyLogic
                 returnKind = ReturnKindLogic.getInstance().getReturnKindByName(eea, returnKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(returnPolicyName == null) {
                     if(allowDefault) {
                         returnPolicy = returnPolicyControl.getDefaultReturnPolicy(returnKind, entityPermission);
@@ -179,7 +179,7 @@ public class ReturnPolicyLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnPolicy.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 returnPolicy = returnPolicyControl.getReturnPolicyByEntityInstance(entityInstance, entityPermission);
             }
         } else {

@@ -95,7 +95,7 @@ public class SubscriptionTypeLogic
         var subscriptionKind = subscriptionKindLogic.getSubscriptionKindByName(eea, subscriptionKindName);
         SubscriptionType subscriptionType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             subscriptionType = getSubscriptionTypeByName(eea, subscriptionKind, subscriptionTypeName, entityPermission);
         }
 
@@ -137,7 +137,7 @@ public class SubscriptionTypeLogic
                 subscriptionKind = subscriptionKindLogic.getSubscriptionKindByName(eea, subscriptionKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(subscriptionTypeName == null) {
                     if(allowDefault) {
                         subscriptionType = subscriptionControl.getDefaultSubscriptionType(subscriptionKind, entityPermission);
@@ -156,7 +156,7 @@ public class SubscriptionTypeLogic
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SubscriptionType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 subscriptionType = subscriptionControl.getSubscriptionTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

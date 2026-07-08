@@ -58,7 +58,7 @@ public class LotLogic
             lotIdentifier = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.LOT.name());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var lotControl = Session.getModelController(LotControl.class);
 
             lot = lotControl.getLotByIdentifier(item, lotIdentifier);
@@ -109,13 +109,13 @@ public class LotLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Lot.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         lot = lotControl.getLotByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     var item = ItemLogic.getInstance().getItemByName(eea, itemName);
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         lot = getLotByIdentifier(eea, item, lotIdentifier, entityPermission);
                     }
                 }

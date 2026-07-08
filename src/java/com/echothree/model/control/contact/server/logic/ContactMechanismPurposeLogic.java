@@ -67,7 +67,7 @@ public class ContactMechanismPurposeLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanismPurpose.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contactMechanismPurpose = contactControl.getContactMechanismPurposeByEntityInstance(entityInstance);
                     }
                 } else {

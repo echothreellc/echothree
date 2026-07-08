@@ -149,7 +149,7 @@ public class SecurityRoleLogic
                 handleExecutionError(MissingRequiredSecurityRoleGroupNameException.class, eea, ExecutionErrors.MissingRequiredSecurityRoleGroupName.name());
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(securityRoleName == null) {
                     if(allowDefault) {
                         securityRole = securityControl.getDefaultSecurityRole(securityRoleGroup, entityPermission);
@@ -168,7 +168,7 @@ public class SecurityRoleLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRole.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 securityRole = securityControl.getSecurityRoleByEntityInstance(entityInstance, entityPermission);
             }
         } else {

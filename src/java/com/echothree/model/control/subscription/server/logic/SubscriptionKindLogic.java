@@ -94,7 +94,7 @@ public class SubscriptionKindLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SubscriptionKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         subscriptionKind = subscriptionControl.getSubscriptionKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

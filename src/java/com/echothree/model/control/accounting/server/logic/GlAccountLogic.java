@@ -120,7 +120,7 @@ public class GlAccountLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GlAccount.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         glAccount = accountingControl.getGlAccountByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

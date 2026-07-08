@@ -118,7 +118,7 @@ public class ItemAccountingCategoryLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAccountingCategory.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemAccountingCategory = accountingControl.getItemAccountingCategoryByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -172,7 +172,7 @@ public class ItemAccountingCategoryLogic
     public void deleteItemAccountingCategory(final ExecutionErrorAccumulator eea, final ItemAccountingCategory itemAccountingCategory, final BasePK deletedBy) {
         checkDeleteItemAccountingCategory(eea, itemAccountingCategory);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             var accountingControl = Session.getModelController(AccountingControl.class);
 
             accountingControl.deleteItemAccountingCategory(itemAccountingCategory, deletedBy);

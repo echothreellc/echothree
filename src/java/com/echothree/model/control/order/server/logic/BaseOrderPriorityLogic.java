@@ -103,7 +103,7 @@ public class BaseOrderPriorityLogic
         var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             orderPriority = getOrderPriorityByName(eea, orderType, orderPriorityName, entityPermission);
         }
 
@@ -145,7 +145,7 @@ public class BaseOrderPriorityLogic
                 orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(orderPriorityName == null) {
                     if(allowDefault) {
                         orderPriority = orderPriorityControl.getDefaultOrderPriority(orderType, entityPermission);
@@ -164,7 +164,7 @@ public class BaseOrderPriorityLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderPriority.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 orderPriority = orderPriorityControl.getOrderPriorityByEntityInstance(entityInstance, entityPermission);
             }
         } else {

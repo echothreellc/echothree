@@ -113,7 +113,7 @@ public class TagLogic
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Tag.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         tag = tagControl.getTagByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

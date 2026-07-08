@@ -109,7 +109,7 @@ public class PaymentMethodTypeLogic
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentMethodType.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByEntityInstance(entityInstance, entityPermission);
                 }
             } else {

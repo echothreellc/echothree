@@ -221,7 +221,7 @@ public class EntityAliasTypeLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAliasType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         entityAliasType = entityAliasControl.getEntityAliasTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

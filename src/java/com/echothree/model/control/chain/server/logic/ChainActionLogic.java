@@ -149,7 +149,7 @@ public class ChainActionLogic
                 chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainTypeName == null) {
                     if(allowDefault) {
                         chainType = chainControl.getDefaultChainType(chainKind);
@@ -166,7 +166,7 @@ public class ChainActionLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainName == null) {
                     if(allowDefault) {
                         chain = chainControl.getDefaultChain(chainType, entityPermission);
@@ -184,7 +184,7 @@ public class ChainActionLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainActionSetName == null) {
                     if(allowDefault) {
                         chainActionSet = chainControl.getDefaultChainActionSet(chain, entityPermission);
@@ -203,7 +203,7 @@ public class ChainActionLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainActionName != null) {
                     chainAction = getChainActionByName(eea, chainActionSet, chainActionName, entityPermission);
                 } else {
@@ -214,7 +214,7 @@ public class ChainActionLogic
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainAction.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 chainAction = chainControl.getChainActionByEntityInstance(entityInstance, entityPermission);
             }
         } else {

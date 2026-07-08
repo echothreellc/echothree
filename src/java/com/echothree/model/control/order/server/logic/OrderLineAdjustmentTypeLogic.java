@@ -83,7 +83,7 @@ public class OrderLineAdjustmentTypeLogic
         var orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
         OrderLineAdjustmentType orderLineAdjustmentType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             orderLineAdjustmentType = getOrderLineAdjustmentTypeByName(eea, orderType, orderLineAdjustmentTypeName, entityPermission);
         }
 
@@ -125,7 +125,7 @@ public class OrderLineAdjustmentTypeLogic
                 orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(orderLineAdjustmentTypeName == null) {
                     if(allowDefault) {
                         orderLineAdjustmentType = orderLineAdjustmentControl.getDefaultOrderLineAdjustmentType(orderType, entityPermission);
@@ -144,7 +144,7 @@ public class OrderLineAdjustmentTypeLogic
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderLineAdjustmentType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

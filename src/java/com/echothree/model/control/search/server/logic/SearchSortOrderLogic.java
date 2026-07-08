@@ -106,7 +106,7 @@ public class SearchSortOrderLogic
         var searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
         SearchSortOrder searchSortOrder = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             searchSortOrder = getSearchSortOrderByName(eea, searchKind, searchSortOrderName, entityPermission);
         }
 
@@ -147,7 +147,7 @@ public class SearchSortOrderLogic
                 searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(searchSortOrderName == null) {
                     if(allowDefault) {
                         searchSortOrder = searchControl.getDefaultSearchSortOrder(searchKind, entityPermission);
@@ -166,7 +166,7 @@ public class SearchSortOrderLogic
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchSortOrder.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 searchSortOrder = searchControl.getSearchSortOrderByEntityInstance(entityInstance, entityPermission);
             }
         } else {
