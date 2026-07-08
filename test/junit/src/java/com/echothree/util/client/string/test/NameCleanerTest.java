@@ -19,32 +19,17 @@ package com.echothree.util.client.string.test;
 import com.echothree.util.client.string.NameCleaner;
 import com.echothree.util.client.test.UserVisitTestCase;
 import javax.naming.NamingException;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class NameCleanerTest
         extends UserVisitTestCase {
-    
-    /** Creates a new instance of NameCleanerTest */
-    public NameCleanerTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new NameCleanerTest("testNameCleaner"));
-        
-        return suite;
-    }
 
     NameCleaner nameCleaner = null;
 
+    @BeforeEach
     @Override
     protected void setUp() {
         super.setUp();
@@ -56,6 +41,7 @@ public class NameCleanerTest
         }
     }
 
+    @AfterEach
     @Override
     protected void tearDown() {
         super.tearDown();
@@ -88,9 +74,8 @@ public class NameCleanerTest
         }
     }
 
+    @Test
     public void testNameCleaner() {
-        setUp();
-
         checkCleansedName("", null, null, null, null, null);
         checkCleansedName("Richard", null, "Richard", null, null, null);
         checkCleansedName("Mr.", "Mr.", null, null, null, null);
@@ -115,8 +100,6 @@ public class NameCleanerTest
         checkCleansedName("Richard Harms", null, "Richard", null, "Harms", null);
         checkCleansedName("Richard R. S. T. Harms", null, "Richard", "R. S. T.", "Harms", null);
         checkCleansedName("Richard R. Harms-Harms", null, "Richard", "R.", "Harms-Harms", null);
-        
-        tearDown();
     }
 
 }

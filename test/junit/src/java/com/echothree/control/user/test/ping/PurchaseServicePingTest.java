@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.purchase.common.PurchaseUtil;
 import com.echothree.control.user.purchase.common.PurchaseService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PurchaseServicePingTest
-        extends TestCase {
+public class PurchaseServicePingTest {
     private PurchaseService purchaseService;
     
-    /** Creates a new instance of PurchaseServiceTest */
-    public PurchaseServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new PurchaseServicePingTest("testPingPurchaseService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             purchaseService = PurchaseUtil.getHome();
             assertNotNull(purchaseService);
@@ -54,8 +37,8 @@ public class PurchaseServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             purchaseService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class PurchaseServicePingTest
         }
     }
     
+    @Test
     public void testPingPurchaseService() {
-        setUp();
         try {
             purchaseService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

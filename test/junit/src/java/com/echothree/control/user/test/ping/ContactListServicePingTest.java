@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.ContactListService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ContactListServicePingTest
-        extends TestCase {
+public class ContactListServicePingTest {
     private ContactListService contactListService;
     
-    /** Creates a new instance of ContactListServiceTest */
-    public ContactListServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new ContactListServicePingTest("testPingContactListService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             contactListService = ContactListUtil.getHome();
             assertNotNull(contactListService);
@@ -54,8 +37,8 @@ public class ContactListServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             contactListService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class ContactListServicePingTest
         }
     }
     
+    @Test
     public void testPingContactListService() {
-        setUp();
         try {
             contactListService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {
