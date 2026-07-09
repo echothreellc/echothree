@@ -22,22 +22,26 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassSectionLogic;
+import com.echothree.model.data.training.server.entity.TrainingClassPage;
+import com.echothree.model.data.training.server.entity.TrainingClassSection;
+import com.echothree.model.data.training.server.factory.TrainingClassPageFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassPagesCommand
-        extends BaseSimpleCommand<GetTrainingClassPagesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<TrainingClassPage, GetTrainingClassPagesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,41 +51,67 @@ public class GetTrainingClassPagesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassPage.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    private TrainingControl trainingControl;
+
+    @Inject
+    private TrainingClassLogic trainingClassLogic;
+
+    @Inject
+    private TrainingClassSectionLogic trainingClassSectionLogic;
     
     /** Creates a new instance of GetTrainingClassPagesCommand */
     public GetTrainingClassPagesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private TrainingClassSection trainingClassSection;
+
     @Override
-    protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var result = TrainingResultFactory.getGetTrainingClassPagesResult();
+    protected void handleForm() {
         var trainingClassName = form.getTrainingClassName();
-        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
 
-        if(trainingClass != null) {
+        if(!hasExecutionErrors()) {
             var trainingClassSectionName = form.getTrainingClassSectionName();
-            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
-            if(trainingClassSection != null) {
-                var userVisit = getUserVisit();
-                
-                result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
-                result.setTrainingClassPages(trainingControl.getTrainingClassPageTransfers(userVisit, trainingClassSection));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTrainingClassSectionName.name(), trainingClassName, trainingClassSectionName);
+            trainingClassSection = trainingClassSectionLogic.getTrainingClassSectionByName(this, trainingClass, trainingClassSectionName);
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : trainingControl.countTrainingClassPages(trainingClassSection);
+    }
+
+    @Override
+    protected Collection<TrainingClassPage> getEntities() {
+        return hasExecutionErrors() ? null : trainingControl.getTrainingClassPages(trainingClassSection);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<TrainingClassPage> entities) {
+        var result = TrainingResultFactory.getGetTrainingClassPagesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
+
+            if(session.hasLimit(TrainingClassPageFactory.class)) {
+                result.setTrainingClassPageCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+
+            result.setTrainingClassPages(trainingControl.getTrainingClassPageTransfers(userVisit, entities));
         }
 
         return result;
