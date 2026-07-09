@@ -67,6 +67,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.training.common.pk.PartyTrainingClassPK;
 import com.echothree.model.data.training.common.pk.TrainingClassPK;
+import com.echothree.model.data.training.common.pk.TrainingClassSectionPK;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionAnswer;
@@ -361,7 +362,7 @@ public class TrainingControl
         getTrainingClassesQueries = Collections.unmodifiableMap(queryMap);
     }
     
-   private List<TrainingClass> getTrainingClasses(EntityPermission entityPermission) {
+    private List<TrainingClass> getTrainingClasses(EntityPermission entityPermission) {
         return TrainingClassFactory.getInstance().getEntitiesFromQuery(entityPermission, getTrainingClassesQueries);
     }
     
@@ -680,7 +681,31 @@ public class TrainingControl
         
         return trainingClassSection;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClassSection */
+    public TrainingClassSection getTrainingClassSectionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TrainingClassSectionPK(entityInstance.getEntityUniqueId());
+
+        return TrainingClassSectionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TrainingClassSection getTrainingClassSectionByEntityInstance(EntityInstance entityInstance) {
+        return getTrainingClassSectionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClassSection getTrainingClassSectionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTrainingClassSectionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTrainingClassSectionsByTrainingClass(final TrainingClass trainingClass) {
+        return session.queryForLong("""
+               SELECT COUNT(*)
+               FROM trainingclasssections
+               JOIN trainingclasssectiondetails ON trnclssdt_trainingclasssectiondetailid = trnclss_activedetailid
+               WHERE trnclssdt_trncls_trainingclassid = ?
+               """, trainingClass);
+    }
+
     private static final Map<EntityPermission, String> getTrainingClassSectionByNameQueries;
 
     static {
