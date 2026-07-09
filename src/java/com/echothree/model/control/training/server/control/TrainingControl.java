@@ -327,7 +327,7 @@ public class TrainingControl
         getDefaultTrainingClassQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private TrainingClass getDefaultTrainingClass(EntityPermission entityPermission) {
+    public TrainingClass getDefaultTrainingClass(EntityPermission entityPermission) {
         return TrainingClassFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultTrainingClassQueries);
     }
     

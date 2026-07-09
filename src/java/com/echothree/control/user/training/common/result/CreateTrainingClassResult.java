@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.training.common.form;
+package com.echothree.control.user.training.common.result;
 
-import com.echothree.control.user.training.common.spec.TrainingClassUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.training.common.spec.TrainingClassSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteTrainingClassForm
-        extends TrainingClassUniversalSpec {
+public interface CreateTrainingClassResult
+        extends TrainingClassSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond TrainingClassUniversalSpec
+    // Nothing additional beyond TrainingClassSpec, EntityRefSpec, BaseResult
     
 }

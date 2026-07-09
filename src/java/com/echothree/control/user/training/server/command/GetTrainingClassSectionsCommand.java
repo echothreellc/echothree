@@ -94,9 +94,11 @@ public class GetTrainingClassSectionsCommand
         var partyTrainingClassName = form.getPartyTrainingClassName();
         var parameterCount = (trainingClassName == null ? 0 : 1) + (partyTrainingClassName == null ? 0 : 1);
 
-        if(parameterCount == 1) {
+        if(parameterCount == 0) {
+            trainingClass = trainingClassLogic.getTrainingClassByName(this, null, true);
+        } else if(parameterCount == 1) {
             if(trainingClassName != null) {
-                trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName);
+                trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
             } else {
                 var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, partyTrainingClassName);
 

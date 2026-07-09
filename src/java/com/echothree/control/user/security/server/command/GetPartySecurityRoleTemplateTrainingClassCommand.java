@@ -80,7 +80,7 @@ public class GetPartySecurityRoleTemplateTrainingClassCommand
 
         if(!hasExecutionErrors()) {
             var trainingClassName = form.getTrainingClassName();
-            var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName);
+            var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
 
             if(!hasExecutionErrors()) {
                 partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplate, trainingClass);

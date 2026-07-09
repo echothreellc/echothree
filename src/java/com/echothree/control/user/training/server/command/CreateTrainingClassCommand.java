@@ -17,29 +17,31 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.CreateTrainingClassForm;
+import com.echothree.control.user.training.common.result.CreateTrainingClassResult;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workeffort.common.workeffort.TrainingConstants;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrainingClassCommand
@@ -53,8 +55,8 @@ public class CreateTrainingClassCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClass.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -83,9 +85,21 @@ public class CreateTrainingClassCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null),
                 new FieldDefinition("IntroductionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
-                );
+        );
     }
     
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of CreateTrainingClassCommand */
     public CreateTrainingClassCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -93,107 +107,98 @@ public class CreateTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClassName = form.getTrainingClassName();
-        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
-        
-        if(trainingClass == null) {
-            var mimeTypeLogic = MimeTypeLogic.getInstance();
-            var overview = form.getOverview();
-            var overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
-                    ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
-                    ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
+        var result = TrainingResultFactory.getCreateTrainingClassResult();
+        TrainingClass trainingClass = null;
+        var overview = form.getOverview();
+        var overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
+                ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
+                ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
+
+        if(!hasExecutionErrors()) {
+            var introduction = form.getIntroduction();
+            var introductionMimeType = mimeTypeLogic.checkMimeType(this, form.getIntroductionMimeTypeName(), introduction, MimeTypeUsageTypes.TEXT.name(),
+                    ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
+                    ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 
             if(!hasExecutionErrors()) {
-                var introduction = form.getIntroduction();
-                var introductionMimeType = mimeTypeLogic.checkMimeType(this, form.getIntroductionMimeTypeName(), introduction, MimeTypeUsageTypes.TEXT.name(),
-                        ExecutionErrors.MissingRequiredIntroductionMimeTypeName.name(), ExecutionErrors.MissingRequiredIntroduction.name(),
-                        ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
+                var estimatedReadingTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                        form.getEstimatedReadingTime(), form.getEstimatedReadingTimeUnitOfMeasureTypeName(),
+                        null, ExecutionErrors.MissingRequiredEstimatedReadingTime.name(), null, ExecutionErrors.MissingRequiredEstimatedReadingTimeUnitOfMeasureTypeName.name(),
+                        null, ExecutionErrors.UnknownEstimatedReadingTimeUnitOfMeasureTypeName.name());
 
                 if(!hasExecutionErrors()) {
-                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                    var estimatedReadingTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                            form.getEstimatedReadingTime(), form.getEstimatedReadingTimeUnitOfMeasureTypeName(),
-                            null, ExecutionErrors.MissingRequiredEstimatedReadingTime.name(), null, ExecutionErrors.MissingRequiredEstimatedReadingTimeUnitOfMeasureTypeName.name(),
-                            null, ExecutionErrors.UnknownEstimatedReadingTimeUnitOfMeasureTypeName.name());
+                    var readingTimeAllowed = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                            form.getReadingTimeAllowed(), form.getReadingTimeAllowedUnitOfMeasureTypeName(),
+                            null, ExecutionErrors.MissingRequiredReadingTimeAllowed.name(), null, ExecutionErrors.MissingRequiredReadingTimeAllowedUnitOfMeasureTypeName.name(),
+                            null, ExecutionErrors.UnknownReadingTimeAllowedUnitOfMeasureTypeName.name());
 
                     if(!hasExecutionErrors()) {
-                        var readingTimeAllowed = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                                form.getReadingTimeAllowed(), form.getReadingTimeAllowedUnitOfMeasureTypeName(),
-                                null, ExecutionErrors.MissingRequiredReadingTimeAllowed.name(), null, ExecutionErrors.MissingRequiredReadingTimeAllowedUnitOfMeasureTypeName.name(),
-                                null, ExecutionErrors.UnknownReadingTimeAllowedUnitOfMeasureTypeName.name());
+                        var estimatedTestingTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                                form.getEstimatedTestingTime(), form.getEstimatedTestingTimeUnitOfMeasureTypeName(),
+                                null, ExecutionErrors.MissingRequiredEstimatedTestingTime.name(), null, ExecutionErrors.MissingRequiredEstimatedTestingTimeUnitOfMeasureTypeName.name(),
+                                null, ExecutionErrors.UnknownEstimatedTestingTimeUnitOfMeasureTypeName.name());
 
                         if(!hasExecutionErrors()) {
-                            var estimatedTestingTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                                    form.getEstimatedTestingTime(), form.getEstimatedTestingTimeUnitOfMeasureTypeName(),
-                                    null, ExecutionErrors.MissingRequiredEstimatedTestingTime.name(), null, ExecutionErrors.MissingRequiredEstimatedTestingTimeUnitOfMeasureTypeName.name(),
-                                    null, ExecutionErrors.UnknownEstimatedTestingTimeUnitOfMeasureTypeName.name());
+                            var testingTimeAllowed = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                                    form.getTestingTimeAllowed(), form.getTestingTimeAllowedUnitOfMeasureTypeName(),
+                                    null, ExecutionErrors.MissingRequiredTestingTimeAllowed.name(), null, ExecutionErrors.MissingRequiredTestingTimeAllowedUnitOfMeasureTypeName.name(),
+                                    null, ExecutionErrors.UnknownTestingTimeAllowedUnitOfMeasureTypeName.name());
 
                             if(!hasExecutionErrors()) {
-                                var testingTimeAllowed = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                                        form.getTestingTimeAllowed(), form.getTestingTimeAllowedUnitOfMeasureTypeName(),
-                                        null, ExecutionErrors.MissingRequiredTestingTimeAllowed.name(), null, ExecutionErrors.MissingRequiredTestingTimeAllowedUnitOfMeasureTypeName.name(),
-                                        null, ExecutionErrors.UnknownTestingTimeAllowedUnitOfMeasureTypeName.name());
+                                var requiredCompletionTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                                        form.getRequiredCompletionTime(), form.getRequiredCompletionTimeUnitOfMeasureTypeName(),
+                                        null, ExecutionErrors.MissingRequiredRequiredCompletionTime.name(), null, ExecutionErrors.MissingRequiredRequiredCompletionTimeUnitOfMeasureTypeName.name(),
+                                        null, ExecutionErrors.UnknownRequiredCompletionTimeUnitOfMeasureTypeName.name());
 
                                 if(!hasExecutionErrors()) {
-                                    var requiredCompletionTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                                            form.getRequiredCompletionTime(), form.getRequiredCompletionTimeUnitOfMeasureTypeName(),
-                                            null, ExecutionErrors.MissingRequiredRequiredCompletionTime.name(), null, ExecutionErrors.MissingRequiredRequiredCompletionTimeUnitOfMeasureTypeName.name(),
-                                            null, ExecutionErrors.UnknownRequiredCompletionTimeUnitOfMeasureTypeName.name());
+                                    var workEffortScopeName = form.getWorkEffortScopeName();
+                                    WorkEffortScope workEffortScope = null;
+
+                                    if(workEffortScopeName != null) {
+                                        var workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
+
+                                        if(workEffortType != null) {
+                                            workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+
+                                            if(workEffortScope == null) {
+                                                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), TrainingConstants.WorkEffortType_TRAINING,
+                                                        workEffortScopeName);
+                                            }
+                                        } else {
+                                            addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), TrainingConstants.WorkEffortType_TRAINING);
+                                        }
+                                    }
 
                                     if(!hasExecutionErrors()) {
-                                        var workEffortScopeName = form.getWorkEffortScopeName();
-                                        WorkEffortScope workEffortScope = null;
-
-                                        if(workEffortScopeName != null) {
-                                            var workEffortControl = Session.getModelController(WorkEffortControl.class);
-                                            var workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
-
-                                            if(workEffortType != null) {
-                                                workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
-
-                                                if(workEffortScope == null) {
-                                                    addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), TrainingConstants.WorkEffortType_TRAINING,
-                                                            workEffortScopeName);
-                                                }
-                                            } else {
-                                                addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), TrainingConstants.WorkEffortType_TRAINING);
-                                            }
-                                        }
+                                        var testingValidityTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                                                form.getTestingValidityTime(), form.getTestingValidityTimeUnitOfMeasureTypeName(),
+                                                null, ExecutionErrors.MissingRequiredTestingValidityTime.name(), null, ExecutionErrors.MissingRequiredTestingValidityTimeUnitOfMeasureTypeName.name(),
+                                                null, ExecutionErrors.UnknownTestingValidityTimeUnitOfMeasureTypeName.name());
 
                                         if(!hasExecutionErrors()) {
-                                            var testingValidityTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                                                    form.getTestingValidityTime(), form.getTestingValidityTimeUnitOfMeasureTypeName(),
-                                                    null, ExecutionErrors.MissingRequiredTestingValidityTime.name(), null, ExecutionErrors.MissingRequiredTestingValidityTimeUnitOfMeasureTypeName.name(),
-                                                    null, ExecutionErrors.UnknownTestingValidityTimeUnitOfMeasureTypeName.name());
+                                            var expiredRetentionTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                                                    form.getExpiredRetentionTime(), form.getExpiredRetentionTimeUnitOfMeasureTypeName(),
+                                                    null, ExecutionErrors.MissingRequiredExpiredRetentionTime.name(), null, ExecutionErrors.MissingRequiredExpiredRetentionTimeUnitOfMeasureTypeName.name(),
+                                                    null, ExecutionErrors.UnknownExpiredRetentionTimeUnitOfMeasureTypeName.name());
 
                                             if(!hasExecutionErrors()) {
-                                                var expiredRetentionTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
-                                                        form.getExpiredRetentionTime(), form.getExpiredRetentionTimeUnitOfMeasureTypeName(),
-                                                        null, ExecutionErrors.MissingRequiredExpiredRetentionTime.name(), null, ExecutionErrors.MissingRequiredExpiredRetentionTimeUnitOfMeasureTypeName.name(),
-                                                        null, ExecutionErrors.UnknownExpiredRetentionTimeUnitOfMeasureTypeName.name());
+                                                var trainingClassName = form.getTrainingClassName();
+                                                var strDefaultPercentageToPass = form.getDefaultPercentageToPass();
+                                                var defaultPercentageToPass = strDefaultPercentageToPass == null ? null : Integer.valueOf(strDefaultPercentageToPass);
+                                                var strOverallQuestionCount = form.getOverallQuestionCount();
+                                                var overallQuestionCount = strOverallQuestionCount == null ? null : Integer.valueOf(strOverallQuestionCount);
+                                                var alwaysReassignOnExpiration = Boolean.valueOf(form.getAlwaysReassignOnExpiration());
+                                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                                var description = form.getDescription();
+                                                var createdBy = getPartyPK();
 
-                                                if(!hasExecutionErrors()) {
-                                                    var createdBy = getPartyPK();
-                                                    var strDefaultPercentageToPass = form.getDefaultPercentageToPass();
-                                                    var defaultPercentageToPass = strDefaultPercentageToPass == null ? null : Integer.valueOf(strDefaultPercentageToPass);
-                                                    var strOverallQuestionCount = form.getOverallQuestionCount();
-                                                    var overallQuestionCount = strOverallQuestionCount == null ? null : Integer.valueOf(strOverallQuestionCount);
-                                                    var alwaysReassignOnExpiration = Boolean.valueOf(form.getAlwaysReassignOnExpiration());
-                                                    var isDefault = Boolean.valueOf(form.getIsDefault());
-                                                    var sortOrder = Integer.valueOf(form.getSortOrder());
-                                                    var description = form.getDescription();
-
-                                                    trainingClass = trainingControl.createTrainingClass(trainingClassName, estimatedReadingTime,
-                                                            readingTimeAllowed, estimatedTestingTime, testingTimeAllowed, requiredCompletionTime,
-                                                            workEffortScope, defaultPercentageToPass, overallQuestionCount, testingValidityTime,
-                                                            expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, createdBy);
-
-                                                    if(description != null || overview != null || introduction != null) {
-                                                        trainingControl.createTrainingClassTranslation(trainingClass, getPreferredLanguage(), description,
-                                                                overviewMimeType, overview, introductionMimeType, introduction, createdBy);
-                                                    }
-                                                }
+                                                trainingClass = trainingClassLogic.createTrainingClass(this, trainingClassName, estimatedReadingTime,
+                                                        readingTimeAllowed, estimatedTestingTime, testingTimeAllowed, requiredCompletionTime,
+                                                        workEffortScope, defaultPercentageToPass, overallQuestionCount, testingValidityTime,
+                                                        expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder,
+                                                        getPreferredLanguage(), description, overviewMimeType, overview,
+                                                        introductionMimeType, introduction, createdBy);
                                             }
                                         }
                                     }
@@ -203,11 +208,14 @@ public class CreateTrainingClassCommand
                     }
                 }
             }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateTrainingClassName.name(), trainingClassName);
         }
-        
-        return null;
+
+        if(trainingClass != null) {
+            result.setTrainingClassName(trainingClass.getLastDetail().getTrainingClassName());
+            result.setEntityRef(trainingClass.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
