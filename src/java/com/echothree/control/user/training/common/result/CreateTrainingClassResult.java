@@ -16,21 +16,13 @@
 
 package com.echothree.control.user.training.common.result;
 
-import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.training.common.spec.TrainingClassSpec;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
-public interface GetTrainingClassSectionsResult
-        extends BaseResult {
+public interface CreateTrainingClassResult
+        extends TrainingClassSpec, EntityRefSpec, BaseResult {
     
-    TrainingClassTransfer getTrainingClass();
-    void setTrainingClass(TrainingClassTransfer trainingClass);
-    
-    Long getTrainingClassSectionCount();
-    void setTrainingClassSectionCount(Long trainingClassSectionCount);
-
-    List<TrainingClassSectionTransfer> getTrainingClassSections();
-    void setTrainingClassSections(List<TrainingClassSectionTransfer> trainingClassSections);
+    // Nothing additional beyond TrainingClassSpec, EntityRefSpec, BaseResult
     
 }

@@ -24,23 +24,22 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassCommand
-        extends BaseSimpleCommand<GetTrainingClassForm> {
+        extends BaseSingleEntityCommand<TrainingClass, GetTrainingClassForm> {
     
     private final static CommandSecurityDefinition employeeCommandSecurityDefinition;
     private final static CommandSecurityDefinition testingCommandSecurityDefinition;
@@ -51,20 +50,29 @@ public class GetTrainingClassCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClass.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
 
         testingCommandSecurityDefinition = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
-                ));
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
     
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyTrainingClassLogic partyTrainingClassLogic;
+
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
     /** Creates a new instance of GetTrainingClassCommand */
     public GetTrainingClassCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -76,44 +84,39 @@ public class GetTrainingClassCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetTrainingClassResult();
+    protected TrainingClass getEntity() {
         var trainingClassName = form.getTrainingClassName();
         var partyTrainingClassName = form.getPartyTrainingClassName();
         var parameterCount = (trainingClassName == null ? 0 : 1) + (partyTrainingClassName == null ? 0 : 1);
+        TrainingClass trainingClass = null;
 
-        if(parameterCount == 1) {
-            var trainingControl = Session.getModelController(TrainingControl.class);
-            TrainingClass trainingClass = null;
-            var partyPK = getPartyPK();
-
-            if(trainingClassName != null) {
-                trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
-
-                if(trainingClass == null) {
-                    addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
-                }
-            } else {
-                var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
-
-                if(partyTrainingClass != null) {
-                    PartyTrainingClassLogic.getInstance().checkPartyTrainingClassStatus(this, partyTrainingClass, partyPK);
-
-                    if(!hasExecutionErrors()) {
-                        trainingClass = partyTrainingClass.getLastDetail().getTrainingClass();
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
-                }
-            }
+        if(parameterCount == 0 || trainingClassName != null) {
+            trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, true);
+        } else {
+            var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, partyTrainingClassName);
 
             if(!hasExecutionErrors()) {
-                result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));
+                partyTrainingClassLogic.checkPartyTrainingClassStatus(this, partyTrainingClass, getPartyPK());
 
-                sendEvent(trainingClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                if(!hasExecutionErrors()) {
+                    trainingClass = partyTrainingClass.getLastDetail().getTrainingClass();
+                }
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        if(trainingClass != null) {
+            sendEvent(trainingClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return trainingClass;
+    }
+
+    @Override
+    protected BaseResult getResult(TrainingClass trainingClass) {
+        var result = TrainingResultFactory.getGetTrainingClassResult();
+
+        if(trainingClass != null) {
+            result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));
         }
 
         return result;

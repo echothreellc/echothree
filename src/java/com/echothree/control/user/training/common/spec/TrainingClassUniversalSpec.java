@@ -14,23 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.training.common.result;
+package com.echothree.control.user.training.common.spec;
 
-import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTrainingClassSectionsResult
-        extends BaseResult {
+public interface TrainingClassUniversalSpec
+        extends TrainingClassSpec, UniversalEntitySpec {
     
-    TrainingClassTransfer getTrainingClass();
-    void setTrainingClass(TrainingClassTransfer trainingClass);
-    
-    Long getTrainingClassSectionCount();
-    void setTrainingClassSectionCount(Long trainingClassSectionCount);
-
-    List<TrainingClassSectionTransfer> getTrainingClassSections();
-    void setTrainingClassSections(List<TrainingClassSectionTransfer> trainingClassSections);
+    // Nothing additional beyond TrainingClassSpec, UniversalEntitySpec
     
 }

@@ -20,19 +20,17 @@ import com.echothree.control.user.training.common.form.DeleteTrainingClassForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTrainingClassCommand
@@ -46,14 +44,19 @@ public class DeleteTrainingClassCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClass.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
     }
     
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
     /** Creates a new instance of DeleteTrainingClassCommand */
     public DeleteTrainingClassCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -61,14 +64,10 @@ public class DeleteTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClassName = form.getTrainingClassName();
-        var trainingClass = trainingControl.getTrainingClassByNameForUpdate(trainingClassName);
+        var trainingClass = trainingClassLogic.getTrainingClassByUniversalSpecForUpdate(this, form, false);
         
-        if(trainingClass != null) {
-            trainingControl.deleteTrainingClass(trainingClass, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+        if(!hasExecutionErrors()) {
+            trainingClassLogic.deleteTrainingClass(this, trainingClass, getPartyPK());
         }
         
         return null;
