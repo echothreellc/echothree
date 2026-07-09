@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.chain.common.ChainConstants;
+import com.echothree.model.data.chain.common.ChainEntityRoleTypeConstants;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.chain.server.entity.ChainTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -112,6 +113,26 @@ public class ChainTypeObject
                 var chains = entities.stream().map(ChainObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, chains);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("chain entity role types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ChainEntityRoleTypeObject> getChainEntityRoleTypes(final DataFetchingEnvironment env) {
+        if(ChainSecurityUtils.getHasChainEntityRoleTypesAccess(env)) {
+            var chainControl = Session.getModelController(ChainControl.class);
+            var totalCount = chainControl.countChainEntityRoleTypesByChainType(chainType);
+
+            try(var objectLimiter = new ObjectLimiter(env, ChainEntityRoleTypeConstants.COMPONENT_VENDOR_NAME, ChainEntityRoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getChainEntityRoleTypes(chainType);
+                var chainEntityRoleTypes = entities.stream().map(ChainEntityRoleTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, chainEntityRoleTypes);
             }
         } else {
             return Connections.emptyConnection();
