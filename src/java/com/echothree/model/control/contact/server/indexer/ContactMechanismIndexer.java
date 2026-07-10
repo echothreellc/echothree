@@ -17,12 +17,12 @@
 package com.echothree.model.control.contact.server.indexer;
 
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
+import com.echothree.model.control.contact.server.analyzer.ContactMechanismAnalyzer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.contact.server.analyzer.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -35,24 +35,29 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.common.string.Inet4AddressUtils;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class ContactMechanismIndexer
         extends BaseIndexer<ContactMechanism> {
-    
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    GeoControl geoControl = Session.getModelController(GeoControl.class);
 
-    /** Creates a new instance of ContactMechanismIndexer */
-    public ContactMechanismIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Override
+    public BaseIndexer<ContactMechanism> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

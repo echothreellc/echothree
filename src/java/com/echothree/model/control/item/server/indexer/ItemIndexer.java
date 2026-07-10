@@ -20,20 +20,21 @@ import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducer;
 import com.echothree.model.control.index.server.indexer.sortabledescriptionproducer.SortableDescriptionProducerFactory;
+import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -41,20 +42,22 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class ItemIndexer
         extends BaseIndexer<Item> {
-    
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
+    @Inject
+    ItemControl itemControl;
     
     List<ItemDescriptionType> itemDescriptionTypes;
     SortableDescriptionProducer sortableDescriptionProducer;
 
-    /** Creates a new instance of ItemIndexer */
-    public ItemIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
-        
+    @Override
+    public BaseIndexer<Item> setup(final ExecutionErrorAccumulator eea, final Index index) {
         itemDescriptionTypes = itemControl.getItemDescriptionTypesByIncludeInIndex();
         sortableDescriptionProducer = SortableDescriptionProducerFactory.getInstance().getSortableDescriptionProducer(index.getLastDetail().getLanguage());
+
+        return super.setup(eea, index);
     }
 
     @Override

@@ -19,29 +19,32 @@ package com.echothree.model.control.offer.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.offer.server.analyzer.UseTypeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.offer.server.analyzer.UseTypeAnalyzer;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class UseTypeIndexer
         extends BaseIndexer<UseType> {
 
-    UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
+    @Inject
+    UseTypeControl useTypeControl;
 
-    /** Creates a new instance of UseTypeIndexer */
-    public UseTypeIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Override
+    public BaseIndexer<UseType> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override
