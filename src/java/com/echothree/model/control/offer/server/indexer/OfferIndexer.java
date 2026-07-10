@@ -19,29 +19,32 @@ package com.echothree.model.control.offer.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.offer.server.analyzer.OfferAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.offer.server.analyzer.OfferAnalyzer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class OfferIndexer
         extends BaseIndexer<Offer> {
-    
-    OfferControl offerControl = Session.getModelController(OfferControl.class);
 
-    /** Creates a new instance of OfferIndexer */
-    public OfferIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Inject
+    OfferControl offerControl;
+
+    @Override
+    public BaseIndexer<Offer> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
+import javax.enterprise.context.Dependent;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -32,12 +33,13 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class EntityAliasTypeIndexer
         extends BaseIndexer<EntityAliasType> {
-    
-    /** Creates a new instance of EntityAliasTypeIndexer */
-    public EntityAliasTypeIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+
+    @Override
+    public BaseIndexer<EntityAliasType> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

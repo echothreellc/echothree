@@ -20,29 +20,32 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.item.server.analyzer.HarmonizedTariffScheduleCodeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.item.server.analyzer.HarmonizedTariffScheduleCodeAnalyzer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class HarmonizedTariffScheduleCodeIndexer
         extends BaseIndexer<HarmonizedTariffScheduleCode> {
-    
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
 
-    /** Creates a new instance of HarmonizedTariffScheduleCodeIndexer */
-    public HarmonizedTariffScheduleCodeIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Inject
+    ItemControl itemControl;
+
+    @Override
+    public BaseIndexer<HarmonizedTariffScheduleCode> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override
