@@ -69,6 +69,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.spi.CDI;
 
 @Dependent
 public class UpdateIndexesCommand
@@ -88,7 +89,7 @@ public class UpdateIndexesCommand
     }
     
     private static final int QUEUED_ENTITY_COUNT = 10;
-    private static final long MAXIMUM_MILLISECONDS = 90 * 1000; // 90 seconds
+    private static final long MAXIMUM_MILLISECONDS = 40 * 1000; // 40 seconds, allows time to close indexes
     
     private void setLimits() {
         var limits = new HashMap<String, Limit>(1);
@@ -128,51 +129,51 @@ public class UpdateIndexesCommand
                 BaseIndexer<?> baseIndexer = null;
 
                 if(indexTypeName.equals(IndexTypes.CUSTOMER.name())) {
-                    baseIndexer = new CustomerIndexer(this, index);
+                    baseIndexer = CDI.current().select(CustomerIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.EMPLOYEE.name())) {
-                    baseIndexer = new EmployeeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EmployeeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.VENDOR.name())) {
-                    baseIndexer = new VendorIndexer(this, index);
+                    baseIndexer = CDI.current().select(VendorIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ITEM.name())) {
-                    baseIndexer = new ItemIndexer(this, index);
+                    baseIndexer = CDI.current().select(ItemIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.FORUM_MESSAGE.name())) {
-                    baseIndexer = new ForumMessageIndexer(this, index);
+                    baseIndexer = CDI.current().select(ForumMessageIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.COMPONENT_VENDOR.name())) {
-                    baseIndexer = new ComponentVendorIndexer(this, index);
+                    baseIndexer = CDI.current().select(ComponentVendorIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_TYPE.name())) {
-                    baseIndexer = new EntityTypeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityTypeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ALIAS_TYPE.name())) {
-                    baseIndexer = new EntityAliasTypeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityAliasTypeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE_GROUP.name())) {
-                    baseIndexer = new EntityAttributeGroupIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityAttributeGroupIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE.name())) {
-                    baseIndexer = new EntityAttributeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityAttributeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
-                    baseIndexer = new EntityListItemIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityListItemIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG.name())) {
-                    baseIndexer = new ContentCatalogIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContentCatalogIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG_ITEM.name())) {
-                    baseIndexer = new ContentCatalogItemIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContentCatalogItemIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
-                    baseIndexer = new ContentCategoryIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContentCategoryIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE_GROUP.name())) {
-                    baseIndexer = new SecurityRoleGroupIndexer(this, index);
+                    baseIndexer = CDI.current().select(SecurityRoleGroupIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE.name())) {
-                    baseIndexer = new SecurityRoleIndexer(this, index);
+                    baseIndexer = CDI.current().select(SecurityRoleIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name())) {
-                    baseIndexer = new HarmonizedTariffScheduleCodeIndexer(this, index);
+                    baseIndexer = CDI.current().select(HarmonizedTariffScheduleCodeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTACT_MECHANISM.name())) {
-                    baseIndexer = new ContactMechanismIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContactMechanismIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.OFFER.name())) {
-                    baseIndexer = new OfferIndexer(this, index);
+                    baseIndexer = CDI.current().select(OfferIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE.name())) {
-                    baseIndexer = new UseIndexer(this, index);
+                    baseIndexer = CDI.current().select(UseIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE_TYPE.name())) {
-                    baseIndexer = new UseTypeIndexer(this, index);
+                    baseIndexer = CDI.current().select(UseTypeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SHIPPING_METHOD.name())) {
-                    baseIndexer = new ShippingMethodIndexer(this, index);
+                    baseIndexer = CDI.current().select(ShippingMethodIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.WAREHOUSE.name())) {
-                    baseIndexer = new WarehouseIndexer(this, index);
+                    baseIndexer = CDI.current().select(WarehouseIndexer.class).get().setup(this, index);
                 }
 
                 return baseIndexer;
