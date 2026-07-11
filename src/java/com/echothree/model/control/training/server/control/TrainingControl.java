@@ -66,6 +66,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.training.common.pk.PartyTrainingClassPK;
+import com.echothree.model.data.training.common.pk.TrainingClassAnswerPK;
 import com.echothree.model.data.training.common.pk.TrainingClassPK;
 import com.echothree.model.data.training.common.pk.TrainingClassSectionPK;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
@@ -1671,7 +1672,31 @@ public class TrainingControl
         
         return trainingClassAnswer;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClassAnswer */
+    public TrainingClassAnswer getTrainingClassAnswerByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TrainingClassAnswerPK(entityInstance.getEntityUniqueId());
+
+        return TrainingClassAnswerFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TrainingClassAnswer getTrainingClassAnswerByEntityInstance(EntityInstance entityInstance) {
+        return getTrainingClassAnswerByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClassAnswer getTrainingClassAnswerByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTrainingClassAnswerByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTrainingClassAnswersByTrainingClassQuestion(final TrainingClassQuestion trainingClassQuestion) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM trainingclassanswers
+                        JOIN trainingclassanswerdetails ON trnclsansdt_trainingclassanswerdetailid = trnclsans_activedetailid
+                        WHERE trnclsansdt_trnclsqus_trainingclassquestionid = ?
+                        """, trainingClassQuestion);
+    }
+
     private static final Map<EntityPermission, String> getTrainingClassAnswerByNameQueries;
 
     static {
