@@ -2103,7 +2103,7 @@ public class TrainingControl
         return getPartyTrainingClassByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countPartyTrainingClassesBy(final Party party) {
+    public long countPartyTrainingClassesByParty(final Party party) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM partytrainingclasses
@@ -2112,7 +2112,7 @@ public class TrainingControl
                         """, party);
     }
 
-    public long countPartyTrainingClassesBy(final TrainingClass trainingClass) {
+    public long countPartyTrainingClassesByTrainingClass(final TrainingClass trainingClass) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM partytrainingclasses
