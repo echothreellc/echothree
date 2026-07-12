@@ -66,8 +66,12 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.training.common.pk.PartyTrainingClassPK;
+import com.echothree.model.data.training.common.pk.PartyTrainingClassSessionPK;
+import com.echothree.model.data.training.common.pk.PartyTrainingClassSessionQuestionPK;
 import com.echothree.model.data.training.common.pk.TrainingClassAnswerPK;
 import com.echothree.model.data.training.common.pk.TrainingClassPK;
+import com.echothree.model.data.training.common.pk.TrainingClassPagePK;
+import com.echothree.model.data.training.common.pk.TrainingClassQuestionPK;
 import com.echothree.model.data.training.common.pk.TrainingClassSectionPK;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
@@ -279,15 +283,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasses, trainingclassdetails " +
-                "WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_trainingclassname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasses, trainingclassdetails " +
-                "WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_trainingclassname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasses, trainingclassdetails
+                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_trainingclassname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasses, trainingclassdetails
+                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_trainingclassname = ?
+                FOR UPDATE
+                """);
         getTrainingClassByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -316,15 +322,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasses, trainingclassdetails " +
-                "WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasses, trainingclassdetails " +
-                "WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasses, trainingclassdetails
+                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasses, trainingclassdetails
+                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultTrainingClassQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -349,17 +357,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasses, trainingclassdetails " +
-                "WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid " +
-                "ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasses, trainingclassdetails " +
-                "WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasses, trainingclassdetails
+                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid
+                ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasses, trainingclassdetails
+                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid
+                FOR UPDATE
+                """);
         getTrainingClassesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -534,15 +544,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasstranslations " +
-                "WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_lang_languageid = ? AND trnclstr_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasstranslations " +
-                "WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_lang_languageid = ? AND trnclstr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasstranslations
+                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_lang_languageid = ? AND trnclstr_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasstranslations
+                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_lang_languageid = ? AND trnclstr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -572,17 +584,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasstranslations, languages " +
-                "WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_thrutime = ? AND trnclstr_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasstranslations " +
-                "WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasstranslations, languages
+                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_thrutime = ? AND trnclstr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasstranslations
+                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassTranslationsByTrainingClassQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -712,17 +726,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssections, trainingclasssectiondetails " +
-                "WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid " +
-                "AND trnclssdt_trncls_trainingclassid = ? AND trnclssdt_trainingclasssectionname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssections, trainingclasssectiondetails " +
-                "WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid " +
-                "AND trnclssdt_trncls_trainingclassid = ? AND trnclssdt_trainingclasssectionname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasssections, trainingclasssectiondetails
+                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
+                AND trnclssdt_trncls_trainingclassid = ? AND trnclssdt_trainingclasssectionname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasssections, trainingclasssectiondetails
+                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
+                AND trnclssdt_trncls_trainingclassid = ? AND trnclssdt_trainingclasssectionname = ?
+                FOR UPDATE
+                """);
         getTrainingClassSectionByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -752,19 +768,21 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssections, trainingclasssectiondetails " +
-                "WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid " +
-                "AND trnclssdt_trncls_trainingclassid = ? " +
-                "ORDER BY trnclssdt_sortorder, trnclssdt_trainingclasssectionname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssections, trainingclasssectiondetails " +
-                "WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid " +
-                "AND trnclssdt_trncls_trainingclassid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasssections, trainingclasssectiondetails
+                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
+                AND trnclssdt_trncls_trainingclassid = ?
+                ORDER BY trnclssdt_sortorder, trnclssdt_trainingclasssectionname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasssections, trainingclasssectiondetails
+                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
+                AND trnclssdt_trncls_trainingclassid = ?
+                FOR UPDATE
+                """);
         getTrainingClassSectionsQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -867,15 +885,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssectiontranslations " +
-                "WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_lang_languageid = ? AND trnclsstr_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssectiontranslations " +
-                "WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_lang_languageid = ? AND trnclsstr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasssectiontranslations
+                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_lang_languageid = ? AND trnclsstr_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasssectiontranslations
+                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_lang_languageid = ? AND trnclsstr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassSectionTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -905,17 +925,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssectiontranslations, languages " +
-                "WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_thrutime = ? AND trnclsstr_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasssectiontranslations " +
-                "WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasssectiontranslations, languages
+                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_thrutime = ? AND trnclsstr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasssectiontranslations
+                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassSectionTranslationsByTrainingClassSectionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1015,23 +1037,61 @@ public class TrainingControl
         
         return trainingClassPage;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClassPage */
+    public TrainingClassPage getTrainingClassPageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TrainingClassPagePK(entityInstance.getEntityUniqueId());
+
+        return TrainingClassPageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TrainingClassPage getTrainingClassPageByEntityInstance(EntityInstance entityInstance) {
+        return getTrainingClassPageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClassPage getTrainingClassPageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTrainingClassPageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTrainingClassPagesByTrainingClassSection(final TrainingClassSection trainingClassSection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM trainingclasspages
+                        JOIN trainingclasspagedetails ON trnclspdt_trainingclasspagedetailid = trnclsp_activedetailid
+                        WHERE trnclspdt_trnclss_trainingclasssectionid = ?
+                        """, trainingClassSection);
+    }
+
+    public long countTrainingClassPages(List<TrainingClassSection> trainingClassSections) {
+        long total = 0;
+
+        total = trainingClassSections.stream().map(this::countTrainingClassPagesByTrainingClassSection).reduce(total, Long::sum);
+
+        return total;
+    }
+
+    public long countTrainingClassPages(TrainingClass trainingClass) {
+        return countTrainingClassPages(getTrainingClassSections(trainingClass));
+    }
+
     private static final Map<EntityPermission, String> getTrainingClassPageByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspages, trainingclasspagedetails " +
-                "WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = ? AND trnclspdt_trainingclasspagename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspages, trainingclasspagedetails " +
-                "WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = ? AND trnclspdt_trainingclasspagename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasspages, trainingclasspagedetails
+                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
+                AND trnclspdt_trnclss_trainingclasssectionid = ? AND trnclspdt_trainingclasspagename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasspages, trainingclasspagedetails
+                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
+                AND trnclspdt_trnclss_trainingclasssectionid = ? AND trnclspdt_trainingclasspagename = ?
+                FOR UPDATE
+                """);
         getTrainingClassPageByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1057,45 +1117,26 @@ public class TrainingControl
         return getTrainingClassPageDetailValueForUpdate(getTrainingClassPageByNameForUpdate(trainingClassSection, trainingClassPageName));
     }
     
-    public long countTrainingClassPages(TrainingClassSection trainingClassSection) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM trainingclasspages, trainingclasspagedetails " +
-                "WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = ?",
-                trainingClassSection);
-    }
-
-    public long countTrainingClassPages(List<TrainingClassSection> trainingClassSections) {
-        long total = 0;
-
-        total = trainingClassSections.stream().map((trainingClassSection) -> countTrainingClassPages(trainingClassSection)).reduce(total, (accumulator, _item) -> accumulator + _item);
-
-        return total;
-    }
-
-    public long countTrainingClassPages(TrainingClass trainingClass) {
-        return countTrainingClassPages(getTrainingClassSections(trainingClass));
-    }
-
     private static final Map<EntityPermission, String> getTrainingClassPagesQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspages, trainingclasspagedetails " +
-                "WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = ? " +
-                "ORDER BY trnclspdt_sortorder, trnclspdt_trainingclasspagename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspages, trainingclasspagedetails " +
-                "WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasspages, trainingclasspagedetails
+                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
+                AND trnclspdt_trnclss_trainingclasssectionid = ?
+                ORDER BY trnclspdt_sortorder, trnclspdt_trainingclasspagename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasspages, trainingclasspagedetails
+                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
+                AND trnclspdt_trnclss_trainingclasssectionid = ?
+                FOR UPDATE
+                """);
         getTrainingClassPagesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1194,15 +1235,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspagetranslations " +
-                "WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_lang_languageid = ? AND trnclsptr_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspagetranslations " +
-                "WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_lang_languageid = ? AND trnclsptr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasspagetranslations
+                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_lang_languageid = ? AND trnclsptr_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasspagetranslations
+                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_lang_languageid = ? AND trnclsptr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassPageTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1233,17 +1276,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspagetranslations, languages " +
-                "WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_thrutime = ? AND trnclsptr_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclasspagetranslations " +
-                "WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclasspagetranslations, languages
+                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_thrutime = ? AND trnclsptr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclasspagetranslations
+                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassPageTranslationsByTrainingClassPageQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1342,23 +1387,61 @@ public class TrainingControl
         
         return trainingClassQuestion;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClassQuestion */
+    public TrainingClassQuestion getTrainingClassQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TrainingClassQuestionPK(entityInstance.getEntityUniqueId());
+
+        return TrainingClassQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TrainingClassQuestion getTrainingClassQuestionByEntityInstance(EntityInstance entityInstance) {
+        return getTrainingClassQuestionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClassQuestion getTrainingClassQuestionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTrainingClassQuestionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTrainingClassQuestionsByTrainingClassSection(final TrainingClassSection trainingClassSection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM trainingclassquestions
+                        JOIN trainingclassquestiondetails ON trnclsqusdt_trainingclassquestiondetailid = trnclsqus_activedetailid
+                        WHERE trnclsqusdt_trnclss_trainingclasssectionid = ?
+                        """, trainingClassSection);
+    }
+
+    public long countTrainingClassQuestions(List<TrainingClassSection> trainingClassSections) {
+        long total = 0;
+
+        total = trainingClassSections.stream().map(this::countTrainingClassQuestionsByTrainingClassSection).reduce(total, Long::sum);
+
+        return total;
+    }
+
+    public long countTrainingClassQuestions(TrainingClass trainingClass) {
+        return countTrainingClassQuestions(getTrainingClassSections(trainingClass));
+    }
+
     private static final Map<EntityPermission, String> getTrainingClassQuestionByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestions, trainingclassquestiondetails " +
-                "WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid " +
-                "AND trnclsqusdt_trnclss_trainingclasssectionid = ? AND trnclsqusdt_trainingclassquestionname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestions, trainingclassquestiondetails " +
-                "WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid " +
-                "AND trnclsqusdt_trnclss_trainingclasssectionid = ? AND trnclsqusdt_trainingclassquestionname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassquestions, trainingclassquestiondetails
+                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
+                AND trnclsqusdt_trnclss_trainingclasssectionid = ? AND trnclsqusdt_trainingclassquestionname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassquestions, trainingclassquestiondetails
+                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
+                AND trnclsqusdt_trnclss_trainingclasssectionid = ? AND trnclsqusdt_trainingclassquestionname = ?
+                FOR UPDATE
+                """);
         getTrainingClassQuestionByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1385,45 +1468,26 @@ public class TrainingControl
         return getTrainingClassQuestionDetailValueForUpdate(getTrainingClassQuestionByNameForUpdate(trainingClassSection, trainingClassQuestionName));
     }
     
-    public long countTrainingClassQuestions(TrainingClassSection trainingClassSection) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM trainingclassquestions, trainingclassquestiondetails " +
-                "WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid " +
-                "AND trnclsqusdt_trnclss_trainingclasssectionid = ?",
-                trainingClassSection);
-    }
-
-    public long countTrainingClassQuestions(List<TrainingClassSection> trainingClassSections) {
-        long total = 0;
-
-        total = trainingClassSections.stream().map((trainingClassSection) -> countTrainingClassQuestions(trainingClassSection)).reduce(total, (accumulator, _item) -> accumulator + _item);
-
-        return total;
-    }
-
-    public long countTrainingClassQuestions(TrainingClass trainingClass) {
-        return countTrainingClassQuestions(getTrainingClassSections(trainingClass));
-    }
-
     private static final Map<EntityPermission, String> getTrainingClassQuestionsQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestions, trainingclassquestiondetails " +
-                "WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid " +
-                "AND trnclsqusdt_trnclss_trainingclasssectionid = ? " +
-                "ORDER BY trnclsqusdt_sortorder, trnclsqusdt_trainingclassquestionname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestions, trainingclassquestiondetails " +
-                "WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid " +
-                "AND trnclsqusdt_trnclss_trainingclasssectionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassquestions, trainingclassquestiondetails
+                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
+                AND trnclsqusdt_trnclss_trainingclasssectionid = ?
+                ORDER BY trnclsqusdt_sortorder, trnclsqusdt_trainingclassquestionname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassquestions, trainingclassquestiondetails
+                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
+                AND trnclsqusdt_trnclss_trainingclasssectionid = ?
+                FOR UPDATE
+                """);
         getTrainingClassQuestionsQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1525,15 +1589,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestiontranslations " +
-                "WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_lang_languageid = ? AND trnclsqustr_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestiontranslations " +
-                "WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_lang_languageid = ? AND trnclsqustr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassquestiontranslations
+                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_lang_languageid = ? AND trnclsqustr_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassquestiontranslations
+                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_lang_languageid = ? AND trnclsqustr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassQuestionTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1564,17 +1630,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestiontranslations, languages " +
-                "WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_thrutime = ? AND trnclsqustr_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassquestiontranslations " +
-                "WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassquestiontranslations, languages
+                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_thrutime = ? AND trnclsqustr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassquestiontranslations
+                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassQuestionTranslationsByTrainingClassQuestionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1702,17 +1770,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswers, trainingclassanswerdetails " +
-                "WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid " +
-                "AND trnclsansdt_trnclsqus_trainingclassquestionid = ? AND trnclsansdt_trainingclassanswername = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswers, trainingclassanswerdetails " +
-                "WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid " +
-                "AND trnclsansdt_trnclsqus_trainingclassquestionid = ? AND trnclsansdt_trainingclassanswername = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassanswers, trainingclassanswerdetails
+                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
+                AND trnclsansdt_trnclsqus_trainingclassquestionid = ? AND trnclsansdt_trainingclassanswername = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassanswers, trainingclassanswerdetails
+                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
+                AND trnclsansdt_trnclsqus_trainingclassquestionid = ? AND trnclsansdt_trainingclassanswername = ?
+                FOR UPDATE
+                """);
         getTrainingClassAnswerByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1741,19 +1811,21 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswers, trainingclassanswerdetails " +
-                "WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid " +
-                "AND trnclsansdt_trnclsqus_trainingclassquestionid = ? " +
-                "ORDER BY trnclsansdt_sortorder, trnclsansdt_trainingclassanswername " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswers, trainingclassanswerdetails " +
-                "WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid " +
-                "AND trnclsansdt_trnclsqus_trainingclassquestionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassanswers, trainingclassanswerdetails
+                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
+                AND trnclsansdt_trnclsqus_trainingclassquestionid = ?
+                ORDER BY trnclsansdt_sortorder, trnclsansdt_trainingclassanswername
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassanswers, trainingclassanswerdetails
+                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
+                AND trnclsansdt_trnclsqus_trainingclassquestionid = ?
+                FOR UPDATE
+                """);
         getTrainingClassAnswersQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1853,15 +1925,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswertranslations " +
-                "WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_lang_languageid = ? AND trnclsanstr_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswertranslations " +
-                "WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_lang_languageid = ? AND trnclsanstr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassanswertranslations
+                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_lang_languageid = ? AND trnclsanstr_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassanswertranslations
+                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_lang_languageid = ? AND trnclsanstr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassAnswerTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1891,17 +1965,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswertranslations, languages " +
-                "WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_thrutime = ? AND trnclsanstr_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trainingclassanswertranslations " +
-                "WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM trainingclassanswertranslations, languages
+                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_thrutime = ? AND trnclsanstr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM trainingclassanswertranslations
+                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_thrutime = ?
+                FOR UPDATE
+                """);
         getTrainingClassAnswerTranslationsByTrainingClassAnswerQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2011,48 +2087,81 @@ public class TrainingControl
         
         return partyTrainingClass;
     }
-    
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyTrainingClass */
-    public PartyTrainingClass getPartyTrainingClassByEntityInstance(EntityInstance entityInstance) {
+    public PartyTrainingClass getPartyTrainingClassByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyTrainingClassPK(entityInstance.getEntityUniqueId());
-        var partyTrainingClass = PartyTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return partyTrainingClass;
+        return PartyTrainingClassFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    private PartyTrainingClass convertEntityInstanceToPartyTrainingClass(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        PartyTrainingClass partyTrainingClass = null;
-        
-        if(entityInstanceControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name())) {
-            partyTrainingClass = PartyTrainingClassFactory.getInstance().getEntityFromPK(entityPermission, new PartyTrainingClassPK(entityInstance.getEntityUniqueId()));
-        }
-        
-        return partyTrainingClass;
+    public PartyTrainingClass getPartyTrainingClassByEntityInstance(EntityInstance entityInstance) {
+        return getPartyTrainingClassByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
-    
-    public PartyTrainingClass convertEntityInstanceToPartyTrainingClass(final EntityInstance entityInstance) {
-        return convertEntityInstanceToPartyTrainingClass(entityInstance, EntityPermission.READ_ONLY);
+
+    public PartyTrainingClass getPartyTrainingClassByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyTrainingClassByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
-    public PartyTrainingClass convertEntityInstanceToPartyTrainingClassForUpdate(final EntityInstance entityInstance) {
-        return convertEntityInstanceToPartyTrainingClass(entityInstance, EntityPermission.READ_WRITE);
+
+    public long countPartyTrainingClassesBy(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasses
+                        JOIN partytrainingclassdetails ON ptrnclsdt_partytrainingclassdetailid = ptrncls_activedetailid
+                        WHERE ptrnclsdt_par_partyid = ?
+                        """, party);
     }
-    
+
+    public long countPartyTrainingClassesBy(final TrainingClass trainingClass) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasses
+                        JOIN partytrainingclassdetails ON ptrnclsdt_partytrainingclassdetailid = ptrncls_activedetailid
+                        WHERE ptrnclsdt_trncls_trainingclassid = ?
+                        """, trainingClass);
+    }
+
+    public long countPartyTrainingClasses(Party party, TrainingClass trainingClass, WorkflowStep workflowStep) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM partytrainingclasses, partytrainingclassdetails, componentvendors, componentvendordetails, entitytypes, entitytypedetails,
+                entityinstances, workflowentitystatuses
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid
+                AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ?
+                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                AND ent_activedetailid = entdt_entitytypedetailid
+                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                AND entdt_entitytypename = ?
+                AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid
+                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                """, party, trainingClass, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name(), workflowStep,
+                Session.MAX_TIME);
+    }
+
+    public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
+        var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
+
+        return countPartyTrainingClasses(party, trainingClass, workflowStep);
+    }
+
     private static final Map<EntityPermission, String> getPartyTrainingClassByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_partytrainingclassname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_partytrainingclassname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_partytrainingclassname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_partytrainingclassname = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2081,18 +2190,20 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails, trainingclasses, trainingclassdetails " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? " +
-                "AND ptrnclsdt_trncls_trainingclassid = trncls_trainingclassid AND trncls_lastdetailid = trnclsdt_trainingclassdetailid " +
-                "ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname, ptrnclsdt_partytrainingclassname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails, trainingclasses, trainingclassdetails
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ?
+                AND ptrnclsdt_trncls_trainingclassid = trncls_trainingclassid AND trncls_lastdetailid = trnclsdt_trainingclassdetailid
+                ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname, ptrnclsdt_partytrainingclassname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassesByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2113,18 +2224,20 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails, parties, partydetails " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_trncls_trainingclassid = ? " +
-                "AND ptrnclsdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_trncls_trainingclassid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails, parties, partydetails
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_trncls_trainingclassid = ?
+                AND ptrnclsdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                ORDER BY pardt_partyname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_trncls_trainingclassid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassesByTrainingClassQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2145,31 +2258,33 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails, workflows, workflowdetails, workflowsteps, workflowstepdetails, componentvendors, " +
-                "componentvendordetails, entitytypes, entitytypedetails, entityinstances, workflowentitystatuses " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ? " +
-                "AND wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ? " +
-                "AND wkfl_workflowid = wkflsdt_wkfl_workflowid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_workflowstepname = ? " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND ent_activedetailid = entdt_entitytypedetailid AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid " +
-                "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfls_workflowstepid = wkfles_wkfls_workflowstepid AND wkfles_thrutime = ? " +
-                "ORDER BY ptrnclsdt_partytrainingclassname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasses, partytrainingclassdetails, workflows, workflowdetails, workflowsteps, workflowstepdetails, componentvendors, " +
-                "componentvendordetails, entitytypes, entitytypedetails, entityinstances, workflowentitystatuses " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ? " +
-                "AND wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ? " +
-                "AND wkfl_workflowid = wkflsdt_wkfl_workflowid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_workflowstepname = ? " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND ent_activedetailid = entdt_entitytypedetailid AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid " +
-                "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfls_workflowstepid = wkfles_wkfls_workflowstepid AND wkfles_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails, workflows, workflowdetails, workflowsteps, workflowstepdetails, componentvendors,
+                componentvendordetails, entitytypes, entitytypedetails, entityinstances, workflowentitystatuses
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ?
+                AND wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?
+                AND wkfl_workflowid = wkflsdt_wkfl_workflowid AND wkfl_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_workflowstepname = ?
+                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND ent_activedetailid = entdt_entitytypedetailid AND entdt_entitytypename = ?
+                AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid
+                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfls_workflowstepid = wkfles_wkfls_workflowstepid AND wkfles_thrutime = ?
+                ORDER BY ptrnclsdt_partytrainingclassname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasses, partytrainingclassdetails, workflows, workflowdetails, workflowsteps, workflowstepdetails, componentvendors,
+                componentvendordetails, entitytypes, entitytypedetails, entityinstances, workflowentitystatuses
+                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ?
+                AND wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?
+                AND wkfl_workflowid = wkflsdt_wkfl_workflowid AND wkfl_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_workflowstepname = ?
+                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND ent_activedetailid = entdt_entitytypedetailid AND entdt_entitytypename = ?
+                AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid
+                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfls_workflowstepid = wkfles_wkfls_workflowstepid AND wkfles_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassesByStatusQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2207,31 +2322,6 @@ public class TrainingControl
         return getPartyTrainingClassesByStatuses(EntityPermission.READ_WRITE, party, trainingClass, workflowStepNames);
     }
 
-    public long countPartyTrainingClasses(Party party, TrainingClass trainingClass, WorkflowStep workflowStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partytrainingclasses, partytrainingclassdetails, componentvendors, componentvendordetails, entitytypes, entitytypedetails, " +
-                "entityinstances, workflowentitystatuses " +
-                "WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid " +
-                "AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ? " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND ent_activedetailid = entdt_entitytypedetailid " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                "AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid " +
-                "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?",
-                party, trainingClass, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name(), workflowStep,
-                Session.MAX_TIME);
-    }
-    
-    public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
-        var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-        
-        return countPartyTrainingClasses(party, trainingClass, workflowStep);
-    }
-    
     public PartyTrainingClassStatusChoicesBean getPartyTrainingClassStatusChoices(String defaultPartyTrainingClassStatusChoice, Language language,
             boolean allowNullChoice, PartyTrainingClass partyTrainingClass, PartyPK partyPK) {
         var partyTrainingClassStatusChoicesBean = new PartyTrainingClassStatusChoicesBean();
@@ -2360,15 +2450,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclassstatuses " +
-                "WHERE ptrnclsst_ptrncls_partytrainingclassid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclassstatuses " +
-                "WHERE ptrnclsst_ptrncls_partytrainingclassid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclassstatuses
+                WHERE ptrnclsst_ptrncls_partytrainingclassid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclassstatuses
+                WHERE ptrnclsst_ptrncls_partytrainingclassid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassStatusQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2429,23 +2521,48 @@ public class TrainingControl
 
         return partyTrainingClassSession;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyTrainingClassSession */
+    public PartyTrainingClassSession getPartyTrainingClassSessionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyTrainingClassSessionPK(entityInstance.getEntityUniqueId());
+
+        return PartyTrainingClassSessionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyTrainingClassSession getPartyTrainingClassSessionByEntityInstance(EntityInstance entityInstance) {
+        return getPartyTrainingClassSessionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyTrainingClassSession getPartyTrainingClassSessionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyTrainingClassSessionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyTrainingClassSessionsByPartyTrainingClass(final PartyTrainingClass partyTrainingClass) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessions
+                        JOIN partytrainingclasssessiondetails ON ptrnclssessdt_partytrainingclasssessiondetailid = ptrnclssess_activedetailid
+                        WHERE ptrnclssessdt_ptrncls_partytrainingclassid = ?
+                        """, partyTrainingClass);
+    }
     private static final Map<EntityPermission, String> getPartyTrainingClassSessionBySequenceQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessions, partytrainingclasssessiondetails " +
-                "WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid " +
-                "AND ptrnclssessdt_ptrncls_partytrainingclassid = ? AND ptrnclssessdt_partytrainingclasssessionsequence = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessions, partytrainingclasssessiondetails " +
-                "WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid " +
-                "AND ptrnclssessdt_ptrncls_partytrainingclassid = ? AND ptrnclssessdt_partytrainingclasssessionsequence = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessions, partytrainingclasssessiondetails
+                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
+                AND ptrnclssessdt_ptrncls_partytrainingclassid = ? AND ptrnclssessdt_partytrainingclasssessionsequence = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessions, partytrainingclasssessiondetails
+                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
+                AND ptrnclssessdt_ptrncls_partytrainingclassid = ? AND ptrnclssessdt_partytrainingclasssessionsequence = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionBySequenceQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2476,19 +2593,21 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessions, partytrainingclasssessiondetails " +
-                "WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid " +
-                "AND ptrnclssessdt_ptrncls_partytrainingclassid = ? " +
-                "ORDER BY ptrnclssessdt_partytrainingclasssessionsequence " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessions, partytrainingclasssessiondetails " +
-                "WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid " +
-                "AND ptrnclssessdt_ptrncls_partytrainingclassid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessions, partytrainingclasssessiondetails
+                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
+                AND ptrnclssessdt_ptrncls_partytrainingclassid = ?
+                ORDER BY ptrnclssessdt_partytrainingclasssessionsequence
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessions, partytrainingclasssessiondetails
+                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
+                AND ptrnclssessdt_ptrncls_partytrainingclassid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionsByPartyTrainingClassQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2583,15 +2702,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionstatuses " +
-                "WHERE ptrnclssessst_ptrnclssess_partytrainingclasssessionid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionstatuses " +
-                "WHERE ptrnclssessst_ptrnclssess_partytrainingclasssessionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionstatuses
+                WHERE ptrnclssessst_ptrnclssess_partytrainingclasssessionid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionstatuses
+                WHERE ptrnclssessst_ptrnclssess_partytrainingclasssessionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionStatusQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2614,11 +2735,12 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionstatuses " +
-                "WHERE ptrnclssessst_lastpartytrainingclasssessionsectionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionstatuses
+                WHERE ptrnclssessst_lastpartytrainingclasssessionsectionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2637,11 +2759,12 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionstatuses " +
-                "WHERE ptrnclssessst_lastpartytrainingclasssessionpageid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionstatuses
+                WHERE ptrnclssessst_lastpartytrainingclasssessionpageid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2660,11 +2783,12 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionstatuses " +
-                "WHERE ptrnclssessst_lastpartytrainingclasssessionquestionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionstatuses
+                WHERE ptrnclssessst_lastpartytrainingclasssessionquestionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2728,21 +2852,39 @@ public class TrainingControl
         
         return partyTrainingClassSessionSection;
     }
-    
+
+    public long countPartyTrainingClassSessionSectionsByPartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessionsections
+                        WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ?
+                        """, partyTrainingClassSession, Session.MAX_TIME);
+    }
+
+    public long countPartyTrainingClassSessionSectionsByTrainingClassSection(final TrainingClassSection trainingClassSection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessionsections
+                        WHERE ptrnclss_trnclss_trainingclasssectionid = ? AND ptrnclss_thrutime = ?
+                        """, trainingClassSection, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyTrainingClassSessionSectionQueries;
     
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionsections " +
-                "WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_partytrainingclasssessionsectionsequence = ? AND ptrnclss_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionsections " +
-                "WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_partytrainingclasssessionsectionsequence = ? AND ptrnclss_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionsections
+                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_partytrainingclasssessionsectionsequence = ? AND ptrnclss_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionsections
+                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_partytrainingclasssessionsectionsequence = ? AND ptrnclss_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionSectionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2776,17 +2918,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionsections " +
-                "WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ? " +
-                "ORDER BY ptrnclss_partytrainingclasssessionsectionsequence " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionsections " +
-                "WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionsections
+                WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ?
+                ORDER BY ptrnclss_partytrainingclasssessionsectionsequence
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionsections
+                WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionSectionsByPartyTrainingClassSessionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2809,19 +2953,21 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionsections, trainingclasssections, trainingclasssectiondetails, trainingclasssections, trainingclasssectiondetails " +
-                "WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_thrutime = ? " +
-                "AND ptrnclss_trnclsp_trainingclasssectionid = trnclsp_trainingclasssectionid AND trnclsp_lastdetailid = trnclspdt_trainingclasssectiondetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid " +
-                "ORDER BY ptrnclss_partytrainingclasssessionsectionsequence, trnclspdt_sortorder, trnclspdt_trainingclasssectionname, trnclssdt_sortorder, trnclssdt_trainingclasssectionname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionsections " +
-                "WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionsections, trainingclasssections, trainingclasssectiondetails, trainingclasssections, trainingclasssectiondetails
+                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_thrutime = ?
+                AND ptrnclss_trnclsp_trainingclasssectionid = trnclsp_trainingclasssectionid AND trnclsp_lastdetailid = trnclspdt_trainingclasssectiondetailid
+                AND trnclspdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid
+                ORDER BY ptrnclss_partytrainingclasssessionsectionsequence, trnclspdt_sortorder, trnclspdt_trainingclasssectionname, trnclssdt_sortorder, trnclssdt_trainingclasssectionname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionsections
+                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionSectionsByTrainingClassSectionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2926,21 +3072,39 @@ public class TrainingControl
         
         return partyTrainingClassSessionPage;
     }
-    
+
+    public long countPartyTrainingClassSessionPagesByPartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessionpages
+                        WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
+                        """, partyTrainingClassSession, Session.MAX_TIME);
+    }
+
+    public long countPartyTrainingClassSessionPagesByTrainingClassPage(final TrainingClassPage trainingClassPage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessionpages
+                        WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
+                        """, trainingClassPage, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyTrainingClassSessionPageQueries;
     
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionpages " +
-                "WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_partytrainingclasssessionpagesequence = ? AND ptrnclsp_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionpages " +
-                "WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_partytrainingclasssessionpagesequence = ? AND ptrnclsp_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionpages
+                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_partytrainingclasssessionpagesequence = ? AND ptrnclsp_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionpages
+                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_partytrainingclasssessionpagesequence = ? AND ptrnclsp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionPageQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2974,17 +3138,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionpages " +
-                "WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_thrutime = ? " +
-                "ORDER BY ptrnclsp_partytrainingclasssessionpagesequence " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionpages " +
-                "WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionpages
+                WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_thrutime = ?
+                ORDER BY ptrnclsp_partytrainingclasssessionpagesequence
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionpages
+                WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionPagesByPartyTrainingClassSessionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3007,19 +3173,21 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionpages, trainingclasspages, trainingclasspagedetails, trainingclasssections, trainingclasssectiondetails " +
-                "WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ? " +
-                "AND ptrnclsp_trnclsp_trainingclasspageid = trnclsp_trainingclasspageid AND trnclsp_lastdetailid = trnclspdt_trainingclasspagedetailid " +
-                "AND trnclspdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid " +
-                "ORDER BY ptrnclsp_partytrainingclasssessionpagesequence, trnclspdt_sortorder, trnclspdt_trainingclasspagename, trnclssdt_sortorder, trnclssdt_trainingclasssectionname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionpages " +
-                "WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionpages, trainingclasspages, trainingclasspagedetails, trainingclasssections, trainingclasssectiondetails
+                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
+                AND ptrnclsp_trnclsp_trainingclasspageid = trnclsp_trainingclasspageid AND trnclsp_lastdetailid = trnclspdt_trainingclasspagedetailid
+                AND trnclspdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid
+                ORDER BY ptrnclsp_partytrainingclasssessionpagesequence, trnclspdt_sortorder, trnclspdt_trainingclasspagename, trnclssdt_sortorder, trnclssdt_trainingclasssectionname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionpages
+                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionPagesByTrainingClassPageQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3122,23 +3290,58 @@ public class TrainingControl
 
         return partyTrainingClassSessionQuestion;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyTrainingClassSessionQuestion */
+    public PartyTrainingClassSessionQuestion getPartyTrainingClassSessionQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyTrainingClassSessionQuestionPK(entityInstance.getEntityUniqueId());
+
+        return PartyTrainingClassSessionQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyTrainingClassSessionQuestion getPartyTrainingClassSessionQuestionByEntityInstance(EntityInstance entityInstance) {
+        return getPartyTrainingClassSessionQuestionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyTrainingClassSessionQuestion getPartyTrainingClassSessionQuestionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyTrainingClassSessionQuestionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyTrainingClassSessionQuestionsByPartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessionquestions
+                        JOIN partytrainingclasssessionquestiondetails ON ptrnclsqusdt_partytrainingclasssessionquestiondetailid = ptrnclsqus_activedetailid
+                        WHERE ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ?
+                        """, partyTrainingClassSession);
+    }
+
+    public long countPartyTrainingClassSessionQuestionsByTrainingClassQuestion(final TrainingClassQuestion trainingClassQuestion) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytrainingclasssessionquestions
+                        JOIN partytrainingclasssessionquestiondetails ON ptrnclsqusdt_partytrainingclasssessionquestiondetailid = ptrnclsqus_activedetailid
+                        WHERE ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
+                        """, trainingClassQuestion);
+    }
+
     private static final Map<EntityPermission, String> getPartyTrainingClassSessionQuestionQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails " +
-                "WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid " +
-                "AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails " +
-                "WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid " +
-                "AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
+                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
+                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionQuestionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3172,21 +3375,23 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails, trainingclassquestions, trainingclassquestiondetails, trainingclasssections, trainingclasssectiondetails "
-                + "WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid "
-                + "AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = trnclsqus_trainingclassquestionid AND trnclsqus_lastdetailid = trnclsqusdt_trainingclassquestiondetailid "
-                + "AND trnclsqusdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid "
-                + "AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? "
-                + "ORDER BY ptrnclsqusdt_sortorder, trnclsqusdt_sortorder, trnclsqusdt_trainingclassquestionname, trnclssdt_sortorder, trnclssdt_trainingclasssectionname "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails "
-                + "WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid "
-                + "AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails, trainingclassquestions, trainingclassquestiondetails, trainingclasssections, trainingclasssectiondetails
+                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = trnclsqus_trainingclassquestionid AND trnclsqus_lastdetailid = trnclsqusdt_trainingclassquestiondetailid
+                AND trnclsqusdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid
+                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ?
+                ORDER BY ptrnclsqusdt_sortorder, trnclsqusdt_sortorder, trnclsqusdt_trainingclassquestionname, trnclssdt_sortorder, trnclssdt_trainingclasssectionname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
+                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionQuestionsByPartyTrainingClassSessionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3209,20 +3414,22 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytrainingclasssessionquestions, partytrainingclasssessions, partytrainingclasssessiondetails, partytrainingclasses, partytrainingclassdetails "
-                + "WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid "
-                + "AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ptrnclssess_partytrainingclasssessionid AND ptrnclssess_lastdetailid = ptrnclssessdt_partytrainingclasssessiondetailid "
-                + "AND ptrnclssessdt_ptrncls_partytrainingclassid = ptrncls_partytrainingclassid AND ptrncls_lastdetailid = ptrnclsdt_partytrainingclassdetailid "
-                + "ORDER BY ptrnclsqusdt_sortorder, ptrnclssessdt_partytrainingclasssessionsequence, ptrnclsdt_partytrainingclassname "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails "
-                + "WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid "
-                + "AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestions, partytrainingclasssessions, partytrainingclasssessiondetails, partytrainingclasses, partytrainingclassdetails
+                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ptrnclssess_partytrainingclasssessionid AND ptrnclssess_lastdetailid = ptrnclssessdt_partytrainingclasssessiondetailid
+                AND ptrnclssessdt_ptrncls_partytrainingclassid = ptrncls_partytrainingclassid AND ptrncls_lastdetailid = ptrnclsdt_partytrainingclassdetailid
+                ORDER BY ptrnclsqusdt_sortorder, ptrnclssessdt_partytrainingclasssessionsequence, ptrnclsdt_partytrainingclassname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
+                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionQuestionsByTrainingClassQuestionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3326,15 +3533,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionquestionstatuses " +
-                "WHERE ptrnclsqusst_ptrnclsqus_partytrainingclasssessionquestionid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionquestionstatuses " +
-                "WHERE ptrnclsqusst_ptrnclsqus_partytrainingclasssessionquestionid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestionstatuses
+                WHERE ptrnclsqusst_ptrnclsqus_partytrainingclasssessionquestionid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionquestionstatuses
+                WHERE ptrnclsqusst_ptrnclsqus_partytrainingclasssessionquestionid = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionQuestionStatusQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3390,15 +3599,17 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionanswers " +
-                "WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_partytrainingclasssessionanswersequence = ? AND ptrnclsans_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionanswers " +
-                "WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_partytrainingclasssessionanswersequence = ? AND ptrnclsans_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionanswers
+                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_partytrainingclasssessionanswersequence = ? AND ptrnclsans_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionanswers
+                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_partytrainingclasssessionanswersequence = ? AND ptrnclsans_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionAnswerQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3432,17 +3643,19 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionanswers " +
-                "WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_thrutime = ? " +
-                "ORDER BY ptrnclsans_partytrainingclasssessionanswersequence " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytrainingclasssessionanswers " +
-                "WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionanswers
+                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_thrutime = ?
+                ORDER BY ptrnclsans_partytrainingclasssessionanswersequence
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionanswers
+                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3465,20 +3678,22 @@ public class TrainingControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytrainingclasssessionanswers, partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails, partytrainingclasssessions, partytrainingclasssessiondetails, partytrainingclass, partytrainingclassdetails "
-                + "WHERE ptrnclsans_trnclsans_trainingclassanswerid = ? AND ptrnclsans_thrutime = ? "
-                + "AND ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ptrnclsqus_partytrainingclasssessionquestionid AND ptrnclsqus_lastdetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid "
-                + "AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ptrnclssess_partytrainingclasssessionid AND ptrnclssess_lastdetailid = ptrnclssessdt_partytrainingclasssessiondetailid "
-                + "AND ptrnclssessdt_ptrncls_partytrainingclassid = ptrncls_partytrainingclassid AND ptrncls_lastdetailid = ptrnclsdt_partytrainingclassdetailid "
-                + "ORER BY ptrnclsans_partytrainingclasssessionanswersequence, ptrnclsqusdt_sortorder, ptrnclssessdt_partytrainingclasssessionsequence, ptrnclsdt_partytrainingclassname "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytrainingclasssessionanswers "
-                + "WHERE ptrnclsans_trnclsans_trainingclassanswerid = ? AND ptrnclsans_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionanswers, partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails, partytrainingclasssessions, partytrainingclasssessiondetails, partytrainingclass, partytrainingclassdetails
+                WHERE ptrnclsans_trnclsans_trainingclassanswerid = ? AND ptrnclsans_thrutime = ?
+                AND ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ptrnclsqus_partytrainingclasssessionquestionid AND ptrnclsqus_lastdetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
+                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ptrnclssess_partytrainingclasssessionid AND ptrnclssess_lastdetailid = ptrnclssessdt_partytrainingclasssessiondetailid
+                AND ptrnclssessdt_ptrncls_partytrainingclassid = ptrncls_partytrainingclassid AND ptrncls_lastdetailid = ptrnclsdt_partytrainingclassdetailid
+                ORER BY ptrnclsans_partytrainingclasssessionanswersequence, ptrnclsqusdt_sortorder, ptrnclssessdt_partytrainingclasssessionsequence, ptrnclsdt_partytrainingclassname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partytrainingclasssessionanswers
+                WHERE ptrnclsans_trnclsans_trainingclassanswerid = ? AND ptrnclsans_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTrainingClassSessionAnswersByTrainingClassAnswerQueries = Collections.unmodifiableMap(queryMap);
     }
     

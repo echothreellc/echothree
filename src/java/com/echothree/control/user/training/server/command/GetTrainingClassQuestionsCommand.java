@@ -90,7 +90,7 @@ public class GetTrainingClassQuestionsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : trainingControl.countTrainingClassQuestions(trainingClassSection);
+        return hasExecutionErrors() ? null : trainingControl.countTrainingClassQuestionsByTrainingClassSection(trainingClassSection);
     }
 
     @Override

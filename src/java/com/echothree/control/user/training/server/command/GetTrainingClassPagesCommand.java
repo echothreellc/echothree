@@ -90,7 +90,7 @@ public class GetTrainingClassPagesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : trainingControl.countTrainingClassPages(trainingClassSection);
+        return hasExecutionErrors() ? null : trainingControl.countTrainingClassPagesByTrainingClassSection(trainingClassSection);
     }
 
     @Override
