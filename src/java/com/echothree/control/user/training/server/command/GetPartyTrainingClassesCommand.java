@@ -20,25 +20,31 @@ import com.echothree.control.user.training.common.form.GetPartyTrainingClassesFo
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.training.server.entity.PartyTrainingClass;
+import com.echothree.model.data.training.server.entity.TrainingClass;
+import com.echothree.model.data.training.server.factory.PartyTrainingClassFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTrainingClassesCommand
-        extends BaseSimpleCommand<GetPartyTrainingClassesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyTrainingClass, GetPartyTrainingClassesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,54 +54,96 @@ public class GetPartyTrainingClassesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClass.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
     
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
     /** Creates a new instance of GetPartyTrainingClassesCommand */
     public GetPartyTrainingClassesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    private Party party;
+    private TrainingClass trainingClass;
+
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetPartyTrainingClassesResult();
+    protected void handleForm() {
         var partyName = form.getPartyName();
         var trainingClassName = form.getTrainingClassName();
         var parameterCount = (partyName == null ? 0 : 1) + (trainingClassName == null ? 0 : 1);
-        
+
         if(parameterCount == 1) {
-            var trainingControl = Session.getModelController(TrainingControl.class);
-            
             if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var party = partyControl.getPartyByName(partyName);
-                
-                if(party != null) {
-                    result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
-                    result.setPartyTrainingClasses(trainingControl.getPartyTrainingClassTransfersByParty(getUserVisit(), party));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
-            } else if(trainingClassName != null) {
-                var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
-                
-                if(trainingClass != null) {
-                    result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));
-                    result.setPartyTrainingClasses(trainingControl.getPartyTrainingClassTransfersByTrainingClass(getUserVisit(), trainingClass));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
-                }
+                party = partyLogic.getPartyByName(this, partyName);
+            } else {
+                trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            total = party != null ? trainingControl.countPartyTrainingClassesByParty(party) :
+                    trainingControl.countPartyTrainingClassesByTrainingClass(trainingClass);
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<PartyTrainingClass> getEntities() {
+        Collection<PartyTrainingClass> entities = null;
+
+        if(!hasExecutionErrors()) {
+            entities = party != null ? trainingControl.getPartyTrainingClassesByParty(party) :
+                    trainingControl.getPartyTrainingClassesByTrainingClass(trainingClass);
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyTrainingClass> entities) {
+        var result = TrainingResultFactory.getGetPartyTrainingClassesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(party != null) {
+                result.setParty(partyControl.getPartyTransfer(userVisit, party));
+            } else {
+                result.setTrainingClass(trainingControl.getTrainingClassTransfer(userVisit, trainingClass));
+            }
+
+            if(session.hasLimit(PartyTrainingClassFactory.class)) {
+                result.setPartyTrainingClassCount(getTotalEntities());
+            }
+
+            result.setPartyTrainingClasses(trainingControl.getPartyTrainingClassTransfers(userVisit, entities));
+        }
+
         return result;
     }
     
