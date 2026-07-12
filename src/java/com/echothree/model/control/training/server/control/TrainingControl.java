@@ -2164,8 +2164,8 @@ public class TrainingControl
                 """);
         getPartyTrainingClassByNameQueries = Collections.unmodifiableMap(queryMap);
     }
-    
-    private PartyTrainingClass getPartyTrainingClassByName(String partyTrainingClassName, EntityPermission entityPermission) {
+
+    public PartyTrainingClass getPartyTrainingClassByName(String partyTrainingClassName, EntityPermission entityPermission) {
         return PartyTrainingClassFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTrainingClassByNameQueries, partyTrainingClassName);
     }
     

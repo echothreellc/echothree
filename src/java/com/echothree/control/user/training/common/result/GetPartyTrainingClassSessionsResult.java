@@ -26,6 +26,9 @@ public interface GetPartyTrainingClassSessionsResult
     
     PartyTrainingClassTransfer getPartyTrainingClass();
     void setPartyTrainingClass(PartyTrainingClassTransfer partyTrainingClass);
+
+    Long getPartyTrainingClassSessionCount();
+    void setPartyTrainingClassSessionCount(Long partyTrainingClassSessionCount);
     
     List<PartyTrainingClassSessionTransfer> getPartyTrainingClassSessions();
     void setPartyTrainingClassSessions(List<PartyTrainingClassSessionTransfer> partyTrainingClassSessions);

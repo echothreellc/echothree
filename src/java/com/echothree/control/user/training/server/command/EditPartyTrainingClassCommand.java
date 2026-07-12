@@ -18,7 +18,6 @@ package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.edit.PartyTrainingClassEdit;
 import com.echothree.control.user.training.common.edit.TrainingEditFactory;
-import com.echothree.control.user.training.common.form.EditPartyTrainingClassForm;
 import com.echothree.control.user.training.common.result.EditPartyTrainingClassResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.control.user.training.common.spec.PartyTrainingClassSpec;
@@ -28,19 +27,19 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTrainingClassCommand
@@ -55,23 +54,29 @@ public class EditPartyTrainingClassCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClass.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CompletedTime", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ValidUntilTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of EditPartyTrainingClassCommand */
     public EditPartyTrainingClassCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyTrainingClassLogic partyTrainingClassLogic;
     
     @Override
     public EditPartyTrainingClassResult getResult() {
@@ -85,20 +90,12 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public PartyTrainingClass getEntity(EditPartyTrainingClassResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        PartyTrainingClass partyTrainingClass;
         var partyTrainingClassName = spec.getPartyTrainingClassName();
+        var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, partyTrainingClassName,
+                editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON) ? EntityPermission.READ_ONLY : EntityPermission.READ_WRITE);
 
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
-        } else { // EditMode.UPDATE
-            partyTrainingClass = trainingControl.getPartyTrainingClassByNameForUpdate(partyTrainingClassName);
-        }
-
-        if(partyTrainingClass != null) {
+        if(!hasExecutionErrors()) {
             result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
         }
 
         return partyTrainingClass;
@@ -111,8 +108,6 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public void fillInResult(EditPartyTrainingClassResult result, PartyTrainingClass partyTrainingClass) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
     }
 
@@ -151,14 +146,13 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public void doUpdate(PartyTrainingClass partyTrainingClass) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var partyTrainingClassDetailValue = trainingControl.getPartyTrainingClassDetailValueForUpdate(partyTrainingClass);
 
         partyTrainingClassDetailValue.setCompletedTime(completedTime);
         partyTrainingClassDetailValue.setValidUntilTime(validUntilTime);
 
-        PartyTrainingClassLogic.getInstance().updatePartyTrainingClassFromValue(partyTrainingClassDetailValue, partyPK);
+        partyTrainingClassLogic.updatePartyTrainingClassFromValue(partyTrainingClassDetailValue, partyPK);
     }
 
 }
