@@ -74,8 +74,13 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.forum.common.pk.ForumGroupPK;
+import com.echothree.model.data.forum.common.pk.ForumMessageAttachmentPK;
 import com.echothree.model.data.forum.common.pk.ForumMessagePK;
+import com.echothree.model.data.forum.common.pk.ForumMessagePartPK;
+import com.echothree.model.data.forum.common.pk.ForumMessagePartTypePK;
+import com.echothree.model.data.forum.common.pk.ForumMessageTypePK;
 import com.echothree.model.data.forum.common.pk.ForumPK;
+import com.echothree.model.data.forum.common.pk.ForumRoleTypePK;
 import com.echothree.model.data.forum.common.pk.ForumThreadPK;
 import com.echothree.model.data.forum.common.pk.ForumTypePK;
 import com.echothree.model.data.forum.server.entity.Forum;
@@ -303,12 +308,13 @@ public class ForumControl
     }
 
     public List<ForumGroup> getForumGroups() {
-        var ps = ForumGroupFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM forumgroups, forumgroupdetails " +
-                "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid " +
-                "ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname " +
-                "_LIMIT_");
+        var ps = ForumGroupFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM forumgroups, forumgroupdetails
+                WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid
+                ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname
+                _LIMIT_
+                """);
         
         return ForumGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -320,14 +326,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroups, forumgroupdetails " +
-                        "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroups, forumgroupdetails
+                        WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroups, forumgroupdetails " +
-                        "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroups, forumgroupdetails
+                        WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupFactory.getInstance().prepareStatement(query);
@@ -466,14 +476,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupdescriptions " +
-                        "WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupdescriptions
+                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupdescriptions " +
-                        "WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupdescriptions
+                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupDescriptionFactory.getInstance().prepareStatement(query);
@@ -514,16 +528,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupdescriptions, languages " +
-                        "WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ? " +
-                        "AND frmgrpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupdescriptions, languages
+                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ?
+                        AND frmgrpd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupdescriptions " +
-                        "WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupdescriptions
+                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupDescriptionFactory.getInstance().prepareStatement(query);
@@ -665,12 +684,13 @@ public class ForumControl
     }
 
     public List<Forum> getForums() {
-        var ps = ForumFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM forums, forumdetails " +
-                "WHERE frm_activedetailid = frmdt_forumdetailid " +
-                "ORDER BY frmdt_sortorder, frmdt_forumname " +
-                "_LIMIT_");
+        var ps = ForumFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM forums, forumdetails
+                WHERE frm_activedetailid = frmdt_forumdetailid
+                ORDER BY frmdt_sortorder, frmdt_forumname
+                _LIMIT_
+                """);
         
         return ForumFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -682,14 +702,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forums, forumdetails " +
-                        "WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forums, forumdetails
+                        WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forums, forumdetails " +
-                        "WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forums, forumdetails
+                        WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumFactory.getInstance().prepareStatement(query);
@@ -846,14 +870,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumdescriptions " +
-                        "WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumdescriptions
+                        WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumdescriptions " +
-                        "WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumdescriptions
+                        WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumDescriptionFactory.getInstance().prepareStatement(query);
@@ -893,15 +921,20 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumdescriptions, languages " +
-                        "WHERE frmd_frm_forumid = ? AND frmd_thrutime = ? AND frmd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM forumdescriptions, languages
+                        WHERE frmd_frm_forumid = ? AND frmd_thrutime = ? AND frmd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumdescriptions " +
-                        "WHERE frmd_frm_forumid = ? AND frmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumdescriptions
+                        WHERE frmd_frm_forumid = ? AND frmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumDescriptionFactory.getInstance().prepareStatement(query);
@@ -1020,13 +1053,21 @@ public class ForumControl
         
         return forumGroupForum;
     }
-    
+
     public long countForumGroupForumsByForumGroup(ForumGroup forumGroup) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM forumgroupforums " +
-                "WHERE frmgrpfrm_frmgrp_forumgroupid = ?",
-                forumGroup);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM forumgroupforums
+                WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ?
+                """, forumGroup, Session.MAX_TIME);
+    }
+
+    public long countForumGroupForumsByForum(Forum forum) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM forumgroupforums
+                WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
+                """, forum, Session.MAX_TIME);
     }
 
     private ForumGroupForum getForumGroupForum(ForumGroup forumGroup, Forum forum, EntityPermission entityPermission) {
@@ -1036,14 +1077,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums " +
-                        "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums
+                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums " +
-                        "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums
+                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
@@ -1083,14 +1128,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums " +
-                        "WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums
+                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums " +
-                        "WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums
+                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
@@ -1127,17 +1176,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums, forums, forumdetails " +
-                        "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ? " +
-                        "AND frmgrpfrm_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid " +
-                        "ORDER BY frmdt_sortorder, frmdt_forumname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums, forums, forumdetails
+                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ?
+                        AND frmgrpfrm_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
+                        ORDER BY frmdt_sortorder, frmdt_forumname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums " +
-                        "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums
+                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
@@ -1168,16 +1221,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums, forumgroups, forumgroupdetails " +
-                        "WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ? " +
-                        "AND frmgrpfrm_frmgrp_forumgroupid = frmgrp_forumgroupid AND frmgrp_lastdetailid = frmgrpdt_forumgroupdetailid " +
-                        "ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums, forumgroups, forumgroupdetails
+                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
+                        AND frmgrpfrm_frmgrp_forumgroupid = frmgrp_forumgroupid AND frmgrp_lastdetailid = frmgrpdt_forumgroupdetailid
+                        ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumgroupforums " +
-                        "WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumgroupforums
+                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumGroupForumFactory.getInstance().prepareStatement(query);
@@ -1309,15 +1367,38 @@ public class ForumControl
     public ForumRoleType createForumRoleType(String forumRoleTypeName, Boolean isDefault, Integer sortOrder) {
         return ForumRoleTypeFactory.getInstance().create(forumRoleTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumRoleType */
+    public ForumRoleType getForumRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumRoleTypePK(entityInstance.getEntityUniqueId());
+
+        return ForumRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumRoleType getForumRoleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getForumRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumRoleType getForumRoleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumRoleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumRoleTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumroletypes
+                        """);
+    }
+
     public ForumRoleType getForumRoleTypeByName(String forumRoleTypeName) {
         ForumRoleType forumRoleType;
         
         try {
-            var ps = ForumRoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forumroletypes " +
-                    "WHERE frmrtyp_forumroletypename = ?");
+            var ps = ForumRoleTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forumroletypes
+                    WHERE frmrtyp_forumroletypename = ?
+                    """);
             
             ps.setString(1, forumRoleTypeName);
             
@@ -1330,10 +1411,12 @@ public class ForumControl
     }
     
     public List<ForumRoleType> getForumRoleTypes() {
-        var ps = ForumRoleTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM forumroletypes " +
-                "ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename");
+        var ps = ForumRoleTypeFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM forumroletypes
+                ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename
+                _LIMIT_
+                """);
         
         return ForumRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1387,10 +1470,11 @@ public class ForumControl
         ForumRoleTypeDescription forumRoleTypeDescription;
         
         try {
-            var ps = ForumRoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forumroletypedescriptions " +
-                    "WHERE frmrtypd_frmrtyp_forumroletypeid = ? AND frmrtypd_lang_languageid = ?");
+            var ps = ForumRoleTypeDescriptionFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forumroletypedescriptions
+                    WHERE frmrtypd_frmrtyp_forumroletypeid = ? AND frmrtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, forumRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1455,10 +1539,11 @@ public class ForumControl
         ForumType forumType;
         
         try {
-            var ps = ForumTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forumtypes " +
-                    "WHERE frmtyp_forumtypename = ?");
+            var ps = ForumTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forumtypes
+                    WHERE frmtyp_forumtypename = ?
+                    """);
             
             ps.setString(1, forumTypeName);
             
@@ -1471,11 +1556,12 @@ public class ForumControl
     }
     
     public List<ForumType> getForumTypes() {
-        var ps = ForumTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM forumtypes " +
-                "ORDER BY frmtyp_sortorder, frmtyp_forumtypename " +
-                "_LIMIT_");
+        var ps = ForumTypeFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM forumtypes
+                ORDER BY frmtyp_sortorder, frmtyp_forumtypename
+                _LIMIT_
+                """);
         
         return ForumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1527,10 +1613,11 @@ public class ForumControl
         ForumTypeDescription forumTypeDescription;
         
         try {
-            var ps = ForumTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forumtypedescriptions " +
-                    "WHERE frmtypd_frmtyp_forumtypeid = ? AND frmtypd_lang_languageid = ?");
+            var ps = ForumTypeDescriptionFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forumtypedescriptions
+                    WHERE frmtypd_frmtyp_forumtypeid = ? AND frmtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, forumType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1586,7 +1673,23 @@ public class ForumControl
         
         return forumMimeType;
     }
-    
+
+    public long countForumMimeTypeByForum(final Forum forum) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummimetypes
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ?
+                        """, forum, Session.MAX_TIME);
+    }
+
+    public long countForumMimeTypeByMimeType(final MimeType mimeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummimetypes
+                        WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
+                        """, mimeType, Session.MAX_TIME);
+    }
+
     private ForumMimeType getForumMimeType(Forum forum, MimeType mimeType, EntityPermission entityPermission) {
         ForumMimeType forumMimeType;
         
@@ -1594,14 +1697,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes " +
-                        "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes " +
-                        "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
@@ -1641,14 +1748,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes " +
-                        "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes " +
-                        "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
@@ -1685,16 +1796,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes, mimetypes, mimetypedetails " +
-                        "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ? " +
-                        "AND frmmtyp_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid " +
-                        "ORDER BY frmmtyp_sortorder, mtypdt_sortorder, mtypdt_mimetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes, mimetypes, mimetypedetails
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ?
+                        AND frmmtyp_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid
+                        ORDER BY frmmtyp_sortorder, mtypdt_sortorder, mtypdt_mimetypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes " +
-                        "WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes
+                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
@@ -1725,16 +1841,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes, forums, forumdetails " +
-                        "WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ? " +
-                        "AND frmmtyp_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid " +
-                        "ORDER BY frmmtyp_sortorder, frmdt_sortorder, frmdt_forumname";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes, forums, forumdetails
+                        WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
+                        AND frmmtyp_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
+                        ORDER BY frmmtyp_sortorder, frmdt_sortorder, frmdt_forumname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummimetypes " +
-                        "WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummimetypes
+                        WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMimeTypeFactory.getInstance().prepareStatement(query);
@@ -1907,21 +2028,45 @@ public class ForumControl
         
         return forumPartyRole;
     }
-    
+
+    public long countForumPartyRoleByForum(Forum forum) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumpartyroles
+                        WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ?
+                        """, forum, Session.MAX_TIME);
+    }
+
+    public long countForumPartyRoleByParty(Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumpartyroles
+                        WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countForumPartyRoleByForumRoleType(ForumRoleType forumRoleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumpartyroles
+                        WHERE frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
+                        """, forumRoleType, Session.MAX_TIME);
+    }
+
     public boolean hasForumPartyRoles(Forum forum, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger(
-                "SELECT COUNT(*) " +
-                "FROM forumpartyroles " +
-                "WHERE frmparr_frm_forumid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?",
-                forum, forumRoleType, Session.MAX_TIME) == 0);
+        return !(session.queryForInteger("""
+                        SELECT COUNT(*)
+                        FROM forumpartyroles
+                        WHERE frmparr_frm_forumid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
+                        """, forum, forumRoleType, Session.MAX_TIME) == 0);
     }
 
     public boolean hasForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger(
-                "SELECT COUNT(*) " +
-                "FROM forumpartyroles " +
-                "WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?",
-                forum, party, forumRoleType, Session.MAX_TIME) == 0);
+        return !(session.queryForInteger("""
+                        SELECT COUNT(*)
+                        FROM forumpartyroles
+                        WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
+                        """, forum, party, forumRoleType, Session.MAX_TIME) == 0);
     }
 
     private List<ForumPartyRole> getForumPartyRolesByForum(Forum forum, EntityPermission entityPermission) {
@@ -1931,17 +2076,22 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartyroles, parties, partydetails, forumroletypes " +
-                        "WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ? " +
-                        "AND frmparr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "AND frmparr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid " +
-                        "ORDER BY pardt_partyname, frmrtyp_sortorder, frmrtyp_forumroletypename";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartyroles, parties, partydetails, forumroletypes
+                        WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ?
+                        AND frmparr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        AND frmparr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
+                        ORDER BY pardt_partyname, frmrtyp_sortorder, frmrtyp_forumroletypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartyroles " +
-                        "WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartyroles
+                        WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
@@ -1972,17 +2122,22 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartyroles, forums, forumdetails, forumroletypes " +
-                        "WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ? " +
-                        "AND frmparr_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid " +
-                        "AND frmparr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid " +
-                        "ORDER BY frmdt_sortorder, frmdt_forumname, frmrtyp_sortorder, frmrtyp_forumroletypename";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartyroles, forums, forumdetails, forumroletypes
+                        WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ?
+                        AND frmparr_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
+                        AND frmparr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
+                        ORDER BY frmdt_sortorder, frmdt_forumname, frmrtyp_sortorder, frmrtyp_forumroletypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartyroles " +
-                        "WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartyroles
+                        WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
@@ -2013,16 +2168,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartyroles " +
-                        "WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? " +
-                        "AND frmparr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartyroles
+                        WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartyroles " +
-                        "WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? " +
-                        "AND frmparr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartyroles
+                        WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumPartyRoleFactory.getInstance().prepareStatement(query);
@@ -2095,21 +2252,45 @@ public class ForumControl
         
         return forumPartyTypeRole;
     }
-    
+
+    public long countForumPartyTypeRolesByForum(Forum forum) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ?
+                        """, forum, Session.MAX_TIME);
+    }
+
+    public long countForumPartyTypeRolesByPartyType(PartyType partyType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_ptyp_partytypeid = ? AND frmptypr_thrutime = ?
+                        """, partyType, Session.MAX_TIME);
+    }
+
+    public long countForumPartyTypeRolesByForumRoleType(ForumRoleType forumRoleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
+                        """, forumRoleType, Session.MAX_TIME);
+    }
+
     public boolean hasForumPartyTypeRoles(Forum forum, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger(
-                "SELECT COUNT(*) " +
-                "FROM forumpartytyperoles " +
-                "WHERE frmptypr_frm_forumid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?",
-                forum, forumRoleType, Session.MAX_TIME) == 0);
+        return !(session.queryForInteger("""
+                        SELECT COUNT(*)
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
+                        """, forum, forumRoleType, Session.MAX_TIME) == 0);
     }
 
     public boolean hasForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger(
-                "SELECT COUNT(*) " +
-                "FROM forumpartytyperoles " +
-                "WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?",
-                forum, partyType, forumRoleType, Session.MAX_TIME) == 0);
+        return !(session.queryForInteger("""
+                        SELECT COUNT(*)
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
+                        """, forum, partyType, forumRoleType, Session.MAX_TIME) == 0);
     }
 
     private List<ForumPartyTypeRole> getForumPartyTypeRolesByForum(Forum forum, EntityPermission entityPermission) {
@@ -2119,17 +2300,22 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartytyperoles, partytypes, forumroletypes " +
-                        "WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ? " +
-                        "AND frmptypr_ptyp_partytypeid = ptyp_partytypeid " +
-                        "AND frmptypr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename, frmrtyp_sortorder, frmrtyp_forumroletypename";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartytyperoles, partytypes, forumroletypes
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ?
+                        AND frmptypr_ptyp_partytypeid = ptyp_partytypeid
+                        AND frmptypr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
+                        ORDER BY ptyp_sortorder, ptyp_partytypename, frmrtyp_sortorder, frmrtyp_forumroletypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartytyperoles " +
-                        "WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumPartyTypeRoleFactory.getInstance().prepareStatement(query);
@@ -2160,16 +2346,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartytyperoles " +
-                        "WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? " +
-                        "AND frmptypr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumpartytyperoles " +
-                        "WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? " +
-                        "AND frmptypr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumpartytyperoles
+                        WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumPartyTypeRoleFactory.getInstance().prepareStatement(query);
@@ -2237,7 +2425,23 @@ public class ForumControl
             Boolean isDefault, Integer sortOrder) {
         return ForumTypeMessageTypeFactory.getInstance().create(forumType, forumMessageType, isDefault, sortOrder);
     }
-    
+
+    public long countForumTypeMessageTypeBy(final ForumType forumType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ?
+                        """, forumType);
+    }
+
+    public long countForumTypeMessageTypeBy(final ForumMessageType forumMessageType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?
+                        """, forumMessageType);
+    }
+
     private List<ForumTypeMessageType> getForumTypeMessageTypesByForumType(ForumType forumType, EntityPermission entityPermission) {
         List<ForumTypeMessageType> forumTypeMessageTypes;
         
@@ -2245,16 +2449,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumtypemessagetypes, forummessagetypes " +
-                        "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? " +
-                        "AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = frmmsgtyp_forummessagetypeid " +
-                        "ORDER BY frmtypmsgtyp_sortorder, frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM forumtypemessagetypes, forummessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ?
+                        AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = frmmsgtyp_forummessagetypeid
+                        ORDER BY frmtypmsgtyp_sortorder, frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumtypemessagetypes " +
-                        "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
@@ -2284,14 +2493,18 @@ public class ForumControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumtypemessagetypes " +
-                        "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumtypemessagetypes " +
-                        "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
@@ -2322,14 +2535,18 @@ public class ForumControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumtypemessagetypes " +
-                        "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumtypemessagetypes " +
-                        "WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumtypemessagetypes
+                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumTypeMessageTypeFactory.getInstance().prepareStatement(query);
@@ -2377,7 +2594,23 @@ public class ForumControl
         
         return forumForumThread;
     }
-    
+
+    public long countForumForumThreadsByForum(final Forum forum) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM forumforumthreads
+                WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                """, forum, Session.MAX_TIME);
+    }
+
+    public long countForumForumThreadsByForumThread(final ForumThread forumThread) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM forumforumthreads
+                WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
+                """, forumThread, Session.MAX_TIME);
+    }
+
     private ForumForumThread getForumForumThread(Forum forum, ForumThread forumThread, EntityPermission entityPermission) {
         ForumForumThread forumForumThread;
         
@@ -2385,14 +2618,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads " +
-                        "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads
+                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads " +
-                        "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads
+                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
@@ -2432,14 +2669,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads " +
-                        "WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads
+                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads " +
-                        "WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads
+                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
@@ -2476,16 +2717,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads, forumthreads, forumthreaddetails " +
-                        "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ? " +
-                        "AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid AND frmthrd_lastdetailid = frmthrddt_forumthreaddetailid " +
-                        "ORDER BY frmthrddt_sortorder, frmthrddt_postedtime";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads, forumthreads, forumthreaddetails
+                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                        AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid AND frmthrd_lastdetailid = frmthrddt_forumthreaddetailid
+                        ORDER BY frmthrddt_sortorder, frmthrddt_postedtime
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads " +
-                        "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads
+                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
@@ -2516,16 +2762,21 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads, forums, forumdetails " +
-                        "WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ? " +
-                        "AND frmfrmthrd_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid " +
-                        "ORDER BY frmdt_sortorder, frmdt_forumname";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads, forums, forumdetails
+                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
+                        AND frmfrmthrd_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
+                        ORDER BY frmdt_sortorder, frmdt_forumname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads " +
-                        "WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads
+                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumForumThreadFactory.getInstance().prepareStatement(query);
@@ -2548,7 +2799,7 @@ public class ForumControl
     public List<ForumForumThread> getForumForumThreadsByForumThreadForUpdate(ForumThread forumThread) {
         return getForumForumThreadsByForumThread(forumThread, EntityPermission.READ_WRITE);
     }
-    
+
     public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, Collection<ForumForumThread> forumForumThreads) {
         List<ForumForumThreadTransfer> forumForumThreadTransfers = new ArrayList<>(forumForumThreads.size());
         
@@ -2693,13 +2944,37 @@ public class ForumControl
         
         return forumThread;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumThread */
-    public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance) {
-        var pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
-        var forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return forumThread;
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumThread */
+    public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
+
+        return ForumThreadFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance) {
+        return getForumThreadByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumThread getForumThreadByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumThreadByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumThreads() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumthreads
+                        JOIN forumthreaddetails ON frmthrddt_forumthreaddetailid = frmthrd_activedetailid
+                        """);
+    }
+
+    public long countForumThreadsByIcon(final Icon icon) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumthreads
+                        JOIN forumthreaddetails ON frmthrddt_forumthreaddetailid = frmthrd_activedetailid
+                        WHERE frmthrddt_icn_iconid = ?
+                        """, icon);
     }
 
     private ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
@@ -2709,14 +2984,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumthreads, forumthreaddetails " +
-                        "WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumthreads, forumthreaddetails
+                        WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumthreads, forumthreaddetails " +
-                        "WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumthreads, forumthreaddetails
+                        WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumThreadFactory.getInstance().prepareStatement(query);
@@ -2751,19 +3030,21 @@ public class ForumControl
         long count;
         
         if (includeFutureForumThreads) {
-            count = session.queryForLong(
-                    "SELECT COUNT(*) "
-                    + "FROM forumforumthreads "
-                    + "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?",
+            count = session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM forumforumthreads
+                    WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                    """,
                     forum, Session.MAX_TIME);
         } else {
-            count = session.queryForLong(
-                    "SELECT COUNT(*) "
-                    + "FROM forumforumthreads, forumthreads, forumthreaddetails "
-                    + "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ? "
-                    + "AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid "
-                    + "AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid "
-                    + "AND frmthrddt_postedtime <= ?",
+            count = session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM forumforumthreads, forumthreads, forumthreaddetails
+                    WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                    AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid
+                    AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid
+                    AND frmthrddt_postedtime <= ?
+                    """,
                     forum, Session.MAX_TIME, session.getStartTime());
         }
 
@@ -2777,25 +3058,29 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads, forumthreads, forumthreaddetails, componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, entitytimes " +
-                        "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ? " +
-                        "AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid " +
-                        "AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid " +
-                        "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                        "AND ent_activedetailid = entdt_entitytypedetailid AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND entdt_entitytypename = ? " +
-                        "AND ent_entitytypeid = eni_ent_entitytypeid AND frmthrd_forumthreadid = eni_entityuniqueid " +
-                        "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-                        (includeFutureForumThreads? "": "AND frmthrddt_postedtime <= ? ") +
-                        "ORDER BY frmthrddt_sortorder, frmthrddt_postedtime DESC, etim_createdtime DESC" +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads, forumthreads, forumthreaddetails, componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, entitytimes
+                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                        AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid
+                        AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid
+                        AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                        AND ent_activedetailid = entdt_entitytypedetailid AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND entdt_entitytypename = ?
+                        AND ent_entitytypeid = eni_ent_entitytypeid AND frmthrd_forumthreadid = eni_entityuniqueid
+                        AND eni_entityinstanceid = etim_eni_entityinstanceid
+                        """ + (includeFutureForumThreads? "": "AND frmthrddt_postedtime <= ? ") + """
+                        ORDER BY frmthrddt_sortorder, frmthrddt_postedtime DESC, etim_createdtime DESC
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumforumthreads, forumthreads, forumthreaddetails " +
-                        "WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ? " +
-                        "AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid " +
-                        "AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumforumthreads, forumthreads, forumthreaddetails
+                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
+                        AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid
+                        AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumThreadFactory.getInstance().prepareStatement(query);
@@ -2927,20 +3212,64 @@ public class ForumControl
         
         return forumMessage;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessage */
-    public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance) {
-        var pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
-        var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return forumMessage;
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessage */
+    public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
+
+        return ForumMessageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance) {
+        return getForumMessageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumMessage getForumMessageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumMessageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countForumMessages() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM forummessages, forummessagedetails " +
-                "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessages
+                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
+                        """);
+    }
+
+    public long countForumMessagesByForumThread(ForumThread forumThread) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessages
+                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
+                        WHERE frmmsgdt_frmthrd_forumthreadid = ?
+                        """, forumThread);
+    }
+
+    public long countForumMessagesByForumMessageType(ForumMessageType forumMessageType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessages
+                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
+                        WHERE frmmsgdt_frmmsgtyp_forummessagetypeid = ?
+                        """, forumMessageType);
+    }
+
+    public long countForumMessagesByParentForumMessage(ForumMessage parentForumMessage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessages
+                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
+                        WHERE frmmsgdt_parentforummessageid = ?
+                        """, parentForumMessage);
+    }
+
+    public long countForumMessagesByIcon(Icon icon) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessages
+                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
+                        WHERE frmmsgdt_icn_iconid = ?
+                        """, icon);
     }
 
     private ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
@@ -2950,14 +3279,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessages, forummessagedetails " +
-                        "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessages, forummessagedetails
+                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessages, forummessagedetails " +
-                        "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessages, forummessagedetails
+                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMessageFactory.getInstance().prepareStatement(query);
@@ -2988,14 +3321,6 @@ public class ForumControl
         return getForumMessageDetailValueForUpdate(getForumMessageByNameForUpdate(forumMessageName));
     }
     
-    public long countForumMessagesByForumThread(ForumThread forumThread) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM forummessages, forummessagedetails " +
-                "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ?",
-                forumThread);
-    }
-    
     private List<ForumMessage> getForumMessagesByForumThread(ForumThread forumThread, EntityPermission entityPermission) {
         List<ForumMessage> forumMessages;
         
@@ -3003,16 +3328,20 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessages, forummessagedetails " +
-                        "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ? " +
-                        "ORDER BY frmmsgdt_postedtime, frmmsgdt_forummessagename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessages, forummessagedetails
+                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ?
+                        ORDER BY frmmsgdt_postedtime, frmmsgdt_forummessagename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessages, forummessagedetails " +
-                        "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessages, forummessagedetails
+                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMessageFactory.getInstance().prepareStatement(query);
@@ -3040,17 +3369,19 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM forummessages, forummessagedetails " +
-                "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_parentforummessageid = ? " +
-                "ORDER BY frmmsgdt_sortorder, frmmsgdt_forummessagename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM forummessages, forummessagedetails " +
-                "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_parentforummessageid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessages, forummessagedetails
+                WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_parentforummessageid = ?
+                ORDER BY frmmsgdt_sortorder, frmmsgdt_forummessagename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessages, forummessagedetails
+                WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_parentforummessageid = ?
+                FOR UPDATE
+                """);
         getForumMessagesByParentForumMessageQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3156,15 +3487,17 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM forummessagestatuses " +
-                "WHERE frmmsgst_frmmsg_forummessageid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM forummessagestatuses " +
-                "WHERE frmmsgst_frmmsg_forummessageid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessagestatuses
+                WHERE frmmsgst_frmmsg_forummessageid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessagestatuses
+                WHERE frmmsgst_frmmsg_forummessageid = ?
+                FOR UPDATE
+                """);
         getForumMessageStatusQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3221,22 +3554,57 @@ public class ForumControl
         return forumMessageAttachment;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessageAttachment */
+    public ForumMessageAttachment getForumMessageAttachmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumMessageAttachmentPK(entityInstance.getEntityUniqueId());
+
+        return ForumMessageAttachmentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumMessageAttachment getForumMessageAttachmentByEntityInstance(EntityInstance entityInstance) {
+        return getForumMessageAttachmentByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumMessageAttachment getForumMessageAttachmentByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumMessageAttachmentByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumMessageAttachmentsByForumMessage(ForumMessage forumMessage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageattachments
+                        JOIN frmmsgattdt_forummessageattachmentdetailid ON frmmsgattdt_forummessageattachmentdetailid = frmmsgatt_activedetailid
+                        WHERE frmmsgattdt_frmmsg_forummessageid = ?
+                        """, forumMessage);
+    }
+
+    public long countForumMessageAttachmentsByMimeType(MimeType mimeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageattachments
+                        JOIN frmmsgattdt_forummessageattachmentdetailid ON frmmsgattdt_forummessageattachmentdetailid = frmmsgatt_activedetailid
+                        WHERE frmmsgattdt_mtyp_mimetypeid = ?
+                        """, mimeType);
+    }
+
     private static final Map<EntityPermission, String> getForumMessageAttachmentBySequenceQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachments, forummessageattachmentdetails "
-                + "WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ? "
-                + "AND frmmsgattdt_forummessageattachmentsequence = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachments, forummessageattachmentdetails "
-                + "WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ? "
-                + "AND frmmsgattdt_forummessageattachmentsequence = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessageattachments, forummessageattachmentdetails
+                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
+                AND frmmsgattdt_forummessageattachmentsequence = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessageattachments, forummessageattachmentdetails
+                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
+                AND frmmsgattdt_forummessageattachmentsequence = ?
+                FOR UPDATE
+                """);
         getForumMessageAttachmentBySequenceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3266,16 +3634,19 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachments, forummessageattachmentdetails "
-                + "WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ? "
-                + "ORDER BY frmmsgattdt_forummessageattachmentsequence");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachments, forummessageattachmentdetails "
-                + "WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessageattachments, forummessageattachmentdetails
+                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
+                ORDER BY frmmsgattdt_forummessageattachmentsequence
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessageattachments, forummessageattachmentdetails
+                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
+                FOR UPDATE
+                """);
         getForumMessageAttachmentByForumMessageQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3363,7 +3734,7 @@ public class ForumControl
     }
 
     // --------------------------------------------------------------------------------
-    //   ForumMessageAttachment Utilities
+    //   Forum Mssage Attachment Utilities
     // --------------------------------------------------------------------------------
 
     private void verifyForumMessageAttachmentMimeType(ForumMessageAttachment forumMessageAttachment, String entityAttributeTypeName) {
@@ -3393,15 +3764,17 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM forummessageblobattachments "
-                + "WHERE frmmsgbatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgbatt_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM forummessageblobattachments "
-                + "WHERE frmmsgbatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgbatt_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessageblobattachments
+                WHERE frmmsgbatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgbatt_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessageblobattachments
+                WHERE frmmsgbatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgbatt_thrutime = ?
+                FOR UPDATE
+                """);
         getForumMessageBlobAttachmentQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3477,15 +3850,17 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM forummessageclobattachments "
-                + "WHERE frmmsgcatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgcatt_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM forummessageclobattachments "
-                + "WHERE frmmsgcatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgcatt_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessageclobattachments
+                WHERE frmmsgcatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgcatt_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessageclobattachments
+                WHERE frmmsgcatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgcatt_thrutime = ?
+                FOR UPDATE
+                """);
         getForumMessageClobAttachmentQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3560,15 +3935,17 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachmentdescriptions "
-                + "WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_lang_languageid = ? AND frmmsgattd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachmentdescriptions "
-                + "WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_lang_languageid = ? AND frmmsgattd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessageattachmentdescriptions
+                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_lang_languageid = ? AND frmmsgattd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessageattachmentdescriptions
+                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_lang_languageid = ? AND frmmsgattd_thrutime = ?
+                FOR UPDATE
+                """);
         getForumMessageAttachmentDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3598,16 +3975,19 @@ public class ForumControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachmentdescriptions, languages "
-                + "WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_thrutime = ? AND frmmsgattd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM forummessageattachmentdescriptions "
-                + "WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM forummessageattachmentdescriptions, languages
+                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_thrutime = ? AND frmmsgattd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM forummessageattachmentdescriptions
+                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_thrutime = ?
+                FOR UPDATE
+                """);
         getForumMessageAttachmentDescriptionsByForumMessageAttachmentQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3709,7 +4089,31 @@ public class ForumControl
         
         return forumMessageRole;
     }
-    
+
+    public long countForumMessageRolesByForumMessage(final ForumMessage forumMessage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageroles
+                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ?
+                        """, forumMessage, Session.MAX_TIME);
+    }
+
+    public long countForumMessageRolesByForumRoleType(final ForumRoleType forumRoleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageroles
+                        WHERE frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_thrutime = ?
+                        """, forumRoleType, Session.MAX_TIME);
+    }
+
+    public long countForumMessageRolesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageroles
+                        WHERE frmmsgr_par_partyid = ? AND frmmsgr_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
     private ForumMessageRole getForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party, EntityPermission entityPermission) {
         ForumMessageRole forumMessageRole;
         
@@ -3717,14 +4121,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessageroles " +
-                        "WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessageroles
+                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ? AND frmmsgr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessageroles " +
-                        "WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessageroles
+                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ? AND frmmsgr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMessageRoleFactory.getInstance().prepareStatement(query);
@@ -3757,17 +4165,22 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessageroles, forumroletypes, parties, partydetails " +
-                        "WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ? " +
-                        "AND frmmsgr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid " +
-                        "AND frmmsgr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename, pardt_partyname";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessageroles, forumroletypes, parties, partydetails
+                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ?
+                        AND frmmsgr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
+                        AND frmmsgr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename, pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessageroles " +
-                        "WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessageroles
+                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMessageRoleFactory.getInstance().prepareStatement(query);
@@ -3848,7 +4261,58 @@ public class ForumControl
         
         return forumMessagePart;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessagePart */
+    public ForumMessagePart getForumMessagePartByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumMessagePartPK(entityInstance.getEntityUniqueId());
+
+        return ForumMessagePartFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumMessagePart getForumMessagePartByEntityInstance(EntityInstance entityInstance) {
+        return getForumMessagePartByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumMessagePart getForumMessagePartByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumMessagePartByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumMessagePartsByForumMessage(final ForumMessage forumMessage) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageparts
+                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
+                        WHERE frmmsgprtdt_frmmsg_forummessageid = ?
+                        """, forumMessage);
+    }
+
+    public long countForumMessagePartsByForumMessagePartType(final ForumMessagePartType forumMessagePartType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageparts
+                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
+                        WHERE frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ?
+                        """, forumMessagePartType);
+    }
+
+    public long countForumMessagePartsByLanguage(final Language language) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageparts
+                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
+                        WHERE frmmsgprtdt_lang_languageid = ?
+                        """, language);
+    }
+
+    public long countForumMessagePartsByMimeType(final MimeType mimeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageparts
+                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
+                        WHERE frmmsgprtdt_mtyp_mimetypeid = ?
+                        """, mimeType);
+    }
+
     private ForumMessagePart getForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
             Language language, EntityPermission entityPermission) {
         ForumMessagePart forumMessagePart;
@@ -3857,16 +4321,20 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessageparts, forummessagepartdetails " +
-                        "WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid " +
-                        "AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessageparts, forummessagepartdetails
+                        WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid
+                        AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forummessageparts, forummessagepartdetails " +
-                        "WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid " +
-                        "AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forummessageparts, forummessagepartdetails
+                        WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid
+                        AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumMessagePartFactory.getInstance().prepareStatement(query);
@@ -3906,12 +4374,13 @@ public class ForumControl
         List<ForumMessagePart> forumMessageParts;
         
         try {
-            var ps = ForumMessagePartFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessageparts, forummessagepartdetails " +
-                    "WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid " +
-                    "AND frmmsgprtdt_frmmsg_forummessageid = ? " +
-                    "FOR UPDATE");
+            var ps = ForumMessagePartFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessageparts, forummessagepartdetails
+                    WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid
+                    AND frmmsgprtdt_frmmsg_forummessageid = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
             
@@ -4038,14 +4507,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumstringmessageparts " +
-                        "WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumstringmessageparts
+                        WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumstringmessageparts " +
-                        "WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumstringmessageparts
+                        WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumStringMessagePartFactory.getInstance().prepareStatement(query);
@@ -4131,14 +4604,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumclobmessageparts " +
-                        "WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumclobmessageparts
+                        WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumclobmessageparts " +
-                        "WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumclobmessageparts
+                        WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumClobMessagePartFactory.getInstance().prepareStatement(query);
@@ -4222,14 +4699,18 @@ public class ForumControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumblobmessageparts " +
-                        "WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM forumblobmessageparts
+                        WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM forumblobmessageparts " +
-                        "WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM forumblobmessageparts
+                        WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ForumBlobMessagePartFactory.getInstance().prepareStatement(query);
@@ -4301,15 +4782,38 @@ public class ForumControl
             Integer sortOrder) {
         return ForumMessagePartTypeFactory.getInstance().create(forumMessagePartTypeName, mimeTypeUsageType, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessagePartType */
+    public ForumMessagePartType getForumMessagePartTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumMessagePartTypePK(entityInstance.getEntityUniqueId());
+
+        return ForumMessagePartTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumMessagePartType getForumMessagePartTypeByEntityInstance(EntityInstance entityInstance) {
+        return getForumMessagePartTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumMessagePartType getForumMessagePartTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumMessagePartTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumMessagePartTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessageparttypes
+                        """);
+    }
+
     public ForumMessagePartType getForumMessagePartTypeByName(String forumMessagePartTypeName) {
         ForumMessagePartType forumMessagePartType;
         
         try {
-            var ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessageparttypes " +
-                    "WHERE frmmsgprttyp_forummessageparttypename = ?");
+            var ps = ForumMessagePartTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessageparttypes
+                    WHERE frmmsgprttyp_forummessageparttypename = ?
+                    """);
             
             ps.setString(1, forumMessagePartTypeName);
             
@@ -4323,10 +4827,12 @@ public class ForumControl
     }
     
     public List<ForumMessagePartType> getForumMessagePartTypes() {
-        var ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM forummessageparttypes " +
-                "ORDER BY frmmsgprttyp_sortorder, frmmsgprttyp_forummessageparttypename");
+        var ps = ForumMessagePartTypeFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM forummessageparttypes
+                ORDER BY frmmsgprttyp_sortorder, frmmsgprttyp_forummessageparttypename
+                _LIMIT_
+                """);
         
         return ForumMessagePartTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -4349,10 +4855,11 @@ public class ForumControl
         ForumMessagePartTypeDescription forumMessagePartTypeDescription;
         
         try {
-            var ps = ForumMessagePartTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessageparttypedescriptions " +
-                    "WHERE frmmsgprttypd_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprttypd_lang_languageid = ?");
+            var ps = ForumMessagePartTypeDescriptionFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessageparttypedescriptions
+                    WHERE frmmsgprttypd_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprttypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, forumMessagePartType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -4392,15 +4899,38 @@ public class ForumControl
     public ForumMessageType createForumMessageType(String forumMessageTypeName, Boolean isDefault, Integer sortOrder) {
         return ForumMessageTypeFactory.getInstance().create(forumMessageTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessageType */
+    public ForumMessageType getForumMessageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumMessageTypePK(entityInstance.getEntityUniqueId());
+
+        return ForumMessageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumMessageType getForumMessageTypeByEntityInstance(EntityInstance entityInstance) {
+        return getForumMessageTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumMessageType getForumMessageTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumMessageTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumMessageTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forummessagetypes
+                        """);
+    }
+
     public ForumMessageType getForumMessageTypeByName(String forumMessageTypeName) {
         ForumMessageType forumMessageType;
         
         try {
-            var ps = ForumMessageTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessagetypes " +
-                    "WHERE frmmsgtyp_forummessagetypename = ?");
+            var ps = ForumMessageTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessagetypes
+                    WHERE frmmsgtyp_forummessagetypename = ?
+                    """);
             
             ps.setString(1, forumMessageTypeName);
             
@@ -4413,10 +4943,12 @@ public class ForumControl
     }
     
     public List<ForumMessageType> getForumMessageTypes() {
-        var ps = ForumMessageTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM forummessagetypes " +
-                "ORDER BY frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename");
+        var ps = ForumMessageTypeFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM forummessagetypes
+                ORDER BY frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename
+                _LIMIT_
+                """);
         
         return ForumMessageTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -4470,10 +5002,11 @@ public class ForumControl
         ForumMessageTypeDescription forumMessageTypeDescription;
         
         try {
-            var ps = ForumMessageTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessagetypedescriptions " +
-                    "WHERE frmmsgtypd_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypd_lang_languageid = ?");
+            var ps = ForumMessageTypeDescriptionFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessagetypedescriptions
+                    WHERE frmmsgtypd_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -4517,10 +5050,11 @@ public class ForumControl
         ForumMessageTypePartType forumMessageTypePartType;
         
         try {
-            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessagetypeparttypes " +
-                    "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_sortorder = ?");
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessagetypeparttypes
+                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_sortorder = ?
+                    """);
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             ps.setInt(2, sortOrder);
@@ -4538,10 +5072,11 @@ public class ForumControl
         ForumMessageTypePartType forumMessageTypePartType;
         
         try {
-            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessagetypeparttypes " +
-                    "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_indexdefault = 1");
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessagetypeparttypes
+                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_indexdefault = 1
+                    """);
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             
@@ -4557,11 +5092,13 @@ public class ForumControl
         List<ForumMessageTypePartType> forumMessageTypePartTypes;
         
         try {
-            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessagetypeparttypes " +
-                    "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? " +
-                    "ORDER BY frmmsgtypprttyp_sortorder");
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessagetypeparttypes
+                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ?
+                    ORDER BY frmmsgtypprttyp_sortorder
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             
@@ -4577,11 +5114,13 @@ public class ForumControl
         List<ForumMessageTypePartType> forumMessageTypePartTypes;
         
         try {
-            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM forummessagetypeparttypes " +
-                    "WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_includeinindex = 1 " +
-                    "ORDER BY frmmsgtypprttyp_sortorder");
+            var ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM forummessagetypeparttypes
+                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_includeinindex = 1
+                    ORDER BY frmmsgtypprttyp_sortorder
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             
