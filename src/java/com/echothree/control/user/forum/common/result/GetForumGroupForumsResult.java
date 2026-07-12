@@ -31,6 +31,9 @@ public interface GetForumGroupForumsResult
     ForumTransfer getForum();
     void setForum(ForumTransfer forum);
     
+    Long getForumGroupForumCount();
+    void setForumGroupForumCount(Long forumGroupForumCount);
+
     List<ForumGroupForumTransfer> getForumGroupForums();
     void setForumGroupForums(List<ForumGroupForumTransfer> forumGroupForums);
     

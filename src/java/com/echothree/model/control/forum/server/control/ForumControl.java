@@ -319,7 +319,7 @@ public class ForumControl
         return ForumGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
-    private ForumGroup getForumGroupByName(String forumGroupName, EntityPermission entityPermission) {
+    public ForumGroup getForumGroupByName(String forumGroupName, EntityPermission entityPermission) {
         ForumGroup forumGroup;
         
         try {
