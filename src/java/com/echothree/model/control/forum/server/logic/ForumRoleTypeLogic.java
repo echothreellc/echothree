@@ -34,18 +34,18 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class ForumLogic
+public class ForumRoleTypeLogic
         extends BaseLogic {
 
     @Inject
     ForumControl forumControl;
 
-    protected ForumLogic() {
+    protected ForumRoleTypeLogic() {
         super();
     }
 
-    public static ForumLogic getInstance() {
-        return CDI.current().select(ForumLogic.class).get();
+    public static ForumRoleTypeLogic getInstance() {
+        return CDI.current().select(ForumRoleTypeLogic.class).get();
     }
     
     public ForumRoleType getForumRoleTypeByName(final ExecutionErrorAccumulator eea, final String forumRoleTypeName) {

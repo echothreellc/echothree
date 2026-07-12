@@ -23,7 +23,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumThread;
@@ -56,7 +56,7 @@ public class GetForumMessagesCommand
     ForumControl forumControl;
 
     @Inject
-    ForumLogic forumLogic;
+    ForumRoleTypeLogic forumLogic;
 
     /** Creates a new instance of GetForumMessagesCommand */
     public GetForumMessagesCommand() {

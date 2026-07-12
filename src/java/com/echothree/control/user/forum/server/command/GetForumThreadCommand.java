@@ -24,7 +24,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.forum.server.entity.ForumThread;
 import com.echothree.util.common.command.BaseResult;
@@ -57,7 +57,7 @@ public class GetForumThreadCommand
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
-    ForumLogic forumLogic;
+    ForumRoleTypeLogic forumLogic;
 
     /** Creates a new instance of GetForumThreadCommand */
     public GetForumThreadCommand() {
