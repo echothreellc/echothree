@@ -16,21 +16,19 @@
 
 package com.echothree.model.control.forum.server.logic;
 
-import com.echothree.model.control.forum.common.exception.UnknownForumPartyRoleException;
-import com.echothree.model.control.forum.common.exception.UnknownForumPartyTypeRoleException;
-import com.echothree.model.control.forum.common.exception.UnknownForumRoleTypeNameException;
+import com.echothree.control.user.forum.common.spec.ForumUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.forum.common.exception.UnknownForumNameException;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.party.common.exception.PartyRequiredException;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumRoleType;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -44,115 +42,59 @@ public class ForumLogic
         super();
     }
 
-    public static ForumLogic getInstance() {
-        return CDI.current().select(ForumLogic.class).get();
-    }
-    
-    public ForumRoleType getForumRoleTypeByName(final ExecutionErrorAccumulator eea, final String forumRoleTypeName) {
-        var forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
+    public Forum getForumByName(final ExecutionErrorAccumulator eea, final String forumName,
+            final EntityPermission entityPermission) {
+        var forum = forumControl.getForumByName(forumName, entityPermission);
 
-        if(forumRoleType == null) {
-            handleExecutionError(UnknownForumRoleTypeNameException.class, eea, ExecutionErrors.UnknownForumRoleTypeName.name(), forumRoleTypeName);
+        if(forum == null) {
+            handleExecutionError(UnknownForumNameException.class, eea, ExecutionErrors.UnknownForumName.name(), forumName);
         }
 
-        return forumRoleType;
+        return forum;
     }
 
-    public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final Forum forum, final Party party, final String forumRoleTypeName) {
-        var forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
-
-        return isForumRoleTypePermitted(eea, forum, party, forumRoleType);
+    public Forum getForumByName(final ExecutionErrorAccumulator eea, final String forumName) {
+        return getForumByName(eea, forumName, EntityPermission.READ_ONLY);
     }
 
-    public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final Forum forum, final Party party, final ForumRoleType forumRoleType) {
-        var hasForumPartyTypeRoles = forumControl.hasForumPartyTypeRoles(forum, forumRoleType);
-        var hasForumPartyRoles = forumControl.hasForumPartyRoles(forum, forumRoleType);
-        var permitted = !(hasForumPartyTypeRoles || hasForumPartyRoles);
+    public Forum getForumByNameForUpdate(final ExecutionErrorAccumulator eea, final String forumName) {
+        return getForumByName(eea, forumName, EntityPermission.READ_WRITE);
+    }
 
-        if(!permitted) {
-            if(party == null) {
-                handleExecutionError(PartyRequiredException.class, eea, ExecutionErrors.PartyRequired.name());
-            } else {
-                var hasForumPartyTypeRole = false;
-                var hasForumPartyRole = false;
+    public Forum getForumByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ForumUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Forum forum = null;
+        var forumName = universalSpec.getForumName();
+        var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-                if(hasForumPartyTypeRoles) {
-                    var partyType = party.getLastDetail().getPartyType();
+        switch(parameterCount) {
+            case 1 -> {
+                if(forumName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Forum.name());
 
-                    hasForumPartyTypeRole = forumControl.hasForumPartyTypeRole(forum, partyType, forumRoleType);
-                }
-
-                if(hasForumPartyRoles) {
-                    hasForumPartyRole = forumControl.hasForumPartyRole(forum, party, forumRoleType);
-                }
-
-                permitted |= hasForumPartyTypeRole || hasForumPartyRole;
-
-                if(!permitted) {
-                    var forumName = forum.getLastDetail().getForumName();
-                    var forumRoleTypeName = forumRoleType.getForumRoleTypeName();
-
-                    if(!hasForumPartyRole) {
-                        var partyName = party.getLastDetail().getPartyName();
-
-                        handleExecutionError(UnknownForumPartyRoleException.class, eea, ExecutionErrors.UnknownForumPartyRole.name(), forumName, partyName, forumRoleTypeName);
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        forum = forumControl.getForumByEntityInstance(entityInstance, entityPermission);
                     }
-
-                    if(!hasForumPartyTypeRole) {
-                        var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
-
-                        handleExecutionError(UnknownForumPartyTypeRoleException.class, eea, ExecutionErrors.UnknownForumPartyTypeRole.name(), forumName, partyTypeName, forumRoleTypeName);
-                    }
+                } else {
+                    forum = getForumByName(eea, forumName, entityPermission);
                 }
             }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
-        return permitted;
+        return forum;
     }
 
-    public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumThread forumThread, final Party party, final String forumRoleTypeName) {
-        var forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
-        var permitted = false;
-
-        if(!hasExecutionErrors(eea)) {
-            permitted = isForumRoleTypePermitted(eea, forumThread, party, forumRoleType);
-        }
-
-        return permitted;
+    public Forum getForumByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ForumUniversalSpec universalSpec) {
+        return getForumByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
     }
 
-    public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumThread forumThread, final Party party, final ForumRoleType forumRoleType) {
-        var forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
-        var permitted = false;
-
-        for(var forumForumThread : forumForumThreads) {
-            var forum = forumForumThread.getForum();
-
-            permitted |= isForumRoleTypePermitted(eea, forum, party, forumRoleType);
-
-            if(permitted) {
-                break;
-            }
-        }
-
-        return permitted;
+    public Forum getForumByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ForumUniversalSpec universalSpec) {
+        return getForumByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
-    public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumMessage forumMessage, final Party party, final String forumRoleTypeName) {
-        var forumRoleType = getForumRoleTypeByName(eea, forumRoleTypeName);
-        var permitted = false;
-
-        if(!hasExecutionErrors(eea)) {
-            permitted = isForumRoleTypePermitted(eea, forumMessage, party, forumRoleType);
-        }
-
-        return permitted;
-    }
-
-    public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumMessage forumMessage, final Party party, final ForumRoleType forumRoleType) {
-        var forumThread = forumMessage.getLastDetail().getForumThread();
-
-        return isForumRoleTypePermitted(eea, forumThread, party, forumRoleType);
-    }
-    
 }

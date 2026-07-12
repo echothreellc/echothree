@@ -19,6 +19,7 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.GetForumsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumGroupLogic;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.factory.ForumFactory;
@@ -48,7 +49,9 @@ public class GetForumsCommand
 
     @Inject
     ForumControl forumControl;
-
+    @Inject
+    ForumGroupLogic forumGroupLogic;
+    
     /** Creates a new instance of GetForumsCommand */
     public GetForumsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -61,11 +64,7 @@ public class GetForumsCommand
         var forumGroupName = form.getForumGroupName();
 
         if(forumGroupName != null) {
-            forumGroup = forumControl.getForumGroupByName(forumGroupName);
-
-            if(forumGroup == null) {
-                addExecutionError(ExecutionErrors.UnknownForumGroupName.name(), forumGroupName);
-            }
+            forumGroup = forumGroupLogic.getForumGroupByName(this, forumGroupName);
         }
     }
 

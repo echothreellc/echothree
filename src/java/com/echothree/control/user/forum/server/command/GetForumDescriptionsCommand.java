@@ -20,8 +20,7 @@ import com.echothree.control.user.forum.common.form.GetForumDescriptionsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -56,7 +55,7 @@ public class GetForumDescriptionsCommand
         var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+            if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                 result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
                 result.setForumDescriptions(forumControl.getForumDescriptionTransfersByForum(getUserVisit(), forum));
             } else {

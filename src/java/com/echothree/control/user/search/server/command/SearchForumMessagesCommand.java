@@ -21,13 +21,12 @@ import com.echothree.control.user.search.common.result.SearchForumMessagesResult
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.forum.server.search.ForumMessageSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -113,7 +112,7 @@ public class SearchForumMessagesCommand
                                     var forum = forumControl.getForumByName(forumName);
 
                                     if(forum != null) {
-                                        if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                                        if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                                             var forumMessageTypeName = form.getForumMessageTypeName();
                                             var forumMessageType = forumMessageTypeName == null ? null : forumControl.getForumMessageTypeByName(forumMessageTypeName);
 
