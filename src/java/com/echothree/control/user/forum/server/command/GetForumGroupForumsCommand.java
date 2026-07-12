@@ -20,14 +20,15 @@ import com.echothree.control.user.forum.common.form.GetForumGroupForumsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumGroupLogic;
+import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumGroupForum;
 import com.echothree.model.data.forum.server.factory.ForumGroupForumFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
@@ -49,8 +50,12 @@ public class GetForumGroupForumsCommand
     
     @Inject
     ForumControl forumControl;
+
     @Inject
     ForumGroupLogic forumGroupLogic;
+
+    @Inject
+    ForumLogic forumLogic;
     
     /** Creates a new instance of GetForumGroupForumsCommand */
     public GetForumGroupForumsCommand() {
@@ -69,12 +74,8 @@ public class GetForumGroupForumsCommand
         if(parameterCount == 1) {
             if(forumGroupName != null) {
                 forumGroup = forumGroupLogic.getForumGroupByName(this, forumGroupName);
-            } else if(forumName != null) {
-                forum = forumControl.getForumByName(forumName);
-
-                if(forum == null) {
-                    addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
-                }
+            } else {
+                forum = forumLogic.getForumByName(this, forumName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -88,7 +89,7 @@ public class GetForumGroupForumsCommand
         if(!hasExecutionErrors()) {
             if(forumGroup != null) {
                 totalEntities = forumControl.countForumGroupForumsByForumGroup(forumGroup);
-            } else if(forum != null) {
+            } else {
                 totalEntities = forumControl.countForumGroupForumsByForum(forum);
             }
         }
@@ -103,7 +104,7 @@ public class GetForumGroupForumsCommand
         if(!hasExecutionErrors()) {
             if(forumGroup != null) {
                 forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
-            } else if(forum != null) {
+            } else {
                 forumGroupForums = forumControl.getForumGroupForumsByForum(forum);
             }
         }
@@ -120,7 +121,7 @@ public class GetForumGroupForumsCommand
 
             if(forumGroup != null) {
                 result.setForumGroup(forumControl.getForumGroupTransfer(userVisit, forumGroup));
-            } else if(forum != null) {
+            } else {
                 result.setForum(forumControl.getForumTransfer(userVisit, forum));
             }
 

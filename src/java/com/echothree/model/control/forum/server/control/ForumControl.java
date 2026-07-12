@@ -695,7 +695,7 @@ public class ForumControl
         return ForumFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
-    private Forum getForumByName(String forumName, EntityPermission entityPermission) {
+    public Forum getForumByName(String forumName, EntityPermission entityPermission) {
         Forum forum;
         
         try {
