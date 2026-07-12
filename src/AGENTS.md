@@ -17,3 +17,10 @@
 - Strings that span multiple lines should use Java text blocks
      - Opening quotes must be on the line of code before the start of the block
      - Closing quotes must be on the line following the last line of the block, followed immediately by any parameters or the closing parenthesis
+
+### Build Instructions
+
+- `ant clean`: Clean the build environment
+- `ant compile`: Compile the source code
+- `ant deploy`: Deploy the application
+- `ant javadoc`: Generate the JavaDoc documentation
