@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.forum.server.logic;
 
-import com.echothree.model.control.forum.common.exception.UnknownForumGroupNameException;
 import com.echothree.control.user.forum.common.spec.ForumGroupUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.forum.common.exception.UnknownForumGroupNameException;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -29,7 +29,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -41,10 +40,6 @@ public class ForumGroupLogic
 
     protected ForumGroupLogic() {
         super();
-    }
-
-    public static ForumGroupLogic getInstance() {
-        return CDI.current().select(ForumGroupLogic.class).get();
     }
 
     public ForumGroup getForumGroupByName(final ExecutionErrorAccumulator eea, final String forumGroupName,
