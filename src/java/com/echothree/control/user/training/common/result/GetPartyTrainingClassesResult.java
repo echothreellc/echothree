@@ -31,6 +31,9 @@ public interface GetPartyTrainingClassesResult
     TrainingClassTransfer getTrainingClass();
     void setTrainingClass(TrainingClassTransfer skillType);
     
+    Long getPartyTrainingClassCount();
+    void setPartyTrainingClassCount(Long partyTrainingClassCount);
+    
     List<PartyTrainingClassTransfer> getPartyTrainingClasses();
     void setPartyTrainingClasses(List<PartyTrainingClassTransfer> partyTrainingClasses);
     
