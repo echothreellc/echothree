@@ -22,18 +22,17 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTrainingClassStatusChoicesCommand
@@ -45,15 +44,15 @@ public class GetPartyTrainingClassStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClassStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClassStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("TrainingName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("DefaultPartyTrainingClassStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("TrainingName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("DefaultPartyTrainingClassStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
     
@@ -61,23 +60,26 @@ public class GetPartyTrainingClassStatusChoicesCommand
     public GetPartyTrainingClassStatusChoicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyTrainingClassLogic partyTrainingClassLogic;
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var result = TrainingResultFactory.getGetPartyTrainingClassStatusChoicesResult();
         var partyTrainingClassName = form.getPartyTrainingClassName();
-        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+        var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, partyTrainingClassName);
 
-            if(partyTrainingClass != null) {
-                var defaultPartyTrainingClassStatusChoice = form.getDefaultPartyTrainingClassStatusChoice();
-                var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        if(!hasExecutionErrors()) {
+            var defaultPartyTrainingClassStatusChoice = form.getDefaultPartyTrainingClassStatusChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-                result.setPartyTrainingClassStatusChoices(trainingControl.getPartyTrainingClassStatusChoices(defaultPartyTrainingClassStatusChoice,
-                        getPreferredLanguage(), allowNullChoice, partyTrainingClass, getPartyPK()));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
-            }
+            result.setPartyTrainingClassStatusChoices(trainingControl.getPartyTrainingClassStatusChoices(defaultPartyTrainingClassStatusChoice,
+                    getPreferredLanguage(), allowNullChoice, partyTrainingClass, getPartyPK()));
+        }
         
         return result;
     }
