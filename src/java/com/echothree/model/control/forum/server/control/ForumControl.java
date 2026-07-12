@@ -2977,7 +2977,7 @@ public class ForumControl
                         """, icon);
     }
 
-    private ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
+    public ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
         ForumThread forumThread;
         
         try {
@@ -3272,7 +3272,7 @@ public class ForumControl
                         """, icon);
     }
 
-    private ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
+    public ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
         ForumMessage forumMessage;
         
         try {
