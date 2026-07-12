@@ -379,6 +379,18 @@
             <entityType entityTypeName="ForumGroupForum" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeForum languageIsoName="en" description="Forum Group Forum" />
             </entityType>
+            <entityType entityTypeName="ForumRoleType" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Role Type" />
+            </entityType>
+            <entityType entityTypeName="ForumType" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Type" />
+            </entityType>
+            <entityType entityTypeName="ForumMessagePartType" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Part Type" />
+            </entityType>
+            <entityType entityTypeName="ForumMessageType" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Type" />
+            </entityType>
             <entityType entityTypeName="ForumMimeType" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Forum Mime Type" />
             </entityType>
