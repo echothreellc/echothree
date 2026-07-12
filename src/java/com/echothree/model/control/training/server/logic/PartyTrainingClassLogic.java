@@ -36,13 +36,24 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyTrainingClassLogic
         extends BaseLogic {
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     protected PartyTrainingClassLogic() {
         super();
@@ -52,9 +63,8 @@ public class PartyTrainingClassLogic
         return CDI.current().select(PartyTrainingClassLogic.class).get();
     }
     
-    public PartyTrainingClass getPartyTrainingClassByName(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+    public PartyTrainingClass getPartyTrainingClassByName(final ExecutionErrorAccumulator eea, final String partyTrainingClassName, final EntityPermission entityPermission) {
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName, entityPermission);
 
         if(partyTrainingClass == null) {
             handleExecutionError(UnknownPartyTrainingClassNameException.class, eea, ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
@@ -62,10 +72,17 @@ public class PartyTrainingClassLogic
 
         return partyTrainingClass;
     }
+
+    public PartyTrainingClass getPartyTrainingClassByName(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
+        return getPartyTrainingClassByName(eea, partyTrainingClassName, EntityPermission.READ_ONLY);
+    }
+
+    public PartyTrainingClass getPartyTrainingClassByNameForUpdate(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
+        return getPartyTrainingClassByName(eea, partyTrainingClassName, EntityPermission.READ_WRITE);
+    }
     
     private void insertPartyTrainingClassIntoWorkflow(final EntityInstance entityInstance, final Long completedTime, final Long validUntilTime,
             final BasePK partyPK) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowEntranceName = completedTime == null ? PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_ASSIGNED : PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_PASSED;
         
         workflowControl.addEntityToWorkflowUsingNames(null, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowEntranceName,
@@ -173,8 +190,6 @@ public class PartyTrainingClassLogic
 
     public PartyTrainingClass createPartyTrainingClass(final Session session, final PreparedPartyTrainingClass preparedPartyTrainingClass,
             final BasePK createdBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var party = preparedPartyTrainingClass.getParty();
         var trainingClass = preparedPartyTrainingClass.getTrainingClass();
         var completedTime = preparedPartyTrainingClass.getCompletedTime();
@@ -222,9 +237,7 @@ public class PartyTrainingClassLogic
         var invalidPartyTrainingClass = false;
 
         if(modifiedBy.equals(partyTrainingClassDetail.getPartyPK())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                     entityInstance);
             var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
@@ -246,8 +259,6 @@ public class PartyTrainingClassLogic
     }
 
     public void updatePartyTrainingClassFromValue(final PartyTrainingClassDetailValue partyTrainingClassDetailValue, final BasePK updatedBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        
         // TODO: adjust Status if necessary
         // TODO: delete PartyTrainingClassStatus if necessary
         
@@ -255,8 +266,6 @@ public class PartyTrainingClassLogic
     }
     
     public void deletePartyTrainingClass(PartyTrainingClass partyTrainingClass, final BasePK deleteBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        
         trainingControl.deletePartyTrainingClass(partyTrainingClass, deleteBy);
     }
     
