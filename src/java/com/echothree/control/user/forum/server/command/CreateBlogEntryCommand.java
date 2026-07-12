@@ -21,7 +21,7 @@ import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -83,10 +83,10 @@ public class CreateBlogEntryCommand
 
                 if(forumTypeName.equals(ForumConstants.ForumType_BLOG)) {
                     var party = userLogin == null ? getParty() : userLogin.getParty();
-                    var forumRoleType = ForumLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_AUTHOR);
+                    var forumRoleType = ForumRoleTypeLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_AUTHOR);
 
                     if(!hasExecutionErrors()) {
-                        if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
+                        if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
                             var partyControl = Session.getModelController(PartyControl.class);
                             var languageIsoName = form.getLanguageIsoName();
                             var language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);

@@ -319,7 +319,7 @@ public class ForumControl
         return ForumGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
-    private ForumGroup getForumGroupByName(String forumGroupName, EntityPermission entityPermission) {
+    public ForumGroup getForumGroupByName(String forumGroupName, EntityPermission entityPermission) {
         ForumGroup forumGroup;
         
         try {
@@ -695,7 +695,7 @@ public class ForumControl
         return ForumFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
-    private Forum getForumByName(String forumName, EntityPermission entityPermission) {
+    public Forum getForumByName(String forumName, EntityPermission entityPermission) {
         Forum forum;
         
         try {
@@ -2977,7 +2977,7 @@ public class ForumControl
                         """, icon);
     }
 
-    private ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
+    public ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
         ForumThread forumThread;
         
         try {
@@ -3272,7 +3272,7 @@ public class ForumControl
                         """, icon);
     }
 
-    private ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
+    public ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
         ForumMessage forumMessage;
         
         try {

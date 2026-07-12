@@ -24,9 +24,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -82,7 +81,7 @@ public class GetForumCommand
 
             // If the UUID for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
-                if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                if(form.getUuid() != null || ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
                     sendEvent(forum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
