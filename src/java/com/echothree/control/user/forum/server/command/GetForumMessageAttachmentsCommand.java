@@ -20,53 +20,89 @@ import com.echothree.control.user.forum.common.form.GetForumMessageAttachmentsFo
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumMessageLogic;
 import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
+import com.echothree.model.data.forum.server.entity.ForumMessage;
+import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
+import com.echothree.model.data.forum.server.factory.ForumMessageAttachmentFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageAttachmentsCommand
-        extends BaseSimpleCommand<GetForumMessageAttachmentsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ForumMessageAttachment, GetForumMessageAttachmentsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    ForumMessageLogic forumMessageLogic;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
 
     /** Creates a new instance of GetForumMessageAttachmentsCommand */
     public GetForumMessageAttachmentsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    ForumMessage forumMessage;
+
     @Override
-    protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
-        var result = ForumResultFactory.getGetForumMessageAttachmentsResult();
+    protected void handleForm() {
         var forumMessageName = form.getForumMessageName();
-        var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+
+        forumMessage = forumMessageLogic.getForumMessageByName(this, forumMessageName);
+
+        if(!hasExecutionErrors()) {
+            if(!forumRoleTypeLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
+                addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
+                forumMessage = null;
+            }
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return forumMessage == null ? null : forumControl.countForumMessageAttachmentsByForumMessage(forumMessage);
+    }
+
+    @Override
+    protected Collection<ForumMessageAttachment> getEntities() {
+        return forumMessage == null ? null : forumControl.getForumMessageAttachmentsByForumMessage(forumMessage);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ForumMessageAttachment> entities) {
+        var result = ForumResultFactory.getGetForumMessageAttachmentsResult();
 
         if(forumMessage != null) {
-            if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
-                var userVisit = getUserVisit();
+            var userVisit = getUserVisit();
 
-                result.setForumMessage(forumControl.getForumMessageTransfer(userVisit, forumMessage));
-                result.setForumMessageAttachments(forumControl.getForumMessageAttachmentTransfersByForumMessage(userVisit, forumMessage));
-            } else {
-                addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
+            result.setForumMessage(forumControl.getForumMessageTransfer(userVisit, forumMessage));
+
+            if(session.hasLimit(ForumMessageAttachmentFactory.class)) {
+                result.setForumMessageAttachmentCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownForumMessageName.name(), forumMessageName);
+
+            result.setForumMessageAttachments(forumControl.getForumMessageAttachmentTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     
