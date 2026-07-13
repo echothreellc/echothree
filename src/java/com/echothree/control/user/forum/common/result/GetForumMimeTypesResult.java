@@ -26,6 +26,9 @@ public interface GetForumMimeTypesResult
     
     ForumTransfer getForum();
     void setForum(ForumTransfer forum);
+
+    Long getForumMimeTypeCount();
+    void setForumMimeTypeCount(Long forumMimeTypeCount);
     
     List<ForumMimeTypeTransfer> getForumMimeTypes();
     void setForumMimeTypes(List<ForumMimeTypeTransfer> forumMimeTypes);
