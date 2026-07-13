@@ -2205,20 +2205,22 @@ public class ForumControl
         return getForumPartyRole(forum, party, forumRoleType, EntityPermission.READ_WRITE);
     }
     
-    public List<ForumPartyRoleTransfer> getForumPartyRoleTransfersByForum(UserVisit userVisit, Forum forum) {
-        var forumPartyRoles = getForumPartyRolesByForum(forum);
+    public List<ForumPartyRoleTransfer> getForumPartyRoleTransfers(UserVisit userVisit, Collection<ForumPartyRole> forumPartyRoles) {
         List<ForumPartyRoleTransfer> forumPartyRoleTransfers = null;
-        
+
         if(forumPartyRoles != null) {
-            
             forumPartyRoleTransfers = new ArrayList<>(forumPartyRoles.size());
-            
+
             for(var forumPartyRole : forumPartyRoles) {
                 forumPartyRoleTransfers.add(forumPartyRoleTransferCache.getForumPartyRoleTransfer(userVisit, forumPartyRole));
             }
         }
-        
+
         return forumPartyRoleTransfers;
+    }
+
+    public List<ForumPartyRoleTransfer> getForumPartyRoleTransfersByForum(UserVisit userVisit, Forum forum) {
+        return getForumPartyRoleTransfers(userVisit, getForumPartyRolesByForum(forum));
     }
     
     public ForumPartyRoleTransfer getForumPartyRoleTransfer(UserVisit userVisit, ForumPartyRole forumPartyRole) {
@@ -2383,20 +2385,22 @@ public class ForumControl
         return getForumPartyTypeRole(forum, partyType, forumRoleType, EntityPermission.READ_WRITE);
     }
     
-    public List<ForumPartyTypeRoleTransfer> getForumPartyTypeRoleTransfersByForum(UserVisit userVisit, Forum forum) {
-        var forumPartyTypeRoles = getForumPartyTypeRolesByForum(forum);
+    public List<ForumPartyTypeRoleTransfer> getForumPartyTypeRoleTransfers(UserVisit userVisit, Collection<ForumPartyTypeRole> forumPartyTypeRoles) {
         List<ForumPartyTypeRoleTransfer> forumPartyTypeRoleTransfers = null;
-        
+
         if(forumPartyTypeRoles != null) {
-            
             forumPartyTypeRoleTransfers = new ArrayList<>(forumPartyTypeRoles.size());
-            
+
             for(var forumPartyTypeRole : forumPartyTypeRoles) {
                 forumPartyTypeRoleTransfers.add(forumPartyTypeRoleTransferCache.getForumPartyTypeRoleTransfer(userVisit, forumPartyTypeRole));
             }
         }
-        
+
         return forumPartyTypeRoleTransfers;
+    }
+
+    public List<ForumPartyTypeRoleTransfer> getForumPartyTypeRoleTransfersByForum(UserVisit userVisit, Forum forum) {
+        return getForumPartyTypeRoleTransfers(userVisit, getForumPartyTypeRolesByForum(forum));
     }
     
     public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(UserVisit userVisit, ForumPartyTypeRole forumPartyTypeRole) {
