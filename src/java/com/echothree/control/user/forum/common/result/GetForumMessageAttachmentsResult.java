@@ -26,6 +26,9 @@ public interface GetForumMessageAttachmentsResult
     
     ForumMessageTransfer getForumMessage();
     void setForumMessage(ForumMessageTransfer forumMessage);
+
+    Long getForumMessageAttachmentCount();
+    void setForumMessageAttachmentCount(Long forumMessageAttachmentCount);
     
     List<ForumMessageAttachmentTransfer> getForumMessageAttachments();
     void setForumMessageAttachments(List<ForumMessageAttachmentTransfer> forumMessageAttachments);
