@@ -19,19 +19,22 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.GetForumMimeTypesForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.data.forum.server.entity.Forum;
+import com.echothree.model.data.forum.server.entity.ForumMimeType;
+import com.echothree.model.data.forum.server.factory.ForumMimeTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMimeTypesCommand
-        extends BaseSimpleCommand<GetForumMimeTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ForumMimeType, GetForumMimeTypesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -41,23 +44,50 @@ public class GetForumMimeTypesCommand
         );
     }
     
+    @Inject
+    ForumControl forumControl;
+    
+    @Inject
+    ForumLogic forumLogic;
+    
     /** Creates a new instance of GetForumMimeTypesCommand */
     public GetForumMimeTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    private Forum forum;
+    
     @Override
-    protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
-        var result = ForumResultFactory.getGetForumMimeTypesResult();
+    protected void handleForm() {
         var forumName = form.getForumName();
-        var forum = forumControl.getForumByName(forumName);
+        
+        forum = forumLogic.getForumByName(this, forumName);
+    }
+    
+    @Override
+    protected Long getTotalEntities() {
+        return forum == null ? null : forumControl.countForumMimeTypeByForum(forum);
+    }
+    
+    @Override
+    protected Collection<ForumMimeType> getEntities() {
+        return forum == null ? null : forumControl.getForumMimeTypesByForum(forum);
+    }
+    
+    @Override
+    protected BaseResult getResult(Collection<ForumMimeType> entities) {
+        var result = ForumResultFactory.getGetForumMimeTypesResult();
         
         if(forum != null) {
-            result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
-            result.setForumMimeTypes(forumControl.getForumMimeTypeTransfersByForum(getUserVisit(), forum));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
+            var userVisit = getUserVisit();
+            
+            result.setForum(forumControl.getForumTransfer(userVisit, forum));
+
+            if(session.hasLimit(ForumMimeTypeFactory.class)) {
+                result.setForumMimeTypeCount(getTotalEntities());
+            }
+
+            result.setForumMimeTypes(forumControl.getForumMimeTypeTransfers(userVisit, entities));
         }
         
         return result;
