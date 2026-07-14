@@ -19,19 +19,22 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.GetForumPartyTypeRolesForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.data.forum.server.entity.Forum;
+import com.echothree.model.data.forum.server.entity.ForumPartyTypeRole;
+import com.echothree.model.data.forum.server.factory.ForumPartyTypeRoleFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumPartyTypeRolesCommand
-        extends BaseSimpleCommand<GetForumPartyTypeRolesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ForumPartyTypeRole, GetForumPartyTypeRolesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -41,23 +44,50 @@ public class GetForumPartyTypeRolesCommand
         );
     }
     
+    @Inject
+    ForumControl forumControl;
+    
+    @Inject
+    ForumLogic forumLogic;
+    
     /** Creates a new instance of GetForumPartyTypeRolesCommand */
     public GetForumPartyTypeRolesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    private Forum forum;
+    
     @Override
-    protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
-        var result = ForumResultFactory.getGetForumPartyTypeRolesResult();
+    protected void handleForm() {
         var forumName = form.getForumName();
-        var forum = forumControl.getForumByName(forumName);
+        
+        forum = forumLogic.getForumByName(this, forumName);
+    }
+    
+    @Override
+    protected Long getTotalEntities() {
+        return forum == null ? null : forumControl.countForumPartyTypeRolesByForum(forum);
+    }
+    
+    @Override
+    protected Collection<ForumPartyTypeRole> getEntities() {
+        return forum == null ? null : forumControl.getForumPartyTypeRolesByForum(forum);
+    }
+    
+    @Override
+    protected BaseResult getResult(Collection<ForumPartyTypeRole> entities) {
+        var result = ForumResultFactory.getGetForumPartyTypeRolesResult();
         
         if(forum != null) {
-            result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
-            result.setForumPartyTypeRoles(forumControl.getForumPartyTypeRoleTransfersByForum(getUserVisit(), forum));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
+            var userVisit = getUserVisit();
+            
+            result.setForum(forumControl.getForumTransfer(userVisit, forum));
+
+            if(session.hasLimit(ForumPartyTypeRoleFactory.class)) {
+                result.setForumPartyTypeRoleCount(getTotalEntities());
+            }
+
+            result.setForumPartyTypeRoles(forumControl.getForumPartyTypeRoleTransfers(userVisit, entities));
         }
         
         return result;
