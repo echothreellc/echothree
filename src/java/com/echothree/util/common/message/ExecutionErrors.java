@@ -537,6 +537,7 @@ public enum ExecutionErrors {
     UnknownDepartmentName,
     DuplicateContactMechanismAliasTypeName,
     UnknownContactMechanismAliasTypeName,
+    UnknownDefaultContactMechanismAliasType,
     DuplicateContactMechanismAliasTypeDescription,
     UnknownContactMechanismAlias,
     DuplicateContactMechanismAlias,
