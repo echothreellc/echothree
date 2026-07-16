@@ -25,11 +25,12 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetContactListContactMechanismPurposeCommand
-        extends BaseSimpleCommand<GetContactListContactMechanismPurposeForm> {
+        extends BaseSingleEntityCommand<ContactListContactMechanismPurpose, GetContactListContactMechanismPurposeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -73,28 +74,37 @@ public class GetContactListContactMechanismPurposeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetContactListContactMechanismPurposeResult();
+    protected ContactListContactMechanismPurpose getEntity() {
+        ContactListContactMechanismPurpose contactListContactMechanismPurpose = null;
         var contactListName = form.getContactListName();
         var contactList = contactListLogic.getContactListByName(this, contactListName);
-        
+
         if(!hasExecutionErrors()) {
             var contactMechanismPurposeName = form.getContactMechanismPurposeName();
             var contactMechanismPurpose = contactMechanismPurposeLogic.getContactMechanismPurposeByName(this, contactMechanismPurposeName);
-            
-            if(!hasExecutionErrors()) {
-                var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
-                
-                if(contactListContactMechanismPurpose != null) {
-                    result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));
 
+            if(!hasExecutionErrors()) {
+                contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
+
+                if(contactListContactMechanismPurpose != null) {
                     sendEvent(contactListContactMechanismPurpose.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateContactListContactMechanismPurpose.name(), contactListName, contactMechanismPurposeName);
                 }
             }
         }
-        
+
+        return contactListContactMechanismPurpose;
+    }
+
+    @Override
+    protected BaseResult getResult(ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
+        var result = ContactListResultFactory.getGetContactListContactMechanismPurposeResult();
+
+        if(contactListContactMechanismPurpose != null) {
+            result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));
+        }
+
         return result;
     }
     
