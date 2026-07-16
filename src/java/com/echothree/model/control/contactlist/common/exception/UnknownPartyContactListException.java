@@ -14,13 +14,26 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.contactlist.common.form;
+package com.echothree.model.control.contactlist.common.exception;
 
-import com.echothree.control.user.contactlist.common.spec.PartyContactListUniversalSpec;
+import com.echothree.util.common.message.Message;
 
-public interface GetPartyContactListForm
-        extends PartyContactListUniversalSpec {
-    
-    // Nothing additional beyond PartyContactListSpec
-    
+public class UnknownPartyContactListException
+        extends BaseContactListException {
+
+    /** Creates a new instance of UnknownPartyContactListException */
+    public UnknownPartyContactListException() {
+        super();
+    }
+
+    /** Creates a new instance of UnknownPartyContactListException */
+    public UnknownPartyContactListException(String message) {
+        super(message);
+    }
+
+    /** Creates a new instance of UnknownPartyContactListException */
+    public UnknownPartyContactListException(Message message) {
+        super(message);
+    }
+
 }
