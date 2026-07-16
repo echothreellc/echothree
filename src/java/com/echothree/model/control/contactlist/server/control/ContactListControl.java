@@ -2332,7 +2332,7 @@ public class ContactListControl
         getPartyContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private PartyContactList getPartyContactList(Party party, ContactList contactList, EntityPermission entityPermission) {
+    public PartyContactList getPartyContactList(Party party, ContactList contactList, EntityPermission entityPermission) {
         return PartyContactListFactory.getInstance().getEntityFromQuery(entityPermission, getPartyContactListQueries,
                 party, contactList);
     }

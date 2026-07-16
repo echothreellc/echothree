@@ -20,15 +20,17 @@ import com.echothree.control.user.contactlist.common.form.GetPartyTypeContactLis
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTypeContactListCommand
-        extends BaseSimpleCommand<GetPartyTypeContactListForm> {
+        extends BaseSingleEntityCommand<PartyTypeContactList, GetPartyTypeContactListForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,12 +70,12 @@ public class GetPartyTypeContactListCommand
     
     /** Creates a new instance of GetPartyTypeContactListCommand */
     public GetPartyTypeContactListCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetPartyTypeContactListResult();
+    protected PartyTypeContactList getEntity() {
+        PartyTypeContactList partyTypeContactList = null;
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyLogic.getPartyTypeByName(this, partyTypeName);
         
@@ -82,14 +84,25 @@ public class GetPartyTypeContactListCommand
             var contactList = contactListLogic.getContactListByName(this, contactListName);
             
             if(!hasExecutionErrors()) {
-                var partyTypeContactList = contactListControl.getPartyTypeContactList(partyType, contactList);
+                partyTypeContactList = contactListControl.getPartyTypeContactList(partyType, contactList);
                 
                 if(partyTypeContactList != null) {
-                    result.setPartyTypeContactList(contactListControl.getPartyTypeContactListTransfer(getUserVisit(), partyTypeContactList));
+                    sendEvent(partyTypeContactList.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartyTypeContactList.name(), partyTypeName, contactListName);
                 }
             }
+        }
+        
+        return partyTypeContactList;
+    }
+    
+    @Override
+    protected BaseResult getResult(PartyTypeContactList partyTypeContactList) {
+        var result = ContactListResultFactory.getGetPartyTypeContactListResult();
+        
+        if(partyTypeContactList != null) {
+            result.setPartyTypeContactList(contactListControl.getPartyTypeContactListTransfer(getUserVisit(), partyTypeContactList));
         }
         
         return result;
