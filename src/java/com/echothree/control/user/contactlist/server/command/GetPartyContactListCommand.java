@@ -19,16 +19,16 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.GetPartyContactListForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.contactlist.server.logic.PartyContactListLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.PartyContactList;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyContactListCommand
-        extends BaseSimpleCommand<GetPartyContactListForm> {
+        extends BaseSingleEntityCommand<PartyContactList, GetPartyContactListForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,46 +52,43 @@ public class GetPartyContactListCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
-    }
-    
-    /** Creates a new instance of GetPartyContactListCommand */
-    public GetPartyContactListCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Inject
     ContactListControl contactListControl;
 
     @Inject
-    ContactListLogic contactListLogic;
-
-    @Inject
-    PartyLogic partyLogic;
+    PartyContactListLogic partyContactListLogic;
+    
+    /** Creates a new instance of GetPartyContactListCommand */
+    public GetPartyContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
     
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetPartyContactListResult();
-        var partyName = form.getPartyName();
-        var party = partyLogic.getPartyByName(this, partyName);
+    protected PartyContactList getEntity() {
+        var partyContactList = partyContactListLogic.getPartyContactListByUniversalSpec(this, form);
 
-        if(!hasExecutionErrors()) {
-            var contactListName = form.getContactListName();
-            var contactList = contactListLogic.getContactListByName(this, contactListName);
-
-            if(!hasExecutionErrors()) {
-                var partyContactList = contactListControl.getPartyContactList(party, contactList);
-
-                if(partyContactList != null) {
-                    result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyContactList.name(), partyName, contactListName);
-                }
-            }
+        if(partyContactList != null) {
+            sendEvent(partyContactList.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return partyContactList;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyContactList partyContactList) {
+        var result = ContactListResultFactory.getGetPartyContactListResult();
+
+        if(partyContactList != null) {
+            result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
+        }
+
         return result;
     }
     
