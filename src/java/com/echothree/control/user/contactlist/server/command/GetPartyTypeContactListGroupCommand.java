@@ -20,16 +20,17 @@ import com.echothree.control.user.contactlist.common.form.GetPartyTypeContactLis
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListGroupLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTypeContactListGroupCommand
-        extends BaseSimpleCommand<GetPartyTypeContactListGroupForm> {
+        extends BaseSingleEntityCommand<PartyTypeContactListGroup, GetPartyTypeContactListGroupForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,9 +63,6 @@ public class GetPartyTypeContactListGroupCommand
     ContactListControl contactListControl;
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     ContactListGroupLogic contactListGroupLogic;
 
     @Inject
@@ -72,12 +70,12 @@ public class GetPartyTypeContactListGroupCommand
 
     /** Creates a new instance of GetPartyTypeContactListGroupCommand */
     public GetPartyTypeContactListGroupCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetPartyTypeContactListGroupResult();
+    protected PartyTypeContactListGroup getEntity() {
+        PartyTypeContactListGroup partyTypeContactListGroup = null;
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyTypeLogic.getPartyTypeByName(this, partyTypeName);
         
@@ -86,14 +84,25 @@ public class GetPartyTypeContactListGroupCommand
             var contactListGroup = contactListGroupLogic.getContactListGroupByName(this, contactListGroupName);
             
             if(!hasExecutionErrors()) {
-                var partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroup(partyType, contactListGroup);
+                partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroup(partyType, contactListGroup);
                 
                 if(partyTypeContactListGroup != null) {
-                    result.setPartyTypeContactListGroup(contactListControl.getPartyTypeContactListGroupTransfer(getUserVisit(), partyTypeContactListGroup));
+                    sendEvent(partyTypeContactListGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartyTypeContactListGroup.name(), partyTypeName, contactListGroupName);
                 }
             }
+        }
+        
+        return partyTypeContactListGroup;
+    }
+    
+    @Override
+    protected BaseResult getResult(PartyTypeContactListGroup partyTypeContactListGroup) {
+        var result = ContactListResultFactory.getGetPartyTypeContactListGroupResult();
+        
+        if(partyTypeContactListGroup != null) {
+            result.setPartyTypeContactListGroup(contactListControl.getPartyTypeContactListGroupTransfer(getUserVisit(), partyTypeContactListGroup));
         }
         
         return result;
