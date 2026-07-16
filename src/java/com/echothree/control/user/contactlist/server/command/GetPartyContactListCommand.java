@@ -20,15 +20,17 @@ import com.echothree.control.user.contactlist.common.form.GetPartyContactListFor
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.PartyContactList;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyContactListCommand
-        extends BaseSimpleCommand<GetPartyContactListForm> {
+        extends BaseSingleEntityCommand<PartyContactList, GetPartyContactListForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,11 +59,6 @@ public class GetPartyContactListCommand
         );
     }
     
-    /** Creates a new instance of GetPartyContactListCommand */
-    public GetPartyContactListCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
     @Inject
     ContactListControl contactListControl;
 
@@ -71,9 +68,14 @@ public class GetPartyContactListCommand
     @Inject
     PartyLogic partyLogic;
     
+    /** Creates a new instance of GetPartyContactListCommand */
+    public GetPartyContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+    
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetPartyContactListResult();
+    protected PartyContactList getEntity() {
+        PartyContactList partyContactList = null;
         var partyName = form.getPartyName();
         var party = partyLogic.getPartyByName(this, partyName);
 
@@ -82,16 +84,27 @@ public class GetPartyContactListCommand
             var contactList = contactListLogic.getContactListByName(this, contactListName);
 
             if(!hasExecutionErrors()) {
-                var partyContactList = contactListControl.getPartyContactList(party, contactList);
+                partyContactList = contactListControl.getPartyContactList(party, contactList);
 
                 if(partyContactList != null) {
-                    result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
+                    sendEvent(partyContactList.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartyContactList.name(), partyName, contactListName);
                 }
             }
         }
-        
+
+        return partyContactList;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyContactList partyContactList) {
+        var result = ContactListResultFactory.getGetPartyContactListResult();
+
+        if(partyContactList != null) {
+            result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
+        }
+
         return result;
     }
     
