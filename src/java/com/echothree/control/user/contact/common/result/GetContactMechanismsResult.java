@@ -18,11 +18,15 @@ package com.echothree.control.user.contact.common.result;
 
 import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-public interface GetContactMechanismResult
+public interface GetContactMechanismsResult
         extends BaseResult {
+    
+    Long getContactMechanismCount();
+    void setContactMechanismCount(Long contactMechanismCount);
 
-    ContactMechanismTransfer getContactMechanism();
-    void setContactMechanism(ContactMechanismTransfer contactMechanism);
-
+    List<ContactMechanismTransfer> getContactMechanisms();
+    void setContactMechanisms(List<ContactMechanismTransfer> contactMechanisms);
+    
 }

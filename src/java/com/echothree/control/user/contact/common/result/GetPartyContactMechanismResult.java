@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.contact.common.result;
 
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.util.common.command.BaseResult;
 
-public interface GetContactMechanismResult
+public interface GetPartyContactMechanismResult
         extends BaseResult {
 
-    ContactMechanismTransfer getContactMechanism();
-    void setContactMechanism(ContactMechanismTransfer contactMechanism);
+    PartyContactMechanismTransfer getPartyContactMechanism();
+    void setPartyContactMechanism(PartyContactMechanismTransfer partyContactMechanism);
 
 }
