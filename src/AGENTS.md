@@ -18,6 +18,14 @@
      - Opening quotes must be on the line of code before the start of the block
      - Closing quotes must be on the line following the last line of the block, followed immediately by any parameters or the closing parenthesis
 
+### Form and Result Generation
+
+- Forms, Results, Specs, and Edits are defined as interfaces in `...common.form`, `...common.result`, `...common.spec`, and `...common.edit` packages.
+- Concrete implementations and factories are automatically generated during the build process (`ant compile`).
+- The generated code is located in the `generated/` directory.
+- Use the generated factories to instantiate these objects (e.g., `ContactFormFactory.getGetContactMechanismsForm()`, `ContactResultFactory.getGetContactMechanismsResult()`).
+- Always run `ant compile` after adding or modifying these interfaces to ensure the implementations and factories are up to date.
+
 ### Build Instructions
 
 - `ant clean`: Clean the build environment
