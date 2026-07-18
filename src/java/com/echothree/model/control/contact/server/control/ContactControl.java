@@ -2513,7 +2513,7 @@ public class ContactControl
         partyContactMechanism.setLastDetail(partyContactMechanismDetail);
         partyContactMechanism.store();
         
-        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return partyContactMechanism;
     }
@@ -2965,7 +2965,7 @@ public class ContactControl
             partyContactMechanism.setActiveDetail(partyContactMechanismDetail);
             partyContactMechanism.setLastDetail(partyContactMechanismDetail);
             
-            sendEvent(partyPK, EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3018,7 +3018,7 @@ public class ContactControl
             }
         }
         
-        sendEvent(partyContactMechanismDetail.getPartyPK(), EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletePartyContactMechanismsByParty(Party party, BasePK deletedBy) {
@@ -3351,7 +3351,7 @@ public class ContactControl
         partyContactMechanismPurpose.setLastDetail(partyContactMechanismPurposeDetail);
         partyContactMechanismPurpose.store();
         
-        sendEvent(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyContactMechanismPurpose;
     }
@@ -3649,7 +3649,7 @@ public class ContactControl
             partyContactMechanismPurpose.setActiveDetail(partyContactMechanismPurposeDetail);
             partyContactMechanismPurpose.setLastDetail(partyContactMechanismPurposeDetail);
             
-            sendEvent(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3682,7 +3682,7 @@ public class ContactControl
             }
         }
         
-        sendEvent(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism,
@@ -3703,7 +3703,7 @@ public class ContactControl
         var partyContactMechanismRelationship = PartyContactMechanismRelationshipFactory.getInstance().create(fromPartyContactMechanism,
                 toPartyContactMechanism, session.getStartTime(), Session.MAX_TIME);
         
-        sendEvent(fromPartyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismRelationship.getPrimaryKey(), null, createdBy);
+        sendEvent(fromPartyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyContactMechanismRelationship;
     }
@@ -3865,6 +3865,8 @@ public class ContactControl
     public void deletePartyContactMechanismRelationship(PartyContactMechanismRelationship partyContactMechanismRelationship, BasePK deletedBy) {
         partyContactMechanismRelationship.setThruTime(session.getStartTime());
         partyContactMechanismRelationship.store();
+
+        sendEvent(partyContactMechanismRelationship.getFromPartyContactMechanism().getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyContactMechanismRelationships(List<PartyContactMechanismRelationship> partyContactMechanismRelationships, BasePK deletedBy) {
