@@ -18,10 +18,16 @@ package com.echothree.model.control.contactlist.server.graphql;
 
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.contactlist.common.CustomerTypeContactListConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +35,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("contact list object")
 @GraphQLName("ContactList")
@@ -115,6 +124,26 @@ public class ContactListObject
         var userControl = Session.getModelController(UserControl.class);
 
         return contactListControl.getBestContactListDescription(contactList, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("customer type contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypeContactListObject> getCustomerTypeContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasCustomerTypeContactListsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countCustomerTypeContactListsByContactList(contactList);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeContactListConstants.COMPONENT_VENDOR_NAME, CustomerTypeContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getCustomerTypeContactListsByContactList(contactList);
+                var customerTypeContactLists = entities.stream().map(CustomerTypeContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, customerTypeContactLists);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
