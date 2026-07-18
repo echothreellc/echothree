@@ -41,14 +41,16 @@ public class GetPartyContactMechanismsCommand
 
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
     @Inject
     ContactControl contactControl;
+
     @Inject
     PartyControl partyControl;
+
     @Inject
     PartyLogic partyLogic;
 
@@ -61,17 +63,21 @@ public class GetPartyContactMechanismsCommand
 
     @Override
     protected void handleForm() {
-        party = partyLogic.getPartyByName(this, form.getPartyName());
+        var partyName = form.getPartyName();
+
+        if(partyName != null) {
+            party = partyLogic.getPartyByName(this, partyName);
+        }
     }
 
     @Override
     protected Long getTotalEntities() {
-        return party == null ? null : contactControl.countPartyContactMechanismsByParty(party);
+        return hasExecutionErrors() ? null : (party == null ? contactControl.countPartyContactMechanisms() : contactControl.countPartyContactMechanismsByParty(party));
     }
 
     @Override
     protected Collection<PartyContactMechanism> getEntities() {
-        return party == null ? null : contactControl.getPartyContactMechanismsByParty(party);
+        return hasExecutionErrors() ? null : (party == null ? contactControl.getPartyContactMechanisms() : contactControl.getPartyContactMechanismsByParty(party));
     }
 
     @Override
@@ -79,11 +85,14 @@ public class GetPartyContactMechanismsCommand
         var result = ContactResultFactory.getGetPartyContactMechanismsResult();
 
         if(entities != null) {
+            if(party != null) {
+                result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
+            }
+
             if(session.hasLimit(PartyContactMechanismFactory.class)) {
                 result.setPartyContactMechanismCount(getTotalEntities());
             }
 
-            result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
             result.setPartyContactMechanisms(contactControl.getPartyContactMechanismTransfers(getUserVisit(), entities));
         }
 
