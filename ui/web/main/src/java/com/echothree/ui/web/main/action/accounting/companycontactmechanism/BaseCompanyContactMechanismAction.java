@@ -18,6 +18,7 @@ package com.echothree.ui.web.main.action.accounting.companycontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
+import com.echothree.control.user.contact.common.result.GetPartyContactMechanismResult;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.party.common.PartyUtil;
@@ -103,14 +104,14 @@ public abstract class BaseCompanyContactMechanismAction<A
 
     public static void setupPartyContactMechanismTransfer(HttpServletRequest request, String partyName, String contactMechanismName)
             throws NamingException {
-        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getGetPartyContactMechanismForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setContactMechanismName(contactMechanismName);
 
-        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var commandResult = ContactUtil.getHome().getPartyContactMechanism(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContactMechanismResult)executionResult.getResult();
+        var result = (GetPartyContactMechanismResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_CONTACT_MECHANISM, result.getPartyContactMechanism());
     }

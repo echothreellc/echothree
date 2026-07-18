@@ -16,9 +16,14 @@
 
 package com.echothree.model.control.contact.server.logic;
 
+import com.echothree.control.user.contact.common.spec.ContactMechanismUniversalSpec;
 import com.echothree.model.control.contact.common.exception.CannotDeleteContactMechanismInUseException;
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismNameException;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -26,13 +31,22 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContactMechanismLogic
     extends BaseLogic {
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ContactMechanismLogic() {
         super();
@@ -41,10 +55,9 @@ public class ContactMechanismLogic
     public static ContactMechanismLogic getInstance() {
         return CDI.current().select(ContactMechanismLogic.class).get();
     }
-    
+
     public ContactMechanism getContactMechanismByName(final ExecutionErrorAccumulator eea, final String contactMechanismName,
             final EntityPermission entityPermission) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName, entityPermission);
 
         if(contactMechanism == null) {
@@ -62,10 +75,44 @@ public class ContactMechanismLogic
         return getContactMechanismByName(eea, contactMechanismName, EntityPermission.READ_WRITE);
     }
 
+    public ContactMechanism getContactMechanismByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContactMechanismUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        ContactMechanism contactMechanism = null;
+        var contactMechanismName = universalSpec.getContactMechanismName();
+        var parameterCount = (contactMechanismName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(contactMechanismName == null) {
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanism.name());
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        contactMechanism = contactControl.getContactMechanismByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    contactMechanism = getContactMechanismByName(eea, contactMechanismName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return contactMechanism;
+    }
+
+    public ContactMechanism getContactMechanismByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContactMechanismUniversalSpec universalSpec) {
+        return getContactMechanismByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanism getContactMechanismByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ContactMechanismUniversalSpec universalSpec) {
+        return getContactMechanismByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
     public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final ContactMechanism contactMechanism,
             final PartyPK deletedBy) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         var cannotDeleteContactMechanismInUse = false;
 
         // Check if the ContactMechanism is in-use by any PartyPaymentMethodCreditCard.

@@ -195,14 +195,33 @@ public class ContactBean
     }
 
     @Override
+    public CommandResult<GetContactMechanismsResult> getContactMechanisms(UserVisitPK userVisitPK, GetContactMechanismsForm form) {
+        return CDI.current().select(GetContactMechanismsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
     public CommandResult<VoidResult> deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form) {
         return CDI.current().select(DeleteContactMechanismCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Party Contact Mechanisms
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetPartyContactMechanismResult> getPartyContactMechanism(UserVisitPK userVisitPK, GetPartyContactMechanismForm form) {
+        return CDI.current().select(GetPartyContactMechanismCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetPartyContactMechanismsResult> getPartyContactMechanisms(UserVisitPK userVisitPK, GetPartyContactMechanismsForm form) {
+        return CDI.current().select(GetPartyContactMechanismsCommand.class).get().run(userVisitPK, form);
+    }
+
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Aliases
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult<VoidResult> createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form) {
         return CDI.current().select(CreateContactMechanismAliasCommand.class).get().run(userVisitPK, form);
