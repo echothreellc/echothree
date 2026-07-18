@@ -87,6 +87,7 @@ import com.echothree.model.data.contact.common.pk.ContactMechanismAliasTypePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismTypePK;
+import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPurposePK;
 import com.echothree.model.data.contact.common.pk.PostalAddressFormatPK;
 import com.echothree.model.data.contact.common.pk.PostalAddressLinePK;
@@ -2515,6 +2516,21 @@ public class ContactControl
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyContactMechanism;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyContactMechanism */
+    public PartyContactMechanism getPartyContactMechanismByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyContactMechanismPK(entityInstance.getEntityUniqueId());
+
+        return PartyContactMechanismFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyContactMechanism getPartyContactMechanismByEntityInstance(EntityInstance entityInstance) {
+        return getPartyContactMechanismByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyContactMechanism getPartyContactMechanismByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyContactMechanismByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countPartyContactMechanisms() {
