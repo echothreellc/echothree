@@ -16,6 +16,9 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.graphql.ContactListSecurityUtils;
+import com.echothree.model.control.contactlist.server.graphql.PartyTypeContactListGroupObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -27,6 +30,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.contactlist.common.PartyTypeContactListGroupConstants;
 import com.echothree.model.data.party.common.PartyAliasTypeConstants;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.Session;
@@ -125,6 +129,26 @@ public class PartyTypeObject
                 var partyAliasTypes = entities.stream().map(PartyAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, partyAliasTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party type contact list groups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyTypeContactListGroupObject> getPartyTypeContactListGroups(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasPartyTypeContactListGroupsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countPartyTypeContactListGroupsByPartyType(partyType);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyTypeContactListGroupConstants.COMPONENT_VENDOR_NAME, PartyTypeContactListGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getPartyTypeContactListGroupsByPartyType(partyType);
+                var partyTypeContactListGroups = entities.stream().map(PartyTypeContactListGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyTypeContactListGroups);
             }
         } else {
             return Connections.emptyConnection();
