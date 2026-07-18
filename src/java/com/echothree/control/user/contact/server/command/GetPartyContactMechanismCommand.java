@@ -34,12 +34,6 @@ import javax.inject.Inject;
 public class GetPartyContactMechanismCommand
         extends BaseSingleEntityCommand<PartyContactMechanism, GetPartyContactMechanismForm> {
     
-    @Inject
-    ContactControl contactControl;
-
-    @Inject
-    PartyContactMechanismLogic partyContactMechanismLogic;
-    
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -50,12 +44,18 @@ public class GetPartyContactMechanismCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyContactMechanismLogic partyContactMechanismLogic;
+
     /** Creates a new instance of GetPartyContactMechanismCommand */
     public GetPartyContactMechanismCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
     protected PartyContactMechanism getEntity() {
         var partyContactMechanism = partyContactMechanismLogic.getPartyContactMechanismByUniversalSpec(this, form);

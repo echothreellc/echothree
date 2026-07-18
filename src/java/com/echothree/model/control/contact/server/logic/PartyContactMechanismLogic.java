@@ -45,6 +45,15 @@ public class PartyContactMechanismLogic
     @Inject
     ContactControl contactControl;
 
+    @Inject
+    ContactMechanismLogic contactMechanismLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
             final ContactMechanism contactMechanism, final EntityPermission entityPermission) {
         var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism, entityPermission);
@@ -72,13 +81,13 @@ public class PartyContactMechanismLogic
         PartyContactMechanism partyContactMechanism = null;
         var partyName = universalSpec.getPartyName();
         var contactMechanismName = universalSpec.getContactMechanismName();
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         var parameterCount = (partyName == null ? 0 : 1) + (contactMechanismName == null ? 0 : 1) + possibleEntitySpecs;
 
         switch(parameterCount) {
             case 1 -> {
                 if(possibleEntitySpecs == 1) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyContactMechanism.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -90,10 +99,10 @@ public class PartyContactMechanismLogic
             }
             case 2 -> {
                 if(partyName != null && contactMechanismName != null) {
-                    var party = PartyLogic.getInstance().getPartyByName(eea, partyName);
+                    var party = partyLogic.getPartyByName(eea, partyName);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var contactMechanism = ContactMechanismLogic.getInstance().getContactMechanismByName(eea, contactMechanismName);
+                        var contactMechanism = contactMechanismLogic.getContactMechanismByName(eea, contactMechanismName);
 
                         if(eea == null || !eea.hasExecutionErrors()) {
                             partyContactMechanism = getPartyContactMechanism(eea, party, contactMechanism, entityPermission);

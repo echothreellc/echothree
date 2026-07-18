@@ -45,6 +45,9 @@ public class ContactMechanismLogic
     @Inject
     PartyPaymentMethodControl partyPaymentMethodControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ContactMechanismLogic() {
         super();
     }
@@ -76,12 +79,12 @@ public class ContactMechanismLogic
             final ContactMechanismUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ContactMechanism contactMechanism = null;
         var contactMechanismName = universalSpec.getContactMechanismName();
-        var parameterCount = (contactMechanismName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contactMechanismName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(contactMechanismName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanism.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
