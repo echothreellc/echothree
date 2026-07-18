@@ -3178,7 +3178,7 @@ public class ContactListControl
     public long countCustomerTypeContactListsByContactList(final ContactList contactList) {
         return session.queryForLong("""
                         SELECT COUNT(*)
-                        FROM customertypecontactlistgroups
+                        FROM customertypecontactlists
                         WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
                         """, contactList, Session.MAX_TIME);
     }
