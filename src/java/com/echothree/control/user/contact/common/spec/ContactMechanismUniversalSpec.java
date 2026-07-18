@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.contact.common.form;
+package com.echothree.control.user.contact.common.spec;
 
-import com.echothree.control.user.contact.common.spec.ContactMechanismUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetContactMechanismForm
-        extends ContactMechanismUniversalSpec {
-    
-    // Nothing additional beyond ContactMechanismUniversalSpec
-    
+public interface ContactMechanismUniversalSpec
+        extends ContactMechanismSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond ContactMechanismSpec, UniversalEntitySpec
+
 }

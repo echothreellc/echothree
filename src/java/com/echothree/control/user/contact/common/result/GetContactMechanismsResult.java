@@ -14,13 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.contact.common.form;
+package com.echothree.control.user.contact.common.result;
 
-import com.echothree.control.user.contact.common.spec.ContactMechanismUniversalSpec;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-public interface GetContactMechanismForm
-        extends ContactMechanismUniversalSpec {
+public interface GetContactMechanismsResult
+        extends BaseResult {
     
-    // Nothing additional beyond ContactMechanismUniversalSpec
+    Long getContactMechanismCount();
+    void setContactMechanismCount(Long contactMechanismCount);
+
+    List<ContactMechanismTransfer> getContactMechanisms();
+    void setContactMechanisms(List<ContactMechanismTransfer> contactMechanisms);
     
 }
