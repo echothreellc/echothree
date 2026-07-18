@@ -42,7 +42,7 @@ public class CustomerTypeContactListGroupObject
     public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
         var customerType = customerTypeContactListGroup.getCustomerType();
 
-        return customerType == null ? null : (CustomerSecurityUtils.getHasCustomerTypeAccess(env) ? new CustomerTypeObject(customerType) : null);
+        return CustomerSecurityUtils.getHasCustomerTypeAccess(env) ? new CustomerTypeObject(customerType) : null;
     }
 
     @GraphQLField
@@ -50,7 +50,7 @@ public class CustomerTypeContactListGroupObject
     public ContactListGroupObject getContactListGroup(final DataFetchingEnvironment env) {
         var contactListGroup = customerTypeContactListGroup.getContactListGroup();
 
-        return contactListGroup == null ? null : (ContactListSecurityUtils.getHasContactListGroupAccess(env) ? new ContactListGroupObject(contactListGroup) : null);
+        return ContactListSecurityUtils.getHasContactListGroupAccess(env) ? new ContactListGroupObject(contactListGroup) : null;
     }
 
     @GraphQLField
