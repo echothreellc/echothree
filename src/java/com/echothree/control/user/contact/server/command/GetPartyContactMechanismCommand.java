@@ -20,7 +20,6 @@ import com.echothree.control.user.contact.common.form.GetPartyContactMechanismFo
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contact.server.logic.PartyContactMechanismLogic;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -58,13 +57,7 @@ public class GetPartyContactMechanismCommand
     
     @Override
     protected PartyContactMechanism getEntity() {
-        var partyContactMechanism = partyContactMechanismLogic.getPartyContactMechanismByUniversalSpec(this, form);
-
-        if(partyContactMechanism != null) {
-            sendEvent(partyContactMechanism.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        }
-
-        return partyContactMechanism;
+        return partyContactMechanismLogic.getPartyContactMechanismByUniversalSpec(this, form);
     }
 
     @Override
