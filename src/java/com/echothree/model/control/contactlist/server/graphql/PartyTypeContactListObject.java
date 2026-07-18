@@ -16,39 +16,39 @@
 
 package com.echothree.model.control.contactlist.server.graphql;
 
-import com.echothree.model.control.customer.server.graphql.CustomerSecurityUtils;
-import com.echothree.model.control.customer.server.graphql.CustomerTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
-import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.control.party.server.graphql.PartyTypeObject;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("customer type contact list object")
-@GraphQLName("CustomerTypeContactList")
-public class CustomerTypeContactListObject
+@GraphQLDescription("party type contact list object")
+@GraphQLName("PartyTypeContactList")
+public class PartyTypeContactListObject
         extends BaseObject {
 
-    private final CustomerTypeContactList customerTypeContactList; // Always Present
+    private final PartyTypeContactList partyTypeContactList; // Always Present
 
-    public CustomerTypeContactListObject(CustomerTypeContactList customerTypeContactList) {
-        this.customerTypeContactList = customerTypeContactList;
+    public PartyTypeContactListObject(PartyTypeContactList partyTypeContactList) {
+        this.partyTypeContactList = partyTypeContactList;
     }
 
     @GraphQLField
-    @GraphQLDescription("customer type")
-    public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
-        var customerType = customerTypeContactList.getCustomerType();
+    @GraphQLDescription("party type")
+    public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
+        var partyType = partyTypeContactList.getPartyType();
 
-        return CustomerSecurityUtils.getHasCustomerTypeAccess(env) ? new CustomerTypeObject(customerType) : null;
+        return PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(partyType) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("contact list")
     public ContactListObject getContactList(final DataFetchingEnvironment env) {
-        var contactList = customerTypeContactList.getContactList();
+        var contactList = partyTypeContactList.getContactList();
 
         return ContactListSecurityUtils.getHasContactListAccess(env) ? new ContactListObject(contactList) : null;
     }
@@ -57,7 +57,7 @@ public class CustomerTypeContactListObject
     @GraphQLDescription("add when created")
     @GraphQLNonNull
     public boolean getAddWhenCreated() {
-        return customerTypeContactList.getAddWhenCreated();
+        return partyTypeContactList.getAddWhenCreated();
     }
 
 }
