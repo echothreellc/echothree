@@ -49,6 +49,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSalesOrderShipmentGroupCommand
@@ -79,6 +80,9 @@ public class EditSalesOrderShipmentGroupCommand
                 new FieldDefinition("HoldUntilComplete", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyContactMechanismLogic partyContactMechanismLogic;
 
     /** Creates a new instance of EditSalesOrderShipmentGroupCommand */
     public EditSalesOrderShipmentGroupCommand() {
@@ -163,7 +167,7 @@ public class EditSalesOrderShipmentGroupCommand
 
                 switch(parameterCount) {
                     case 2 ->
-                            partyContactMechanism = PartyContactMechanismLogic.getInstance().getPartyContactMechanism(this, party, contactMechanism);
+                            partyContactMechanism = partyContactMechanismLogic.getPartyContactMechanism(this, party, contactMechanism);
                     case 0 -> {
                     }
                     default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
