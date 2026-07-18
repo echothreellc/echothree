@@ -24,6 +24,14 @@ import com.echothree.control.user.contactlist.server.command.GetContactListGroup
 import com.echothree.control.user.contactlist.server.command.GetContactListTypeCommand;
 import com.echothree.control.user.contactlist.server.command.GetContactListTypesCommand;
 import com.echothree.control.user.contactlist.server.command.GetContactListsCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListGroupCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListGroupsCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListsCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListGroupCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListGroupsCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -59,6 +67,38 @@ public interface ContactListSecurityUtils {
 
     static boolean getHasContactListAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContactListCommand.class);
+    }
+
+    static boolean getHasPartyTypeContactListGroupsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeContactListGroupsCommand.class);
+    }
+
+    static boolean getHasPartyTypeContactListGroupAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeContactListGroupCommand.class);
+    }
+
+    static boolean getHasCustomerTypeContactListGroupsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeContactListGroupsCommand.class);
+    }
+
+    static boolean getHasCustomerTypeContactListGroupAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeContactListGroupCommand.class);
+    }
+
+    static boolean getHasPartyTypeContactListsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeContactListsCommand.class);
+    }
+
+    static boolean getHasPartyTypeContactListAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeContactListCommand.class);
+    }
+
+    static boolean getHasCustomerTypeContactListsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeContactListsCommand.class);
+    }
+
+    static boolean getHasCustomerTypeContactListAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeContactListCommand.class);
     }
 
 }
