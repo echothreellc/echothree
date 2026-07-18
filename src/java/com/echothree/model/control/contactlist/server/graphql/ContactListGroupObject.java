@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contactlist.common.ContactListConstants;
+import com.echothree.model.data.contactlist.common.CustomerTypeContactListGroupConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroupDetail;
 import com.echothree.util.server.persistence.Session;
@@ -106,6 +107,26 @@ public class ContactListGroupObject
                 var contactLists = entities.stream().map(ContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, contactLists);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("customer type contact list groups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypeContactListGroupObject> getCustomerTypeContactListGroups(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasCustomerTypeContactListGroupsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countCustomerTypeContactListGroupsByContactListGroup(contactListGroup);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeContactListGroupConstants.COMPONENT_VENDOR_NAME, CustomerTypeContactListGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getCustomerTypeContactListGroupsByContactListGroup(contactListGroup);
+                var customerTypeContactListGroups = entities.stream().map(CustomerTypeContactListGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, customerTypeContactListGroups);
             }
         } else {
             return Connections.emptyConnection();
