@@ -42,7 +42,7 @@ public class PartyTypeContactListGroupObject
     public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
         var partyType = partyTypeContactListGroup.getPartyType();
 
-        return partyType == null ? null : (PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(partyType) : null);
+        return PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(partyType) : null;
     }
 
     @GraphQLField
@@ -50,7 +50,7 @@ public class PartyTypeContactListGroupObject
     public ContactListGroupObject getContactListGroup(final DataFetchingEnvironment env) {
         var contactListGroup = partyTypeContactListGroup.getContactListGroup();
 
-        return contactListGroup == null ? null : (ContactListSecurityUtils.getHasContactListGroupAccess(env) ? new ContactListGroupObject(contactListGroup) : null);
+        return ContactListSecurityUtils.getHasContactListGroupAccess(env) ? new ContactListGroupObject(contactListGroup) : null;
     }
 
     @GraphQLField
