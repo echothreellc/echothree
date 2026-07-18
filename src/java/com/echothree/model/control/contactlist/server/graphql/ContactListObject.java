@@ -28,6 +28,7 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.data.contactlist.common.CustomerTypeContactListConstants;
+import com.echothree.model.data.contactlist.common.PartyTypeContactListConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListDetail;
 import com.echothree.util.server.persistence.Session;
@@ -140,6 +141,26 @@ public class ContactListObject
                 var customerTypeContactLists = entities.stream().map(CustomerTypeContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, customerTypeContactLists);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party type contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyTypeContactListObject> getPartyTypeContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasPartyTypeContactListsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countPartyTypeContactListsByContactList(contactList);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyTypeContactListConstants.COMPONENT_VENDOR_NAME, PartyTypeContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getPartyTypeContactListsByContactList(contactList);
+                var partyTypeContactLists = entities.stream().map(PartyTypeContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyTypeContactLists);
             }
         } else {
             return Connections.emptyConnection();
