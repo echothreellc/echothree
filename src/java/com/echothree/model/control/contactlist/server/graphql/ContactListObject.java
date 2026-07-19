@@ -27,6 +27,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.contactlist.common.ContactListContactMechanismPurposeConstants;
 import com.echothree.model.data.contactlist.common.CustomerTypeContactListConstants;
 import com.echothree.model.data.contactlist.common.PartyTypeContactListConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
@@ -161,6 +162,26 @@ public class ContactListObject
                 var partyTypeContactLists = entities.stream().map(PartyTypeContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, partyTypeContactLists);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("contact list contact mechanism purposes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContactListContactMechanismPurposeObject> getContactListContactMechanismPurposes(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasContactListContactMechanismPurposesAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countContactListContactMechanismPurposesByContactList(contactList);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContactListContactMechanismPurposeConstants.COMPONENT_VENDOR_NAME, ContactListContactMechanismPurposeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getContactListContactMechanismPurposesByContactList(contactList);
+                var contactListContactMechanismPurposes = entities.stream().map(ContactListContactMechanismPurposeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contactListContactMechanismPurposes);
             }
         } else {
             return Connections.emptyConnection();
