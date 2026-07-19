@@ -17,6 +17,8 @@
 package com.echothree.model.control.contactlist.server.graphql;
 
 import com.echothree.control.user.contactlist.server.command.GetContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListContactMechanismPurposeCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListContactMechanismPurposesCommand;
 import com.echothree.control.user.contactlist.server.command.GetContactListFrequenciesCommand;
 import com.echothree.control.user.contactlist.server.command.GetContactListFrequencyCommand;
 import com.echothree.control.user.contactlist.server.command.GetContactListGroupCommand;
@@ -99,6 +101,14 @@ public interface ContactListSecurityUtils {
 
     static boolean getHasCustomerTypeContactListAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeContactListCommand.class);
+    }
+
+    static boolean getHasContactListContactMechanismPurposesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContactListContactMechanismPurposesCommand.class);
+    }
+
+    static boolean getHasContactListContactMechanismPurposeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetContactListContactMechanismPurposeCommand.class);
     }
 
 }
