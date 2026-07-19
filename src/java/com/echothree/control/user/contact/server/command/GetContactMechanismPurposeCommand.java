@@ -20,18 +20,11 @@ import com.echothree.control.user.contact.common.form.GetContactMechanismPurpose
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contact.server.logic.ContactMechanismPurposeLogic;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -39,7 +32,8 @@ import javax.enterprise.context.Dependent;
 @Dependent
 public class GetContactMechanismPurposeCommand
         extends BaseSingleEntityCommand<ContactMechanismPurpose, GetContactMechanismPurposeForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -47,7 +41,7 @@ public class GetContactMechanismPurposeCommand
                 new FieldDefinition("ContactMechanismPurposeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetContactMechanismPurposeCommand */
@@ -57,9 +51,7 @@ public class GetContactMechanismPurposeCommand
 
     @Override
     protected ContactMechanismPurpose getEntity() {
-        var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByUniversalSpec(this, form);
-
-        return contactMechanismPurpose;
+        return ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByUniversalSpec(this, form);
     }
 
     @Override

@@ -17,16 +17,28 @@
 package com.echothree.model.control.contact.server.graphql;
 
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.graphql.ContactListContactMechanismPurposeObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
+import com.echothree.model.data.contactlist.common.ContactListContactMechanismPurposeConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("contact mechanism purpose object")
 @GraphQLName("ContactMechanismPurpose")
@@ -78,5 +90,25 @@ public class ContactMechanismPurposeObject
 
         return contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("contact list contact mechanism purposes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ContactListContactMechanismPurposeObject> getContactListContactMechanismPurposes(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasContactListContactMechanismPurposesAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countContactListContactMechanismPurposesByContactMechanismPurpose(contactMechanismPurpose);
+
+            try(var objectLimiter = new ObjectLimiter(env, ContactListContactMechanismPurposeConstants.COMPONENT_VENDOR_NAME, ContactListContactMechanismPurposeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getContactListContactMechanismPurposesByContactMechanismPurpose(contactMechanismPurpose);
+                var contactListContactMechanismPurposes = entities.stream().map(ContactListContactMechanismPurposeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, contactListContactMechanismPurposes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetContactMechanismPurposesResult
         extends BaseResult {
-    
+
+    Long getContactMechanismPurposeCount();
+    void setContactMechanismPurposeCount(Long contactMechanismPurposeCount);
+
     List<ContactMechanismPurposeTransfer> getContactMechanismPurposes();
     void setContactMechanismPurposes(List<ContactMechanismPurposeTransfer> contactMechanismPurposes);
     
