@@ -29,6 +29,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObjec
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.data.contactlist.common.ContactListContactMechanismPurposeConstants;
 import com.echothree.model.data.contactlist.common.CustomerTypeContactListConstants;
+import com.echothree.model.data.contactlist.common.PartyContactListConstants;
 import com.echothree.model.data.contactlist.common.PartyTypeContactListConstants;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListDetail;
@@ -182,6 +183,26 @@ public class ContactListObject
                 var contactListContactMechanismPurposes = entities.stream().map(ContactListContactMechanismPurposeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, contactListContactMechanismPurposes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyContactListObject> getPartyContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasPartyContactListsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countPartyContactListsByContactList(contactList);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyContactListConstants.COMPONENT_VENDOR_NAME, PartyContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getPartyContactListsByContactList(contactList);
+                var partyContactLists = entities.stream().map(PartyContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyContactLists);
             }
         } else {
             return Connections.emptyConnection();
