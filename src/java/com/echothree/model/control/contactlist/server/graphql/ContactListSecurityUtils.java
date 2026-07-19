@@ -30,6 +30,8 @@ import com.echothree.control.user.contactlist.server.command.GetCustomerTypeCont
 import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListGroupCommand;
 import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListGroupsCommand;
 import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListsCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyContactListsCommand;
 import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListCommand;
 import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListGroupCommand;
 import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListGroupsCommand;
@@ -93,6 +95,14 @@ public interface ContactListSecurityUtils {
 
     static boolean getHasPartyTypeContactListAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeContactListCommand.class);
+    }
+
+    static boolean getHasPartyContactListsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyContactListsCommand.class);
+    }
+
+    static boolean getHasPartyContactListAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyContactListCommand.class);
     }
 
     static boolean getHasCustomerTypeContactListsAccess(final DataFetchingEnvironment env) {

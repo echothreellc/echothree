@@ -2398,7 +2398,7 @@ public class ContactListControl
                 + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ? "
                 + "AND parclstdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND pardt_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY parclstdt_sortorder, pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
+                + "ORDER BY pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
                 "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
