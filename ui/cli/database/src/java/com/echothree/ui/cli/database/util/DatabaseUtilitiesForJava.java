@@ -208,6 +208,9 @@ public class DatabaseUtilitiesForJava {
         pw.println("");
         pw.println("import java.io.Serializable;");
         pw.println("");
+        pw.println("import javax.annotation.Nonnull;");
+        pw.println("import javax.annotation.Nullable;");
+        pw.println("");
         if(theTable.hasBlob()) {
             pw.println("import com.echothree.util.common.persistence.type.ByteArray;");
             pw.println("");
@@ -332,9 +335,10 @@ public class DatabaseUtilitiesForJava {
     
     public void writeValueCoreFunctions(PrintWriter pw, Table theTable) {
         var factoryClass = theTable.getFactoryClass();
-        
-        pw.println("   @Override");
-        pw.println("   public " + factoryClass + " getBaseFactoryInstance() {");
+
+        pw.println("    @Override");
+        pw.println("    @Nonnull");
+        pw.println("    public " + factoryClass + " getBaseFactoryInstance() {");
         pw.println("        return " + factoryClass + ".getInstance();");
         pw.println("    }");
         pw.println("    ");
@@ -343,7 +347,8 @@ public class DatabaseUtilitiesForJava {
     public void writeValuePrimaryKey(PrintWriter pw, Table theTable) {
         var pkClass = theTable.getPKClass();
         
-        pw.println("   @Override");
+        pw.println("    @Override");
+        pw.println("    @Nonnull");
         pw.println("    public " + pkClass + " getPrimaryKey() {");
         pw.println("        if(_primaryKey == null) {");
         pw.println("            _primaryKey = new " + pkClass + "(entityId);");
@@ -389,6 +394,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
+        pw.println("    @Nonnull");
         pw.println("    public String toString() {");
         pw.println("        if(_stringValue == null) {");
         pw.println("            _stringValue = \"{\" + ");
@@ -520,18 +526,20 @@ public class DatabaseUtilitiesForJava {
             var getFunctionName = column.getGetFunctionName();
             var variableName = column.getVariableName();
             var javaType = column.getTypeAsJavaType();
-            
+            var nullAnnotation = column.getNullAllowed() ? "@Nullable" : "@Nonnull";
+
+            pw.println("    " + nullAnnotation);
             pw.println("    public " + javaType + " " + getFunctionName + "() {");
             pw.println("        return " + variableName + ";");
             pw.println("    }");
             pw.println("    ");
             if(!column.getNullAllowed()) {
-                pw.println("    public void " + column.getSetFunctionName() + "(" + javaType + " " + variableName + ")");
+                pw.println("    public void " + column.getSetFunctionName() + "(" + nullAnnotation + " " + javaType + " " + variableName + ")");
                 pw.println("            throws PersistenceNotNullException {");
                 pw.println("        checkForNull(" + variableName + ");");
                 pw.println("        ");
             } else {
-                pw.println("    public void " + column.getSetFunctionName() + "(" + javaType + " " + variableName + ") {");
+                pw.println("    public void " + column.getSetFunctionName() + "(" + nullAnnotation + " " + javaType + " " + variableName + ") {");
             }
             pw.println("        boolean update = true;");
             pw.println("        ");
@@ -565,6 +573,7 @@ public class DatabaseUtilitiesForJava {
         var valueClass = theTable.getValueClass();
         
         pw.println("    @Override");
+        pw.println("    @Nonnull");
         pw.println("    public " + valueClass + " clone() {");
         pw.println("        Object result;");
         pw.println("        ");
@@ -744,6 +753,9 @@ public class DatabaseUtilitiesForJava {
         pw.println("");
         pw.println("import java.io.Serializable;");
         pw.println("");
+        pw.println("import javax.annotation.Nonnull;");
+        pw.println("import javax.annotation.Nullable;");
+        pw.println("");
     }
     
     public void writeEntityInstanceVariables(PrintWriter pw, Table theTable) {
@@ -775,8 +787,9 @@ public class DatabaseUtilitiesForJava {
         var entityClass = theTable.getEntityClass();
         var factoryClass = theTable.getFactoryClass();
         var valueClass = theTable.getValueClass();
-        
+
         pw.println("    @Override");
+        pw.println("    @Nonnull");
         pw.println("    public " + factoryClass + " getBaseFactoryInstance() {");
         pw.println("        return " + factoryClass + ".getInstance();");
         pw.println("    }");
@@ -792,6 +805,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
+        pw.println("    @Nonnull");
         pw.println("    public String toString() {");
         pw.println("        return _pk.toString();");
         pw.println("    }");
@@ -821,17 +835,19 @@ public class DatabaseUtilitiesForJava {
         pw.println("        getBaseFactoryInstance().remove(this);");
         pw.println("    }");
         pw.println("    ");
+        pw.println("    @Nonnull");
         pw.println("    public " + valueClass + " get" + valueClass + "() {");
         pw.println("        return _value;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public void set" + valueClass + "(" + valueClass + " value)");
+        pw.println("    public void set" + valueClass + "(@Nonnull " + valueClass + " value)");
         pw.println("            throws PersistenceReadOnlyException {");
         pw.println("        checkReadWrite();");
         pw.println("        _value = value;");
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
+        pw.println("    @Nonnull");
         pw.println("    public " + theTable.getPKClass() + " getPrimaryKey() {");
         pw.println("        return _pk;");
         pw.println("    }");
@@ -847,8 +863,10 @@ public class DatabaseUtilitiesForJava {
                 var setFunctionName = column.getSetFunctionName();
                 var variableName = column.getVariableName();
                 var javaType = column.getTypeAsJavaType();
+                var nullAnnotation = column.getNullAllowed() ? "@Nullable" : "@Nonnull";
                 String fkEntityClass = null;
-                
+
+                pw.println("    " + nullAnnotation);
                 pw.println("    public " + javaType + " " + getFunctionName + "() {");
                 pw.println("        return _value." + getFunctionName + "();");
                 pw.println("    }");
@@ -859,7 +877,8 @@ public class DatabaseUtilitiesForJava {
                     var fkFactoryClass = column.getFKFactoryClass();
                     
                     fkEntityClass = column.getFKEntityClass();
-                    
+
+                    pw.println("    " + nullAnnotation);
                     pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "(EntityPermission entityPermission) {");
                     if(column.getNullAllowed()) {
                         pw.println("        " + javaType + " pk = " + getFunctionName + "();");
@@ -871,17 +890,19 @@ public class DatabaseUtilitiesForJava {
                     }
                     pw.println("    }");
                     pw.println("    ");
+                    pw.println("    " + nullAnnotation);
                     pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "() {");
                     pw.println("        return " + getEntityFunctionName + "(EntityPermission.READ_ONLY);");
                     pw.println("    }");
                     pw.println("    ");
+                    pw.println("    " + nullAnnotation);
                     pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "ForUpdate() {");
                     pw.println("        return " + getEntityFunctionName + "(EntityPermission.READ_WRITE);");
                     pw.println("    }");
                     pw.println("    ");
                 }
                 
-                pw.println("    public void " + setFunctionName + "(" + javaType + " " + variableName + ")");
+                pw.println("    public void " + setFunctionName + "(" + nullAnnotation + " " + javaType + " " + variableName + ")");
                 pw.println("            throws PersistenceNotNullException, PersistenceReadOnlyException {");
                 pw.println("        checkReadWrite();");
                 pw.println("        _value." + setFunctionName + "(" + variableName + ");");
@@ -889,8 +910,8 @@ public class DatabaseUtilitiesForJava {
                 pw.println("    ");
                 
                 if(type == ColumnType.columnForeignKey) {
-                    pw.println("    public void " + column.getSetEntityFunctionName() + "(" + fkEntityClass + " entity) {");
-                    pw.println("        " + setFunctionName + "(entity == null? null: entity.getPrimaryKey());");
+                    pw.println("    public void " + column.getSetEntityFunctionName() + "(" + nullAnnotation + " " + fkEntityClass + " entity) {");
+                    pw.println("        " + setFunctionName + "(entity == null ? null : entity.getPrimaryKey());");
                     pw.println("    }");
                     pw.println("    ");
                 }

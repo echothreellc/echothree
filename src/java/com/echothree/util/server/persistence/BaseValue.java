@@ -18,6 +18,8 @@ package com.echothree.util.server.persistence;
 
 import com.echothree.util.common.exception.PersistenceNotNullException;
 import com.echothree.util.common.persistence.BasePK;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public abstract class BaseValue<PK extends BasePK> {
     
@@ -35,25 +37,28 @@ public abstract class BaseValue<PK extends BasePK> {
         entityId = null;
         _primaryKey = null;
     }
-    
+
+    @Nonnull
     public abstract BaseFactory getBaseFactoryInstance();
     
     protected boolean hasIdentity() {
         return entityId != null;
     }
-    
+
+    @Nonnull
     public abstract PK getPrimaryKey();
-    
+
+    @Nonnull
     public Long getEntityId() {
         return entityId;
     }
     
-    public void setEntityId(Long entityId) {
+    public void setEntityId(@Nonnull Long entityId) {
         this.entityId = entityId;
         _primaryKey = null;
     }
     
-    protected void checkForNull(Object o)
+    protected void checkForNull(@Nullable Object o)
             throws PersistenceNotNullException {
         var isNull = false;
         
