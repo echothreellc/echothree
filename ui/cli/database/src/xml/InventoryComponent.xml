@@ -864,7 +864,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionTypes" nameSingular="InventoryTransactionType" columnPrefix="invtnxtyp">
+                <table namePlural="InventoryTransactionTypes" nameSingular="InventoryTransactionType" columnPrefix="invtrxtyp">
                     <columns>
                         <column name="InventoryTransactionTypeId" type="EID" nullAllowed="false" />
                         <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionTypeDetails" destinationColumn="InventoryTransactionTypeDetailId"/>
@@ -882,7 +882,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionTypeDetails" nameSingular="InventoryTransactionTypeDetail" columnPrefix="invtnxtypdt">
+                <table namePlural="InventoryTransactionTypeDetails" nameSingular="InventoryTransactionTypeDetail" columnPrefix="invtrxtypdt">
                     <columns>
                         <column name="InventoryTransactionTypeDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
@@ -925,7 +925,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionTypeDescriptions" nameSingular="InventoryTransactionTypeDescription" columnPrefix="invtnxtypd">
+                <table namePlural="InventoryTransactionTypeDescriptions" nameSingular="InventoryTransactionTypeDescription" columnPrefix="invtrxtypd">
                     <columns>
                         <column name="InventoryTransactionTypeDescriptionId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
@@ -953,7 +953,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactions" nameSingular="InventoryTransaction" columnPrefix="invtnx">
+                <table namePlural="InventoryTransactions" nameSingular="InventoryTransaction" columnPrefix="invtrx">
                     <columns>
                         <column name="InventoryTransactionId" type="EID" nullAllowed="false" />
                         <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionDetails" destinationColumn="InventoryTransactionDetailId"/>
@@ -971,7 +971,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionDetails" nameSingular="InventoryTransactionDetail" columnPrefix="invtnxdt">
+                <table namePlural="InventoryTransactionDetails" nameSingular="InventoryTransactionDetail" columnPrefix="invtrxdt">
                     <columns>
                         <column name="InventoryTransactionDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactions" destinationColumn="InventoryTransactionId" />
@@ -1004,7 +1004,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionStatuses" nameSingular="InventoryTransactionStatus" columnPrefix="invtnxst">
+                <table namePlural="InventoryTransactionStatuses" nameSingular="InventoryTransactionStatus" columnPrefix="invtrxst">
                     <columns>
                         <column name="InventoryTransactionStatusId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactions" destinationColumn="InventoryTransactionId"/>
@@ -1019,7 +1019,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionLines" nameSingular="InventoryTransactionLine" columnPrefix="invtnxl">
+                <table namePlural="InventoryTransactionLines" nameSingular="InventoryTransactionLine" columnPrefix="invtrxl">
                     <columns>
                         <column name="InventoryTransactionLineId" type="EID" nullAllowed="false" />
                         <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionLineDetails" destinationColumn="InventoryTransactionLineDetailId"/>
@@ -1037,7 +1037,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionLineDetails" nameSingular="InventoryTransactionLineDetail" columnPrefix="invtnxldt">
+                <table namePlural="InventoryTransactionLineDetails" nameSingular="InventoryTransactionLineDetail" columnPrefix="invtrxldt">
                     <columns>
                         <column name="InventoryTransactionLineDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />
@@ -1077,7 +1077,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionLineStatuses" nameSingular="InventoryTransactionLineStatus" columnPrefix="invtnxlst">
+                <table namePlural="InventoryTransactionLineStatuses" nameSingular="InventoryTransactionLineStatus" columnPrefix="invtrxlst">
                     <columns>
                         <column name="InventoryTransactionLineStatusId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId"/>
@@ -1092,7 +1092,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionLineSources" nameSingular="InventoryTransactionLineSource" columnPrefix="invtnxlsrc">
+                <table namePlural="InventoryTransactionLineSources" nameSingular="InventoryTransactionLineSource" columnPrefix="invtrxlsrc">
                     <columns>
                         <column name="InventoryTransactionLineSourceId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />
@@ -1125,7 +1125,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryTransactionLineDestinations" nameSingular="InventoryTransactionLineDestination" columnPrefix="invtnxldn">
+                <table namePlural="InventoryTransactionLineDestinations" nameSingular="InventoryTransactionLineDestination" columnPrefix="invtrxldn">
                     <columns>
                         <column name="InventoryTransactionLineDestinationId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />

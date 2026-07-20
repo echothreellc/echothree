@@ -114,7 +114,7 @@ public class InventoryTransactionTypeControl
         return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
                 """);
     }
 
@@ -126,14 +126,14 @@ public class InventoryTransactionTypeControl
         queryMap.put(EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
-                AND invtnxtypdt_inventorytransactiontypename = ?
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
+                AND invtrxtypdt_inventorytransactiontypename = ?
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
-                AND invtnxtypdt_inventorytransactiontypename = ?
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
+                AND invtrxtypdt_inventorytransactiontypename = ?
                 FOR UPDATE
                 """);
         getInventoryTransactionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
@@ -167,14 +167,14 @@ public class InventoryTransactionTypeControl
         queryMap.put(EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
-                AND invtnxtypdt_isdefault = 1
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
+                AND invtrxtypdt_isdefault = 1
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
-                AND invtnxtypdt_isdefault = 1
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
+                AND invtrxtypdt_isdefault = 1
                 FOR UPDATE
                 """);
         getDefaultInventoryTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
@@ -204,14 +204,14 @@ public class InventoryTransactionTypeControl
         queryMap.put(EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
-                ORDER BY invtnxtypdt_sortorder, invtnxtypdt_inventorytransactiontypename
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
+                ORDER BY invtrxtypdt_sortorder, invtrxtypdt_inventorytransactiontypename
                 _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
                 FOR UPDATE
                 """);
         getInventoryTransactionTypesQueries = Collections.unmodifiableMap(queryMap);
@@ -395,12 +395,12 @@ public class InventoryTransactionTypeControl
         queryMap.put(EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM inventorytransactiontypedescriptions
-                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_lang_languageid = ? AND invtnxtypd_thrutime = ?
+                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_lang_languageid = ? AND invtrxtypd_thrutime = ?
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM inventorytransactiontypedescriptions
-                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_lang_languageid = ? AND invtnxtypd_thrutime = ?
+                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_lang_languageid = ? AND invtrxtypd_thrutime = ?
                 FOR UPDATE
                 """);
         getInventoryTransactionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
@@ -435,14 +435,14 @@ public class InventoryTransactionTypeControl
         queryMap.put(EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM inventorytransactiontypedescriptions, languages
-                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ? AND invtnxtypd_lang_languageid = lang_languageid
+                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_thrutime = ? AND invtrxtypd_lang_languageid = lang_languageid
                 ORDER BY lang_sortorder, lang_languageisoname
                 _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM inventorytransactiontypedescriptions
-                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ?
+                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_thrutime = ?
                 FOR UPDATE
                 """);
         getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
