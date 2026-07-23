@@ -648,6 +648,48 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="InventoryLocationStatuses" nameSingular="InventoryLocationStatus" columnPrefix="invlocst">
+                    <columns>
+                        <column name="InventoryLocationStatusId" type="EID" nullAllowed="false" />
+                        <column name="LocationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Locations" destinationColumn="LocationId" />
+                        <column name="OwnerPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationStatusId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LocationId" />
+                            <indexColumn name="ItemId" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LocationId" />
+                            <indexColumn name="OwnerPartyId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LocationId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="OwnerPartyId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ItemId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="InventoryPartyStatuses" nameSingular="InventoryPartyStatus" columnPrefix="invparst">
                     <columns>
                         <column name="InventoryPartyStatusId" type="EID" nullAllowed="false" />
