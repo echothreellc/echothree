@@ -1399,7 +1399,7 @@
                     <columns>
                         <column name="InventoryTransactionLineStatusId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId"/>
-                        <column name="Quantity" type="Long" nullAllowed="false" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
@@ -1533,6 +1533,141 @@
                         <index type="Multiple" name="Index4">
                             <indexColumn name="PartyId" />
                             <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryCostingPools" nameSingular="InventoryCostingPool" columnPrefix="invcpl">
+                    <columns>
+                        <column name="InventoryCostingPoolId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryCostingPoolDetails" destinationColumn="InventoryCostingPoolDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryCostingPoolDetails" destinationColumn="InventoryCostingPoolDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryCostingPoolId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryCostingPoolDetails" nameSingular="InventoryCostingPoolDetail" columnPrefix="invcpldt">
+                    <columns>
+                        <column name="InventoryCostingPoolDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryCostingPoolId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingPools" destinationColumn="InventoryCostingPoolId" />
+                        <column name="InventoryCostingPoolName" type="Name" nullAllowed="false" />
+                        <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryCostingPoolDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryCostingPoolId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="InventoryCostingPoolName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CompanyPartyId" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ItemId" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryCostingPoolStatuses" nameSingular="InventoryCostingPoolStatus" columnPrefix="invcplst">
+                    <columns>
+                        <column name="InventoryLayerStatusId" type="EID" nullAllowed="false" />
+                        <column name="InventoryCostingPoolId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingPools" destinationColumn="InventoryCostingPoolId"/>
+                        <column name="InventoryLayerSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLayerStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="InventoryCostingPoolId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLayers" nameSingular="InventoryLayer" columnPrefix="invl">
+                    <columns>
+                        <column name="InventoryLayerId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryLayerDetails" destinationColumn="InventoryLayerDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryLayerDetails" destinationColumn="InventoryLayerDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLayerId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLayerDetails" nameSingular="InventoryLayerDetail" columnPrefix="invldt">
+                    <columns>
+                        <column name="InventoryLayerDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLayerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLayers" destinationColumn="InventoryLayerId" />
+                        <column name="InventoryLayerSequence" type="Integer" nullAllowed="false" />
+                        <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />
+                        <column name="ReceiptQuantity" type="Measurement" nullAllowed="false" />
+                        <column name="UnitAmount" type="Currency" nullAllowed="true" />
+                        <column name="Description" type="Description" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLayerDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryLayerId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="InventoryLayerId" />
+                            <indexColumn name="InventoryLayerSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryTransactionLineId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLayerStatuses" nameSingular="InventoryLayerStatus" columnPrefix="invlst">
+                    <columns>
+                        <column name="InventoryLayerStatusId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLayerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLayers" destinationColumn="InventoryLayerId"/>
+                        <column name="QuantityOnHand" type="Measurement" nullAllowed="false" />
+                        <column name="QuantityAllocated" type="Measurement" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLayerStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="InventoryLayerId" />
                         </index>
                     </indexes>
                 </table>
