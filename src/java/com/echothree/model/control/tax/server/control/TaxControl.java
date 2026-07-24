@@ -141,6 +141,21 @@ public class TaxControl
         return taxClassification;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
+    public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
+
+        return TaxClassificationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
+        return getTaxClassificationByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TaxClassification getTaxClassificationByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTaxClassificationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode) {
         return session.queryForLong(
                 "SELECT COUNT(*) "
@@ -149,14 +164,6 @@ public class TaxControl
                 countryGeoCode);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
-    public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
-        var pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
-        var taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return taxClassification;
-    }
-    
     public long countTaxClassifications() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +

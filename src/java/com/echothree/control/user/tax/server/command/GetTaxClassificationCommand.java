@@ -19,7 +19,6 @@ package com.echothree.control.user.tax.server.command;
 import com.echothree.control.user.tax.common.form.GetTaxClassificationForm;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -27,7 +26,6 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.control.tax.server.logic.TaxClassificationLogic;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -54,13 +52,12 @@ public class GetTaxClassificationCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("TaxClassificationName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("TaxClassificationName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-
-    @Inject
-    GeoControl geoControl;
 
     @Inject
     TaxControl taxControl;
@@ -75,20 +72,10 @@ public class GetTaxClassificationCommand
     
     @Override
     protected TaxClassification getEntity() {
-        TaxClassification taxClassification = null;
-        var countryName = form.getCountryName();
-        var countryGeoCode = geoControl.getCountryByAlias(countryName);
+        var taxClassification = taxClassificationLogic.getTaxClassificationByUniversalSpec(this, form);
 
-        if(countryGeoCode == null) {
-            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), countryName);
-        } else {
-            var taxClassificationName = form.getTaxClassificationName();
-
-            taxClassification = taxClassificationLogic.getTaxClassificationByName(this, countryGeoCode, taxClassificationName);
-
-            if(taxClassification != null) {
-                sendEvent(taxClassification.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            }
+        if(taxClassification != null) {
+            sendEvent(taxClassification.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return taxClassification;
