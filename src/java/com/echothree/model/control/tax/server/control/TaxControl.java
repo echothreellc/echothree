@@ -141,27 +141,28 @@ public class TaxControl
         return taxClassification;
     }
 
-    public long countTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?",
-                countryGeoCode);
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
+    public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
+
+        return TaxClassificationFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
     public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
-        var pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
-        var taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return taxClassification;
+        return getTaxClassificationByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
-    
-    public long countTaxClassifications() {
+
+    public TaxClassification getTaxClassificationByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTaxClassificationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM taxclassifications, taxclassificationdetails " +
-                "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid");
+                """
+                SELECT COUNT(*)
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?
+                """, countryGeoCode);
     }
 
     private static final Map<EntityPermission, String> getTaxClassificationsByCountryGeoCodeQueries;
@@ -170,16 +171,20 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ? "
-                + "ORDER BY txclsfndt_sortorder, txclsfndt_taxclassificationname "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?
+                ORDER BY txclsfndt_sortorder, txclsfndt_taxclassificationname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?
+                FOR UPDATE
+                """);
         getTaxClassificationsByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -202,16 +207,20 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid "
-                + "AND txclsfndt_countrygeocodeid = ? AND txclsfndt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
+                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid "
-                + "AND txclsfndt_countrygeocodeid = ? AND txclsfndt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
+                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -238,16 +247,20 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid "
-                + "AND txclsfndt_countrygeocodeid = ? AND txclsfndt_taxclassificationname = ?");
+                """
+                SELECT _ALL_
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
+                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_taxclassificationname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM taxclassifications, taxclassificationdetails "
-                + "WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid "
-                + "AND txclsfndt_countrygeocodeid = ? AND txclsfndt_taxclassificationname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM taxclassifications, taxclassificationdetails
+                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
+                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_taxclassificationname = ?
+                FOR UPDATE
+                """);
         getTaxClassificationByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -433,14 +446,18 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM taxclassificationtranslations "
-                + "WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_lang_languageid = ? AND txclsfntr_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM taxclassificationtranslations
+                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_lang_languageid = ? AND txclsfntr_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM taxclassificationtranslations "
-                + "WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_lang_languageid = ? AND txclsfntr_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM taxclassificationtranslations
+                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_lang_languageid = ? AND txclsfntr_thrutime = ?
+                FOR UPDATE
+                """);
         getTaxClassificationTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -471,15 +488,20 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM taxclassificationtranslations, languages "
-                + "WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_thrutime = ? AND txclsfntr_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM taxclassificationtranslations, languages
+                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_thrutime = ? AND txclsfntr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM taxclassificationtranslations "
-                + "WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM taxclassificationtranslations
+                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_thrutime = ?
+                FOR UPDATE
+                """);
         getTaxClassificationTranslationsByTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -585,16 +607,21 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails, geocodes, geocodedetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_itm_itemid = ? "
-                + "AND itmtxclsfndt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid "
-                + "ORDER BY geodt_sortorder, geodt_geocodename");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails, geocodes, geocodedetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_itm_itemid = ?
+                AND itmtxclsfndt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
+                ORDER BY geodt_sortorder, geodt_geocodename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_itm_itemid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_itm_itemid = ?
+                FOR UPDATE
+                """);
         getItemTaxClassificationsByItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -617,16 +644,21 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails, items, itemdetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_countrygeocodeid = ? "
-                + "AND itmtxclsfndt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid "
-                + "ORDER BY itmdt_itemname");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails, items, itemdetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_countrygeocodeid = ?
+                AND itmtxclsfndt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY itmdt_itemname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_countrygeocodeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_countrygeocodeid = ?
+                FOR UPDATE
+                """);
         getItemTaxClassificationsByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -649,17 +681,22 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails, items, itemdetails, geocodes, geocodedetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_hztsc_taxclassificationid = ? "
-                + "AND itmtxclsfndt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid "
-                + "AND itmtxclsfndt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid "
-                + "ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails, items, itemdetails, geocodes, geocodedetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_hztsc_taxclassificationid = ?
+                AND itmtxclsfndt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmtxclsfndt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
+                ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_hztsc_taxclassificationid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_hztsc_taxclassificationid = ?
+                FOR UPDATE
+                """);
         getItemTaxClassificationsByTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -682,16 +719,20 @@ public class TaxControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid "
-                + "AND itmtxclsfndt_itm_itemid = ? AND itmtxclsfndt_countrygeocodeid = ?");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid
+                AND itmtxclsfndt_itm_itemid = ? AND itmtxclsfndt_countrygeocodeid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemtaxclassifications, itemtaxclassificationdetails "
-                + "WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid "
-                + "AND itmtxclsfndt_itm_itemid = ? AND itmtxclsfndt_countrygeocodeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemtaxclassifications, itemtaxclassificationdetails
+                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid
+                AND itmtxclsfndt_itm_itemid = ? AND itmtxclsfndt_countrygeocodeid = ?
+                FOR UPDATE
+                """);
         getItemTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -856,16 +897,20 @@ public class TaxControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM taxes, taxdetails " +
-                    "WHERE tx_activedetailid = txdt_taxdetailid " +
-                    "ORDER BY txdt_sortorder, txdt_taxname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM taxes, taxdetails
+                    WHERE tx_activedetailid = txdt_taxdetailid
+                    ORDER BY txdt_sortorder, txdt_taxname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM taxes, taxdetails " +
-                    "WHERE tx_activedetailid = txdt_taxdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM taxes, taxdetails
+                    WHERE tx_activedetailid = txdt_taxdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TaxFactory.getInstance().prepareStatement(query);
@@ -888,14 +933,18 @@ public class TaxControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM taxes, taxdetails " +
-                        "WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM taxes, taxdetails
+                        WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM taxes, taxdetails " +
-                        "WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM taxes, taxdetails
+                        WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TaxFactory.getInstance().prepareStatement(query);
@@ -930,14 +979,18 @@ public class TaxControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM taxes, taxdetails " +
-                    "WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM taxes, taxdetails
+                    WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM taxes, taxdetails " +
-                    "WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM taxes, taxdetails
+                    WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TaxFactory.getInstance().prepareStatement(query);
@@ -1076,14 +1129,18 @@ public class TaxControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM taxdescriptions " +
-                        "WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM taxdescriptions
+                        WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM taxdescriptions " +
-                        "WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM taxdescriptions
+                        WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
@@ -1123,15 +1180,20 @@ public class TaxControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM taxdescriptions, languages " +
-                        "WHERE txd_tx_taxid = ? AND txd_thrutime = ? AND txd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM taxdescriptions, languages
+                        WHERE txd_tx_taxid = ? AND txd_thrutime = ? AND txd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM taxdescriptions " +
-                        "WHERE txd_tx_taxid = ? AND txd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM taxdescriptions
+                        WHERE txd_tx_taxid = ? AND txd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
@@ -1241,9 +1303,11 @@ public class TaxControl
     
     public long countGeoCodeTaxesByGeoCode(GeoCode geoCode) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM geocodetaxes " +
-                "WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM geocodetaxes
+                WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?
+                """,
                 geoCode, Session.MAX_TIME);
     }
 
@@ -1254,14 +1318,18 @@ public class TaxControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM geocodetaxes " +
-                        "WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM geocodetaxes
+                        WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM geocodetaxes " +
-                        "WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM geocodetaxes
+                        WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
@@ -1293,17 +1361,22 @@ public class TaxControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM geocodetaxes, taxes, taxdetails " +
-                        "WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ? " +
-                        "AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid " +
-                        "ORDER BY txdt_sortorder, txdt_taxname";
+                query = """
+                        SELECT _ALL_
+                        FROM geocodetaxes, taxes, taxdetails
+                        WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?
+                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
+                        ORDER BY txdt_sortorder, txdt_taxname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM geocodetaxes, taxes, taxdetails " +
-                        "WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ? " +
-                        "AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM geocodetaxes, taxes, taxdetails
+                        WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?
+                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
@@ -1334,17 +1407,22 @@ public class TaxControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM geocodetaxes, taxes, taxdetails " +
-                        "WHERE geotx_tx_taxid = ? AND geotx_thrutime = ? " +
-                        "AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid " +
-                        "ORDER BY txdt_sortorder, txdt_taxname";
+                query = """
+                        SELECT _ALL_
+                        FROM geocodetaxes, taxes, taxdetails
+                        WHERE geotx_tx_taxid = ? AND geotx_thrutime = ?
+                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
+                        ORDER BY txdt_sortorder, txdt_taxname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM geocodetaxes, taxes, taxdetails " +
-                        "WHERE geotx_tx_taxid = ? AND geotx_thrutime = ? " +
-                        "AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM geocodetaxes, taxes, taxdetails
+                        WHERE geotx_tx_taxid = ? AND geotx_thrutime = ?
+                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);

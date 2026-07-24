@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.tax.common.form;
+package com.echothree.control.user.tax.common.spec;
 
-import com.echothree.control.user.tax.common.spec.TaxClassificationUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTaxClassificationForm
-        extends TaxClassificationUniversalSpec {
+public interface TaxClassificationUniversalSpec
+        extends TaxClassificationSpec, UniversalEntitySpec {
 
-    // Nothing additional beyond TaxClassificationUniversalSpec
-    
+    // Nothing additional beyond TaxClassificationSpec, UniversalEntitySpec
+
 }
