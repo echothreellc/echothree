@@ -1035,7 +1035,25 @@ public class TermControl
         
         return customerTypeCreditLimit;
     }
-    
+
+    public long countCustomerTypeCreditLimitsByCustomerType(final CustomerType customerType) {
+        return session.queryForLong(
+                """
+                SELECT COUNT(*)
+                FROM customertypecreditlimits
+                WHERE cutyclim_cuty_customertypeid = ? AND cutyclim_thrutime = ?
+                """, customerType, Session.MAX_TIME);
+    }
+
+    public long countCustomerTypeCreditLimitsByCurrency(final Currency currency) {
+        return session.queryForLong(
+                """
+                SELECT COUNT(*)
+                FROM customertypecreditlimits
+                WHERE cutyclim_cur_currencyid = ? AND cutyclim_thrutime = ?
+                """, currency, Session.MAX_TIME);
+    }
+
     private CustomerTypeCreditLimit getCustomerTypeCreditLimit(CustomerType customerType, Currency currency, EntityPermission entityPermission) {
         CustomerTypeCreditLimit customerTypeCreditLimit;
         
@@ -1136,16 +1154,20 @@ public class TermControl
     public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
         return customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit);
     }
-    
-    public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
-        var customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerType(customerType);
+
+    public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfers(UserVisit userVisit,
+            Collection<CustomerTypeCreditLimit> customerTypeCreditLimits) {
         List<CustomerTypeCreditLimitTransfer> customerTypeCreditLimitTransfers = new ArrayList<>(customerTypeCreditLimits.size());
-        
+
         customerTypeCreditLimits.forEach((customerTypeCreditLimit) ->
                 customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit))
         );
-        
+
         return customerTypeCreditLimitTransfers;
+    }
+
+    public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
+        return getCustomerTypeCreditLimitTransfers(userVisit, getCustomerTypeCreditLimitsByCustomerType(customerType));
     }
     
     public void updateCustomerTypeCreditLimitFromValue(CustomerTypeCreditLimitValue customerTypeCreditLimitValue, BasePK updatedBy) {
