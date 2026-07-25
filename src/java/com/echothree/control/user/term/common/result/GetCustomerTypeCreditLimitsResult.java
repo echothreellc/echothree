@@ -26,7 +26,10 @@ public interface GetCustomerTypeCreditLimitsResult
     
     CustomerTypeTransfer getCustomerType();
     void setCustomerType(CustomerTypeTransfer customerType);
-    
+
+    Long getCustomerTypeCreditLimitCount();
+    void setCustomerTypeCreditLimitCount(Long customerTypeCreditLimitCount);
+
     List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimits();
     void setCustomerTypeCreditLimits(List<CustomerTypeCreditLimitTransfer> terms);
     
