@@ -926,7 +926,7 @@ public class TaxControl
         return getTaxes(EntityPermission.READ_WRITE);
     }
     
-    private Tax getTaxByName(String taxName, EntityPermission entityPermission) {
+    public Tax getTaxByName(String taxName, EntityPermission entityPermission) {
         Tax tax;
         
         try {
@@ -975,7 +975,7 @@ public class TaxControl
         return getTaxDetailValueForUpdate(getTaxByNameForUpdate(taxName));
     }
     
-    private Tax getDefaultTax(EntityPermission entityPermission) {
+    public Tax getDefaultTax(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
