@@ -72,7 +72,7 @@ public class GetTaxClassificationCommand
     
     @Override
     protected TaxClassification getEntity() {
-        var taxClassification = taxClassificationLogic.getTaxClassificationByUniversalSpec(this, form);
+        var taxClassification = taxClassificationLogic.getTaxClassificationByUniversalSpec(this, form, true);
 
         if(taxClassification != null) {
             sendEvent(taxClassification.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());

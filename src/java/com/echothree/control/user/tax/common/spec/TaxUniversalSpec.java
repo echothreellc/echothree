@@ -14,27 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.tax.common.result;
+package com.echothree.control.user.tax.common.spec;
 
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.tax.common.transfer.GeoCodeTaxTransfer;
-import com.echothree.model.control.tax.common.transfer.TaxTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetGeoCodeTaxesResult
-        extends BaseResult {
+public interface TaxUniversalSpec
+        extends TaxSpec, UniversalEntitySpec {
 
-    GeoCodeTransfer getGeoCode();
-    void setGeoCode(GeoCodeTransfer geoCode);
+    // Nothing additional beyond TaxSpec, UniversalEntitySpec
 
-    TaxTransfer getTax();
-    void setTax(TaxTransfer tax);
-
-    Long getGeoCodeTaxCount();
-    void setGeoCodeTaxCount(Long geoCodeTaxCount);
-    
-    List<GeoCodeTaxTransfer> getGeoCodeTaxes();
-    void setGeoCodeTaxes(List<GeoCodeTaxTransfer> geoCodeTaxes);
-    
 }

@@ -14,27 +14,27 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.tax.common.result;
+package com.echothree.model.control.tax.common.exception;
 
-import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.tax.common.transfer.GeoCodeTaxTransfer;
-import com.echothree.model.control.tax.common.transfer.TaxTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.message.Message;
 
-public interface GetGeoCodeTaxesResult
-        extends BaseResult {
+public class DuplicateTaxNameException
+        extends BaseTaxException {
 
-    GeoCodeTransfer getGeoCode();
-    void setGeoCode(GeoCodeTransfer geoCode);
+    public DuplicateTaxNameException() {
+        super();
+    }
 
-    TaxTransfer getTax();
-    void setTax(TaxTransfer tax);
+    public DuplicateTaxNameException(final String message) {
+        super(message);
+    }
 
-    Long getGeoCodeTaxCount();
-    void setGeoCodeTaxCount(Long geoCodeTaxCount);
-    
-    List<GeoCodeTaxTransfer> getGeoCodeTaxes();
-    void setGeoCodeTaxes(List<GeoCodeTaxTransfer> geoCodeTaxes);
-    
+    public DuplicateTaxNameException(final Throwable cause) {
+        super(cause);
+    }
+
+    public DuplicateTaxNameException(final Message message) {
+        super(message);
+    }
+
 }
