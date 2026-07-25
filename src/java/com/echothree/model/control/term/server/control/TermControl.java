@@ -1333,16 +1333,19 @@ public class TermControl
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
         return partyCreditLimitTransferCache.getPartyCreditLimitTransfer(userVisit, partyCreditLimit);
     }
-    
-    public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfersByParty(UserVisit userVisit, Party party) {
-        var partyCreditLimits = getPartyCreditLimitsByParty(party);
+
+    public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfers(UserVisit userVisit, Collection<PartyCreditLimit> partyCreditLimits) {
         List<PartyCreditLimitTransfer> partyCreditLimitTransfers = new ArrayList<>(partyCreditLimits.size());
-        
+
         partyCreditLimits.forEach((partyCreditLimit) ->
                 partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(userVisit, partyCreditLimit))
         );
-        
+
         return partyCreditLimitTransfers;
+    }
+
+    public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfersByParty(UserVisit userVisit, Party party) {
+        return getPartyCreditLimitTransfers(userVisit, getPartyCreditLimitsByParty(party));
     }
     
     public void updatePartyCreditLimitFromValue(PartyCreditLimitValue partyCreditLimitValue, BasePK updatedBy) {
