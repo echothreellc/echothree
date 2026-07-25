@@ -376,6 +376,7 @@ public enum ExecutionErrors {
     UnknownStatePostal2Letter,
     UnknownStateName,
     UnknownDefaultTax,
+    UnknownDefaultTaxClassification,
     UnknownTaxName,
     UnknownToFilterStepName,
     UnknownToUnitOfMeasureTypeName,

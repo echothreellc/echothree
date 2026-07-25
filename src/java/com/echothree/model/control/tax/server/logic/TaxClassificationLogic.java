@@ -23,6 +23,7 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.common.exception.DuplicateTaxClassificationNameException;
+import com.echothree.model.control.tax.common.exception.UnknownDefaultTaxClassificationException;
 import com.echothree.model.control.tax.common.exception.UnknownTaxClassificationNameException;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -102,43 +103,70 @@ public class TaxClassificationLogic
     }
 
     public TaxClassification getTaxClassificationByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final TaxClassificationUniversalSpec universalSpec, final EntityPermission entityPermission) {
+            final TaxClassificationUniversalSpec universalSpec, final boolean allowDefault,
+            final EntityPermission entityPermission) {
         var countryName = universalSpec.getCountryName();
         var taxClassificationName = universalSpec.getTaxClassificationName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(countryName, taxClassificationName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         TaxClassification taxClassification = null;
+        var parameterCount = nameParameterCount + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
-            var countryGeoCode = geoControl.getCountryByAlias(countryName);
+        switch(parameterCount) {
+            case 1 -> {
+                if(nameParameterCount == 0) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TaxClassification.name());
 
-            if(countryGeoCode == null) {
-                handleExecutionError(null, eea, ExecutionErrors.UnknownGeoCodeName.name(), countryName);
-            } else {
-                taxClassification = getTaxClassificationByName(eea, countryGeoCode, taxClassificationName, entityPermission);
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        taxClassification = taxControl.getTaxClassificationByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else if(countryName != null && allowDefault) {
+                    var countryGeoCode = geoControl.getCountryByAlias(countryName);
+
+                    if(countryGeoCode == null) {
+                        handleExecutionError(null, eea, ExecutionErrors.UnknownGeoCodeName.name(), countryName);
+                    } else {
+                        taxClassification = entityPermission == EntityPermission.READ_WRITE
+                                ? taxControl.getDefaultTaxClassificationForUpdate(countryGeoCode)
+                                : taxControl.getDefaultTaxClassification(countryGeoCode);
+
+                        if(taxClassification == null) {
+                            handleExecutionError(UnknownDefaultTaxClassificationException.class, eea,
+                                    ExecutionErrors.UnknownDefaultTaxClassification.name());
+                        }
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
             }
-        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHO_THREE.name(), EntityTypes.TaxClassification.name());
+            case 2 -> {
+                if(nameParameterCount == 2) {
+                    var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
-            if(eea == null || !eea.hasExecutionErrors()) {
-                taxClassification = taxControl.getTaxClassificationByEntityInstance(entityInstance, entityPermission);
+                    if(countryGeoCode == null) {
+                        handleExecutionError(null, eea, ExecutionErrors.UnknownGeoCodeName.name(), countryName);
+                    } else {
+                        taxClassification = getTaxClassificationByName(eea, countryGeoCode, taxClassificationName, entityPermission);
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
             }
-        } else {
-            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return taxClassification;
     }
 
     public TaxClassification getTaxClassificationByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final TaxClassificationUniversalSpec universalSpec) {
-        return getTaxClassificationByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+            final TaxClassificationUniversalSpec universalSpec, final boolean allowDefault) {
+        return getTaxClassificationByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
     }
 
     public TaxClassification getTaxClassificationByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
-            final TaxClassificationUniversalSpec universalSpec) {
-        return getTaxClassificationByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+            final TaxClassificationUniversalSpec universalSpec, final boolean allowDefault) {
+        return getTaxClassificationByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public void updateTaxClassificationFromValue(final TaxClassificationDetailValue taxClassificationDetailValue, final BasePK updatedBy) {
