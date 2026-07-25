@@ -30,6 +30,9 @@ public interface GetItemTaxClassificationsResult
     
     CountryTransfer getCountry();
     void setCountry(CountryTransfer country);
+
+    Long getItemTaxClassificationCount();
+    void setItemTaxClassificationCount(Long itemTaxClassificationCount);
     
     List<ItemTaxClassificationTransfer> getItemTaxClassifications();
     void setItemTaxClassifications(List<ItemTaxClassificationTransfer> itemTaxClassifications);

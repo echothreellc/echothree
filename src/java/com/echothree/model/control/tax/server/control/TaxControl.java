@@ -601,6 +601,33 @@ public class TaxControl
         return itemTaxClassification;
     }
 
+    public long countItemTaxClassificationByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemtaxclassifications
+                        JOIN itemtaxclassificationdetails ON itmtxclsfndt_itemtaxclassificationdetailid = itmtxclsfn_activedetailid
+                        WHERE itmtxclsfndt_itm_itemid = ?
+                        """, item);
+    }
+
+    public long countItemTaxClassificationByCountryGeoCode(final GeoCode countryGeoCode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemtaxclassifications
+                        JOIN itemtaxclassificationdetails ON itmtxclsfndt_itemtaxclassificationdetailid = itmtxclsfn_activedetailid
+                        WHERE itmtxclsfndt_countrygeocodeid = ?
+                        """, countryGeoCode);
+    }
+
+    public long countItemTaxClassificationByTaxClassification(final TaxClassification taxClassification) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemtaxclassifications
+                        JOIN itemtaxclassificationdetails ON itmtxclsfndt_itemtaxclassificationdetailid = itmtxclsfn_activedetailid
+                        WHERE itmtxclsfndt_txclsfn_taxclassificationid = ?
+                        """, taxClassification);
+    }
+
     private static final Map<EntityPermission, String> getItemTaxClassificationsByItemQueries;
 
     static {
