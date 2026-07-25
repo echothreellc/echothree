@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.tax.common.result;
 
+import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.tax.common.transfer.GeoCodeTaxTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.util.common.command.BaseResult;
@@ -23,9 +24,15 @@ import java.util.List;
 
 public interface GetGeoCodeTaxesResult
         extends BaseResult {
-    
+
+    GeoCodeTransfer getGeoCode();
+    void setGeoCode(GeoCodeTransfer geoCode);
+
     TaxTransfer getTax();
     void setTax(TaxTransfer tax);
+
+    Long getGeoCodeTaxCount();
+    void setGeoCodeTaxCount(Long geoCodeTaxCount);
     
     List<GeoCodeTaxTransfer> getGeoCodeTaxes();
     void setGeoCodeTaxes(List<GeoCodeTaxTransfer> geoCodeTaxes);

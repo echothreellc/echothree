@@ -1311,6 +1311,16 @@ public class TaxControl
                 geoCode, Session.MAX_TIME);
     }
 
+    public long countGeoCodeTaxesByTax(Tax tax) {
+        return session.queryForLong(
+                """
+                SELECT COUNT(*)
+                FROM geocodetaxes
+                WHERE geotx_tx_taxid = ? AND geotx_thrutime = ?
+                """,
+                tax, Session.MAX_TIME);
+    }
+
     private GeoCodeTax getGeoCodeTax(GeoCode geoCode, Tax tax, EntityPermission entityPermission) {
         GeoCodeTax geoCodeTax;
         
@@ -1450,7 +1460,7 @@ public class TaxControl
         return geoCodeTaxTransferCache.getTransfer(userVisit, geoCodeTax);
     }
     
-    private List<GeoCodeTaxTransfer> getGeoCodeTaxTransfers(UserVisit userVisit, Collection<GeoCodeTax> geoCodeTaxes) {
+    public List<GeoCodeTaxTransfer> getGeoCodeTaxTransfers(UserVisit userVisit, Collection<GeoCodeTax> geoCodeTaxes) {
         List<GeoCodeTaxTransfer> geoCodeTaxTransfers = new ArrayList<>(geoCodeTaxes.size());
         
         geoCodeTaxes.forEach((geoCodeTax) -> {
