@@ -182,17 +182,21 @@ public class CustomerControl
 
     public long countCustomerTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM customertypes, customertypedetails " +
-                        "WHERE cuty_activedetailid = cutydt_customertypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM customertypes, customertypedetails
+                WHERE cuty_activedetailid = cutydt_customertypedetailid
+                """);
     }
 
     public long countCustomerTypesByDefaultOfferUse(OfferUse defaultOfferUse) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM customertypes, customertypedetails " +
-                        "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
-                        "AND cutydt_defaultofferuseid = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypes, customertypedetails
+                WHERE cuty_activedetailid = cutydt_customertypedetailid
+                AND cutydt_defaultofferuseid = ?
+                """,
                 defaultOfferUse);
     }
 
@@ -200,15 +204,20 @@ public class CustomerControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM customertypes, customertypedetails " +
-                    "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
-                    "ORDER BY cutydt_sortorder, cutydt_customertypename";
+            query = """
+            SELECT _ALL_
+            FROM customertypes, customertypedetails
+            WHERE cuty_activedetailid = cutydt_customertypedetailid
+            ORDER BY cutydt_sortorder, cutydt_customertypename
+            _LIMIT_
+            """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM customertypes, customertypedetails " +
-                    "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
-                    "FOR UPDATE";
+            query = """
+            SELECT _ALL_
+            FROM customertypes, customertypedetails
+            WHERE cuty_activedetailid = cutydt_customertypedetailid
+            FOR UPDATE
+            """;
         }
 
         var ps = CustomerTypeFactory.getInstance().prepareStatement(query);
@@ -228,14 +237,18 @@ public class CustomerControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM customertypes, customertypedetails " +
-                    "WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_isdefault = 1";
+            query = """
+            SELECT _ALL_
+            FROM customertypes, customertypedetails
+            WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_isdefault = 1
+            """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM customertypes, customertypedetails " +
-                    "WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+            SELECT _ALL_
+            FROM customertypes, customertypedetails
+            WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_isdefault = 1
+            FOR UPDATE
+            """;
         }
 
         var ps = CustomerTypeFactory.getInstance().prepareStatement(query);
@@ -262,14 +275,18 @@ public class CustomerControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customertypes, customertypedetails " +
-                        "WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_customertypename = ?";
+                query = """
+                SELECT _ALL_
+                FROM customertypes, customertypedetails
+                WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_customertypename = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customertypes, customertypedetails " +
-                        "WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_customertypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM customertypes, customertypedetails
+                WHERE cuty_activedetailid = cutydt_customertypedetailid AND cutydt_customertypename = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = CustomerTypeFactory.getInstance().prepareStatement(query);
@@ -481,14 +498,18 @@ public class CustomerControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customertypedescriptions " +
-                        "WHERE cutyd_cuty_customertypeid = ? AND cutyd_lang_languageid = ? AND cutyd_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM customertypedescriptions
+                WHERE cutyd_cuty_customertypeid = ? AND cutyd_lang_languageid = ? AND cutyd_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customertypedescriptions " +
-                        "WHERE cutyd_cuty_customertypeid = ? AND cutyd_lang_languageid = ? AND cutyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM customertypedescriptions
+                WHERE cutyd_cuty_customertypeid = ? AND cutyd_lang_languageid = ? AND cutyd_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = CustomerTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -528,15 +549,20 @@ public class CustomerControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customertypedescriptions, languages " +
-                        "WHERE cutyd_cuty_customertypeid = ? AND cutyd_thrutime = ? AND cutyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                SELECT _ALL_
+                FROM customertypedescriptions, languages
+                WHERE cutyd_cuty_customertypeid = ? AND cutyd_thrutime = ? AND cutyd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customertypedescriptions " +
-                        "WHERE cutyd_cuty_customertypeid = ? AND cutyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM customertypedescriptions
+                WHERE cutyd_cuty_customertypeid = ? AND cutyd_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = CustomerTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -652,18 +678,20 @@ public class CustomerControl
 
     public long countCustomers() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM customers " +
-                        "WHERE cu_thrutime = ?",
-                Session.MAX_TIME);
+                """
+                SELECT COUNT(*)
+                FROM customers
+                WHERE cu_thrutime = ?
+                """, Session.MAX_TIME);
     }
 
     public long countCustomersByInitialOfferUse(OfferUse initialOfferUse) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM customers " +
-                        "WHERE cu_initialofferuseid = ? AND cu_thrutime = ?",
-                initialOfferUse, Session.MAX_TIME);
+                """
+                SELECT COUNT(*)
+                FROM customers
+                WHERE cu_initialofferuseid = ? AND cu_thrutime = ?
+                """, initialOfferUse, Session.MAX_TIME);
     }
 
     private List<Customer> getCustomers(EntityPermission entityPermission) {
@@ -673,16 +701,20 @@ public class CustomerControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customers " +
-                        "WHERE cu_thrutime = ? " +
-                        "ORDER BY cu_customername " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM customers
+                WHERE cu_thrutime = ?
+                ORDER BY cu_customername
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customers " +
-                        "WHERE cu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM customers
+                WHERE cu_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = CustomerFactory.getInstance().prepareStatement(query);
@@ -712,14 +744,18 @@ public class CustomerControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customers " +
-                        "WHERE cu_par_partyid = ? AND cu_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM customers
+                WHERE cu_par_partyid = ? AND cu_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customers " +
-                        "WHERE cu_par_partyid = ? AND cu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM customers
+                WHERE cu_par_partyid = ? AND cu_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = CustomerFactory.getInstance().prepareStatement(query);
@@ -750,14 +786,18 @@ public class CustomerControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customers " +
-                        "WHERE cu_customername = ? AND cu_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM customers
+                WHERE cu_customername = ? AND cu_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM customers " +
-                        "WHERE cu_customername = ? AND cu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM customers
+                WHERE cu_customername = ? AND cu_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = CustomerFactory.getInstance().prepareStatement(query);
@@ -937,25 +977,31 @@ public class CustomerControl
     
     public long countCustomerTypePaymentMethodsByCustomerType(CustomerType customerType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_thrutime = ?
+                """,
                 customerType, Session.MAX_TIME);
     }
 
     public long countCustomerTypePaymentMethodsByPaymentMethod(PaymentMethod paymentMethod) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypepaymentmethods
+                WHERE cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?
+                """,
                 paymentMethod, Session.MAX_TIME);
     }
 
     public boolean getCustomerTypePaymentMethodExists(CustomerType customerType, PaymentMethod paymentMethod) {
         return 1 == session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?
+                """,
                 customerType, paymentMethod, Session.MAX_TIME);
     }
 
@@ -965,14 +1011,18 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypePaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1004,14 +1054,18 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_isdefault = 1 AND cutypm_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_isdefault = 1 AND cutypm_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_isdefault = 1 AND cutypm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_isdefault = 1 AND cutypm_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultCustomerTypePaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1038,16 +1092,21 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods, paymentmethods, paymentmethoddetails " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_thrutime = ? " +
-                "AND cutypm_pm_paymentmethodid = pm_paymentmethodid AND pm_activedetailid = pmdt_paymentmethoddetailid " +
-                "ORDER BY pmdt_sortorder, pmdt_paymentmethodname");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods, paymentmethods, paymentmethoddetails
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_thrutime = ?
+                AND cutypm_pm_paymentmethodid = pm_paymentmethodid AND pm_activedetailid = pmdt_paymentmethoddetailid
+                ORDER BY pmdt_sortorder, pmdt_paymentmethodname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_cuty_customertypeid = ? AND cutypm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods
+                WHERE cutypm_cuty_customertypeid = ? AND cutypm_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypePaymentMethodsByCustomerTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1070,16 +1129,21 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods, customertypes, customertypedetails " +
-                "WHERE cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ? " +
-                "AND cutypm_cuty_customertypeid = cuty_customertypeid AND cuty_activedetailid = cutydt_customertypedetailid " +
-                "ORDER BY cutydt_sortorder, cutydt_customertypename");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods, customertypes, customertypedetails
+                WHERE cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?
+                AND cutypm_cuty_customertypeid = cuty_customertypeid AND cuty_activedetailid = cutydt_customertypedetailid
+                ORDER BY cutydt_sortorder, cutydt_customertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypepaymentmethods " +
-                "WHERE cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypepaymentmethods
+                WHERE cutypm_pm_paymentmethodid = ? AND cutypm_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypePaymentMethodsByPaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1230,25 +1294,31 @@ public class CustomerControl
     
     public long countCustomerTypeShippingMethodsByCustomerType(CustomerType customerType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ?
+                """,
                 customerType, Session.MAX_TIME);
     }
 
     public long countCustomerTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypeshippingmethods
+                WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?
+                """,
                 shippingMethod, Session.MAX_TIME);
     }
 
     public boolean getCustomerTypeShippingMethodExists(CustomerType customerType, ShippingMethod shippingMethod) {
         return 1 == session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?
+                """,
                 customerType, shippingMethod, Session.MAX_TIME);
     }
 
@@ -1258,14 +1328,18 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeShippingMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1297,14 +1371,18 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_isdefault = 1 AND cutyshm_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_isdefault = 1 AND cutyshm_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_isdefault = 1 AND cutyshm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_isdefault = 1 AND cutyshm_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultCustomerTypeShippingMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1331,17 +1409,21 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods, shippingmethods, shippingmethoddetails " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ? " +
-                "AND cutyshm_shm_shippingmethodid = shm_shippingmethodid AND shm_activedetailid = shmdt_shippingmethoddetailid " +
-                "ORDER BY shmdt_sortorder, shmdt_shippingmethodname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods, shippingmethods, shippingmethoddetails
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ?
+                AND cutyshm_shm_shippingmethodid = shm_shippingmethodid AND shm_activedetailid = shmdt_shippingmethoddetailid
+                ORDER BY shmdt_sortorder, shmdt_shippingmethodname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods
+                WHERE cutyshm_cuty_customertypeid = ? AND cutyshm_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeShippingMethodsByCustomerTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1364,17 +1446,21 @@ public class CustomerControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods, customertypes, customertypedetails " +
-                "WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ? " +
-                "AND cutyshm_cuty_customertypeid = cuty_customertypeid AND cuty_activedetailid = cutydt_customertypedetailid " +
-                "ORDER BY cutydt_sortorder, cutydt_customertypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods, customertypes, customertypedetails
+                WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?
+                AND cutyshm_cuty_customertypeid = cuty_customertypeid AND cuty_activedetailid = cutydt_customertypedetailid
+                ORDER BY cutydt_sortorder, cutydt_customertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM customertypeshippingmethods " +
-                "WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypeshippingmethods
+                WHERE cutyshm_shm_shippingmethodid = ? AND cutyshm_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeShippingMethodsByShippingMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
