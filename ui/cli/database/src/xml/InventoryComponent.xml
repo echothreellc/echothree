@@ -1697,6 +1697,26 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="InventoryLocationBuckets" nameSingular="InventoryLocationBucket" columnPrefix="invlocbcktd">
+                    <columns>
+                        <column name="InventoryLocationBucketId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLocationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLocations" destinationColumn="InventoryLocationId"/>
+                        <column name="InventoryBucketTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryBucketTypes" destinationColumn="InventoryBucketTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationBucketId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryLocationId" />
+                            <indexColumn name="InventoryBucketTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="InventoryBucketTypeId" />
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>
