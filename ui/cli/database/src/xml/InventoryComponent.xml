@@ -1717,6 +1717,41 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PartyBuckets" nameSingular="PartyBucket" columnPrefix="parbckt">
+                    <columns>
+                        <column name="PartyBucketId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="InventoryBucketTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryBucketTypes" destinationColumn="InventoryBucketTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyBucketId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="InventoryBucketTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="InventoryBucketTypeId" />
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>
