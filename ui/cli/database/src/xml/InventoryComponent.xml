@@ -1028,7 +1028,7 @@
                     <columns>
                         <column name="InventoryTransactionTimeTypeDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTimeTypes" destinationColumn="InventoryTransactionTimeTypeId" />
-                        <column name="OrderTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OrderTypes" destinationColumn="OrderTypeId" />
+                        <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
                         <column name="InventoryTransactionTimeTypeName" type="Name" nullAllowed="false" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
@@ -1044,12 +1044,12 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
-                            <indexColumn name="OrderTypeId" />
+                            <indexColumn name="InventoryTransactionTypeId" />
                             <indexColumn name="InventoryTransactionTimeTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="OrderTypeId" />
+                            <indexColumn name="InventoryTransactionTypeId" />
                         </index>
                         <index type="Multiple" name="Index4">
                             <indexColumn name="IsDefault" />
@@ -1106,7 +1106,7 @@
                     <columns>
                         <column name="InventoryTransactionRoleTypeDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionRoleTypes" destinationColumn="InventoryTransactionRoleTypeId" />
-                        <column name="OrderTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OrderTypes" destinationColumn="OrderTypeId" />
+                        <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
                         <column name="InventoryTransactionRoleTypeName" type="Name" nullAllowed="false" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
@@ -1122,12 +1122,12 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
-                            <indexColumn name="OrderTypeId" />
+                            <indexColumn name="InventoryTransactionTypeId" />
                             <indexColumn name="InventoryTransactionRoleTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="OrderTypeId" />
+                            <indexColumn name="InventoryTransactionTypeId" />
                         </index>
                         <index type="Multiple" name="Index4">
                             <indexColumn name="IsDefault" />
