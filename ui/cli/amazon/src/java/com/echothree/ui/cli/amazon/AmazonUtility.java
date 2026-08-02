@@ -14,6 +14,8 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
+package com.echothree.ui.cli.amazon;
+
 import com.echothree.ui.cli.amazon.batch.order.BatchOrderDirectoryHandler;
 import com.echothree.ui.cli.amazon.batch.order.BatchOrderFileHandler;
 import org.apache.commons.cli.CommandLine;

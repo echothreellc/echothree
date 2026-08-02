@@ -89,7 +89,7 @@
     </target>
 
     <target name="Amazon_sample_orders" depends="compile">
-        <java classname="AmazonUtility" fork="true">
+        <java classname="com.echothree.ui.cli.amazon.AmazonUtility" fork="true">
             <arg value="--directory"/>
             <arg value="/Users/rich/amazon"/>
             <classpath>
@@ -122,7 +122,7 @@
         
     <target name="Help">
         <echo>+----------------------------------------------+</echo>
-        <echo>+ Available targets for Amazon utilities:       +</echo>
+        <echo>+ Available targets for Amazon utilities:      +</echo>
         <echo>+                                              +</echo>
         <echo>+        ant Amazon_sample_orders              +</echo>
         <echo>+                                              +</echo>
