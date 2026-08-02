@@ -107,7 +107,7 @@ public class Index {
     }
     
     public boolean isColumnInIndex(Column matchColumn) {
-        return indexColumns.stream().anyMatch((theColumn) -> (theColumn == matchColumn));
+        return indexColumns.stream().anyMatch((theColumn) -> theColumn.getName().equals(matchColumn.getName()));
     }
     
 }

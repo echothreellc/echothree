@@ -123,7 +123,7 @@ public class DatabaseViewUtilities {
             for(var column : detailTable.getColumns()) {
                 var columnName = column.getName();
                 
-                if(column != detailPrimaryKey && !primaryKey.getName().equals(column.getName())) {
+                if(!detailPrimaryKey.getName().equals(column.getName()) && !primaryKey.getName().equals(column.getName())) {
                     if(!(columnName.equals("FromTime") || columnName.equals("ThruTime"))) {
                         if(usedColumnCount > 0) {
                             viewColumns.append(", ");
