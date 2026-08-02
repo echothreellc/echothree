@@ -1162,7 +1162,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositions" nameSingular="InventoryDisposition" columnPrefix="invdspn">
+                <table namePlural="InventoryDispositions" nameSingular="InventoryDisposition" columnPrefix="invdsp">
                     <columns>
                         <column name="InventoryDispositionId" type="EID" nullAllowed="false" />
                         <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionDetails" destinationColumn="InventoryDispositionDetailId"/>
@@ -1180,7 +1180,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionDetails" nameSingular="InventoryDispositionDetail" columnPrefix="invdspndt">
+                <table namePlural="InventoryDispositionDetails" nameSingular="InventoryDispositionDetail" columnPrefix="invdspdt">
                     <columns>
                         <column name="InventoryDispositionDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryDispositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositions" destinationColumn="InventoryDispositionId" />
@@ -1210,7 +1210,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionDescriptions" nameSingular="InventoryDispositionDescription" columnPrefix="invdspnd">
+                <table namePlural="InventoryDispositionDescriptions" nameSingular="InventoryDispositionDescription" columnPrefix="invdspd">
                     <columns>
                         <column name="InventoryDispositionDescriptionId" type="EID" nullAllowed="false" />
                         <column name="InventoryDispositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositions" destinationColumn="InventoryDispositionId" />
@@ -1238,7 +1238,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionAdjustments" nameSingular="InventoryDispositionAdjustment" columnPrefix="invdspnadj">
+                <table namePlural="InventoryDispositionAdjustments" nameSingular="InventoryDispositionAdjustment" columnPrefix="invdspadj">
                     <columns>
                         <column name="InventoryDispositionAdjustmentId" type="EID" nullAllowed="false" />
                         <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionAdjustmentDetails" destinationColumn="InventoryDispositionAdjustmentDetailId"/>
@@ -1256,7 +1256,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionAdjustmentDetails" nameSingular="InventoryDispositionAdjustmentDetail" columnPrefix="invdspnadjdt">
+                <table namePlural="InventoryDispositionAdjustmentDetails" nameSingular="InventoryDispositionAdjustmentDetail" columnPrefix="invdspadjdt">
                     <columns>
                         <column name="InventoryDispositionAdjustmentDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryDispositionAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositionAdjustments" destinationColumn="InventoryDispositionAdjustmentId" />
@@ -1290,7 +1290,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionAdjustmentDescriptions" nameSingular="InventoryDispositionAdjustmentDescription" columnPrefix="invdspnadjd">
+                <table namePlural="InventoryDispositionAdjustmentDescriptions" nameSingular="InventoryDispositionAdjustmentDescription" columnPrefix="invdspadjd">
                     <columns>
                         <column name="InventoryDispositionAdjustmentDescriptionId" type="EID" nullAllowed="false" />
                         <column name="InventoryDispositionAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositionAdjustments" destinationColumn="InventoryDispositionAdjustmentId" />
