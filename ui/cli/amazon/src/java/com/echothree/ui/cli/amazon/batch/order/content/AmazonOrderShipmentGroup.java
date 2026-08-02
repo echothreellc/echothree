@@ -55,8 +55,8 @@ public class AmazonOrderShipmentGroup
 
     @Override
     public String getKey() {
-        return new StringBuilder(getRecipientName()).append('~').append(getShipAddress1()).append('~').append(getShipAddress2()).append('~').append(getShipCity()).append('~')
-                .append(getShipState()).append('~').append(getShipZip()).append('~').append(getShipCountry()).append('~').append(getShipMethod()).toString();
+        return getRecipientName() + '~' + getShipAddress1() + '~' + getShipAddress2() + '~' + getShipCity() + '~'
+                + getShipState() + '~' + getShipZip() + '~' + getShipCountry() + '~' + getShipMethod();
     }
 
     /**
