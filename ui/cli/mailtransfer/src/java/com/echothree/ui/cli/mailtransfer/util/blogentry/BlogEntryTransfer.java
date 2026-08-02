@@ -75,12 +75,10 @@ public class BlogEntryTransfer {
 
     private static Logger logger = LoggerFactory.getLogger(BlogEntryTransfer.class);
 
-    private final boolean doVerbose;
     private final Configuration configuration;
 
     /** Creates a new instance of BlogEntryTransfer */
-    public BlogEntryTransfer(Configuration configuration, boolean doVerbose) {
-        this.doVerbose = doVerbose;
+    public BlogEntryTransfer(Configuration configuration) {
         this.configuration = configuration;
     }
 
@@ -210,7 +208,7 @@ public class BlogEntryTransfer {
             capturedMessageParts.add(new CapturedMessagePart(html));
         }
 
-        class CapturedMessagePart {
+        static class CapturedMessagePart {
             String html;
 
             CapturedMessagePart(String html) {
@@ -236,12 +234,12 @@ public class BlogEntryTransfer {
             if(cid == null) {
                 returnedCid = "Generated-" + forumMessageAttachmentSequence;
             }
-            capturedMessageAttachmentsByCid.put(cid == null ? new StringBuilder("<").append(returnedCid).append(">").toString() : cid, capturedMessageAttachment);
+            capturedMessageAttachmentsByCid.put(cid == null ? "<" + returnedCid + ">" : cid, capturedMessageAttachment);
 
             return returnedCid;
         }
 
-        class CapturedMessageAttachment {
+        static class CapturedMessageAttachment {
             Integer forumMessageAttachmentSequence;
             MimeType mimeType;
             ByteArray blob;
@@ -258,7 +256,7 @@ public class BlogEntryTransfer {
     }
 
     String wrapInHtmlDocument(String html) {
-        return new StringBuilder("<html><body>").append(html).append("</body></html>").toString();
+        return "<html><body>" + html + "</body></html>";
     }
 
     String commandResultToHtmlDocument(CommandResult commandResult) {
@@ -404,8 +402,8 @@ public class BlogEntryTransfer {
             throws MessagingException, MimeTypeParseException, IOException {
         var indent = StringUtils.getInstance().repeatingStringFromChar(' ', depth);
 
-        if(content instanceof String) {
-            var html =  StringUtils.getInstance().convertToHtml((String)content, MimeTypes.TEXT_X_MARKUP.mimeTypeName());
+        if(content instanceof String string) {
+            var html =  StringUtils.getInstance().convertToHtml(string, MimeTypes.TEXT_X_MARKUP.mimeTypeName());
 
             if(collectedParts == null) {
                 collectedParts = new CollectedParts();
@@ -421,16 +419,16 @@ public class BlogEntryTransfer {
             log.info(indent + "MimeMultipart's mimeTypeName: " + mimeTypeName);
 
             switch (subType) {
-                case "mixed":
-                case "related":
+                case "mixed", "related" -> {
                     collectedParts = new CollectedParts();
                     
                     for (var x = 0; x < mimeMultipartContent.getCount(); x++) {
                         var bodyPart = mimeMultipartContent.getBodyPart(x);
                         
                         captureContent(depth + 2, collectedParts, bodyPart);
-                    }   break;
-                case "alternative":
+                    }
+                }
+                case "alternative" -> {
                     var count = mimeMultipartContent.getCount();
                     List<CollectedParts> alternativeCollectedParts = new ArrayList<>(count);
                     
@@ -452,10 +450,9 @@ public class BlogEntryTransfer {
                             log.info(indent + "found nativeFancyContent");
                         }
                     }
-                    break;
-                default:
+                }
+                default ->
                     log.error(indent + "unknown subType: " + subType);
-                    break;
             }
         } else if(content instanceof MimeBodyPart mimeBodyPart) {
             var mimeType = new MimeType(mimeBodyPart.getContentType());
@@ -642,8 +639,8 @@ public class BlogEntryTransfer {
                                     if(fromAddresses != null && fromAddresses.length > 0) {
                                         var address = fromAddresses[0];
 
-                                        if(address instanceof InternetAddress) {
-                                            sender = ((InternetAddress)address).getAddress();
+                                        if(address instanceof InternetAddress internetAddress) {
+                                            sender = internetAddress.getAddress();
                                         }
                                     }
 
@@ -673,9 +670,9 @@ public class BlogEntryTransfer {
                                         var recipientAddresses = getRecipientAddresses(mimeMessage);
                                         List<String> forumNames = new ArrayList<>(recipientAddresses.size());
 
-                                        var date = mimeMessage.getSentDate();
-                                        if (date != null) {
-                                            sentDate = date.toString();
+                                        var sentDateValue = mimeMessage.getSentDate();
+                                        if (sentDateValue != null) {
+                                            sentDate = sentDateValue.toInstant().toString();
                                         }
 
                                         log.info("Subject: " + description);
