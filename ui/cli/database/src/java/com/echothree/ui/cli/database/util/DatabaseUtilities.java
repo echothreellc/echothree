@@ -204,7 +204,7 @@ public abstract class DatabaseUtilities {
             //Column destinationColumn = destinationTable.getColumn(destinationColumnName);
             var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
 
-            var referencesSelf = theColumn.getTable() == destinationTable;
+            var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
             var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
             var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
             result = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
@@ -346,7 +346,7 @@ public abstract class DatabaseUtilities {
 
         var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
 
-        var referencesSelf = theColumn.getTable() == destinationTable;
+        var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
         var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
         var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
         var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
@@ -430,7 +430,7 @@ public abstract class DatabaseUtilities {
         var destinationColumnName = theColumn.getDestinationColumn();
         var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
 
-        var referencesSelf = theColumn.getTable() == destinationTable;
+        var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
         var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
         var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
         var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
@@ -796,7 +796,7 @@ public abstract class DatabaseUtilities {
 
         var fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase(Locale.getDefault());
 
-        var referencesSelf = theFK.getTable() == destinationTable;
+        var referencesSelf = theFK.getTable().getNamePlural().equals(destinationTable.getNamePlural());
         var differingColumnName = !referencesSelf && !theFK.getName().equals(destinationColumnName);
         var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
         var fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase(Locale.getDefault());
