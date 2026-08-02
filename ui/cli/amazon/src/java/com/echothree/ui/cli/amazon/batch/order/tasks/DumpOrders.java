@@ -17,16 +17,12 @@
 package com.echothree.ui.cli.amazon.batch.order.tasks;
 
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrders;
-import com.google.common.base.Splitter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class DumpOrders {
 
     private final Log LOG = LogFactory.getLog(this.getClass());
-
-    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
-           .trimResults();
 
     private AmazonOrders amazonOrders;
 

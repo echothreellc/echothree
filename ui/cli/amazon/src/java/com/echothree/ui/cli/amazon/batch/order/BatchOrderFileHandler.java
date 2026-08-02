@@ -20,33 +20,21 @@ import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrders;
 import com.echothree.ui.cli.amazon.batch.order.tasks.BuildOrders;
 import com.echothree.ui.cli.amazon.batch.order.tasks.DumpOrders;
 import com.echothree.ui.cli.amazon.batch.order.tasks.EnterOrders;
-import com.echothree.util.common.string.StringUtils;
-import com.google.common.base.Splitter;
 import java.io.IOException;
 import javax.naming.NamingException;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class BatchOrderFileHandler {
-
-    private final Log LOG = LogFactory.getLog(this.getClass());
-
-    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
-           .trimResults();
 
     private Configuration configuration;
     private String filename;
     int depth;
-
-    private String indent;
 
     private void init(Configuration configuration, String filename, int depth) {
         this.configuration = configuration;
         this.filename = filename;
         this.depth = depth;
         
-        indent = StringUtils.getInstance().repeatingStringFromChar(' ', depth);
     }
 
     /** Creates a new instance of BatchOrderFileHandler */

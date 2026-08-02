@@ -79,7 +79,7 @@ public class BatchOrderDirectoryHandler {
             LOG.info(indent + "Directory: " + file.getName());
 
             for(var i = 0; i < contents.length; i++) {
-                recurseFile(new File(new StringBuilder(file.getAbsolutePath()).append('/').append(contents[i]).toString()), depth + 1);
+                recurseFile(new File(file.getAbsolutePath() + '/' + contents[i]), depth + 1);
             }
         } else {
             LOG.info(indent + "File: " + file.getName());
