@@ -1204,9 +1204,9 @@
                             <indexColumn name="InventoryDispositionName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index6">
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryTransactionTypeId" />
                             <indexColumn name="IsDefault" />
-                            <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>
