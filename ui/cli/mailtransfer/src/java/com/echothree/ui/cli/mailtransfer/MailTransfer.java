@@ -66,7 +66,7 @@ public class MailTransfer {
         }
 
         if(doBlogEntries) {
-            new BlogEntryTransfer(configuration, doVerbose).transfer();
+            new BlogEntryTransfer(configuration).transfer();
         }
     }
 
