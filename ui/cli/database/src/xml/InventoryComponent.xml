@@ -1162,7 +1162,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositions" nameSingular="InventoryDisposition" columnPrefix="invdspn">
+                <table namePlural="InventoryDispositions" nameSingular="InventoryDisposition" columnPrefix="invdsp">
                     <columns>
                         <column name="InventoryDispositionId" type="EID" nullAllowed="false" />
                         <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionDetails" destinationColumn="InventoryDispositionDetailId"/>
@@ -1180,7 +1180,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionDetails" nameSingular="InventoryDispositionDetail" columnPrefix="invdspndt">
+                <table namePlural="InventoryDispositionDetails" nameSingular="InventoryDispositionDetail" columnPrefix="invdspdt">
                     <columns>
                         <column name="InventoryDispositionDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryDispositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositions" destinationColumn="InventoryDispositionId" />
@@ -1210,7 +1210,7 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionDescriptions" nameSingular="InventoryDispositionDescription" columnPrefix="invdspnd">
+                <table namePlural="InventoryDispositionDescriptions" nameSingular="InventoryDispositionDescription" columnPrefix="invdspd">
                     <columns>
                         <column name="InventoryDispositionDescriptionId" type="EID" nullAllowed="false" />
                         <column name="InventoryDispositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositions" destinationColumn="InventoryDispositionId" />
@@ -1238,15 +1238,15 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionMovements" nameSingular="InventoryDispositionMovement" columnPrefix="invdspnmv">
+                <table namePlural="InventoryDispositionAdjustments" nameSingular="InventoryDispositionAdjustment" columnPrefix="invdspadj">
                     <columns>
-                        <column name="InventoryDispositionMovementId" type="EID" nullAllowed="false" />
-                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionMovementDetails" destinationColumn="InventoryDispositionMovementDetailId"/>
-                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionMovementDetails" destinationColumn="InventoryDispositionMovementDetailId"/>
+                        <column name="InventoryDispositionAdjustmentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionAdjustmentDetails" destinationColumn="InventoryDispositionAdjustmentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryDispositionAdjustmentDetails" destinationColumn="InventoryDispositionAdjustmentDetailId"/>
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="InventoryDispositionMovementId" />
+                            <indexColumn name="InventoryDispositionAdjustmentId" />
                         </index>
                         <index type="Unique">
                             <indexColumn name="ActiveDetailId"/>
@@ -1256,12 +1256,12 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionMovementDetails" nameSingular="InventoryDispositionMovementDetail" columnPrefix="invdspnmvdt">
+                <table namePlural="InventoryDispositionAdjustmentDetails" nameSingular="InventoryDispositionAdjustmentDetail" columnPrefix="invdspadjdt">
                     <columns>
-                        <column name="InventoryDispositionMovementDetailId" type="EID" nullAllowed="false" />
-                        <column name="InventoryDispositionMovementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositionMovements" destinationColumn="InventoryDispositionMovementId" />
+                        <column name="InventoryDispositionAdjustmentDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryDispositionAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositionAdjustments" destinationColumn="InventoryDispositionAdjustmentId" />
                         <column name="InventoryDispositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositions" destinationColumn="InventoryDispositionId" />
-                        <column name="InventoryDispositionMovementName" type="Name" nullAllowed="false" />
+                        <column name="InventoryDispositionAdjustmentName" type="Name" nullAllowed="false" />
                         <column name="InventoryAdjustmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryAdjustmentTypes" destinationColumn="InventoryAdjustmentTypeId" />
                         <column name="InventoryBucketTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryBucketTypes" destinationColumn="InventoryBucketTypeId" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
@@ -1271,15 +1271,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="InventoryDispositionMovementDetailId" />
+                            <indexColumn name="InventoryDispositionAdjustmentDetailId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="InventoryDispositionMovementId" />
+                            <indexColumn name="InventoryDispositionAdjustmentId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
                             <indexColumn name="InventoryDispositionId" />
-                            <indexColumn name="InventoryDispositionMovementName" />
+                            <indexColumn name="InventoryDispositionAdjustmentName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
@@ -1290,10 +1290,10 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryDispositionMovementDescriptions" nameSingular="InventoryDispositionMovementDescription" columnPrefix="invdspnmvd">
+                <table namePlural="InventoryDispositionAdjustmentDescriptions" nameSingular="InventoryDispositionAdjustmentDescription" columnPrefix="invdspadjd">
                     <columns>
-                        <column name="InventoryDispositionMovementDescriptionId" type="EID" nullAllowed="false" />
-                        <column name="InventoryDispositionMovementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositionMovements" destinationColumn="InventoryDispositionMovementId" />
+                        <column name="InventoryDispositionAdjustmentDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="InventoryDispositionAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositionAdjustments" destinationColumn="InventoryDispositionAdjustmentId" />
                         <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
                         <column name="Description" type="Description" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -1301,15 +1301,95 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="InventoryDispositionMovementDescriptionId" />
+                            <indexColumn name="InventoryDispositionAdjustmentDescriptionId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="InventoryDispositionMovementId" />
+                            <indexColumn name="InventoryDispositionAdjustmentId" />
                             <indexColumn name="LanguageId" />
                             <indexColumn name="ThruTime"/>
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="InventoryDispositionMovementId" />
+                            <indexColumn name="InventoryDispositionAdjustmentId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryTransactionReasons" nameSingular="InventoryTransactionReason" columnPrefix="invtrxrsn">
+                    <columns>
+                        <column name="InventoryTransactionReasonId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionReasonDetails" destinationColumn="InventoryTransactionReasonDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionReasonDetails" destinationColumn="InventoryTransactionReasonDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryTransactionReasonId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryTransactionReasonDetails" nameSingular="InventoryTransactionReasonDetail" columnPrefix="invtrxrsndt">
+                    <columns>
+                        <column name="InventoryTransactionReasonDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryTransactionReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionReasons" destinationColumn="InventoryTransactionReasonId" />
+                        <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
+                        <column name="InventoryTransactionReasonName" type="Name" nullAllowed="false" />
+                        <column name="InventoryDispositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryDispositions" destinationColumn="InventoryDispositionId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryTransactionReasonDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryTransactionReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="InventoryTransactionTypeId" />
+                            <indexColumn name="InventoryTransactionReasonName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryTransactionTypeId" />
+                            <indexColumn name="IsDefault" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryDispositionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryTransactionReasonDescriptions" nameSingular="InventoryTransactionReasonDescription" columnPrefix="invtrxrsnd">
+                    <columns>
+                        <column name="InventoryTransactionReasonDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="InventoryTransactionReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionReasons" destinationColumn="InventoryTransactionReasonId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryTransactionReasonDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryTransactionReasonId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="InventoryTransactionReasonId" />
                             <indexColumn name="ThruTime"/>
                         </index>
                         <index type="Multiple" name="Index3">
@@ -1343,6 +1423,7 @@
                         <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
                         <column name="InventoryTransactionName" type="Name" nullAllowed="false" />
                         <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="InventoryTransactionReasonId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionReasons" destinationColumn="InventoryTransactionReasonId" />
                         <column name="Reference" type="Reference" nullAllowed="true" />
                         <column name="Description" type="Description" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -1367,6 +1448,9 @@
                         </index>
                         <index type="Multiple" name="Index4">
                             <indexColumn name="CompanyPartyId" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="InventoryTransactionReasonId" />
                         </index>
                     </indexes>
                 </table>
@@ -1469,6 +1553,7 @@
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />
                         <column name="InventoryTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactions" destinationColumn="InventoryTransactionId" />
                         <column name="InventoryTransactionLineSequence" type="Integer" nullAllowed="false" />
+                        <column name="InventoryTransactionReasonId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionReasons" destinationColumn="InventoryTransactionReasonId" />
                         <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
                         <column name="LotId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
                         <column name="InventoryAdjustmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryAdjustmentTypes" destinationColumn="InventoryAdjustmentTypeId" />
@@ -1494,12 +1579,15 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
-                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryTransactionReasonId" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="LotId" />
+                            <indexColumn name="ItemId" />
                         </index>
                         <index type="Multiple" name="Index6">
+                            <indexColumn name="LotId" />
+                        </index>
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="InventoryAdjustmentTypeId" />
                         </index>
                     </indexes>
