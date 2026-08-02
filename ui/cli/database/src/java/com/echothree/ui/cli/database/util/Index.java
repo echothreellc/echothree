@@ -48,12 +48,12 @@ public class Index {
         this.name = name;
         this.nameWasSpecified = name != null;
 
-        switch(type) {
-            case "PrimaryKey" -> this.type = indexPrimaryKey;
-            case "Unique" -> this.type = indexUnique;
-            case "Multiple" -> this.type = indexMultiple;
+        this.type = switch(type) {
+            case "PrimaryKey" -> indexPrimaryKey;
+            case "Unique" -> indexUnique;
+            case "Multiple" -> indexMultiple;
             default -> throw new Exception("Illegal index type " + type);
-        }
+        };
         
         indexColumns = new LinkedHashSet<>();
     }
