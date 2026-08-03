@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-08-02-01
+
+* Add Inventory Transaction Reasons [44](https://gitlab.echothree.com/echothree/echothree/-/work_items/44)
+* Convert GetGeoCodeTaxes UC to Use BasePaginatedMultipleEntitiesCommand [1995](https://gitlab.echothree.com/echothree/echothree/-/work_items/1995)
+* Convert GetItemTaxClassifications UC to Use BasePaginatedMultipleEntitiesCommand [1996](https://gitlab.echothree.com/echothree/echothree/-/work_items/1996)
+* Convert GetTaxClassifications UC to Use BasePaginatedMultipleEntitiesCommand [1997](https://gitlab.echothree.com/echothree/echothree/-/work_items/1997)
+* Convert GetCustomerTypeCreditLimits UC to Use BasePaginatedMultipleEntitiesCommand [1999](https://gitlab.echothree.com/echothree/echothree/-/work_items/1999)
+* Convert GetPartyCreditLimits UC to Use BasePaginatedMultipleEntitiesCommand [2000](https://gitlab.echothree.com/echothree/echothree/-/work_items/2000)
+* Add Inventory Transaction and Inventory Transaction Line Entities [2155](https://gitlab.echothree.com/echothree/echothree/-/work_items/2155)
+* Add Inventory Transaction Role Type and Related Entities [2156](https://gitlab.echothree.com/echothree/echothree/-/work_items/2156)
+* Add Inventory Transaction Time Type and Related Entities [2157](https://gitlab.echothree.com/echothree/echothree/-/work_items/2157)
+* Replace tnx with trx in columnPrefix for Inventory Transaction Tables [2158](https://gitlab.echothree.com/echothree/echothree/-/work_items/2158)
+* Add @Nullable and @Nonnull Annotations in PK, Value, and Entity Objects [2159](https://gitlab.echothree.com/echothree/echothree/-/work_items/2159)
+* Additional String Formatting Functions [2162](https://gitlab.echothree.com/echothree/echothree/-/work_items/2162)
+* Add Inventory Costing Method and Related Entities [2163](https://gitlab.echothree.com/echothree/echothree/-/work_items/2163)
+* Add Inventory Costing Pool and Related Entities [2164](https://gitlab.echothree.com/echothree/echothree/-/work_items/2164)
+* Add Inventory Location Status Entity [2165](https://gitlab.echothree.com/echothree/echothree/-/work_items/2165)
+* Add Inventory Dispositions [2167](https://gitlab.echothree.com/echothree/echothree/-/work_items/2167)
+* Add Inventory Bucket Types [2168](https://gitlab.echothree.com/echothree/echothree/-/work_items/2168)
+* Add Party Buckets [2169](https://gitlab.echothree.com/echothree/echothree/-/work_items/2169)
+* Add Inventory Location Buckets [2170](https://gitlab.echothree.com/echothree/echothree/-/work_items/2170)
+* Rename Inventory Location Assignments to Inventory Locations [2171](https://gitlab.echothree.com/echothree/echothree/-/work_items/2171)
+* ClassGraph 4.8.186 Upgrade [2172](https://gitlab.echothree.com/echothree/echothree/-/work_items/2172)
+* Add Inventory Disposition Adjustments [2173](https://gitlab.echothree.com/echothree/echothree/-/work_items/2173)
+* Correct Error Prone Warnings in Database Utility [2174](https://gitlab.echothree.com/echothree/echothree/-/work_items/2174)
+* Correct Error Prone Warnings in Mail Transfer Utility [2175](https://gitlab.echothree.com/echothree/echothree/-/work_items/2175)
+
 ## 2026-07-19-01
 
 * Convert GetForumForumThreads UC to Use BasePaginatedMultipleEntitiesCommand [1855](https://gitlab.echothree.com/echothree/echothree/-/work_items/1855)
