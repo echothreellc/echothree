@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class LotTimeControl
@@ -61,6 +62,12 @@ public class LotTimeControl
     //   Lot Time Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LotTimeTypeFactory lotTimeTypeFactory;
+
+    @Inject
+    protected LotTimeTypeDetailFactory lotTimeTypeDetailFactory;
+
     public LotTimeType createLotTimeType(String lotTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultLotTimeType = getDefaultLotTimeType();
         var defaultFound = defaultLotTimeType != null;
@@ -74,12 +81,12 @@ public class LotTimeControl
             isDefault = true;
         }
 
-        var lotTimeType = LotTimeTypeFactory.getInstance().create();
-        var lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotTimeTypeName, isDefault,
+        var lotTimeType = lotTimeTypeFactory.create();
+        var lotTimeTypeDetail = lotTimeTypeDetailFactory.create(lotTimeType, lotTimeTypeName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        lotTimeType = LotTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        lotTimeType = lotTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 lotTimeType.getPrimaryKey());
         lotTimeType.setActiveDetail(lotTimeTypeDetail);
         lotTimeType.setLastDetail(lotTimeTypeDetail);
@@ -94,7 +101,7 @@ public class LotTimeControl
     public LotTimeType getLotTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LotTimeTypePK(entityInstance.getEntityUniqueId());
 
-        return LotTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return lotTimeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public LotTimeType getLotTimeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -135,7 +142,7 @@ public class LotTimeControl
     }
 
     private LotTimeType getLotTimeTypeByName(String lotTimeTypeName, EntityPermission entityPermission) {
-        return LotTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getLotTimeTypeByNameQueries,
+        return lotTimeTypeFactory.getEntityFromQuery(entityPermission, getLotTimeTypeByNameQueries,
                 lotTimeTypeName);
     }
 
@@ -177,7 +184,7 @@ public class LotTimeControl
     }
 
     private LotTimeType getDefaultLotTimeType(EntityPermission entityPermission) {
-        return LotTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotTimeTypeQueries);
+        return lotTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultLotTimeTypeQueries);
     }
 
     public LotTimeType getDefaultLotTimeType() {
@@ -214,7 +221,7 @@ public class LotTimeControl
     }
 
     private List<LotTimeType> getLotTimeTypes(EntityPermission entityPermission) {
-        return LotTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTimeTypesQueries);
+        return lotTimeTypeFactory.getEntitiesFromQuery(entityPermission, getLotTimeTypesQueries);
     }
 
     public List<LotTimeType> getLotTimeTypes() {
@@ -280,7 +287,7 @@ public class LotTimeControl
     private void updateLotTimeTypeFromValue(LotTimeTypeDetailValue lotTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(lotTimeTypeDetailValue.hasBeenModified()) {
-            var lotTimeType = LotTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotTimeType = lotTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      lotTimeTypeDetailValue.getLotTimeTypePK());
             var lotTimeTypeDetail = lotTimeType.getActiveDetailForUpdate();
 
@@ -308,7 +315,7 @@ public class LotTimeControl
                 }
             }
 
-            lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeTypePK, lotTimeTypeName, isDefault, sortOrder,
+            lotTimeTypeDetail = lotTimeTypeDetailFactory.create(lotTimeTypePK, lotTimeTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             lotTimeType.setActiveDetail(lotTimeTypeDetail);
@@ -355,8 +362,11 @@ public class LotTimeControl
     //   Lot Time Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LotTimeTypeDescriptionFactory lotTimeTypeDescriptionFactory;
+
     public LotTimeTypeDescription createLotTimeTypeDescription(LotTimeType lotTimeType, Language language, String description, BasePK createdBy) {
-        var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
+        var lotTimeTypeDescription = lotTimeTypeDescriptionFactory.create(lotTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -384,7 +394,7 @@ public class LotTimeControl
     }
 
     private LotTimeTypeDescription getLotTimeTypeDescription(LotTimeType lotTimeType, Language language, EntityPermission entityPermission) {
-        return LotTimeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getLotTimeTypeDescriptionQueries,
+        return lotTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getLotTimeTypeDescriptionQueries,
                 lotTimeType, language, Session.MAX_TIME);
     }
 
@@ -426,7 +436,7 @@ public class LotTimeControl
     }
 
     private List<LotTimeTypeDescription> getLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType, EntityPermission entityPermission) {
-        return LotTimeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTimeTypeDescriptionsByLotTimeTypeQueries,
+        return lotTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getLotTimeTypeDescriptionsByLotTimeTypeQueries,
                 lotTimeType, Session.MAX_TIME);
     }
 
@@ -472,7 +482,7 @@ public class LotTimeControl
 
     public void updateLotTimeTypeDescriptionFromValue(LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue, BasePK updatedBy) {
         if(lotTimeTypeDescriptionValue.hasBeenModified()) {
-            var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotTimeTypeDescription = lotTimeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeTypeDescriptionValue.getPrimaryKey());
 
             lotTimeTypeDescription.setThruTime(session.getStartTime());
@@ -482,7 +492,7 @@ public class LotTimeControl
             var language = lotTimeTypeDescription.getLanguage();
             var description = lotTimeTypeDescriptionValue.getDescription();
 
-            lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
+            lotTimeTypeDescription = lotTimeTypeDescriptionFactory.create(lotTimeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -508,8 +518,11 @@ public class LotTimeControl
     //   Lot Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LotTimeFactory lotTimeFactory;
+
     public LotTime createLotTime(Lot lot, LotTimeType lotTimeType, Long time, BasePK createdBy) {
-        var lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.getStartTime(), Session.MAX_TIME);
+        var lotTime = lotTimeFactory.create(lot, lotTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -552,7 +565,7 @@ public class LotTimeControl
     }
 
     private LotTime getLotTime(Lot lot, LotTimeType lotTimeType, EntityPermission entityPermission) {
-        return LotTimeFactory.getInstance().getEntityFromQuery(entityPermission, getLotTimeQueries, lot, lotTimeType, Session.MAX_TIME);
+        return lotTimeFactory.getEntityFromQuery(entityPermission, getLotTimeQueries, lot, lotTimeType, Session.MAX_TIME);
     }
 
     public LotTime getLotTime(Lot lot, LotTimeType lotTimeType) {
@@ -594,7 +607,7 @@ public class LotTimeControl
     }
 
     private List<LotTime> getLotTimesByLot(Lot lot, EntityPermission entityPermission) {
-        return LotTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTimesByLotQueries, lot, Session.MAX_TIME);
+        return lotTimeFactory.getEntitiesFromQuery(entityPermission, getLotTimesByLotQueries, lot, Session.MAX_TIME);
     }
 
     public List<LotTime> getLotTimesByLot(Lot lot) {
@@ -628,7 +641,7 @@ public class LotTimeControl
     }
 
     private List<LotTime> getLotTimesByLotTimeType(LotTimeType lotTimeType, EntityPermission entityPermission) {
-        return LotTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTimesByLotTimeTypeQueries, lotTimeType, Session.MAX_TIME);
+        return lotTimeFactory.getEntitiesFromQuery(entityPermission, getLotTimesByLotTimeTypeQueries, lotTimeType, Session.MAX_TIME);
     }
 
     public List<LotTime> getLotTimesByLotTimeType(LotTimeType lotTimeType) {
@@ -663,7 +676,7 @@ public class LotTimeControl
 
     public void updateLotTimeFromValue(LotTimeValue lotTimeValue, BasePK updatedBy) {
         if(lotTimeValue.hasBeenModified()) {
-            var lotTime = LotTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotTime = lotTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeValue.getPrimaryKey());
 
             lotTime.setThruTime(session.getStartTime());
@@ -673,7 +686,7 @@ public class LotTimeControl
             var lotTimeTypePK = lotTime.getLotTimeTypePK(); // Not updated
             var time = lotTimeValue.getTime();
 
-            lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
+            lotTime = lotTimeFactory.create(lotPK, lotTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(lotPK, EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

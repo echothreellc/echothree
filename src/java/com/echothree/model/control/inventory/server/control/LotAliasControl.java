@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class LotAliasControl
@@ -60,6 +61,12 @@ public class LotAliasControl
     // --------------------------------------------------------------------------------
     //   Lot Alias Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected LotAliasTypeFactory lotAliasTypeFactory;
+
+    @Inject
+    protected LotAliasTypeDetailFactory lotAliasTypeDetailFactory;
 
     public LotAliasType createLotAliasType(String lotAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -75,12 +82,12 @@ public class LotAliasControl
             isDefault = true;
         }
 
-        var lotAliasType = LotAliasTypeFactory.getInstance().create();
-        var lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasType, lotAliasTypeName,
+        var lotAliasType = lotAliasTypeFactory.create();
+        var lotAliasTypeDetail = lotAliasTypeDetailFactory.create(lotAliasType, lotAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        lotAliasType = LotAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lotAliasType.getPrimaryKey());
+        lotAliasType = lotAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, lotAliasType.getPrimaryKey());
         lotAliasType.setActiveDetail(lotAliasTypeDetail);
         lotAliasType.setLastDetail(lotAliasTypeDetail);
         lotAliasType.store();
@@ -94,7 +101,7 @@ public class LotAliasControl
     public LotAliasType getLotAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LotAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return LotAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return lotAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public LotAliasType getLotAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -135,7 +142,7 @@ public class LotAliasControl
     }
 
     private LotAliasType getLotAliasTypeByName(String lotAliasTypeName, EntityPermission entityPermission) {
-        return LotAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getLotAliasTypeByNameQueries,
+        return lotAliasTypeFactory.getEntityFromQuery(entityPermission, getLotAliasTypeByNameQueries,
                 lotAliasTypeName);
     }
 
@@ -177,7 +184,7 @@ public class LotAliasControl
     }
 
     private LotAliasType getDefaultLotAliasType(EntityPermission entityPermission) {
-        return LotAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotAliasTypeQueries);
+        return lotAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultLotAliasTypeQueries);
     }
 
     public LotAliasType getDefaultLotAliasType() {
@@ -214,7 +221,7 @@ public class LotAliasControl
     }
 
     private List<LotAliasType> getLotAliasTypes(EntityPermission entityPermission) {
-        return LotAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotAliasTypesQueries);
+        return lotAliasTypeFactory.getEntitiesFromQuery(entityPermission, getLotAliasTypesQueries);
     }
 
     public List<LotAliasType> getLotAliasTypes() {
@@ -281,7 +288,7 @@ public class LotAliasControl
     private void updateLotAliasTypeFromValue(LotAliasTypeDetailValue lotAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(lotAliasTypeDetailValue.hasBeenModified()) {
-            var lotAliasType = LotAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotAliasType = lotAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     lotAliasTypeDetailValue.getLotAliasTypePK());
             var lotAliasTypeDetail = lotAliasType.getActiveDetailForUpdate();
 
@@ -310,7 +317,7 @@ public class LotAliasControl
                 }
             }
 
-            lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasTypePK, lotAliasTypeName,
+            lotAliasTypeDetail = lotAliasTypeDetailFactory.create(lotAliasTypePK, lotAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             lotAliasType.setActiveDetail(lotAliasTypeDetail);
@@ -363,8 +370,11 @@ public class LotAliasControl
     //   Lot Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LotAliasTypeDescriptionFactory lotAliasTypeDescriptionFactory;
+
     public LotAliasTypeDescription createLotAliasTypeDescription(LotAliasType lotAliasType, Language language, String description, BasePK createdBy) {
-        var lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language,
+        var lotAliasTypeDescription = lotAliasTypeDescriptionFactory.create(lotAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -392,7 +402,7 @@ public class LotAliasControl
     }
 
     private LotAliasTypeDescription getLotAliasTypeDescription(LotAliasType lotAliasType, Language language, EntityPermission entityPermission) {
-        return LotAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getLotAliasTypeDescriptionQueries,
+        return lotAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getLotAliasTypeDescriptionQueries,
                 lotAliasType, language, Session.MAX_TIME);
     }
 
@@ -434,7 +444,7 @@ public class LotAliasControl
     }
 
     private List<LotAliasTypeDescription> getLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, EntityPermission entityPermission) {
-        return LotAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotAliasTypeDescriptionsByLotAliasTypeQueries,
+        return lotAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getLotAliasTypeDescriptionsByLotAliasTypeQueries,
                 lotAliasType, Session.MAX_TIME);
     }
 
@@ -480,7 +490,7 @@ public class LotAliasControl
 
     public void updateLotAliasTypeDescriptionFromValue(LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue, BasePK updatedBy) {
         if(lotAliasTypeDescriptionValue.hasBeenModified()) {
-            var lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lotAliasTypeDescription = lotAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      lotAliasTypeDescriptionValue.getPrimaryKey());
 
             lotAliasTypeDescription.setThruTime(session.getStartTime());
@@ -490,7 +500,7 @@ public class LotAliasControl
             var language = lotAliasTypeDescription.getLanguage();
             var description = lotAliasTypeDescriptionValue.getDescription();
 
-            lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language, description,
+            lotAliasTypeDescription = lotAliasTypeDescriptionFactory.create(lotAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -516,8 +526,11 @@ public class LotAliasControl
     //   Lot Aliases
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LotAliasFactory lotAliasFactory;
+
     public LotAlias createLotAlias(Lot lot, LotAliasType lotAliasType, String alias, BasePK createdBy) {
-        var lotAlias = LotAliasFactory.getInstance().create(lot, lotAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var lotAlias = lotAliasFactory.create(lot, lotAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -560,7 +573,7 @@ public class LotAliasControl
     }
 
     private LotAlias getLotAlias(Lot lot, LotAliasType lotAliasType, EntityPermission entityPermission) {
-        return LotAliasFactory.getInstance().getEntityFromQuery(entityPermission, getLotAliasQueries,
+        return lotAliasFactory.getEntityFromQuery(entityPermission, getLotAliasQueries,
                 lot, lotAliasType, Session.MAX_TIME);
     }
 
@@ -600,7 +613,7 @@ public class LotAliasControl
     }
 
     private LotAlias getLotAliasByAlias(LotAliasType lotAliasType, String alias, EntityPermission entityPermission) {
-        return LotAliasFactory.getInstance().getEntityFromQuery(entityPermission, getLotAliasByAliasQueries, lotAliasType, alias, Session.MAX_TIME);
+        return lotAliasFactory.getEntityFromQuery(entityPermission, getLotAliasByAliasQueries, lotAliasType, alias, Session.MAX_TIME);
     }
 
     public LotAlias getLotAliasByAlias(LotAliasType lotAliasType, String alias) {
@@ -634,7 +647,7 @@ public class LotAliasControl
     }
 
     private List<LotAlias> getLotAliasesByLot(Lot lot, EntityPermission entityPermission) {
-        return LotAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotAliasesByLotQueries,
+        return lotAliasFactory.getEntitiesFromQuery(entityPermission, getLotAliasesByLotQueries,
                 lot, Session.MAX_TIME);
     }
 
@@ -669,7 +682,7 @@ public class LotAliasControl
     }
 
     private List<LotAlias> getLotAliasesByLotAliasType(LotAliasType lotAliasType, EntityPermission entityPermission) {
-        return LotAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotAliasesByLotAliasTypeQueries,
+        return lotAliasFactory.getEntitiesFromQuery(entityPermission, getLotAliasesByLotAliasTypeQueries,
                 lotAliasType, Session.MAX_TIME);
     }
 
@@ -701,7 +714,7 @@ public class LotAliasControl
 
     public void updateLotAliasFromValue(LotAliasValue lotAliasValue, BasePK updatedBy) {
         if(lotAliasValue.hasBeenModified()) {
-            var lotAlias = LotAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lotAliasValue.getPrimaryKey());
+            var lotAlias = lotAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, lotAliasValue.getPrimaryKey());
 
             lotAlias.setThruTime(session.getStartTime());
             lotAlias.store();
@@ -710,7 +723,7 @@ public class LotAliasControl
             var lotAliasTypePK = lotAlias.getLotAliasTypePK();
             var alias  = lotAliasValue.getAlias();
 
-            lotAlias = LotAliasFactory.getInstance().create(lotPK, lotAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            lotAlias = lotAliasFactory.create(lotPK, lotAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(lotPK, EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

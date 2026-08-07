@@ -36,19 +36,14 @@ import javax.inject.Inject;
 @Dependent
 public class GetInventoryLocationGroupCapacitiesCommand
         extends BasePaginatedMultipleEntitiesCommand<InventoryLocationGroupCapacity, GetInventoryLocationGroupCapacitiesForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
-    }
-    
-    /** Creates a new instance of GetInventoryLocationGroupCapacitiesCommand */
-    public GetInventoryLocationGroupCapacitiesCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Inject
@@ -57,6 +52,10 @@ public class GetInventoryLocationGroupCapacitiesCommand
     @Inject
     WarehouseLogic warehouseLogic;
 
+    /** Creates a new instance of GetInventoryLocationGroupCapacitiesCommand */
+    public GetInventoryLocationGroupCapacitiesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
+    }
     private InventoryLocationGroup inventoryLocationGroup;
 
     @Override
@@ -102,5 +101,5 @@ public class GetInventoryLocationGroupCapacitiesCommand
 
         return result;
     }
-    
+
 }

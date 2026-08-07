@@ -31,8 +31,8 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -41,7 +41,7 @@ public class SetInventoryLocationGroupStatusCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -56,27 +56,31 @@ public class SetInventoryLocationGroupStatusCommand
                 new FieldDefinition("InventoryLocationGroupStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of SetInventoryLocationGroupStatusCommand */
     public SetInventoryLocationGroupStatusCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
         if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
             var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
-            
+
             if(inventoryLocationGroup != null) {
                 var inventoryLocationGroupStatusChoice = form.getInventoryLocationGroupStatusChoice();
-                
+
                 inventoryControl.setInventoryLocationGroupStatus(this, inventoryLocationGroup, inventoryLocationGroupStatusChoice, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
@@ -84,8 +88,8 @@ public class SetInventoryLocationGroupStatusCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+
         return null;
     }
-    
+
 }

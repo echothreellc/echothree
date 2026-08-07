@@ -34,9 +34,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LotLogic
@@ -50,17 +50,27 @@ public class LotLogic
         return CDI.current().select(LotLogic.class).get();
     }
 
+    @Inject
+    LotControl lotControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     public Lot createLot(final ExecutionErrorAccumulator eea, final Item item, String lotIdentifier,
             final BasePK createdBy) {
         Lot lot = null;
 
         if(lotIdentifier == null) {
-            lotIdentifier = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.LOT.name());
+            lotIdentifier = sequenceGeneratorLogic.getNextSequenceValue(eea, SequenceTypes.LOT.name());
         }
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var lotControl = Session.getModelController(LotControl.class);
-
             lot = lotControl.getLotByIdentifier(item, lotIdentifier);
             if(lot == null) {
                 lot = lotControl.createLot(item, lotIdentifier, createdBy);
@@ -75,7 +85,6 @@ public class LotLogic
 
     public Lot getLotByIdentifier(final ExecutionErrorAccumulator eea, final Item item, final String lotIdentifier,
             final EntityPermission entityPermission) {
-        var lotControl = Session.getModelController(LotControl.class);
         var lot = lotControl.getLotByIdentifier(item, lotIdentifier, entityPermission);
 
         if(lot == null) {
@@ -97,23 +106,22 @@ public class LotLogic
     public Lot getLotByUniversalSpec(final ExecutionErrorAccumulator eea, final LotUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
         Lot lot = null;
-        var lotControl = Session.getModelController(LotControl.class);
         var itemName = universalSpec.getItemName();
         var lotIdentifier = universalSpec.getLotIdentifier();
         var parameterCount = (itemName != null && lotIdentifier != null ? 1 : 0)
-                + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+                + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(lotIdentifier == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Lot.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
                         lot = lotControl.getLotByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
-                    var item = ItemLogic.getInstance().getItemByName(eea, itemName);
+                    var item = itemLogic.getItemByName(eea, itemName);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
                         lot = getLotByIdentifier(eea, item, lotIdentifier, entityPermission);
@@ -139,8 +147,6 @@ public class LotLogic
 
     public void deleteLot(final ExecutionErrorAccumulator eea, final Lot lot,
             final BasePK deletedBy) {
-        var lotControl = Session.getModelController(LotControl.class);
-
         lotControl.deleteLot(lot, deletedBy);
     }
 

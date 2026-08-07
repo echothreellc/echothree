@@ -32,8 +32,8 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -42,7 +42,7 @@ public class CreateInventoryLocationGroupDescriptionCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -58,35 +58,41 @@ public class CreateInventoryLocationGroupDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
             );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of CreateInventoryLocationGroupDescriptionCommand */
     public CreateInventoryLocationGroupDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
         if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
             var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
-            
+
             if(inventoryLocationGroup != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
-                
+
                 if(language != null) {
                     var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
-                    
+
                     if(inventoryLocationGroupDescription == null) {
                         var description = form.getDescription();
-                        
+
                         inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupDescription.name());
@@ -100,8 +106,8 @@ public class CreateInventoryLocationGroupDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+
         return null;
     }
-    
+
 }

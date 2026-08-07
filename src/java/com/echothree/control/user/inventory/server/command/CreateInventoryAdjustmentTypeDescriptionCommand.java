@@ -31,17 +31,17 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryAdjustmentTypeDescriptionCommand
         extends BaseSimpleCommand<CreateInventoryAdjustmentTypeDescriptionForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -49,36 +49,40 @@ public class CreateInventoryAdjustmentTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryAdjustmentType.name(), SecurityRoles.Description.name())
                         ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of CreateInventoryAdjustmentTypeDescriptionCommand */
     public CreateInventoryAdjustmentTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentTypeName = form.getInventoryAdjustmentTypeName();
         var inventoryAdjustmentType = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeByName(inventoryAdjustmentTypeName);
-        
+
         if(inventoryAdjustmentType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
+
             if(language != null) {
                 var inventoryAdjustmentTypeDescription = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDescription(inventoryAdjustmentType, language);
-                
+
                 if(inventoryAdjustmentTypeDescription == null) {
                     var description = form.getDescription();
-                    
+
                     inventoryAdjustmentTypeControl.createInventoryAdjustmentTypeDescription(inventoryAdjustmentType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateInventoryAdjustmentTypeDescription.name(), inventoryAdjustmentTypeName, languageIsoName);
@@ -89,8 +93,8 @@ public class CreateInventoryAdjustmentTypeDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryAdjustmentTypeName.name(), inventoryAdjustmentTypeName);
         }
-        
+
         return null;
     }
-    
+
 }

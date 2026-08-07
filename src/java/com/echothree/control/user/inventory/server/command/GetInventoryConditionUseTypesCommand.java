@@ -41,7 +41,6 @@ public class GetInventoryConditionUseTypesCommand
 
     @Inject
     InventoryControl inventoryControl;
-
     /** Creates a new instance of GetInventoryConditionUseTypesCommand */
     public GetInventoryConditionUseTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);

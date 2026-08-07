@@ -54,11 +54,6 @@ public class EditInventoryLocationGroupCapacityCommand
         );
     }
 
-    /** Creates a new instance of EditInventoryLocationGroupCapacityCommand */
-    public EditInventoryLocationGroupCapacityCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
-
     @Inject
     InventoryControl inventoryControl;
 
@@ -68,6 +63,10 @@ public class EditInventoryLocationGroupCapacityCommand
     @Inject
     WarehouseControl warehouseControl;
 
+    /** Creates a new instance of EditInventoryLocationGroupCapacityCommand */
+    public EditInventoryLocationGroupCapacityCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
     @Override
     public EditInventoryLocationGroupCapacityResult getResult() {
         return InventoryResultFactory.getEditInventoryLocationGroupCapacityResult();

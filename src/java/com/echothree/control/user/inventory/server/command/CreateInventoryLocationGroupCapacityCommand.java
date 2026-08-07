@@ -26,16 +26,16 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryLocationGroupCapacityCommand
         extends BaseSimpleCommand<CreateInventoryLocationGroupCapacityForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
@@ -45,40 +45,46 @@ public class CreateInventoryLocationGroupCapacityCommand
                 new FieldDefinition("Capacity", FieldType.UNSIGNED_LONG, true, null, null)
                 );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of CreateInventoryLocationGroupCapacityCommand */
     public CreateInventoryLocationGroupCapacityCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
         if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
             var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
-            
+
             if(inventoryLocationGroup != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
-                
+
                 if(unitOfMeasureKind != null) {
                     var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                     var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-                    
+
                     if(unitOfMeasureType != null) {
                         var inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacity(inventoryLocationGroup,
                                 unitOfMeasureType);
-                        
+
                         if(inventoryLocationGroupCapacity == null) {
                             var capacity = Long.valueOf(form.getCapacity());
-                            
+
                             inventoryControl.createInventoryLocationGroupCapacity(inventoryLocationGroup, unitOfMeasureType,
                                     capacity, getPartyPK());
                         } else {
@@ -96,8 +102,8 @@ public class CreateInventoryLocationGroupCapacityCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+
         return null;
     }
-    
+
 }

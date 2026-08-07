@@ -37,18 +37,18 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditAllocationPriorityCommand
         extends BaseAbstractEditCommand<AllocationPriorityUniversalSpec, AllocationPriorityEdit, EditAllocationPriorityResult, AllocationPriority, AllocationPriority> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -56,11 +56,11 @@ public class EditAllocationPriorityCommand
                     new SecurityRoleDefinition(SecurityRoleGroups.AllocationPriority.name(), SecurityRoles.Edit.name())
                     ))
                 ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, true, null, null)
                 );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Priority", FieldType.UNSIGNED_INTEGER, true, null, null),
@@ -69,7 +69,13 @@ public class EditAllocationPriorityCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    AllocationPriorityLogic allocationPriorityLogic;
+
     /** Creates a new instance of EditAllocationPriorityCommand */
     public EditAllocationPriorityCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -90,14 +96,12 @@ public class EditAllocationPriorityCommand
         AllocationPriority allocationPriority;
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            allocationPriority = AllocationPriorityLogic.getInstance().getAllocationPriorityByUniversalSpec(this, spec, false);
+            allocationPriority = allocationPriorityLogic.getAllocationPriorityByUniversalSpec(this, spec, false);
         } else { // EditMode.UPDATE
-            allocationPriority = AllocationPriorityLogic.getInstance().getAllocationPriorityByUniversalSpecForUpdate(this, spec, false);
+            allocationPriority = allocationPriorityLogic.getAllocationPriorityByUniversalSpecForUpdate(this, spec, false);
         }
 
         if(!hasExecutionErrors()) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
-
             result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
         }
 
@@ -111,14 +115,11 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void fillInResult(EditAllocationPriorityResult result, AllocationPriority allocationPriority) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-
         result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
     }
 
     @Override
     public void doLock(AllocationPriorityEdit edit, AllocationPriority allocationPriority) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, getPreferredLanguage());
         var allocationPriorityDetail = allocationPriority.getLastDetail();
 
@@ -134,7 +135,6 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void canUpdate(AllocationPriority allocationPriority) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriorityName = edit.getAllocationPriorityName();
         var duplicateAllocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
@@ -145,7 +145,6 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void doUpdate(AllocationPriority allocationPriority) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var partyPK = getPartyPK();
         var allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
         var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());
@@ -156,7 +155,7 @@ public class EditAllocationPriorityCommand
         allocationPriorityDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         allocationPriorityDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        AllocationPriorityLogic.getInstance().updateAllocationPriorityFromValue(allocationPriorityDetailValue, partyPK);
+        allocationPriorityLogic.updateAllocationPriorityFromValue(allocationPriorityDetailValue, partyPK);
 
         if(allocationPriorityDescription == null && description != null) {
             inventoryControl.createAllocationPriorityDescription(allocationPriority, getPreferredLanguage(), description, partyPK);

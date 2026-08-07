@@ -36,18 +36,18 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditLotTimeTypeCommand
         extends BaseAbstractEditCommand<LotTimeTypeSpec, LotTimeTypeEdit, EditLotTimeTypeResult, LotTimeType, LotTimeType> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,11 +55,11 @@ public class EditLotTimeTypeCommand
                     new SecurityRoleDefinition(SecurityRoleGroups.LotTimeType.name(), SecurityRoles.Edit.name())
                     ))
                 ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -67,7 +67,10 @@ public class EditLotTimeTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    LotTimeControl lotTimeControl;
+
     /** Creates a new instance of EditLotTimeTypeCommand */
     public EditLotTimeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,7 +88,6 @@ public class EditLotTimeTypeCommand
 
     @Override
     public LotTimeType getEntity(EditLotTimeTypeResult result) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         LotTimeType lotTimeType;
         var lotTimeTypeName = spec.getLotTimeTypeName();
 
@@ -111,14 +113,11 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void fillInResult(EditLotTimeTypeResult result, LotTimeType lotTimeType) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
-
         result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
     }
 
     @Override
     public void doLock(LotTimeTypeEdit edit, LotTimeType lotTimeType) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, getPreferredLanguage());
         var lotTimeTypeDetail = lotTimeType.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void canUpdate(LotTimeType lotTimeType) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotTimeTypeName = edit.getLotTimeTypeName();
         var duplicateLotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
@@ -144,7 +142,6 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void doUpdate(LotTimeType lotTimeType) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var partyPK = getPartyPK();
         var lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueForUpdate(lotTimeType);
         var lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, getPreferredLanguage());

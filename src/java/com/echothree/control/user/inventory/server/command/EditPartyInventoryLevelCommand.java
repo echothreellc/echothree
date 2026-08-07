@@ -52,7 +52,7 @@ public class EditPartyInventoryLevelCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -68,7 +68,7 @@ public class EditPartyInventoryLevelCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MinimumInventoryUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("MinimumInventory", FieldType.UNSIGNED_LONG, false, null, null),
@@ -90,7 +90,6 @@ public class EditPartyInventoryLevelCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
-
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
