@@ -47,7 +47,7 @@ public class EditInventoryLocationGroupCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -60,7 +60,7 @@ public class EditInventoryLocationGroupCommand
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -74,7 +74,6 @@ public class EditInventoryLocationGroupCommand
 
     @Inject
     WarehouseControl warehouseControl;
-
     /** Creates a new instance of EditInventoryLocationGroupCommand */
     public EditInventoryLocationGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -178,5 +177,5 @@ public class EditInventoryLocationGroupCommand
             inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, partyPK);
         }
     }
-    
+
 }

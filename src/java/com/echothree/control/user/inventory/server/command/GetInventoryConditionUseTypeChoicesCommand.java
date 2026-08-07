@@ -24,36 +24,38 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetInventoryConditionUseTypeChoicesCommand
         extends BaseSimpleCommand<GetInventoryConditionUseTypeChoicesForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("DefaultInventoryConditionUseTypeChoice", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
     /** Creates a new instance of GetInventoryConditionUseTypeChoicesCommand */
     public GetInventoryConditionUseTypeChoicesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetInventoryConditionUseTypeChoicesResult();
         var defaultInventoryConditionUseTypeChoice = form.getDefaultInventoryConditionUseTypeChoice();
-        
+
         result.setInventoryConditionUseTypeChoices(inventoryControl.getInventoryConditionUseTypeChoices(defaultInventoryConditionUseTypeChoice, getPreferredLanguage()));
-        
+
         return result;
     }
-    
+
 }

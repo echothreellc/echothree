@@ -37,22 +37,21 @@ import javax.inject.Inject;
 @Dependent
 public class GetInventoryConditionUsesCommand
         extends BasePaginatedMultipleEntitiesCommand<InventoryConditionUse, GetInventoryConditionUsesForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryConditionUseTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     InventoryControl inventoryControl;
 
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
-
     /** Creates a new instance of GetInventoryConditionUsesCommand */
     public GetInventoryConditionUsesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -134,5 +133,5 @@ public class GetInventoryConditionUsesCommand
 
         return result;
     }
-    
+
 }

@@ -30,17 +30,17 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class DeleteLotAliasTypeCommand
         extends BaseSimpleCommand<DeleteLotAliasTypeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -48,20 +48,22 @@ public class DeleteLotAliasTypeCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.LotAliasType.name(), SecurityRoles.Delete.name())
                         ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
+    @Inject
+    LotAliasControl lotAliasControl;
+
     /** Creates a new instance of DeleteLotAliasTypeCommand */
     public DeleteLotAliasTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var lotAliasTypeName = form.getLotAliasTypeName();
         var lotAliasType = lotAliasControl.getLotAliasTypeByNameForUpdate(lotAliasTypeName);
 
@@ -73,5 +75,5 @@ public class DeleteLotAliasTypeCommand
 
         return null;
     }
-    
+
 }

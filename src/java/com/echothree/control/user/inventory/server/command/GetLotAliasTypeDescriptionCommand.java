@@ -32,17 +32,17 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetLotAliasTypeDescriptionCommand
         extends BaseSimpleCommand<GetLotAliasTypeDescriptionForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -50,27 +50,31 @@ public class GetLotAliasTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.LotAliasType.name(), SecurityRoles.Description.name())
                         ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of GetLotAliasTypeDescriptionCommand */
     public GetLotAliasTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var result = InventoryResultFactory.getGetLotAliasTypeDescriptionResult();
         var lotAliasTypeName = form.getLotAliasTypeName();
         var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -91,5 +95,5 @@ public class GetLotAliasTypeDescriptionCommand
 
         return result;
     }
-    
+
 }

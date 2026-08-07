@@ -60,17 +60,16 @@ public class GetInventoryLocationGroupsCommand
         );
     }
 
-    /** Creates a new instance of GetInventoryLocationGroupsCommand */
-    public GetInventoryLocationGroupsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-
     @Inject
     InventoryControl inventoryControl;
 
     @Inject
     WarehouseControl warehouseControl;
 
+    /** Creates a new instance of GetInventoryLocationGroupsCommand */
+    public GetInventoryLocationGroupsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
     Warehouse warehouse;
     Party warehouseParty;
 

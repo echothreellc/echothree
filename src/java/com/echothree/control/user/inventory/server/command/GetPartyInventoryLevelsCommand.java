@@ -52,7 +52,7 @@ public class GetPartyInventoryLevelsCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -83,6 +83,11 @@ public class GetPartyInventoryLevelsCommand
     WarehouseControl warehouseControl;
 
     @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of GetPartyInventoryLevelsCommand */
@@ -106,9 +111,9 @@ public class GetPartyInventoryLevelsCommand
 
         if(parameterCount == 1) {
             if(itemName != null) {
-                item = ItemLogic.getInstance().getItemByName(this, itemName);
+                item = itemLogic.getItemByName(this, itemName);
             } else if(inventoryConditionName != null) {
-                inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
+                inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
             } else {
                 party = partyInventoryLevelUtil.getParty(this, partyName, companyName, warehouseName);
             }

@@ -38,15 +38,16 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryTransactionTypeCommand
         extends BaseSimpleCommand<CreateInventoryTransactionTypeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -54,7 +55,7 @@ public class CreateInventoryTransactionTypeCommand
                     new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionType.name(), SecurityRoles.Create.name())
                     ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -65,22 +66,34 @@ public class CreateInventoryTransactionTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryTransactionTypeLogic inventoryTransactionTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     /** Creates a new instance of CreateInventoryTransactionTypeCommand */
     public CreateInventoryTransactionTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getCreateInventoryTransactionTypeResult();
         var inventoryTransactionSequenceTypeName = form.getInventoryTransactionSequenceTypeName();
-        var inventoryTransactionSequenceType = inventoryTransactionSequenceTypeName == null ? null : SequenceTypeLogic.getInstance().getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
+        var inventoryTransactionSequenceType = inventoryTransactionSequenceTypeName == null ? null : sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
         InventoryTransactionType inventoryTransactionType = null;
 
         if(!hasExecutionErrors()) {
             var inventoryTransactionWorkflowName = form.getInventoryTransactionWorkflowName();
-            var inventoryTransactionWorkflow = inventoryTransactionWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+            var inventoryTransactionWorkflow = inventoryTransactionWorkflowName == null ? null : workflowLogic.getWorkflowByName(
                     UnknownInventoryTransactionWorkflowNameException.class, ExecutionErrors.UnknownInventoryTransactionWorkflowName, this,
                     inventoryTransactionWorkflowName, EntityPermission.READ_ONLY);
 
@@ -88,7 +101,7 @@ public class CreateInventoryTransactionTypeCommand
                 var inventoryTransactionWorkflowEntranceName = form.getInventoryTransactionWorkflowEntranceName();
 
                 if(inventoryTransactionWorkflowEntranceName == null || inventoryTransactionWorkflow != null) {
-                    var inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                    var inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
                             UnknownInventoryTransactionWorkflowEntranceNameException.class, ExecutionErrors.UnknownInventoryTransactionWorkflowEntranceName, this,
                             inventoryTransactionWorkflow, inventoryTransactionWorkflowEntranceName);
 
@@ -99,7 +112,7 @@ public class CreateInventoryTransactionTypeCommand
                         var description = form.getDescription();
                         var partyPK = getPartyPK();
 
-                        inventoryTransactionType = InventoryTransactionTypeLogic.getInstance().createInventoryTransactionType(this, inventoryTransactionTypeName, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
+                        inventoryTransactionType = inventoryTransactionTypeLogic.createInventoryTransactionType(this, inventoryTransactionTypeName, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
                                 inventoryTransactionWorkflowEntrance, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
                     }
                 } else {
@@ -115,5 +128,5 @@ public class CreateInventoryTransactionTypeCommand
 
         return result;
     }
-    
+
 }

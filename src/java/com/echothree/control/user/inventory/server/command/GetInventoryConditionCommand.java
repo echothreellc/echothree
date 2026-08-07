@@ -27,17 +27,17 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetInventoryConditionCommand
         extends BaseSingleEntityCommand<InventoryCondition, GetInventoryConditionForm> {
-    
+
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
@@ -45,15 +45,21 @@ public class GetInventoryConditionCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
     /** Creates a new instance of GetInventoryConditionCommand */
     public GetInventoryConditionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
     protected InventoryCondition getEntity() {
-        var entity = InventoryConditionLogic.getInstance().getInventoryConditionByUniversalSpec(this, form, true);
+        var entity = inventoryConditionLogic.getInventoryConditionByUniversalSpec(this, form, true);
 
         if(entity != null) {
             sendEvent(entity.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -61,10 +67,9 @@ public class GetInventoryConditionCommand
 
         return entity;
     }
-    
+
     @Override
     protected BaseResult getResult(InventoryCondition entity) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetInventoryConditionResult();
 
         if(entity != null) {
@@ -73,5 +78,5 @@ public class GetInventoryConditionCommand
 
         return result;
     }
-    
+
 }

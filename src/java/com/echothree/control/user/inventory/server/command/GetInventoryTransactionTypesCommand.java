@@ -30,18 +30,18 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetInventoryTransactionTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<InventoryTransactionType, GetInventoryTransactionTypesForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -52,7 +52,10 @@ public class GetInventoryTransactionTypesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+
     /** Creates a new instance of GetInventoryTransactionTypesCommand */
     public GetInventoryTransactionTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetInventoryTransactionTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
         return inventoryTransactionTypeControl.countInventoryTransactionTypes();
     }
 
     @Override
     protected Collection<InventoryTransactionType> getEntities() {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
         return inventoryTransactionTypeControl.getInventoryTransactionTypes();
     }
 
@@ -82,8 +81,6 @@ public class GetInventoryTransactionTypesCommand
         var result = InventoryResultFactory.getGetInventoryTransactionTypesResult();
 
         if(entities != null) {
-            var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
             if(session.hasLimit(InventoryTransactionTypeFactory.class)) {
                 result.setInventoryTransactionTypeCount(getTotalEntities());
             }
@@ -93,5 +90,5 @@ public class GetInventoryTransactionTypesCommand
 
         return result;
     }
-    
+
 }

@@ -41,7 +41,7 @@ public class GetLotTimeTypesCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,7 +55,6 @@ public class GetLotTimeTypesCommand
 
     @Inject
     LotTimeControl lotTimeControl;
-
     /** Creates a new instance of GetLotTimeTypesCommand */
     public GetLotTimeTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -90,5 +89,5 @@ public class GetLotTimeTypesCommand
 
         return result;
     }
-    
+
 }

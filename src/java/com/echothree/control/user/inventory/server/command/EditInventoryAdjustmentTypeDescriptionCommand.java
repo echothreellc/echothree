@@ -38,18 +38,18 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditInventoryAdjustmentTypeDescriptionCommand
         extends BaseAbstractEditCommand<InventoryAdjustmentTypeDescriptionSpec, InventoryAdjustmentTypeDescriptionEdit, EditInventoryAdjustmentTypeDescriptionResult, InventoryAdjustmentTypeDescription, InventoryAdjustmentType> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -57,22 +57,28 @@ public class EditInventoryAdjustmentTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryAdjustmentType.name(), SecurityRoles.Description.name())
                         ))
                 ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditInventoryAdjustmentTypeDescriptionCommand */
     public EditInventoryAdjustmentTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditInventoryAdjustmentTypeDescriptionResult getResult() {
         return InventoryResultFactory.getEditInventoryAdjustmentTypeDescriptionResult();
@@ -85,13 +91,11 @@ public class EditInventoryAdjustmentTypeDescriptionCommand
 
     @Override
     public InventoryAdjustmentTypeDescription getEntity(EditInventoryAdjustmentTypeDescriptionResult result) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription = null;
         var inventoryAdjustmentTypeName = spec.getInventoryAdjustmentTypeName();
         var inventoryAdjustmentType = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeByName(inventoryAdjustmentTypeName);
 
         if(inventoryAdjustmentType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditInventoryAdjustmentTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditInventoryAdjustmentTypeDescriptionResult result, InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
         result.setInventoryAdjustmentTypeDescription(inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDescriptionTransfer(getUserVisit(), inventoryAdjustmentTypeDescription));
     }
 
@@ -134,11 +136,10 @@ public class EditInventoryAdjustmentTypeDescriptionCommand
 
     @Override
     public void doUpdate(InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentTypeDescriptionValue = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDescriptionValue(inventoryAdjustmentTypeDescription);
         inventoryAdjustmentTypeDescriptionValue.setDescription(edit.getDescription());
 
         inventoryAdjustmentTypeControl.updateInventoryAdjustmentTypeDescriptionFromValue(inventoryAdjustmentTypeDescriptionValue, getPartyPK());
     }
-    
+
 }

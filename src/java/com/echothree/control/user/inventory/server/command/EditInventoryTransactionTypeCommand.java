@@ -43,18 +43,18 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditInventoryTransactionTypeCommand
         extends BaseAbstractEditCommand<InventoryTransactionTypeUniversalSpec, InventoryTransactionTypeEdit, EditInventoryTransactionTypeResult, InventoryTransactionType, InventoryTransactionType> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -62,13 +62,13 @@ public class EditInventoryTransactionTypeCommand
                     new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionType.name(), SecurityRoles.Edit.name())
                     ))
                 ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -79,7 +79,22 @@ public class EditInventoryTransactionTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+
+    @Inject
+    InventoryTransactionTypeLogic inventoryTransactionTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     /** Creates a new instance of EditInventoryTransactionTypeCommand */
     public EditInventoryTransactionTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -97,9 +112,8 @@ public class EditInventoryTransactionTypeCommand
 
     @Override
     public InventoryTransactionType getEntity(EditInventoryTransactionTypeResult result) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionTypeName = spec.getInventoryTransactionTypeName();
-        var inventoryTransactionType = InventoryTransactionTypeLogic.getInstance().getInventoryTransactionTypeByUniversalSpec(this, spec, false,
+        var inventoryTransactionType = inventoryTransactionTypeLogic.getInventoryTransactionTypeByUniversalSpec(this, spec, false,
                 editModeToEntityPermission(editMode));
 
         if(inventoryTransactionType != null) {
@@ -118,8 +132,6 @@ public class EditInventoryTransactionTypeCommand
 
     @Override
     public void fillInResult(EditInventoryTransactionTypeResult result, InventoryTransactionType inventoryTransactionType) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
         result.setInventoryTransactionType(inventoryTransactionTypeControl.getInventoryTransactionTypeTransfer(getUserVisit(), inventoryTransactionType));
     }
 
@@ -129,7 +141,6 @@ public class EditInventoryTransactionTypeCommand
 
     @Override
     public void doLock(InventoryTransactionTypeEdit edit, InventoryTransactionType inventoryTransactionType) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionTypeDescription = inventoryTransactionTypeControl.getInventoryTransactionTypeDescription(inventoryTransactionType, getPreferredLanguage());
         var inventoryTransactionTypeDetail = inventoryTransactionType.getLastDetail();
 
@@ -151,7 +162,6 @@ public class EditInventoryTransactionTypeCommand
 
     @Override
     public void canUpdate(InventoryTransactionType inventoryTransactionType) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionTypeName = edit.getInventoryTransactionTypeName();
         var duplicateInventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
 
@@ -159,12 +169,12 @@ public class EditInventoryTransactionTypeCommand
             var inventoryTransactionSequenceTypeName = edit.getInventoryTransactionSequenceTypeName();
 
             inventoryTransactionSequenceType = inventoryTransactionSequenceTypeName == null ? null :
-                    SequenceTypeLogic.getInstance().getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
+                    sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
 
             if(!hasExecutionErrors()) {
                 var inventoryTransactionWorkflowName = edit.getInventoryTransactionWorkflowName();
 
-                inventoryTransactionWorkflow = inventoryTransactionWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+                inventoryTransactionWorkflow = inventoryTransactionWorkflowName == null ? null : workflowLogic.getWorkflowByName(
                         UnknownInventoryTransactionWorkflowNameException.class, ExecutionErrors.UnknownInventoryTransactionWorkflowName, this,
                         inventoryTransactionWorkflowName, EntityPermission.READ_ONLY);
 
@@ -172,7 +182,7 @@ public class EditInventoryTransactionTypeCommand
                     var inventoryTransactionWorkflowEntranceName = edit.getInventoryTransactionWorkflowEntranceName();
 
                     if(inventoryTransactionWorkflowEntranceName == null || inventoryTransactionWorkflow != null) {
-                            inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                            inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
                                     UnknownInventoryTransactionWorkflowEntranceNameException.class, ExecutionErrors.UnknownInventoryTransactionWorkflowEntranceName, this,
                                     inventoryTransactionWorkflow, inventoryTransactionWorkflowEntranceName);
                     } else {
@@ -185,7 +195,6 @@ public class EditInventoryTransactionTypeCommand
 
     @Override
     public void doUpdate(InventoryTransactionType inventoryTransactionType) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var partyPK = getPartyPK();
         var inventoryTransactionTypeDetailValue = inventoryTransactionTypeControl.getInventoryTransactionTypeDetailValueForUpdate(inventoryTransactionType);
         var inventoryTransactionTypeDescription = inventoryTransactionTypeControl.getInventoryTransactionTypeDescriptionForUpdate(inventoryTransactionType, getPreferredLanguage());
@@ -198,7 +207,7 @@ public class EditInventoryTransactionTypeCommand
         inventoryTransactionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         inventoryTransactionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        InventoryTransactionTypeLogic.getInstance().updateInventoryTransactionTypeFromValue(inventoryTransactionTypeDetailValue, partyPK);
+        inventoryTransactionTypeLogic.updateInventoryTransactionTypeFromValue(inventoryTransactionTypeDetailValue, partyPK);
 
         if(inventoryTransactionTypeDescription == null && description != null) {
             inventoryTransactionTypeControl.createInventoryTransactionTypeDescription(inventoryTransactionType, getPreferredLanguage(), description, partyPK);

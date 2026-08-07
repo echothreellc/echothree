@@ -38,15 +38,16 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryAdjustmentTypeCommand
         extends BaseSimpleCommand<CreateInventoryAdjustmentTypeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -54,7 +55,7 @@ public class CreateInventoryAdjustmentTypeCommand
                     new SecurityRoleDefinition(SecurityRoleGroups.InventoryAdjustmentType.name(), SecurityRoles.Create.name())
                     ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -62,12 +63,24 @@ public class CreateInventoryAdjustmentTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeLogic inventoryAdjustmentTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     /** Creates a new instance of CreateInventoryAdjustmentTypeCommand */
     public CreateInventoryAdjustmentTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getCreateInventoryAdjustmentTypeResult();
@@ -77,7 +90,7 @@ public class CreateInventoryAdjustmentTypeCommand
         var description = form.getDescription();
         var partyPK = getPartyPK();
 
-        var inventoryAdjustmentType = InventoryAdjustmentTypeLogic.getInstance().createInventoryAdjustmentType(this,
+        var inventoryAdjustmentType = inventoryAdjustmentTypeLogic.createInventoryAdjustmentType(this,
                 inventoryAdjustmentTypeName, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
 
         if(inventoryAdjustmentType != null) {
@@ -87,5 +100,5 @@ public class CreateInventoryAdjustmentTypeCommand
 
         return result;
     }
-    
+
 }
