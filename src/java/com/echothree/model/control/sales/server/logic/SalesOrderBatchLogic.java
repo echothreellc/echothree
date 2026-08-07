@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sales.server.logic;
 
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -102,7 +102,7 @@ public class SalesOrderBatchLogic
     
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,
             final Long amount, final BasePK createdBy) {
-        var batch = batchLogic.createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
+        var batch = batchLogic.createBatch(eea, BatchTypes.SALES_ORDER.name(), createdBy);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             orderBatchControl.createOrderBatch(batch, currency, count, amount, createdBy);
@@ -158,11 +158,11 @@ public class SalesOrderBatchLogic
     }
 
     public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchName) {
-        return batchLogic.getBatchByName(eea, BatchConstants.BatchType_SALES_ORDER, batchName);
+        return batchLogic.getBatchByName(eea, BatchTypes.SALES_ORDER.name(), batchName);
     }
 
     public Batch getBatchByNameForUpdate(final ExecutionErrorAccumulator eea, final String batchName) {
-        return batchLogic.getBatchByNameForUpdate(eea, BatchConstants.BatchType_SALES_ORDER, batchName);
+        return batchLogic.getBatchByNameForUpdate(eea, BatchTypes.SALES_ORDER.name(), batchName);
     }
 
     public SalesOrderBatchStatusChoicesBean getSalesOrderBatchStatusChoices(String defaultSalesOrderBatchStatusChoice, Language language, boolean allowNullChoice,

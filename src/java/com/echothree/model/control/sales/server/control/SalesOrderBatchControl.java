@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sales.server.control;
 
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
@@ -33,6 +33,7 @@ import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class SalesOrderBatchControl
@@ -70,7 +70,7 @@ public class SalesOrderBatchControl
     }
 
     public long countSalesOrderBatches() {
-        return batchControl.countBatchesByBatchType(batchControl.getBatchTypeByName(BatchConstants.BatchType_SALES_ORDER));
+        return batchControl.countBatchesByBatchType(batchControl.getBatchTypeByName(BatchTypes.SALES_ORDER.name()));
     }
 
     private static final Map<EntityPermission, String> getSalesOrderBatchQueries;
@@ -108,7 +108,7 @@ public class SalesOrderBatchControl
     }
 
     public List<Batch> getSalesOrderBatches() {
-        return batchControl.getBatchesUsingNames(BatchConstants.BatchType_SALES_ORDER);
+        return batchControl.getBatchesUsingNames(BatchTypes.SALES_ORDER.name());
     }
 
     public SalesOrderBatchValue getSalesOrderBatchValue(SalesOrderBatch salesOrderBatch) {

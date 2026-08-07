@@ -17,7 +17,7 @@
 package com.echothree.control.user.batch.server.command.util;
 
 import com.echothree.control.user.batch.common.spec.BatchTypeSpec;
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class BatchAliasUtil {
 
     static {
         securityRoleGroupNameByBatchTypeName = new HashMap<>();
-        securityRoleGroupNameByBatchTypeName.put(BatchConstants.BatchType_SALES_ORDER, SecurityRoleGroups.SalesOrderBatchAlias.name());
+        securityRoleGroupNameByBatchTypeName.put(BatchTypes.SALES_ORDER.name(), SecurityRoleGroups.SalesOrderBatchAlias.name());
     }
 
     public String getSecurityRoleGroupNameByBatchTypeName(String batchTypeName) {

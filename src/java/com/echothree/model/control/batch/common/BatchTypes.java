@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.batch.common;
 
-public interface BatchConstants {
+public enum BatchTypes {
 
-    String BatchType_ORDER = "ORDER";
-    String BatchType_SALES_ORDER = "SALES_ORDER";
+    ORDER,
+    SALES_ORDER
     
 }
