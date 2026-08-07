@@ -30,13 +30,19 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GlAccountTypeLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GlAccountTypeLogic() {
         super();
@@ -49,7 +55,6 @@ public class GlAccountTypeLogic
     public GlAccountType createGlAccountType(final ExecutionErrorAccumulator eea, final String glAccountTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
 
         if(glAccountType == null) {
@@ -68,7 +73,6 @@ public class GlAccountTypeLogic
     }
 
     public GlAccountType getGlAccountTypeByName(final ExecutionErrorAccumulator eea, final String glAccountTypeName) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
 
         if(glAccountType == null) {
@@ -81,9 +85,8 @@ public class GlAccountTypeLogic
     public GlAccountType getGlAccountTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final GlAccountTypeUniversalSpec universalSpec, boolean allowDefault) {
         GlAccountType glAccountType = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountTypeName = universalSpec.getGlAccountTypeName();
-        var parameterCount = (glAccountTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (glAccountTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -99,7 +102,7 @@ public class GlAccountTypeLogic
             }
             case 1 -> {
                 if(glAccountTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GlAccountType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

@@ -59,6 +59,12 @@ public class ChainInstanceLogic
     @Inject
     protected ChainTypeLogic chainTypeLogic;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     protected ChainInstanceLogic() {
         super();
     }
@@ -72,11 +78,11 @@ public class ChainInstanceLogic
             var sequence = chain.getLastDetail().getChainInstanceSequence();
 
             if(sequence == null) {
-                sequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.name());
+                sequence = sequenceGeneratorLogic.getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.name());
             }
 
             if(!hasExecutionErrors(eea)) {
-                chainInstance = chainControl.createChainInstance(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), defaultChainActionSet, createdBy);
+                chainInstance = chainControl.createChainInstance(sequenceGeneratorLogic.getNextSequenceValue(sequence), defaultChainActionSet, createdBy);
             }
         }
 
@@ -129,12 +135,12 @@ public class ChainInstanceLogic
             final ChainInstanceUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ChainInstance chainInstance = null;
         var chainInstanceName = universalSpec.getChainInstanceName();
-        var parameterCount = (chainInstanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (chainInstanceName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(chainInstanceName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainInstance.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

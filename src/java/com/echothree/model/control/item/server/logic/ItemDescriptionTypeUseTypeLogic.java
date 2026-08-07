@@ -44,6 +44,9 @@ public class ItemDescriptionTypeUseTypeLogic
     @Inject
     ItemControl itemControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ItemDescriptionTypeUseTypeLogic() {
         super();
     }
@@ -93,7 +96,7 @@ public class ItemDescriptionTypeUseTypeLogic
             final ItemDescriptionTypeUseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemDescriptionTypeUseType itemDescriptionTypeUseType = null;
         var itemDescriptionTypeUseTypeName = universalSpec.getItemDescriptionTypeUseTypeName();
-        var parameterCount = (itemDescriptionTypeUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemDescriptionTypeUseTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class ItemDescriptionTypeUseTypeLogic
             }
             case 1 -> {
                 if(itemDescriptionTypeUseTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescriptionTypeUseType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

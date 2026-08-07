@@ -35,13 +35,13 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class EntityTypeLogic
         extends BaseLogic {
-    
+
     @Inject
     EntityTypeControl entityTypeControl;
-    
+
     @Inject
     ComponentVendorLogic componentVendorLogic;
-    
+
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 

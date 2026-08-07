@@ -49,14 +49,6 @@ import javax.inject.Inject;
 public class BatchLogic
         extends BaseLogic {
 
-    protected BatchLogic() {
-        super();
-    }
-
-    public static BatchLogic getInstance() {
-        return CDI.current().select(BatchLogic.class).get();
-    }
-
     @Inject
     BatchControl batchControl;
 
@@ -71,7 +63,15 @@ public class BatchLogic
 
     @Inject
     SequenceGeneratorLogic sequenceGeneratorLogic;
-    
+
+    protected BatchLogic() {
+        super();
+    }
+
+    public static BatchLogic getInstance() {
+        return CDI.current().select(BatchLogic.class).get();
+    }
+
     public SequenceType getBatchSequenceType(final ExecutionErrorAccumulator eea, final BatchType batchType) {
         SequenceType sequenceType;
         var parentBatchType = batchType;

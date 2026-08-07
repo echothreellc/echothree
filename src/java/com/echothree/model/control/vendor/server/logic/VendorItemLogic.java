@@ -28,14 +28,23 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class VendorItemLogic
         extends BaseLogic {
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    VendorLogic vendorLogic;
 
     protected VendorItemLogic() {
         super();
@@ -47,18 +56,17 @@ public class VendorItemLogic
 
     public VendorItem getVendorItemByUniversalSpec(final ExecutionErrorAccumulator eea, final VendorItemUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorName = universalSpec.getVendorName();
         var partyName = universalSpec.getPartyName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(vendorName, partyName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         VendorItem vendorItem = null;
 
         if(nameParameterCount == 1 && possibleEntitySpecs == 0) {
             var vendorItemName = universalSpec.getVendorItemName();
 
             if(vendorItemName != null) {
-                var vendor = VendorLogic.getInstance().getVendorByName(eea, vendorName, partyName, null);
+                var vendor = vendorLogic.getVendorByName(eea, vendorName, partyName, null);
                 var vendorParty = vendor.getParty();
 
                 vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName, entityPermission);
@@ -72,7 +80,7 @@ public class VendorItemLogic
                 handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStep.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {

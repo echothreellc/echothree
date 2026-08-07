@@ -44,7 +44,7 @@ public class PartyLogic
 
     @Inject
     PartyControl partyControl;
-    
+
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 

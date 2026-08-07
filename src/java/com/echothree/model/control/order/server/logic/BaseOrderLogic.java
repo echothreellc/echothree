@@ -68,9 +68,40 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public class BaseOrderLogic
         extends BaseLogic {
+
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderLineControl orderLineControl;
+
+    @Inject
+    OrderPaymentPreferenceControl orderPaymentPreferenceControl;
+
+    @Inject
+    OrderRoleControl orderRoleControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    @Inject
+    ShippingMethodLogic shippingMethodLogic;
 
     protected BaseOrderLogic() {
         super();
@@ -81,7 +112,6 @@ public class BaseOrderLogic
     }
     
     public OrderType getOrderTypeByName(final ExecutionErrorAccumulator eea, final String orderTypeName) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
@@ -92,7 +122,6 @@ public class BaseOrderLogic
     }
 
     public OrderRoleType getOrderRoleTypeByName(final ExecutionErrorAccumulator eea, final String orderRoleTypeName) {
-        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
         var orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
 
         if(orderRoleType == null) {
@@ -107,8 +136,6 @@ public class BaseOrderLogic
         var sequenceType = orderTypeDetail.getOrderSequenceType();
 
         if(sequenceType == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-
             sequenceType = sequenceControl.getDefaultSequenceType();
         }
 
@@ -124,8 +151,6 @@ public class BaseOrderLogic
         Sequence sequence = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
 
@@ -144,7 +169,7 @@ public class BaseOrderLogic
         }
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            orderName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            orderName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         }
 
         return orderName;
@@ -158,8 +183,6 @@ public class BaseOrderLogic
         Order order = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var orderControl = Session.getModelController(OrderControl.class);
-            
             order = orderControl.createOrder(orderType, orderName, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
                     allowCombiningShipments, term, freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, createdBy);
         }
@@ -168,7 +191,6 @@ public class BaseOrderLogic
     }
 
     public OrderAliasType getOrderAliasTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderAliasTypeName) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
         if(orderAliasType == null) {
@@ -181,7 +203,6 @@ public class BaseOrderLogic
 
     private Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,
             final EntityPermission entityPermission) {
-        var orderControl = Session.getModelController(OrderControl.class);
         var orderType = getOrderTypeByName(eea, orderTypeName);
         Order order = null;
 
@@ -205,7 +226,6 @@ public class BaseOrderLogic
     }
     
     public Set<Item> getItemsFromOrder(final Order order) {
-        var orderLineControl = Session.getModelController(OrderLineControl.class);
         var orderLines = orderLineControl.getOrderLinesByOrder(order);
         var items = new HashSet<Item>(orderLines.size());
 
@@ -251,11 +271,9 @@ public class BaseOrderLogic
             }
             
             if(eea == null || !eea.hasExecutionErrors()) {
-                PaymentMethodLogic.getInstance().checkAcceptanceOfItems(session, eea, paymentMethod, getItemsFromOrder(order), createdBy);
+                paymentMethodLogic.checkAcceptanceOfItems(session, eea, paymentMethod, getItemsFromOrder(order), createdBy);
                 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
-                    var orderControl = Session.getModelController(OrderControl.class);
                     var orderStatus = orderControl.getOrderStatusForUpdate(order);
 
                     if(orderPaymentPreferenceSequence == null) {
@@ -295,7 +313,6 @@ public class BaseOrderLogic
 
     private OrderPaymentPreference getOrderPaymentPreferenceByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,
             final String orderPaymentPreferenceSequence, final EntityPermission entityPermission) {
-        var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
         var order = getOrderByName(eea, orderTypeName, orderName);
         OrderPaymentPreference orderPaymentPreference = null;
         
@@ -323,11 +340,10 @@ public class BaseOrderLogic
     
     public void checkItemAgainstOrderPaymentPreferences(final Session session, final ExecutionErrorAccumulator eea, final Order order, final Item item,
             final BasePK evaluatedBy) {
-        var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
         var orderPaymentPreferences = orderPaymentPreferenceControl.getOrderPaymentPreferencesByOrder(order);
         
         orderPaymentPreferences.forEach((orderPaymentPreference) -> {
-            PaymentMethodLogic.getInstance().checkAcceptanceOfItem(session, eea, orderPaymentPreference.getLastDetail().getPaymentMethod(), item, evaluatedBy);
+            paymentMethodLogic.checkAcceptanceOfItem(session, eea, orderPaymentPreference.getLastDetail().getPaymentMethod(), item, evaluatedBy);
         });
     }
     
@@ -336,7 +352,7 @@ public class BaseOrderLogic
         var shippingMethod = orderShipmentGroup.getLastDetail().getShippingMethod();
         
         if(shippingMethod != null) {
-            ShippingMethodLogic.getInstance().checkAcceptanceOfItem(session, eea, shippingMethod, item, evaluatedBy);
+            shippingMethodLogic.checkAcceptanceOfItem(session, eea, shippingMethod, item, evaluatedBy);
         }
     }
 

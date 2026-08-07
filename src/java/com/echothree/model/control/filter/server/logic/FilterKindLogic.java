@@ -41,6 +41,12 @@ import javax.inject.Inject;
 public class FilterKindLogic
         extends BaseLogic {
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected FilterKindLogic() {
         super();
     }
@@ -48,9 +54,6 @@ public class FilterKindLogic
     public static FilterKindLogic getInstance() {
         return CDI.current().select(FilterKindLogic.class).get();
     }
-
-    @Inject
-    FilterControl filterControl;
 
     public FilterKind createFilterKind(final ExecutionErrorAccumulator eea, final String filterKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
@@ -93,7 +96,7 @@ public class FilterKindLogic
             final FilterKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         FilterKind filterKind = null;
         var filterKindName = universalSpec.getFilterKindName();
-        var parameterCount = (filterKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (filterKindName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class FilterKindLogic
             }
             case 1 -> {
                 if(filterKindName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterKind.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

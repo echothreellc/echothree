@@ -28,6 +28,9 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class LotTimeLogic {
 
+    @Inject
+    LotTimeControl lotTimeControl;
+
     protected LotTimeLogic() {
         super();
     }
@@ -35,9 +38,6 @@ public class LotTimeLogic {
     public static LotTimeLogic getInstance() {
         return CDI.current().select(LotTimeLogic.class).get();
     }
-
-    @Inject
-    LotTimeControl lotTimeControl;
 
     public void createOrUpdateLotTimeIfNotNull(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
             final BasePK partyPK) {

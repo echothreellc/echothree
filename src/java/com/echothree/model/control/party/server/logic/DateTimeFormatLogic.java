@@ -22,13 +22,16 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class DateTimeFormatLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
 
     protected DateTimeFormatLogic() {
         super();
@@ -39,7 +42,6 @@ public class DateTimeFormatLogic
     }
     
     public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
 
         if(dateTimeFormat == null) {

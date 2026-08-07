@@ -46,6 +46,9 @@ public class TaxLogic
     @Inject
     TaxControl taxControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected TaxLogic() {
         super();
     }
@@ -98,7 +101,7 @@ public class TaxLogic
             final boolean allowDefault, final EntityPermission entityPermission) {
         var taxName = universalSpec.getTaxName();
         Tax tax = null;
-        var parameterCount = (taxName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (taxName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -114,7 +117,7 @@ public class TaxLogic
             }
             case 1 -> {
                 if(taxName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Tax.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

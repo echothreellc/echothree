@@ -24,13 +24,19 @@ import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class RatingTypeLogic
         extends BaseLogic {
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
 
     protected RatingTypeLogic() {
         super();
@@ -41,7 +47,6 @@ public class RatingTypeLogic
     }
     
     public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String ratingTypeName) {
-        var ratingControl = Session.getModelController(RatingControl.class);
         var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
 
         if(ratingType == null) {
@@ -55,7 +60,7 @@ public class RatingTypeLogic
     }
 
     public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName, final String ratingTypeName) {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         RatingType ratingType = null;
         
         if(!hasExecutionErrors(eea)) {

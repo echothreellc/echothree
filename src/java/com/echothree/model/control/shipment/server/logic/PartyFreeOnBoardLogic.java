@@ -23,13 +23,16 @@ import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyFreeOnBoardLogic
         extends BaseLogic {
+
+    @Inject
+    PartyFreeOnBoardControl partyFreeOnBoardControl;
 
     protected PartyFreeOnBoardLogic() {
         super();
@@ -40,7 +43,6 @@ public class PartyFreeOnBoardLogic
     }
     
     public PartyFreeOnBoard getPartyFreeOnBoard(final ExecutionErrorAccumulator eea, final Party party) {
-        var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
         var partyFreeOnBoard = partyFreeOnBoardControl.getPartyFreeOnBoard(party);
 
         if(partyFreeOnBoard == null) {

@@ -41,6 +41,12 @@ import javax.inject.Inject;
 public class AllocationPriorityLogic
         extends BaseLogic {
 
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected AllocationPriorityLogic() {
         super();
     }
@@ -48,12 +54,6 @@ public class AllocationPriorityLogic
     public static AllocationPriorityLogic getInstance() {
         return CDI.current().select(AllocationPriorityLogic.class).get();
     }
-
-    @Inject
-    InventoryControl inventoryControl;
-
-    @Inject
-    EntityInstanceLogic entityInstanceLogic;
 
     public AllocationPriority createAllocationPriority(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,

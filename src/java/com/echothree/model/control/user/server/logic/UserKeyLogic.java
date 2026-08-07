@@ -22,13 +22,16 @@ import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.factory.UserKeyFactory;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UserKeyLogic {
+
+    @Inject
+    UserControl userControl;
 
     protected UserKeyLogic() {
         super();
@@ -39,7 +42,6 @@ public class UserKeyLogic {
     }
     
     public void removeInactiveUserKeys(final Long remainingTime, final Long inactiveTime) {
-        var userControl = Session.getModelController(UserControl.class);
         var startTime = System.currentTimeMillis();
         long entityCount = 0;
         
@@ -58,7 +60,6 @@ public class UserKeyLogic {
     /** Sets the Party and PartyRelationship to null.
      */
     public void clearUserKey(UserKey userKey) {
-        var userControl = Session.getModelController(UserControl.class);
         var userKeyDetailValue = userControl.getUserKeyDetailValueForUpdate(userKey);
 
         userKeyDetailValue.setPartyPK(null);
@@ -78,16 +79,12 @@ public class UserKeyLogic {
     /** Sets the Party and PartyRelationship to null when a UserKey contains the specified Party.
      */
     public void clearUserKeysByParty(Party party) {
-        var userControl = Session.getModelController(UserControl.class);
-
         clearUserKeys(userControl.getUserKeysByPartyForUpdate(party));
     }
 
     /** Sets the Party and PartyRelationship to null when a UserKey contains the specified PartyRelationship.
      */
     public void clearUserKeysByPartyRelationship(PartyRelationship partyRelationship) {
-        var userControl = Session.getModelController(UserControl.class);
-
         clearUserKeys(userControl.getUserKeysByPartyRelationshipForUpdate(partyRelationship));
     }
     

@@ -20,11 +20,15 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class BooklandEanChecksumLogic
         extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
+
+    @Inject
+    Ean13ChecksumLogic ean13ChecksumLogic;
 
     protected BooklandEanChecksumLogic() {
         super();
@@ -39,7 +43,7 @@ public class BooklandEanChecksumLogic
         if(alias.length() == 13) {
             if(alias.matches("\\d{13}")) {
                 switch(Integer.parseInt(alias.substring(0, 3))) {
-                    case 978, 979 -> Ean13ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                    case 978, 979 -> ean13ChecksumLogic.checkChecksum(eea, alias);
                     default -> eea.addExecutionError(ExecutionErrors.IncorrectBooklandEanPrefix.name(), alias);
                 }
             } else {

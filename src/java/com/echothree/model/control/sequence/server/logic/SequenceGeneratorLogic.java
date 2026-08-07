@@ -37,7 +37,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.cdi.CommandScopeExtension;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EmptyStackException;
@@ -47,10 +46,17 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SequenceGeneratorLogic
         extends BaseLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
 
     protected SequenceGeneratorLogic() {
         super();
@@ -164,7 +170,6 @@ public class SequenceGeneratorLogic
                 result = sequenceDeque.removeFirst();
             } catch (NoSuchElementException nsee1) {
                 try(var ignored = CommandScopeExtension.getCommandScopeContext().push()) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
 
                     if(sequenceValue != null) {
@@ -297,7 +302,6 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
 
         if(sequence == null) {
@@ -308,7 +312,7 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        var sequenceType = sequenceTypeLogic.getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
 
         if(!hasExecutionErrors(eea)) {
@@ -362,7 +366,6 @@ public class SequenceGeneratorLogic
     }
 
     public SequenceType identifySequenceType(final String value) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
 

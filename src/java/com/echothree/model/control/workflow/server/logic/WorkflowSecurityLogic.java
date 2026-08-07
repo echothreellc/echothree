@@ -25,12 +25,18 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowSecurityLogic {
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     protected WorkflowSecurityLogic() {
         super();
@@ -41,7 +47,6 @@ public class WorkflowSecurityLogic {
     }
     
     public boolean checkWorkflowEntranceAvailable(final WorkflowEntrance workflowEntrance, final PartyPK partyPK) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var checkPassed = false;
 
         if(workflowControl.countWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance) != 0) {
@@ -50,7 +55,6 @@ public class WorkflowSecurityLogic {
             var workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
 
             if(workflowEntrancePartyType != null) {
-                var securityControl = Session.getModelController(SecurityControl.class);
                 var workflowEntranceSecurityRoles = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
 
                 if(workflowEntranceSecurityRoles.isEmpty()) {
@@ -86,7 +90,6 @@ public class WorkflowSecurityLogic {
     }
 
     public boolean checkWorkflowDestinationAvailable(final WorkflowDestination workflowDestination, final PartyPK partyPK) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var checkPassed = false;
 
         if(workflowControl.countWorkflowDestinationPartyTypes(workflowDestination) != 0) {
@@ -95,7 +98,6 @@ public class WorkflowSecurityLogic {
             var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
 
             if(workflowDestinationPartyType != null) {
-                var securityControl = Session.getModelController(SecurityControl.class);
                 var workflowDestinationSecurityRoles = workflowControl.getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);
 
                 if(workflowDestinationSecurityRoles.isEmpty()) {

@@ -55,6 +55,15 @@ public class PartyTrainingClassLogic
     @Inject
     WorkflowControl workflowControl;
 
+    @Inject
+    PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
+
+    @Inject
+    WorkEffortLogic workEffortLogic;
+
+    @Inject
+    WorkRequirementLogic workRequirementLogic;
+
     protected PartyTrainingClassLogic() {
         super();
     }
@@ -179,7 +188,7 @@ public class PartyTrainingClassLogic
                     Long estimatedTimeAllowed = estimatedReadingTime + estimatedTestingTime;
                     Long maximumTimeAllowed = readingTimeAllowed + testingTimeAllowed;
 
-                    preparedPartyTrainingClass.setPreparedWorkEffort(WorkEffortLogic.getInstance().prepareForWorkEffort(eea, workEffortScope,
+                    preparedPartyTrainingClass.setPreparedWorkEffort(workEffortLogic.prepareForWorkEffort(eea, workEffortScope,
                             requiredCompletionTime, estimatedTimeAllowed, maximumTimeAllowed));
                 }
             }
@@ -206,9 +215,9 @@ public class PartyTrainingClassLogic
                 var requiredCompletionTime = trainingClass.getLastDetail().getRequiredCompletionTime();
                 var requiredTime = requiredCompletionTime == null ? null : session.getStartTime() + requiredCompletionTime;
 
-                workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
+                workEffort = workEffortLogic.createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 
-                WorkRequirementLogic.getInstance().createWorkRequirementUsingNames(session, workEffort, TrainingConstants.WorkRequirementType_TRAINING,
+                workRequirementLogic.createWorkRequirementUsingNames(session, workEffort, TrainingConstants.WorkRequirementType_TRAINING,
                     party, null, requiredTime, createdBy);
             }
         }
@@ -221,7 +230,7 @@ public class PartyTrainingClassLogic
 
             // If there are Pages to read, or Questions to answer, then setup a PartyTrainingClassSession for them.
             if(trainingControl.countTrainingClassPages(trainingClassSections) != 0 || trainingControl.countTrainingClassQuestions(trainingClassSections) != 0) {
-                PartyTrainingClassSessionLogic.getInstance().createPartyTrainingClassSession(partyTrainingClass, createdBy);
+                partyTrainingClassSessionLogic.createPartyTrainingClassSession(partyTrainingClass, createdBy);
             }
         }
 

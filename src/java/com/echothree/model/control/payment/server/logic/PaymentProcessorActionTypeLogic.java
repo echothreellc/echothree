@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentProcessorActionTypeLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PaymentProcessorActionTypeLogic() {
         super();
@@ -51,7 +57,6 @@ public class PaymentProcessorActionTypeLogic
     public PaymentProcessorActionType createPaymentProcessorActionType(final ExecutionErrorAccumulator eea, final String paymentProcessorActionTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
 
         if(paymentProcessorActionType == null) {
@@ -69,7 +74,6 @@ public class PaymentProcessorActionTypeLogic
 
     public PaymentProcessorActionType getPaymentProcessorActionTypeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorActionTypeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName, entityPermission);
 
         if(paymentProcessorActionType == null) {
@@ -90,9 +94,8 @@ public class PaymentProcessorActionTypeLogic
     public PaymentProcessorActionType getPaymentProcessorActionTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorActionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorActionType paymentProcessorActionType = null;
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
-        var parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 0) {
             if(allowDefault) {
@@ -106,7 +109,7 @@ public class PaymentProcessorActionTypeLogic
             }
         } else if(parameterCount == 1) {
             if(paymentProcessorActionTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorActionType.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {
@@ -134,8 +137,6 @@ public class PaymentProcessorActionTypeLogic
 
     public void deletePaymentProcessorActionType(final ExecutionErrorAccumulator eea, final PaymentProcessorActionType paymentProcessorActionType,
             final BasePK deletedBy) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-
         paymentProcessorActionTypeControl.deletePaymentProcessorActionType(paymentProcessorActionType, deletedBy);
     }
 }

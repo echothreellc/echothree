@@ -29,13 +29,22 @@ import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CompanyLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
 
     protected CompanyLogic() {
         super();
@@ -48,12 +57,10 @@ public class CompanyLogic
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName,
             final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required) {
         var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+                entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         PartyCompany partyCompany = null;
 
         if(parameterCount == 1) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(companyName != null) {
                 partyCompany = partyControl.getPartyCompanyByName(companyName);
 
@@ -64,20 +71,20 @@ public class CompanyLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.COMPANY.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.COMPANY.name());
 
                     partyCompany = partyControl.getPartyCompany(party);
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(universalEntitySpec != null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.COMPANY.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.COMPANY.name());
 
                     partyCompany = partyControl.getPartyCompany(party);
                 }

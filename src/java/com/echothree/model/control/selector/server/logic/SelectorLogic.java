@@ -36,14 +36,26 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SelectorLogic
         extends BaseLogic {
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SelectorKindLogic selectorKindLogic;
+
+    @Inject
+    SelectorTypeLogic selectorTypeLogic;
 
     protected SelectorLogic() {
         super();
@@ -56,7 +68,7 @@ public class SelectorLogic
     public Selector createSelector(final ExecutionErrorAccumulator eea, final String selectorKindName, final String selectorTypeName,
             final String selectorName, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByName(eea, selectorKindName, selectorTypeName);
+        var selectorType = selectorTypeLogic.getSelectorTypeByName(eea, selectorKindName, selectorTypeName);
         Selector selector = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -68,7 +80,6 @@ public class SelectorLogic
 
     public Selector createSelector(final ExecutionErrorAccumulator eea, final SelectorType selectorType, final String selectorName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selector = selectorControl.getSelectorByName(selectorType, selectorName);
 
         if(selector == null) {
@@ -87,7 +98,6 @@ public class SelectorLogic
 
     public Selector getSelectorByName(final ExecutionErrorAccumulator eea, final SelectorType selectorType, final String selectorName,
             final EntityPermission entityPermission) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selector = selectorControl.getSelectorByName(selectorType, selectorName, entityPermission);
 
         if(selector == null) {
@@ -111,7 +121,7 @@ public class SelectorLogic
 
     public Selector getSelectorByName(final ExecutionErrorAccumulator eea, final String selectorKindName,
             final String selectorTypeName, final String selectorName, final EntityPermission entityPermission) {
-        var selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByName(eea, selectorKindName, selectorTypeName);
+        var selectorType = selectorTypeLogic.getSelectorTypeByName(eea, selectorKindName, selectorTypeName);
         Selector selector = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -133,12 +143,11 @@ public class SelectorLogic
 
     public Selector getSelectorByUniversalSpec(final ExecutionErrorAccumulator eea, final SelectorUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = universalSpec.getSelectorKindName();
         var selectorTypeName = universalSpec.getSelectorTypeName();
         var selectorName = universalSpec.getSelectorName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(selectorKindName, selectorTypeName, selectorName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         Selector selector = null;
 
         if(nameParameterCount < 4 && possibleEntitySpecs == 0) {
@@ -156,7 +165,7 @@ public class SelectorLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(eea, selectorKindName);
+                selectorKind = selectorKindLogic.getSelectorKindByName(eea, selectorKindName);
             }
 
             if(selectorTypeName == null) {
@@ -170,7 +179,7 @@ public class SelectorLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByName(eea, selectorKind, selectorTypeName);
+                selectorType = selectorTypeLogic.getSelectorTypeByName(eea, selectorKind, selectorTypeName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -189,7 +198,7 @@ public class SelectorLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.Selector.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {

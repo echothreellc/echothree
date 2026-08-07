@@ -36,12 +36,15 @@ import javax.inject.Inject;
 public class ContactListTypeLogic
     extends BaseLogic {
 
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ContactListTypeLogic() {
         super();
     }
-
-    @Inject
-    ContactListControl contactListControl;
 
     public ContactListType getContactListTypeByName(final ExecutionErrorAccumulator eea, final String contactListTypeName,
             final EntityPermission entityPermission) {
@@ -66,7 +69,7 @@ public class ContactListTypeLogic
             final ContactListTypeUniversalSpec spec, final boolean allowDefault, final EntityPermission entityPermission) {
         ContactListType contactListType = null;
         var contactListTypeName = spec.getContactListTypeName();
-        var parameterCount = (contactListTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (contactListTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -82,7 +85,7 @@ public class ContactListTypeLogic
             }
             case 1 -> {
                 if(contactListTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, spec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, spec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactListType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

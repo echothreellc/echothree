@@ -41,6 +41,12 @@ import javax.inject.Inject;
 public class InventoryAdjustmentTypeLogic
     extends BaseLogic {
 
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected InventoryAdjustmentTypeLogic() {
         super();
     }
@@ -48,12 +54,6 @@ public class InventoryAdjustmentTypeLogic
     public static InventoryAdjustmentTypeLogic getInstance() {
         return CDI.current().select(InventoryAdjustmentTypeLogic.class).get();
     }
-
-    @Inject
-    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
-
-    @Inject
-    EntityInstanceLogic entityInstanceLogic;
 
     public InventoryAdjustmentType createInventoryAdjustmentType(final ExecutionErrorAccumulator eea, final String inventoryAdjustmentTypeName,
             final Boolean isDefault, final Integer sortOrder,

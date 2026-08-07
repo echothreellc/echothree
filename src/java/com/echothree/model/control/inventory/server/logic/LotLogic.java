@@ -42,14 +42,6 @@ import javax.inject.Inject;
 public class LotLogic
         extends BaseLogic {
 
-    protected LotLogic() {
-        super();
-    }
-
-    public static LotLogic getInstance() {
-        return CDI.current().select(LotLogic.class).get();
-    }
-
     @Inject
     LotControl lotControl;
 
@@ -61,6 +53,14 @@ public class LotLogic
 
     @Inject
     SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    protected LotLogic() {
+        super();
+    }
+
+    public static LotLogic getInstance() {
+        return CDI.current().select(LotLogic.class).get();
+    }
 
     public Lot createLot(final ExecutionErrorAccumulator eea, final Item item, String lotIdentifier,
             final BasePK createdBy) {

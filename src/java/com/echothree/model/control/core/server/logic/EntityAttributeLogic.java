@@ -152,10 +152,35 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class EntityAttributeLogic
         extends BaseLogic {
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    QueueTypeLogic queueTypeLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected EntityAttributeLogic() {
         super();
@@ -178,7 +203,7 @@ public class EntityAttributeLogic
     public EntityAttributeType getEntityAttributeTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         EntityAttributeType entityAttributeType = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -210,7 +235,7 @@ public class EntityAttributeLogic
     public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         EntityAttributeGroup entityAttributeGroup = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -241,10 +266,9 @@ public class EntityAttributeLogic
 
         if(entityTypeDetail.getIsExtensible()) {
             if(entityAttributeName == null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.name());
 
-                entityAttributeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+                entityAttributeName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
             }
 
             entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
@@ -259,8 +283,6 @@ public class EntityAttributeLogic
                                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                                     workflow.getLastDetail().getWorkflowName());
                         } else {
-                            var workflowControl = Session.getModelController(WorkflowControl.class);
-
                             if(!workflowControl.workflowEntityTypeExists(workflow, entityType)) {
                                 handleExecutionError(UnknownWorkflowEntityTypeException.class, eea, ExecutionErrors.UnknownWorkflowEntityType.name(),
                                         workflow.getLastDetail().getWorkflowName(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -361,7 +383,7 @@ public class EntityAttributeLogic
     
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final String entityAttributeName, EntityPermission entityPermission) {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendor, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendor, entityTypeName);
         EntityAttribute entityAttribute = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -383,7 +405,7 @@ public class EntityAttributeLogic
     
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAttributeName, EntityPermission entityPermission) {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         EntityAttribute entityAttribute = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -407,7 +429,7 @@ public class EntityAttributeLogic
             final EntityPermission entityPermission) {
         EntityAttribute entityAttribute = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -432,14 +454,14 @@ public class EntityAttributeLogic
         var componentVendorName = universalSpec.getComponentVendorName();
         var entityTypeName = universalSpec.getEntityTypeName();
         var entityAttributeName = universalSpec.getEntityAttributeName();
-        var universalSpecCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var universalSpecCount = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null ? 0 : 1)
                 + universalSpecCount;
 
         switch(parameterCount) {
             case 1 -> {
                 if(universalSpecCount == 1) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -533,7 +555,7 @@ public class EntityAttributeLogic
         var entityRef = entityInstanceAttributeSpec.getEntityRefAttribute();
         var uuid = entityInstanceAttributeSpec.getUuidAttribute();
 
-        return EntityInstanceLogic.getInstance().getEntityInstance(eea, entityRef, uuid, null);
+        return entityInstanceLogic.getEntityInstance(eea, entityRef, uuid, null);
     }
 
     private List<EntityInstancePKResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
@@ -576,12 +598,10 @@ public class EntityAttributeLogic
     public void updateEntityAttributeFromValue(final Session session, final EntityAttributeDetailValue entityAttributeDetailValue,
             final BasePK updatedBy) {
         if(entityAttributeDetailValue.getEntityAttributeNameHasBeenModified()) {
-            final var indexControl = Session.getModelController(IndexControl.class);
             final var entityAttribute = coreControl.getEntityAttributeByPK(entityAttributeDetailValue.getEntityAttributePK());
             
             if(indexControl.countIndexTypesByEntityType(entityAttribute.getLastDetail().getEntityType()) > 0) {
-                final var queueControl = Session.getModelController(QueueControl.class);
-                final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
+                final var queueTypePK = queueTypeLogic.getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
                 final var entityInstanceResults = getEntityInstanceResultsByEntityAttributeTypeName(entityAttribute);
                 final var queuedEntities = new ArrayList<QueuedEntityValue>(entityInstanceResults.size());
 
@@ -614,11 +634,11 @@ public class EntityAttributeLogic
                 var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
 
                 if(entityListItemSequence == null) {
-                    entityListItemSequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.name());
+                    entityListItemSequence = sequenceGeneratorLogic.getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.name());
                 }
 
                 if(eea != null && !hasExecutionErrors(eea)) {
-                    entityListItemName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, entityListItemSequence);
+                    entityListItemName = sequenceGeneratorLogic.getNextSequenceValue(eea, entityListItemSequence);
                 } else {
                     handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
                             SequenceTypes.ENTITY_LIST_ITEM.name());
@@ -687,7 +707,7 @@ public class EntityAttributeLogic
     public EntityListItem getEntityListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAttributeName, final String entityListItemName,
             final EntityPermission entityPermission) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(eea, componentVendorName,
+        var entityAttribute = this.getEntityAttributeByName(eea, componentVendorName,
                 entityTypeName, entityAttributeName);
         EntityListItem entityListItem = null;
         
@@ -713,7 +733,7 @@ public class EntityAttributeLogic
     public EntityListItem getEntityListItemByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         EntityListItem entityListItem = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -738,14 +758,14 @@ public class EntityAttributeLogic
         var entityTypeName = universalSpec.getEntityTypeName();
         var entityAttributeName = universalSpec.getEntityAttributeName();
         var entityListItemName = universalSpec.getEntityListItemName();
-        var universalSpecCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var universalSpecCount = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null && entityListItemName == null ? 0 : 1)
                 + universalSpecCount;
 
         switch(parameterCount) {
             case 1 -> {
                 if(universalSpecCount == 1) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -817,13 +837,11 @@ public class EntityAttributeLogic
     
     public void updateEntityListItemFromValue(final Session session, EntityListItemDetailValue entityListItemDetailValue, BasePK updatedBy) {
         if(entityListItemDetailValue.getEntityListItemNameHasBeenModified()) {
-            var indexControl = Session.getModelController(IndexControl.class);
             var entityListItem = coreControl.getEntityListItemByPK(entityListItemDetailValue.getEntityListItemPK());
             var entityAttributeDetail = entityListItem.getLastDetail().getEntityAttribute().getLastDetail();
             
             if(indexControl.countIndexTypesByEntityType(entityAttributeDetail.getEntityType()) > 0) {
-                var queueControl = Session.getModelController(QueueControl.class);
-                var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
+                var queueTypePK = queueTypeLogic.getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
                 var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
@@ -938,7 +956,7 @@ public class EntityAttributeLogic
                 coreControl.createEntityBooleanAttribute(entityAttribute, entityInstance, booleanAttribute, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityBooleanAttributeException.class, eea, ExecutionErrors.DuplicateEntityBooleanAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -1038,7 +1056,7 @@ public class EntityAttributeLogic
                     coreControl.createEntityIntegerAttribute(entityAttribute, entityInstance, integerAttribute, createdBy);
                 } else {
                     handleExecutionError(DuplicateEntityIntegerAttributeException.class, eea, ExecutionErrors.DuplicateEntityIntegerAttribute.name(),
-                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                             entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             }
@@ -1139,7 +1157,7 @@ public class EntityAttributeLogic
                     coreControl.createEntityLongAttribute(entityAttribute, entityInstance, longAttribute, createdBy);
                 } else {
                     handleExecutionError(DuplicateEntityLongAttributeException.class, eea, ExecutionErrors.DuplicateEntityLongAttribute.name(),
-                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                             entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             }
@@ -1218,7 +1236,7 @@ public class EntityAttributeLogic
                     coreControl.createEntityStringAttribute(entityAttribute, entityInstance, language, stringAttribute, createdBy);
                 } else {
                     handleExecutionError(DuplicateEntityStringAttributeException.class, eea, ExecutionErrors.DuplicateEntityStringAttribute.name(),
-                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                             entityAttribute.getLastDetail().getEntityAttributeName(),
                             language.getLanguageIsoName());
                 }
@@ -1242,7 +1260,7 @@ public class EntityAttributeLogic
                 coreControl.createEntityClobAttribute(entityAttribute, entityInstance, language, clobAttribute, mimeType, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityClobAttributeException.class, eea, ExecutionErrors.DuplicateEntityClobAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName(),
                         language.getLanguageIsoName());
             }
@@ -1264,7 +1282,7 @@ public class EntityAttributeLogic
                 coreControl.createEntityNameAttribute(entityAttribute, nameAttribute, entityInstance, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityNameAttributeException.class, eea, ExecutionErrors.DuplicateEntityNameAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -1327,7 +1345,7 @@ public class EntityAttributeLogic
                 coreControl.createEntityDateAttribute(entityAttribute, entityInstance, dateAttribute, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityDateAttributeException.class, eea, ExecutionErrors.DuplicateEntityDateAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -1390,7 +1408,7 @@ public class EntityAttributeLogic
                 coreControl.createEntityTimeAttribute(entityAttribute, entityInstance, timeAttribute, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityTimeAttributeException.class, eea, ExecutionErrors.DuplicateEntityTimeAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -1453,7 +1471,7 @@ public class EntityAttributeLogic
                 coreControl.createEntityGeoPointAttribute(entityAttribute, entityInstance, latitude, longitude, elevation, altitude, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityGeoPointAttributeException.class, eea, ExecutionErrors.DuplicateEntityGeoPointAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -1516,7 +1534,7 @@ public class EntityAttributeLogic
                 entityListItemAttribute = coreControl.createEntityListItemAttribute(entityAttribute, entityInstance, entityListItem, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityListItemAttributeException.class, eea, ExecutionErrors.DuplicateEntityListItemAttribute.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -1579,7 +1597,7 @@ public class EntityAttributeLogic
                 entityMultipleListItemAttribute = coreControl.createEntityMultipleListItemAttribute(entityAttribute, entityInstance, entityListItem, createdBy);
             } else {
                 handleExecutionError(DuplicateEntityMultipleListItemAttributeException.class, eea, ExecutionErrors.DuplicateEntityMultipleListItemAttribute.name(),
-                    EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                     entityAttribute.getLastDetail().getEntityAttributeName(),
                     entityListItem.getLastDetail().getEntityListItemName());
             }

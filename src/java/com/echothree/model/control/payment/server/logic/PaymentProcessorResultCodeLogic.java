@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentProcessorResultCodeLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PaymentProcessorResultCodeLogic() {
         super();
@@ -51,7 +57,6 @@ public class PaymentProcessorResultCodeLogic
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final ExecutionErrorAccumulator eea, final String paymentProcessorResultCodeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
 
         if(paymentProcessorResultCode == null) {
@@ -69,7 +74,6 @@ public class PaymentProcessorResultCodeLogic
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorResultCodeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName, entityPermission);
 
         if(paymentProcessorResultCode == null) {
@@ -90,9 +94,8 @@ public class PaymentProcessorResultCodeLogic
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorResultCodeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorResultCode paymentProcessorResultCode = null;
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var paymentProcessorResultCodeName = universalSpec.getPaymentProcessorResultCodeName();
-        var parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,7 +111,7 @@ public class PaymentProcessorResultCodeLogic
             }
             case 1 -> {
                 if(paymentProcessorResultCodeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorResultCode.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -137,8 +140,6 @@ public class PaymentProcessorResultCodeLogic
 
     public void deletePaymentProcessorResultCode(final ExecutionErrorAccumulator eea, final PaymentProcessorResultCode paymentProcessorResultCode,
             final BasePK deletedBy) {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-
         paymentProcessorResultCodeControl.deletePaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
     }
 }

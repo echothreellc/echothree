@@ -40,6 +40,12 @@ import javax.inject.Inject;
 public class InventoryConditionLogic
     extends BaseLogic {
 
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected InventoryConditionLogic() {
         super();
     }
@@ -47,12 +53,6 @@ public class InventoryConditionLogic
     public static InventoryConditionLogic getInstance() {
         return CDI.current().select(InventoryConditionLogic.class).get();
     }
-
-    @Inject
-    InventoryControl inventoryControl;
-
-    @Inject
-    EntityInstanceLogic entityInstanceLogic;
 
     public InventoryCondition createInventoryCondition(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,

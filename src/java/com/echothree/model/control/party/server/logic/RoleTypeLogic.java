@@ -30,13 +30,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class RoleTypeLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected RoleTypeLogic() {
         super();
@@ -48,7 +54,6 @@ public class RoleTypeLogic
 
     public RoleType createRoleType(final ExecutionErrorAccumulator eea, final String roleTypeName, final RoleType parentRoleType,
             final Language language, final String description) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var roleType = partyControl.getRoleTypeByName(roleTypeName);
 
         if(roleType == null) {
@@ -66,7 +71,6 @@ public class RoleTypeLogic
 
     public RoleType getRoleTypeByName(final ExecutionErrorAccumulator eea, final String roleTypeName,
             final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var roleType = partyControl.getRoleTypeByName(roleTypeName, entityPermission);
 
         if(roleType == null) {
@@ -87,13 +91,12 @@ public class RoleTypeLogic
     public RoleType getRoleTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final RoleTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         RoleType roleType = null;
-        var partyControl = Session.getModelController(PartyControl.class);
         var roleTypeName = universalSpec.getRoleTypeName();
-        var parameterCount = (roleTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (roleTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 1) {
             if(roleTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.RoleType.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {

@@ -46,6 +46,9 @@ public class TrainingClassLogic
     @Inject
     private TrainingControl trainingControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected TrainingClassLogic() {
         super();
     }
@@ -121,13 +124,13 @@ public class TrainingClassLogic
             final TrainingClassUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
         TrainingClass trainingClass = null;
         var trainingClassName = universalSpec.getTrainingClassName();
-        var parameterCount = (trainingClassName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (trainingClassName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> trainingClass = getTrainingClassByName(eea, null, allowDefault, entityPermission);
             case 1 -> {
                 if(trainingClassName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TrainingClass.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

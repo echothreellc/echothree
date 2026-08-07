@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TagScopeLogic
     extends BaseLogic {
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TagScopeLogic() {
         super();
@@ -51,7 +57,6 @@ public class TagScopeLogic
     public TagScope createTagScope(final ExecutionErrorAccumulator eea, final String tagScopeName,
             final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScope = tagControl.getTagScopeByName(tagScopeName);
 
         if(tagScope == null) {
@@ -70,7 +75,6 @@ public class TagScopeLogic
 
     public TagScope getTagScopeByName(final ExecutionErrorAccumulator eea, final String tagScopeName,
             final EntityPermission entityPermission) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScope = tagControl.getTagScopeByName(tagScopeName, entityPermission);
 
         if(tagScope == null) {
@@ -91,9 +95,8 @@ public class TagScopeLogic
     public TagScope getTagScopeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TagScopeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         TagScope tagScope = null;
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = universalSpec.getTagScopeName();
-        var parameterCount = (tagScopeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (tagScopeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class TagScopeLogic
             }
             case 1 -> {
                 if(tagScopeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TagScope.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -138,8 +141,6 @@ public class TagScopeLogic
 
     public void deleteTagScope(final ExecutionErrorAccumulator eea, final TagScope tagScope,
             final BasePK deletedBy) {
-        var tagControl = Session.getModelController(TagControl.class);
-
         tagControl.deleteTagScope(tagScope, deletedBy);
     }
 

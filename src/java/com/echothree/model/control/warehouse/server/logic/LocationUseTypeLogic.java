@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LocationUseTypeLogic
         extends BaseLogic {
+
+    @Inject
+    LocationUseTypeControl locationUseTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected LocationUseTypeLogic() {
         super();
@@ -50,7 +56,6 @@ public class LocationUseTypeLogic
 
     public LocationUseType createLocationUseType(final ExecutionErrorAccumulator eea, final String locationUseTypeName,
             final Boolean allowMultiple,final Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
-        var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
         var locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName);
 
         if(locationUseType == null) {
@@ -65,9 +70,8 @@ public class LocationUseTypeLogic
     public LocationUseType getLocationUseTypeByName(final ExecutionErrorAccumulator eea, final String locationUseTypeName,
             final UniversalEntitySpec universalEntitySpec, final boolean allowDefault, final EntityPermission entityPermission) {
         LocationUseType locationUseType = null;
-        var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
         var parameterCount = (locationUseTypeName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+                entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -89,7 +93,7 @@ public class LocationUseTypeLogic
                         handleExecutionError(UnknownLocationUseTypeNameException.class, eea, ExecutionErrors.UnknownLocationUseTypeName.name(), locationUseTypeName);
                     }
                 } else if(universalEntitySpec != null){
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

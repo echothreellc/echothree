@@ -28,13 +28,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UserVisitGroupLogic
         extends BaseLogic {
+
+    @Inject
+    UserControl userControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected UserVisitGroupLogic() {
         super();
@@ -46,7 +52,6 @@ public class UserVisitGroupLogic
 
     public UserVisitGroup getUserVisitGroupByName(final ExecutionErrorAccumulator eea, final String userVisitGroupName,
             final EntityPermission entityPermission) {
-        var userControl = Session.getModelController(UserControl.class);
         var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName, entityPermission);
 
         if(userVisitGroup == null) {
@@ -67,14 +72,13 @@ public class UserVisitGroupLogic
     public UserVisitGroup getUserVisitGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UserVisitGroupUniversalSpec universalSpec, final EntityPermission entityPermission) {
         UserVisitGroup userVisitGroup = null;
-        var userControl = Session.getModelController(UserControl.class);
         var userVisitGroupName = universalSpec.getUserVisitGroupName();
-        var parameterCount = (userVisitGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (userVisitGroupName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(userVisitGroupName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.UserVisitGroup.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

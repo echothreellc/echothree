@@ -51,6 +51,24 @@ import javax.inject.Inject;
 public class FilterStepLogic
         extends BaseLogic {
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
+    @Inject
+    FilterLogic filterLogic;
+
+    @Inject
+    FilterTypeLogic filterTypeLogic;
+
+    @Inject
+    SelectorLogic selectorLogic;
+
     protected FilterStepLogic() {
         super();
     }
@@ -59,19 +77,16 @@ public class FilterStepLogic
         return CDI.current().select(FilterStepLogic.class).get();
     }
 
-    @Inject
-    FilterControl filterControl;
-
     public FilterStep createFilterStep(final ExecutionErrorAccumulator eea, final String filterKindName,
             final String filterTypeName, final String filterName, final String filterStepName,
             final String filterItemSelectorName, final Language language, final String description,
             final BasePK createdBy) {
-        var filter = FilterLogic.getInstance().getFilterByName(eea, filterKindName, filterTypeName, filterName);
+        var filter = filterLogic.getFilterByName(eea, filterKindName, filterTypeName, filterName);
         FilterStep filterStep = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var filterItemSelector = filterItemSelectorName == null ? null :
-                    SelectorLogic.getInstance().getSelectorByName(eea, SelectorKinds.ITEM.name(),
+                    selectorLogic.getSelectorByName(eea, SelectorKinds.ITEM.name(),
                             SelectorTypes.FILTER.name(), filterItemSelectorName);
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -122,7 +137,7 @@ public class FilterStepLogic
 
     public FilterStep getFilterStepByName(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,
             final String filterName, final String filterStepName, final EntityPermission entityPermission) {
-        var filterStepType = FilterLogic.getInstance().getFilterByName(eea, filterKindName, filterTypeName, filterName);
+        var filterStepType = filterLogic.getFilterByName(eea, filterKindName, filterTypeName, filterName);
         FilterStep filterStep = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -149,7 +164,7 @@ public class FilterStepLogic
         var filterName = universalSpec.getFilterName();
         var filterStepName = universalSpec.getFilterStepName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName, filterName, filterStepName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         FilterStep filterStep = null;
 
         if(nameParameterCount < 5 && possibleEntitySpecs == 0) {
@@ -168,7 +183,7 @@ public class FilterStepLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+                filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
             }
 
             if(filterTypeName == null && !eea.hasExecutionErrors()) {
@@ -183,7 +198,7 @@ public class FilterStepLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKind, filterTypeName);
+                filterType = filterTypeLogic.getFilterTypeByName(eea, filterKind, filterTypeName);
             }
 
             if(filterName == null && !eea.hasExecutionErrors()) {
@@ -198,7 +213,7 @@ public class FilterStepLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filter = FilterLogic.getInstance().getFilterByName(eea, filterType, filterName);
+                filter = filterLogic.getFilterByName(eea, filterType, filterName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -209,7 +224,7 @@ public class FilterStepLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStep.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {

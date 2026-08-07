@@ -25,10 +25,14 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LockoutPolicyLogic {
-    
+
+    @Inject
+    PartyControl partyControl;
+
     protected LockoutPolicyLogic() {
         super();
     }
@@ -75,7 +79,6 @@ public class LockoutPolicyLogic {
     
     public void checkUserLogin(final Session session, final ExecutionErrorAccumulator ema, final Party party,
             final UserLoginStatus userLoginStatus) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var policy = partyControl.getPartyTypeLockoutPolicy(party.getLastDetail().getPartyType());
         
         if(policy != null) {

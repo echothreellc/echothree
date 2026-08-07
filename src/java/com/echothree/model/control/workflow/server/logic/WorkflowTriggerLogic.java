@@ -32,9 +32,13 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowTriggerLogic {
+
+    @Inject
+    WorkflowControl workflowControl;
 
     protected WorkflowTriggerLogic() {
         super();
@@ -79,7 +83,6 @@ public class WorkflowTriggerLogic {
     }
     
     public void processWorkflowTriggers(final Session session, final ExecutionErrorAccumulator eea, final PartyPK triggeredBy) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var remainingTime = 1L * 50 * 1000; // 1 minute
         
         for(var workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.getStartTime())) {

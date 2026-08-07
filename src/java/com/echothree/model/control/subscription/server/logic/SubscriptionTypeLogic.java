@@ -49,13 +49,12 @@ public class SubscriptionTypeLogic
         extends BaseLogic {
 
     @Inject
+    ParameterUtils parameterUtils;
+    @Inject
     SubscriptionControl subscriptionControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
-
-    @Inject
-    ParameterUtils parameterUtils;
 
     @Inject
     SubscriptionKindLogic subscriptionKindLogic;

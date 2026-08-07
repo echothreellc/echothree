@@ -37,7 +37,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
@@ -47,6 +46,21 @@ import javax.inject.Inject;
 public class FilterAdjustmentLogic
         extends BaseLogic {
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    FilterAdjustmentSourceLogic filterAdjustmentSourceLogic;
+
+    @Inject
+    FilterAdjustmentTypeLogic filterAdjustmentTypeLogic;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
     protected FilterAdjustmentLogic() {
         super();
     }
@@ -54,18 +68,6 @@ public class FilterAdjustmentLogic
     public static FilterAdjustmentLogic getInstance() {
         return CDI.current().select(FilterAdjustmentLogic.class).get();
     }
-
-    @Inject
-    FilterControl filterControl;
-
-    @Inject
-    FilterKindLogic filterKindLogic;
-
-    @Inject
-    FilterAdjustmentSourceLogic filterAdjustmentSourceLogic;
-
-    @Inject
-    FilterAdjustmentTypeLogic filterAdjustmentTypeLogic;
 
     public FilterAdjustment createFilterAdjustment(final ExecutionErrorAccumulator eea, final String filterKindName,
             final String filterAdjustmentName, final String filterAdjustmentSourceName, final String filterAdjustmentTypeName,
@@ -144,11 +146,10 @@ public class FilterAdjustmentLogic
 
     public FilterAdjustment getFilterAdjustmentByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterAdjustmentUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = universalSpec.getFilterKindName();
         var filterAdjustmentName = universalSpec.getFilterAdjustmentName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterAdjustmentName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         FilterAdjustment filterAdjustment = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -165,7 +166,7 @@ public class FilterAdjustmentLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+                filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -184,7 +185,7 @@ public class FilterAdjustmentLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterAdjustment.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {

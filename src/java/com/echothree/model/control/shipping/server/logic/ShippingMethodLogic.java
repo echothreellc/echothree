@@ -44,10 +44,17 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ShippingMethodLogic
     extends BaseLogic {
+
+    @Inject
+    ShippingControl shippingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ShippingMethodLogic() {
         super();
@@ -60,7 +67,6 @@ public class ShippingMethodLogic
     public ShippingMethod createShippingMethod(final ExecutionErrorAccumulator eea, final String shippingMethodName,
             final Selector geoCodeSelector, final Selector itemSelector, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
         if(shippingMethod == null) {
@@ -79,7 +85,6 @@ public class ShippingMethodLogic
     
     private ShippingMethod getShippingMethodByName(final ExecutionErrorAccumulator eea, final String shippingMethodName,
             final EntityPermission entityPermission) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName, entityPermission);
 
         if(shippingMethod == null) {
@@ -100,14 +105,13 @@ public class ShippingMethodLogic
     public ShippingMethod getShippingMethodByUniversalSpec(final ExecutionErrorAccumulator eea, final ShippingMethodUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
         ShippingMethod shippingMethod = null;
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethodName = universalSpec.getShippingMethodName();
-        var parameterCount = (shippingMethodName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (shippingMethodName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(shippingMethodName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ShippingMethod.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -176,14 +180,10 @@ public class ShippingMethodLogic
 
     public void updateShippingMethodFromValue(final ExecutionErrorAccumulator eea, final ShippingMethodDetailValue shippingMethodDetailValue,
             final BasePK updatedBy) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-
         shippingControl.updateShippingMethodFromValue(shippingMethodDetailValue, updatedBy);
     }
 
     public void deleteShippingMethod(final ExecutionErrorAccumulator eea, final ShippingMethod shippingMethod, final BasePK deletedBy) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-
         shippingControl.deleteShippingMethod(shippingMethod, deletedBy);
     }
     

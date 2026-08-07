@@ -40,13 +40,9 @@ import javax.inject.Inject;
 public class OrderLineAdjustmentTypeLogic
         extends BaseLogic {
 
-    protected OrderLineAdjustmentTypeLogic() {
-        super();
-    }
-
     @Inject
     OrderLineAdjustmentControl orderLineAdjustmentControl;
-    
+
     @Inject
     OrderTypeControl orderTypeControl;
 
@@ -55,6 +51,10 @@ public class OrderLineAdjustmentTypeLogic
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
+    protected OrderLineAdjustmentTypeLogic() {
+        super();
+    }
 
     public OrderLineAdjustmentType getOrderLineAdjustmentTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType,
             final String orderLineAdjustmentTypeName, final EntityPermission entityPermission) {

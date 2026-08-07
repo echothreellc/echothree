@@ -29,13 +29,25 @@ import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContactEmailAddressLogic
     extends BaseLogic {
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected ContactEmailAddressLogic() {
         super();
@@ -47,10 +59,7 @@ public class ContactEmailAddressLogic
     
     public PartyContactMechanism createContactEmailAddress(Party party, String emailAddress, Boolean allowSolicitation,
             String description, String contactMechanismPurposeName, BasePK createdBy) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+        var contactMechanismName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
         var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
 
         var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,

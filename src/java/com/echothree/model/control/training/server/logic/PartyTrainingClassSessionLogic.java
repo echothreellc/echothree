@@ -45,10 +45,17 @@ import java.util.Comparator;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyTrainingClassSessionLogic
         extends BaseLogic {
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyTrainingClassLogic partyTrainingClassLogic;
 
     protected PartyTrainingClassSessionLogic() {
         super();
@@ -60,7 +67,6 @@ public class PartyTrainingClassSessionLogic
 
     private PartyTrainingClassSession getPartyTrainingClassSession(final ExecutionErrorAccumulator eea, final PartyTrainingClass partyTrainingClass,
             final Integer partyTrainingClassSessionSequence, final EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSession = trainingControl.getPartyTrainingClassSessionBySequence(partyTrainingClass,
                 partyTrainingClassSessionSequence, entityPermission);
 
@@ -84,7 +90,6 @@ public class PartyTrainingClassSessionLogic
     
     private PartyTrainingClassSession getLatestPartyTrainingClassSession(final ExecutionErrorAccumulator eea, final PartyTrainingClass partyTrainingClass,
             final EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassStatus = trainingControl.getPartyTrainingClassStatus(partyTrainingClass);
         var partyTrainingClassSessionSequence = partyTrainingClassStatus.getPartyTrainingClassSessionSequence();
         var partyTrainingClassSession = partyTrainingClassStatus == null ? null
@@ -111,7 +116,6 @@ public class PartyTrainingClassSessionLogic
     private PartyTrainingClassSessionPage getPartyTrainingClassSessionPage(final ExecutionErrorAccumulator eea,
             final PartyTrainingClassSession partyTrainingClassSession, final Integer partyTrainingClassSessionPageSequence,
             final EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSessionPage = trainingControl.getPartyTrainingClassSessionPage(partyTrainingClassSession,
                 partyTrainingClassSessionPageSequence, entityPermission);
 
@@ -140,7 +144,6 @@ public class PartyTrainingClassSessionLogic
     private PartyTrainingClassSessionQuestion getPartyTrainingClassSessionQuestion(final ExecutionErrorAccumulator eea,
             final PartyTrainingClassSession partyTrainingClassSession, final TrainingClassQuestion trainingClassQuestion,
             final EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSessionQuestion = trainingControl.getPartyTrainingClassSessionQuestion(partyTrainingClassSession,
                 trainingClassQuestion, entityPermission);
 
@@ -173,7 +176,6 @@ public class PartyTrainingClassSessionLogic
     private PartyTrainingClassSessionAnswer getPartyTrainingClassSessionAnswer(final ExecutionErrorAccumulator eea,
             final PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion, final Integer partyTrainingClassSessionAnswerSequence,
             final EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSessionAnswer = trainingControl.getPartyTrainingClassSessionAnswer(partyTrainingClassSessionQuestion,
                 partyTrainingClassSessionAnswerSequence, entityPermission);
 
@@ -206,14 +208,12 @@ public class PartyTrainingClassSessionLogic
     
     public PartyTrainingClassSessionStatus getLatestPartyTrainingClassSessionStatusForUpdate(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
         PartyTrainingClassSessionStatus partyTrainingClassSessionStatus = null;
-        var partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(eea, partyTrainingClassName);
+        var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(eea, partyTrainingClassName);
         
         if(!hasExecutionErrors(eea)) {
             var partyTrainingClassSession = getLatestPartyTrainingClassSession(eea, partyTrainingClass);
             
             if(!hasExecutionErrors(eea)) {
-                var trainingControl = Session.getModelController(TrainingControl.class);
-                
                 partyTrainingClassSessionStatus = trainingControl.getPartyTrainingClassSessionStatusForUpdate(partyTrainingClassSession);
                 
                 if(partyTrainingClassSessionStatus == null) {
@@ -229,7 +229,6 @@ public class PartyTrainingClassSessionLogic
     
     public PartyTrainingClassSessionPage createPartyTrainingClassSessionPage(final Session session, final PartyTrainingClassSession partyTrainingClassSession,
             final TrainingClassPage trainingClassPage, final BasePK createdBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
                 trainingClassPage, session.getStartTime(), null, createdBy);
 
@@ -238,8 +237,6 @@ public class PartyTrainingClassSessionLogic
 
     public PartyTrainingClassSessionQuestion createPartyTrainingClassSessionQuestion(final PartyTrainingClassSession partyTrainingClassSession,
             final TrainingClassQuestion trainingClassQuestion, final Integer sortOrder, final BasePK createdBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        
         return trainingControl.createPartyTrainingClassSessionQuestion(partyTrainingClassSession, trainingClassQuestion, sortOrder, createdBy);
     }
 
@@ -256,7 +253,6 @@ public class PartyTrainingClassSessionLogic
     }
 
     public void setupPartyTrainingClassSessionQuestions(final PartyTrainingClassSession partyTrainingClassSession, final BasePK createdBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClass = partyTrainingClassSession.getLastDetail().getPartyTrainingClass().getLastDetail().getTrainingClass();
         var trainingClassSections = trainingControl.getTrainingClassSections(trainingClass);
         var overallQuestionCount = trainingClass.getLastDetail().getOverallQuestionCount();
@@ -337,7 +333,6 @@ public class PartyTrainingClassSessionLogic
     }
     
     public PartyTrainingClassSession createPartyTrainingClassSession(final PartyTrainingClass partyTrainingClass, final BasePK createdBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSession = trainingControl.createPartyTrainingClassSession(partyTrainingClass, createdBy);
         var partyTrainingClassStatus = trainingControl.getPartyTrainingClassStatusForUpdate(partyTrainingClass);
 
@@ -349,7 +344,6 @@ public class PartyTrainingClassSessionLogic
     }
 
     public void deletePartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession, final BasePK deletedBy) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClass = partyTrainingClassSession.getLastDetail().getPartyTrainingClass();
 
         trainingControl.deletePartyTrainingClassSession(partyTrainingClassSession, deletedBy);

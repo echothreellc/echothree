@@ -43,10 +43,10 @@ public class ItemVolumeTypeLogic
     extends BaseLogic {
 
     @Inject
-    EntityInstanceLogic entityInstanceLogic;
+    ItemControl itemControl;
 
     @Inject
-    ItemControl itemControl;
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemVolumeTypeLogic() {
         super();

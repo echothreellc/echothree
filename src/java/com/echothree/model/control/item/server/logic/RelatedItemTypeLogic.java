@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class RelatedItemTypeLogic
     extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected RelatedItemTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class RelatedItemTypeLogic
     public RelatedItemType createRelatedItemType(final ExecutionErrorAccumulator eea, final String relatedItemTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
         if(relatedItemType == null) {
@@ -70,7 +75,6 @@ public class RelatedItemTypeLogic
 
     public RelatedItemType getRelatedItemTypeByName(final ExecutionErrorAccumulator eea, final String relatedItemTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName, entityPermission);
 
         if(relatedItemType == null) {
@@ -91,9 +95,8 @@ public class RelatedItemTypeLogic
     public RelatedItemType getRelatedItemTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final RelatedItemTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         RelatedItemType relatedItemType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var relatedItemTypeName = universalSpec.getRelatedItemTypeName();
-        var parameterCount = (relatedItemTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (relatedItemTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class RelatedItemTypeLogic
             }
             case 1 -> {
                 if(relatedItemTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.RelatedItemType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -138,15 +141,11 @@ public class RelatedItemTypeLogic
 
     public void updateRelatedItemTypeFromValue(final RelatedItemTypeDetailValue relatedItemTypeDetailValue,
             final BasePK updatedBy) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, updatedBy);
     }
     
     public void deleteRelatedItemType(final ExecutionErrorAccumulator eea, final RelatedItemType relatedItemType,
             final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.deleteRelatedItemType(relatedItemType, deletedBy);
     }
 

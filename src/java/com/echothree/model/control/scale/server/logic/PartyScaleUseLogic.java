@@ -24,13 +24,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyScaleUseLogic
         extends BaseLogic {
+
+    @Inject
+    ScaleControl scaleControl;
 
     protected PartyScaleUseLogic() {
         super();
@@ -42,7 +45,6 @@ public class PartyScaleUseLogic
 
     public PartyScaleUse getPartyScaleUse(final ExecutionErrorAccumulator ema, final Party party, final ScaleUseType scaleUseType,
             final BasePK createdBy) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
 
         if(partyScaleUse == null) {
@@ -60,7 +62,6 @@ public class PartyScaleUseLogic
 
     public PartyScaleUse getPartyScaleUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String scaleUseTypeName,
             final BasePK createdBy) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         PartyScaleUse partyScaleUse = null;
 

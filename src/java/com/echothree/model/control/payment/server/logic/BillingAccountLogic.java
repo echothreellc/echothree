@@ -27,12 +27,18 @@ import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class BillingAccountLogic {
+
+    @Inject
+    BillingControl billingControl;
+
+    @Inject
+    ContactControl contactControl;
 
     protected BillingAccountLogic() {
         super();
@@ -44,14 +50,12 @@ public class BillingAccountLogic {
 
     public BillingAccount getBillingAccount(final ExecutionErrorAccumulator ema, final Party billFrom, PartyContactMechanism billFromPartyContactMechanism,
             final Party billTo, PartyContactMechanism billToPartyContactMechanism, final Currency currency, final String reference, final String description, final BasePK createdBy) {
-        var billingControl = Session.getModelController(BillingControl.class);
         var billingAccount = billingControl.getBillingAccount(billFrom, billTo, currency);
 
         // If the BillingAccount was found, the billFromPartyContactMechanism and billToPartyContactMechanism parameters are ignored. They're used only
         // when a new BillingAccount needs to be created.
         if(billingAccount == null) {
             if(billFromPartyContactMechanism == null || billToPartyContactMechanism == null) {
-                var contactControl = Session.getModelController(ContactControl.class);
                 var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
                 
                 if(billFromPartyContactMechanism == null) {

@@ -66,19 +66,17 @@ import javax.inject.Inject;
 public class SalesOrderBatchLogic
         extends BaseLogic {
 
-    protected SalesOrderBatchLogic() {
-        super();
-    }
-
-    public static SalesOrderBatchLogic getInstance() {
-        return CDI.current().select(SalesOrderBatchLogic.class).get();
-    }
-
     @Inject
     BatchControl batchControl;
 
     @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
     OrderBatchControl orderBatchControl;
+
+    @Inject
+    OrderControl orderControl;
 
     @Inject
     SalesOrderBatchControl salesOrderBatchControl;
@@ -87,26 +85,31 @@ public class SalesOrderBatchLogic
     WorkflowControl workflowControl;
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
-
-    @Inject
-    OrderControl orderControl;
-
-    @Inject
     BatchLogic batchLogic;
 
     @Inject
-    WorkflowStepLogic workflowStepLogic;
+    EntityInstanceLogic entityInstanceLogic;
 
     @Inject
-    WorkflowLogic workflowLogic;
+    SalesOrderLineLogic salesOrderLineLogic;
 
     @Inject
     WorkflowDestinationLogic workflowDestinationLogic;
 
     @Inject
-    SalesOrderLineLogic salesOrderLineLogic;
-    
+    WorkflowLogic workflowLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
+
+    protected SalesOrderBatchLogic() {
+        super();
+    }
+
+    public static SalesOrderBatchLogic getInstance() {
+        return CDI.current().select(SalesOrderBatchLogic.class).get();
+    }
+
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,
             final Long amount, final BasePK createdBy) {
         var batch = batchLogic.createBatch(eea, BatchTypes.SALES_ORDER.name(), createdBy);
@@ -180,12 +183,12 @@ public class SalesOrderBatchLogic
             final SalesOrderBatchUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Batch batch = null;
         var batchName = universalSpec.getBatchName();
-        var parameterCount = (batchName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (batchName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(batchName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Batch.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
