@@ -108,10 +108,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 @CommandScope
 public class InventoryControl
         extends BaseInventoryControl {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
     
     /** Creates a new instance of InventoryControl */
     protected InventoryControl() {
@@ -483,7 +493,7 @@ public class InventoryControl
         deleteInventoryLocationGroupVolumeByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         deleteInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         
-        ((WarehouseControl)Session.getModelController(WarehouseControl.class)).deleteLocationsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
+        warehouseControl.deleteLocationsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         deleteInventoryLocationGroup(inventoryLocationGroup, deletedBy, true);
     }
     
@@ -1242,9 +1252,6 @@ public class InventoryControl
     }
     
     public void deleteInventoryCondition(final InventoryCondition inventoryCondition, final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
-        
         deleteInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionUseByInventoryCondition(inventoryCondition, deletedBy);
