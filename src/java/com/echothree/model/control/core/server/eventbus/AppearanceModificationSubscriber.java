@@ -22,24 +22,26 @@ import com.echothree.model.data.core.common.AppearanceConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class AppearanceModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    AppearanceControl appearanceControl;
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
         decodeEventAndApply(se, touchEntityInstancesIfAppearance);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchEntityInstancesIfAppearance = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var appearanceControl = Session.getModelController(AppearanceControl.class);
             var appearance = appearanceControl.getAppearanceByEntityInstance(entityInstance);
             var entityAppearances = appearanceControl.getEntityAppearancesByAppearance(appearance);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());

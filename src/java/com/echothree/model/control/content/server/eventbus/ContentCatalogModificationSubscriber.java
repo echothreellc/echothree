@@ -27,25 +27,29 @@ import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class ContentCatalogModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    EventControl eventControl;
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
         decodeEventAndApply(se, touchContentCatalogsIfContentCollection);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchContentCatalogsIfContentCollection = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(ContentCollectionConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ContentCollectionConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
             var contentCollection = contentControl.getContentCollectionByEntityInstance(entityInstance);
             var contentCatalogs = contentControl.getContentCatalogs(contentCollection);
 

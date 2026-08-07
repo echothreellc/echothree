@@ -27,25 +27,29 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterAdjustmentConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class FilterAdjustmentModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    EventControl eventControl;
+
+    @Inject
+    FilterControl filterControl;
 
     @Subscribe
     public void receiveSentFilterAdjustmentEvent(SentEvent se) {
         decodeEventAndApply(se, touchFiltersIfFilterAdjustment);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchFiltersIfFilterAdjustment = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(FilterAdjustmentConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterAdjustmentConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustment = filterControl.getFilterAdjustmentByEntityInstance(entityInstance);
 
             var filters = filterControl.getFiltersByInitialFilterAdjustment(filterAdjustment);

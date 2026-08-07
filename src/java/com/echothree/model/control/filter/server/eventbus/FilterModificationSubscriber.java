@@ -28,25 +28,29 @@ import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.model.data.filter.common.FilterStepElementConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class FilterModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    EventControl eventControl;
+
+    @Inject
+    FilterControl filterControl;
 
     @Subscribe
     public void receiveSentFilterStepEvent(SentEvent se) {
         decodeEventAndApply(se, touchFilterIfFilterStep);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchFilterIfFilterStep = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var filterControl = Session.getModelController(FilterControl.class);
             var filterStep = filterControl.getFilterStepByEntityInstance(entityInstance);
 
             eventControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
@@ -60,13 +64,11 @@ public class FilterModificationSubscriber
         decodeEventAndApply(se, touchFilterIfFilterStepElement);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchFilterIfFilterStepElement = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(FilterStepElementConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterStepElementConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var filterControl = Session.getModelController(FilterControl.class);
             var filterStepElement = filterControl.getFilterStepElementByEntityInstance(entityInstance);
 
             eventControl.sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
