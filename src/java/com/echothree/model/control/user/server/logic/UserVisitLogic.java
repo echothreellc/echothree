@@ -35,6 +35,9 @@ public class UserVisitLogic
         extends BaseLogic {
 
     @Inject
+    UserVisitFactory userVisitFactory;
+
+    @Inject
     OrderControl orderControl;
 
     @Inject
@@ -90,7 +93,7 @@ public class UserVisitLogic
     
     public void invalidateAbandonedUserVisits(Long abandonedTime, PartyPK invalidatedBy) {
         for(var userVisit: userControl.getAbandonedUserVisits(abandonedTime)) {
-            userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
+            userVisit = userVisitFactory.getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
             
             invalidateUserVisit(userVisit, invalidatedBy);
         }
@@ -98,7 +101,7 @@ public class UserVisitLogic
     
     public void removeInvalidatedUserVisits() {
         for(var userVisit: userControl.getInvalidatedUserVisits()) {
-            userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
+            userVisit = userVisitFactory.getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
             
             userControl.removeUserVisit(userVisit);
         }

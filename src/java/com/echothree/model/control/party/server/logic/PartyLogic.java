@@ -43,6 +43,9 @@ public class PartyLogic
         extends BaseLogic {
 
     @Inject
+    PartyFactory partyFactory;
+
+    @Inject
     PartyControl partyControl;
 
     @Inject
@@ -60,7 +63,7 @@ public class PartyLogic
     public Party getPartyFromEntityInstance(final EntityInstance entityInstance) {
         var pk = new PartyPK(entityInstance.getEntityUniqueId());
         
-        return PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return partyFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public boolean isPartyType(final Party party, final String ... partyTypeNames) {

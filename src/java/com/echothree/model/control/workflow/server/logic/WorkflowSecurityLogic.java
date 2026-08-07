@@ -33,6 +33,9 @@ import javax.inject.Inject;
 public class WorkflowSecurityLogic {
 
     @Inject
+    PartyFactory partyFactory;
+
+    @Inject
     SecurityControl securityControl;
 
     @Inject
@@ -50,7 +53,7 @@ public class WorkflowSecurityLogic {
         var checkPassed = false;
 
         if(workflowControl.countWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance) != 0) {
-            var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
+            var party = partyFactory.getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
             var partyType = party.getLastDetail().getPartyType();
             var workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
 
@@ -93,7 +96,7 @@ public class WorkflowSecurityLogic {
         var checkPassed = false;
 
         if(workflowControl.countWorkflowDestinationPartyTypes(workflowDestination) != 0) {
-            var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
+            var party = partyFactory.getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
             var partyType = party.getLastDetail().getPartyType();
             var workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
 

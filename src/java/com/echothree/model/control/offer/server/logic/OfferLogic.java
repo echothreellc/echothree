@@ -50,6 +50,9 @@ public class OfferLogic
         extends BaseLogic {
 
     @Inject
+    OfferFactory offerFactory;
+
+    @Inject
     OfferControl offerControl;
 
     @Inject
@@ -159,11 +162,11 @@ public class OfferLogic
 
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
         if(offerDetailValue.getOfferItemSelectorPKHasBeenModified() && offerDetailValue.getOfferItemSelectorPK() != null) {
-            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+            var offer = offerFactory.getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
 
             offerItemLogic.deleteOfferItemsByOffer(offer, updatedBy);
         } else if(offerDetailValue.getOfferItemPriceFilterPKHasBeenModified() && offerDetailValue.getOfferItemPriceFilterPK() != null) {
-            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+            var offer = offerFactory.getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
 
             var offerItems = offerItemControl.getOfferItemsByOffer(offer);
             for(var offerItem : offerItems) {

@@ -38,6 +38,9 @@ import javax.inject.Inject;
 public class WorkflowTriggerLogic {
 
     @Inject
+    WorkflowTriggerFactory workflowTriggerFactory;
+
+    @Inject
     WorkflowControl workflowControl;
 
     protected WorkflowTriggerLogic() {
@@ -91,7 +94,7 @@ public class WorkflowTriggerLogic {
             if(errorsOccurred == null || errorsOccurred == false) {
                 var startTime = System.currentTimeMillis();
 
-                workflowTrigger = WorkflowTriggerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowTrigger.getPrimaryKey());
+                workflowTrigger = workflowTriggerFactory.getEntityFromPK(EntityPermission.READ_WRITE, workflowTrigger.getPrimaryKey());
                 processWorkflowTrigger(session, eea, workflowTrigger, triggeredBy);
 
                 if(eea.hasExecutionErrors()) {

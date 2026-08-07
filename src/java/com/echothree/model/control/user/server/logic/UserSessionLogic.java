@@ -32,6 +32,9 @@ import javax.inject.Inject;
 public class UserSessionLogic {
 
     @Inject
+    UserSessionFactory userSessionFactory;
+
+    @Inject
     UserControl userControl;
 
     protected UserSessionLogic() {
@@ -51,7 +54,7 @@ public class UserSessionLogic {
     public UserSession invalidateUserSession(UserSession userSession) {
         if(userSession.getIdentityVerifiedTime() != null) {
             if(!userSession.getEntityPermission().equals(EntityPermission.READ_WRITE)) {
-                userSession = UserSessionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userSession.getPrimaryKey());
+                userSession = userSessionFactory.getEntityFromPK(EntityPermission.READ_WRITE, userSession.getPrimaryKey());
             }
 
             userControl.deleteUserSession(userSession);

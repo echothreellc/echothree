@@ -31,6 +31,9 @@ import javax.inject.Inject;
 public class UserKeyLogic {
 
     @Inject
+    UserKeyFactory userKeyFactory;
+
+    @Inject
     UserControl userControl;
 
     protected UserKeyLogic() {
@@ -51,7 +54,7 @@ public class UserKeyLogic {
                 break;
             }
             
-            userKey = UserKeyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userKey.getPrimaryKey());
+            userKey = userKeyFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKey.getPrimaryKey());
             
             userControl.removeUserKey(userKey);
         }
