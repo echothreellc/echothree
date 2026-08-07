@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteOrderPriorityCommand
@@ -44,16 +45,20 @@ public class DeleteOrderPriorityCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderPriority.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderPriorityLogic orderPriorityLogic;
+
     
     /** Creates a new instance of DeleteOrderPriorityCommand */
     public DeleteOrderPriorityCommand() {
@@ -62,10 +67,10 @@ public class DeleteOrderPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        var orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpecForUpdate(this, form, false);
+        var orderPriority = orderPriorityLogic.getOrderPriorityByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            OrderPriorityLogic.getInstance().deleteOrderPriority(this, orderPriority, getPartyPK());
+            orderPriorityLogic.deleteOrderPriority(this, orderPriority, getPartyPK());
         }
 
         return null;

@@ -67,6 +67,7 @@ public class GetOrderAdjustmentTypesCommand
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
     
     /** Creates a new instance of GetOrderAdjustmentTypesCommand */
     public GetOrderAdjustmentTypesCommand() {

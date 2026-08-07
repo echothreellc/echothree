@@ -29,10 +29,10 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditDateTimeFormatDescriptionCommand
@@ -51,6 +51,10 @@ public class EditDateTimeFormatDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditDateTimeFormatDescriptionCommand */
     public EditDateTimeFormatDescriptionCommand() {
@@ -59,7 +63,6 @@ public class EditDateTimeFormatDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getEditDateTimeFormatDescriptionResult();
         var dateTimeFormatName = spec.getDateTimeFormatName();
         var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);

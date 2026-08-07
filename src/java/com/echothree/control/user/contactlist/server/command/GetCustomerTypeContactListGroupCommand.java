@@ -58,7 +58,7 @@ public class GetCustomerTypeContactListGroupCommand
                 new FieldDefinition("ContactListGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ContactListControl contactListControl;
 
@@ -67,6 +67,7 @@ public class GetCustomerTypeContactListGroupCommand
 
     @Inject
     CustomerTypeLogic customerTypeLogic;
+
 
     /** Creates a new instance of GetCustomerTypeContactListGroupCommand */
     public GetCustomerTypeContactListGroupCommand() {

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTagScopeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditTagScopeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TagScope.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,12 @@ public class EditTagScopeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TagControl tagControl;
 
     /** Creates a new instance of EditTagScopeDescriptionCommand */
     public EditTagScopeDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditTagScopeDescriptionCommand
 
     @Override
     public TagScopeDescription getEntity(EditTagScopeDescriptionResult result) {
-        var tagControl = Session.getModelController(TagControl.class);
         TagScopeDescription tagScopeDescription = null;
         var tagScopeName = spec.getTagScopeName();
         var tagScope = tagControl.getTagScopeByName(tagScopeName);
 
         if(tagScope != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditTagScopeDescriptionCommand
 
     @Override
     public void fillInResult(EditTagScopeDescriptionResult result, TagScopeDescription tagScopeDescription) {
-        var tagControl = Session.getModelController(TagControl.class);
-
         result.setTagScopeDescription(tagControl.getTagScopeDescriptionTransfer(getUserVisit(), tagScopeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditTagScopeDescriptionCommand
 
     @Override
     public void doUpdate(TagScopeDescription tagScopeDescription) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeDescriptionValue = tagControl.getTagScopeDescriptionValue(tagScopeDescription);
         tagScopeDescriptionValue.setDescription(edit.getDescription());
 

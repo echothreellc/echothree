@@ -62,17 +62,18 @@ public class GetFilterStepDestinationsCommand
                 new FieldDefinition("ToFilterStepName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterStepDestinationsCommand */
-    public GetFilterStepDestinationsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterStepLogic filterStepLogic;
+
+
+    /** Creates a new instance of GetFilterStepDestinationsCommand */
+    public GetFilterStepDestinationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private FilterStep fromFilterStep;
     private FilterStep toFilterStep;

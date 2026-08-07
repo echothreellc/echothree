@@ -26,6 +26,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUserVisitGroupStatusChoicesCommand
@@ -35,11 +36,12 @@ public class GetUserVisitGroupStatusChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("UserVisitGroupName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultUserVisitGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("UserVisitGroupName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultUserVisitGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
     
     /** Creates a new instance of GetUserVisitGroupStatusChoicesCommand */
     public GetUserVisitGroupStatusChoicesCommand() {
@@ -48,7 +50,6 @@ public class GetUserVisitGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = UserResultFactory.getGetUserVisitGroupStatusChoicesResult();
         var userVisitGroupName = form.getUserVisitGroupName();
         var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);

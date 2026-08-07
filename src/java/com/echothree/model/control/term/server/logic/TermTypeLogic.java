@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TermTypeLogic
         extends BaseLogic {
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TermTypeLogic() {
         super();
@@ -51,7 +57,6 @@ public class TermTypeLogic
     public TermType createTermType(final ExecutionErrorAccumulator eea, final String termTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var termControl = Session.getModelController(TermControl.class);
         var termType = termControl.getTermTypeByName(termTypeName);
 
         if(termType == null) {
@@ -69,7 +74,6 @@ public class TermTypeLogic
 
     public TermType getTermTypeByName(final ExecutionErrorAccumulator eea, final String termTypeName,
             final EntityPermission entityPermission) {
-        var termControl = Session.getModelController(TermControl.class);
         var termType = termControl.getTermTypeByName(termTypeName, entityPermission);
 
         if(termType == null) {
@@ -90,9 +94,8 @@ public class TermTypeLogic
     public TermType getTermTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TermTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         TermType termType = null;
-        var termControl = Session.getModelController(TermControl.class);
         var termTypeName = universalSpec.getTermTypeName();
-        var parameterCount = (termTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (termTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,7 +111,7 @@ public class TermTypeLogic
             }
             case 1 -> {
                 if(termTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TermType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

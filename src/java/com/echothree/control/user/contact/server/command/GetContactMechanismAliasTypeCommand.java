@@ -57,12 +57,15 @@ public class GetContactMechanismAliasTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     ContactControl contactControl;
-    
+
     @Inject
     ContactMechanismAliasTypeLogic contactMechanismAliasTypeLogic;
+
+
+
     
     /** Creates a new instance of GetContactMechanismAliasTypeCommand */
     public GetContactMechanismAliasTypeCommand() {

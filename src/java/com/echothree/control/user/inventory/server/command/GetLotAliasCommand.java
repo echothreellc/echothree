@@ -66,6 +66,7 @@ public class GetLotAliasCommand
 
     @Inject
     LotLogic lotLogic;
+
     /** Creates a new instance of GetLotAliasCommand */
     public GetLotAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);

@@ -29,9 +29,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCompanyCommand
@@ -49,8 +49,15 @@ public class CreateCompanyCommand
                 new FieldDefinition("PreferredDateTimeFormatName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateCompanyCommand */
     public CreateCompanyCommand() {
@@ -60,7 +67,6 @@ public class CreateCompanyCommand
     @Override
     protected BaseResult execute() {
         var result = PartyResultFactory.getCreateCompanyResult();
-        var partyControl = Session.getModelController(PartyControl.class);
         var companyName = form.getCompanyName();
         var partyCompany = partyControl.getPartyCompanyByName(companyName);
         
@@ -83,7 +89,6 @@ public class CreateCompanyCommand
                         if(preferredCurrencyIsoName == null)
                             preferredCurrency = null;
                         else {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
                             preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                         }
                         

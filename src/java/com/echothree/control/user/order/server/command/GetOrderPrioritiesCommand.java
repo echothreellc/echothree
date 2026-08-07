@@ -34,10 +34,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderPrioritiesCommand
@@ -58,6 +58,16 @@ public class GetOrderPrioritiesCommand
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    OrderPriorityControl orderPriorityControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     
     /** Creates a new instance of GetOrderPrioritiesCommand */
     public GetOrderPrioritiesCommand() {
@@ -70,13 +80,11 @@ public class GetOrderPrioritiesCommand
     protected void handleForm() {
         var orderTypeName = form.getOrderTypeName();
 
-        orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, orderTypeName);
+        orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
         return hasExecutionErrors() ? null : orderPriorityControl.countOrderPriorities(orderType);
     }
 
@@ -85,8 +93,6 @@ public class GetOrderPrioritiesCommand
         Collection<OrderPriority> orderPriorities = null;
 
         if(!hasExecutionErrors()) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
             orderPriorities = orderPriorityControl.getOrderPriorities(orderType);
         }
 
@@ -98,8 +104,6 @@ public class GetOrderPrioritiesCommand
         var result = OrderResultFactory.getGetOrderPrioritiesResult();
 
         if(entities != null) {
-            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(OrderPriorityFactory.class)) {

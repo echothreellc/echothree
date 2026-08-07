@@ -27,7 +27,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -37,13 +36,19 @@ public class PartyChainLogic
         extends BaseLogic {
 
     @Inject
-    protected ChainTypeLogic chainTypeLogic;
+    ChainControl chainControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
 
     @Inject
     protected ChainInstanceLogic chainInstanceLogic;
 
     @Inject
-    ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
+    protected ChainTypeLogic chainTypeLogic;
 
     protected PartyChainLogic() {
         super();
@@ -63,7 +68,6 @@ public class PartyChainLogic
             var chainEntityRoleType = chainEntityRoleTypeLogic.getChainEntityRoleTypeByName(eea, chainType, partyTypeName);
             
             if(!hasExecutionErrors(eea)) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                 
                 if(resetChainIfRunning) {
@@ -73,8 +77,6 @@ public class PartyChainLogic
                 chainInstance = chainInstanceLogic.createChainInstance(eea, chainType, party, createdBy);
 
                 if(!hasExecutionErrors(eea) && chainInstance != null) {
-                    var chainControl = Session.getModelController(ChainControl.class);
-
                     chainControl.createChainInstanceEntityRole(chainInstance, chainEntityRoleType, entityInstance, createdBy);
                 }
             }

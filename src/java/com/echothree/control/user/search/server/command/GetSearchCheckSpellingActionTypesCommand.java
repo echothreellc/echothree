@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchCheckSpellingActionTypesCommand
@@ -53,6 +53,9 @@ public class GetSearchCheckSpellingActionTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    SearchControl searchControl;
+
     /** Creates a new instance of GetSearchCheckSpellingActionTypesCommand */
     public GetSearchCheckSpellingActionTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetSearchCheckSpellingActionTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.countSearchCheckSpellingActionTypes();
     }
 
     @Override
     protected Collection<SearchCheckSpellingActionType> getEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.getSearchCheckSpellingActionTypes();
     }
 
@@ -82,8 +81,6 @@ public class GetSearchCheckSpellingActionTypesCommand
         var result = SearchResultFactory.getGetSearchCheckSpellingActionTypesResult();
 
         if(entities != null) {
-            var searchControl = Session.getModelController(SearchControl.class);
-
             if(session.hasLimit(SearchCheckSpellingActionTypeFactory.class)) {
                 result.setSearchCheckSpellingActionTypeCount(getTotalEntities());
             }

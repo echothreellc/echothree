@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditForumGroupForumCommand
@@ -53,6 +53,10 @@ public class EditForumGroupForumCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of EditForumGroupForumCommand */
     public EditForumGroupForumCommand() {
@@ -71,7 +75,6 @@ public class EditForumGroupForumCommand
 
     @Override
     public ForumGroupForum getEntity(EditForumGroupForumResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         ForumGroupForum forumGroupForum = null;
         var forumGroupName = spec.getForumGroupName();
         var forumGroup = forumControl.getForumGroupByName(forumGroupName);
@@ -107,8 +110,6 @@ public class EditForumGroupForumCommand
 
     @Override
     public void fillInResult(EditForumGroupForumResult result, ForumGroupForum forumGroupForum) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForumGroupForum(forumControl.getForumGroupForumTransfer(getUserVisit(), forumGroupForum));
     }
 
@@ -120,7 +121,6 @@ public class EditForumGroupForumCommand
 
     @Override
     public void doUpdate(ForumGroupForum forumGroupForum) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumGroupForumValue = forumControl.getForumGroupForumValue(forumGroupForum);
 
         forumGroupForumValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

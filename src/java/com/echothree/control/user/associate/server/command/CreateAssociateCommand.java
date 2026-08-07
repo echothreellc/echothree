@@ -18,7 +18,6 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.CreateAssociateForm;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -26,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateAssociateCommand
@@ -38,14 +37,21 @@ public class CreateAssociateCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
-            new FieldDefinition("SummaryMimeTypeName", FieldType.MIME_TYPE, true, null, null),
-            new FieldDefinition("Summary", FieldType.STRING, true, null, null)
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
+                new FieldDefinition("SummaryMimeTypeName", FieldType.MIME_TYPE, true, null, null),
+                new FieldDefinition("Summary", FieldType.STRING, true, null, null)
         );
     }
+
+    @Inject
+    AssociateControl associateControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateAssociateCommand */
     public CreateAssociateCommand() {
@@ -54,7 +60,6 @@ public class CreateAssociateCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = Session.getModelController(AssociateControl.class);
         var associateProgramName = form.getAssociateProgramName();
         var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
@@ -63,12 +68,10 @@ public class CreateAssociateCommand
             var associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate == null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyName = form.getPartyName();
                 var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                     var summaryMimeTypeName = form.getSummaryMimeTypeName();
                     var summaryMimeType = mimeTypeControl.getMimeTypeByName(summaryMimeTypeName);
                     

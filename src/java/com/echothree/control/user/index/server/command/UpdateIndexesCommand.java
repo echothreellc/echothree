@@ -60,7 +60,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import static java.lang.Math.toIntExact;
 import java.util.ArrayList;
@@ -70,6 +69,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @Dependent
 public class UpdateIndexesCommand
@@ -79,9 +79,22 @@ public class UpdateIndexesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
-        );
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    QueueTypeLogic queueTypeLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
     
     /** Creates a new instance of UpdateIndexesCommand */
     public UpdateIndexesCommand() {
@@ -99,7 +112,6 @@ public class UpdateIndexesCommand
     }
     
     private Map<EntityInstance, List<QueuedEntity>> getQueuedEntities(final QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queuedEntityMap = new HashMap<EntityInstance, List<QueuedEntity>>(QUEUED_ENTITY_COUNT);
         var queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
         
@@ -207,7 +219,7 @@ public class UpdateIndexesCommand
     private void closeIndexers(final QueueControl queueControl, final QueueType queueType, final Map<EntityType, List<BaseIndexer<?>>> indexersMap) {
         indexersMap.forEach((key, value) -> value.stream().peek((baseIndexer) -> {
             if(queueControl.countQueuedEntitiesByEntityType(queueType, baseIndexer.getEntityType()) == 0) {
-                SearchLogic.getInstance().invalidateCachedSearchesByIndex(baseIndexer.getIndex());
+                searchLogic.invalidateCachedSearchesByIndex(baseIndexer.getIndex());
             }
         }).forEach(BaseIndexer::close));
     }
@@ -247,17 +259,14 @@ public class UpdateIndexesCommand
     @Override
     protected BaseResult execute() {
         var result = IndexResultFactory.getUpdateIndexesResult();
-        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(this, QueueTypes.INDEXING.name());
+        var queueType = queueTypeLogic.getQueueTypeByName(this, QueueTypes.INDEXING.name());
         var indexingComplete = false; // Indexing is only complete when we can absolutely verify it as being complete.
         
         if(!hasExecutionErrors()) {
-            var queueControl = Session.getModelController(QueueControl.class);
-            
             indexingComplete = queueControl.countQueuedEntitiesByQueueType(queueType) == 0;
             
             // If there isn't anything in the queue, skip over all of this.
             if(!indexingComplete) {
-                var indexControl = Session.getModelController(IndexControl.class);
                 var indexersMap = new HashMap<EntityType, List<BaseIndexer<?>>>(toIntExact(indexControl.countIndexes()));
 
                 try {

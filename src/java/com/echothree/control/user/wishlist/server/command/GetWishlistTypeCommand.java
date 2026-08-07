@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWishlistTypeCommand
@@ -45,6 +45,13 @@ public class GetWishlistTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
+
     
     /** Creates a new instance of GetWishlistTypeCommand */
     public GetWishlistTypeCommand() {
@@ -53,7 +60,7 @@ public class GetWishlistTypeCommand
 
     @Override
     protected WishlistType getEntity() {
-        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpec(this, form, true);
+        var wishlistType = wishlistTypeLogic.getWishlistTypeByUniversalSpec(this, form, true);
 
         if(wishlistType != null) {
             sendEvent(wishlistType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetWishlistTypeCommand
 
     @Override
     protected BaseResult getResult(WishlistType itemAliasType) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var result = WishlistResultFactory.getGetWishlistTypeResult();
 
         if(itemAliasType != null) {

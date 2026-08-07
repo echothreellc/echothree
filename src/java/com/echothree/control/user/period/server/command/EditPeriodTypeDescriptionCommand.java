@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPeriodTypeDescriptionCommand
@@ -53,8 +53,8 @@ public class EditPeriodTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PeriodType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -66,6 +66,13 @@ public class EditPeriodTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PeriodControl periodControl;
+
     
     /** Creates a new instance of EditPeriodTypeDescriptionCommand */
     public EditPeriodTypeDescriptionCommand() {
@@ -74,7 +81,6 @@ public class EditPeriodTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var result = PeriodResultFactory.getEditPeriodTypeDescriptionResult();
         var periodKindName = spec.getPeriodKindName();
         var periodKind = periodControl.getPeriodKindByName(periodKindName);
@@ -84,7 +90,6 @@ public class EditPeriodTypeDescriptionCommand
             var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
 
             if(periodType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

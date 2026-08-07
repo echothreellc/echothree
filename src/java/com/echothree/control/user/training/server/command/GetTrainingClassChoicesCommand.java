@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassChoicesCommand
@@ -46,14 +46,18 @@ public class GetTrainingClassChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClass.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultTrainingClassChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
     
     /** Creates a new instance of GetTrainingClassChoicesCommand */
     public GetTrainingClassChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetTrainingClassChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var result = TrainingResultFactory.getGetTrainingClassChoicesResult();
         var defaultTrainingClassChoice = form.getDefaultTrainingClassChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

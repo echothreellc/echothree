@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactWebAddressCommand
@@ -59,8 +59,8 @@ public class EditContactWebAddressCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -72,6 +72,13 @@ public class EditContactWebAddressCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContactWebAddressCommand */
     public EditContactWebAddressCommand() {
@@ -97,13 +104,11 @@ public class EditContactWebAddressCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactWebAddressResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -143,15 +148,12 @@ public class EditContactWebAddressCommand
 
     @Override
     public void fillInResult(EditContactWebAddressResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
     }
 
     @Override
     public void doLock(ContactWebAddressEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactWebAddress = contactControl.getContactWebAddress(contactMechanism);
         var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
@@ -162,7 +164,6 @@ public class EditContactWebAddressCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactWebAddressValue = contactControl.getContactWebAddressValueForUpdate(contactMechanism);

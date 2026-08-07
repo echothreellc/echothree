@@ -68,17 +68,18 @@ public class EditWishlistTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditWishlistTypeCommand */
-    public EditWishlistTypeCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     WishlistControl wishlistControl;
 
     @Inject
     WishlistTypeLogic wishlistTypeLogic;
+
+
+    /** Creates a new instance of EditWishlistTypeCommand */
+    public EditWishlistTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditWishlistTypeResult getResult() {

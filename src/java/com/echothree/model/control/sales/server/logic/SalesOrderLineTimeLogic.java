@@ -32,6 +32,12 @@ import javax.inject.Inject;
 public class SalesOrderLineTimeLogic
         extends BaseLogic {
 
+    @Inject
+    OrderLineTimeLogic orderLineTimeLogic;
+
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
+
     protected SalesOrderLineTimeLogic() {
         super();
     }
@@ -39,12 +45,7 @@ public class SalesOrderLineTimeLogic
     public static SalesOrderLineTimeLogic getInstance() {
         return CDI.current().select(SalesOrderLineTimeLogic.class).get();
     }
-    
-    @Inject
-    OrderLineTimeLogic orderLineTimeLogic;
-    @Inject
-    SalesOrderLineLogic salesOrderLineLogic;
-    
+
     public void createOrderLineTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence, final String orderTimeTypeName, final Long time, final BasePK createdBy) {
         var orderLine = salesOrderLineLogic.getOrderLineByName(eea, orderName, orderLineSequence);
         

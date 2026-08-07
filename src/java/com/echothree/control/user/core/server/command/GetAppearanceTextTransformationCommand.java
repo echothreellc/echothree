@@ -66,6 +66,7 @@ public class GetAppearanceTextTransformationCommand
 
     @Inject
     TextLogic textLogic;
+
     
     /** Creates a new instance of GetAppearanceTextTransformationCommand */
     public GetAppearanceTextTransformationCommand() {

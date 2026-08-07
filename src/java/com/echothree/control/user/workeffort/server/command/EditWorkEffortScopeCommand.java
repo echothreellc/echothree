@@ -43,9 +43,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkEffortScopeCommand
@@ -60,8 +60,8 @@ public class EditWorkEffortScopeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkEffortScope.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -82,6 +82,16 @@ public class EditWorkEffortScopeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of EditWorkEffortScopeCommand */
     public EditWorkEffortScopeCommand() {
@@ -102,7 +112,6 @@ public class EditWorkEffortScopeCommand
 
     @Override
     public WorkEffortScope getEntity(EditWorkEffortScopeResult result) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         WorkEffortScope workEffortScope = null;
         var workEffortTypeName = spec.getWorkEffortTypeName();
 
@@ -136,8 +145,6 @@ public class EditWorkEffortScopeCommand
 
     @Override
     public void fillInResult(EditWorkEffortScopeResult result, WorkEffortScope workEffortScope) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-
         result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(getUserVisit(), workEffortScope));
     }
 
@@ -146,8 +153,6 @@ public class EditWorkEffortScopeCommand
     
     @Override
     public void doLock(WorkEffortScopeEdit edit, WorkEffortScope workEffortScope) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, getPreferredLanguage());
         var workEffortScopeDetail = workEffortScope.getLastDetail();
         var workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
@@ -179,7 +184,6 @@ public class EditWorkEffortScopeCommand
     
     @Override
     public void canUpdate(WorkEffortScope workEffortScope) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var workEffortScopeName = edit.getWorkEffortScopeName();
         var duplicateWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
 
@@ -189,7 +193,6 @@ public class EditWorkEffortScopeCommand
             var workEffortSequenceName = edit.getWorkEffortSequenceName();
 
             if(workEffortSequenceName != null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
 
                 if(sequenceType != null) {
@@ -200,8 +203,6 @@ public class EditWorkEffortScopeCommand
             }
 
             if(workEffortSequenceName == null || workEffortSequence != null) {
-                var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
                 scheduledTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                         edit.getScheduledTime(), edit.getScheduledTimeUnitOfMeasureTypeName(),
                         null, ExecutionErrors.MissingRequiredScheduledTime.name(), null, ExecutionErrors.MissingRequiredScheduledTimeUnitOfMeasureTypeName.name(),
@@ -228,7 +229,6 @@ public class EditWorkEffortScopeCommand
     
     @Override
     public void doUpdate(WorkEffortScope workEffortScope) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var partyPK = getPartyPK();
         var workEffortScopeDetailValue = workEffortControl.getWorkEffortScopeDetailValueForUpdate(workEffortScope);
         var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescriptionForUpdate(workEffortScope, getPreferredLanguage());

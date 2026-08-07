@@ -22,13 +22,16 @@ import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SelectorNodeTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SelectorControl selectorControl;
 
     protected SelectorNodeTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class SelectorNodeTypeLogic
     }
     
     public SelectorNodeType getSelectorNodeTypeByName(final ExecutionErrorAccumulator eea, final String selectorNodeTypeName) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
 
         if(selectorNodeType == null) {

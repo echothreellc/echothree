@@ -32,10 +32,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ForumMessageControl
         extends BaseModelControl {
+
+    @Inject
+    protected ForumControl forumControl;
 
     /** Creates a new instance of ForumControl */
     protected ForumMessageControl() {
@@ -45,6 +49,12 @@ public class ForumMessageControl
     // --------------------------------------------------------------------------------
     //   Forum Message Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ForumMessageFactory forumMessageFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<ForumMessageResultTransfer> getForumMessageResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -57,19 +67,20 @@ public class ForumMessageControl
         }
 
         try {
-            var forumControl = Session.getModelController(ForumControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+            var ps = searchResultFactory.prepareStatement(
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
+                    var forumMessage = forumMessageFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
 
                     forumMessageResultTransfers.add(new ForumMessageResultTransfer(forumMessage.getLastDetail().getForumMessageName(),
                             includeForumMessage ? forumControl.getForumMessageTransfer(userVisit, forumMessage) : null));

@@ -44,7 +44,6 @@ import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
@@ -60,7 +59,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityNamesUtils;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import com.echothree.util.server.string.NameCleaner;
 import com.echothree.util.server.validation.fieldtype.EntityNameFieldType;
@@ -81,14 +79,42 @@ public class IdentifyCommand
                 new FieldDefinition("Target", FieldType.STRING, true, null, null)
         );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     
     /** Creates a new instance of IdentifyCommand */
     public IdentifyCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    EntityAliasControl entityAliasControl;
 
     @Override
     protected void setupSession() {
@@ -105,7 +131,6 @@ public class IdentifyCommand
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false);
 
         entityInstance.setEntityNames(entityInstanceAndNames.getEntityNames());
@@ -122,13 +147,11 @@ public class IdentifyCommand
     }
     
     private void checkItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var item = itemControl.getItemByNameThenAlias(target);
 
             if(item != null) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
@@ -138,13 +161,11 @@ public class IdentifyCommand
     }
 
     private void checkCompanies(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Company.name(), SecurityRoles.Search.name())) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyCompany = partyControl.getPartyCompanyByName(target);
 
             if(partyCompany != null) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyCompany.getParty().getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
@@ -154,10 +175,8 @@ public class IdentifyCommand
     }
 
     private void checkDivisions(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Division.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyDivisions = partyControl.getDivisionsByName(target);
 
             partyDivisions.stream().map((partyDivision) -> entityInstanceControl.getEntityInstanceByBasePK(partyDivision.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -167,10 +186,8 @@ public class IdentifyCommand
     }
 
     private void checkDepartments(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Department.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyDepartments = partyControl.getDepartmentsByName(target);
 
             partyDepartments.stream().map((partyDepartment) -> entityInstanceControl.getEntityInstanceByBasePK(partyDepartment.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -180,10 +197,8 @@ public class IdentifyCommand
     }
 
     private void checkWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
             var warehouse = warehouseControl.getWarehouseByName(target);
 
             if(warehouse != null) {
@@ -196,10 +211,8 @@ public class IdentifyCommand
     }
 
     private void checkLocations(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Location.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
             var locations = warehouseControl.getLocationsByName(target);
 
             locations.stream().map((location) -> entityInstanceControl.getEntityInstanceByBasePK(location.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -209,10 +222,8 @@ public class IdentifyCommand
     }
 
     private void checkEmployees(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var employeeControl = Session.getModelController(EmployeeControl.class);
             var partyEmployee = employeeControl.getPartyEmployeeByName(target);
 
             if(partyEmployee != null) {
@@ -225,10 +236,8 @@ public class IdentifyCommand
     }
 
     private void checkCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var customerControl = Session.getModelController(CustomerControl.class);
             var customer = customerControl.getCustomerByName(target);
 
             if(customer != null) {
@@ -241,10 +250,8 @@ public class IdentifyCommand
     }
 
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var vendorControl = Session.getModelController(VendorControl.class);
             var vendor = vendorControl.getVendorByName(target);
 
             if(vendor != null) {
@@ -257,10 +264,8 @@ public class IdentifyCommand
     }
 
     private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var vendorControl = Session.getModelController(VendorControl.class);
             var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
 
             vendorItems.stream().map((vendorItem) -> entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -270,9 +275,8 @@ public class IdentifyCommand
     }
 
     private void checkComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var componentVendor = componentControl.getComponentVendorByName(target);
 
             if(componentVendor != null) {
@@ -285,9 +289,8 @@ public class IdentifyCommand
     }
 
     private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityTypes = entityTypeControl.getEntityTypesByName(target);
 
             entityTypes.stream().map((entityType) -> entityInstanceControl.getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -297,9 +300,8 @@ public class IdentifyCommand
     }
 
     private void checkEntityAliasTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAliasType.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityAliasTypes = entityAliasControl.getEntityAliasTypesByName(target);
 
             entityAliasTypes.stream().map((entityAliasType) -> entityInstanceControl.getEntityInstanceByBasePK(entityAliasType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -309,9 +311,8 @@ public class IdentifyCommand
     }
 
     private void checkEntityAttributes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityAttributes = coreControl.getEntityAttributesByName(target);
 
             entityAttributes.stream().map((entityAttribute) -> entityInstanceControl.getEntityInstanceByBasePK(entityAttribute.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -321,9 +322,8 @@ public class IdentifyCommand
     }
 
     private void checkEntityListItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityListItem.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityListItems = coreControl.getEntityListItemsByName(target);
 
             entityListItems.stream().map((entityListItem) -> entityInstanceControl.getEntityInstanceByBasePK(entityListItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -333,9 +333,8 @@ public class IdentifyCommand
     }
 
     private void checkEntityAttributeGroups(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Search.name())) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(target);
 
             if(entityAttributeGroup != null) {
@@ -375,9 +374,8 @@ public class IdentifyCommand
 
     private void searchCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
             final NameResult nameResult) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.CUSTOMER.name());
 
             if(!hasExecutionErrors()) {
@@ -425,9 +423,8 @@ public class IdentifyCommand
 
     private void searchEmployees(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
             final NameResult nameResult) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.EMPLOYEE.name());
 
             if(!hasExecutionErrors()) {
@@ -475,9 +472,8 @@ public class IdentifyCommand
 
     private void searchVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
             final NameResult nameResult) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.VENDOR.name());
 
             if(!hasExecutionErrors()) {
@@ -517,9 +513,8 @@ public class IdentifyCommand
     }
 
     private void searchWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.WAREHOUSE.name());
 
             if(!hasExecutionErrors()) {
@@ -558,9 +553,8 @@ public class IdentifyCommand
     }
 
     private void searchItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ITEM.name());
 
             if(!hasExecutionErrors()) {
@@ -597,9 +591,8 @@ public class IdentifyCommand
     }
 
     private void searchComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.COMPONENT_VENDOR.name());
 
             if(!hasExecutionErrors()) {
@@ -636,9 +629,8 @@ public class IdentifyCommand
     }
 
     private void searchEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
 
             if(!hasExecutionErrors()) {
@@ -675,9 +667,8 @@ public class IdentifyCommand
     }
 
     private void searchEntityAliasTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAliasType.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
 
             if(!hasExecutionErrors()) {
@@ -714,9 +705,8 @@ public class IdentifyCommand
     }
 
     private void searchEntityAttributes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
 
             if(!hasExecutionErrors()) {
@@ -753,9 +743,8 @@ public class IdentifyCommand
     }
 
     private void searchEntityListItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityListItem.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
 
             if(!hasExecutionErrors()) {
@@ -792,9 +781,8 @@ public class IdentifyCommand
     }
 
     private void searchEntityAttributeGroups(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Search.name())) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
 
             if(!hasExecutionErrors()) {
@@ -812,8 +800,7 @@ public class IdentifyCommand
     // Add results from any of the BaseSearchEvaluators to the entityInstances.
     private void addSearchResults(final UserVisit userVisit, final SearchType searchType,
             final Set<EntityInstanceTransfer> entityInstances) {
-        var searchControl = Session.getModelController(SearchControl.class);
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
+        var userVisitSearch = searchLogic.getUserVisitSearch(null, userVisit, searchType);
         var resultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
 
         for(var resultEntityInstance : resultEntityInstances) {

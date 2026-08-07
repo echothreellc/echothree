@@ -37,10 +37,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentCatalogItemsCommand
@@ -54,8 +54,8 @@ public class GetContentCatalogItemsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCatalogItem.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentWebAddressName", FieldType.HOST_NAME, false, null, null),
@@ -64,8 +64,15 @@ public class GetContentCatalogItemsCommand
                 new FieldDefinition("AssociateProgramName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociateName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
     
     /** Creates a new instance of GetContentCatalogItemsCommand */
     public GetContentCatalogItemsCommand() {
@@ -81,7 +88,6 @@ public class GetContentCatalogItemsCommand
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -124,7 +130,7 @@ public class GetContentCatalogItemsCommand
         }
 
         if(!hasExecutionErrors()) {
-            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+            associateReferralLogic.handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
                     contentCatalog.getPrimaryKey(), getPartyPK());
 
         }
@@ -132,8 +138,6 @@ public class GetContentCatalogItemsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return hasExecutionErrors() ? null :
                 contentControl.countContentCatalogItemsByContentCatalog(contentCatalog);
     }
@@ -143,8 +147,6 @@ public class GetContentCatalogItemsCommand
         Collection<ContentCatalogItem> contentCatalogItems = null;
 
         if(!hasExecutionErrors()) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             contentCatalogItems = contentControl.getContentCatalogItemsByContentCatalog(contentCatalog);
         }
 
@@ -156,7 +158,6 @@ public class GetContentCatalogItemsCommand
         var result = ContentResultFactory.getGetContentCatalogItemsResult();
 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
             result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));

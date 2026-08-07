@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterStepCommand
@@ -57,6 +58,10 @@ public class CreateFilterStepCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
     
     /** Creates a new instance of CreateFilterStepCommand */
     public CreateFilterStepCommand() {
@@ -73,7 +78,7 @@ public class CreateFilterStepCommand
         var filterItemSelectorName = form.getFilterItemSelectorName();
         var description = form.getDescription();
 
-        var filterStep = FilterStepLogic.getInstance().createFilterStep(this, filterKindName, filterTypeName,
+        var filterStep = filterStepLogic.createFilterStep(this, filterKindName, filterTypeName,
                 filterName, filterStepName, filterItemSelectorName, getPreferredLanguage(), description, getPartyPK());
 
         if(filterStep != null) {

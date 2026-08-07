@@ -38,6 +38,9 @@ public class ForumLogic
     @Inject
     ForumControl forumControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ForumLogic() {
         super();
     }
@@ -65,12 +68,12 @@ public class ForumLogic
             final ForumUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Forum forum = null;
         var forumName = universalSpec.getForumName();
-        var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (forumName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(forumName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Forum.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

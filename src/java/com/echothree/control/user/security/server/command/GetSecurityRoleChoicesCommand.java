@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleChoicesCommand
@@ -47,17 +47,24 @@ public class GetSecurityRoleChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SecurityRole.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SecurityRole.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSecurityRoleChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of GetSecurityRoleChoicesCommand */
     public GetSecurityRoleChoicesCommand() {
@@ -72,7 +79,6 @@ public class GetSecurityRoleChoicesCommand
         var parameterCount = (securityRoleGroupName == null ? 0 : 1) + (workflowName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var securityControl = Session.getModelController(SecurityControl.class);
             SecurityRoleGroup securityRoleGroup = null;
             
             if(securityRoleGroupName != null) {
@@ -82,7 +88,6 @@ public class GetSecurityRoleChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name(), securityRoleGroupName);
                 }
             } else {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var workflow = workflowControl.getWorkflowByName(workflowName);
 
                 if(workflow != null) {

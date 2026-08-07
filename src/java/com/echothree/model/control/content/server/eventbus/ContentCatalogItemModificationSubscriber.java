@@ -34,25 +34,38 @@ import com.echothree.model.data.inventory.common.InventoryConditionConstants;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class ContentCatalogItemModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    EventControl eventControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
 
     @Subscribe
     public void receiveSentEventForContentCategories(SentEvent se) {
         decodeEventAndApply(se, touchContentCatalogItemsIfContentCategory);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchContentCatalogItemsIfContentCategory = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(ContentCategoryConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ContentCategoryConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
             var contentCategory = contentControl.getContentCategoryByEntityInstance(entityInstance);
             var contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(contentCategory);
 
@@ -71,13 +84,11 @@ public class ContentCatalogItemModificationSubscriber
         decodeEventAndApply(se, touchContentCatalogItemsIfContentCatalog);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchContentCatalogItemsIfContentCatalog = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(ContentCatalogConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ContentCatalogConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
             var contentCatalog = contentControl.getContentCatalogByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByContentCatalog(contentCatalog);
 
@@ -94,14 +105,11 @@ public class ContentCatalogItemModificationSubscriber
         decodeEventAndApply(se, touchContentCatalogItemsIfItem);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchContentCatalogItemsIfItem = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(ItemConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ItemConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var itemControl = Session.getModelController(ItemControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
             var item = itemControl.getItemByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByItem(item);
 
@@ -118,14 +126,11 @@ public class ContentCatalogItemModificationSubscriber
         decodeEventAndApply(se, touchContentCatalogInventoryConditionsIfInventoryCondition);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchContentCatalogInventoryConditionsIfInventoryCondition = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(InventoryConditionConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && InventoryConditionConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var inventoryControl = Session.getModelController(InventoryControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
             var inventoryCondition = inventoryControl.getInventoryConditionByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByInventoryCondition(inventoryCondition);
 
@@ -142,14 +147,11 @@ public class ContentCatalogItemModificationSubscriber
         decodeEventAndApply(se, touchContentCatalogUnitOfMeasureTypesIfUnitOfMeasureType);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchContentCatalogUnitOfMeasureTypesIfUnitOfMeasureType = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(UnitOfMeasureTypeConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && UnitOfMeasureTypeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var uomControl = Session.getModelController(UomControl.class);
-            var contentControl = Session.getModelController(ContentControl.class);
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByUnitOfMeasureType(unitOfMeasureType);
 

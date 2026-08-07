@@ -32,10 +32,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ContactMechanismControl
         extends BaseModelControl {
+
+    @Inject
+    protected ContactControl contactControl;
 
     /** Creates a new instance of ContactMechanismControl */
     protected ContactMechanismControl() {
@@ -45,6 +49,12 @@ public class ContactMechanismControl
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ContactMechanismFactory contactMechanismFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<ContactMechanismResultTransfer> getContactMechanismResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -57,19 +67,20 @@ public class ContactMechanismControl
         }
 
         try {
-            var contactControl = Session.getModelController(ContactControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+            var ps = searchResultFactory.prepareStatement(
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContactMechanismPK(rs.getLong(1)));
+                    var contactMechanism = contactMechanismFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ContactMechanismPK(rs.getLong(1)));
                     var contactMechanismDetail = contactMechanism.getLastDetail();
 
                     contactMechanismResultTransfers.add(new ContactMechanismResultTransfer(contactMechanismDetail.getContactMechanismName(),

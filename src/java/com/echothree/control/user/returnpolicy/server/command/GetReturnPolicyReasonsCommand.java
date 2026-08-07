@@ -62,7 +62,7 @@ public class GetReturnPolicyReasonsCommand
                 new FieldDefinition("ReturnReasonName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
@@ -71,6 +71,7 @@ public class GetReturnPolicyReasonsCommand
 
     @Inject
     ReturnPolicyLogic returnPolicyLogic;
+
 
     /** Creates a new instance of GetReturnPolicyReasonsCommand */
     public GetReturnPolicyReasonsCommand() {

@@ -18,8 +18,6 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.GetRatingTypesForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
-import com.echothree.model.control.core.server.control.ComponentControl;
-import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.core.server.entity.EntityType;

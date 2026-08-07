@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContentCategoryItemCommand
@@ -51,8 +51,8 @@ public class DeleteContentCategoryItemCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCategoryItem.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +62,27 @@ public class DeleteContentCategoryItemCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ContentLogic contentLogic;
+
     
     /** Creates a new instance of DeleteContentCategoryItemCommand */
     public DeleteContentCategoryItemCommand() {
@@ -72,7 +91,6 @@ public class DeleteContentCategoryItemCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -85,24 +103,20 @@ public class DeleteContentCategoryItemCommand
                 var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
                     var itemName = form.getItemName();
                     var item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
-                        var inventoryControl = Session.getModelController(InventoryControl.class);
                         var inventoryConditionName = form.getInventoryConditionName();
                         var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                         
                         if(inventoryCondition != null) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             var itemDetail = item.getLastDetail();
                             var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 var currencyIsoName = form.getCurrencyIsoName();
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
@@ -115,7 +129,7 @@ public class DeleteContentCategoryItemCommand
                                                 contentCatalogItem);
                                         
                                         if(contentCategoryItem != null) {
-                                            ContentLogic.getInstance().deleteContentCategoryItem(contentCategoryItem, getPartyPK());
+                                            contentLogic.deleteContentCategoryItem(contentCategoryItem, getPartyPK());
                                         } else {
                                             addExecutionError(ExecutionErrors.UnknownContentCategoryItem.name(),
                                                     contentCollectionName, contentCatalogName, contentCategoryName, itemName,

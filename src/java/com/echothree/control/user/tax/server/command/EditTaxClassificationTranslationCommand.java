@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTaxClassificationTranslationCommand
@@ -59,8 +59,8 @@ public class EditTaxClassificationTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TaxClassification.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TaxClassificationName", FieldType.ENTITY_NAME, true, null, null),
@@ -73,6 +73,18 @@ public class EditTaxClassificationTranslationCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TaxControl taxControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     /** Creates a new instance of EditTaxClassificationTranslationCommand */
     public EditTaxClassificationTranslationCommand() {
@@ -91,18 +103,15 @@ public class EditTaxClassificationTranslationCommand
 
     @Override
     public TaxClassificationTranslation getEntity(EditTaxClassificationTranslationResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         TaxClassificationTranslation taxClassificationTranslation = null;
         var countryName = spec.getCountryName();
         var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
-            var taxControl = Session.getModelController(TaxControl.class);
             var taxClassificationName = spec.getTaxClassificationName();
             var taxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
 
             if(taxClassification != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -136,8 +145,6 @@ public class EditTaxClassificationTranslationCommand
 
     @Override
     public void fillInResult(EditTaxClassificationTranslationResult result, TaxClassificationTranslation taxClassificationTranslation) {
-        var taxControl = Session.getModelController(TaxControl.class);
-
         result.setTaxClassificationTranslation(taxControl.getTaxClassificationTranslationTransfer(getUserVisit(), taxClassificationTranslation));
     }
 
@@ -157,14 +164,13 @@ public class EditTaxClassificationTranslationCommand
         var overviewMimeTypeName = edit.getOverviewMimeTypeName();
         var overview = edit.getOverview();
         
-        overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
+        overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                 ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
     }
     
     @Override
     public void doUpdate(TaxClassificationTranslation taxClassificationTranslation) {
-        var taxControl = Session.getModelController(TaxControl.class);
         var taxClassificationTranslationValue = taxControl.getTaxClassificationTranslationValue(taxClassificationTranslation);
 
         taxClassificationTranslationValue.setDescription(edit.getDescription());

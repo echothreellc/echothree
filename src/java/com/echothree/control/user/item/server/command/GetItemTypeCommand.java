@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemTypeCommand
@@ -50,6 +50,15 @@ public class GetItemTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemTypeLogic itemTypeLogic;
+
     /** Creates a new instance of GetItemTypeCommand */
     public GetItemTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -57,21 +66,20 @@ public class GetItemTypeCommand
 
     @Override
     protected ItemType getEntity() {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemType itemType = null;
         var itemTypeName = form.getItemTypeName();
-        var parameterCount = (itemTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(itemTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemType.name());
 
                 if(!hasExecutionErrors()) {
                     itemType = itemControl.getItemTypeByEntityInstance(entityInstance);
                 }
             } else {
-                itemType = ItemTypeLogic.getInstance().getItemTypeByName(this, itemTypeName);
+                itemType = itemTypeLogic.getItemTypeByName(this, itemTypeName);
             }
 
             if(itemType != null) {
@@ -86,7 +94,6 @@ public class GetItemTypeCommand
 
     @Override
     protected BaseResult getResult(ItemType itemType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemTypeResult();
 
         if(itemType != null) {

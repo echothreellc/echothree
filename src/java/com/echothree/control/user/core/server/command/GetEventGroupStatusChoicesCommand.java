@@ -18,16 +18,15 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventGroupStatusChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEventGroupStatusChoicesCommand
@@ -37,11 +36,12 @@ public class GetEventGroupStatusChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EventGroupName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultEventGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("EventGroupName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultEventGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
     
     /** Creates a new instance of GetEventGroupStatusChoicesCommand */
     public GetEventGroupStatusChoicesCommand() {
@@ -50,7 +50,6 @@ public class GetEventGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var eventControl = Session.getModelController(EventControl.class);
         var result = CoreResultFactory.getGetEventGroupStatusChoicesResult();
         var eventGroupName = form.getEventGroupName();
         var eventGroup = eventControl.getEventGroupByName(eventGroupName);

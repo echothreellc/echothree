@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteUseNameElementCommand
@@ -44,13 +45,17 @@ public class DeleteUseNameElementCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.UseNameElement.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    UseNameElementLogic useNameElementLogic;
+
     
     /** Creates a new instance of DeleteUseNameElementCommand */
     public DeleteUseNameElementCommand() {
@@ -60,10 +65,10 @@ public class DeleteUseNameElementCommand
     @Override
     protected BaseResult execute() {
         var useNameElementName = form.getUseNameElementName();
-        var useNameElement = UseNameElementLogic.getInstance().getUseNameElementByNameForUpdate(this, useNameElementName);
+        var useNameElement = useNameElementLogic.getUseNameElementByNameForUpdate(this, useNameElementName);
         
         if(!hasExecutionErrors()) {
-            UseNameElementLogic.getInstance().deleteUseNameElement(this, useNameElement, getPartyPK());
+            useNameElementLogic.deleteUseNameElement(this, useNameElement, getPartyPK());
         }
         
         return null;

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterStepElementDescriptionCommand
@@ -60,6 +60,13 @@ public class CreateFilterStepElementDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateFilterStepElementDescriptionCommand */
     public CreateFilterStepElementDescriptionCommand() {
@@ -68,7 +75,6 @@ public class CreateFilterStepElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -89,7 +95,6 @@ public class CreateFilterStepElementDescriptionCommand
                         var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement != null) {
-                            var partyControl = Session.getModelController(PartyControl.class);
                             var languageIsoName = form.getLanguageIsoName();
                             var language = partyControl.getLanguageByIsoName(languageIsoName);
                             

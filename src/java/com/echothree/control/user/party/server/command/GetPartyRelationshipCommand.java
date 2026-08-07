@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyRelationshipCommand
@@ -59,6 +59,10 @@ public class GetPartyRelationshipCommand
                 new FieldDefinition("ToRoleTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetPartyRelationshipCommand */
     public GetPartyRelationshipCommand() {
@@ -67,7 +71,6 @@ public class GetPartyRelationshipCommand
 
     @Override
     protected PartyRelationship getEntity() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyRelationshipTypeName = form.getPartyRelationshipTypeName();
         var partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
         PartyRelationship partyRelationship = null;
@@ -114,8 +117,6 @@ public class GetPartyRelationshipCommand
         var result = PartyResultFactory.getGetPartyRelationshipResult();
 
         if(partyRelationship != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             result.setPartyRelationship(partyControl.getPartyRelationshipTransfer(getUserVisit(), partyRelationship));
         }
 

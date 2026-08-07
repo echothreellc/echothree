@@ -27,6 +27,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeCommand
@@ -44,6 +45,10 @@ public class GetEntityAttributeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of GetEntityAttributeCommand */
     public GetEntityAttributeCommand() {
@@ -52,7 +57,7 @@ public class GetEntityAttributeCommand
     
     @Override
     protected EntityAttribute getEntity() {
-        return EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        return entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
     }
     
     @Override

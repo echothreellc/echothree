@@ -60,9 +60,10 @@ public class GetSelectorTypesCommand
 
     @Inject
     SelectorControl selectorControl;
-    
+
     @Inject
     SelectorKindLogic selectorKindLogic;
+
 
     /** Creates a new instance of GetSelectorTypesCommand */
     public GetSelectorTypesCommand() {

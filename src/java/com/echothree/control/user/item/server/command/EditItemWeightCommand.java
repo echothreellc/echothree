@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemWeightCommand
@@ -72,6 +72,16 @@ public class EditItemWeightCommand
                 new FieldDefinition("Weight", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of EditItemWeightCommand */
     public EditItemWeightCommand() {
@@ -92,8 +102,6 @@ public class EditItemWeightCommand
 
     @Override
     public ItemWeight getEntity(EditItemWeightResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var uomControl = Session.getModelController(UomControl.class);
         ItemWeight itemWeight = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
@@ -103,7 +111,7 @@ public class EditItemWeightCommand
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
-                var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByName(this, spec.getItemWeightTypeName());
+                var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByName(this, spec.getItemWeightTypeName());
 
                 if(!hasExecutionErrors()) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -143,15 +151,11 @@ public class EditItemWeightCommand
 
     @Override
     public void fillInResult(EditItemWeightResult result, ItemWeight itemWeight) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemWeight(itemControl.getItemWeightTransfer(getUserVisit(), itemWeight));
     }
 
     @Override
     public void doLock(ItemWeightEdit edit, ItemWeight itemWeight) {
-        var uomControl = Session.getModelController(UomControl.class);
-
         weight = itemWeight.getWeight();
         var weightConversion = weight == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, weight).convertToHighestUnitOfMeasureType();
 
@@ -164,7 +168,6 @@ public class EditItemWeightCommand
 
     @Override
     public void canUpdate(ItemWeight itemWeight) {
-        var uomControl = Session.getModelController(UomControl.class);
         var weightUnitOfMeasureTypeName = edit.getWeightUnitOfMeasureTypeName();
 
         weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, weightUnitOfMeasureTypeName);
@@ -182,8 +185,6 @@ public class EditItemWeightCommand
 
     @Override
     public void doUpdate(ItemWeight itemWeight) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var uomControl = Session.getModelController(UomControl.class);
         var itemWeightValue = itemControl.getItemWeightValue(itemWeight);
 
         var weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();

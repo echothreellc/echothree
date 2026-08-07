@@ -36,10 +36,10 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEmploymentCommand
@@ -61,6 +61,13 @@ public class EditEmploymentCommand
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditEmploymentCommand */
     public EditEmploymentCommand() {
@@ -82,7 +89,6 @@ public class EditEmploymentCommand
 
     @Override
     public Employment getEntity(EditEmploymentResult result) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         Employment employment;
         var employmentName = spec.getEmploymentName();
 
@@ -106,8 +112,6 @@ public class EditEmploymentCommand
 
     @Override
     public void fillInResult(EditEmploymentResult result, Employment employment) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         result.setEmployment(employeeControl.getEmploymentTransfer(getUserVisit(), employment));
     }
 
@@ -116,7 +120,6 @@ public class EditEmploymentCommand
 
     @Override
     public void doLock(EmploymentEdit edit, Employment employment) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var employmentDetail = employment.getLastDetail();
         var endTime = employmentDetail.getEndTime();
 
@@ -134,13 +137,11 @@ public class EditEmploymentCommand
     
     @Override
     public void canUpdate(Employment employment) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var companyName = edit.getCompanyName();
 
         partyCompany = partyControl.getPartyCompanyByName(companyName);
 
         if(partyCompany != null) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
             var terminationTypeName = edit.getTerminationTypeName();
 
             terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
@@ -163,7 +164,6 @@ public class EditEmploymentCommand
 
     @Override
     public void doUpdate(Employment employment) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employmentDetailValue = employeeControl.getEmploymentDetailValueForUpdate(employment);
         var strEndTime = edit.getEndTime();
 

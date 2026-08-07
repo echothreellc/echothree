@@ -26,13 +26,25 @@ import com.echothree.model.data.item.server.entity.ItemKitMember;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @Dependent
 public class ItemKitMemberLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
     private ItemKitMemberLogic() {
         super();
@@ -45,7 +57,6 @@ public class ItemKitMemberLogic
     public ItemKitMember getItemKitMember(final ExecutionErrorAccumulator eea, final String itemName, final String inventoryConditionName,
             final String unitOfMeasureTypeName, final String memberItemName, final String memberInventoryConditionName,
             final String memberUnitOfMeasureTypeName) {
-        var itemLogic = ItemLogic.getInstance();
         var item = itemLogic.getItemByName(eea, itemName);
         ItemKitMember itemKitMember = null;
 
@@ -54,11 +65,9 @@ public class ItemKitMemberLogic
             var itemTypeName = itemDetail.getItemType().getItemTypeName();
 
             if(itemTypeName.equals(ItemTypes.KIT.name())) {
-                var inventoryConditionLogic = InventoryConditionLogic.getInstance();
                 var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(eea, inventoryConditionName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
                     var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                     var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
 
@@ -73,8 +82,6 @@ public class ItemKitMemberLogic
                                 var memberUnitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea, memberUnitOfMeasureKind, memberUnitOfMeasureTypeName);
 
                                 if(eea == null || !eea.hasExecutionErrors()) {
-                                    var itemControl = Session.getModelController(ItemControl.class);
-
                                     itemKitMember = itemControl.getItemKitMember(item, inventoryCondition, unitOfMeasureType, memberItem,
                                             memberInventoryCondition, memberUnitOfMeasureType);
 

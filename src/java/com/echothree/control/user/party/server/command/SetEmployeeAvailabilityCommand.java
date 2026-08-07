@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetEmployeeAvailabilityCommand
@@ -47,16 +47,23 @@ public class SetEmployeeAvailabilityCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.EmployeeAvailability.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.EmployeeAvailability.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("EmployeeAvailabilityChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EmployeeAvailabilityChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of SetEmployeeAvailabilityCommand */
     public SetEmployeeAvailabilityCommand() {
@@ -65,7 +72,6 @@ public class SetEmployeeAvailabilityCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeName = form.getEmployeeName();
         var partyName = form.getPartyName();
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
@@ -82,8 +88,6 @@ public class SetEmployeeAvailabilityCommand
                     addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
                 party = partyControl.getPartyByName(partyName);
                 if(party == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);

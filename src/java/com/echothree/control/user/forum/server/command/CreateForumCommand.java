@@ -29,9 +29,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumCommand
@@ -48,8 +48,18 @@ public class CreateForumCommand
                 new FieldDefinition("ForumMessageSequenceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreateForumCommand */
     public CreateForumCommand() {
@@ -58,7 +68,6 @@ public class CreateForumCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumName = form.getForumName();
         var forum = forumControl.getForumByName(forumName);
         
@@ -67,7 +76,6 @@ public class CreateForumCommand
             var forumType = forumControl.getForumTypeByName(forumTypeName);
             
             if(forumType != null) {
-                var iconControl = Session.getModelController(IconControl.class);
                 var iconName = form.getIconName();
                 var icon = iconName == null? null: iconControl.getIconByName(iconName);
                 
@@ -88,7 +96,7 @@ public class CreateForumCommand
                         var forumMessageSequenceName = form.getForumMessageSequenceName();
                         
                         if(forumThreadSequenceName != null || forumMessageSequenceName != null) {
-                            sequenceControl = Session.getModelController(SequenceControl.class);
+                            sequenceControl = this.sequenceControl;
                             
                             if(forumThreadSequenceName != null) {
                                 var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());

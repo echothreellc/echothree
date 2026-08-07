@@ -62,12 +62,7 @@ public class GetOfferChainTypesCommand
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetOfferChainTypesCommand */
-    public GetOfferChainTypesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     ChainControl chainControl;
 
@@ -76,6 +71,12 @@ public class GetOfferChainTypesCommand
 
     @Inject
     OfferLogic offerLogic;
+
+
+    /** Creates a new instance of GetOfferChainTypesCommand */
+    public GetOfferChainTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private Offer offer;
     private ChainType chainType;

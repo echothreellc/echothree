@@ -70,6 +70,12 @@ public class LicenseControl
     //   License Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LicenseTypeFactory licenseTypeFactory;
+
+    @Inject
+    protected LicenseTypeDetailFactory licenseTypeDetailFactory;
+
     public LicenseType createLicenseType(String licenseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultLicenseType = getDefaultLicenseType();
         var defaultFound = defaultLicenseType != null;
@@ -83,12 +89,12 @@ public class LicenseControl
             isDefault = true;
         }
 
-        var licenseType = LicenseTypeFactory.getInstance().create();
-        var licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseType, licenseTypeName, isDefault, sortOrder, session.getStartTime(),
+        var licenseType = licenseTypeFactory.create();
+        var licenseTypeDetail = licenseTypeDetailFactory.create(licenseType, licenseTypeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, licenseType.getPrimaryKey());
+        licenseType = licenseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, licenseType.getPrimaryKey());
         licenseType.setActiveDetail(licenseTypeDetail);
         licenseType.setLastDetail(licenseTypeDetail);
         licenseType.store();
@@ -102,7 +108,7 @@ public class LicenseControl
     public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LicenseTypePK(entityInstance.getEntityUniqueId());
 
-        return LicenseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return licenseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -127,21 +133,25 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_licensetypename = ?");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_licensetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_licensetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_licensetypename = ?
+                FOR UPDATE
+                """);
         getLicenseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private LicenseType getLicenseTypeByName(String licenseTypeName, EntityPermission entityPermission) {
-        return LicenseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getLicenseTypeByNameQueries, licenseTypeName);
+        return licenseTypeFactory.getEntityFromQuery(entityPermission, getLicenseTypeByNameQueries, licenseTypeName);
     }
 
     public LicenseType getLicenseTypeByName(String licenseTypeName) {
@@ -166,21 +176,25 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultLicenseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private LicenseType getDefaultLicenseType(EntityPermission entityPermission) {
-        return LicenseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLicenseTypeQueries);
+        return licenseTypeFactory.getEntityFromQuery(entityPermission, getDefaultLicenseTypeQueries);
     }
 
     public LicenseType getDefaultLicenseType() {
@@ -201,21 +215,25 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "ORDER BY lcnstypdt_sortorder, lcnstypdt_licensetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                ORDER BY lcnstypdt_sortorder, lcnstypdt_licensetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                FOR UPDATE
+                """);
         getLicenseTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<LicenseType> getLicenseTypes(EntityPermission entityPermission) {
-        return LicenseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLicenseTypesQueries);
+        return licenseTypeFactory.getEntitiesFromQuery(entityPermission, getLicenseTypesQueries);
     }
 
     public List<LicenseType> getLicenseTypes() {
@@ -280,7 +298,7 @@ public class LicenseControl
 
     private void updateLicenseTypeFromValue(LicenseTypeDetailValue licenseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(licenseTypeDetailValue.hasBeenModified()) {
-            var licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var licenseType = licenseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      licenseTypeDetailValue.getLicenseTypePK());
             var licenseTypeDetail = licenseType.getActiveDetailForUpdate();
 
@@ -308,7 +326,7 @@ public class LicenseControl
                 }
             }
 
-            licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseTypePK, licenseTypeName, isDefault, sortOrder, session.getStartTime(),
+            licenseTypeDetail = licenseTypeDetailFactory.create(licenseTypePK, licenseTypeName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             licenseType.setActiveDetail(licenseTypeDetail);
@@ -370,8 +388,11 @@ public class LicenseControl
     //   License Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LicenseTypeDescriptionFactory licenseTypeDescriptionFactory;
+
     public LicenseTypeDescription createLicenseTypeDescription(LicenseType licenseType, Language language, String description, BasePK createdBy) {
-        var licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
+        var licenseTypeDescription = licenseTypeDescriptionFactory.create(licenseType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -385,19 +406,23 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLicenseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private LicenseTypeDescription getLicenseTypeDescription(LicenseType licenseType, Language language, EntityPermission entityPermission) {
-        return LicenseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getLicenseTypeDescriptionQueries,
+        return licenseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getLicenseTypeDescriptionQueries,
                 licenseType, language, Session.MAX_TIME);
     }
 
@@ -423,20 +448,24 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions, languages " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ? AND lcnstypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions, languages
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ? AND lcnstypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLicenseTypeDescriptionsByLicenseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<LicenseTypeDescription> getLicenseTypeDescriptionsByLicenseType(LicenseType licenseType, EntityPermission entityPermission) {
-        return LicenseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getLicenseTypeDescriptionsByLicenseTypeQueries,
+        return licenseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getLicenseTypeDescriptionsByLicenseTypeQueries,
                 licenseType, Session.MAX_TIME);
     }
 
@@ -482,7 +511,7 @@ public class LicenseControl
 
     public void updateLicenseTypeDescriptionFromValue(LicenseTypeDescriptionValue licenseTypeDescriptionValue, BasePK updatedBy) {
         if(licenseTypeDescriptionValue.hasBeenModified()) {
-            var licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var licenseTypeDescription = licenseTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     licenseTypeDescriptionValue.getPrimaryKey());
 
             licenseTypeDescription.setThruTime(session.getStartTime());
@@ -492,7 +521,7 @@ public class LicenseControl
             var language = licenseTypeDescription.getLanguage();
             var description = licenseTypeDescriptionValue.getDescription();
 
-            licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
+            licenseTypeDescription = licenseTypeDescriptionFactory.create(licenseType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

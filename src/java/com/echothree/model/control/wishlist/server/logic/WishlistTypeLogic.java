@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WishlistTypeLogic
     extends BaseLogic {
+
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected WishlistTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class WishlistTypeLogic
     public WishlistType createWishlistType(final ExecutionErrorAccumulator eea, final String wishlistTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
 
         if(wishlistType == null) {
@@ -70,7 +75,6 @@ public class WishlistTypeLogic
 
     public WishlistType getWishlistTypeByName(final ExecutionErrorAccumulator eea, final String wishlistTypeName,
             final EntityPermission entityPermission) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName, entityPermission);
 
         if(wishlistType == null) {
@@ -91,9 +95,8 @@ public class WishlistTypeLogic
     public WishlistType getWishlistTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final WishlistTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         WishlistType wishlistType = null;
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistTypeName = universalSpec.getWishlistTypeName();
-        var parameterCount = (wishlistTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (wishlistTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class WishlistTypeLogic
             }
             case 1 -> {
                 if(wishlistTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.WishlistType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -138,15 +141,11 @@ public class WishlistTypeLogic
 
     public void updateWishlistTypeFromValue(final WishlistTypeDetailValue wishlistTypeDetailValue,
             final BasePK updatedBy) {
-        final var wishlistControl = Session.getModelController(WishlistControl.class);
-
         wishlistControl.updateWishlistTypeFromValue(wishlistTypeDetailValue, updatedBy);
     }
     
     public void deleteWishlistType(final ExecutionErrorAccumulator eea, final WishlistType wishlistType,
             final BasePK deletedBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         wishlistControl.deleteWishlistType(wishlistType, deletedBy);
     }
 

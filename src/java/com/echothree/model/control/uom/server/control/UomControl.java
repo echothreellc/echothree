@@ -96,6 +96,12 @@ import javax.inject.Inject;
 public class UomControl
         extends BaseModelControl {
     
+    @Inject
+    protected ItemControl itemControl;
+
+    @Inject
+    protected VendorControl vendorControl;
+
     /** Creates a new instance of UomControl */
     protected UomControl() {
         super();
@@ -135,7 +141,13 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Kinds
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureKindFactory unitOfMeasureKindFactory;
+
+    @Inject
+    protected UnitOfMeasureKindDetailFactory unitOfMeasureKindDetailFactory;
+
     public UnitOfMeasureKind createUnitOfMeasureKind(String unitOfMeasureKindName, Integer fractionDigits, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultUnitOfMeasureKind = getDefaultUnitOfMeasureKind();
@@ -150,12 +162,12 @@ public class UomControl
             isDefault = true;
         }
 
-        var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
-        var unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create( unitOfMeasureKind, unitOfMeasureKindName,
+        var unitOfMeasureKind = unitOfMeasureKindFactory.create();
+        var unitOfMeasureKindDetail = unitOfMeasureKindDetailFactory.create( unitOfMeasureKind, unitOfMeasureKindName,
                 fractionDigits, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureKind.getPrimaryKey());
+        unitOfMeasureKind = unitOfMeasureKindFactory.getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureKind.getPrimaryKey());
         unitOfMeasureKind.setActiveDetail(unitOfMeasureKindDetail);
         unitOfMeasureKind.setLastDetail(unitOfMeasureKindDetail);
         unitOfMeasureKind.store();
@@ -178,7 +190,7 @@ public class UomControl
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindPK(entityInstance.getEntityUniqueId());
 
-        return UnitOfMeasureKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return unitOfMeasureKindFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance) {
@@ -209,9 +221,9 @@ public class UomControl
                     """;
         }
 
-        var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
+        var ps = unitOfMeasureKindFactory.prepareStatement(query);
         
-        return UnitOfMeasureKindFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return unitOfMeasureKindFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<UnitOfMeasureKind> getUnitOfMeasureKinds() {
@@ -226,7 +238,7 @@ public class UomControl
         List<UnitOfMeasureKind> unitOfMeasureKinds;
         
         try {
-            var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(
+            var ps = unitOfMeasureKindFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM unitofmeasurekinds, unitofmeasurekinddetails, unitofmeasurekinduses
@@ -240,7 +252,7 @@ public class UomControl
             ps.setLong(2, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureKinds = UnitOfMeasureKindFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            unitOfMeasureKinds = unitOfMeasureKindFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -266,9 +278,9 @@ public class UomControl
                     """;
         }
 
-        var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
+        var ps = unitOfMeasureKindFactory.prepareStatement(query);
         
-        return UnitOfMeasureKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return unitOfMeasureKindFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public UnitOfMeasureKind getDefaultUnitOfMeasureKind() {
@@ -306,12 +318,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindFactory.prepareStatement(query);
             
             ps.setString(1, unitOfMeasureKindName);
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureKind = unitOfMeasureKindFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -447,7 +459,7 @@ public class UomControl
     private void updateUnitOfMeasureKindFromValue(UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(unitOfMeasureKindDetailValue.hasBeenModified()) {
-            var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureKind = unitOfMeasureKindFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindDetailValue.getUnitOfMeasureKindPK());
             var unitOfMeasureKindDetail = unitOfMeasureKind.getActiveDetailForUpdate();
             
@@ -476,7 +488,7 @@ public class UomControl
                 }
             }
             
-            unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(unitOfMeasureKindPK, unitOfMeasureKindName, fractionDigits, isDefault,
+            unitOfMeasureKindDetail = unitOfMeasureKindDetailFactory.create(unitOfMeasureKindPK, unitOfMeasureKindName, fractionDigits, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             unitOfMeasureKind.setActiveDetail(unitOfMeasureKindDetail);
@@ -523,9 +535,12 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Kind Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureKindDescriptionFactory unitOfMeasureKindDescriptionFactory;
+
     public UnitOfMeasureKindDescription createUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, String description, BasePK createdBy) {
-        var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind, language, description,
+        var unitOfMeasureKindDescription = unitOfMeasureKindDescriptionFactory.create(unitOfMeasureKind, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -554,13 +569,13 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureKindDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureKindDescription = unitOfMeasureKindDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -608,12 +623,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureKindDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureKindDescriptions = UnitOfMeasureKindDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureKindDescriptions = unitOfMeasureKindDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -663,7 +678,7 @@ public class UomControl
     
     public void updateUnitOfMeasureKindDescriptionFromValue(UnitOfMeasureKindDescriptionValue unitOfMeasureKindDescriptionValue, BasePK updatedBy) {
         if(unitOfMeasureKindDescriptionValue.hasBeenModified()) {
-            var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureKindDescription = unitOfMeasureKindDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindDescriptionValue.getPrimaryKey());
             
             unitOfMeasureKindDescription.setThruTime(session.getStartTime());
@@ -673,7 +688,7 @@ public class UomControl
             var language = unitOfMeasureKindDescription.getLanguage();
             var description = unitOfMeasureKindDescriptionValue.getDescription();
             
-            unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind,
+            unitOfMeasureKindDescription = unitOfMeasureKindDescriptionFactory.create(unitOfMeasureKind,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -697,7 +712,13 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureTypeFactory unitOfMeasureTypeFactory;
+
+    @Inject
+    protected UnitOfMeasureTypeDetailFactory unitOfMeasureTypeDetailFactory;
+
     public UnitOfMeasureType createUnitOfMeasureType(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
             SymbolPosition symbolPosition, Boolean suppressSymbolSeparator, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -713,13 +734,13 @@ public class UomControl
             isDefault = true;
         }
 
-        var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().create();
-        var unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureType,
+        var unitOfMeasureType = unitOfMeasureTypeFactory.create();
+        var unitOfMeasureTypeDetail = unitOfMeasureTypeDetailFactory.create(unitOfMeasureType,
                 unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition, suppressSymbolSeparator, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureType.getPrimaryKey());
+        unitOfMeasureType = unitOfMeasureTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureType.getPrimaryKey());
         unitOfMeasureType.setActiveDetail(unitOfMeasureTypeDetail);
         unitOfMeasureType.setLastDetail(unitOfMeasureTypeDetail);
         unitOfMeasureType.store();
@@ -743,7 +764,7 @@ public class UomControl
     public UnitOfMeasureType getUnitOfMeasureTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureTypePK(entityInstance.getEntityUniqueId());
 
-        return UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return unitOfMeasureTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureType getUnitOfMeasureTypeByEntityInstance(EntityInstance entityInstance) {
@@ -779,12 +800,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureTypes = UnitOfMeasureTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureTypes = unitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -823,11 +844,11 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             
-            unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            unitOfMeasureType = unitOfMeasureTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -871,13 +892,13 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setString(2, unitOfMeasureTypeName);
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureType = unitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -958,7 +979,7 @@ public class UomControl
     private void updateUnitOfMeasureTypeFromValue(UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(unitOfMeasureTypeDetailValue.hasBeenModified()) {
-            var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureType = unitOfMeasureTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeDetailValue.getUnitOfMeasureTypePK());
             var unitOfMeasureTypeDetail = unitOfMeasureType.getActiveDetailForUpdate();
             
@@ -990,7 +1011,7 @@ public class UomControl
                 }
             }
             
-            unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureTypePK, unitOfMeasureKindPK,
+            unitOfMeasureTypeDetail = unitOfMeasureTypeDetailFactory.create(unitOfMeasureTypePK, unitOfMeasureKindPK,
                     unitOfMeasureTypeName, symbolPositionPK, suppressSymbolSeparator, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -1006,8 +1027,6 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
         
         deleteUnitOfMeasureEquivalentsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         deleteUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
@@ -1053,10 +1072,13 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureTypeDescriptionFactory unitOfMeasureTypeDescriptionFactory;
+
     public UnitOfMeasureTypeDescription createUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language,
             String singularDescription, String pluralDescription, String symbol, BasePK createdBy) {
-        var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(
+        var unitOfMeasureTypeDescription = unitOfMeasureTypeDescriptionFactory.create(
                 unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1086,13 +1108,13 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureTypeDescription = unitOfMeasureTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1139,12 +1161,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureTypeDescriptions = UnitOfMeasureTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureTypeDescriptions = unitOfMeasureTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1235,7 +1257,7 @@ public class UomControl
     
     public void updateUnitOfMeasureTypeDescriptionFromValue(UnitOfMeasureTypeDescriptionValue unitOfMeasureTypeDescriptionValue, BasePK updatedBy) {
         if(unitOfMeasureTypeDescriptionValue.hasBeenModified()) {
-            var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureTypeDescription = unitOfMeasureTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeDescriptionValue.getPrimaryKey());
             
             unitOfMeasureTypeDescription.setThruTime(session.getStartTime());
@@ -1247,7 +1269,7 @@ public class UomControl
             var pluralDescription = unitOfMeasureTypeDescriptionValue.getPluralDescription();
             var symbol = unitOfMeasureTypeDescriptionValue.getSymbol();
             
-            unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(unitOfMeasureType, language,
+            unitOfMeasureTypeDescription = unitOfMeasureTypeDescriptionFactory.create(unitOfMeasureType, language,
                     singularDescription, pluralDescription, symbol, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1271,10 +1293,13 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Type Volumes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureTypeVolumeFactory unitOfMeasureTypeVolumeFactory;
+
     public UnitOfMeasureTypeVolume createUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, Long height, Long width,
             Long depth, BasePK createdBy) {
-        var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(
+        var unitOfMeasureTypeVolume = unitOfMeasureTypeVolumeFactory.create(
                 unitOfMeasureType, height, width, depth, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1311,12 +1336,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeVolumeFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeVolumeFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureTypeVolume = unitOfMeasureTypeVolumeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1350,7 +1375,7 @@ public class UomControl
     
     public void updateUnitOfMeasureTypeVolumeFromValue(UnitOfMeasureTypeVolumeValue unitOfMeasureTypeVolumeValue, BasePK updatedBy) {
         if(unitOfMeasureTypeVolumeValue.hasBeenModified()) {
-            var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureTypeVolume = unitOfMeasureTypeVolumeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeVolumeValue.getPrimaryKey());
             
             unitOfMeasureTypeVolume.setThruTime(session.getStartTime());
@@ -1361,7 +1386,7 @@ public class UomControl
             var width = unitOfMeasureTypeVolumeValue.getWidth();
             var depth = unitOfMeasureTypeVolumeValue.getDepth();
             
-            unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(unitOfMeasureTypePK, height,
+            unitOfMeasureTypeVolume = unitOfMeasureTypeVolumeFactory.create(unitOfMeasureTypePK, height,
                     width, depth, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1384,9 +1409,12 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Type Weights
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureTypeWeightFactory unitOfMeasureTypeWeightFactory;
+
     public UnitOfMeasureTypeWeight createUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
-        var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureType, weight,
+        var unitOfMeasureTypeWeight = unitOfMeasureTypeWeightFactory.create(unitOfMeasureType, weight,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1423,12 +1451,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureTypeWeightFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureTypeWeightFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureTypeWeight = unitOfMeasureTypeWeightFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1462,7 +1490,7 @@ public class UomControl
     
     public void updateUnitOfMeasureTypeWeightFromValue(UnitOfMeasureTypeWeightValue unitOfMeasureTypeWeightValue, BasePK updatedBy) {
         if(unitOfMeasureTypeWeightValue.hasBeenModified()) {
-            var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureTypeWeight = unitOfMeasureTypeWeightFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeWeightValue.getPrimaryKey());
             
             unitOfMeasureTypeWeight.setThruTime(session.getStartTime());
@@ -1471,7 +1499,7 @@ public class UomControl
             var unitOfMeasureTypePK = unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(); // Not updated
             var weight = unitOfMeasureTypeWeightValue.getWeight();
             
-            unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureTypePK, weight,
+            unitOfMeasureTypeWeight = unitOfMeasureTypeWeightFactory.create(unitOfMeasureTypePK, weight,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1494,17 +1522,19 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Equivalents
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureEquivalentFactory unitOfMeasureEquivalentFactory;
+
     public UnitOfMeasureEquivalent createUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, Long toQuantity, BasePK createdBy) {
-        var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(
+        var unitOfMeasureEquivalent = unitOfMeasureEquivalentFactory.create(
                 fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureEquivalent;
     }
-
 
     public long countUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
         return session.queryForLong("""
@@ -1554,13 +1584,13 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
             
             ps.setLong(1, fromUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, toUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureEquivalent = unitOfMeasureEquivalentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1618,14 +1648,14 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
             ps.setLong(4, unitOfMeasureKind.getPrimaryKey().getEntityId());
             
-            unitOfMeasureEquivalents = UnitOfMeasureEquivalentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureEquivalents = unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1666,7 +1696,7 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
             
             ps.setLong(1, fromUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1674,7 +1704,7 @@ public class UomControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            unitOfMeasureEquivalents = UnitOfMeasureEquivalentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureEquivalents = unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1715,7 +1745,7 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureEquivalentFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
             
             ps.setLong(1, toUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1723,7 +1753,7 @@ public class UomControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            unitOfMeasureEquivalents = UnitOfMeasureEquivalentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureEquivalents = unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1772,7 +1802,7 @@ public class UomControl
     
     public void updateUnitOfMeasureEquivalentFromValue(UnitOfMeasureEquivalentValue unitOfMeasureEquivalentValue, BasePK updatedBy) {
         if(unitOfMeasureEquivalentValue.hasBeenModified()) {
-            var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureEquivalent = unitOfMeasureEquivalentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureEquivalentValue.getPrimaryKey());
             
             unitOfMeasureEquivalent.setThruTime(session.getStartTime());
@@ -1782,7 +1812,7 @@ public class UomControl
             var toUnitOfMeasureTypePK = unitOfMeasureEquivalent.getToUnitOfMeasureTypePK(); // Not updated
             var toQuantity = unitOfMeasureEquivalentValue.getToQuantity();
             
-            unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(fromUnitOfMeasureTypePK,
+            unitOfMeasureEquivalent = unitOfMeasureEquivalentFactory.create(fromUnitOfMeasureTypePK,
                     toUnitOfMeasureTypePK, toQuantity, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(fromUnitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1820,10 +1850,13 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Kind Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureKindUseTypeFactory unitOfMeasureKindUseTypeFactory;
+
     public UnitOfMeasureKindUseType createUnitOfMeasureKindUseType(String unitOfMeasureKindUseTypeName, Boolean allowMultiple, Boolean allowFractionDigits,
             Boolean isDefault, Integer sortOrder) {
-        return UnitOfMeasureKindUseTypeFactory.getInstance().create(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
+        return unitOfMeasureKindUseTypeFactory.create(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
     }
 
     public long countUnitOfMeasureKindUseTypes() {
@@ -1837,7 +1870,7 @@ public class UomControl
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUseTypePK(entityInstance.getEntityUniqueId());
 
-        return UnitOfMeasureKindUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return unitOfMeasureKindUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1849,7 +1882,7 @@ public class UomControl
     }
     
     public List<UnitOfMeasureKindUseType> getUnitOfMeasureKindUseTypes() {
-        var ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
+        var ps = unitOfMeasureKindUseTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM unitofmeasurekindusetypes
@@ -1857,14 +1890,14 @@ public class UomControl
                 _LIMIT_
                 """);
         
-        return UnitOfMeasureKindUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return unitOfMeasureKindUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByName(String unitOfMeasureKindUseTypeName) {
         UnitOfMeasureKindUseType unitOfMeasureKindUseType;
         
         try {
-            var ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
+            var ps = unitOfMeasureKindUseTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM unitofmeasurekindusetypes
@@ -1873,7 +1906,7 @@ public class UomControl
             
             ps.setString(1, unitOfMeasureKindUseTypeName);
             
-            unitOfMeasureKindUseType = UnitOfMeasureKindUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            unitOfMeasureKindUseType = unitOfMeasureKindUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1935,16 +1968,19 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Kind Use Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureKindUseTypeDescriptionFactory unitOfMeasureKindUseTypeDescriptionFactory;
+
     public UnitOfMeasureKindUseTypeDescription createUnitOfMeasureKindUseTypeDescription(UnitOfMeasureKindUseType unitOfMeasureKindUseType, Language language, String description) {
-        return UnitOfMeasureKindUseTypeDescriptionFactory.getInstance().create(unitOfMeasureKindUseType, language, description);
+        return unitOfMeasureKindUseTypeDescriptionFactory.create(unitOfMeasureKindUseType, language, description);
     }
     
     public UnitOfMeasureKindUseTypeDescription getUnitOfMeasureKindUseTypeDescription(UnitOfMeasureKindUseType unitOfMeasureKindUseType, Language language) {
         UnitOfMeasureKindUseTypeDescription unitOfMeasureKindUseTypeDescription;
         
         try {
-            var ps = UnitOfMeasureKindUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = unitOfMeasureKindUseTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM unitofmeasurekindusetypedescriptions
@@ -1954,7 +1990,7 @@ public class UomControl
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            unitOfMeasureKindUseTypeDescription = UnitOfMeasureKindUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            unitOfMeasureKindUseTypeDescription = unitOfMeasureKindUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1982,7 +2018,10 @@ public class UomControl
     // --------------------------------------------------------------------------------
     //   Unit Of Measure Kind Uses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UnitOfMeasureKindUseFactory unitOfMeasureKindUseFactory;
+
     public UnitOfMeasureKindUse createUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
@@ -1997,7 +2036,7 @@ public class UomControl
             isDefault = true;
         }
 
-        var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(
+        var unitOfMeasureKindUse = unitOfMeasureKindUseFactory.create(
                 unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2029,7 +2068,7 @@ public class UomControl
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUsePK(entityInstance.getEntityUniqueId());
 
-        return UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return unitOfMeasureKindUseFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByEntityInstance(EntityInstance entityInstance) {
@@ -2063,13 +2102,13 @@ public class UomControl
                         FOR UPDATE
                         """;
             }
-            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2117,12 +2156,12 @@ public class UomControl
                         FOR UPDATE
                         """;
             }
-            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2167,12 +2206,12 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            unitOfMeasureKindUses = UnitOfMeasureKindUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            unitOfMeasureKindUses = unitOfMeasureKindUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2217,13 +2256,13 @@ public class UomControl
                         """;
             }
 
-            var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(query);
+            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
             
-            unitOfMeasureKindUses = UnitOfMeasureKindUseFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            unitOfMeasureKindUses = unitOfMeasureKindUseFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2247,7 +2286,7 @@ public class UomControl
         
         if(!unitOfMeasureKindUseType.getAllowMultiple()) {
             try {
-                var ps = UnitOfMeasureKindUseFactory.getInstance().prepareStatement(
+                var ps = unitOfMeasureKindUseFactory.prepareStatement(
                         """
                         SELECT _ALL_
                         FROM unitofmeasurekinduses
@@ -2257,7 +2296,7 @@ public class UomControl
                 ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
                 ps.setLong(2, Session.MAX_TIME);
                 
-                unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+                unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);
             }
@@ -2313,7 +2352,7 @@ public class UomControl
     private void updateUnitOfMeasureKindUseFromValue(UnitOfMeasureKindUseValue unitOfMeasureKindUseValue, boolean checkDefault,
             BasePK updatedBy) {
         if(unitOfMeasureKindUseValue.hasBeenModified()) {
-            var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindUseValue.getPrimaryKey());
             
             unitOfMeasureKindUse.setThruTime(session.getStartTime());
@@ -2341,7 +2380,7 @@ public class UomControl
                 }
             }
             
-            unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(unitOfMeasureKindUseTypePK,
+            unitOfMeasureKindUse = unitOfMeasureKindUseFactory.create(unitOfMeasureKindUseTypePK,
                     unitOfMeasureKindPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureKindPK, EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

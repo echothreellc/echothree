@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemAliasTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditItemAliasTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditItemAliasTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditItemAliasTypeDescriptionCommand */
     public EditItemAliasTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditItemAliasTypeDescriptionCommand
 
     @Override
     public ItemAliasTypeDescription getEntity(EditItemAliasTypeDescriptionResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemAliasTypeDescription itemAliasTypeDescription = null;
         var itemAliasTypeName = spec.getItemAliasTypeName();
         var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
         if(itemAliasType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditItemAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemAliasTypeDescriptionResult result, ItemAliasTypeDescription itemAliasTypeDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemAliasTypeDescription(itemControl.getItemAliasTypeDescriptionTransfer(getUserVisit(), itemAliasTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditItemAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemAliasTypeDescription itemAliasTypeDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
         
         itemAliasTypeDescriptionValue.setDescription(edit.getDescription());

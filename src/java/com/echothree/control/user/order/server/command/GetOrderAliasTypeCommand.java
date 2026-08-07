@@ -56,12 +56,13 @@ public class GetOrderAliasTypeCommand
                 new FieldDefinition("OrderAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     OrderAliasControl orderAliasControl;
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
 
     /** Creates a new instance of GetOrderAliasTypeCommand */
     public GetOrderAliasTypeCommand() {

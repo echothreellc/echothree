@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditSearchTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,12 @@ public class EditSearchTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
 
     /** Creates a new instance of EditSearchTypeDescriptionCommand */
     public EditSearchTypeDescriptionCommand() {
@@ -85,7 +91,6 @@ public class EditSearchTypeDescriptionCommand
 
     @Override
     public SearchTypeDescription getEntity(EditSearchTypeDescriptionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchTypeDescription searchTypeDescription = null;
         var searchKindName = spec.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
@@ -95,7 +100,6 @@ public class EditSearchTypeDescriptionCommand
             var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
             if(searchType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -129,8 +133,6 @@ public class EditSearchTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchTypeDescriptionResult result, SearchTypeDescription searchTypeDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchTypeDescription(searchControl.getSearchTypeDescriptionTransfer(getUserVisit(), searchTypeDescription));
     }
 
@@ -141,7 +143,6 @@ public class EditSearchTypeDescriptionCommand
 
     @Override
     public void doUpdate(SearchTypeDescription searchTypeDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
 
         searchTypeDescriptionValue.setDescription(edit.getDescription());

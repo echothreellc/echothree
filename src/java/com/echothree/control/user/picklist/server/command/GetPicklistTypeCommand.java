@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTypeCommand
@@ -48,13 +48,17 @@ public class GetPicklistTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PicklistType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of GetPicklistTypeCommand */
     public GetPicklistTypeCommand() {
@@ -63,7 +67,6 @@ public class GetPicklistTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var result = PicklistResultFactory.getGetPicklistTypeResult();
         var picklistTypeName = form.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);

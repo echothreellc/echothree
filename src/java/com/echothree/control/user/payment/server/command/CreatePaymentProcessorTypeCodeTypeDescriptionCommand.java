@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorTypeCodeTypeDescriptionCommand
@@ -44,16 +45,19 @@ public class CreatePaymentProcessorTypeCodeTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorTypeCodeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentProcessorTypeCodeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorTypeCodeTypeLogic paymentProcessorTypeCodeTypeLogic;
 
     /** Creates a new instance of CreatePaymentProcessorTypeCodeTypeDescriptionCommand */
     public CreatePaymentProcessorTypeCodeTypeDescriptionCommand() {
@@ -67,7 +71,7 @@ public class CreatePaymentProcessorTypeCodeTypeDescriptionCommand
         var languageIsoName = form.getLanguageIsoName();
         var description = form.getDescription();
 
-        PaymentProcessorTypeCodeTypeLogic.getInstance().createPaymentProcessorTypeCodeTypeDescription(this,
+        paymentProcessorTypeCodeTypeLogic.createPaymentProcessorTypeCodeTypeDescription(this,
                 paymentProcessorTypeName, paymentProcessorTypeCodeTypeName, languageIsoName, description, getPartyPK());
 
         return null;

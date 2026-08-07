@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeGroupCommand
@@ -55,6 +56,10 @@ public class GetEntityAttributeGroupCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeGroupLogic entityAttributeGroupLogic;
+
     
     /** Creates a new instance of GetEntityAttributeGroupCommand */
     public GetEntityAttributeGroupCommand() {
@@ -63,7 +68,7 @@ public class GetEntityAttributeGroupCommand
 
     @Override
     protected EntityAttributeGroup getEntity() {
-        var entityAttributeGroup = EntityAttributeGroupLogic.getInstance().getEntityAttributeGroupByUniversalSpec(this, form);
+        var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByUniversalSpec(this, form);
 
         return entityAttributeGroup;
     }

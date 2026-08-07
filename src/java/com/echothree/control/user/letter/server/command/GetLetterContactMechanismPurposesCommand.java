@@ -59,12 +59,13 @@ public class GetLetterContactMechanismPurposesCommand
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     LetterControl letterControl;
 
     @Inject
     ChainTypeLogic chainTypeLogic;
+
 
     /** Creates a new instance of GetLetterContactMechanismPurposesCommand */
     public GetLetterContactMechanismPurposesCommand() {

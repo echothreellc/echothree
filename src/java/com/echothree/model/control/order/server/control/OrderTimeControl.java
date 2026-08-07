@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderTimeControl
@@ -67,6 +68,12 @@ public class OrderTimeControl
     //   Order Time Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderTimeTypeFactory orderTimeTypeFactory;
+
+    @Inject
+    protected OrderTimeTypeDetailFactory orderTimeTypeDetailFactory;
+
     public OrderTimeType createOrderTimeType(OrderType orderType, String orderTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultOrderTimeType = getDefaultOrderTimeType(orderType);
         var defaultFound = defaultOrderTimeType != null;
@@ -80,12 +87,12 @@ public class OrderTimeControl
             isDefault = true;
         }
 
-        var orderTimeType = OrderTimeTypeFactory.getInstance().create();
-        var orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeType, orderType, orderTimeTypeName, isDefault,
+        var orderTimeType = orderTimeTypeFactory.create();
+        var orderTimeTypeDetail = orderTimeTypeDetailFactory.create(orderTimeType, orderType, orderTimeTypeName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderTimeType = OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderTimeType = orderTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderTimeType.getPrimaryKey());
         orderTimeType.setActiveDetail(orderTimeTypeDetail);
         orderTimeType.setLastDetail(orderTimeTypeDetail);
@@ -101,7 +108,7 @@ public class OrderTimeControl
             final EntityPermission entityPermission) {
         var pk = new OrderTimeTypePK(entityInstance.getEntityUniqueId());
 
-        return OrderTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderTimeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderTimeType getOrderTimeTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -113,7 +120,7 @@ public class OrderTimeControl
     }
 
     public OrderTimeType getOrderTimeTypeByPK(OrderTimeTypePK pk) {
-        return OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return orderTimeTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countOrderTimeTypes(OrderType orderType) {
@@ -147,7 +154,7 @@ public class OrderTimeControl
     }
 
     public OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName, EntityPermission entityPermission) {
-        return OrderTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTimeTypeByNameQueries,
+        return orderTimeTypeFactory.getEntityFromQuery(entityPermission, getOrderTimeTypeByNameQueries,
                 orderType, orderTimeTypeName);
     }
 
@@ -189,7 +196,7 @@ public class OrderTimeControl
     }
 
     public OrderTimeType getDefaultOrderTimeType(OrderType orderType, EntityPermission entityPermission) {
-        return OrderTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderTimeTypeQueries,
+        return orderTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderTimeTypeQueries,
                 orderType);
     }
 
@@ -229,7 +236,7 @@ public class OrderTimeControl
     }
 
     private List<OrderTimeType> getOrderTimeTypes(OrderType orderType, EntityPermission entityPermission) {
-        return OrderTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTimeTypesQueries,
+        return orderTimeTypeFactory.getEntitiesFromQuery(entityPermission, getOrderTimeTypesQueries,
                 orderType);
     }
 
@@ -297,7 +304,7 @@ public class OrderTimeControl
     private void updateOrderTimeTypeFromValue(OrderTimeTypeDetailValue orderTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderTimeTypeDetailValue.hasBeenModified()) {
-            var orderTimeType = OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTimeType = orderTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderTimeTypeDetailValue.getOrderTimeTypePK());
             var orderTimeTypeDetail = orderTimeType.getActiveDetailForUpdate();
 
@@ -327,7 +334,7 @@ public class OrderTimeControl
                 }
             }
 
-            orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeTypePK, orderTypePK, orderTimeTypeName, isDefault, sortOrder,
+            orderTimeTypeDetail = orderTimeTypeDetailFactory.create(orderTimeTypePK, orderTypePK, orderTimeTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             orderTimeType.setActiveDetail(orderTimeTypeDetail);
@@ -375,8 +382,11 @@ public class OrderTimeControl
     //   Order Time Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderTimeTypeDescriptionFactory orderTimeTypeDescriptionFactory;
+
     public OrderTimeTypeDescription createOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, String description, BasePK createdBy) {
-        var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
+        var orderTimeTypeDescription = orderTimeTypeDescriptionFactory.create(orderTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -404,7 +414,7 @@ public class OrderTimeControl
     }
 
     private OrderTimeTypeDescription getOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, EntityPermission entityPermission) {
-        return OrderTimeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTimeTypeDescriptionQueries,
+        return orderTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderTimeTypeDescriptionQueries,
                 orderTimeType, language, Session.MAX_TIME);
     }
 
@@ -446,7 +456,7 @@ public class OrderTimeControl
     }
 
     private List<OrderTimeTypeDescription> getOrderTimeTypeDescriptionsByOrderTimeType(OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return OrderTimeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTimeTypeDescriptionsByOrderTimeTypeQueries,
+        return orderTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderTimeTypeDescriptionsByOrderTimeTypeQueries,
                 orderTimeType, Session.MAX_TIME);
     }
 
@@ -492,7 +502,7 @@ public class OrderTimeControl
 
     public void updateOrderTimeTypeDescriptionFromValue(OrderTimeTypeDescriptionValue orderTimeTypeDescriptionValue, BasePK updatedBy) {
         if(orderTimeTypeDescriptionValue.hasBeenModified()) {
-            var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTimeTypeDescription = orderTimeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTimeTypeDescriptionValue.getPrimaryKey());
 
             orderTimeTypeDescription.setThruTime(session.getStartTime());
@@ -502,7 +512,7 @@ public class OrderTimeControl
             var language = orderTimeTypeDescription.getLanguage();
             var description = orderTimeTypeDescriptionValue.getDescription();
 
-            orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
+            orderTimeTypeDescription = orderTimeTypeDescriptionFactory.create(orderTimeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -528,8 +538,11 @@ public class OrderTimeControl
     //   Order Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderTimeFactory orderTimeFactory;
+
     public OrderTime createOrderTime(Order order, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        var orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
+        var orderTime = orderTimeFactory.create(order, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -580,7 +593,7 @@ public class OrderTimeControl
     }
 
     private OrderTime getOrderTime(Order order, OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return OrderTimeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTimeQueries, order, orderTimeType, Session.MAX_TIME);
+        return orderTimeFactory.getEntityFromQuery(entityPermission, getOrderTimeQueries, order, orderTimeType, Session.MAX_TIME);
     }
 
     public OrderTime getOrderTime(Order order, OrderTimeType orderTimeType) {
@@ -622,7 +635,7 @@ public class OrderTimeControl
     }
 
     private List<OrderTime> getOrderTimesByOrder(Order order, EntityPermission entityPermission) {
-        return OrderTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTimesByOrderQueries, order, Session.MAX_TIME);
+        return orderTimeFactory.getEntitiesFromQuery(entityPermission, getOrderTimesByOrderQueries, order, Session.MAX_TIME);
     }
 
     public List<OrderTime> getOrderTimesByOrder(Order order) {
@@ -656,7 +669,7 @@ public class OrderTimeControl
     }
 
     private List<OrderTime> getOrderTimesByOrderTimeType(OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return OrderTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTimesByOrderTimeTypeQueries, orderTimeType, Session.MAX_TIME);
+        return orderTimeFactory.getEntitiesFromQuery(entityPermission, getOrderTimesByOrderTimeTypeQueries, orderTimeType, Session.MAX_TIME);
     }
 
     public List<OrderTime> getOrderTimesByOrderTimeType(OrderTimeType orderTimeType) {
@@ -691,7 +704,7 @@ public class OrderTimeControl
 
     public void updateOrderTimeFromValue(OrderTimeValue orderTimeValue, BasePK updatedBy) {
         if(orderTimeValue.hasBeenModified()) {
-            var orderTime = OrderTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTime = orderTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTimeValue.getPrimaryKey());
 
             orderTime.setThruTime(session.getStartTime());
@@ -701,7 +714,7 @@ public class OrderTimeControl
             var orderTimeTypePK = orderTime.getOrderTimeTypePK(); // Not updated
             var time = orderTimeValue.getTime();
 
-            orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
+            orderTime = orderTimeFactory.create(orderPK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPK, EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -732,8 +745,11 @@ public class OrderTimeControl
     //   Order Line Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderLineTimeFactory orderLineTimeFactory;
+
     public OrderLineTime createOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        var orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
+        var orderLineTime = orderLineTimeFactory.create(orderLine, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -784,7 +800,7 @@ public class OrderTimeControl
     }
 
     private OrderLineTime getOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return OrderLineTimeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderLineTimeQueries,
+        return orderLineTimeFactory.getEntityFromQuery(entityPermission, getOrderLineTimeQueries,
                 orderLine, orderTimeType, Session.MAX_TIME);
     }
 
@@ -827,7 +843,7 @@ public class OrderTimeControl
     }
 
     private List<OrderLineTime> getOrderLineTimesByOrderLine(OrderLine orderLine, EntityPermission entityPermission) {
-        return OrderLineTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderLineTimesByOrderQueries,
+        return orderLineTimeFactory.getEntitiesFromQuery(entityPermission, getOrderLineTimesByOrderQueries,
                 orderLine, Session.MAX_TIME);
     }
 
@@ -862,7 +878,7 @@ public class OrderTimeControl
     }
 
     private List<OrderLineTime> getOrderLineTimesByOrderTimeType(OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return OrderLineTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderLineTimesByOrderTimeTypeQueries,
+        return orderLineTimeFactory.getEntitiesFromQuery(entityPermission, getOrderLineTimesByOrderTimeTypeQueries,
                 orderTimeType, Session.MAX_TIME);
     }
 
@@ -898,7 +914,7 @@ public class OrderTimeControl
 
     public void updateOrderLineTimeFromValue(OrderLineTimeValue orderLineTimeValue, BasePK updatedBy) {
         if(orderLineTimeValue.hasBeenModified()) {
-            var orderLineTime = OrderLineTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLineTime = orderLineTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineTimeValue.getPrimaryKey());
 
             orderLineTime.setThruTime(session.getStartTime());
@@ -908,7 +924,7 @@ public class OrderTimeControl
             var orderTimeTypePK = orderLineTime.getOrderTimeTypePK(); // Not updated
             var time = orderLineTimeValue.getTime();
 
-            orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
+            orderLineTime = orderLineTimeFactory.create(orderLinePK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderLinePK, EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

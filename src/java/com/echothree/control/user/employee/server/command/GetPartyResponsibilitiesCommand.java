@@ -47,7 +47,7 @@ public class GetPartyResponsibilitiesCommand
                 new FieldDefinition("ResponsibilityTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     EmployeeControl employeeControl;
 
@@ -56,6 +56,7 @@ public class GetPartyResponsibilitiesCommand
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyResponsibilitiesCommand */
     public GetPartyResponsibilitiesCommand() {

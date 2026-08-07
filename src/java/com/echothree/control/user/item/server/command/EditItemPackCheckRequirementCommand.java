@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemPackCheckRequirementCommand
@@ -54,6 +54,13 @@ public class EditItemPackCheckRequirementCommand
                 new FieldDefinition("MaximumQuantity", FieldType.UNSIGNED_LONG, false, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditItemPackCheckRequirementCommand */
     public EditItemPackCheckRequirementCommand() {
@@ -72,13 +79,11 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public ItemPackCheckRequirement getEntity(EditItemPackCheckRequirementResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemPackCheckRequirement itemPackCheckRequirement = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
@@ -109,8 +114,6 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public void fillInResult(EditItemPackCheckRequirementResult result, ItemPackCheckRequirement itemPackCheckRequirement) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemPackCheckRequirement(itemControl.getItemPackCheckRequirementTransfer(getUserVisit(), itemPackCheckRequirement));
     }
 
@@ -143,7 +146,6 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public void doUpdate(ItemPackCheckRequirement itemPackCheckRequirement) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemPackCheckRequirementValue = itemControl.getItemPackCheckRequirementValue(itemPackCheckRequirement);
 
         itemPackCheckRequirementValue.setMinimumQuantity(minimumQuantity);

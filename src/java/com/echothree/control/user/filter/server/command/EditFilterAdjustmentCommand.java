@@ -68,14 +68,15 @@ public class EditFilterAdjustmentCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
     
     /** Creates a new instance of EditFilterAdjustmentCommand */
     public EditFilterAdjustmentCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-
-    @Inject
-    FilterControl filterControl;
 
     @Override
     public EditFilterAdjustmentResult getResult() {

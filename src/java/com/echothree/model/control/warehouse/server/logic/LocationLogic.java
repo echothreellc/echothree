@@ -23,14 +23,17 @@ import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LocationLogic
         extends BaseLogic {
+
+    @Inject
+    WarehouseControl warehouseControl;
 
     protected LocationLogic() {
         super();
@@ -41,7 +44,6 @@ public class LocationLogic
     }
 
     public void validateLocationName(final ExecutionErrorAccumulator eea, final LocationType locationType, final String locationName) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var locationNameElements = warehouseControl.getLocationNameElementsByLocationType(locationType);
         var endIndex = 0;
         var validLocationName = true;

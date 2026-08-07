@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditScaleCommand
@@ -56,8 +56,8 @@ public class EditScaleCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Scale.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ScaleName", FieldType.ENTITY_NAME, true, null, null)
@@ -73,6 +73,12 @@ public class EditScaleCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    ServerControl serverControl;
 
     /** Creates a new instance of EditScaleCommand */
     public EditScaleCommand() {
@@ -91,7 +97,6 @@ public class EditScaleCommand
 
     @Override
     public Scale getEntity(EditScaleResult result) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         Scale scale;
         var scaleName = spec.getScaleName();
 
@@ -117,8 +122,6 @@ public class EditScaleCommand
 
     @Override
     public void fillInResult(EditScaleResult result, Scale scale) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
-
         result.setScale(scaleControl.getScaleTransfer(getUserVisit(), scale));
     }
 
@@ -126,7 +129,6 @@ public class EditScaleCommand
 
     @Override
     public void doLock(ScaleEdit edit, Scale scale) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleDescription = scaleControl.getScaleDescription(scale, getPreferredLanguage());
         var scaleDetail = scale.getLastDetail();
 
@@ -148,7 +150,6 @@ public class EditScaleCommand
 
     @Override
     public void canUpdate(Scale scale) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleName = edit.getScaleName();
         var duplicateScale = scaleControl.getScaleByName(scaleName);
 
@@ -162,7 +163,6 @@ public class EditScaleCommand
             if(scaleType == null) {
                 addExecutionError(ExecutionErrors.UnknownScaleTypeName.name(), scaleTypeName);
             } else {
-                var serverControl = Session.getModelController(ServerControl.class);
                 var serverName = edit.getServerName();
                 var server = serverControl.getServerByName(serverName);
 
@@ -188,7 +188,6 @@ public class EditScaleCommand
 
     @Override
     public void doUpdate(Scale scale) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
         var scaleDetailValue = scaleControl.getScaleDetailValueForUpdate(scale);
         var scaleDescription = scaleControl.getScaleDescriptionForUpdate(scale, getPreferredLanguage());

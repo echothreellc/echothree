@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnTypesCommand
@@ -58,6 +58,12 @@ public class GetReturnTypesCommand
         );
     }
 
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
     /** Creates a new instance of GetReturnTypesCommand */
     public GetReturnTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -69,13 +75,11 @@ public class GetReturnTypesCommand
     protected void handleForm() {
         var returnKindName = form.getReturnKindName();
 
-        returnKind = ReturnKindLogic.getInstance().getReturnKindByName(this, returnKindName);
+        returnKind = returnKindLogic.getReturnKindByName(this, returnKindName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         return hasExecutionErrors() ? null :
                 returnPolicyControl.countReturnTypesByReturnKind(returnKind);
     }
@@ -85,8 +89,6 @@ public class GetReturnTypesCommand
         Collection<ReturnType> returnTypes = null;
 
         if(!hasExecutionErrors()) {
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
             returnTypes = returnPolicyControl.getReturnTypes(returnKind);
         }
 
@@ -98,7 +100,6 @@ public class GetReturnTypesCommand
         var result = ReturnPolicyResultFactory.getGetReturnTypesResult();
 
         if(entities != null) {
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ReturnTypeFactory.class)) {

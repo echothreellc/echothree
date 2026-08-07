@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentMethodTypeCommand
@@ -53,8 +53,8 @@ public class EditPaymentMethodTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -69,6 +69,13 @@ public class EditPaymentMethodTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PaymentMethodTypeControl paymentMethodTypeControl;
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
     
     /** Creates a new instance of EditPaymentMethodTypeCommand */
     public EditPaymentMethodTypeCommand() {
@@ -87,7 +94,7 @@ public class EditPaymentMethodTypeCommand
     
     @Override
     public PaymentMethodType getEntity(EditPaymentMethodTypeResult result) {
-        return PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return paymentMethodTypeLogic.getPaymentMethodTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -97,14 +104,11 @@ public class EditPaymentMethodTypeCommand
     
     @Override
     public void fillInResult(EditPaymentMethodTypeResult result, PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-        
         result.setPaymentMethodType(paymentMethodTypeControl.getPaymentMethodTypeTransfer(getUserVisit(), paymentMethodType));
     }
     
     @Override
     public void doLock(PaymentMethodTypeEdit edit, PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescription(paymentMethodType, getPreferredLanguage());
         var paymentMethodTypeDetail = paymentMethodType.getLastDetail();
         
@@ -119,7 +123,6 @@ public class EditPaymentMethodTypeCommand
         
     @Override
     public void canUpdate(PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var paymentMethodTypeName = edit.getPaymentMethodTypeName();
         var duplicatePaymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 
@@ -130,7 +133,6 @@ public class EditPaymentMethodTypeCommand
     
     @Override
     public void doUpdate(PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var partyPK = getPartyPK();
         var paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueForUpdate(paymentMethodType);
         var paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescriptionForUpdate(paymentMethodType, getPreferredLanguage());

@@ -53,10 +53,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class FontControl
         extends BaseCoreControl {
+
+    @Inject
+    protected AppearanceControl appearanceControl;
 
     /** Creates a new instance of FontControl */
     protected FontControl() {
@@ -66,6 +70,12 @@ public class FontControl
     // --------------------------------------------------------------------------------
     //   Font Styles
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected FontStyleFactory fontStyleFactory;
+
+    @Inject
+    protected FontStyleDetailFactory fontStyleDetailFactory;
 
     public FontStyle createFontStyle(String fontStyleName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFontStyle = getDefaultFontStyle();
@@ -80,12 +90,12 @@ public class FontControl
             isDefault = true;
         }
 
-        var fontStyle = FontStyleFactory.getInstance().create();
-        var fontStyleDetail = FontStyleDetailFactory.getInstance().create(fontStyle, fontStyleName, isDefault, sortOrder, session.getStartTime(),
+        var fontStyle = fontStyleFactory.create();
+        var fontStyleDetail = fontStyleDetailFactory.create(fontStyle, fontStyleName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        fontStyle = FontStyleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, fontStyle.getPrimaryKey());
+        fontStyle = fontStyleFactory.getEntityFromPK(EntityPermission.READ_WRITE, fontStyle.getPrimaryKey());
         fontStyle.setActiveDetail(fontStyleDetail);
         fontStyle.setLastDetail(fontStyleDetail);
         fontStyle.store();
@@ -99,7 +109,7 @@ public class FontControl
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FontStylePK(entityInstance.getEntityUniqueId());
 
-        return FontStyleFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return fontStyleFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance) {
@@ -124,21 +134,25 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontstyles, fontstyledetails " +
-                        "WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid " +
-                        "AND fntstyldt_fontstylename = ?");
+                """
+                SELECT _ALL_
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                AND fntstyldt_fontstylename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontstyles, fontstyledetails " +
-                        "WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid " +
-                        "AND fntstyldt_fontstylename = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                AND fntstyldt_fontstylename = ?
+                FOR UPDATE
+                """);
         getFontStyleByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FontStyle getFontStyleByName(String fontStyleName, EntityPermission entityPermission) {
-        return FontStyleFactory.getInstance().getEntityFromQuery(entityPermission, getFontStyleByNameQueries, fontStyleName);
+        return fontStyleFactory.getEntityFromQuery(entityPermission, getFontStyleByNameQueries, fontStyleName);
     }
 
     public FontStyle getFontStyleByName(String fontStyleName) {
@@ -163,21 +177,25 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontstyles, fontstyledetails " +
-                        "WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid " +
-                        "AND fntstyldt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                AND fntstyldt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontstyles, fontstyledetails " +
-                        "WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid " +
-                        "AND fntstyldt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                AND fntstyldt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFontStyleQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FontStyle getDefaultFontStyle(EntityPermission entityPermission) {
-        return FontStyleFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFontStyleQueries);
+        return fontStyleFactory.getEntityFromQuery(entityPermission, getDefaultFontStyleQueries);
     }
 
     public FontStyle getDefaultFontStyle() {
@@ -198,21 +216,25 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontstyles, fontstyledetails " +
-                        "WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid " +
-                        "ORDER BY fntstyldt_sortorder, fntstyldt_fontstylename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                ORDER BY fntstyldt_sortorder, fntstyldt_fontstylename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontstyles, fontstyledetails " +
-                        "WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                FOR UPDATE
+                """);
         getFontStylesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FontStyle> getFontStyles(EntityPermission entityPermission) {
-        return FontStyleFactory.getInstance().getEntitiesFromQuery(entityPermission, getFontStylesQueries);
+        return fontStyleFactory.getEntitiesFromQuery(entityPermission, getFontStylesQueries);
     }
 
     public List<FontStyle> getFontStyles() {
@@ -277,7 +299,7 @@ public class FontControl
 
     private void updateFontStyleFromValue(FontStyleDetailValue fontStyleDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(fontStyleDetailValue.hasBeenModified()) {
-            var fontStyle = FontStyleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontStyle = fontStyleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     fontStyleDetailValue.getFontStylePK());
             var fontStyleDetail = fontStyle.getActiveDetailForUpdate();
 
@@ -305,7 +327,7 @@ public class FontControl
                 }
             }
 
-            fontStyleDetail = FontStyleDetailFactory.getInstance().create(fontStylePK, fontStyleName, isDefault, sortOrder, session.getStartTime(),
+            fontStyleDetail = fontStyleDetailFactory.create(fontStylePK, fontStyleName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             fontStyle.setActiveDetail(fontStyleDetail);
@@ -320,7 +342,6 @@ public class FontControl
     }
 
     private void deleteFontStyle(FontStyle fontStyle, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var fontStyleDetail = fontStyle.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearancesByFontStyle(fontStyle, deletedBy);
@@ -369,8 +390,11 @@ public class FontControl
     //   Font Style Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FontStyleDescriptionFactory fontStyleDescriptionFactory;
+
     public FontStyleDescription createFontStyleDescription(FontStyle fontStyle, Language language, String description, BasePK createdBy) {
-        var fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
+        var fontStyleDescription = fontStyleDescriptionFactory.create(fontStyle, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -384,19 +408,23 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontstyledescriptions " +
-                        "WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_lang_languageid = ? AND fntstyld_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM fontstyledescriptions
+                WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_lang_languageid = ? AND fntstyld_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontstyledescriptions " +
-                        "WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_lang_languageid = ? AND fntstyld_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontstyledescriptions
+                WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_lang_languageid = ? AND fntstyld_thrutime = ?
+                FOR UPDATE
+                """);
         getFontStyleDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FontStyleDescription getFontStyleDescription(FontStyle fontStyle, Language language, EntityPermission entityPermission) {
-        return FontStyleDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getFontStyleDescriptionQueries,
+        return fontStyleDescriptionFactory.getEntityFromQuery(entityPermission, getFontStyleDescriptionQueries,
                 fontStyle, language, Session.MAX_TIME);
     }
 
@@ -422,20 +450,24 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontstyledescriptions, languages " +
-                        "WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_thrutime = ? AND fntstyld_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM fontstyledescriptions, languages
+                WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_thrutime = ? AND fntstyld_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontstyledescriptions " +
-                        "WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontstyledescriptions
+                WHERE fntstyld_fntstyl_fontstyleid = ? AND fntstyld_thrutime = ?
+                FOR UPDATE
+                """);
         getFontStyleDescriptionsByFontStyleQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FontStyleDescription> getFontStyleDescriptionsByFontStyle(FontStyle fontStyle, EntityPermission entityPermission) {
-        return FontStyleDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getFontStyleDescriptionsByFontStyleQueries,
+        return fontStyleDescriptionFactory.getEntitiesFromQuery(entityPermission, getFontStyleDescriptionsByFontStyleQueries,
                 fontStyle, Session.MAX_TIME);
     }
 
@@ -481,7 +513,7 @@ public class FontControl
 
     public void updateFontStyleDescriptionFromValue(FontStyleDescriptionValue fontStyleDescriptionValue, BasePK updatedBy) {
         if(fontStyleDescriptionValue.hasBeenModified()) {
-            var fontStyleDescription = FontStyleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontStyleDescription = fontStyleDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     fontStyleDescriptionValue.getPrimaryKey());
 
             fontStyleDescription.setThruTime(session.getStartTime());
@@ -491,7 +523,7 @@ public class FontControl
             var language = fontStyleDescription.getLanguage();
             var description = fontStyleDescriptionValue.getDescription();
 
-            fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
+            fontStyleDescription = fontStyleDescriptionFactory.create(fontStyle, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -517,6 +549,12 @@ public class FontControl
     //   Font Weights
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FontWeightFactory fontWeightFactory;
+
+    @Inject
+    protected FontWeightDetailFactory fontWeightDetailFactory;
+
     public FontWeight createFontWeight(String fontWeightName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFontWeight = getDefaultFontWeight();
         var defaultFound = defaultFontWeight != null;
@@ -530,12 +568,12 @@ public class FontControl
             isDefault = true;
         }
 
-        var fontWeight = FontWeightFactory.getInstance().create();
-        var fontWeightDetail = FontWeightDetailFactory.getInstance().create(fontWeight, fontWeightName, isDefault, sortOrder, session.getStartTime(),
+        var fontWeight = fontWeightFactory.create();
+        var fontWeightDetail = fontWeightDetailFactory.create(fontWeight, fontWeightName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        fontWeight = FontWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, fontWeight.getPrimaryKey());
+        fontWeight = fontWeightFactory.getEntityFromPK(EntityPermission.READ_WRITE, fontWeight.getPrimaryKey());
         fontWeight.setActiveDetail(fontWeightDetail);
         fontWeight.setLastDetail(fontWeightDetail);
         fontWeight.store();
@@ -549,7 +587,7 @@ public class FontControl
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FontWeightPK(entityInstance.getEntityUniqueId());
 
-        return FontWeightFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return fontWeightFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance) {
@@ -574,21 +612,25 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontweights, fontweightdetails " +
-                        "WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid " +
-                        "AND fntwghtdt_fontweightname = ?");
+                """
+                SELECT _ALL_
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                AND fntwghtdt_fontweightname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontweights, fontweightdetails " +
-                        "WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid " +
-                        "AND fntwghtdt_fontweightname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                AND fntwghtdt_fontweightname = ?
+                FOR UPDATE
+                """);
         getFontWeightByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FontWeight getFontWeightByName(String fontWeightName, EntityPermission entityPermission) {
-        return FontWeightFactory.getInstance().getEntityFromQuery(entityPermission, getFontWeightByNameQueries, fontWeightName);
+        return fontWeightFactory.getEntityFromQuery(entityPermission, getFontWeightByNameQueries, fontWeightName);
     }
 
     public FontWeight getFontWeightByName(String fontWeightName) {
@@ -613,21 +655,25 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontweights, fontweightdetails " +
-                        "WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid " +
-                        "AND fntwghtdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                AND fntwghtdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontweights, fontweightdetails " +
-                        "WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid " +
-                        "AND fntwghtdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                AND fntwghtdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFontWeightQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FontWeight getDefaultFontWeight(EntityPermission entityPermission) {
-        return FontWeightFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFontWeightQueries);
+        return fontWeightFactory.getEntityFromQuery(entityPermission, getDefaultFontWeightQueries);
     }
 
     public FontWeight getDefaultFontWeight() {
@@ -648,21 +694,25 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontweights, fontweightdetails " +
-                        "WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid " +
-                        "ORDER BY fntwghtdt_sortorder, fntwghtdt_fontweightname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                ORDER BY fntwghtdt_sortorder, fntwghtdt_fontweightname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontweights, fontweightdetails " +
-                        "WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                FOR UPDATE
+                """);
         getFontWeightsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FontWeight> getFontWeights(EntityPermission entityPermission) {
-        return FontWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, getFontWeightsQueries);
+        return fontWeightFactory.getEntitiesFromQuery(entityPermission, getFontWeightsQueries);
     }
 
     public List<FontWeight> getFontWeights() {
@@ -727,7 +777,7 @@ public class FontControl
 
     private void updateFontWeightFromValue(FontWeightDetailValue fontWeightDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(fontWeightDetailValue.hasBeenModified()) {
-            var fontWeight = FontWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontWeight = fontWeightFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     fontWeightDetailValue.getFontWeightPK());
             var fontWeightDetail = fontWeight.getActiveDetailForUpdate();
 
@@ -755,7 +805,7 @@ public class FontControl
                 }
             }
 
-            fontWeightDetail = FontWeightDetailFactory.getInstance().create(fontWeightPK, fontWeightName, isDefault, sortOrder, session.getStartTime(),
+            fontWeightDetail = fontWeightDetailFactory.create(fontWeightPK, fontWeightName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             fontWeight.setActiveDetail(fontWeightDetail);
@@ -770,7 +820,6 @@ public class FontControl
     }
 
     private void deleteFontWeight(FontWeight fontWeight, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var fontWeightDetail = fontWeight.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearancesByFontWeight(fontWeight, deletedBy);
@@ -819,8 +868,11 @@ public class FontControl
     //   Font Weight Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FontWeightDescriptionFactory fontWeightDescriptionFactory;
+
     public FontWeightDescription createFontWeightDescription(FontWeight fontWeight, Language language, String description, BasePK createdBy) {
-        var fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
+        var fontWeightDescription = fontWeightDescriptionFactory.create(fontWeight, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -834,19 +886,23 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontweightdescriptions " +
-                        "WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_lang_languageid = ? AND fntwghtd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM fontweightdescriptions
+                WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_lang_languageid = ? AND fntwghtd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontweightdescriptions " +
-                        "WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_lang_languageid = ? AND fntwghtd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontweightdescriptions
+                WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_lang_languageid = ? AND fntwghtd_thrutime = ?
+                FOR UPDATE
+                """);
         getFontWeightDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FontWeightDescription getFontWeightDescription(FontWeight fontWeight, Language language, EntityPermission entityPermission) {
-        return FontWeightDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getFontWeightDescriptionQueries,
+        return fontWeightDescriptionFactory.getEntityFromQuery(entityPermission, getFontWeightDescriptionQueries,
                 fontWeight, language, Session.MAX_TIME);
     }
 
@@ -872,20 +928,24 @@ public class FontControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM fontweightdescriptions, languages " +
-                        "WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_thrutime = ? AND fntwghtd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM fontweightdescriptions, languages
+                WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_thrutime = ? AND fntwghtd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM fontweightdescriptions " +
-                        "WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM fontweightdescriptions
+                WHERE fntwghtd_fntwght_fontweightid = ? AND fntwghtd_thrutime = ?
+                FOR UPDATE
+                """);
         getFontWeightDescriptionsByFontWeightQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FontWeightDescription> getFontWeightDescriptionsByFontWeight(FontWeight fontWeight, EntityPermission entityPermission) {
-        return FontWeightDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getFontWeightDescriptionsByFontWeightQueries,
+        return fontWeightDescriptionFactory.getEntitiesFromQuery(entityPermission, getFontWeightDescriptionsByFontWeightQueries,
                 fontWeight, Session.MAX_TIME);
     }
 
@@ -931,7 +991,7 @@ public class FontControl
 
     public void updateFontWeightDescriptionFromValue(FontWeightDescriptionValue fontWeightDescriptionValue, BasePK updatedBy) {
         if(fontWeightDescriptionValue.hasBeenModified()) {
-            var fontWeightDescription = FontWeightDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var fontWeightDescription = fontWeightDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     fontWeightDescriptionValue.getPrimaryKey());
 
             fontWeightDescription.setThruTime(session.getStartTime());
@@ -941,7 +1001,7 @@ public class FontControl
             var language = fontWeightDescription.getLanguage();
             var description = fontWeightDescriptionValue.getDescription();
 
-            fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
+            fontWeightDescription = fontWeightDescriptionFactory.create(fontWeight, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

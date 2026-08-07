@@ -24,9 +24,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteMessageCommand
@@ -36,12 +36,16 @@ public class DeleteMessageCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    MessageControl messageControl;
+
     
     /** Creates a new instance of DeleteMessageCommand */
     public DeleteMessageCommand() {
@@ -58,7 +62,6 @@ public class DeleteMessageCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = Session.getModelController(MessageControl.class);
                 var messageTypeName = form.getMessageTypeName();
                 var messageType = messageControl.getMessageTypeByNameForUpdate(entityType, messageTypeName);
                 

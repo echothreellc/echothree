@@ -44,6 +44,12 @@ import javax.inject.Inject;
 public class InventoryTransactionTypeLogic
     extends BaseLogic {
 
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected InventoryTransactionTypeLogic() {
         super();
     }
@@ -51,12 +57,6 @@ public class InventoryTransactionTypeLogic
     public static InventoryTransactionTypeLogic getInstance() {
         return CDI.current().select(InventoryTransactionTypeLogic.class).get();
     }
-
-    @Inject
-    InventoryTransactionTypeControl inventoryTransactionTypeControl;
-
-    @Inject
-    EntityInstanceLogic entityInstanceLogic;
 
     public InventoryTransactionType createInventoryTransactionType(final ExecutionErrorAccumulator eea, final String inventoryTransactionTypeName,
             final SequenceType inventoryTransactionSequenceType, final Workflow inventoryTransactionWorkflow,

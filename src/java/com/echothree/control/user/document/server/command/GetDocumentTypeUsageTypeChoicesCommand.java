@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDocumentTypeUsageTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetDocumentTypeUsageTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.DocumentTypeUsageType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultDocumentTypeUsageTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of GetDocumentTypeUsageTypeChoicesCommand */
     public GetDocumentTypeUsageTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetDocumentTypeUsageTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var result = DocumentResultFactory.getGetDocumentTypeUsageTypeChoicesResult();
         var defaultDocumentTypeUsageTypeChoice = form.getDefaultDocumentTypeUsageTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

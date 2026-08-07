@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmployeeCommand
@@ -65,6 +65,18 @@ public class GetEmployeeCommand
         );
     }
 
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyEmployeeLogic partyEmployeeLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetEmployeeCommand */
     public GetEmployeeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -83,7 +95,7 @@ public class GetEmployeeCommand
         partyName = form.getPartyName();
         universalEntitySpec = form;
         parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+                entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -99,15 +111,13 @@ public class GetEmployeeCommand
         if(parameterCount == 0) {
             var party = getParty();
 
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.EMPLOYEE.name());
+            partyLogic.checkPartyType(this, party, PartyTypes.EMPLOYEE.name());
 
             if(!hasExecutionErrors()) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
-
                 partyEmployee = employeeControl.getPartyEmployee(party);
             }
         } else {
-            partyEmployee = PartyEmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName, universalEntitySpec);
+            partyEmployee = partyEmployeeLogic.getPartyEmployeeByName(this, employeeName, partyName, universalEntitySpec);
         }
 
         if(partyEmployee != null) {
@@ -122,8 +132,6 @@ public class GetEmployeeCommand
         var result = EmployeeResultFactory.getGetEmployeeResult();
 
         if(partyEmployee != null) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-
             result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), partyEmployee));
         }
 

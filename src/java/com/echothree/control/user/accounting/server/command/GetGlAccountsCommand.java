@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGlAccountsCommand
@@ -57,6 +57,13 @@ public class GetGlAccountsCommand
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GlAccountCategoryLogic glAccountCategoryLogic;
+
     
     /** Creates a new instance of GetGlAccountsCommand */
     public GetGlAccountsCommand() {
@@ -70,14 +77,12 @@ public class GetGlAccountsCommand
         var glAccountCategoryName = form.getGlAccountCategoryName();
 
         if(glAccountCategoryName != null) {
-            glAccountCategory = GlAccountCategoryLogic.getInstance().getGlAccountCategoryByName(this, glAccountCategoryName);
+            glAccountCategory = glAccountCategoryLogic.getGlAccountCategoryByName(this, glAccountCategoryName);
         }
     }
 
     @Override
     protected Long getTotalEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         return hasExecutionErrors() ? null :
                 glAccountCategory == null ?
                         accountingControl.countGlAccounts() :
@@ -89,8 +94,6 @@ public class GetGlAccountsCommand
         Collection<GlAccount> glAccounts = null;
 
         if(!hasExecutionErrors()) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             glAccounts = glAccountCategory == null ?
                     accountingControl.getGlAccounts() :
                     accountingControl.getGlAccountsByGlAccountCategory(glAccountCategory);
@@ -104,8 +107,6 @@ public class GetGlAccountsCommand
         var result = AccountingResultFactory.getGetGlAccountsResult();
 
         if(entities != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             if(glAccountCategory == null) {
                 result.setGlAccountCount(accountingControl.countGlAccounts());
                 result.setGlAccounts(accountingControl.getGlAccountTransfers(getUserVisit(), entities));

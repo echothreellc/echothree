@@ -33,15 +33,16 @@ import javax.inject.Inject;
 public class GetLanguagesCommand
         extends BasePaginatedMultipleEntitiesCommand<Language, GetLanguagesForm> {
 
-    @Inject
-    PartyControl partyControl;
-
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetLanguagesCommand */
     public GetLanguagesCommand() {

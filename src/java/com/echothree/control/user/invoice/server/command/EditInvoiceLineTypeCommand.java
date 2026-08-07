@@ -77,6 +77,7 @@ public class EditInvoiceLineTypeCommand
 
     @Inject
     InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of EditInvoiceLineTypeCommand */
     public EditInvoiceLineTypeCommand() {

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCompanyCommand
@@ -59,6 +59,13 @@ public class GetCompanyCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    CompanyLogic companyLogic;
+
     
     /** Creates a new instance of GetCompanyCommand */
     public GetCompanyCommand() {
@@ -69,7 +76,7 @@ public class GetCompanyCommand
     protected PartyCompany getEntity() {
         var companyName = form.getCompanyName();
         var partyName = form.getPartyName();
-        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, form, true);
+        var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, partyName, form, true);
 
         if(partyCompany != null) {
             sendEvent(partyCompany.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
@@ -83,8 +90,6 @@ public class GetCompanyCommand
         var result = PartyResultFactory.getGetCompanyResult();
 
         if(partyCompany != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             result.setCompany(partyControl.getCompanyTransfer(getUserVisit(), partyCompany));
         }
 

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWarehouseResultsCommand
@@ -48,13 +48,19 @@ public class GetWarehouseResultsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of GetWarehouseResultsCommand */
     public GetWarehouseResultsCommand() {
@@ -66,14 +72,12 @@ public class GetWarehouseResultsCommand
         var result = SearchResultFactory.getGetWarehouseResultsResult();
         var searchTypeName = form.getSearchTypeName();
         var userVisit = getUserVisit();
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+        var userVisitSearch = searchLogic.getUserVisitSearchByName(this, userVisit,
                 SearchKinds.WAREHOUSE.name(), searchTypeName);
 
         if(!hasExecutionErrors()) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                result.setWarehouseResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                result.setWarehouseResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
             }
 
             result.setWarehouseResults(warehouseControl.getWarehouseResultTransfers(userVisit, userVisitSearch));

@@ -60,17 +60,18 @@ public class GetFilterStepElementsCommand
                 new FieldDefinition("FilterStepName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterStepElementsCommand */
-    public GetFilterStepElementsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterStepLogic filterStepLogic;
+
+
+    /** Creates a new instance of GetFilterStepElementsCommand */
+    public GetFilterStepElementsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private FilterStep filterStep;
 

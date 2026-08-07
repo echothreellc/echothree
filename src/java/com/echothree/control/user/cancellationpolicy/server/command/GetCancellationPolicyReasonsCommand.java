@@ -62,7 +62,7 @@ public class GetCancellationPolicyReasonsCommand
                 new FieldDefinition("CancellationReasonName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     CancellationPolicyControl cancellationPolicyControl;
 
@@ -71,6 +71,7 @@ public class GetCancellationPolicyReasonsCommand
 
     @Inject
     CancellationPolicyLogic cancellationPolicyLogic;
+
 
     /** Creates a new instance of GetCancellationPolicyReasonsCommand */
     public GetCancellationPolicyReasonsCommand() {

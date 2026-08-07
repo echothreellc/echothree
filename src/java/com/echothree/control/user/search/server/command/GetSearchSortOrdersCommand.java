@@ -34,10 +34,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortOrdersCommand
@@ -59,6 +59,12 @@ public class GetSearchSortOrdersCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchKindLogic searchKindLogic;
+
     /** Creates a new instance of GetSearchSortOrdersCommand */
     public GetSearchSortOrdersCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -68,13 +74,11 @@ public class GetSearchSortOrdersCommand
 
     @Override
     protected void handleForm() {
-        searchKind = SearchKindLogic.getInstance().getSearchKindByName(this, form.getSearchKindName());
+        searchKind = searchKindLogic.getSearchKindByName(this, form.getSearchKindName());
     }
 
     @Override
     protected Long getTotalEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return hasExecutionErrors() ?
                 null :
                 searchControl.countSearchSortOrdersBySearchKind(searchKind);
@@ -82,7 +86,6 @@ public class GetSearchSortOrdersCommand
 
     @Override
     protected Collection<SearchSortOrder> getEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
         Collection<SearchSortOrder> entities = null;
 
         if(!hasExecutionErrors()) {
@@ -97,7 +100,6 @@ public class GetSearchSortOrdersCommand
         var result = SearchResultFactory.getGetSearchSortOrdersResult();
 
         if(entities != null) {
-            var searchControl = Session.getModelController(SearchControl.class);
             var userVisit = getUserVisit();
 
             result.setSearchKind(searchControl.getSearchKindTransfer(userVisit, searchKind));

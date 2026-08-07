@@ -36,10 +36,6 @@ import javax.inject.Inject;
 public class PartyContactListLogic
         extends BaseLogic {
 
-    protected PartyContactListLogic() {
-        super();
-    }
-
     @Inject
     ContactListControl contactListControl;
 
@@ -47,19 +43,26 @@ public class PartyContactListLogic
     ContactListLogic contactListLogic;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     PartyLogic partyLogic;
+
+    protected PartyContactListLogic() {
+        super();
+    }
 
     public PartyContactList getPartyContactListByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PartyContactListUniversalSpec universalSpec, final EntityPermission entityPermission) {
         PartyContactList partyContactList = null;
         var partyName = universalSpec.getPartyName();
         var contactListName = universalSpec.getContactListName();
-        var parameterCount = (partyName == null && contactListName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (partyName == null && contactListName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(partyName == null && contactListName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyContactList.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

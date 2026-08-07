@@ -55,14 +55,6 @@ import javax.inject.Inject;
 public class ContactListLogic
     extends BaseLogic {
 
-    protected ContactListLogic() {
-        super();
-    }
-
-    public static ContactListLogic getInstance() {
-        return CDI.current().select(ContactListLogic.class).get();
-    }
-
     @Inject
     ContactListControl contactListControl;
 
@@ -79,8 +71,19 @@ public class ContactListLogic
     ContactListChainLogic contactListChainLogic;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     PartyLogic partyLogic;
-    
+
+    protected ContactListLogic() {
+        super();
+    }
+
+    public static ContactListLogic getInstance() {
+        return CDI.current().select(ContactListLogic.class).get();
+    }
+
     public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName,
             final EntityPermission entityPermission) {
         var contactList = contactListControl.getContactListByName(contactListName, entityPermission);
@@ -104,7 +107,7 @@ public class ContactListLogic
             final ContactListUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ContactList contactList = null;
         var contactListName = universalSpec.getContactListName();
-        var parameterCount = (contactListName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contactListName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -120,7 +123,7 @@ public class ContactListLogic
             }
             case 1 -> {
                 if(contactListName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactList.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

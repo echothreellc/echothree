@@ -31,9 +31,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PostingLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    TransactionTimeLogic transactionTimeLogic;
 
     protected PostingLogic() {
         super();
@@ -85,10 +98,6 @@ public class PostingLogic {
     }
     
     public void postTransaction(final Session session, final Transaction transaction, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
-        var periodControl = Session.getModelController(PeriodControl.class);
-
         var postedTime = session.getStartTime();
         var periods = periodControl.getContainingPeriodsUsingNames(PeriodConstants.PeriodKind_FISCAL, postedTime);
         var transactionGlEntries = accountingControl.getTransactionGlEntriesByTransaction(transaction);
@@ -98,7 +107,7 @@ public class PostingLogic {
                 )
         );
 
-        TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.POSTED_TIME.name(),
+        transactionTimeLogic.createTransactionTime(null, transaction, TransactionTimeTypes.POSTED_TIME.name(),
                 postedTime, createdBy);
     }
     

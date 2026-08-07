@@ -23,9 +23,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class RemovedExpiredEntityLocksCommand
@@ -38,6 +38,10 @@ public class RemovedExpiredEntityLocksCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
+
+    @Inject
+    EntityLockControl entityLockControl;
+
     
     /** Creates a new instance of RemovedExpiredEntityLocksCommand */
     public RemovedExpiredEntityLocksCommand() {
@@ -46,7 +50,6 @@ public class RemovedExpiredEntityLocksCommand
 
     @Override
     protected BaseResult execute() {
-        var entityLockControl = Session.getModelController(EntityLockControl.class);
         Long lockExpirationTime = session.getStartTime() - 24 * 60 * 60 * 1000; // 24 hours
         
         entityLockControl.removeEntityLocksByLockExpirationTime(lockExpirationTime);

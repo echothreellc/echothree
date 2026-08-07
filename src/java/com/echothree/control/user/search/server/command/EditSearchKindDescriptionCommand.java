@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchKindDescriptionCommand
@@ -55,8 +55,8 @@ public class EditSearchKindDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,12 @@ public class EditSearchKindDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
 
     /** Creates a new instance of EditSearchKindDescriptionCommand */
     public EditSearchKindDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditSearchKindDescriptionCommand
 
     @Override
     public SearchKindDescription getEntity(EditSearchKindDescriptionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchKindDescription searchKindDescription = null;
         var searchKindName = spec.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditSearchKindDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchKindDescriptionResult result, SearchKindDescription searchKindDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchKindDescription(searchControl.getSearchKindDescriptionTransfer(getUserVisit(), searchKindDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditSearchKindDescriptionCommand
 
     @Override
     public void doUpdate(SearchKindDescription searchKindDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindDescriptionValue = searchControl.getSearchKindDescriptionValue(searchKindDescription);
 
         searchKindDescriptionValue.setDescription(edit.getDescription());

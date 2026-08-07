@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorResultCodeChoicesCommand
@@ -45,14 +45,18 @@ public class GetPaymentProcessorResultCodeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorResultCode.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultPaymentProcessorResultCodeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
     
     /** Creates a new instance of GetPaymentProcessorResultCodeChoicesCommand */
     public GetPaymentProcessorResultCodeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetPaymentProcessorResultCodeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorResultCodeChoicesResult();
         var defaultPaymentProcessorResultCodeChoice = form.getDefaultPaymentProcessorResultCodeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

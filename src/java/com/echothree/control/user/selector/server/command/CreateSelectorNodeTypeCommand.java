@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorNodeTypeCommand
@@ -47,6 +47,10 @@ public class CreateSelectorNodeTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateSelectorNodeTypeCommand */
     public CreateSelectorNodeTypeCommand() {
@@ -55,7 +59,6 @@ public class CreateSelectorNodeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorNodeTypeName = form.getSelectorNodeTypeName();
         var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         

@@ -57,6 +57,7 @@ public class GetLotTimeTypeCommand
 
     @Inject
     LotTimeControl lotTimeControl;
+
     /** Creates a new instance of GetLotTimeTypeCommand */
     public GetLotTimeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);

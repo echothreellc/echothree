@@ -65,11 +65,6 @@ public class GetPartyRelationshipsCommand
                 new FieldDefinition("ToRoleTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetPartyRelationshipsCommand */
-    public GetPartyRelationshipsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     PartyControl partyControl;
@@ -79,6 +74,12 @@ public class GetPartyRelationshipsCommand
 
     @Inject
     PartyRelationshipLogic partyRelationshipLogic;
+
+
+    /** Creates a new instance of GetPartyRelationshipsCommand */
+    public GetPartyRelationshipsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private PartyRelationshipType partyRelationshipType;
     private Party fromParty;

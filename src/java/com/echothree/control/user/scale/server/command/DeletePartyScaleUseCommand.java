@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyScaleUseCommand
@@ -48,14 +48,20 @@ public class DeletePartyScaleUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyScaleUse.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ScaleUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
 
     /** Creates a new instance of DeletePartyScaleUseCommand */
     public DeletePartyScaleUseCommand() {
@@ -68,8 +74,6 @@ public class DeletePartyScaleUseCommand
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             party = partyControl.getPartyByName(partyName);
             if(party == null) {
                 addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
@@ -79,7 +83,6 @@ public class DeletePartyScaleUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var scaleControl = Session.getModelController(ScaleControl.class);
             var scaleUseTypeName = form.getScaleUseTypeName();
             var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 

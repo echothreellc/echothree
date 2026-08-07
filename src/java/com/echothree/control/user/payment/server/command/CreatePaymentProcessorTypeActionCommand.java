@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorTypeActionCommand
@@ -45,16 +46,20 @@ public class CreatePaymentProcessorTypeActionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorType.name(), SecurityRoles.PaymentProcessorTypeAction.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentProcessorActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorTypeActionLogic paymentProcessorTypeActionLogic;
+
     
     /** Creates a new instance of CreatePaymentProcessorTypeActionTypeCommand */
     public CreatePaymentProcessorTypeActionCommand() {
@@ -69,7 +74,7 @@ public class CreatePaymentProcessorTypeActionCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        var paymentProcessorTypeAction = PaymentProcessorTypeActionLogic.getInstance().createPaymentProcessorTypeAction(this,
+        var paymentProcessorTypeAction = paymentProcessorTypeActionLogic.createPaymentProcessorTypeAction(this,
                 paymentProcessorTypeName, paymentProcessorActionTypeName, isDefault, sortOrder, getPartyPK());
 
         if(paymentProcessorTypeAction != null && !hasExecutionErrors()) {

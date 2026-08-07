@@ -45,10 +45,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class UseTypeControl
         extends BaseOfferControl {
+
+    @Inject
+    protected UseControl useControl;
 
     /** Creates a new instance of UseTypeControl */
     protected UseTypeControl() {
@@ -58,7 +62,13 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
     //   Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UseTypeFactory useTypeFactory;
+
+    @Inject
+    protected UseTypeDetailFactory useTypeDetailFactory;
+
     public UseType createUseType(String useTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultUseType = getDefaultUseType();
         var defaultFound = defaultUseType != null;
@@ -72,12 +82,12 @@ public class UseTypeControl
             isDefault = true;
         }
 
-        var useType = UseTypeFactory.getInstance().create();
-        var useTypeDetail = UseTypeDetailFactory.getInstance().create(useType, useTypeName, isDefault, sortOrder,
+        var useType = useTypeFactory.create();
+        var useTypeDetail = useTypeDetailFactory.create(useType, useTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, useType.getPrimaryKey());
+        useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, useType.getPrimaryKey());
         useType.setActiveDetail(useTypeDetail);
         useType.setLastDetail(useTypeDetail);
         useType.store();
@@ -90,7 +100,7 @@ public class UseTypeControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseType */
     public UseType getUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UseTypePK(entityInstance.getEntityUniqueId());
-        var useType = UseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var useType = useTypeFactory.getEntityFromPK(entityPermission, pk);
 
         return useType;
     }
@@ -115,21 +125,25 @@ public class UseTypeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ "
-                    + "FROM usetypes, usetypedetails "
-                    + "WHERE usetyp_activedetailid = usetypdt_usetypedetailid "
-                    + "ORDER BY usetypdt_sortorder, usetypdt_usetypename "
-                    + "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid
+                    ORDER BY usetypdt_sortorder, usetypdt_usetypename
+                    _LIMIT_
+                    """;
         } else if (entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ "
-                    + "FROM usetypes, usetypedetails "
-                    + "WHERE usetyp_activedetailid = usetypdt_usetypedetailid "
-                    + "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = UseTypeFactory.getInstance().prepareStatement(query);
+        var ps = useTypeFactory.prepareStatement(query);
         
-        return UseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return useTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<UseType> getUseTypes() {
@@ -147,21 +161,25 @@ public class UseTypeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypes, usetypedetails " +
-                        "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypes, usetypedetails
+                        WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypes, usetypedetails " +
-                        "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypes, usetypedetails
+                        WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = UseTypeFactory.getInstance().prepareStatement(query);
+            var ps = useTypeFactory.prepareStatement(query);
             
             ps.setString(1, useTypeName);
             
-            useType = UseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useType = useTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -189,19 +207,23 @@ public class UseTypeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM usetypes, usetypedetails " +
-                    "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM usetypes, usetypedetails " +
-                    "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = UseTypeFactory.getInstance().prepareStatement(query);
+        var ps = useTypeFactory.prepareStatement(query);
         
-        return UseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return useTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public UseType getDefaultUseType() {
@@ -271,7 +293,7 @@ public class UseTypeControl
     private void updateUseTypeFromValue(UseTypeDetailValue useTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(useTypeDetailValue.hasBeenModified()) {
-            var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDetailValue.getUseTypePK());
             var useTypeDetail = useType.getActiveDetailForUpdate();
             
@@ -299,7 +321,7 @@ public class UseTypeControl
                 }
             }
             
-            useTypeDetail = UseTypeDetailFactory.getInstance().create(useTypePK, useTypeName, isDefault, sortOrder,
+            useTypeDetail = useTypeDetailFactory.create(useTypePK, useTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             useType.setActiveDetail(useTypeDetail);
@@ -314,7 +336,6 @@ public class UseTypeControl
     }
     
     public void deleteUseType(UseType useType, BasePK deletedBy) {
-        var useControl = Session.getModelController(UseControl.class);
 
         deleteUseTypeDescriptionsByUseType(useType, deletedBy);
         useControl.deleteUsesByUseType(useType, deletedBy);
@@ -347,9 +368,12 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
     //   Use Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UseTypeDescriptionFactory useTypeDescriptionFactory;
+
     public UseTypeDescription createUseTypeDescription(UseType useType, Language language, String description, BasePK createdBy) {
-        var useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
+        var useTypeDescription = useTypeDescriptionFactory.create(useType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
@@ -365,23 +389,27 @@ public class UseTypeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useTypeDescription = useTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -412,23 +440,27 @@ public class UseTypeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions, languages " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? AND usetypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions, languages
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? AND usetypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            useTypeDescriptions = UseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            useTypeDescriptions = useTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -478,7 +510,7 @@ public class UseTypeControl
     
     public void updateUseTypeDescriptionFromValue(UseTypeDescriptionValue useTypeDescriptionValue, BasePK updatedBy) {
         if(useTypeDescriptionValue.hasBeenModified()) {
-            var useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useTypeDescription = useTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDescriptionValue.getPrimaryKey());
             
             useTypeDescription.setThruTime(session.getStartTime());
@@ -488,7 +520,7 @@ public class UseTypeControl
             var language = useTypeDescription.getLanguage();
             var description = useTypeDescriptionValue.getDescription();
             
-            useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language, description,
+            useTypeDescription = useTypeDescriptionFactory.create(useType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
@@ -511,10 +543,12 @@ public class UseTypeControl
         );
     }
 
-
     // --------------------------------------------------------------------------------
     //   Use Type Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<UseTypeResultTransfer> getUseTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -527,19 +561,21 @@ public class UseTypeControl
         }
 
         try {
-            var useTypeControl = Session.getModelController(UseTypeControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+            var useTypeControl = this;
+            var ps = searchResultFactory.prepareStatement(
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
+                    var useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
                     var useTypeDetail = useType.getLastDetail();
 
                     useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),

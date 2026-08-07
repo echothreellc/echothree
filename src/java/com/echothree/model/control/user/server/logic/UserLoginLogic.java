@@ -22,13 +22,16 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UserLoginLogic
         extends BaseLogic {
+
+    @Inject
+    UserControl userControl;
 
     protected UserLoginLogic() {
         super();
@@ -39,7 +42,6 @@ public class UserLoginLogic
     }
     
     public UserLogin getUserLoginByUsername(final ExecutionErrorAccumulator eea, final String username) {
-        var userControl = Session.getModelController(UserControl.class);
         var userLogin = userControl.getUserLoginByUsername(username);
 
         if(userLogin == null) {

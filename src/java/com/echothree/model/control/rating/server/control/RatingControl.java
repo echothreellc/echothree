@@ -98,15 +98,21 @@ public class RatingControl
     // --------------------------------------------------------------------------------
     //   Rating Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RatingTypeFactory ratingTypeFactory;
+
+    @Inject
+    protected RatingTypeDetailFactory ratingTypeDetailFactory;
+
     public RatingType createRatingType(EntityType entityType, String ratingTypeName, Sequence ratingSequence, Integer sortOrder,
             BasePK createdBy) {
-        var ratingType = RatingTypeFactory.getInstance().create();
-        var ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingType, entityType,
+        var ratingType = ratingTypeFactory.create();
+        var ratingTypeDetail = ratingTypeDetailFactory.create(ratingType, entityType,
                 ratingTypeName, ratingSequence, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        ratingType = RatingTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        ratingType = ratingTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 ratingType.getPrimaryKey());
         ratingType.setActiveDetail(ratingTypeDetail);
         ratingType.setLastDetail(ratingTypeDetail);
@@ -121,7 +127,7 @@ public class RatingControl
     public RatingType getRatingTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new RatingTypePK(entityInstance.getEntityUniqueId());
 
-        return RatingTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return ratingTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public RatingType getRatingTypeByEntityInstance(EntityInstance entityInstance) {
@@ -148,22 +154,26 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypes, ratingtypedetails " +
-                        "WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ? " +
-                        "ORDER BY rtgtypdt_sortorder, rtgtypdt_ratingtypename";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypes, ratingtypedetails
+                        WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ?
+                        ORDER BY rtgtypdt_sortorder, rtgtypdt_ratingtypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypes, ratingtypedetails " +
-                        "WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypes, ratingtypedetails
+                        WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
-            ratingTypes = RatingTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratingTypes = ratingTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -186,24 +196,28 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypes, ratingtypedetails " +
-                        "WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ? " +
-                        "AND rtgtypdt_ratingtypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypes, ratingtypedetails
+                        WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ?
+                        AND rtgtypdt_ratingtypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypes, ratingtypedetails " +
-                        "WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ? " +
-                        "AND rtgtypdt_ratingtypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypes, ratingtypedetails
+                        WHERE rtgtyp_activedetailid = rtgtypdt_ratingtypedetailid AND rtgtypdt_ent_entitytypeid = ?
+                        AND rtgtypdt_ratingtypename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, ratingTypeName);
             
-            ratingType = RatingTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            ratingType = ratingTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -247,7 +261,7 @@ public class RatingControl
     
     public void updateRatingTypeFromValue(RatingTypeDetailValue ratingTypeDetailValue, BasePK updatedBy) {
         if(ratingTypeDetailValue.hasBeenModified()) {
-            var ratingType = RatingTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var ratingType = ratingTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      ratingTypeDetailValue.getRatingTypePK());
             var ratingTypeDetail = ratingType.getActiveDetailForUpdate();
             
@@ -260,7 +274,7 @@ public class RatingControl
             var ratingSequencePK = ratingTypeDetailValue.getRatingSequencePK();
             var sortOrder = ratingTypeDetailValue.getSortOrder();
             
-            ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingTypePK, entityTypePK, ratingTypeName,
+            ratingTypeDetail = ratingTypeDetailFactory.create(ratingTypePK, entityTypePK, ratingTypeName,
                     ratingSequencePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             ratingType.setActiveDetail(ratingTypeDetail);
@@ -295,10 +309,13 @@ public class RatingControl
     // --------------------------------------------------------------------------------
     //   Rating Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RatingTypeDescriptionFactory ratingTypeDescriptionFactory;
+
     public RatingTypeDescription createRatingTypeDescription(RatingType ratingType, Language language, String description,
             BasePK createdBy) {
-        var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType,
+        var ratingTypeDescription = ratingTypeDescriptionFactory.create(ratingType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -313,23 +330,27 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypedescriptions " +
-                        "WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_lang_languageid = ? AND rtgtypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypedescriptions
+                        WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_lang_languageid = ? AND rtgtypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypedescriptions " +
-                        "WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_lang_languageid = ? AND rtgtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypedescriptions
+                        WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_lang_languageid = ? AND rtgtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            ratingTypeDescription = ratingTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -360,23 +381,27 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypedescriptions, languages " +
-                        "WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_thrutime = ? AND rtgtypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypedescriptions, languages
+                        WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_thrutime = ? AND rtgtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypedescriptions " +
-                        "WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypedescriptions
+                        WHERE rtgtypd_rtgtyp_ratingtypeid = ? AND rtgtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            ratingTypeDescriptions = RatingTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratingTypeDescriptions = ratingTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -426,7 +451,7 @@ public class RatingControl
     
     public void updateRatingTypeDescriptionFromValue(RatingTypeDescriptionValue ratingTypeDescriptionValue, BasePK updatedBy) {
         if(ratingTypeDescriptionValue.hasBeenModified()) {
-            var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeDescriptionValue.getPrimaryKey());
+            var ratingTypeDescription = ratingTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeDescriptionValue.getPrimaryKey());
             
             ratingTypeDescription.setThruTime(session.getStartTime());
             ratingTypeDescription.store();
@@ -435,7 +460,7 @@ public class RatingControl
             var language = ratingTypeDescription.getLanguage();
             var description = ratingTypeDescriptionValue.getDescription();
             
-            ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.getStartTime(), Session.MAX_TIME);
+            ratingTypeDescription = ratingTypeDescriptionFactory.create(ratingType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -459,7 +484,13 @@ public class RatingControl
     // --------------------------------------------------------------------------------
     //   Rating Type List Items
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RatingTypeListItemFactory ratingTypeListItemFactory;
+
+    @Inject
+    protected RatingTypeListItemDetailFactory ratingTypeListItemDetailFactory;
+
     public RatingTypeListItem createRatingTypeListItem(RatingType ratingType, String ratingTypeListItemName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
@@ -474,13 +505,13 @@ public class RatingControl
             isDefault = true;
         }
 
-        var ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
-        var ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(
+        var ratingTypeListItem = ratingTypeListItemFactory.create();
+        var ratingTypeListItemDetail = ratingTypeListItemDetailFactory.create(
                 ratingTypeListItem, ratingType, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        ratingTypeListItem = ratingTypeListItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 ratingTypeListItem.getPrimaryKey());
         ratingTypeListItem.setActiveDetail(ratingTypeListItemDetail);
         ratingTypeListItem.setLastDetail(ratingTypeListItemDetail);
@@ -495,7 +526,7 @@ public class RatingControl
     public RatingTypeListItem getRatingTypeListItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new RatingTypeListItemPK(entityInstance.getEntityUniqueId());
 
-        return RatingTypeListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return ratingTypeListItemFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public RatingTypeListItem getRatingTypeListItemByEntityInstance(EntityInstance entityInstance) {
@@ -523,24 +554,28 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid " +
-                        "AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_ratingtypelistitemname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid
+                        AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_ratingtypelistitemname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid " +
-                        "AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_ratingtypelistitemname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid
+                        AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_ratingtypelistitemname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeListItemFactory.prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             ps.setString(2, ratingTypeListItemName);
             
-            ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            ratingTypeListItem = ratingTypeListItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -571,23 +606,27 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid " +
-                        "AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid
+                        AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid " +
-                        "AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid
+                        AND rtgtyplidt_rtgtyp_ratingtypeid = ? AND rtgtyplidt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeListItemFactory.prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             
-            ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            ratingTypeListItem = ratingTypeListItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -614,24 +653,28 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid " +
-                        "AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
-                        "ORDER BY rtgtyplidt_sortorder, rtgtyplidt_ratingtypelistitemname";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid
+                        AND rtgtyplidt_rtgtyp_ratingtypeid = ?
+                        ORDER BY rtgtyplidt_sortorder, rtgtyplidt_ratingtypelistitemname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid " +
-                        "AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid
+                        AND rtgtyplidt_rtgtyp_ratingtypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeListItemFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeListItemFactory.prepareStatement(query);
             
             ps.setLong(1, ratingType.getPrimaryKey().getEntityId());
             
-            ratingTypeListItems = RatingTypeListItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratingTypeListItems = ratingTypeListItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -668,7 +711,7 @@ public class RatingControl
     private void updateRatingTypeListItemFromValue(RatingTypeListItemDetailValue ratingTypeListItemDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(ratingTypeListItemDetailValue.hasBeenModified()) {
-            var ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var ratingTypeListItem = ratingTypeListItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      ratingTypeListItemDetailValue.getRatingTypeListItemPK());
             var ratingTypeListItemDetail = ratingTypeListItem.getActiveDetailForUpdate();
             
@@ -698,7 +741,7 @@ public class RatingControl
                 }
             }
             
-            ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(ratingTypeListItemPK,
+            ratingTypeListItemDetail = ratingTypeListItemDetailFactory.create(ratingTypeListItemPK,
                     ratingTypePK, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             ratingTypeListItem.setActiveDetail(ratingTypeListItemDetail);
@@ -793,10 +836,13 @@ public class RatingControl
     // --------------------------------------------------------------------------------
     //   Rating Type List Item Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RatingTypeListItemDescriptionFactory ratingTypeListItemDescriptionFactory;
+
     public RatingTypeListItemDescription createRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language,
             String description, BasePK createdBy) {
-        var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(
+        var ratingTypeListItemDescription = ratingTypeListItemDescriptionFactory.create(
                 ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -811,23 +857,27 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitemdescriptions " +
-                        "WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_lang_languageid = ? AND rtgtyplid_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitemdescriptions
+                        WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_lang_languageid = ? AND rtgtyplid_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitemdescriptions " +
-                        "WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_lang_languageid = ? AND rtgtyplid_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitemdescriptions
+                        WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_lang_languageid = ? AND rtgtyplid_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeListItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeListItemDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, ratingTypeListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            ratingTypeListItemDescription = ratingTypeListItemDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -858,23 +908,27 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitemdescriptions, languages " +
-                        "WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_thrutime = ? AND rtgtyplid_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitemdescriptions, languages
+                        WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_thrutime = ? AND rtgtyplid_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratingtypelistitemdescriptions " +
-                        "WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratingtypelistitemdescriptions
+                        WHERE rtgtyplid_rtgtypli_ratingtypelistitemid = ? AND rtgtyplid_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingTypeListItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = ratingTypeListItemDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, ratingTypeListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            ratingTypeListItemDescriptions = RatingTypeListItemDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratingTypeListItemDescriptions = ratingTypeListItemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -924,7 +978,7 @@ public class RatingControl
     
     public void updateRatingTypeListItemDescriptionFromValue(RatingTypeListItemDescriptionValue ratingTypeListItemDescriptionValue, BasePK updatedBy) {
         if(ratingTypeListItemDescriptionValue.hasBeenModified()) {
-            var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeListItemDescriptionValue.getPrimaryKey());
+            var ratingTypeListItemDescription = ratingTypeListItemDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeListItemDescriptionValue.getPrimaryKey());
             
             ratingTypeListItemDescription.setThruTime(session.getStartTime());
             ratingTypeListItemDescription.store();
@@ -933,7 +987,7 @@ public class RatingControl
             var language = ratingTypeListItemDescription.getLanguage();
             var description = ratingTypeListItemDescriptionValue.getDescription();
             
-            ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
+            ratingTypeListItemDescription = ratingTypeListItemDescriptionFactory.create(ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -957,15 +1011,21 @@ public class RatingControl
     // --------------------------------------------------------------------------------
     //   Ratings
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RatingFactory ratingFactory;
+
+    @Inject
+    protected RatingDetailFactory ratingDetailFactory;
+
     public Rating createRating(String ratingName, RatingTypeListItem ratingTypeListItem, EntityInstance ratedEntityInstance,
             EntityInstance ratedByEntityInstance, BasePK createdBy) {
-        var rating = RatingFactory.getInstance().create();
-        var ratingDetail = RatingDetailFactory.getInstance().create(rating, ratingName, ratingTypeListItem,
+        var rating = ratingFactory.create();
+        var ratingDetail = ratingDetailFactory.create(rating, ratingName, ratingTypeListItem,
                 ratedEntityInstance, ratedByEntityInstance, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, rating.getPrimaryKey());
+        rating = ratingFactory.getEntityFromPK(EntityPermission.READ_WRITE, rating.getPrimaryKey());
         rating.setActiveDetail(ratingDetail);
         rating.setLastDetail(ratingDetail);
         rating.store();
@@ -983,21 +1043,25 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratingname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratingname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratingname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratingname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingFactory.getInstance().prepareStatement(query);
+            var ps = ratingFactory.prepareStatement(query);
             
             ps.setString(1, ratingName);
             
-            rating = RatingFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            rating = ratingFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1031,24 +1095,28 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ? " +
-                        "AND rtgdt_ratedbyentityinstanceid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ?
+                        AND rtgdt_ratedbyentityinstanceid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ? " +
-                        "AND rtgdt_ratedbyentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ?
+                        AND rtgdt_ratedbyentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingFactory.getInstance().prepareStatement(query);
+            var ps = ratingFactory.prepareStatement(query);
             
             ps.setLong(1, ratedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, ratedByEntityInstance.getPrimaryKey().getEntityId());
             
-            rating = RatingFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            rating = ratingFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1075,22 +1143,26 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ? " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ?
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingFactory.getInstance().prepareStatement(query);
+            var ps = ratingFactory.prepareStatement(query);
             
             ps.setLong(1, ratedEntityInstance.getPrimaryKey().getEntityId());
             
-            ratings = RatingFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratings = ratingFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1114,22 +1186,26 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ? " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ?
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingFactory.getInstance().prepareStatement(query);
+            var ps = ratingFactory.prepareStatement(query);
             
             ps.setLong(1, ratedByEntityInstance.getPrimaryKey().getEntityId());
             
-            ratings = RatingFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratings = ratingFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1152,22 +1228,26 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ? " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ?
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingFactory.getInstance().prepareStatement(query);
+            var ps = ratingFactory.prepareStatement(query);
             
             ps.setLong(1, ratingTypeListItem.getPrimaryKey().getEntityId());
             
-            ratings = RatingFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratings = ratingFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1191,28 +1271,32 @@ public class RatingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails, ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid " +
-                        "AND rtgdt_ratedentityinstanceid = ? AND rtgdt_rtgtypli_ratingtypelistitemid = rtgtypli_ratingtypelistitemid " +
-                        "AND rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
-                        "ORDER BY rtgtyplidt_sortorder, rtgtyplidt_ratingtypelistitemname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails, ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid
+                        AND rtgdt_ratedentityinstanceid = ? AND rtgdt_rtgtypli_ratingtypelistitemid = rtgtypli_ratingtypelistitemid
+                        AND rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid AND rtgtyplidt_rtgtyp_ratingtypeid = ?
+                        ORDER BY rtgtyplidt_sortorder, rtgtyplidt_ratingtypelistitemname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM ratings, ratingdetails, ratingtypelistitems, ratingtypelistitemdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid " +
-                        "AND rtgdt_ratedentityinstanceid = ? AND rtgdt_rtgtypli_ratingtypelistitemid = rtgtypli_ratingtypelistitemid " +
-                        "AND rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM ratings, ratingdetails, ratingtypelistitems, ratingtypelistitemdetails
+                        WHERE rtg_activedetailid = rtgdt_ratingdetailid
+                        AND rtgdt_ratedentityinstanceid = ? AND rtgdt_rtgtypli_ratingtypelistitemid = rtgtypli_ratingtypelistitemid
+                        AND rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid AND rtgtyplidt_rtgtyp_ratingtypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = RatingFactory.getInstance().prepareStatement(query);
+            var ps = ratingFactory.prepareStatement(query);
             
             ps.setLong(1, ratedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, ratingType.getPrimaryKey().getEntityId());
             
-            ratings = RatingFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            ratings = ratingFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1254,7 +1338,7 @@ public class RatingControl
     
     public void updateRatingFromValue(RatingDetailValue ratingDetailValue,  BasePK updatedBy) {
         if(ratingDetailValue.hasBeenModified()) {
-            var rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingDetailValue.getRatingPK());
+            var rating = ratingFactory.getEntityFromPK(EntityPermission.READ_WRITE, ratingDetailValue.getRatingPK());
             var ratingDetail = rating.getActiveDetailForUpdate();
             
             ratingDetail.setThruTime(session.getStartTime());
@@ -1266,7 +1350,7 @@ public class RatingControl
             var ratedEntityInstancePK = ratingDetail.getRatedEntityInstancePK(); // Not updated
             var ratedByEntityInstancePK = ratingDetail.getRatedByEntityInstancePK(); // Not updated
             
-            ratingDetail = RatingDetailFactory.getInstance().create(ratingPK, ratingName, ratingTypeListItemPK, ratedEntityInstancePK, ratedByEntityInstancePK,
+            ratingDetail = ratingDetailFactory.create(ratingPK, ratingName, ratingTypeListItemPK, ratedEntityInstancePK, ratedByEntityInstancePK,
                     session.getStartTime(), Session.MAX_TIME);
             
             rating.setActiveDetail(ratingDetail);

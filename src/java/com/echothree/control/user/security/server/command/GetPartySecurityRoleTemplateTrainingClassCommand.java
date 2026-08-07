@@ -57,7 +57,7 @@ public class GetPartySecurityRoleTemplateTrainingClassCommand
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     SecurityControl securityControl;
 
@@ -66,6 +66,7 @@ public class GetPartySecurityRoleTemplateTrainingClassCommand
 
     @Inject
     TrainingClassLogic trainingClassLogic;
+
 
     /** Creates a new instance of GetPartySecurityRoleTemplateTrainingClassCommand */
     public GetPartySecurityRoleTemplateTrainingClassCommand() {

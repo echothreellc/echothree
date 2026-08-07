@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationKindCommand
@@ -58,6 +58,13 @@ public class GetCancellationKindCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
     
     /** Creates a new instance of GetCancellationKindCommand */
     public GetCancellationKindCommand() {
@@ -66,7 +73,7 @@ public class GetCancellationKindCommand
 
     @Override
     protected CancellationKind getEntity() {
-        var cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByUniversalSpec(this, form, true);
+        var cancellationKind = cancellationKindLogic.getCancellationKindByUniversalSpec(this, form, true);
 
         if(cancellationKind != null) {
             sendEvent(cancellationKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,7 @@ public class GetCancellationKindCommand
 
     @Override
     protected BaseResult getResult(CancellationKind cancellationKind) {
-        var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+        var cancellationControl = cancellationPolicyControl;
         var result = CancellationPolicyResultFactory.getGetCancellationKindResult();
 
         if(cancellationKind != null) {

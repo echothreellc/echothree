@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSubscriptionTypeChoicesCommand
@@ -55,6 +55,10 @@ public class GetSubscriptionTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of GetSubscriptionTypeChoicesCommand */
     public GetSubscriptionTypeChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetSubscriptionTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var result = SubscriptionResultFactory.getGetSubscriptionTypeChoicesResult();
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);

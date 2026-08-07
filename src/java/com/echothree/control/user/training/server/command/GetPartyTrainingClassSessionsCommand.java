@@ -63,6 +63,7 @@ public class GetPartyTrainingClassSessionsCommand
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
     
     /** Creates a new instance of GetPartyTrainingClassSessionsCommand */
     public GetPartyTrainingClassSessionsCommand() {

@@ -40,10 +40,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemAliasCommand
@@ -71,6 +71,19 @@ public class EditItemAliasCommand
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    ItemAliasChecksumTypeLogic itemAliasChecksumTypeLogic;
+
     
     /** Creates a new instance of EditItemAliasCommand */
     public EditItemAliasCommand() {
@@ -89,7 +102,6 @@ public class EditItemAliasCommand
 
     @Override
     public ItemAlias getEntity(EditItemAliasResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var alias = spec.getAlias();
         var itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
 
@@ -107,8 +119,6 @@ public class EditItemAliasCommand
 
     @Override
     public void fillInResult(EditItemAliasResult result, ItemAlias itemAlias) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemAlias(itemControl.getItemAliasTransfer(getUserVisit(), itemAlias));
     }
 
@@ -124,7 +134,6 @@ public class EditItemAliasCommand
 
     @Override
     public void canUpdate(ItemAlias itemAlias) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var alias = edit.getAlias();
         var duplicateItem = itemControl.getItemByName(alias);
 
@@ -132,7 +141,6 @@ public class EditItemAliasCommand
             var duplicateItemAlias = itemControl.getItemAliasByAlias(alias);
 
             if(duplicateItemAlias == null || duplicateItemAlias.getPrimaryKey().equals(itemAlias.getPrimaryKey())) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
                 var itemDetail = itemAlias.getItem().getLastDetail();
                 var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -158,7 +166,7 @@ public class EditItemAliasCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            ItemAliasChecksumTypeLogic.getInstance().checkItemAliasChecksum(this, itemAliasType, alias);
+                            itemAliasChecksumTypeLogic.checkItemAliasChecksum(this, itemAliasType, alias);
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownItemAliasType.name(), itemAliasTypeName);
@@ -177,7 +185,6 @@ public class EditItemAliasCommand
 
     @Override
     public void doUpdate(ItemAlias itemAlias) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasValue = itemControl.getItemAliasValue(itemAlias);
         var alias = edit.getAlias();
         var originalAlias = itemAliasValue.getAlias();
@@ -190,7 +197,6 @@ public class EditItemAliasCommand
         itemControl.updateItemAliasFromValue(itemAliasValue, updatedBy);
 
         if(itemAliasValue.getAliasHasBeenModified()) {
-            var vendorControl = Session.getModelController(VendorControl.class);
             var vendors = vendorControl.getVendorsByDefaultItemAliasType(itemAliasType);
 
             for(var vendor : vendors) {

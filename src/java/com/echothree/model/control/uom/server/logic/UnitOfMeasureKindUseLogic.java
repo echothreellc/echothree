@@ -27,13 +27,22 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UnitOfMeasureKindUseLogic
     extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureKindLogic unitOfMeasureKindLogic;
 
     protected UnitOfMeasureKindUseLogic() {
         super();
@@ -44,7 +53,6 @@ public class UnitOfMeasureKindUseLogic
     }
 
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindUseTypeName) {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
 
         if(unitOfMeasureKindUseType == null) {
@@ -56,7 +64,6 @@ public class UnitOfMeasureKindUseLogic
 
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(final ExecutionErrorAccumulator eea, final UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             final UnitOfMeasureKind unitOfMeasureKind) {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
 
         if(unitOfMeasureKindUse == null) {
@@ -70,7 +77,7 @@ public class UnitOfMeasureKindUseLogic
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindUseTypeName,
             final String unitOfMeasureKindName) {
         var unitOfMeasureKindUseType = getUnitOfMeasureKindUseTypeByName(eea, unitOfMeasureKindUseTypeName);
-        var unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
+        var unitOfMeasureKind = unitOfMeasureKindLogic.getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
         UnitOfMeasureKindUse unitOfMeasureKindUse = null;
         
         if(!hasExecutionErrors(eea)) {
@@ -88,8 +95,6 @@ public class UnitOfMeasureKindUseLogic
         var unitOfMeasureKindUseType = unitOfMeasureKindUse.getUnitOfMeasureKindUseType();
 
         if(unitOfMeasureKindUseType.getAllowMultiple()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             if(itemControl.countItemsByUnitOfMeasureKind(unitOfMeasureKindUse.getUnitOfMeasureKind()) != 0) {
                 ema.addExecutionError(ExecutionErrors.CannotDeleteUnitOfMeasureKindUseInUse.name(), unitOfMeasureKindUseType.getUnitOfMeasureKindUseTypeName(),
                         getUnitOfMeasureKindName(unitOfMeasureKindUse));
@@ -101,8 +106,6 @@ public class UnitOfMeasureKindUseLogic
     }
 
     public void deleteUnitOfMeasureKindUse(final UnitOfMeasureKindUse unitOfMeasureKindUse, final BasePK deletedBy) {
-        var uomControl = Session.getModelController(UomControl.class);
-
         uomControl.deleteUnitOfMeasureKindUse(unitOfMeasureKindUse, deletedBy);
     }
 

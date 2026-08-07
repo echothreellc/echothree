@@ -25,6 +25,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class UpdateLicenseCommand
@@ -37,6 +38,10 @@ public class UpdateLicenseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
+
+    @Inject
+    LicenseCheckLogic licenseCheckLogic;
+
     
     /** Creates a new instance of CreateLicenseTypeCommand */
     public UpdateLicenseCommand() {
@@ -45,7 +50,7 @@ public class UpdateLicenseCommand
     
     @Override
     protected BaseResult execute() {
-        LicenseCheckLogic.getInstance().updateLicense(session);
+        licenseCheckLogic.updateLicense(session);
         
         return null;
     }

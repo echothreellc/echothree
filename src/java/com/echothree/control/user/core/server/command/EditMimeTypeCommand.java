@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditMimeTypeCommand
@@ -53,8 +53,8 @@ public class EditMimeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.MimeType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
@@ -67,6 +67,9 @@ public class EditMimeTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
     /** Creates a new instance of EditMimeTypeCommand */
     public EditMimeTypeCommand() {
@@ -85,7 +88,6 @@ public class EditMimeTypeCommand
 
     @Override
     public MimeType getEntity(EditMimeTypeResult result) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         MimeType mimeType;
         var mimeTypeName = spec.getMimeTypeName();
 
@@ -111,14 +113,11 @@ public class EditMimeTypeCommand
 
     @Override
     public void fillInResult(EditMimeTypeResult result, MimeType mimeType) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
         result.setMimeType(mimeTypeControl.getMimeTypeTransfer(getUserVisit(), mimeType));
     }
 
     @Override
     public void doLock(MimeTypeEdit edit, MimeType mimeType) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeDescription = mimeTypeControl.getMimeTypeDescription(mimeType, getPreferredLanguage());
         var mimeTypeDetail = mimeType.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditMimeTypeCommand
 
     @Override
     public void canUpdate(MimeType mimeType) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
         var duplicateMimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
@@ -144,7 +142,6 @@ public class EditMimeTypeCommand
 
     @Override
     public void doUpdate(MimeType mimeType) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var partyPK = getPartyPK();
         var mimeTypeDetailValue = mimeTypeControl.getMimeTypeDetailValueForUpdate(mimeType);
         var mimeTypeDescription = mimeTypeControl.getMimeTypeDescriptionForUpdate(mimeType, getPreferredLanguage());

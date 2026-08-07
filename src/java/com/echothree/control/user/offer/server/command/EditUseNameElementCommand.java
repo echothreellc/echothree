@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUseNameElementCommand
@@ -53,8 +53,8 @@ public class EditUseNameElementCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.UseNameElement.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, false, null, null),
@@ -70,6 +70,13 @@ public class EditUseNameElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    UseNameElementControl useNameElementControl;
+
+    @Inject
+    UseNameElementLogic useNameElementLogic;
+
     
     /** Creates a new instance of EditUseNameElementCommand */
     public EditUseNameElementCommand() {
@@ -88,7 +95,7 @@ public class EditUseNameElementCommand
     
     @Override
     public UseNameElement getEntity(EditUseNameElementResult result) {
-        return UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+        return useNameElementLogic.getUseNameElementByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -98,14 +105,11 @@ public class EditUseNameElementCommand
     
     @Override
     public void fillInResult(EditUseNameElementResult result, UseNameElement useNameElement) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-        
         result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
     }
     
     @Override
     public void doLock(UseNameElementEdit edit, UseNameElement useNameElement) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
         var useNameElementDetail = useNameElement.getLastDetail();
         
@@ -121,7 +125,6 @@ public class EditUseNameElementCommand
         
     @Override
     public void canUpdate(UseNameElement useNameElement) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElementName = edit.getUseNameElementName();
         var duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
 
@@ -132,7 +135,6 @@ public class EditUseNameElementCommand
     
     @Override
     public void doUpdate(UseNameElement useNameElement) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var partyPK = getPartyPK();
         var useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
         var useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());

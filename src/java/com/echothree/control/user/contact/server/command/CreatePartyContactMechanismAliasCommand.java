@@ -25,10 +25,10 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyContactMechanismAliasCommand
@@ -42,8 +42,15 @@ public class CreatePartyContactMechanismAliasCommand
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactMechanismAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
 
     /** Creates a new instance of CreatePartyContactMechanismAliasCommand */
     public CreatePartyContactMechanismAliasCommand() {
@@ -52,12 +59,10 @@ public class CreatePartyContactMechanismAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = form.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 

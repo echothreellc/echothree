@@ -34,9 +34,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetEntityWorkflowAttributeStatusCommand
@@ -60,6 +60,22 @@ public class SetEntityWorkflowAttributeStatusCommand
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
+
     
     /** Creates a new instance of SetEntityWorkflowAttributeStatusCommand */
     public SetEntityWorkflowAttributeStatusCommand() {
@@ -68,25 +84,24 @@ public class SetEntityWorkflowAttributeStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.WORKFLOW);
             var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
             var workflow = entityAttributeWorkflow.getWorkflow();
             var workflowStepName = form.getWorkflowStepName();
-            var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(this, workflow, workflowStepName);
+            var workflowStep = workflowStepLogic.getWorkflowStepByName(this, workflow, workflowStepName);
 
             if(!hasExecutionErrors()) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var workflowDestinationName = form.getWorkflowDestinationName();
                 WorkflowDestination workflowDestination;
 
                 if(workflowDestinationName == null) {
                     workflowDestination = workflowControl.getDefaultWorkflowDestination(workflowStep);
                 } else {
-                    workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowStep, workflowDestinationName);
+                    workflowDestination = workflowDestinationLogic.getWorkflowDestinationByName(this, workflowStep, workflowDestinationName);
                 }
 
                 if(!hasExecutionErrors()) {

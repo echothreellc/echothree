@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEmployeeTypeCommand
@@ -64,6 +64,10 @@ public class EditEmployeeTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of EditEmployeeTypeCommand */
     public EditEmployeeTypeCommand() {
@@ -82,7 +86,6 @@ public class EditEmployeeTypeCommand
 
     @Override
     public EmployeeType getEntity(EditEmployeeTypeResult result) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeTypeName = spec.getEmployeeTypeName();
         var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName, editModeToEntityPermission(editMode));
 
@@ -100,14 +103,11 @@ public class EditEmployeeTypeCommand
 
     @Override
     public void fillInResult(EditEmployeeTypeResult result, EmployeeType employeeType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         result.setEmployeeType(employeeControl.getEmployeeTypeTransfer(getUserVisit(), employeeType));
     }
 
     @Override
     public void doLock(EmployeeTypeEdit edit, EmployeeType employeeType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, getPreferredLanguage());
         var employeeTypeDetail = employeeType.getLastDetail();
 
@@ -122,7 +122,6 @@ public class EditEmployeeTypeCommand
 
     @Override
     public void canUpdate(EmployeeType employeeType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeTypeName = edit.getEmployeeTypeName();
         var duplicateEmployeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
 
@@ -133,7 +132,6 @@ public class EditEmployeeTypeCommand
 
     @Override
     public void doUpdate(EmployeeType employeeType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var partyPK = getPartyPK();
         var employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueForUpdate(employeeType);
         var employeeTypeDescription = employeeControl.getEmployeeTypeDescriptionForUpdate(employeeType, getPreferredLanguage());

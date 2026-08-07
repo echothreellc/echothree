@@ -41,6 +41,8 @@ public class ChainEntityRoleTypeLogic
         extends BaseLogic {
 
     @Inject
+    protected ParameterUtils parameterUtils;
+    @Inject
     protected ChainControl chainControl;
 
     @Inject
@@ -51,9 +53,6 @@ public class ChainEntityRoleTypeLogic
 
     @Inject
     protected EntityInstanceLogic entityInstanceLogic;
-
-    @Inject
-    protected ParameterUtils parameterUtils;
 
     protected ChainEntityRoleTypeLogic() {
         super();

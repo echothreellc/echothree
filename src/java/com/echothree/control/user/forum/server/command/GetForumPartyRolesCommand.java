@@ -43,12 +43,15 @@ public class GetForumPartyRolesCommand
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ForumControl forumControl;
-    
+
     @Inject
     ForumLogic forumLogic;
+
+
+
     
     /** Creates a new instance of GetForumPartyRolesCommand */
     public GetForumPartyRolesCommand() {

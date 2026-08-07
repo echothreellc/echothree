@@ -35,9 +35,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditForumCommand
@@ -60,6 +60,16 @@ public class EditForumCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditForumCommand */
     public EditForumCommand() {
@@ -78,7 +88,6 @@ public class EditForumCommand
 
     @Override
     public Forum getEntity(EditForumResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         Forum forum;
         var forumName = spec.getForumName();
 
@@ -102,14 +111,11 @@ public class EditForumCommand
 
     @Override
     public void fillInResult(EditForumResult result, Forum forum) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
     }
 
     @Override
     public void doLock(ForumEdit edit, Forum forum) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumDescription = forumControl.getForumDescription(forum, getPreferredLanguage());
         var forumDetail = forum.getLastDetail();
 
@@ -134,12 +140,10 @@ public class EditForumCommand
 
     @Override
     public void canUpdate(Forum forum) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumName = edit.getForumName();
         var duplicateForum = forumControl.getForumByName(forumName);
 
         if(duplicateForum == null || forum.equals(duplicateForum)) {
-            var iconControl = Session.getModelController(IconControl.class);
             var iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -150,7 +154,7 @@ public class EditForumCommand
                 var forumMessageSequenceName = edit.getForumMessageSequenceName();
 
                 if(forumThreadSequenceName != null || forumMessageSequenceName != null) {
-                    sequenceControl = Session.getModelController(SequenceControl.class);
+                    sequenceControl = this.sequenceControl;
 
                     if(forumThreadSequenceName != null) {
                         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
@@ -181,7 +185,6 @@ public class EditForumCommand
 
     @Override
     public void doUpdate(Forum forum) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         var forumDetailValue = forumControl.getForumDetailValueForUpdate(forum);
         var forumDescription = forumControl.getForumDescriptionForUpdate(forum, getPreferredLanguage());

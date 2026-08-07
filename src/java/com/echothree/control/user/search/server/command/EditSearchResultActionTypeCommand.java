@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchResultActionTypeCommand
@@ -53,8 +53,8 @@ public class EditSearchResultActionTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchResultActionType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -69,6 +69,13 @@ public class EditSearchResultActionTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchResultActionTypeLogic searchResultActionTypeLogic;
+
     
     /** Creates a new instance of EditSearchResultActionTypeCommand */
     public EditSearchResultActionTypeCommand() {
@@ -87,7 +94,7 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public SearchResultActionType getEntity(EditSearchResultActionTypeResult result) {
-        return SearchResultActionTypeLogic.getInstance().getSearchResultActionTypeByUniversalSpec(this,
+        return searchResultActionTypeLogic.getSearchResultActionTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
 
@@ -98,14 +105,11 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public void fillInResult(EditSearchResultActionTypeResult result, SearchResultActionType searchResultActionType) {
-        final var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));
     }
 
     @Override
     public void doLock(SearchResultActionTypeEdit edit, SearchResultActionType searchResultActionType) {
-        final var searchControl = Session.getModelController(SearchControl.class);
         final var searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescription(searchResultActionType, getPreferredLanguage());
         final var searchResultActionTypeDetail = searchResultActionType.getLastDetail();
 
@@ -120,7 +124,6 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public void canUpdate(SearchResultActionType searchResultActionType) {
-        final var searchControl = Session.getModelController(SearchControl.class);
         final var searchResultActionTypeName = edit.getSearchResultActionTypeName();
         final var duplicateSearchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
@@ -131,7 +134,6 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public void doUpdate(SearchResultActionType searchResultActionType) {
-        final var searchControl = Session.getModelController(SearchControl.class);
         final var partyPK = getPartyPK();
         final var searchResultActionTypeDetailValue = searchControl.getSearchResultActionTypeDetailValueForUpdate(searchResultActionType);
         final var searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescriptionForUpdate(searchResultActionType, getPreferredLanguage());
@@ -141,7 +143,7 @@ public class EditSearchResultActionTypeCommand
         searchResultActionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         searchResultActionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        SearchResultActionTypeLogic.getInstance().updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, partyPK);
+        searchResultActionTypeLogic.updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, partyPK);
 
         if(searchResultActionTypeDescription == null && description != null) {
             searchControl.createSearchResultActionTypeDescription(searchResultActionType, getPreferredLanguage(), description, partyPK);

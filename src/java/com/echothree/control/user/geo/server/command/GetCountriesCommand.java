@@ -56,13 +56,13 @@ public class GetCountriesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    GeoControl geoControl;
+
     /** Creates a new instance of GetCountriesCommand */
     public GetCountriesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    GeoControl geoControl;
 
     GeoCodeScope countriesGeoCodeScope;
 

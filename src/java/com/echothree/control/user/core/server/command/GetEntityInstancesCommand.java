@@ -49,22 +49,26 @@ public class GetEntityInstancesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityInstance.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of GetEntityInstancesCommand */
     public GetEntityInstancesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    EntityInstanceControl entityInstanceControl;
 
     EntityType entityType;
 
@@ -73,7 +77,7 @@ public class GetEntityInstancesCommand
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
 
-        entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
     }
 
     @Override

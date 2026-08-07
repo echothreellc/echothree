@@ -36,11 +36,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.inject.Inject;
 
 public class BaseOrderPriorityLogic
         extends BaseLogic {
+
+    @Inject
+    OrderPriorityControl orderPriorityControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
 
     protected BaseOrderPriorityLogic() {
         super();
@@ -48,7 +60,7 @@ public class BaseOrderPriorityLogic
 
     public OrderPriority createOrderPriority(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName,
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -60,7 +72,6 @@ public class BaseOrderPriorityLogic
 
     public OrderPriority createOrderPriority(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderPriorityName,
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
         if(orderPriority == null) {
@@ -79,7 +90,6 @@ public class BaseOrderPriorityLogic
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderPriorityName,
             final EntityPermission entityPermission) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName, entityPermission);
 
         if(orderPriority == null) {
@@ -100,7 +110,7 @@ public class BaseOrderPriorityLogic
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName,
             final EntityPermission entityPermission) {
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -120,11 +130,10 @@ public class BaseOrderPriorityLogic
 
     public OrderPriority getOrderPriorityByUniversalSpec(final ExecutionErrorAccumulator eea, final OrderPriorityUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var orderTypeName = universalSpec.getOrderTypeName();
         var orderPriorityName = universalSpec.getOrderPriorityName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(orderTypeName, orderPriorityName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         OrderPriority orderPriority = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -132,7 +141,6 @@ public class BaseOrderPriorityLogic
 
             if(orderTypeName == null) {
                 if(allowDefault) {
-                    var orderTypeControl = Session.getModelController(OrderTypeControl.class);
                     orderType = orderTypeControl.getDefaultOrderType();
 
                     if(orderType == null) {
@@ -142,7 +150,7 @@ public class BaseOrderPriorityLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
+                orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -161,7 +169,7 @@ public class BaseOrderPriorityLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderPriority.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -186,15 +194,11 @@ public class BaseOrderPriorityLogic
 
     public void updateOrderPriorityFromValue(final ExecutionErrorAccumulator eea, OrderPriorityDetailValue orderPriorityDetailValue,
             BasePK updatedBy) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
         orderPriorityControl.updateOrderPriorityFromValue(orderPriorityDetailValue, updatedBy);
     }
 
     public void deleteOrderPriority(final ExecutionErrorAccumulator eea, final OrderPriority orderPriority,
             final BasePK deletedBy) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
         orderPriorityControl.deleteOrderPriority(orderPriority, deletedBy);
     }
 

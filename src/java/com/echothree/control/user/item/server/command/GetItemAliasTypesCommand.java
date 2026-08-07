@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemAliasTypesCommand
@@ -53,6 +53,9 @@ public class GetItemAliasTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    ItemControl itemControl;
+
     /** Creates a new instance of GetItemAliasTypesCommand */
     public GetItemAliasTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetItemAliasTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.countItemAliasTypes();
     }
 
     @Override
     protected Collection<ItemAliasType> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.getItemAliasTypes();
     }
 
@@ -82,7 +81,6 @@ public class GetItemAliasTypesCommand
         var result = ItemResultFactory.getGetItemAliasTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemAliasTypeFactory.class)) {

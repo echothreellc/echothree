@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteUnitOfMeasureKindCommand
@@ -38,8 +38,15 @@ public class DeleteUnitOfMeasureKindCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureKindLogic unitOfMeasureKindLogic;
+
     
     /** Creates a new instance of DeleteUnitOfMeasureKindCommand */
     public DeleteUnitOfMeasureKindCommand() {
@@ -48,13 +55,10 @@ public class DeleteUnitOfMeasureKindCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByNameForUpdate(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            var unitOfMeasureKindLogic = UnitOfMeasureKindLogic.getInstance();
-
             unitOfMeasureKindLogic.checkDeleteUnitOfMeasureKind(this, unitOfMeasureKind);
 
             if(!hasExecutionErrors()) {

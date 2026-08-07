@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUnitOfMeasureTypeCommand
@@ -46,8 +46,15 @@ public class CreateUnitOfMeasureTypeCommand
                 new FieldDefinition("SingularDescription", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PluralDescription", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("Symbol", FieldType.STRING, false, 1L, 20L)
-                );
+        );
     }
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    SymbolPositionLogic symbolPositionLogic;
+
     
     /** Creates a new instance of CreateUnitOfMeasureTypeCommand */
     public CreateUnitOfMeasureTypeCommand() {
@@ -56,7 +63,6 @@ public class CreateUnitOfMeasureTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
@@ -65,7 +71,7 @@ public class CreateUnitOfMeasureTypeCommand
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType == null) {
-                var symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, form.getSymbolPositionName());
+                var symbolPosition = symbolPositionLogic.getSymbolPositionByName(this, form.getSymbolPositionName());
                 
                 if(!hasExecutionErrors()) {
                     var singularDescription = form.getSingularDescription();

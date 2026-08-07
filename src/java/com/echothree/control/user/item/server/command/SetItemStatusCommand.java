@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetItemStatusCommand
@@ -44,14 +45,18 @@ public class SetItemStatusCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemStatus.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemLogic itemLogic;
+
     
     /** Creates a new instance of SetItemStatusCommand */
     public SetItemStatusCommand() {
@@ -60,12 +65,12 @@ public class SetItemStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
         
         if(!hasExecutionErrors()) {
             var itemStatusChoice = form.getItemStatusChoice();
 
-            ItemLogic.getInstance().setItemStatus(session, this, item, itemStatusChoice, getPartyPK());
+            itemLogic.setItemStatus(session, this, item, itemStatusChoice, getPartyPK());
         }
         
         return null;

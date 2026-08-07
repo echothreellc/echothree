@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEventsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -51,7 +50,7 @@ public class GetEventsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Event.name(), SecurityRoles.List.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.Event.name(), SecurityRoles.List.name())
                 ))
         ));
         
@@ -62,12 +61,13 @@ public class GetEventsCommand
                 new FieldDefinition("CreatedByUuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     EntityInstanceControl entityInstanceControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
 
     /** Creates a new instance of GetEventsCommand */
     public GetEventsCommand() {

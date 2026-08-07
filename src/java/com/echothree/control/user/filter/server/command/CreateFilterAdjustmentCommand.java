@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentCommand
@@ -58,6 +59,10 @@ public class CreateFilterAdjustmentCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
     
     /** Creates a new instance of CreateFilterAdjustmentCommand */
     public CreateFilterAdjustmentCommand() {
@@ -75,7 +80,7 @@ public class CreateFilterAdjustmentCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().createFilterAdjustment(this, filterKindName, filterAdjustmentName,
+        var filterAdjustment = filterAdjustmentLogic.createFilterAdjustment(this, filterKindName, filterAdjustmentName,
                 filterAdjustmentSourceName, filterAdjustmentTypeName, isDefault, sortOrder, getPreferredLanguage(),
                 description, getPartyPK());
 

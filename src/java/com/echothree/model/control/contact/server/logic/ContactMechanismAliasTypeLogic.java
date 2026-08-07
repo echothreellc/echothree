@@ -37,6 +37,12 @@ import javax.inject.Inject;
 public class ContactMechanismAliasTypeLogic
         extends BaseLogic {
 
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ContactMechanismAliasTypeLogic() {
         super();
     }
@@ -44,9 +50,6 @@ public class ContactMechanismAliasTypeLogic
     public static ContactMechanismAliasTypeLogic getInstance() {
         return CDI.current().select(ContactMechanismAliasTypeLogic.class).get();
     }
-
-    @Inject
-    ContactControl contactControl;
 
     public ContactMechanismAliasType getContactMechanismAliasTypeByName(final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName,
             final EntityPermission entityPermission) {
@@ -71,7 +74,7 @@ public class ContactMechanismAliasTypeLogic
             final ContactMechanismAliasTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ContactMechanismAliasType contactMechanismAliasType = null;
         var contactMechanismAliasTypeName = universalSpec.getContactMechanismAliasTypeName();
-        var parameterCount = (contactMechanismAliasTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contactMechanismAliasTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -87,7 +90,7 @@ public class ContactMechanismAliasTypeLogic
             }
             case 1 -> {
                 if(contactMechanismAliasTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanismAliasType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

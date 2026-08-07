@@ -24,13 +24,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemInventoryTypeLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
 
     protected ItemInventoryTypeLogic() {
         super();
@@ -41,7 +44,6 @@ public class ItemInventoryTypeLogic
     }
 
     public ItemInventoryType getItemInventoryTypeByName(final ExecutionErrorAccumulator eea, final String itemInventoryTypeName, EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName, entityPermission);
 
         if(itemInventoryType == null) {
@@ -60,7 +62,6 @@ public class ItemInventoryTypeLogic
     }
 
     public ItemInventoryType getDefaultItemInventoryType(final ExecutionErrorAccumulator eea) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemInventoryType = itemControl.getDefaultItemInventoryType();
 
         if(itemInventoryType == null) {

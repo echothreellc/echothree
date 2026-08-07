@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactMechanismPurposeChoicesCommand
@@ -44,8 +44,15 @@ public class GetContactMechanismPurposeChoicesCommand
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultContactMechanismPurposeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
     
     /** Creates a new instance of GetContactMechanismPurposeChoicesCommand */
     public GetContactMechanismPurposeChoicesCommand() {
@@ -61,7 +68,6 @@ public class GetContactMechanismPurposeChoicesCommand
         var parameterCount = (contactMechanismName == null ? 0 : 1) + (contactMechanismTypeName == null ? 0 : 1) + (contactListName == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            var contactControl = Session.getModelController(ContactControl.class);
             ContactMechanismType contactMechanismType = null;
             var defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
@@ -81,7 +87,7 @@ public class GetContactMechanismPurposeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownContactMechanismTypeName.name(), contactMechanismTypeName);
                 }
             } else if(contactListName != null) {
-                var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+                var contactList = contactListLogic.getContactListByName(this, contactListName);
                 
                 if(!hasExecutionErrors()) {
                     result.setContactMechanismPurposeChoices(contactControl.getContactMechanismPurposeChoicesByContactList(defaultContactMechanismPurposeChoice,

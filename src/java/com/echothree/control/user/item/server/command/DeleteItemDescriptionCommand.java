@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemDescriptionCommand
@@ -48,15 +48,25 @@ public class DeleteItemDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemDescription.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
+
     
     /** Creates a new instance of DeleteItemDescriptionCommand */
     public DeleteItemDescriptionCommand() {
@@ -65,7 +75,6 @@ public class DeleteItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
@@ -74,7 +83,6 @@ public class DeleteItemDescriptionCommand
             var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
@@ -82,7 +90,7 @@ public class DeleteItemDescriptionCommand
                     var itemDescription = itemControl.getItemDescriptionForUpdate(itemDescriptionType, item, language);
                     
                     if(itemDescription != null) {
-                        ItemDescriptionLogic.getInstance().deleteItemDescription(itemDescription, getPartyPK());
+                        itemDescriptionLogic.deleteItemDescription(itemDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownItemDescription.name(), itemName, itemDescriptionTypeName, languageIsoName);
                     }

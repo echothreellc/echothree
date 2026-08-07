@@ -18,23 +18,21 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateBlogEntryCommand
@@ -58,8 +56,21 @@ public class CreateBlogEntryCommand
                 new FieldDefinition("Summary", FieldType.STRING, false, null, null),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
     
     /** Creates a new instance of CreateBlogEntryCommand */
     public CreateBlogEntryCommand() {
@@ -68,13 +79,11 @@ public class CreateBlogEntryCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = Session.getModelController(UserControl.class);
         var result = ForumResultFactory.getCreateBlogEntryResult();
         var username = form.getUsername();
         var userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
         
         if(username == null || userLogin != null) {
-            var forumControl = Session.getModelController(ForumControl.class);
             var forumName = form.getForumName();
             var forum = forumControl.getForumByName(forumName);
 
@@ -83,16 +92,14 @@ public class CreateBlogEntryCommand
 
                 if(forumTypeName.equals(ForumConstants.ForumType_BLOG)) {
                     var party = userLogin == null ? getParty() : userLogin.getParty();
-                    var forumRoleType = ForumRoleTypeLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_AUTHOR);
+                    var forumRoleType = forumRoleTypeLogic.getForumRoleTypeByName(this, ForumConstants.ForumRoleType_AUTHOR);
 
                     if(!hasExecutionErrors()) {
-                        if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
-                            var partyControl = Session.getModelController(PartyControl.class);
+                        if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
                             var languageIsoName = form.getLanguageIsoName();
                             var language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
-                                var iconControl = Session.getModelController(IconControl.class);
                                 var forumThreadIconName = form.getForumThreadIconName();
                                 var forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
 
@@ -126,7 +133,6 @@ public class CreateBlogEntryCommand
                                                 var feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
 
                                                 if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
-                                                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                                     var feedSummaryMimeType = feedSummaryMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(feedSummaryMimeTypeName);
 
                                                     if(feedSummaryMimeTypeName == null || feedSummaryMimeType != null) {

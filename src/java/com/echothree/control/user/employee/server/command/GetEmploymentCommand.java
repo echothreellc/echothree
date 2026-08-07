@@ -39,9 +39,10 @@ public class GetEmploymentCommand
                 new FieldDefinition("EmploymentName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     EmployeeControl employeeControl;
+
 
     /** Creates a new instance of GetEmploymentCommand */
     public GetEmploymentCommand() {

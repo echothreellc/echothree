@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFilterCommand
@@ -53,6 +54,10 @@ public class DeleteFilterCommand
                 new FieldDefinition("FilterName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    FilterLogic filterLogic;
+
     
     /** Creates a new instance of DeleteFilterCommand */
     public DeleteFilterCommand() {
@@ -64,10 +69,10 @@ public class DeleteFilterCommand
         var filterKindName = form.getFilterKindName();
         var filterTypeName = form.getFilterTypeName();
         var filterName = form.getFilterName();
-        var filter = FilterLogic.getInstance().getFilterByNameForUpdate(this, filterKindName, filterTypeName, filterName);
+        var filter = filterLogic.getFilterByNameForUpdate(this, filterKindName, filterTypeName, filterName);
 
         if(!hasExecutionErrors()) {
-            FilterLogic.getInstance().deleteFilter(this, filter, getPartyPK());
+            filterLogic.deleteFilter(this, filter, getPartyPK());
         }
 
         return null;

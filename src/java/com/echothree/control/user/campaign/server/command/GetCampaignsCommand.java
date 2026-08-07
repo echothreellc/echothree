@@ -52,9 +52,10 @@ public class GetCampaignsCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     CampaignControl campaignControl;
+
 
     /** Creates a new instance of GetCampaignsCommand */
     public GetCampaignsCommand() {

@@ -30,7 +30,6 @@ import com.echothree.model.control.payment.server.control.PartyPaymentMethodCont
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -43,10 +42,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyPaymentMethodCommand
@@ -61,9 +60,9 @@ public class EditPartyPaymentMethodCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
@@ -89,6 +88,19 @@ public class EditPartyPaymentMethodCommand
                 new FieldDefinition("IssuerContactMechanismName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PartyPaymentMethodLogic partyPaymentMethodLogic;
+
     
     /** Creates a new instance of EditPartyPaymentMethodCommand */
     public EditPartyPaymentMethodCommand() {
@@ -107,7 +119,6 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public PartyPaymentMethod getEntity(EditPartyPaymentMethodResult result) {
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         PartyPaymentMethod partyPaymentMethod;
         var partyPaymentMethodName = spec.getPartyPaymentMethodName();
 
@@ -146,14 +157,11 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public void fillInResult(EditPartyPaymentMethodResult result, PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-
         result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
     }
 
     @Override
     public void doLock(PartyPaymentMethodEdit edit, PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         var partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
         var paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
@@ -165,7 +173,7 @@ public class EditPartyPaymentMethodCommand
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             var partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
             var partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
-            var includeCreditCardNumber = SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, getParty(),
+            var includeCreditCardNumber = securityRoleLogic.hasSecurityRoleUsingNames(null, getParty(),
                     SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name());
 
             if(partyPaymentMethodCreditCard != null) {
@@ -206,13 +214,12 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public void canUpdate(PartyPaymentMethod partyPaymentMethod) {
-        PartyPaymentMethodLogic.getInstance().checkPartyPaymentMethod(session, getUserVisit(), this, getPartyFromPartyPaymentMethod(partyPaymentMethod),
+        partyPaymentMethodLogic.checkPartyPaymentMethod(session, getUserVisit(), this, getPartyFromPartyPaymentMethod(partyPaymentMethod),
                 partyPaymentMethod.getLastDetail().getPaymentMethod(), edit);
     }
 
     @Override
     public void doUpdate(PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         var executingPartyPK = getPartyPK();
         var partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
         var paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
@@ -225,8 +232,6 @@ public class EditPartyPaymentMethodCommand
         partyPaymentMethodControl.updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, executingPartyPK);
 
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-            var contactControl = Session.getModelController(ContactControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
             var party = getPartyFromPartyPaymentMethod(partyPaymentMethod);
             var soundex = new Soundex();
             var personalTitleId = edit.getPersonalTitleId();

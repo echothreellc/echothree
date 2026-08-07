@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteCustomerTypeCreditLimitCommand
@@ -38,10 +38,20 @@ public class DeleteCustomerTypeCreditLimitCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-        new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of DeleteCustomerTypeCreditLimitCommand */
     public DeleteCustomerTypeCreditLimitCommand() {
@@ -50,17 +60,14 @@ public class DeleteCustomerTypeCreditLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypeName = form.getCustomerTypeName();
         var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var currencyIsoName = form.getCurrencyIsoName();
             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                var termControl = Session.getModelController(TermControl.class);
                 var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimitForUpdate(customerType, currency);
                 
                 if(customerTypeCreditLimit != null) {

@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPurchaseInvoiceStatusChoicesCommand
@@ -44,16 +45,20 @@ public class GetPurchaseInvoiceStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PurchaseInvoiceStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PurchaseInvoiceStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("InvoiceName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultInvoiceStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("InvoiceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultInvoiceStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    PurchaseInvoiceLogic purchaseInvoiceLogic;
+
     
     /** Creates a new instance of GetPurchaseInvoiceStatusChoicesCommand */
     public GetPurchaseInvoiceStatusChoicesCommand() {
@@ -62,7 +67,6 @@ public class GetPurchaseInvoiceStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
         var result = PurchaseResultFactory.getGetPurchaseInvoiceStatusChoicesResult();
         var invoiceName = form.getInvoiceName();
         var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);

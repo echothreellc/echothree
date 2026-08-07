@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderAliasControl
@@ -61,6 +62,12 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
     //   Order Alias Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OrderAliasTypeFactory orderAliasTypeFactory;
+
+    @Inject
+    protected OrderAliasTypeDetailFactory orderAliasTypeDetailFactory;
 
     public OrderAliasType createOrderAliasType(OrderType orderType, String orderAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -76,12 +83,12 @@ public class OrderAliasControl
             isDefault = true;
         }
 
-        var orderAliasType = OrderAliasTypeFactory.getInstance().create();
-        var orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasType, orderType, orderAliasTypeName,
+        var orderAliasType = orderAliasTypeFactory.create();
+        var orderAliasTypeDetail = orderAliasTypeDetailFactory.create(orderAliasType, orderType, orderAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderAliasType = OrderAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasType.getPrimaryKey());
+        orderAliasType = orderAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, orderAliasType.getPrimaryKey());
         orderAliasType.setActiveDetail(orderAliasTypeDetail);
         orderAliasType.setLastDetail(orderAliasTypeDetail);
         orderAliasType.store();
@@ -95,7 +102,7 @@ public class OrderAliasControl
     public OrderAliasType getOrderAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return OrderAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderAliasType getOrderAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -139,7 +146,7 @@ public class OrderAliasControl
     }
 
     private OrderAliasType getOrderAliasTypeByName(OrderType orderType, String orderAliasTypeName, EntityPermission entityPermission) {
-        return OrderAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderAliasTypeByNameQueries,
+        return orderAliasTypeFactory.getEntityFromQuery(entityPermission, getOrderAliasTypeByNameQueries,
                 orderType, orderAliasTypeName);
     }
 
@@ -184,7 +191,7 @@ public class OrderAliasControl
     }
 
     private OrderAliasType getDefaultOrderAliasType(OrderType orderType, EntityPermission entityPermission) {
-        return OrderAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderAliasTypeQueries, orderType);
+        return orderAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderAliasTypeQueries, orderType);
     }
 
     public OrderAliasType getDefaultOrderAliasType(OrderType orderType) {
@@ -223,7 +230,7 @@ public class OrderAliasControl
     }
 
     private List<OrderAliasType> getOrderAliasTypes(OrderType orderType, EntityPermission entityPermission) {
-        return OrderAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderAliasTypesQueries, orderType);
+        return orderAliasTypeFactory.getEntitiesFromQuery(entityPermission, getOrderAliasTypesQueries, orderType);
     }
 
     public List<OrderAliasType> getOrderAliasTypes(OrderType orderType) {
@@ -290,7 +297,7 @@ public class OrderAliasControl
     private void updateOrderAliasTypeFromValue(OrderAliasTypeDetailValue orderAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderAliasTypeDetailValue.hasBeenModified()) {
-            var orderAliasType = OrderAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAliasType = orderAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderAliasTypeDetailValue.getOrderAliasTypePK());
             var orderAliasTypeDetail = orderAliasType.getActiveDetailForUpdate();
 
@@ -321,7 +328,7 @@ public class OrderAliasControl
                 }
             }
 
-            orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasTypePK, orderTypePK, orderAliasTypeName,
+            orderAliasTypeDetail = orderAliasTypeDetailFactory.create(orderAliasTypePK, orderTypePK, orderAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderAliasType.setActiveDetail(orderAliasTypeDetail);
@@ -379,8 +386,11 @@ public class OrderAliasControl
     //   Order Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderAliasTypeDescriptionFactory orderAliasTypeDescriptionFactory;
+
     public OrderAliasTypeDescription createOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, String description, BasePK createdBy) {
-        var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language,
+        var orderAliasTypeDescription = orderAliasTypeDescriptionFactory.create(orderAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -410,7 +420,7 @@ public class OrderAliasControl
     }
 
     private OrderAliasTypeDescription getOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, EntityPermission entityPermission) {
-        return OrderAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderAliasTypeDescriptionQueries,
+        return orderAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderAliasTypeDescriptionQueries,
                 orderAliasType, language, Session.MAX_TIME);
     }
 
@@ -454,7 +464,7 @@ public class OrderAliasControl
     }
 
     private List<OrderAliasTypeDescription> getOrderAliasTypeDescriptionsByOrderAliasType(OrderAliasType orderAliasType, EntityPermission entityPermission) {
-        return OrderAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderAliasTypeDescriptionsByOrderAliasTypeQueries,
+        return orderAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderAliasTypeDescriptionsByOrderAliasTypeQueries,
                 orderAliasType, Session.MAX_TIME);
     }
 
@@ -500,7 +510,7 @@ public class OrderAliasControl
 
     public void updateOrderAliasTypeDescriptionFromValue(OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue, BasePK updatedBy) {
         if(orderAliasTypeDescriptionValue.hasBeenModified()) {
-            var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAliasTypeDescription = orderAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderAliasTypeDescriptionValue.getPrimaryKey());
 
             orderAliasTypeDescription.setThruTime(session.getStartTime());
@@ -510,7 +520,7 @@ public class OrderAliasControl
             var language = orderAliasTypeDescription.getLanguage();
             var description = orderAliasTypeDescriptionValue.getDescription();
 
-            orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language, description,
+            orderAliasTypeDescription = orderAliasTypeDescriptionFactory.create(orderAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -536,8 +546,11 @@ public class OrderAliasControl
     //   Order Aliases
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderAliasFactory orderAliasFactory;
+
     public OrderAlias createOrderAlias(Order order, OrderAliasType orderAliasType, String alias, BasePK createdBy) {
-        var orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var orderAlias = orderAliasFactory.create(order, orderAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -582,7 +595,7 @@ public class OrderAliasControl
     }
 
     private OrderAlias getOrderAlias(Order order, OrderAliasType orderAliasType, EntityPermission entityPermission) {
-        return OrderAliasFactory.getInstance().getEntityFromQuery(entityPermission, getOrderAliasQueries,
+        return orderAliasFactory.getEntityFromQuery(entityPermission, getOrderAliasQueries,
                 order, orderAliasType, Session.MAX_TIME);
     }
 
@@ -624,7 +637,7 @@ public class OrderAliasControl
     }
 
     private OrderAlias getOrderAliasByAlias(OrderAliasType orderAliasType, String alias, EntityPermission entityPermission) {
-        return OrderAliasFactory.getInstance().getEntityFromQuery(entityPermission, getOrderAliasByAliasQueries, orderAliasType, alias, Session.MAX_TIME);
+        return orderAliasFactory.getEntityFromQuery(entityPermission, getOrderAliasByAliasQueries, orderAliasType, alias, Session.MAX_TIME);
     }
 
     public OrderAlias getOrderAliasByAlias(OrderAliasType orderAliasType, String alias) {
@@ -660,7 +673,7 @@ public class OrderAliasControl
     }
 
     private List<OrderAlias> getOrderAliasesByOrder(Order order, EntityPermission entityPermission) {
-        return OrderAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderAliasesByOrderQueries,
+        return orderAliasFactory.getEntitiesFromQuery(entityPermission, getOrderAliasesByOrderQueries,
                 order, Session.MAX_TIME);
     }
 
@@ -697,7 +710,7 @@ public class OrderAliasControl
     }
 
     private List<OrderAlias> getOrderAliasesByOrderAliasType(OrderAliasType orderAliasType, EntityPermission entityPermission) {
-        return OrderAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderAliasesByOrderAliasTypeQueries,
+        return orderAliasFactory.getEntitiesFromQuery(entityPermission, getOrderAliasesByOrderAliasTypeQueries,
                 orderAliasType, Session.MAX_TIME);
     }
 
@@ -726,7 +739,7 @@ public class OrderAliasControl
 
     public void updateOrderAliasFromValue(OrderAliasValue orderAliasValue, BasePK updatedBy) {
         if(orderAliasValue.hasBeenModified()) {
-            var orderAlias = OrderAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasValue.getPrimaryKey());
+            var orderAlias = orderAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, orderAliasValue.getPrimaryKey());
 
             orderAlias.setThruTime(session.getStartTime());
             orderAlias.store();
@@ -735,7 +748,7 @@ public class OrderAliasControl
             var orderAliasTypePK = orderAlias.getOrderAliasTypePK();
             var alias  = orderAliasValue.getAlias();
 
-            orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            orderAlias = orderAliasFactory.create(orderPK, orderAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPK, EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

@@ -38,6 +38,7 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityNameAttributeCommand
@@ -64,6 +65,13 @@ public class EditEntityNameAttributeCommand
                 new FieldDefinition("NameAttribute", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of EditEntityNameAttributeCommand */
     public EditEntityNameAttributeCommand() {
@@ -73,10 +81,10 @@ public class EditEntityNameAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityNameAttributeResult();
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -86,8 +94,8 @@ public class EditEntityNameAttributeCommand
 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
@@ -116,7 +124,7 @@ public class EditEntityNameAttributeCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityNameAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
                                 var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
@@ -152,7 +160,7 @@ public class EditEntityNameAttributeCommand
                                         }
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownEntityNameAttribute.name(),
-                                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                     }
                                 }
                             }

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortDirectionCommand
@@ -59,6 +59,12 @@ public class GetSearchSortDirectionCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchSortDirectionLogic searchSortDirectionLogic;
+
     /** Creates a new instance of GetSearchSortDirectionCommand */
     public GetSearchSortDirectionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetSearchSortDirectionCommand
 
     @Override
     protected SearchSortDirection getEntity() {
-        var searchSortDirection = SearchSortDirectionLogic.getInstance().getSearchSortDirectionByUniversalSpec(this, form, true);
+        var searchSortDirection = searchSortDirectionLogic.getSearchSortDirectionByUniversalSpec(this, form, true);
 
         if(searchSortDirection != null) {
             sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetSearchSortDirectionCommand
 
     @Override
     protected BaseResult getResult(SearchSortDirection searchSortDirection) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchSortDirectionResult();
 
         if(searchSortDirection != null) {

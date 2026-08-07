@@ -110,6 +110,12 @@ import javax.inject.Inject;
 public class DocumentControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of DocumentControl */
     protected DocumentControl() {
         super();
@@ -149,7 +155,13 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     //   Document Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DocumentTypeFactory documentTypeFactory;
+
+    @Inject
+    protected DocumentTypeDetailFactory documentTypeDetailFactory;
+
     public DocumentType createDocumentType(String documentTypeName, DocumentType parentDocumentType, MimeTypeUsageType mimeTypeUsageType, Integer maximumPages,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultDocumentType = getDefaultDocumentType();
@@ -164,12 +176,12 @@ public class DocumentControl
             isDefault = true;
         }
 
-        var documentType = DocumentTypeFactory.getInstance().create();
-        var documentTypeDetail = DocumentTypeDetailFactory.getInstance().create(documentType, documentTypeName, parentDocumentType,
+        var documentType = documentTypeFactory.create();
+        var documentTypeDetail = documentTypeDetailFactory.create(documentType, documentTypeName, parentDocumentType,
                 mimeTypeUsageType, maximumPages, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        documentType = DocumentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        documentType = documentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 documentType.getPrimaryKey());
         documentType.setActiveDetail(documentTypeDetail);
         documentType.setLastDetail(documentTypeDetail);
@@ -184,7 +196,7 @@ public class DocumentControl
     public DocumentType getDocumentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new DocumentTypePK(entityInstance.getEntityUniqueId());
 
-        return DocumentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return documentTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public DocumentType getDocumentTypeByEntityInstance(EntityInstance entityInstance) {
@@ -209,21 +221,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_documenttypename = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_documenttypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_documenttypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_documenttypename = ?
+                FOR UPDATE
+                """);
         getDocumentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentType getDocumentTypeByName(String documentTypeName, EntityPermission entityPermission) {
-        return DocumentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDocumentTypeByNameQueries, documentTypeName);
+        return documentTypeFactory.getEntityFromQuery(entityPermission, getDocumentTypeByNameQueries, documentTypeName);
     }
 
     public DocumentType getDocumentTypeByName(String documentTypeName) {
@@ -248,21 +264,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentType getDefaultDocumentType(EntityPermission entityPermission) {
-        return DocumentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultDocumentTypeQueries);
+        return documentTypeFactory.getEntityFromQuery(entityPermission, getDefaultDocumentTypeQueries);
     }
 
     public DocumentType getDefaultDocumentType() {
@@ -283,21 +303,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                FOR UPDATE
+                """);
         getDocumentTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<DocumentType> getDocumentTypes(EntityPermission entityPermission) {
-        return DocumentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypesQueries);
+        return documentTypeFactory.getEntitiesFromQuery(entityPermission, getDocumentTypesQueries);
     }
 
     public List<DocumentType> getDocumentTypes() {
@@ -314,22 +338,26 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ? " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ?
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ?
+                FOR UPDATE
+                """);
         getDocumentTypesByParentDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<DocumentType> getDocumentTypesByParentDocumentType(DocumentType parentDocumentType,
             EntityPermission entityPermission) {
-        return DocumentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypesByParentDocumentTypeQueries,
+        return documentTypeFactory.getEntitiesFromQuery(entityPermission, getDocumentTypesByParentDocumentTypeQueries,
                 parentDocumentType);
     }
 
@@ -417,7 +445,7 @@ public class DocumentControl
     
     private void updateDocumentTypeFromValue(DocumentTypeDetailValue documentTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(documentTypeDetailValue.hasBeenModified()) {
-            var documentType = DocumentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentType = documentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      documentTypeDetailValue.getDocumentTypePK());
             var documentTypeDetail = documentType.getActiveDetailForUpdate();
             
@@ -448,7 +476,7 @@ public class DocumentControl
                 }
             }
             
-            documentTypeDetail = DocumentTypeDetailFactory.getInstance().create(documentTypePK, documentTypeName, parentDocumentTypePK, mimeTypeUsageTypePK,
+            documentTypeDetail = documentTypeDetailFactory.create(documentTypePK, documentTypeName, parentDocumentTypePK, mimeTypeUsageTypePK,
                     maximumPages, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             documentType.setActiveDetail(documentTypeDetail);
@@ -516,9 +544,12 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     //   Document Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DocumentTypeDescriptionFactory documentTypeDescriptionFactory;
+
     public DocumentTypeDescription createDocumentTypeDescription(DocumentType documentType, Language language, String description, BasePK createdBy) {
-        var documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
+        var documentTypeDescription = documentTypeDescriptionFactory.create(documentType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -532,19 +563,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
     private DocumentTypeDescription getDocumentTypeDescription(DocumentType documentType, Language language, EntityPermission entityPermission) {
-        return DocumentTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getDocumentTypeDescriptionQueries,
+        return documentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getDocumentTypeDescriptionQueries,
                 documentType, language, Session.MAX_TIME);
     }
     
@@ -570,21 +605,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions, languages " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ? AND dcmnttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions, languages
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ? AND dcmnttypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeDescriptionsByDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
     private List<DocumentTypeDescription> getDocumentTypeDescriptionsByDocumentType(DocumentType documentType, EntityPermission entityPermission) {
-        return DocumentTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypeDescriptionsByDocumentTypeQueries,
+        return documentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getDocumentTypeDescriptionsByDocumentTypeQueries,
                 documentType, Session.MAX_TIME);
     }
     
@@ -630,7 +669,7 @@ public class DocumentControl
     
     public void updateDocumentTypeDescriptionFromValue(DocumentTypeDescriptionValue documentTypeDescriptionValue, BasePK updatedBy) {
         if(documentTypeDescriptionValue.hasBeenModified()) {
-            var documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeDescription = documentTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     documentTypeDescriptionValue.getPrimaryKey());
             
             documentTypeDescription.setThruTime(session.getStartTime());
@@ -640,7 +679,7 @@ public class DocumentControl
             var language = documentTypeDescription.getLanguage();
             var description = documentTypeDescriptionValue.getDescription();
             
-            documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
+            documentTypeDescription = documentTypeDescriptionFactory.create(documentType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -666,6 +705,12 @@ public class DocumentControl
     //   Document Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected DocumentTypeUsageTypeFactory documentTypeUsageTypeFactory;
+
+    @Inject
+    protected DocumentTypeUsageTypeDetailFactory documentTypeUsageTypeDetailFactory;
+
     public DocumentTypeUsageType createDocumentTypeUsageType(String documentTypeUsageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultDocumentTypeUsageType = getDefaultDocumentTypeUsageType();
         var defaultFound = defaultDocumentTypeUsageType != null;
@@ -679,12 +724,12 @@ public class DocumentControl
             isDefault = true;
         }
 
-        var documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().create();
-        var documentTypeUsageTypeDetail = DocumentTypeUsageTypeDetailFactory.getInstance().create(documentTypeUsageType,
+        var documentTypeUsageType = documentTypeUsageTypeFactory.create();
+        var documentTypeUsageTypeDetail = documentTypeUsageTypeDetailFactory.create(documentTypeUsageType,
                 documentTypeUsageTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        documentTypeUsageType = documentTypeUsageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 documentTypeUsageType.getPrimaryKey());
         documentTypeUsageType.setActiveDetail(documentTypeUsageTypeDetail);
         documentTypeUsageType.setLastDetail(documentTypeUsageTypeDetail);
@@ -701,21 +746,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_documenttypeusagetypename = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_documenttypeusagetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_documenttypeusagetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_documenttypeusagetypename = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentTypeUsageType getDocumentTypeUsageTypeByName(String documentTypeUsageTypeName, EntityPermission entityPermission) {
-        return DocumentTypeUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDocumentTypeUsageTypeByNameQueries, documentTypeUsageTypeName);
+        return documentTypeUsageTypeFactory.getEntityFromQuery(entityPermission, getDocumentTypeUsageTypeByNameQueries, documentTypeUsageTypeName);
     }
 
     public DocumentTypeUsageType getDocumentTypeUsageTypeByName(String documentTypeUsageTypeName) {
@@ -740,21 +789,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentTypeUsageType getDefaultDocumentTypeUsageType(EntityPermission entityPermission) {
-        return DocumentTypeUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultDocumentTypeUsageTypeQueries);
+        return documentTypeUsageTypeFactory.getEntityFromQuery(entityPermission, getDefaultDocumentTypeUsageTypeQueries);
     }
 
     public DocumentTypeUsageType getDefaultDocumentTypeUsageType() {
@@ -775,21 +828,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<DocumentTypeUsageType> getDocumentTypeUsageTypes(EntityPermission entityPermission) {
-        return DocumentTypeUsageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypeUsageTypesQueries);
+        return documentTypeUsageTypeFactory.getEntitiesFromQuery(entityPermission, getDocumentTypeUsageTypesQueries);
     }
 
     public List<DocumentTypeUsageType> getDocumentTypeUsageTypes() {
@@ -851,7 +908,7 @@ public class DocumentControl
 
     private void updateDocumentTypeUsageTypeFromValue(DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(documentTypeUsageTypeDetailValue.hasBeenModified()) {
-            var documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeUsageType = documentTypeUsageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      documentTypeUsageTypeDetailValue.getDocumentTypeUsageTypePK());
             var documentTypeUsageTypeDetail = documentTypeUsageType.getActiveDetailForUpdate();
 
@@ -879,7 +936,7 @@ public class DocumentControl
                 }
             }
 
-            documentTypeUsageTypeDetail = DocumentTypeUsageTypeDetailFactory.getInstance().create(documentTypeUsageTypePK, documentTypeUsageTypeName, isDefault,
+            documentTypeUsageTypeDetail = documentTypeUsageTypeDetailFactory.create(documentTypeUsageTypePK, documentTypeUsageTypeName, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             documentTypeUsageType.setActiveDetail(documentTypeUsageTypeDetail);
@@ -943,8 +1000,11 @@ public class DocumentControl
     //   Document Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected DocumentTypeUsageTypeDescriptionFactory documentTypeUsageTypeDescriptionFactory;
+
     public DocumentTypeUsageTypeDescription createDocumentTypeUsageTypeDescription(DocumentTypeUsageType documentTypeUsageType, Language language, String description, BasePK createdBy) {
-        var documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
+        var documentTypeUsageTypeDescription = documentTypeUsageTypeDescriptionFactory.create(documentTypeUsageType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -958,19 +1018,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentTypeUsageTypeDescription getDocumentTypeUsageTypeDescription(DocumentTypeUsageType documentTypeUsageType, Language language, EntityPermission entityPermission) {
-        return DocumentTypeUsageTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getDocumentTypeUsageTypeDescriptionQueries,
+        return documentTypeUsageTypeDescriptionFactory.getEntityFromQuery(entityPermission, getDocumentTypeUsageTypeDescriptionQueries,
                 documentTypeUsageType, language, Session.MAX_TIME);
     }
 
@@ -996,21 +1060,25 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions, languages " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ? AND dcmnttyputypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions, languages
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ? AND dcmnttyputypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<DocumentTypeUsageTypeDescription> getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, EntityPermission entityPermission) {
-        return DocumentTypeUsageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeQueries,
+        return documentTypeUsageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeQueries,
                 documentTypeUsageType, Session.MAX_TIME);
     }
 
@@ -1056,7 +1124,7 @@ public class DocumentControl
 
     public void updateDocumentTypeUsageTypeDescriptionFromValue(DocumentTypeUsageTypeDescriptionValue documentTypeUsageTypeDescriptionValue, BasePK updatedBy) {
         if(documentTypeUsageTypeDescriptionValue.hasBeenModified()) {
-            var documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeUsageTypeDescription = documentTypeUsageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     documentTypeUsageTypeDescriptionValue.getPrimaryKey());
 
             documentTypeUsageTypeDescription.setThruTime(session.getStartTime());
@@ -1066,7 +1134,7 @@ public class DocumentControl
             var language = documentTypeUsageTypeDescription.getLanguage();
             var description = documentTypeUsageTypeDescriptionValue.getDescription();
 
-            documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
+            documentTypeUsageTypeDescription = documentTypeUsageTypeDescriptionFactory.create(documentTypeUsageType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1092,6 +1160,9 @@ public class DocumentControl
     //   Document Type Usages
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected DocumentTypeUsageFactory documentTypeUsageFactory;
+
     public DocumentTypeUsage createDocumentTypeUsage(DocumentTypeUsageType documentTypeUsageType, DocumentType documentType, Boolean isDefault,
             Integer sortOrder, Integer maximumInstances, BasePK createdBy) {
         var defaultDocumentTypeUsage = getDefaultDocumentTypeUsage(documentTypeUsageType);
@@ -1106,7 +1177,7 @@ public class DocumentControl
             isDefault = true;
         }
 
-        var documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageType, documentType, isDefault, sortOrder,
+        var documentTypeUsage = documentTypeUsageFactory.create(documentTypeUsageType, documentType, isDefault, sortOrder,
                 maximumInstances, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1120,19 +1191,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentTypeUsage getDocumentTypeUsage(DocumentTypeUsageType documentTypeUsageType, DocumentType documentType, EntityPermission entityPermission) {
-        return DocumentTypeUsageFactory.getInstance().getEntityFromQuery(entityPermission, getDocumentTypeUsageQueries,
+        return documentTypeUsageFactory.getEntityFromQuery(entityPermission, getDocumentTypeUsageQueries,
                 documentTypeUsageType, documentType, Session.MAX_TIME);
     }
 
@@ -1158,19 +1233,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultDocumentTypeUsageQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private DocumentTypeUsage getDefaultDocumentTypeUsage(DocumentTypeUsageType documentTypeUsageType, EntityPermission entityPermission) {
-        return DocumentTypeUsageFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultDocumentTypeUsageQueries,
+        return documentTypeUsageFactory.getEntityFromQuery(entityPermission, getDefaultDocumentTypeUsageQueries,
                 documentTypeUsageType, Session.MAX_TIME);
     }
 
@@ -1192,22 +1271,26 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages, documenttypes, documenttypedetails " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ? " +
-                "AND dcmnttypu_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages, documenttypes, documenttypedetails
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ?
+                AND dcmnttypu_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsagesByDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<DocumentTypeUsage> getDocumentTypeUsagesByDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, EntityPermission entityPermission) {
-        return DocumentTypeUsageFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypeUsagesByDocumentTypeUsageTypeQueries,
+        return documentTypeUsageFactory.getEntitiesFromQuery(entityPermission, getDocumentTypeUsagesByDocumentTypeUsageTypeQueries,
                 documentTypeUsageType, Session.MAX_TIME);
     }
 
@@ -1225,22 +1308,26 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages, documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ? " +
-                "AND dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages, documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                AND dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsagesByDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<DocumentTypeUsage> getDocumentTypeUsagesByDocumentType(DocumentType documentType, EntityPermission entityPermission) {
-        return DocumentTypeUsageFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentTypeUsagesByDocumentTypeQueries,
+        return documentTypeUsageFactory.getEntitiesFromQuery(entityPermission, getDocumentTypeUsagesByDocumentTypeQueries,
                 documentType, Session.MAX_TIME);
     }
 
@@ -1276,7 +1363,7 @@ public class DocumentControl
 
     private void updateDocumentTypeUsageFromValue(DocumentTypeUsageValue documentTypeUsageValue, boolean checkDefault, BasePK updatedBy) {
         if(documentTypeUsageValue.hasBeenModified()) {
-            var documentTypeUsage = DocumentTypeUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentTypeUsage = documentTypeUsageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      documentTypeUsageValue.getPrimaryKey());
 
             documentTypeUsage.setThruTime(session.getStartTime());
@@ -1305,7 +1392,7 @@ public class DocumentControl
                 }
             }
 
-            documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageTypePK, documentTypePK, isDefault,
+            documentTypeUsage = documentTypeUsageFactory.create(documentTypeUsageTypePK, documentTypePK, isDefault,
                     sortOrder, maximumInstances, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1368,22 +1455,27 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     //   Documents
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DocumentFactory documentFactory;
+
+    @Inject
+    protected DocumentDetailFactory documentDetailFactory;
+
     public Document createDocument(DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.name()));
-        var documentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var documentName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createDocument(documentName, documentType, mimeType, pages, createdBy);
     }
     
     public Document createDocument(String documentName, DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
-        var document = DocumentFactory.getInstance().create();
-        var documentDetail = DocumentDetailFactory.getInstance().create(document, documentName, documentType, mimeType, pages,
+        var document = documentFactory.create();
+        var documentDetail = documentDetailFactory.create(document, documentName, documentType, mimeType, pages,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        document = DocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, document.getPrimaryKey());
+        document = documentFactory.getEntityFromPK(EntityPermission.READ_WRITE, document.getPrimaryKey());
         document.setActiveDetail(documentDetail);
         document.setLastDetail(documentDetail);
         document.store();
@@ -1395,9 +1487,11 @@ public class DocumentControl
     
     public long countDocumentsByDocumentType(DocumentType documentType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM documents, documentdetails " +
-                "WHERE dcmntdt_dcmnttyp_documenttypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM documents, documentdetails
+                WHERE dcmntdt_dcmnttyp_documenttypeid = ?
+                """,
                 documentType);
     }
 
@@ -1408,21 +1502,25 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documents, documentdetails " +
-                        "WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documents, documentdetails
+                        WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documents, documentdetails " +
-                        "WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documents, documentdetails
+                        WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = DocumentFactory.getInstance().prepareStatement(query);
+            var ps = documentFactory.prepareStatement(query);
             
             ps.setString(1, documentName);
             
-            document = DocumentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            document = documentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1452,23 +1550,27 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documents, documentdetails " +
-                "WHERE dcmnt_activedetailid = dcmnt_activedetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "ORDER BY dcmntdt_documentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documents, documentdetails
+                WHERE dcmnt_activedetailid = dcmnt_activedetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                ORDER BY dcmntdt_documentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documents, documentdetails " +
-                "WHERE dcmnt_activedetailid = dcmnt_activedetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documents, documentdetails
+                WHERE dcmnt_activedetailid = dcmnt_activedetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                FOR UPDATE
+                """);
         getDocumentsByDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Document> getDocumentsByDocumentType(DocumentType documentType, EntityPermission entityPermission) {
-        return DocumentFactory.getInstance().getEntitiesFromQuery(entityPermission, getDocumentsByDocumentTypeQueries,
+        return documentFactory.getEntitiesFromQuery(entityPermission, getDocumentsByDocumentTypeQueries,
                 documentType, Session.MAX_TIME);
     }
 
@@ -1486,7 +1588,7 @@ public class DocumentControl
     
     public void updateDocumentFromValue(DocumentDetailValue documentDetailValue, BasePK updatedBy) {
         if(documentDetailValue.hasBeenModified()) {
-            var document = DocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var document = documentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      documentDetailValue.getDocumentPK());
             var documentDetail = document.getActiveDetailForUpdate();
 
@@ -1499,7 +1601,7 @@ public class DocumentControl
             var mimeTypePK = documentDetailValue.getMimeTypePK();
             var pages = documentDetailValue.getPages();
 
-            documentDetail = DocumentDetailFactory.getInstance().create(documentPK, documentName, documentTypePK, mimeTypePK, pages, session.getStartTime(),
+            documentDetail = documentDetailFactory.create(documentPK, documentName, documentTypePK, mimeTypePK, pages, session.getStartTime(),
                     Session.MAX_TIME);
 
             document.setActiveDetail(documentDetail);
@@ -1538,7 +1640,6 @@ public class DocumentControl
     }
 
     public void removeDocument(Document document) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         document.remove();
         entityInstanceControl.removeEntityInstanceByBasePK(document.getPrimaryKey());
@@ -1560,10 +1661,13 @@ public class DocumentControl
     //   Document Blobs
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected DocumentBlobFactory documentBlobFactory;
+
     public DocumentBlob createDocumentBlob(Document document, ByteArray blob, BasePK createdBy) {
         verifyDocumentMimeType(document, EntityAttributeTypes.BLOB.name());
 
-        var documentBlob = DocumentBlobFactory.getInstance().create(document, blob, session.getStartTime(), Session.MAX_TIME);
+        var documentBlob = documentBlobFactory.create(document, blob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
@@ -1577,22 +1681,26 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentblobs " +
-                        "WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documentblobs
+                        WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentblobs " +
-                        "WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentblobs
+                        WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = DocumentBlobFactory.getInstance().prepareStatement(query);
+            var ps = documentBlobFactory.prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            documentBlob = DocumentBlobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            documentBlob = documentBlobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1619,7 +1727,7 @@ public class DocumentControl
     
     public void updateDocumentBlobFromValue(DocumentBlobValue documentBlobValue, BasePK updatedBy) {
         if(documentBlobValue.hasBeenModified()) {
-            var documentBlob = DocumentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentBlob = documentBlobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     documentBlobValue.getPrimaryKey());
             
             documentBlob.setThruTime(session.getStartTime());
@@ -1628,7 +1736,7 @@ public class DocumentControl
             var documentPK = documentBlob.getDocumentPK(); // Not updated
             var blob = documentBlobValue.getBlob();
             
-            documentBlob = DocumentBlobFactory.getInstance().create(documentPK, blob, session.getStartTime(),
+            documentBlob = documentBlobFactory.create(documentPK, blob, session.getStartTime(),
                     Session.MAX_TIME);
             
             sendEvent(documentBlob.getDocumentPK(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1652,11 +1760,14 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     //   Document Clobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DocumentClobFactory documentClobFactory;
+
     public DocumentClob createDocumentClob(Document document, String clob, BasePK createdBy) {
         verifyDocumentMimeType(document, EntityAttributeTypes.CLOB.name());
 
-        var documentClob = DocumentClobFactory.getInstance().create(document, clob, session.getStartTime(), Session.MAX_TIME);
+        var documentClob = documentClobFactory.create(document, clob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
@@ -1670,22 +1781,26 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentclobs " +
-                        "WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documentclobs
+                        WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentclobs " +
-                        "WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentclobs
+                        WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = DocumentClobFactory.getInstance().prepareStatement(query);
+            var ps = documentClobFactory.prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            documentClob = DocumentClobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            documentClob = documentClobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1711,7 +1826,7 @@ public class DocumentControl
     
     public void updateDocumentClobFromValue(DocumentClobValue documentClobValue, BasePK updatedBy) {
         if(documentClobValue.hasBeenModified()) {
-            var documentClob = DocumentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var documentClob = documentClobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     documentClobValue.getPrimaryKey());
             
             documentClob.setThruTime(session.getStartTime());
@@ -1720,7 +1835,7 @@ public class DocumentControl
             var documentPK = documentClob.getDocumentPK(); // Not updated
             var clob = documentClobValue.getClob();
             
-            documentClob = DocumentClobFactory.getInstance().create(documentPK, clob, session.getStartTime(),
+            documentClob = documentClobFactory.create(documentPK, clob, session.getStartTime(),
                     Session.MAX_TIME);
             
             sendEvent(documentClob.getDocumentPK(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1744,9 +1859,12 @@ public class DocumentControl
     // --------------------------------------------------------------------------------
     //   Document Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DocumentDescriptionFactory documentDescriptionFactory;
+
     public DocumentDescription createDocumentDescription(Document document, Language language, String description, BasePK createdBy) {
-        var documentDescription = DocumentDescriptionFactory.getInstance().create(document, language,
+        var documentDescription = documentDescriptionFactory.create(document, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1761,23 +1879,27 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = documentDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            documentDescription = DocumentDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            documentDescription = documentDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1808,23 +1930,27 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions, languages " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? AND dcmntd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions, languages
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? AND dcmntd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = documentDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, document.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            documentDescriptions = DocumentDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            documentDescriptions = documentDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1878,7 +2004,7 @@ public class DocumentControl
     
     public void updateDocumentDescriptionFromValue(DocumentDescriptionValue documentDescriptionValue, BasePK updatedBy) {
         if(documentDescriptionValue.hasBeenModified()) {
-            var documentDescription = DocumentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, documentDescriptionValue.getPrimaryKey());
+            var documentDescription = documentDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, documentDescriptionValue.getPrimaryKey());
             
             documentDescription.setThruTime(session.getStartTime());
             documentDescription.store();
@@ -1887,7 +2013,7 @@ public class DocumentControl
             var language = documentDescription.getLanguage();
             var description = documentDescriptionValue.getDescription();
             
-            documentDescription = DocumentDescriptionFactory.getInstance().create(document, language, description,
+            documentDescription = documentDescriptionFactory.create(document, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1913,6 +2039,9 @@ public class DocumentControl
     //   Party Type Document Type Usage Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyTypeDocumentTypeUsageTypeFactory partyTypeDocumentTypeUsageTypeFactory;
+
     public PartyTypeDocumentTypeUsageType createPartyTypeDocumentTypeUsageType(PartyType partyType, DocumentTypeUsageType documentTypeUsageType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPartyTypeDocumentTypeUsageType = getDefaultPartyTypeDocumentTypeUsageType(partyType);
@@ -1927,7 +2056,7 @@ public class DocumentControl
             isDefault = true;
         }
 
-        var partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyType,
+        var partyTypeDocumentTypeUsageType = partyTypeDocumentTypeUsageTypeFactory.create(partyType,
                 documentTypeUsageType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1941,19 +2070,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private PartyTypeDocumentTypeUsageType getPartyTypeDocumentTypeUsageType(PartyType partyType, DocumentTypeUsageType documentTypeUsageType, EntityPermission entityPermission) {
-        return PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTypeDocumentTypeUsageTypeQueries,
+        return partyTypeDocumentTypeUsageTypeFactory.getEntityFromQuery(entityPermission, getPartyTypeDocumentTypeUsageTypeQueries,
                 partyType, documentTypeUsageType, Session.MAX_TIME);
     }
 
@@ -1979,19 +2112,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultPartyTypeDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private PartyTypeDocumentTypeUsageType getDefaultPartyTypeDocumentTypeUsageType(PartyType partyType, EntityPermission entityPermission) {
-        return PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyTypeDocumentTypeUsageTypeQueries,
+        return partyTypeDocumentTypeUsageTypeFactory.getEntityFromQuery(entityPermission, getDefaultPartyTypeDocumentTypeUsageTypeQueries,
                 partyType, Session.MAX_TIME);
     }
 
@@ -2013,22 +2150,26 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes, documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "ORDER BY ptypdcmnttyputyp_sortorder, dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes, documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                ORDER BY ptypdcmnttyputyp_sortorder, dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeDocumentTypeUsageTypesByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<PartyTypeDocumentTypeUsageType> getPartyTypeDocumentTypeUsageTypesByPartyType(PartyType partyType, EntityPermission entityPermission) {
-        return PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypeDocumentTypeUsageTypesByPartyTypeQueries,
+        return partyTypeDocumentTypeUsageTypeFactory.getEntitiesFromQuery(entityPermission, getPartyTypeDocumentTypeUsageTypesByPartyTypeQueries,
                 partyType, Session.MAX_TIME);
     }
 
@@ -2046,22 +2187,26 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes, partytypes " +
-                "WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "AND ptypdcmnttyputyp_ptyp_partytypeid = ptyp_partytypeid " +
-                "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes, partytypes
+                WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                AND ptypdcmnttyputyp_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_sortorder, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeDocumentTypeUsageTypesByDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<PartyTypeDocumentTypeUsageType> getPartyTypeDocumentTypeUsageTypesByDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, EntityPermission entityPermission) {
-        return PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypeDocumentTypeUsageTypesByDocumentTypeUsageTypeQueries,
+        return partyTypeDocumentTypeUsageTypeFactory.getEntitiesFromQuery(entityPermission, getPartyTypeDocumentTypeUsageTypesByDocumentTypeUsageTypeQueries,
                 documentTypeUsageType, Session.MAX_TIME);
     }
 
@@ -2097,7 +2242,7 @@ public class DocumentControl
 
     private void updatePartyTypeDocumentTypeUsageTypeFromValue(PartyTypeDocumentTypeUsageTypeValue partyTypeDocumentTypeUsageTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(partyTypeDocumentTypeUsageTypeValue.hasBeenModified()) {
-            var partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeDocumentTypeUsageType = partyTypeDocumentTypeUsageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeDocumentTypeUsageTypeValue.getPrimaryKey());
 
             partyTypeDocumentTypeUsageType.setThruTime(session.getStartTime());
@@ -2125,7 +2270,7 @@ public class DocumentControl
                 }
             }
 
-            partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyTypePK, documentTypeUsageTypePK, isDefault,
+            partyTypeDocumentTypeUsageType = partyTypeDocumentTypeUsageTypeFactory.create(partyTypePK, documentTypeUsageTypePK, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2189,6 +2334,9 @@ public class DocumentControl
     //   Party Documents
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyDocumentFactory partyDocumentFactory;
+
     public PartyDocument createPartyDocument(Party party, Document document, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var documentType = document.getLastDetail().getDocumentType();
         var defaultPartyDocument = getDefaultPartyDocument(party, documentType);
@@ -2203,7 +2351,7 @@ public class DocumentControl
             isDefault = true;
         }
 
-        var partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
+        var partyDocument = partyDocumentFactory.create(party, document, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2212,11 +2360,13 @@ public class DocumentControl
 
     public long countPartyDocumentsByPartyAndDocumentType(Party party, DocumentType documentType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM partydocuments, documents, documentdetails "
-                + "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? "
-                + "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_activedetailid = dcmntdt_documentdetailid "
-                + "AND dcmntdt_dcmnttyp_documenttypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_activedetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                """,
                 party, Session.MAX_TIME, documentType);
     }
 
@@ -2226,19 +2376,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyDocumentQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private PartyDocument getPartyDocument(Document document, EntityPermission entityPermission) {
-        return PartyDocumentFactory.getInstance().getEntityFromQuery(entityPermission, getPartyDocumentQueries,
+        return partyDocumentFactory.getEntityFromQuery(entityPermission, getPartyDocumentQueries,
                 document, Session.MAX_TIME);
     }
 
@@ -2264,23 +2418,27 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ?");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                FOR UPDATE
+                """);
         getDefaultPartyDocumentQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private PartyDocument getDefaultPartyDocument(Party party, DocumentType documentType, EntityPermission entityPermission) {
-        return PartyDocumentFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyDocumentQueries,
+        return partyDocumentFactory.getEntityFromQuery(entityPermission, getDefaultPartyDocumentQueries,
                 party, Session.MAX_TIME, documentType);
     }
 
@@ -2302,23 +2460,27 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails, documenttypes, documenttypedetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename, dcmntdt_documentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails, documenttypes, documenttypedetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename, dcmntdt_documentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyDocumentsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<PartyDocument> getPartyDocumentsByParty(Party party, EntityPermission entityPermission) {
-        return PartyDocumentFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyDocumentsByPartyQueries,
+        return partyDocumentFactory.getEntitiesFromQuery(entityPermission, getPartyDocumentsByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -2336,25 +2498,29 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "ORDER BY pardcmnt_sortorder, dcmntdt_documentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                ORDER BY pardcmnt_sortorder, dcmntdt_documentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                FOR UPDATE
+                """);
         getPartyDocumentsByPartyAndDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<PartyDocument> getPartyDocumentsByPartyAndDocumentType(Party party, DocumentType documentType, EntityPermission entityPermission) {
-        return PartyDocumentFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyDocumentsByPartyAndDocumentTypeQueries,
+        return partyDocumentFactory.getEntitiesFromQuery(entityPermission, getPartyDocumentsByPartyAndDocumentTypeQueries,
                 party, Session.MAX_TIME, documentType);
     }
 
@@ -2372,19 +2538,23 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, partytypes " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partydocuments, partytypes
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyDocumentByDocumentQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private PartyDocument getPartyDocumentByDocument(Document document, EntityPermission entityPermission) {
-        return PartyDocumentFactory.getInstance().getEntityFromQuery(entityPermission, getPartyDocumentByDocumentQueries,
+        return partyDocumentFactory.getEntityFromQuery(entityPermission, getPartyDocumentByDocumentQueries,
                 document, Session.MAX_TIME);
     }
 
@@ -2452,7 +2622,7 @@ public class DocumentControl
 
     private void updatePartyDocumentFromValue(PartyDocumentValue partyDocumentValue, boolean checkDefault, BasePK updatedBy) {
         if(partyDocumentValue.hasBeenModified()) {
-            var partyDocument = PartyDocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyDocumentValue.getPrimaryKey());
+            var partyDocument = partyDocumentFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyDocumentValue.getPrimaryKey());
 
             partyDocument.setThruTime(session.getStartTime());
             partyDocument.store();
@@ -2481,7 +2651,7 @@ public class DocumentControl
                 }
             }
 
-            partyDocument = PartyDocumentFactory.getInstance().create(partyPK, documentPK, isDefault, sortOrder, session.getStartTime(),
+            partyDocument = partyDocumentFactory.create(partyPK, documentPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

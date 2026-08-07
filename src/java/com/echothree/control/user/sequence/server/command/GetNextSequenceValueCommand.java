@@ -50,23 +50,23 @@ public class GetNextSequenceValueCommand
        ));
 
          FORM_FIELD_DEFINITIONS = List.of(
-                 new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
-                 new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
-                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-         );
+                new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
     }
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    @Inject
+    SequenceLogic sequenceLogic;
 
     /** Creates a new instance of SetSequenceValueCommand */
     public GetNextSequenceValueCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-
-    @Inject
-    SequenceLogic sequenceLogic;
-
-    @Inject
-    SequenceGeneratorLogic sequenceGeneratorLogic;
 
     @Override
     protected BaseResult execute() {

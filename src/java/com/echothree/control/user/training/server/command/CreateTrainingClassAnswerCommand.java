@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrainingClassAnswerCommand
@@ -48,8 +48,8 @@ public class CreateTrainingClassAnswerCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassAnswer.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +62,15 @@ public class CreateTrainingClassAnswerCommand
                 new FieldDefinition("Answer", FieldType.STRING, false, null, null),
                 new FieldDefinition("SelectedMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Selected", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateTrainingClassAnswerCommand */
     public CreateTrainingClassAnswerCommand() {
@@ -72,7 +79,6 @@ public class CreateTrainingClassAnswerCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -89,7 +95,6 @@ public class CreateTrainingClassAnswerCommand
                     var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer == null) {
-                        var mimeTypeLogic = MimeTypeLogic.getInstance();
                         var answer = form.getAnswer();
                         var answerMimeType = mimeTypeLogic.checkMimeType(this, form.getAnswerMimeTypeName(), answer, MimeTypeUsageTypes.TEXT.name(),
                                 ExecutionErrors.MissingRequiredAnswerMimeTypeName.name(), ExecutionErrors.MissingRequiredAnswer.name(),

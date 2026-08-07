@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContentPageLayoutCommand
@@ -44,13 +45,17 @@ public class DeleteContentPageLayoutCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContentPageLayoutLogic contentPageLayoutLogic;
+
     
     /** Creates a new instance of DeleteContentPageLayoutCommand */
     public DeleteContentPageLayoutCommand() {
@@ -60,10 +65,10 @@ public class DeleteContentPageLayoutCommand
     @Override
     protected BaseResult execute() {
         var contentPageLayoutName = form.getContentPageLayoutName();
-        var contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByNameForUpdate(this, contentPageLayoutName);
+        var contentPageLayout = contentPageLayoutLogic.getContentPageLayoutByNameForUpdate(this, contentPageLayoutName);
         
         if(!hasExecutionErrors()) {
-            ContentPageLayoutLogic.getInstance().deleteContentPageLayout(this, contentPageLayout, getPartyPK());
+            contentPageLayoutLogic.deleteContentPageLayout(this, contentPageLayout, getPartyPK());
         }
         
         return null;

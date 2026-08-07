@@ -58,11 +58,6 @@ public class GetPaymentProcessorTransactionCodesCommand
                 new FieldDefinition("PaymentProcessorTransactionName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetPaymentProcessorTransactionCodesCommand */
-    public GetPaymentProcessorTransactionCodesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl;
@@ -72,6 +67,12 @@ public class GetPaymentProcessorTransactionCodesCommand
 
     @Inject
     PaymentProcessorTransactionLogic paymentProcessorTransactionLogic;
+
+
+    /** Creates a new instance of GetPaymentProcessorTransactionCodesCommand */
+    public GetPaymentProcessorTransactionCodesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private PaymentProcessorTransaction paymentProcessorTransaction;
 

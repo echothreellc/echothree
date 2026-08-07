@@ -51,9 +51,11 @@ public class EditUnitOfMeasureKindCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
+
     @Inject
     UomControl uomControl;
+
+
     
     /** Creates a new instance of EditUnitOfMeasureKindCommand */
     public EditUnitOfMeasureKindCommand() {

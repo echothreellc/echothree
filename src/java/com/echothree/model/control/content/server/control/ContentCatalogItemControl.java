@@ -35,10 +35,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ContentCatalogItemControl
         extends BaseModelControl {
+
+    @Inject
+    protected ContentControl contentControl;
+
+    @Inject
+    protected SearchControl searchControl;
 
     /** Creates a new instance of ContentCatalogItemControl */
     protected ContentCatalogItemControl() {
@@ -48,6 +55,12 @@ public class ContentCatalogItemControl
     // --------------------------------------------------------------------------------
     //   Content CatalogItem Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ContentCatalogItemFactory contentCatalogItemFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<ContentCatalogItemResultTransfer> getContentCatalogItemResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -60,19 +73,20 @@ public class ContentCatalogItemControl
         }
 
         try {
-            var contentControl = Session.getModelController(ContentControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+            var ps = searchResultFactory.prepareStatement(
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var contentCatalogItem = ContentCatalogItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCatalogItemPK(rs.getLong(1)));
+                    var contentCatalogItem = contentCatalogItemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ContentCatalogItemPK(rs.getLong(1)));
                     var contentCatalogDetail = contentCatalogItem.getContentCatalog().getLastDetail();
                     var itemDetail = contentCatalogItem.getItem().getLastDetail();
 
@@ -90,10 +104,7 @@ public class ContentCatalogItemControl
         return contentCatalogItemResultTransfers;
     }
 
-
     public List<ContentCatalogItemObject> getContentCatalogItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var contentCatalogItemObjects = new ArrayList<ContentCatalogItemObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

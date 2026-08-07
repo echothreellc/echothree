@@ -36,12 +36,6 @@ import javax.inject.Inject;
 public class GetItemAliasesCommand
         extends BasePaginatedMultipleEntitiesCommand<ItemAlias, GetItemAliasesForm> {
 
-    @Inject
-    ItemControl itemControl;
-
-    @Inject
-    ItemLogic itemLogic;
-
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -50,6 +44,13 @@ public class GetItemAliasesCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
     
     /** Creates a new instance of GetItemAliasesCommand */
     public GetItemAliasesCommand() {

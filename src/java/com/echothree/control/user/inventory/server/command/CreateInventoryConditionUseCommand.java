@@ -39,7 +39,7 @@ public class CreateInventoryConditionUseCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionUseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

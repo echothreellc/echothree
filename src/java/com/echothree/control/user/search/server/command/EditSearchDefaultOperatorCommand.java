@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchDefaultOperatorCommand
@@ -53,8 +53,8 @@ public class EditSearchDefaultOperatorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchDefaultOperator.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchDefaultOperatorName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,10 @@ public class EditSearchDefaultOperatorCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchDefaultOperatorCommand */
     public EditSearchDefaultOperatorCommand() {
@@ -85,7 +89,6 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public SearchDefaultOperator getEntity(EditSearchDefaultOperatorResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchDefaultOperator searchDefaultOperator;
         var searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
 
@@ -109,14 +112,11 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public void fillInResult(EditSearchDefaultOperatorResult result, SearchDefaultOperator searchDefaultOperator) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchDefaultOperator(searchControl.getSearchDefaultOperatorTransfer(getUserVisit(), searchDefaultOperator));
     }
 
     @Override
     public void doLock(SearchDefaultOperatorEdit edit, SearchDefaultOperator searchDefaultOperator) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescription(searchDefaultOperator, getPreferredLanguage());
         var searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public void canUpdate(SearchDefaultOperator searchDefaultOperator) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperatorName = edit.getSearchDefaultOperatorName();
         var duplicateSearchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
@@ -142,7 +141,6 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public void doUpdate(SearchDefaultOperator searchDefaultOperator) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         var searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueForUpdate(searchDefaultOperator);
         var searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, getPreferredLanguage());

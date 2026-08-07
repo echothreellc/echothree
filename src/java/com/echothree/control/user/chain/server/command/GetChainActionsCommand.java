@@ -66,6 +66,7 @@ public class GetChainActionsCommand
 
     @Inject
     ChainActionSetLogic chainActionSetLogic;
+
     
     /** Creates a new instance of GetChainActionsCommand */
     public GetChainActionsCommand() {

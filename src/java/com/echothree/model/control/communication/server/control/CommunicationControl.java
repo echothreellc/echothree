@@ -110,6 +110,12 @@ import javax.inject.Inject;
 public class CommunicationControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of CommunicationControl */
     protected CommunicationControl() {
         super();
@@ -153,6 +159,12 @@ public class CommunicationControl
     //   Communication Event Purposes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommunicationEventPurposeFactory communicationEventPurposeFactory;
+
+    @Inject
+    protected CommunicationEventPurposeDetailFactory communicationEventPurposeDetailFactory;
+
     public CommunicationEventPurpose createCommunicationEventPurpose(String communicationEventPurposeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
         var defaultFound = defaultCommunicationEventPurpose != null;
@@ -166,12 +178,12 @@ public class CommunicationControl
             isDefault = true;
         }
 
-        var communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().create();
-        var communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(
+        var communicationEventPurpose = communicationEventPurposeFactory.create();
+        var communicationEventPurposeDetail = communicationEventPurposeDetailFactory.create(
                 communicationEventPurpose, communicationEventPurposeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurpose.getPrimaryKey());
+        communicationEventPurpose = communicationEventPurposeFactory.getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurpose.getPrimaryKey());
         communicationEventPurpose.setActiveDetail(communicationEventPurposeDetail);
         communicationEventPurpose.setLastDetail(communicationEventPurposeDetail);
         communicationEventPurpose.store();
@@ -185,7 +197,7 @@ public class CommunicationControl
     public CommunicationEventPurpose getCommunicationEventPurposeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommunicationEventPurposePK(entityInstance.getEntityUniqueId());
 
-        return CommunicationEventPurposeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return communicationEventPurposeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommunicationEventPurpose getCommunicationEventPurposeByEntityInstance(EntityInstance entityInstance) {
@@ -211,21 +223,25 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                        "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposes, communicationeventpurposedetails
+                        WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                        "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposes, communicationeventpurposedetails
+                        WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventPurposeFactory.prepareStatement(query);
             
             ps.setString(1, communicationEventPurposeName);
             
-            communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationEventPurpose = communicationEventPurposeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -253,19 +269,23 @@ public class CommunicationControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
+        var ps = communicationEventPurposeFactory.prepareStatement(query);
         
-        return CommunicationEventPurposeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return communicationEventPurposeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public CommunicationEventPurpose getDefaultCommunicationEventPurpose() {
@@ -284,21 +304,25 @@ public class CommunicationControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid " +
-                    "ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid
+                    ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
+        var ps = communicationEventPurposeFactory.prepareStatement(query);
         
-        return CommunicationEventPurposeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return communicationEventPurposeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<CommunicationEventPurpose> getCommunicationEventPurposes() {
@@ -365,7 +389,7 @@ public class CommunicationControl
     private void updateCommunicationEventPurposeFromValue(CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(communicationEventPurposeDetailValue.hasBeenModified()) {
-            var communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var communicationEventPurpose = communicationEventPurposeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationEventPurposeDetailValue.getCommunicationEventPurposePK());
             var communicationEventPurposeDetail = communicationEventPurpose.getActiveDetailForUpdate();
             
@@ -393,7 +417,7 @@ public class CommunicationControl
                 }
             }
             
-            communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(communicationEventPurposePK,
+            communicationEventPurposeDetail = communicationEventPurposeDetailFactory.create(communicationEventPurposePK,
                     communicationEventPurposeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             communicationEventPurpose.setActiveDetail(communicationEventPurposeDetail);
@@ -438,10 +462,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Purpose Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventPurposeDescriptionFactory communicationEventPurposeDescriptionFactory;
+
     public CommunicationEventPurposeDescription createCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, String description, BasePK createdBy) {
-        var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(
+        var communicationEventPurposeDescription = communicationEventPurposeDescriptionFactory.create(
                 communicationEventPurpose, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -457,23 +484,27 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventPurposeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, communicationEventPurpose.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationEventPurposeDescription = communicationEventPurposeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -504,24 +535,28 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions, languages " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? AND cmmnevprd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions, languages
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? AND cmmnevprd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventPurposeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, communicationEventPurpose.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            communicationEventPurposeDescriptions = CommunicationEventPurposeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            communicationEventPurposeDescriptions = communicationEventPurposeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -571,7 +606,7 @@ public class CommunicationControl
     
     public void updateCommunicationEventPurposeDescriptionFromValue(CommunicationEventPurposeDescriptionValue communicationEventPurposeDescriptionValue, BasePK updatedBy) {
         if(communicationEventPurposeDescriptionValue.hasBeenModified()) {
-            var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurposeDescriptionValue.getPrimaryKey());
+            var communicationEventPurposeDescription = communicationEventPurposeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurposeDescriptionValue.getPrimaryKey());
             
             communicationEventPurposeDescription.setThruTime(session.getStartTime());
             communicationEventPurposeDescription.store();
@@ -580,7 +615,7 @@ public class CommunicationControl
             var language = communicationEventPurposeDescription.getLanguage();
             var description = communicationEventPurposeDescriptionValue.getDescription();
             
-            communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(communicationEventPurpose, language, description,
+            communicationEventPurposeDescription = communicationEventPurposeDescriptionFactory.create(communicationEventPurpose, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -605,16 +640,19 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Role Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventRoleTypeFactory communicationEventRoleTypeFactory;
+
     public CommunicationEventRoleType createCommunicationEventRoleType(String communicationEventRoleTypeName, Integer sortOrder) {
-        return CommunicationEventRoleTypeFactory.getInstance().create(communicationEventRoleTypeName, sortOrder);
+        return communicationEventRoleTypeFactory.create(communicationEventRoleTypeName, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEventRoleType */
     public CommunicationEventRoleType getCommunicationEventRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommunicationEventRoleTypePK(entityInstance.getEntityUniqueId());
 
-        return CommunicationEventRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return communicationEventRoleTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommunicationEventRoleType getCommunicationEventRoleTypeByEntityInstance(EntityInstance entityInstance) {
@@ -636,14 +674,16 @@ public class CommunicationControl
         CommunicationEventRoleType communicationEventRoleType;
         
         try {
-            var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventroletypes " +
-                    "WHERE cmmnevrtyp_communicationeventroletypename = ?");
+            var ps = communicationEventRoleTypeFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventroletypes
+                    WHERE cmmnevrtyp_communicationeventroletypename = ?
+                    """);
             
             ps.setString(1, communicationEventRoleTypeName);
             
-            communicationEventRoleType = CommunicationEventRoleTypeFactory.getInstance().getEntityFromQuery(
+            communicationEventRoleType = communicationEventRoleTypeFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -653,13 +693,15 @@ public class CommunicationControl
     }
     
     public List<CommunicationEventRoleType> getCommunicationEventRoleTypes() {
-        var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM communicationeventroletypes " +
-                "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename " +
-                "_LIMIT_");
+        var ps = communicationEventRoleTypeFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM communicationeventroletypes
+                ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename
+                _LIMIT_
+                """);
         
-        return CommunicationEventRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return communicationEventRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(UserVisit userVisit,
@@ -670,10 +712,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Role Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventRoleTypeDescriptionFactory communicationEventRoleTypeDescriptionFactory;
+
     public CommunicationEventRoleTypeDescription createCommunicationEventRoleTypeDescription(CommunicationEventRoleType communicationEventRoleType,
             Language language, String description) {
-        return CommunicationEventRoleTypeDescriptionFactory.getInstance().create(communicationEventRoleType, language, description);
+        return communicationEventRoleTypeDescriptionFactory.create(communicationEventRoleType, language, description);
     }
     
     public CommunicationEventRoleTypeDescription getCommunicationEventRoleTypeDescription(CommunicationEventRoleType communicationEventRoleType,
@@ -681,15 +726,17 @@ public class CommunicationControl
         CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription;
         
         try {
-            var ps = CommunicationEventRoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventroletypedescriptions " +
-                    "WHERE cmmnevrtypd_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevrtypd_lang_languageid = ?");
+            var ps = communicationEventRoleTypeDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventroletypedescriptions
+                    WHERE cmmnevrtypd_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevrtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, communicationEventRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            communicationEventRoleTypeDescription = CommunicationEventRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            communicationEventRoleTypeDescription = communicationEventRoleTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -718,17 +765,20 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventTypeFactory communicationEventTypeFactory;
+
     public CommunicationEventType createCommunicationEventType(String communicationEventTypeName, Boolean isDefault,
             Integer sortOrder) {
-        return CommunicationEventTypeFactory.getInstance().create(communicationEventTypeName, isDefault, sortOrder);
+        return communicationEventTypeFactory.create(communicationEventTypeName, isDefault, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEventType */
     public CommunicationEventType getCommunicationEventTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommunicationEventTypePK(entityInstance.getEntityUniqueId());
 
-        return CommunicationEventTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return communicationEventTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommunicationEventType getCommunicationEventTypeByEntityInstance(EntityInstance entityInstance) {
@@ -750,14 +800,16 @@ public class CommunicationControl
         CommunicationEventType communicationEventType;
         
         try {
-            var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventtypes " +
-                    "WHERE cmmnevtyp_communicationeventtypename = ?");
+            var ps = communicationEventTypeFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventtypes
+                    WHERE cmmnevtyp_communicationeventtypename = ?
+                    """);
             
             ps.setString(1, communicationEventTypeName);
             
-            communicationEventType = CommunicationEventTypeFactory.getInstance().getEntityFromQuery(
+            communicationEventType = communicationEventTypeFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -767,13 +819,15 @@ public class CommunicationControl
     }
     
     public List<CommunicationEventType> getCommunicationEventTypes() {
-        var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM communicationeventtypes " +
-                "ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename " +
-                "_LIMIT_");
+        var ps = communicationEventTypeFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM communicationeventtypes
+                ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename
+                _LIMIT_
+                """);
         
-        return CommunicationEventTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return communicationEventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit,
@@ -784,10 +838,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventTypeDescriptionFactory communicationEventTypeDescriptionFactory;
+
     public CommunicationEventTypeDescription createCommunicationEventTypeDescription(CommunicationEventType communicationEventType,
             Language language, String description) {
-        return CommunicationEventTypeDescriptionFactory.getInstance().create(communicationEventType, language, description);
+        return communicationEventTypeDescriptionFactory.create(communicationEventType, language, description);
     }
     
     public CommunicationEventTypeDescription getCommunicationEventTypeDescription(CommunicationEventType communicationEventType,
@@ -795,15 +852,17 @@ public class CommunicationControl
         CommunicationEventTypeDescription communicationEventTypeDescription;
         
         try {
-            var ps = CommunicationEventTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventtypedescriptions " +
-                    "WHERE cmmnevtypd_cmmnevtyp_communicationeventtypeid = ? AND cmmnevtypd_lang_languageid = ?");
+            var ps = communicationEventTypeDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventtypedescriptions
+                    WHERE cmmnevtypd_cmmnevtyp_communicationeventtypeid = ? AND cmmnevtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, communicationEventType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            communicationEventTypeDescription = CommunicationEventTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            communicationEventTypeDescription = communicationEventTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -832,14 +891,19 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Events
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventFactory communicationEventFactory;
+
+    @Inject
+    protected CommunicationEventDetailFactory communicationEventDetailFactory;
+
     public CommunicationEvent createCommunicationEvent(CommunicationEventType communicationEventType,
             CommunicationSource communicationSource, CommunicationEventPurpose communicationEventPurpose,
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.COMMUNICATION_EVENT.name()));
-        var communicationEventName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var communicationEventName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCommunicationEvent(communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document, createdBy);
@@ -849,14 +913,14 @@ public class CommunicationControl
             CommunicationSource communicationSource, CommunicationEventPurpose communicationEventPurpose,
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
-        var communicationEvent = CommunicationEventFactory.getInstance().create();
-        var communicationEventDetail = CommunicationEventDetailFactory.getInstance().create(
+        var communicationEvent = communicationEventFactory.create();
+        var communicationEventDetail = communicationEventDetailFactory.create(
                 communicationEvent, communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        communicationEvent = communicationEventFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 communicationEvent.getPrimaryKey());
         communicationEvent.setActiveDetail(communicationEventDetail);
         communicationEvent.setLastDetail(communicationEventDetail);
@@ -870,7 +934,7 @@ public class CommunicationControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEvent */
     public CommunicationEvent getCommunicationEventByEntityInstance(EntityInstance entityInstance) {
         var pk = new CommunicationEventPK(entityInstance.getEntityUniqueId());
-        var communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var communicationEvent = communicationEventFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return communicationEvent;
     }
@@ -882,27 +946,31 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationevents, communicationeventdetails " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnev_activedetailid = cmmnevdt_communicationeventdetailid " +
-                        "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
-                        "ORDER BY cmmnevdt_communicationeventname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationevents, communicationeventdetails
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnev_activedetailid = cmmnevdt_communicationeventdetailid
+                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
+                        ORDER BY cmmnevdt_communicationeventname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationevents " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationevents
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            communicationEvents = CommunicationEventFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            communicationEvents = communicationEventFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -920,9 +988,11 @@ public class CommunicationControl
     
     public long countCommunicationEventsByParty(Party party) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM communicationeventroles " +
-                "WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM communicationeventroles
+                WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
+                """,
                 party, Session.MAX_TIME);
     }
 
@@ -933,21 +1003,25 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationevents, communicationeventdetails " +
-                        "WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationevents, communicationeventdetails
+                        WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationevents, communicationeventdetails " +
-                        "WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationevents, communicationeventdetails
+                        WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventFactory.prepareStatement(query);
             
             ps.setString(1, communicationEventName);
             
-            communicationEvent = CommunicationEventFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationEvent = communicationEventFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -996,10 +1070,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Event Roles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEventRoleFactory communicationEventRoleFactory;
+
     public CommunicationEventRole createCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
             CommunicationEventRoleType communicationEventRoleType, BasePK createdBy) {
-        var communicationEventRole = CommunicationEventRoleFactory.getInstance().create(
+        var communicationEventRole = communicationEventRoleFactory.create(
                 communicationEvent, party, communicationEventRoleType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationEvent.getPrimaryKey(), EventTypes.MODIFY,
@@ -1016,26 +1093,30 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventRoleFactory.prepareStatement(query);
             
             ps.setLong(1, communicationEvent.getPrimaryKey().getEntityId());
             ps.setLong(2, party.getPrimaryKey().getEntityId());
             ps.setLong(3, communicationEventRoleType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            communicationEventRole = CommunicationEventRoleFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationEventRole = communicationEventRoleFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1061,27 +1142,31 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationeventroletypes, parties, partydetails " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnevr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = cmmnevrtyp_communicationeventroletypeid " +
-                        "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationeventroletypes, parties, partydetails
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnevr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = cmmnevrtyp_communicationeventroletypeid
+                        ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventRoleFactory.prepareStatement(query);
             
             ps.setLong(1, communicationEvent.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            communicationEventRoles = CommunicationEventRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            communicationEventRoles = communicationEventRoleFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1105,29 +1190,33 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationevents, communicationeventdetails " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
-                        "AND cmmnev_lastdetailid = cmmnevdt_communicationeventdetailid " +
-                        "ORDER BY cmmnevdt_communicationeventname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationevents, communicationeventdetails
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
+                        AND cmmnev_lastdetailid = cmmnevdt_communicationeventdetailid
+                        ORDER BY cmmnevdt_communicationeventname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
+            var ps = communicationEventRoleFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, communicationEventRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            communicationEventRoles = CommunicationEventRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            communicationEventRoles = communicationEventRoleFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1162,17 +1251,20 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Source Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationSourceTypeFactory communicationSourceTypeFactory;
+
     public CommunicationSourceType createCommunicationSourceType(String communicationSourceTypeName, Boolean isDefault,
             Integer sortOrder) {
-        return CommunicationSourceTypeFactory.getInstance().create(communicationSourceTypeName, isDefault, sortOrder);
+        return communicationSourceTypeFactory.create(communicationSourceTypeName, isDefault, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationSourceType */
     public CommunicationSourceType getCommunicationSourceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommunicationSourceTypePK(entityInstance.getEntityUniqueId());
 
-        return CommunicationSourceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return communicationSourceTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommunicationSourceType getCommunicationSourceTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1194,14 +1286,16 @@ public class CommunicationControl
         CommunicationSourceType communicationSourceType;
         
         try {
-            var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationsourcetypes " +
-                    "WHERE cmmnsrctyp_communicationsourcetypename = ?");
+            var ps = communicationSourceTypeFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM communicationsourcetypes
+                    WHERE cmmnsrctyp_communicationsourcetypename = ?
+                    """);
             
             ps.setString(1, communicationSourceTypeName);
             
-            communicationSourceType = CommunicationSourceTypeFactory.getInstance().getEntityFromQuery(
+            communicationSourceType = communicationSourceTypeFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1211,13 +1305,15 @@ public class CommunicationControl
     }
     
     public List<CommunicationSourceType> getCommunicationSourceTypes() {
-        var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM communicationsourcetypes " +
-                "ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename " +
-                "_LIMIT_");
+        var ps = communicationSourceTypeFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM communicationsourcetypes
+                ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename
+                _LIMIT_
+                """);
         
-        return CommunicationSourceTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return communicationSourceTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(UserVisit userVisit,
@@ -1228,10 +1324,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Source Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationSourceTypeDescriptionFactory communicationSourceTypeDescriptionFactory;
+
     public CommunicationSourceTypeDescription createCommunicationSourceTypeDescription(CommunicationSourceType communicationSourceType,
             Language language, String description) {
-        return CommunicationSourceTypeDescriptionFactory.getInstance().create(communicationSourceType, language, description);
+        return communicationSourceTypeDescriptionFactory.create(communicationSourceType, language, description);
     }
     
     public CommunicationSourceTypeDescription getCommunicationSourceTypeDescription(CommunicationSourceType communicationSourceType,
@@ -1239,15 +1338,17 @@ public class CommunicationControl
         CommunicationSourceTypeDescription communicationSourceTypeDescription;
         
         try {
-            var ps = CommunicationSourceTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationsourcetypedescriptions " +
-                    "WHERE cmmnsrctypd_cmmnsrctyp_communicationsourcetypeid = ? AND cmmnsrctypd_lang_languageid = ?");
+            var ps = communicationSourceTypeDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM communicationsourcetypedescriptions
+                    WHERE cmmnsrctypd_cmmnsrctyp_communicationsourcetypeid = ? AND cmmnsrctypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            communicationSourceTypeDescription = CommunicationSourceTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            communicationSourceTypeDescription = communicationSourceTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1276,16 +1377,22 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Sources
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationSourceFactory communicationSourceFactory;
+
+    @Inject
+    protected CommunicationSourceDetailFactory communicationSourceDetailFactory;
+
     public CommunicationSource createCommunicationSource(String communicationSourceName, CommunicationSourceType communicationSourceType,
             Integer sortOrder, BasePK createdBy) {
-        var communicationSource = CommunicationSourceFactory.getInstance().create();
-        var communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(
+        var communicationSource = communicationSourceFactory.create();
+        var communicationSourceDetail = communicationSourceDetailFactory.create(
                 communicationSource, communicationSourceName, communicationSourceType, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        communicationSource = CommunicationSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationSource.getPrimaryKey());
+        communicationSource = communicationSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE, communicationSource.getPrimaryKey());
         communicationSource.setActiveDetail(communicationSourceDetail);
         communicationSource.setLastDetail(communicationSourceDetail);
         communicationSource.store();
@@ -1299,7 +1406,7 @@ public class CommunicationControl
     public CommunicationSource getCommunicationSourceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommunicationSourcePK(entityInstance.getEntityUniqueId());
 
-        return CommunicationSourceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return communicationSourceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommunicationSource getCommunicationSourceByEntityInstance(EntityInstance entityInstance) {
@@ -1334,21 +1441,25 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
+            var ps = communicationSourceFactory.prepareStatement(query);
             
             ps.setString(1, communicationSourceName);
             
-            communicationSource = CommunicationSourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationSource = communicationSourceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1376,21 +1487,25 @@ public class CommunicationControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationsources, communicationsourcedetails " +
-                    "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid " +
-                    "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationsources, communicationsourcedetails
+                    WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid
+                    ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationsources, communicationsourcedetails " +
-                    "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationsources, communicationsourcedetails
+                    WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
+        var ps = communicationSourceFactory.prepareStatement(query);
         
-        return CommunicationSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return communicationSourceFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<CommunicationSource> getCommunicationSources() {
@@ -1409,23 +1524,27 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ? " +
-                        "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
+                        ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
+            var ps = communicationSourceFactory.prepareStatement(query);
             
             ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
             
-            communicationSources = CommunicationSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            communicationSources = communicationSourceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1466,7 +1585,7 @@ public class CommunicationControl
     
     public void updateCommunicationSourceFromValue(CommunicationSourceDetailValue communicationSourceDetailValue, BasePK updatedBy) {
         if(communicationSourceDetailValue.hasBeenModified()) {
-            var communicationSource = CommunicationSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var communicationSource = communicationSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationSourceDetailValue.getCommunicationSourcePK());
             var communicationSourceDetail = communicationSource.getActiveDetailForUpdate();
             
@@ -1478,7 +1597,7 @@ public class CommunicationControl
             var communicationSourceTypePK = communicationSourceDetail.getCommunicationSourceTypePK(); // Not updated
             var sortOrder = communicationSourceDetailValue.getSortOrder();
             
-            communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(communicationSourcePK,
+            communicationSourceDetail = communicationSourceDetailFactory.create(communicationSourcePK,
                     communicationSourceName, communicationSourceTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             communicationSource.setActiveDetail(communicationSourceDetail);
@@ -1503,10 +1622,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Source Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationSourceDescriptionFactory communicationSourceDescriptionFactory;
+
     public CommunicationSourceDescription createCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, String description, BasePK createdBy) {
-        var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(
+        var communicationSourceDescription = communicationSourceDescriptionFactory.create(
                 communicationSource, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1522,23 +1644,27 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = communicationSourceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationSourceDescription = communicationSourceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1569,24 +1695,28 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions, languages " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? AND cmmnsrcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions, languages
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? AND cmmnsrcd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = communicationSourceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            communicationSourceDescriptions = CommunicationSourceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            communicationSourceDescriptions = communicationSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1636,7 +1766,7 @@ public class CommunicationControl
     
     public void updateCommunicationSourceDescriptionFromValue(CommunicationSourceDescriptionValue communicationSourceDescriptionValue, BasePK updatedBy) {
         if(communicationSourceDescriptionValue.hasBeenModified()) {
-            var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationSourceDescriptionValue.getPrimaryKey());
+            var communicationSourceDescription = communicationSourceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, communicationSourceDescriptionValue.getPrimaryKey());
             
             communicationSourceDescription.setThruTime(session.getStartTime());
             communicationSourceDescription.store();
@@ -1645,7 +1775,7 @@ public class CommunicationControl
             var language = communicationSourceDescription.getLanguage();
             var description = communicationSourceDescriptionValue.getDescription();
             
-            communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(communicationSource, language, description,
+            communicationSourceDescription = communicationSourceDescriptionFactory.create(communicationSource, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1670,11 +1800,14 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
     //   Communication Email Sources
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommunicationEmailSourceFactory communicationEmailSourceFactory;
+
     public CommunicationEmailSource createCommunicationEmailSource(CommunicationSource communicationSource, Server server,
             String username, String password, WorkEffortScope receiveWorkEffortScope, WorkEffortScope sendWorkEffortScope,
             Selector reviewEmployeeSelector, BasePK createdBy) {
-        var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(
+        var communicationEmailSource = communicationEmailSourceFactory.create(
                 communicationSource, server, username, encodeCommunicationEmailSourcePassword(password), receiveWorkEffortScope,
                 sendWorkEffortScope, reviewEmployeeSelector, session.getStartTime(), Session.MAX_TIME);
         
@@ -1690,22 +1823,26 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationemailsources " +
-                        "WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationemailsources
+                        WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationemailsources " +
-                        "WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationemailsources
+                        WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommunicationEmailSourceFactory.getInstance().prepareStatement(query);
+            var ps = communicationEmailSourceFactory.prepareStatement(query);
             
             ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            communicationEmailSource = CommunicationEmailSourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            communicationEmailSource = communicationEmailSourceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1734,18 +1871,18 @@ public class CommunicationControl
     }
     
     public String encodeCommunicationEmailSourcePassword(String password) {
-        return EncryptionUtils.getInstance().encrypt(CommunicationEmailSourceFactory.getInstance().getEntityTypeName(),
+        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory.getEntityTypeName(),
                 CommunicationEmailSourceFactory.CMMNESRC_PASSWORD, password);
     }
     
     public String decodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource) {
-        return EncryptionUtils.getInstance().decrypt(CommunicationEmailSourceFactory.getInstance().getEntityTypeName(),
+        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory.getEntityTypeName(),
                 CommunicationEmailSourceFactory.CMMNESRC_PASSWORD, communicationEmailSource.getPassword());
     }
     
     public void updateCommunicationEmailSourceFromValue(CommunicationEmailSourceValue communicationEmailSourceValue, BasePK updatedBy) {
         if(communicationEmailSourceValue.hasBeenModified()) {
-            var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var communicationEmailSource = communicationEmailSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationEmailSourceValue.getPrimaryKey());
             
             communicationEmailSource.setThruTime(session.getStartTime());
@@ -1759,7 +1896,7 @@ public class CommunicationControl
             var sendWorkEffortScopePK = communicationEmailSourceValue.getSendWorkEffortScopePK();
             var reviewEmployeeSelectorPK = communicationEmailSourceValue.getReviewEmployeeSelectorPK();
             
-            communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(
+            communicationEmailSource = communicationEmailSourceFactory.create(
                     communicationSource.getPrimaryKey(), serverPK, username, password, receiveWorkEffortScopePK,
                     sendWorkEffortScopePK, reviewEmployeeSelectorPK, session.getStartTime(), Session.MAX_TIME);
             

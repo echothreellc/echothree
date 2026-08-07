@@ -56,7 +56,7 @@ public class GetAppearanceTextDecorationCommand
                 new FieldDefinition("TextDecorationName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     AppearanceControl appearanceControl;
 
@@ -65,6 +65,7 @@ public class GetAppearanceTextDecorationCommand
 
     @Inject
     TextLogic textLogic;
+
 
     /** Creates a new instance of GetAppearanceTextDecorationCommand */
     public GetAppearanceTextDecorationCommand() {

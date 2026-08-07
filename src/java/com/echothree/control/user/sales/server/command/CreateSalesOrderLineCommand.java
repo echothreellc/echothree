@@ -35,6 +35,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderLineCommand
@@ -47,9 +48,9 @@ public class CreateSalesOrderLineCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderLine.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderLine.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, false, null, null),
@@ -64,8 +65,17 @@ public class CreateSalesOrderLineCommand
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
 
     /** Creates a new instance of CreateSalesOrderLineCommand */
     public CreateSalesOrderLineCommand() {
@@ -75,10 +85,10 @@ public class CreateSalesOrderLineCommand
     @Override
     protected void setupValidator(Validator validator) {
         var orderName = form.getOrderName();
-        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var order = orderName == null ? null : salesOrderLogic.getOrderByName(this, orderName);
         
         if(order != null) {
-            validator.setCurrency(OrderLogic.getInstance().getOrderCurrency(order));
+            validator.setCurrency(orderLogic.getOrderCurrency(order));
         }
     }
     
@@ -98,7 +108,7 @@ public class CreateSalesOrderLineCommand
         var description = form.getDescription();
         var taxable = form.getTaxable();
 
-        var orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, this, getUserVisit(), orderName,
+        var orderLine = salesOrderLineLogic.createOrderLine(session, this, getUserVisit(), orderName,
                 itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName,
                 sourceName, orderLineSequence, quantity, unitAmount, description, taxable, getParty());
 

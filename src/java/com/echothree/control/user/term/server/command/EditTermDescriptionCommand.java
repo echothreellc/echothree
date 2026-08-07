@@ -30,9 +30,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTermDescriptionCommand
@@ -51,6 +51,13 @@ public class EditTermDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of EditTermDescriptionCommand */
     public EditTermDescriptionCommand() {
@@ -59,13 +66,11 @@ public class EditTermDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
         var result = TermResultFactory.getEditTermDescriptionResult();
         var termName = spec.getTermName();
         var term = termControl.getTermByName(termName);
         
         if(term != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

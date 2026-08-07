@@ -61,6 +61,7 @@ public class EditUnitOfMeasureTypeCommand
 
     @Inject
     AccountingControl accountingControl;
+
     @Inject
     UomControl uomControl;
 

@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentPageAreaTypeCommand
@@ -44,14 +45,18 @@ public class CreateContentPageAreaTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageAreaType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentPageAreaTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentPageAreaTypeLogic contentPageAreaTypeLogic;
+
     
     /** Creates a new instance of CreateContentPageAreaTypeCommand */
     public CreateContentPageAreaTypeCommand() {
@@ -63,7 +68,7 @@ public class CreateContentPageAreaTypeCommand
         var contentPageAreaTypeName = form.getContentPageAreaTypeName();
         var description = form.getDescription();
         
-        ContentPageAreaTypeLogic.getInstance().createContentPageAreaType(this, contentPageAreaTypeName, getPreferredLanguage(),
+        contentPageAreaTypeLogic.createContentPageAreaType(this, contentPageAreaTypeName, getPreferredLanguage(),
                 description, getPartyPK());
         
         return null;

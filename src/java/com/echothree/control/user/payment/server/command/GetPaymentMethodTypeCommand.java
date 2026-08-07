@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentMethodTypeCommand
@@ -43,8 +43,15 @@ public class GetPaymentMethodTypeCommand
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentMethodTypeControl paymentMethodTypeControl;
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
     
     /** Creates a new instance of GetPaymentMethodTypeCommand */
     public GetPaymentMethodTypeCommand() {
@@ -53,7 +60,7 @@ public class GetPaymentMethodTypeCommand
     
     @Override
     protected PaymentMethodType getEntity() {
-        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
+        var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByUniversalSpec(this, form, true);
 
         if(paymentMethodType != null) {
             sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetPaymentMethodTypeCommand
     
     @Override
     protected BaseResult getResult(PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var result = PaymentResultFactory.getGetPaymentMethodTypeResult();
 
         if(paymentMethodType != null) {

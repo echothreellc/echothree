@@ -50,13 +50,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchLogic
         extends BaseLogic {
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    SearchControl searchControl;
 
     protected SearchLogic() {
         super();
@@ -67,7 +73,6 @@ public class SearchLogic
     }
     
     public SearchDefaultOperator getSearchDefaultOperatorByName(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
         if(searchDefaultOperator == null) {
@@ -78,7 +83,6 @@ public class SearchLogic
     }
     
     public SearchDefaultOperator getDefaultSearchDefaultOperator(final ExecutionErrorAccumulator eea) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperator = searchControl.getDefaultSearchDefaultOperator();
 
         if(searchDefaultOperator == null) {
@@ -89,7 +93,6 @@ public class SearchLogic
     }
 
     public SearchSortDirection getSearchSortDirectionByName(final ExecutionErrorAccumulator eea, final String searchSortDirectionName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection == null) {
@@ -100,7 +103,6 @@ public class SearchLogic
     }
     
     public SearchSortDirection getDefaultSearchSortDirection(final ExecutionErrorAccumulator eea) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirection = searchControl.getDefaultSearchSortDirection();
 
         if(searchSortDirection == null) {
@@ -111,7 +113,6 @@ public class SearchLogic
     }
 
     public SearchUseType getSearchUseTypeByName(final ExecutionErrorAccumulator eea, final String searchUseTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType == null) {
@@ -122,7 +123,6 @@ public class SearchLogic
     }
     
     public SearchResultActionType getSearchResultActionTypeByName(final ExecutionErrorAccumulator eea, final String searchResultActionTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
         if(searchResultActionType == null) {
@@ -133,7 +133,6 @@ public class SearchLogic
     }
     
     public SearchKind getSearchKindByName(final ExecutionErrorAccumulator eea, final String searchKindName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind == null) {
@@ -144,7 +143,6 @@ public class SearchLogic
     }
 
     public SearchType getSearchTypeByName(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
         if(searchType == null) {
@@ -162,7 +160,6 @@ public class SearchLogic
     }
     
     public SearchSortOrder getSearchSortOrderByName(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchSortOrderName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
         if(searchSortOrder == null) {
@@ -180,7 +177,6 @@ public class SearchLogic
     }
     
     public SearchSortOrder getDefaultSearchSortOrder(final ExecutionErrorAccumulator eea, final SearchKind searchKind) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortOrder = searchControl.getDefaultSearchSortOrder(searchKind);
 
         if(searchSortOrder == null) {
@@ -198,7 +194,6 @@ public class SearchLogic
     }
     
     public UserVisitSearch getUserVisitSearch(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final SearchType searchType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
         
         if(userVisitSearch == null) {
@@ -218,7 +213,6 @@ public class SearchLogic
     
     public void removeUserVisitSearch(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
             final String searchTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var userVisitSearch = getUserVisitSearchByName(eea, userVisit, searchKindName, searchTypeName);
 
         if(!hasExecutionErrors(eea)) {
@@ -227,7 +221,6 @@ public class SearchLogic
     }
     
     public Long countSearchResults(final Search search) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var cachedSearch = search.getCachedSearch();
         long count;
         
@@ -259,8 +252,6 @@ public class SearchLogic
             var searchResultActionType = getSearchResultActionTypeByName(eea, searchResultActionTypeName);
             
             if(eea == null || !eea.hasExecutionErrors()) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                var searchControl = Session.getModelController(SearchControl.class);
                 var search = userVisitSearch.getSearch();
                 var cachedSearch = search.getCachedSearch();
                 var basePK = baseEntity.getPrimaryKey();

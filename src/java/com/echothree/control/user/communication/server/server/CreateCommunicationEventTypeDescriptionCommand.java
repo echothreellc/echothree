@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommunicationEventTypeDescriptionCommand
@@ -37,11 +37,17 @@ public class CreateCommunicationEventTypeDescriptionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommunicationEventTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("CommunicationEventTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of CreateCommunicationEventTypeDescriptionCommand */
     public CreateCommunicationEventTypeDescriptionCommand() {
@@ -50,12 +56,10 @@ public class CreateCommunicationEventTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var communicationEventTypeName = form.getCommunicationEventTypeName();
         var communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
         
         if(communicationEventType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

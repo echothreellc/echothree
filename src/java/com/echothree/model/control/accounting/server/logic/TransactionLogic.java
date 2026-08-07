@@ -49,10 +49,38 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PostingLogic postingLogic;
+
+    @Inject
+    TransactionTimeLogic transactionTimeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
 
     protected TransactionLogic() {
         super();
@@ -64,18 +92,15 @@ public class TransactionLogic
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,
             final Long transactionTime, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        
         return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName),
                 transactionTime, createdBy);
     }
     
     public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType,
             final Long transactionTime, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transaction = accountingControl.createTransaction(groupParty, transactionType, createdBy);
 
-        TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
+        transactionTimeLogic.createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
                 transactionTime == null ? session.getStartTime() : transactionTime, createdBy);
 
         return transaction;
@@ -83,7 +108,6 @@ public class TransactionLogic
 
     public Transaction getTransactionByName(final ExecutionErrorAccumulator eea, final String transactionName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transaction = accountingControl.getTransactionByName(transactionName, entityPermission);
 
         if(transaction == null) {
@@ -104,14 +128,13 @@ public class TransactionLogic
     public Transaction getTransactionByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TransactionUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Transaction transaction = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionName = universalSpec.getTransactionName();
-        var parameterCount = (transactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (transactionName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(transactionName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Transaction.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -141,7 +164,6 @@ public class TransactionLogic
     public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty,
             final String transactionGlAccountCategoryName, final GlAccount glAccount, final Currency originalCurrency,
             final Long originalDebit, final Long originalCredit, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionDetail = transaction.getLastDetail();
         
         return createTransactionGlEntry(transaction, groupParty == null ? transactionDetail.getGroupParty() : groupParty,
@@ -189,8 +211,6 @@ public class TransactionLogic
     public TransactionGlEntry createTransactionGlEntry(final Transaction transaction, final Party groupParty,
             final TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, final Currency originalCurrency,
             final Long originalDebit, final Long originalCredit, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        
         glAccount = getGlAccount(accountingControl, transactionGlAccountCategory, glAccount);
 
         var debit = originalDebit == null ? null : getAmount(glAccount, originalCurrency, originalDebit);
@@ -203,7 +223,6 @@ public class TransactionLogic
     
     public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction,
             final String transactionEntityRoleTypeName, final BasePK pk, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transaction.getLastDetail().getTransactionType(),
                 transactionEntityRoleTypeName);
         
@@ -212,8 +231,6 @@ public class TransactionLogic
     
     public TransactionEntityRole createTransactionEntityRole(final Transaction transaction,
             final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(pk);
         
         if(!transactionEntityRoleType.getLastDetail().getEntityType().equals(entityInstance.getEntityType())) {
@@ -240,23 +257,19 @@ public class TransactionLogic
     
     public void postTransaction(final ExecutionErrorAccumulator eea, final Session session, final Transaction transaction,
             final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         validateTransactionBalanced(eea, transaction);
 
         if(eea != null && !hasExecutionErrors(eea)) {
             accountingControl.removeTransactionStatusByTransaction(transaction);
 
-            PostingLogic.getInstance().postTransaction(session, transaction, createdBy);
+            postingLogic.postTransaction(session, transaction, createdBy);
 
             // If it isn't in the Transaction Status workflow, assume this is a system generated transaction and
             // we've gone directly to posting it.
-            var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
+            var workflow = workflowLogic.getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
             if(!workflowControl.isEntityInWorkflow(workflow, entityInstance)) {
-                var workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(null, workflow,
+                var workflowEntrance = workflowEntranceLogic.getWorkflowEntranceByName(null, workflow,
                         TransactionStatusConstants.WorkflowEntrance_TRANSACTION_STATUS_NEW_POSTED);
 
                 workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
@@ -265,8 +278,6 @@ public class TransactionLogic
     }
     
     public void testTransaction(final ExecutionErrorAccumulator eea, final Session session, final BasePK testedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
         var companyParty = partyControl.getDefaultPartyCompany().getParty();
         var divisionParty = partyControl.getDefaultPartyDivision(companyParty).getParty();
         var departmentParty = partyControl.getDefaultPartyDepartment(divisionParty).getParty();

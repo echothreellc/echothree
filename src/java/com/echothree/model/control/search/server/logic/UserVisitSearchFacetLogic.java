@@ -39,15 +39,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UserVisitSearchFacetLogic
         extends BaseLogic {
+
+    @Inject
+    CoreControl coreControl;
 
     protected UserVisitSearchFacetLogic() {
         super();
@@ -58,7 +61,6 @@ public class UserVisitSearchFacetLogic
     }
     
     private List<EntityIntegerRangeDetail> getEntityIntegerRangeDetails(final EntityAttribute entityAttribute) {
-        final var coreControl = Session.getModelController(CoreControl.class);
         final var entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
         final var entityIntegerRangeDetails = new ArrayList<EntityIntegerRangeDetail>(entityIntegerRanges.size());
         
@@ -70,7 +72,6 @@ public class UserVisitSearchFacetLogic
     }
     
     private List<EntityLongRangeDetail> getEntityLongRangeDetails(final EntityAttribute entityAttribute) {
-        final var coreControl = Session.getModelController(CoreControl.class);
         final var entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
         final var entityLongRangeDetails = new ArrayList<EntityLongRangeDetail>(entityLongRanges.size());
         
@@ -84,7 +85,6 @@ public class UserVisitSearchFacetLogic
     // Substantial portions of this are duplicated in getUserVisitSearchFacetObject(...).
     public UserVisitSearchFacetTransfer getUserVisitSearchFacetTransfer(final ExecutionErrorAccumulator eea, final UserVisitSearch userVisitSearch,
             final EntityAttribute entityAttribute) {
-        final var coreControl = Session.getModelController(CoreControl.class);
         List<UserVisitSearchFacetListItemTransfer> userVisitSearchFacetListItemTransfers = null;
         List<UserVisitSearchFacetIntegerTransfer> userVisitSearchFacetIntegerTransfers = null;
         List<UserVisitSearchFacetLongTransfer> userVisitSearchFacetLongTransfers = null;

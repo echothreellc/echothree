@@ -38,6 +38,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityEntityAttributeCommand
@@ -65,6 +66,13 @@ public class EditEntityEntityAttributeCommand
                 new FieldDefinition("UuidAttribute", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of EditEntityEntityAttributeCommand */
     public EditEntityEntityAttributeCommand() {
@@ -74,10 +82,10 @@ public class EditEntityEntityAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityEntityAttributeResult();
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, spec, spec,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec,
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
@@ -95,7 +103,7 @@ public class EditEntityEntityAttributeCommand
                                 var edit = CoreEditFactory.getEntityEntityAttributeEdit();
 
                                 result.setEdit(edit);
-                                edit.setEntityRefAttribute(EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityEntityAttribute.getEntityInstanceAttribute()));
+                                edit.setEntityRefAttribute(entityInstanceLogic.getEntityRefFromEntityInstance(entityEntityAttribute.getEntityInstanceAttribute()));
                             } else {
                                 addExecutionError(ExecutionErrors.EntityLockFailed.name());
                             }
@@ -111,7 +119,7 @@ public class EditEntityEntityAttributeCommand
                                 entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, edit);
+                    var entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, edit);
 
                     if(!hasExecutionErrors()) {
                         if(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {

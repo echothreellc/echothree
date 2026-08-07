@@ -66,17 +66,19 @@ public class EditPartyTrainingClassCommand
                 new FieldDefinition("ValidUntilTime", FieldType.DATE_TIME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of EditPartyTrainingClassCommand */
-    public EditPartyTrainingClassCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     TrainingControl trainingControl;
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
+
+    /** Creates a new instance of EditPartyTrainingClassCommand */
+    public EditPartyTrainingClassCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
     
     @Override
     public EditPartyTrainingClassResult getResult() {

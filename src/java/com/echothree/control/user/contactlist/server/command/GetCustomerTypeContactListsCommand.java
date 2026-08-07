@@ -74,6 +74,7 @@ public class GetCustomerTypeContactListsCommand
 
     @Inject
     CustomerTypeLogic customerTypeLogic;
+
     
     /** Creates a new instance of GetCustomerTypeContactListsCommand */
     public GetCustomerTypeContactListsCommand() {

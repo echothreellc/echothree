@@ -23,12 +23,21 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PeriodLogic {
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     protected PeriodLogic() {
         super();
@@ -40,7 +49,6 @@ public class PeriodLogic {
     
     public Period createPeriod(final PeriodKind periodKind, final String periodName, final Period parentPeriod,
             final PeriodType periodType, final Long startTime, final Long endTime, final PartyPK createdBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var period = periodControl.createPeriod(periodKind, periodName, parentPeriod, periodType, startTime, endTime, createdBy);
         var periodTypeDetail = periodType.getLastDetail();
         var workflowEntrance = periodTypeDetail.getWorkflowEntrance();
@@ -50,8 +58,6 @@ public class PeriodLogic {
         }
         
         if(workflowEntrance != null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
 
             workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);

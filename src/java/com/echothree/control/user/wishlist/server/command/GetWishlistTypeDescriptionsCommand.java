@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWishlistTypeDescriptionsCommand
@@ -51,9 +51,13 @@ public class GetWishlistTypeDescriptionsCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    WishlistControl wishlistControl;
+
     
     /** Creates a new instance of GetWishlistTypeDescriptionsCommand */
     public GetWishlistTypeDescriptionsCommand() {
@@ -62,8 +66,6 @@ public class GetWishlistTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         var result = WishlistResultFactory.getGetWishlistTypeDescriptionsResult();
         var wishlistTypeName = form.getWishlistTypeName();
         var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);

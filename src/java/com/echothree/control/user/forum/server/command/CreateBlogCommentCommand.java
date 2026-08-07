@@ -18,23 +18,21 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateBlogCommentForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateBlogCommentCommand
@@ -52,8 +50,21 @@ public class CreateBlogCommentCommand
                 new FieldDefinition("Title", FieldType.STRING, true, 1L, 512L),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
     
     /** Creates a new instance of CreateBlogCommentCommand */
     public CreateBlogCommentCommand() {
@@ -62,13 +73,11 @@ public class CreateBlogCommentCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = Session.getModelController(UserControl.class);
         var result = ForumResultFactory.getCreateBlogCommentResult();
         var username = form.getUsername();
         var userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
 
         if(username == null || userLogin != null) {
-            var forumControl = Session.getModelController(ForumControl.class);
             var parentForumMessageName = form.getParentForumMessageName();
             var parentForumMessage = forumControl.getForumMessageByName(parentForumMessageName);
 
@@ -77,20 +86,18 @@ public class CreateBlogCommentCommand
                 var forumMessageTypeName = parentForumMessageDetail.getForumMessageType().getForumMessageTypeName();
 
                 if(forumMessageTypeName.equals(ForumConstants.ForumMessageType_BLOG_ENTRY) || forumMessageTypeName.equals(ForumConstants.ForumMessageType_BLOG_COMMENT)) {
-                    var forumRoleType = ForumRoleTypeLogic.getInstance().getForumRoleTypeByName(this, ForumConstants.ForumRoleType_COMMENTOR);
+                    var forumRoleType = forumRoleTypeLogic.getForumRoleTypeByName(this, ForumConstants.ForumRoleType_COMMENTOR);
 
                     if(!hasExecutionErrors()) {
                         var party = userLogin == null ? getParty() : userLogin.getParty();
                         var forumThread = parentForumMessageDetail.getForumThread();
                         var forum = forumControl.getDefaultForumForumThread(forumThread).getForum();
 
-                        if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
-                            var partyControl = Session.getModelController(PartyControl.class);
+                        if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
                             var languageIsoName = form.getLanguageIsoName();
                             var language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
-                                var iconControl = Session.getModelController(IconControl.class);
                                 var forumMessageIconName = form.getForumMessageIconName();
                                 var forumMessageIcon = iconControl.getIconByName(forumMessageIconName);
 
@@ -105,7 +112,6 @@ public class CreateBlogCommentCommand
                                     }
 
                                     if(!hasExecutionErrors()) {
-                                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                         var contentMimeTypeName = form.getContentMimeTypeName();
                                         var contentMimeType = contentMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(contentMimeTypeName);
 

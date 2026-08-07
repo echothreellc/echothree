@@ -30,6 +30,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityListItemDefaultCommand
@@ -55,6 +56,10 @@ public class CreateEntityListItemDefaultCommand
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityListItemDefaultCommand */
     public CreateEntityListItemDefaultCommand() {
@@ -63,15 +68,15 @@ public class CreateEntityListItemDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
+            var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
 
             if(!hasExecutionErrors()) {
                 var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                EntityAttributeLogic.getInstance().createEntityListItemDefault(this, entityAttribute,
+                entityAttributeLogic.createEntityListItemDefault(this, entityAttribute,
                         entityListItem, addMissingAttributes, getPartyPK());
             }
         }

@@ -47,8 +47,7 @@ public class GetEventTypesCommand
                 ))
         ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetEventTypesCommand */

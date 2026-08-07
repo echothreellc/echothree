@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearanceCommand
@@ -48,15 +48,22 @@ public class GetAppearanceCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
     
     /** Creates a new instance of GetAppearanceCommand */
     public GetAppearanceCommand() {
@@ -65,7 +72,7 @@ public class GetAppearanceCommand
 
     @Override
     protected Appearance getEntity() {
-        var appearance = AppearanceLogic.getInstance().getAppearanceByUniversalSpec(this, form);
+        var appearance = appearanceLogic.getAppearanceByUniversalSpec(this, form);
 
         return appearance;
     }
@@ -75,8 +82,6 @@ public class GetAppearanceCommand
         var result = CoreResultFactory.getGetAppearanceResult();
 
         if(appearance != null) {
-            var appearanceControl = Session.getModelController(AppearanceControl.class);
-
             result.setAppearance(appearanceControl.getAppearanceTransfer(getUserVisit(), appearance));
         }
 

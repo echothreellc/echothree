@@ -81,7 +81,7 @@ public class EditFilterAdjustmentFixedAmountCommand
                 new FieldDefinition("UnitAmount:CurrencyIsoName,CurrencyIsoName", FieldType.PRICE_UNIT, true, null, null)
         );
     }
-    
+
     @Inject
     AccountingControl accountingControl;
 
@@ -90,6 +90,7 @@ public class EditFilterAdjustmentFixedAmountCommand
 
     @Inject
     UomControl uomControl;
+
 
     /** Creates a new instance of EditFilterAdjustmentFixedAmountCommand */
     public EditFilterAdjustmentFixedAmountCommand() {

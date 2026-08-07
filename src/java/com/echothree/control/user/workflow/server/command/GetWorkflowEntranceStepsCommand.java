@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntranceStepsCommand
@@ -58,6 +58,13 @@ public class GetWorkflowEntranceStepsCommand
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
     
     /** Creates a new instance of GetWorkflowEntranceStepsCommand */
     public GetWorkflowEntranceStepsCommand() {
@@ -71,14 +78,12 @@ public class GetWorkflowEntranceStepsCommand
         var workflowName = form.getWorkflowName();
         var workflowEntranceName = form.getWorkflowEntranceName();
 
-        workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this,
+        workflowEntrance = workflowEntranceLogic.getWorkflowEntranceByName(this,
                 workflowName, workflowEntranceName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
     }
@@ -88,8 +93,6 @@ public class GetWorkflowEntranceStepsCommand
         Collection<WorkflowEntranceStep> workflowEntranceSteps = null;
 
         if(!hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowEntranceSteps = workflowControl.getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
         }
 
@@ -101,7 +104,6 @@ public class GetWorkflowEntranceStepsCommand
         var result = WorkflowResultFactory.getGetWorkflowEntranceStepsResult();
 
         if(entities != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflowEntrance(workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrance));

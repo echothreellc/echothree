@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyPaymentMethodChoicesCommand
@@ -48,15 +48,22 @@ public class GetPartyPaymentMethodChoicesCommand
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultPaymentMethodChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
     
     /** Creates a new instance of GetPartyPaymentMethodChoicesCommand */
     public GetPartyPaymentMethodChoicesCommand() {
@@ -77,8 +84,6 @@ public class GetPartyPaymentMethodChoicesCommand
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());
             } else {
-                var partyControl = Session.getModelController(PartyControl.class);
-
                 party = partyControl.getPartyByName(partyName);
 
                 if(party == null) {
@@ -88,7 +93,6 @@ public class GetPartyPaymentMethodChoicesCommand
         }
 
         if(!hasExecutionErrors()) {
-            var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
             var defaultPaymentMethodChoice = form.getDefaultPaymentMethodChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

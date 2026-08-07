@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkRequirementTypeDescriptionCommand
@@ -53,6 +53,16 @@ public class EditWorkRequirementTypeDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
     
     /** Creates a new instance of EditWorkRequirementTypeDescriptionCommand */
     public EditWorkRequirementTypeDescriptionCommand() {
@@ -61,18 +71,15 @@ public class EditWorkRequirementTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var result = WorkRequirementResultFactory.getEditWorkRequirementTypeDescriptionResult();
         var workEffortTypeName = spec.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
             var workRequirementTypeName = spec.getWorkRequirementTypeName();
             var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

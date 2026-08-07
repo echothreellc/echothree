@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityAliasTypeCommand
@@ -55,6 +56,10 @@ public class DeleteEntityAliasTypeCommand
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
     
     /** Creates a new instance of DeleteEntityAliasTypeCommand */
     public DeleteEntityAliasTypeCommand() {
@@ -63,10 +68,10 @@ public class DeleteEntityAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpecForUpdate(this, form);
+        var entityAliasType = entityAliasTypeLogic.getEntityAliasTypeByUniversalSpecForUpdate(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAliasTypeLogic.getInstance().deleteEntityAliasType(this, entityAliasType, getPartyPK());
+            entityAliasTypeLogic.deleteEntityAliasType(this, entityAliasType, getPartyPK());
         }
 
         return null;

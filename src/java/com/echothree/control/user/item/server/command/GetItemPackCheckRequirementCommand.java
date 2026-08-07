@@ -42,12 +42,7 @@ public class GetItemPackCheckRequirementCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetItemPackCheckRequirementCommand */
-    public GetItemPackCheckRequirementCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     ItemControl itemControl;
 
@@ -56,6 +51,12 @@ public class GetItemPackCheckRequirementCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+
+    /** Creates a new instance of GetItemPackCheckRequirementCommand */
+    public GetItemPackCheckRequirementCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected BaseResult execute() {

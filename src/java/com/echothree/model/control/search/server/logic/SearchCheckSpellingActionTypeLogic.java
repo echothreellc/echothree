@@ -31,13 +31,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchCheckSpellingActionTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SearchCheckSpellingActionTypeLogic() {
         super();
@@ -49,7 +55,6 @@ public class SearchCheckSpellingActionTypeLogic
 
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final String searchCheckSpellingActionTypeName, final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName, entityPermission);
 
         if(searchCheckSpellingActionType == null) {
@@ -76,14 +81,13 @@ public class SearchCheckSpellingActionTypeLogic
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SearchCheckSpellingActionTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         SearchCheckSpellingActionType searchCheckSpellingActionType = null;
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchCheckSpellingActionTypeName = universalSpec.getSearchCheckSpellingActionTypeName();
-        var parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(searchCheckSpellingActionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchCheckSpellingActionType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -111,8 +115,6 @@ public class SearchCheckSpellingActionTypeLogic
     }
 
     public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransferByName(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchCheckSpellingActionTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, getSearchCheckSpellingActionTypeByName(eea, searchCheckSpellingActionTypeName));
     }
 

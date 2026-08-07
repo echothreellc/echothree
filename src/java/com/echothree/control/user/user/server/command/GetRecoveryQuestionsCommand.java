@@ -18,16 +18,15 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetRecoveryQuestionsForm;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.factory.RecoveryQuestionFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRecoveryQuestionsCommand
@@ -52,15 +51,11 @@ public class GetRecoveryQuestionsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var userControl = Session.getModelController(UserControl.class);
-
         return userControl.countRecoveryQuestions();
     }
 
     @Override
     protected Collection<RecoveryQuestion> getEntities() {
-        var userControl = Session.getModelController(UserControl.class);
-
         return userControl.getRecoveryQuestions();
     }
 
@@ -69,7 +64,6 @@ public class GetRecoveryQuestionsCommand
         var result = UserResultFactory.getGetRecoveryQuestionsResult();
 
         if(entities != null) {
-            var userControl = Session.getModelController(UserControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(RecoveryQuestionFactory.class)) {

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeScopeCommand
@@ -52,9 +52,9 @@ public class EditGeoCodeScopeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeScope.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeScope.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeScopeName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,9 @@ public class EditGeoCodeScopeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
 
     /** Creates a new instance of EditGeoCodeScopeCommand */
     public EditGeoCodeScopeCommand() {
@@ -85,7 +88,6 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public GeoCodeScope getEntity(EditGeoCodeScopeResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScope geoCodeScope;
         var geoCodeScopeName = spec.getGeoCodeScopeName();
 
@@ -111,14 +113,11 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public void fillInResult(EditGeoCodeScopeResult result, GeoCodeScope geoCodeScope) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeScope(geoControl.getGeoCodeScopeTransfer(getUserVisit(), geoCodeScope));
     }
 
     @Override
     public void doLock(GeoCodeScopeEdit edit, GeoCodeScope geoCodeScope) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, getPreferredLanguage());
         var geoCodeScopeDetail = geoCodeScope.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public void canUpdate(GeoCodeScope geoCodeScope) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScopeName = edit.getGeoCodeScopeName();
         var duplicateGeoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
@@ -144,7 +142,6 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public void doUpdate(GeoCodeScope geoCodeScope) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
         var geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueForUpdate(geoCodeScope);
         var geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, getPreferredLanguage());

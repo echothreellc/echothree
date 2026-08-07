@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmployeeTypesCommand
@@ -53,6 +53,10 @@ public class GetEmployeeTypesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of GetEmployeeTypesCommand */
     public GetEmployeeTypesCommand() {
@@ -66,15 +70,11 @@ public class GetEmployeeTypesCommand
     
     @Override
     protected Long getTotalEntities() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         return employeeControl.countEmployeeTypes();
     }
     
     @Override
     protected Collection<EmployeeType> getEntities() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-        
         return employeeControl.getEmployeeTypes();
     }
     
@@ -83,8 +83,6 @@ public class GetEmployeeTypesCommand
         var result = EmployeeResultFactory.getGetEmployeeTypesResult();
         
         if(entities != null) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-
             if(session.hasLimit(CustomerTypeFactory.class)) {
                 result.setEmployeeTypeCount(getTotalEntities());
             }

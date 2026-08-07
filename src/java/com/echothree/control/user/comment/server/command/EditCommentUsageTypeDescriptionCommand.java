@@ -30,9 +30,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommentUsageTypeDescriptionCommand
@@ -54,6 +54,13 @@ public class EditCommentUsageTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCommentUsageTypeDescriptionCommand */
     public EditCommentUsageTypeDescriptionCommand() {
@@ -71,7 +78,6 @@ public class EditCommentUsageTypeDescriptionCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var commentControl = Session.getModelController(CommentControl.class);
                 var commentTypeName = spec.getCommentTypeName();
                 var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
@@ -80,7 +86,6 @@ public class EditCommentUsageTypeDescriptionCommand
                     var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
                     
                     if(commentUsageType != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = spec.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
                         

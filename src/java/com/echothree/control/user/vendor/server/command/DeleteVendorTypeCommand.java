@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteVendorTypeCommand
@@ -44,15 +45,19 @@ public class DeleteVendorTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    VendorTypeLogic vendorTypeLogic;
+
     
     /** Creates a new instance of DeleteVendorTypeCommand */
     public DeleteVendorTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorType = VendorTypeLogic.getInstance().getVendorTypeByUniversalSpecForUpdate(this, form, false);
+        var vendorType = vendorTypeLogic.getVendorTypeByUniversalSpecForUpdate(this, form, false);
         
         if(!hasExecutionErrors()) {
-            VendorTypeLogic.getInstance().deleteVendorType(this, vendorType, getPartyPK());
+            vendorTypeLogic.deleteVendorType(this, vendorType, getPartyPK());
         }
         
         return null;

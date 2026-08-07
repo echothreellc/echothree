@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorTypeCommand
@@ -44,9 +45,9 @@ public class CreateSelectorTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -54,8 +55,12 @@ public class CreateSelectorTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SelectorTypeLogic selectorTypeLogic;
+
     
     /** Creates a new instance of CreateSelectorTypeCommand */
     public CreateSelectorTypeCommand() {
@@ -72,7 +77,7 @@ public class CreateSelectorTypeCommand
         var description = form.getDescription();
         var createdBy = getPartyPK();
 
-        var selectorType = SelectorTypeLogic.getInstance().createSelectorType(this, selectorKindName,
+        var selectorType = selectorTypeLogic.createSelectorType(this, selectorKindName,
                 selectorTypeName, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
         if(selectorType != null) {

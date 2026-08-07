@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowStepTypeLogic
         extends BaseLogic {
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected WorkflowStepTypeLogic() {
         super();
@@ -51,7 +57,6 @@ public class WorkflowStepTypeLogic
     public WorkflowStepType createWorkflowStepType(final ExecutionErrorAccumulator eea, final String workflowStepTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
 
         if(workflowStepType == null) {
@@ -69,7 +74,6 @@ public class WorkflowStepTypeLogic
 
     public WorkflowStepType getWorkflowStepTypeByName(final ExecutionErrorAccumulator eea, final String workflowStepTypeName,
             final EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName, entityPermission);
 
         if(workflowStepType == null) {
@@ -90,9 +94,8 @@ public class WorkflowStepTypeLogic
     public WorkflowStepType getWorkflowStepTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final WorkflowStepTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         WorkflowStepType workflowStepType = null;
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowStepTypeName = universalSpec.getWorkflowStepTypeName();
-        var parameterCount = (workflowStepTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (workflowStepTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 0) {
             if(allowDefault) {
@@ -106,7 +109,7 @@ public class WorkflowStepTypeLogic
             }
         } else if(parameterCount == 1) {
             if(workflowStepTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStepType.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {

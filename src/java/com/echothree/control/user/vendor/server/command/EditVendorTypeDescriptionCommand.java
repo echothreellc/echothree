@@ -65,18 +65,19 @@ public class EditVendorTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of EditVendorTypeDescriptionCommand */
     public EditVendorTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
-    @Inject
-    VendorControl vendorControl;
-
-    @Inject
-    PartyControl partyControl;
-
     @Override
     protected EditVendorTypeDescriptionResult getResult() {
         return VendorResultFactory.getEditVendorTypeDescriptionResult();

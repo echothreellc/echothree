@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSequenceEncoderTypeCommand
@@ -56,6 +56,12 @@ public class GetSequenceEncoderTypeCommand
         );
     }
 
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceEncoderTypeLogic sequenceEncoderTypeLogic;
+
     /** Creates a new instance of GetSequenceEncoderTypeCommand */
     public GetSequenceEncoderTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,12 +71,11 @@ public class GetSequenceEncoderTypeCommand
     protected SequenceEncoderType getEntity() {
         var sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
 
-        return SequenceEncoderTypeLogic.getInstance().getSequenceEncoderTypeByName(this, sequenceEncoderTypeName);
+        return sequenceEncoderTypeLogic.getSequenceEncoderTypeByName(this, sequenceEncoderTypeName);
     }
 
     @Override
     protected BaseResult getResult(SequenceEncoderType sequenceEncoderType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceEncoderTypeResult();
 
         if(sequenceEncoderType != null) {

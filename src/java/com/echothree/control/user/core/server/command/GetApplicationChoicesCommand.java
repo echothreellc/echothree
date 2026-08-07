@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationChoicesCommand
@@ -45,14 +45,18 @@ public class GetApplicationChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Application.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultApplicationChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
     
     /** Creates a new instance of GetApplicationChoicesCommand */
     public GetApplicationChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetApplicationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var result = CoreResultFactory.getGetApplicationChoicesResult();
         var defaultApplicationChoice = form.getDefaultApplicationChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

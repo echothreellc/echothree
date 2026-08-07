@@ -53,18 +53,13 @@ public class GetGeoCodeDateTimeFormatsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeDateTimeFormat.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DateTimeFormatName", FieldType.ENTITY_NAME, false, null, null)
-                );
-    }
-    
-    /** Creates a new instance of GetGeoCodeDateTimeFormatsCommand */
-    public GetGeoCodeDateTimeFormatsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        );
     }
 
     @Inject
@@ -72,6 +67,12 @@ public class GetGeoCodeDateTimeFormatsCommand
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of GetGeoCodeDateTimeFormatsCommand */
+    public GetGeoCodeDateTimeFormatsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     GeoCode geoCode;
     DateTimeFormat dateTimeFormat;

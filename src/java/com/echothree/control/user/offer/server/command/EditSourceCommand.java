@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSourceCommand
@@ -67,6 +67,9 @@ public class EditSourceCommand
         );
     }
 
+    @Inject
+    SourceControl sourceControl;
+
     /** Creates a new instance of EditSourceCommand */
     public EditSourceCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -84,7 +87,6 @@ public class EditSourceCommand
 
     @Override
     public Source getEntity(EditSourceResult result) {
-        var sourceControl = Session.getModelController(SourceControl.class);
         Source source;
         var sourceName = spec.getSourceName();
 
@@ -110,8 +112,6 @@ public class EditSourceCommand
 
     @Override
     public void fillInResult(EditSourceResult result, Source source) {
-        var sourceControl = Session.getModelController(SourceControl.class);
-
         result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));
     }
 
@@ -126,7 +126,6 @@ public class EditSourceCommand
 
     @Override
     public void canUpdate(Source source) {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var sourceName = edit.getSourceName();
         var duplicateSource = sourceControl.getSourceByName(sourceName);
 
@@ -137,7 +136,6 @@ public class EditSourceCommand
 
     @Override
     public void doUpdate(Source source) {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var partyPK = getPartyPK();
         var sourceDetailValue = sourceControl.getSourceDetailValueForUpdate(source);
 

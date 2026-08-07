@@ -29,9 +29,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePrinterGroupCommand
@@ -47,8 +47,20 @@ public class CreatePrinterGroupCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
     /** Creates a new instance of CreatePrinterGroupCommand */
     public CreatePrinterGroupCommand() {
@@ -57,20 +69,16 @@ public class CreatePrinterGroupCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var printerGroupName = form.getPrinterGroupName();
        var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup == null) {
-            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
             var keepPrintedJobsTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     form.getKeepPrintedJobsTime(), form.getKeepPrintedJobsTimeUnitOfMeasureTypeName(),
                     null, ExecutionErrors.MissingRequiredKeepPrintedJobsTime.name(), null, ExecutionErrors.MissingRequiredKeepPrintedJobsTimeUnitOfMeasureTypeName.name(),
                     null, ExecutionErrors.UnknownKeepPrintedJobsTimeUnitOfMeasureTypeName.name());
 
             if(!hasExecutionErrors()) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

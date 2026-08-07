@@ -42,13 +42,25 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WarehouseLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
 
     protected WarehouseLogic() {
         super();
@@ -62,11 +74,9 @@ public class WarehouseLogic
             final Language preferredLanguage, final Currency preferredCurrency, final TimeZone preferredTimeZone,
             final DateTimeFormat preferredDateTimeFormat, final String name, final Boolean isDefault, final Integer sortOrder,
             final BasePK createdBy) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
 
         if(warehouse == null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
             var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency,
                     preferredTimeZone, preferredDateTimeFormat, createdBy);
@@ -86,9 +96,8 @@ public class WarehouseLogic
     public Warehouse getWarehouseByName(final ExecutionErrorAccumulator eea, final String warehouseName, final String partyName,
             final UniversalEntitySpec universalEntitySpec, final boolean allowDefault, final EntityPermission entityPermission) {
         Warehouse warehouse = null;
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var parameterCount = (warehouseName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+                entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -103,8 +112,6 @@ public class WarehouseLogic
                 }
             }
             case 1 -> {
-                var partyControl = Session.getModelController(PartyControl.class);
-
                 if(warehouseName != null) {
                     warehouse = warehouseControl.getWarehouseByName(warehouseName, entityPermission);
 
@@ -115,20 +122,20 @@ public class WarehouseLogic
                     var party = partyControl.getPartyByName(partyName);
 
                     if(party != null) {
-                        PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.WAREHOUSE.name());
+                        partyLogic.checkPartyType(eea, party, PartyTypes.WAREHOUSE.name());
 
                         warehouse = warehouseControl.getWarehouse(party, entityPermission);
                     } else {
                         handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                     }
                 } else if(universalEntitySpec != null){
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
                         var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                        PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.WAREHOUSE.name());
+                        partyLogic.checkPartyType(eea, party, PartyTypes.WAREHOUSE.name());
 
                         warehouse = warehouseControl.getWarehouse(party, entityPermission);
                     }
@@ -168,14 +175,10 @@ public class WarehouseLogic
 
     public void updateWarehouseFromValue(final ExecutionErrorAccumulator eea, final WarehouseValue warehouseValue,
             final BasePK updatedBy) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         warehouseControl.updateWarehouseFromValue(warehouseValue, updatedBy);
     }
 
     public void deleteWarehouse(final ExecutionErrorAccumulator eea, final Warehouse warehouse, final BasePK deletedBy) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         // TODO: Verify warehouse is empty
 
         warehouseControl.deleteWarehouse(warehouse, deletedBy);

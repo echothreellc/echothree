@@ -39,10 +39,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchEmployeesCommand
@@ -56,8 +56,8 @@ public class SearchEmployeesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -76,8 +76,20 @@ public class SearchEmployeesCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of SearchEmployeesCommand */
     public SearchEmployeesCommand() {
@@ -92,7 +104,6 @@ public class SearchEmployeesCommand
         var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount < 2) {
-            var searchControl = Session.getModelController(SearchControl.class);
             var searchKind = searchControl.getSearchKindByName(SearchKinds.EMPLOYEE.name());
 
             if(searchKind != null) {
@@ -105,7 +116,6 @@ public class SearchEmployeesCommand
                     PartyAliasType partyAliasType = null;
 
                     if(partyAliasTypeName != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
 
                         if(partyType != null) {
@@ -120,7 +130,6 @@ public class SearchEmployeesCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var employeeStatusChoice = form.getEmployeeStatusChoice();
                         var employeeStatusWorkflowStep = employeeStatusChoice == null ? null : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS), employeeStatusChoice);
 
@@ -129,7 +138,6 @@ public class SearchEmployeesCommand
                             var employeeAvailabilityWorkflowStep = employeeAvailabilityChoice == null ? null : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY), employeeAvailabilityChoice);
 
                             if(employeeAvailabilityChoice == null || employeeAvailabilityWorkflowStep != null) {
-                                var searchLogic = SearchLogic.getInstance();
                                 var userVisit = getUserVisit();
                                 var employeeSearchEvaluator = new EmployeeSearchEvaluator(userVisit, searchType, searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind), searchLogic.getDefaultSearchSortDirection(null));
                                 var createdSince = form.getCreatedSince();

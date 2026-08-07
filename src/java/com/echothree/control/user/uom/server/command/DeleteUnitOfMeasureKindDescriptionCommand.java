@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteUnitOfMeasureKindDescriptionCommand
@@ -39,8 +39,15 @@ public class DeleteUnitOfMeasureKindDescriptionCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of DeleteUnitOfMeasureKindDescriptionCommand */
     public DeleteUnitOfMeasureKindDescriptionCommand() {
@@ -49,12 +56,10 @@ public class DeleteUnitOfMeasureKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

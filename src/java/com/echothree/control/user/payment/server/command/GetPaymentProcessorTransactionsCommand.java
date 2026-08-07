@@ -52,14 +52,15 @@ public class GetPaymentProcessorTransactionsCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+
     
     /** Creates a new instance of GetPaymentProcessorTransactionsCommand */
     public GetPaymentProcessorTransactionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    PaymentProcessorTransactionControl paymentProcessorTransactionControl;
 
     @Override
     protected void handleForm() {

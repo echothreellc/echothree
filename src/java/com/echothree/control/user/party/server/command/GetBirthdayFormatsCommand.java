@@ -52,9 +52,10 @@ public class GetBirthdayFormatsCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     PartyControl partyControl;
+
 
     /** Creates a new instance of GetBirthdayFormatsCommand */
     public GetBirthdayFormatsCommand() {

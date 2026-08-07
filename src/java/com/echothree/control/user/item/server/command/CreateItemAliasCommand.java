@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemAliasCommand
@@ -56,8 +56,18 @@ public class CreateItemAliasCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemAliasChecksumTypeLogic itemAliasChecksumTypeLogic;
+
     
     /** Creates a new instance of CreateItemAliasCommand */
     public CreateItemAliasCommand() {
@@ -66,12 +76,10 @@ public class CreateItemAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var itemDetail = item.getLastDetail();
             var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -99,7 +107,7 @@ public class CreateItemAliasCommand
                         }
                         
                         if(!hasExecutionErrors()) {
-                            ItemAliasChecksumTypeLogic.getInstance().checkItemAliasChecksum(this, itemAliasType, alias);
+                            itemAliasChecksumTypeLogic.checkItemAliasChecksum(this, itemAliasType, alias);
 
                             if(!hasExecutionErrors()) {
                                 if(!itemAliasTypeDetail.getAllowMultiple()) {

@@ -59,13 +59,16 @@ public class GetTrainingClassPageCommand
         );
     }
 
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
+
     /** Creates a new instance of GetTrainingClassPageCommand */
     public GetTrainingClassPageCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    TrainingControl trainingControl;
 
     @Override
     protected BaseResult execute() {
@@ -84,7 +87,7 @@ public class GetTrainingClassPageCommand
                 if(trainingClassPage != null) {
                     var partyTrainingClassName = form.getPartyTrainingClassName();
                     var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
-                            : PartyTrainingClassSessionLogic.getInstance().getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
+                            : partyTrainingClassSessionLogic.getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
 
                     if(!hasExecutionErrors()) {
                         var partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
@@ -109,7 +112,7 @@ public class GetTrainingClassPageCommand
                                 var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
                                         trainingClassPage, session.getStartTime(), null, partyPK);
 
-                                PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
+                                partyTrainingClassSessionLogic.updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                         null, partyTrainingClassSessionPage, null);
 
                                 result.setPartyTrainingClassSessionPage(trainingControl.getPartyTrainingClassSessionPageTransfer(userVisit, partyTrainingClassSessionPage));

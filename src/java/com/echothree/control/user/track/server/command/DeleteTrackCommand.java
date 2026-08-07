@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTrackCommand
@@ -46,13 +46,17 @@ public class DeleteTrackCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Track.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrackName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of DeleteTrackCommand */
     public DeleteTrackCommand() {
@@ -61,7 +65,6 @@ public class DeleteTrackCommand
     
     @Override
     protected BaseResult execute() {
-        var trackControl = Session.getModelController(TrackControl.class);
         var trackName = form.getTrackName();
         var track = trackControl.getTrackByNameForUpdate(trackName);
         

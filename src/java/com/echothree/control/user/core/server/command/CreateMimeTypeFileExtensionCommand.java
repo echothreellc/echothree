@@ -17,16 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeFileExtensionForm;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateMimeTypeFileExtensionCommand
@@ -39,8 +38,9 @@ public class CreateMimeTypeFileExtensionCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("FileExtension", FieldType.STRING, true, 1L, 10L),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
     
     /** Creates a new instance of CreateMimeTypeFileExtensionCommand */
     public CreateMimeTypeFileExtensionCommand() {
@@ -49,7 +49,6 @@ public class CreateMimeTypeFileExtensionCommand
     
     @Override
     protected BaseResult execute() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = form.getMimeTypeName();
         var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
         

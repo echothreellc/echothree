@@ -32,10 +32,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleGroupsCommand
@@ -56,6 +56,10 @@ public class GetSecurityRoleGroupsCommand
                 new FieldDefinition("ParentSecurityRoleGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of GetSecurityRoleGroupsCommand */
     public GetSecurityRoleGroupsCommand() {
@@ -66,7 +70,6 @@ public class GetSecurityRoleGroupsCommand
 
     @Override
     protected void handleForm() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var parentSecurityRoleGroupName = form.getParentSecurityRoleGroupName();
 
         parentSecurityRoleGroup = parentSecurityRoleGroupName == null ? null : securityControl.getSecurityRoleGroupByName(parentSecurityRoleGroupName);
@@ -78,8 +81,6 @@ public class GetSecurityRoleGroupsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         return hasExecutionErrors() ? null :
                 parentSecurityRoleGroup == null ?
                         securityControl.countSecurityRoleGroups() :
@@ -88,7 +89,6 @@ public class GetSecurityRoleGroupsCommand
 
     @Override
     protected Collection<SecurityRoleGroup> getEntities() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         Collection<SecurityRoleGroup> entities = null;
 
         if(!hasExecutionErrors()) {
@@ -103,7 +103,6 @@ public class GetSecurityRoleGroupsCommand
     @Override
     protected BaseResult getResult(Collection<SecurityRoleGroup> entities) {
         var result = SecurityResultFactory.getGetSecurityRoleGroupsResult();
-        var securityControl = Session.getModelController(SecurityControl.class);
         var userVisit = getUserVisit();
 
         result.setParentSecurityRoleGroup(parentSecurityRoleGroup == null ? null : securityControl.getSecurityRoleGroupTransfer(userVisit, parentSecurityRoleGroup));

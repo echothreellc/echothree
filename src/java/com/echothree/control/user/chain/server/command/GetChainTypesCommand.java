@@ -57,12 +57,13 @@ public class GetChainTypesCommand
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ChainControl chainControl;
 
     @Inject
     ChainKindLogic chainKindLogic;
+
 
     /** Creates a new instance of GetChainTypesCommand */
     public GetChainTypesCommand() {

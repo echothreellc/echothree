@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditServerDescriptionCommand
@@ -55,8 +55,8 @@ public class EditServerDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Server.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditServerDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of EditServerDescriptionCommand */
     public EditServerDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditServerDescriptionCommand
 
     @Override
     public ServerDescription getEntity(EditServerDescriptionResult result) {
-        var serverControl = Session.getModelController(ServerControl.class);
         ServerDescription serverDescription = null;
         var serverName = spec.getServerName();
         var server = serverControl.getServerByName(serverName);
 
         if(server != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditServerDescriptionCommand
 
     @Override
     public void fillInResult(EditServerDescriptionResult result, ServerDescription serverDescription) {
-        var serverControl = Session.getModelController(ServerControl.class);
-
         result.setServerDescription(serverControl.getServerDescriptionTransfer(getUserVisit(), serverDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditServerDescriptionCommand
 
     @Override
     public void doUpdate(ServerDescription serverDescription) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var serverDescriptionValue = serverControl.getServerDescriptionValue(serverDescription);
         serverDescriptionValue.setDescription(edit.getDescription());
 

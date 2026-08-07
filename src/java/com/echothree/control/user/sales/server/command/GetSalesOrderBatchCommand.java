@@ -63,6 +63,7 @@ public class GetSalesOrderBatchCommand
 
     @Inject
     SalesOrderBatchLogic salesOrderBatchLogic;
+
     
     /** Creates a new instance of GetSalesOrderBatchCommand */
     public GetSalesOrderBatchCommand() {

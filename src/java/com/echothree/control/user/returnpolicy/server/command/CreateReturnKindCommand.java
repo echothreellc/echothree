@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateReturnKindCommand
@@ -46,9 +47,9 @@ public class CreateReturnKindCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnKind.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnKind.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -56,8 +57,15 @@ public class CreateReturnKindCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
     
     /** Creates a new instance of CreateReturnKindCommand */
     public CreateReturnKindCommand() {
@@ -70,14 +78,14 @@ public class CreateReturnKindCommand
         ReturnKind returnKind = null;
         var returnKindName = form.getReturnKindName();
         var returnSequenceTypeName = form.getReturnSequenceTypeName();
-        var returnSequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, returnSequenceTypeName);
+        var returnSequenceType = sequenceTypeLogic.getSequenceTypeByName(this, returnSequenceTypeName);
 
         if(!hasExecutionErrors()) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            returnKind = ReturnKindLogic.getInstance().createReturnKind(this, returnKindName,
+            returnKind = returnKindLogic.createReturnKind(this, returnKindName,
                     returnSequenceType, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
 

@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemUnitCustomerTypeLimitCommand
@@ -39,12 +39,25 @@ public class DeleteItemUnitCustomerTypeLimitCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("UnitOfMeasureTypeName", FieldType.PERCENT, true, null, null),
-            new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.PERCENT, true, null, null),
+                new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
         );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of DeleteItemUnitCustomerTypeLimitCommand */
     public DeleteItemUnitCustomerTypeLimitCommand() {
@@ -53,22 +66,18 @@ public class DeleteItemUnitCustomerTypeLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryConditionName = form.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
-                    var customerControl = Session.getModelController(CustomerControl.class);
                     var customerTypeName = form.getCustomerTypeName();
                     var customerType = customerControl.getCustomerTypeByName(customerTypeName);
                     

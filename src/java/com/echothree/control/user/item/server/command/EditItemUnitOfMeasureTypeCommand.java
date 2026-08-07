@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemUnitOfMeasureTypeCommand
@@ -68,6 +68,13 @@ public class EditItemUnitOfMeasureTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditItemUnitOfMeasureTypeCommand */
     public EditItemUnitOfMeasureTypeCommand() {
@@ -86,13 +93,11 @@ public class EditItemUnitOfMeasureTypeCommand
 
     @Override
     public ItemUnitOfMeasureType getEntity(EditItemUnitOfMeasureTypeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitOfMeasureType itemUnitOfMeasureType = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
@@ -123,8 +128,6 @@ public class EditItemUnitOfMeasureTypeCommand
 
     @Override
     public void fillInResult(EditItemUnitOfMeasureTypeResult result, ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemUnitOfMeasureType(itemControl.getItemUnitOfMeasureTypeTransfer(getUserVisit(), itemUnitOfMeasureType));
     }
 
@@ -136,7 +139,6 @@ public class EditItemUnitOfMeasureTypeCommand
 
     @Override
     public void doUpdate(ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemUnitOfMeasureTypeValue = itemControl.getItemUnitOfMeasureTypeValue(itemUnitOfMeasureType);
 
         itemUnitOfMeasureTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

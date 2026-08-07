@@ -69,17 +69,18 @@ public class EditWishlistPriorityCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditWishlistPriorityCommand */
-    public EditWishlistPriorityCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     WishlistControl wishlistControl;
 
     @Inject
     WishlistPriorityLogic wishlistPriorityLogic;
+
+
+    /** Creates a new instance of EditWishlistPriorityCommand */
+    public EditWishlistPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditWishlistPriorityResult getResult() {

@@ -517,7 +517,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryLocationGroupDescriptionFactory inventoryLocationGroupDescriptionFactory;
-    
+
     public InventoryLocationGroupDescription createInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language, String description, BasePK createdBy) {
         var inventoryLocationGroupDescription = inventoryLocationGroupDescriptionFactory.create(inventoryLocationGroup, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -697,7 +697,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryLocationGroupVolumeFactory inventoryLocationGroupVolumeFactory;
-    
+
     public InventoryLocationGroupVolume createInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup,
             Long height, Long width, Long depth, BasePK createdBy) {
         var inventoryLocationGroupVolume = inventoryLocationGroupVolumeFactory.create(inventoryLocationGroup, height, width, depth,
@@ -811,7 +811,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryLocationGroupCapacityFactory inventoryLocationGroupCapacityFactory;
-    
+
     public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryLocationGroupGroup,
             UnitOfMeasureType unitOfMeasureType, Long capacity, BasePK createdBy) {
         var inventoryLocationGroupGroupCapacity = inventoryLocationGroupCapacityFactory.create(inventoryLocationGroupGroup,
@@ -989,7 +989,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryConditionDetailFactory inventoryConditionDetailFactory;
-    
+
     public InventoryCondition createInventoryCondition(final String inventoryConditionName, Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
         var defaultInventoryCondition = getDefaultInventoryCondition();
@@ -1315,7 +1315,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryConditionDescriptionFactory inventoryConditionDescriptionFactory;
-    
+
     public InventoryConditionDescription createInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language, final String description, final BasePK createdBy) {
         var inventoryConditionDescription = inventoryConditionDescriptionFactory.create(inventoryCondition,
@@ -1468,7 +1468,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryConditionUseTypeFactory inventoryConditionUseTypeFactory;
-    
+
     public InventoryConditionUseType createInventoryConditionUseType(String inventoryConditionUseTypeName, Boolean isDefault,
             Integer sortOrder) {
         return inventoryConditionUseTypeFactory.create(inventoryConditionUseTypeName, isDefault, sortOrder);
@@ -1498,10 +1498,12 @@ public class InventoryControl
 
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
         var ps = inventoryConditionUseTypeFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM inventoryconditionusetypes " +
-                "ORDER BY invconut_inventoryconditionusetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM inventoryconditionusetypes
+                ORDER BY invconut_inventoryconditionusetypename
+                _LIMIT_
+                """);
         
         return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1511,9 +1513,11 @@ public class InventoryControl
         
         try {
             var ps = inventoryConditionUseTypeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM inventoryconditionusetypes " +
-                    "WHERE invconut_inventoryconditionusetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM inventoryconditionusetypes
+                    WHERE invconut_inventoryconditionusetypename = ?
+                    """);
             
             ps.setString(1, inventoryConditionUseTypeName);
             
@@ -1581,7 +1585,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryConditionUseTypeDescriptionFactory inventoryConditionUseTypeDescriptionFactory;
-    
+
     public InventoryConditionUseTypeDescription createInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language, String description) {
         return inventoryConditionUseTypeDescriptionFactory.create(inventoryConditionUseType, language, description);
     }
@@ -1630,7 +1634,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryConditionUseFactory inventoryConditionUseFactory;
-    
+
     public InventoryConditionUse createInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, Boolean isDefault, BasePK createdBy) {
         var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
@@ -1969,7 +1973,7 @@ public class InventoryControl
 
     @Inject
     protected InventoryConditionGlAccountFactory inventoryConditionGlAccountFactory;
-    
+
     public InventoryConditionGlAccount createInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, BasePK createdBy) {
@@ -2255,7 +2259,7 @@ public class InventoryControl
 
     @Inject
     protected PartyInventoryLevelFactory partyInventoryLevelFactory;
-    
+
     public PartyInventoryLevel createPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             Long minimumInventory, Long maximumInventory, Long reorderQuantity, BasePK createdBy) {
         var partyInventoryLevel = partyInventoryLevelFactory.create(party, item,

@@ -23,13 +23,16 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CurrencyLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
 
     protected CurrencyLogic() {
         super();
@@ -40,7 +43,6 @@ public class CurrencyLogic
     }
     
     public Currency getCurrencyByName(final ExecutionErrorAccumulator eea, final String currencyIsoName) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency == null) {
@@ -51,7 +53,6 @@ public class CurrencyLogic
     }
     
     public Currency getDefaultCurrency(final ExecutionErrorAccumulator eea) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currency = accountingControl.getDefaultCurrency();
 
         if(currency == null) {

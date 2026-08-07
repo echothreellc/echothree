@@ -38,10 +38,6 @@ import javax.inject.Inject;
 public class PartyContactMechanismLogic
     extends BaseLogic {
 
-    protected PartyContactMechanismLogic() {
-        super();
-    }
-
     @Inject
     ContactControl contactControl;
 
@@ -53,6 +49,10 @@ public class PartyContactMechanismLogic
 
     @Inject
     PartyLogic partyLogic;
+
+    protected PartyContactMechanismLogic() {
+        super();
+    }
 
     public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
             final ContactMechanism contactMechanism, final EntityPermission entityPermission) {

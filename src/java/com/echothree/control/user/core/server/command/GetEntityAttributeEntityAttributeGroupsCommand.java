@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,15 +60,16 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of GetEntityAttributeEntityAttributeGroupsCommand */
     public GetEntityAttributeEntityAttributeGroupsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    EntityAttributeLogic entityAttributeLogic;
-
     private EntityAttribute entityAttribute;
     private EntityAttributeGroup entityAttributeGroup;
 

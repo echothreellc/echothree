@@ -53,9 +53,11 @@ public class GetPrinterCommand
                 new FieldDefinition("PrinterName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     PrinterControl printerControl;
+
+
     
     /** Creates a new instance of GetPrinterCommand */
     public GetPrinterCommand() {

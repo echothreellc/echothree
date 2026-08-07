@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderTimeTypeDescriptionCommand
@@ -56,8 +56,8 @@ public class EditOrderTimeTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderTimeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,6 +69,16 @@ public class EditOrderTimeTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditOrderTimeTypeDescriptionCommand */
     public EditOrderTimeTypeDescriptionCommand() {
@@ -87,18 +97,15 @@ public class EditOrderTimeTypeDescriptionCommand
 
     @Override
     public OrderTimeTypeDescription getEntity(EditOrderTimeTypeDescriptionResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderTimeTypeDescription orderTimeTypeDescription = null;
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
             var orderTimeTypeName = spec.getOrderTimeTypeName();
             var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,8 +139,6 @@ public class EditOrderTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderTimeTypeDescriptionResult result, OrderTimeTypeDescription orderTimeTypeDescription) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
         result.setOrderTimeTypeDescription(orderTimeControl.getOrderTimeTypeDescriptionTransfer(getUserVisit(), orderTimeTypeDescription));
     }
 
@@ -144,7 +149,6 @@ public class EditOrderTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderTimeTypeDescription orderTimeTypeDescription) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var orderTimeTypeDescriptionValue = orderTimeControl.getOrderTimeTypeDescriptionValue(orderTimeTypeDescription);
         
         orderTimeTypeDescriptionValue.setDescription(edit.getDescription());

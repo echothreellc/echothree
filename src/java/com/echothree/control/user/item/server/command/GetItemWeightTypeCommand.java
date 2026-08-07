@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemWeightTypeCommand
@@ -43,8 +43,15 @@ public class GetItemWeightTypeCommand
                 new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of GetItemWeightTypeCommand */
     public GetItemWeightTypeCommand() {
@@ -53,7 +60,7 @@ public class GetItemWeightTypeCommand
 
     @Override
     protected ItemWeightType getEntity() {
-        var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByUniversalSpec(this, form, true);
+        var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByUniversalSpec(this, form, true);
 
         if(itemWeightType != null) {
             sendEvent(itemWeightType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,7 @@ public class GetItemWeightTypeCommand
 
     @Override
     protected BaseResult getResult(ItemWeightType itemWeightType) {
-        var itemWeightTypeControl = Session.getModelController(ItemControl.class);
+        var itemWeightTypeControl = itemControl;
         var result = ItemResultFactory.getGetItemWeightTypeResult();
 
         if(itemWeightType != null) {

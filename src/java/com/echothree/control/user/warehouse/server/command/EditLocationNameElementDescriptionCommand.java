@@ -36,7 +36,6 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -68,17 +67,18 @@ public class EditLocationNameElementDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditLocationNameElementDescriptionCommand */
-    public EditLocationNameElementDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     PartyControl partyControl;
 
     @Inject
     WarehouseControl warehouseControl;
+
+
+    /** Creates a new instance of EditLocationNameElementDescriptionCommand */
+    public EditLocationNameElementDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditLocationNameElementDescriptionResult getResult() {

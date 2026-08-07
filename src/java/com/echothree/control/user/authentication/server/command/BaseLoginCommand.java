@@ -41,14 +41,27 @@ import com.echothree.util.common.message.ExecutionWarnings;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
 import java.util.List;
+import javax.inject.Inject;
 
 public abstract class BaseLoginCommand<F extends BaseForm>
         extends BaseSimpleCommand<F> {
     
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
+
     /** Creates a new instance of BaseLoginCommand */
     protected BaseLoginCommand(final CommandSecurityDefinition commandSecurityDefinition,
             final List<FieldDefinition> formFieldDefinition) {
@@ -57,7 +70,6 @@ public abstract class BaseLoginCommand<F extends BaseForm>
     
     protected UserLoginPasswordString checkPassword(final String password, final Party party, final String userLoginPasswordTypeName,
             final boolean deleteOnSuccess) {
-        var userControl = getUserControl();
         var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
         var userLoginPassword = deleteOnSuccess? userControl.getUserLoginPasswordForUpdate(party, userLoginPasswordType):
             userControl.getUserLoginPassword(party, userLoginPasswordType);
@@ -95,7 +107,6 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         if(result == null) {
             addExecutionError(ExecutionErrors.IncorrectPassword.name());
         } else if(doStatusChecks) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(party.getLastDetail().getPartyType());
             
             if(partyTypePasswordStringPolicy != null) {
@@ -116,7 +127,6 @@ public abstract class BaseLoginCommand<F extends BaseForm>
                         var warningTime = expirationTime - expirationWarningTime;
                         
                         if(session.getStartTime() > warningTime) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                             var remainingTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(), timeUnitOfMeasureKind, Long.valueOf(expirationTime - session.getStartTime()));
                             
@@ -163,12 +173,11 @@ public abstract class BaseLoginCommand<F extends BaseForm>
 
     protected void addRemoteInet4AddressToParty(final Party party, final Integer remoteInet4Address) {
         if(remoteInet4Address != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var partyPK = party.getPrimaryKey();
             var partyContactMechanism = contactControl.getPartyContactMechanismByInet4Address(party, remoteInet4Address);
 
             if(partyContactMechanism == null) {
-                var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+                var contactMechanismName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                 var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
                 var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType, false, partyPK);
 
@@ -186,7 +195,6 @@ public abstract class BaseLoginCommand<F extends BaseForm>
 
     protected void successfulLogin(final UserLoginStatus userLoginStatus, final Party party, final PartyRelationship partyRelationship,
             final Integer remoteInet4Address) {
-        var userControl = getUserControl();
         var userVisit = getUserVisitForUpdate();
         var userKey = userVisit.getUserKey();
         var userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());

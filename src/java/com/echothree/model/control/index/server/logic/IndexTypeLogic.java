@@ -22,13 +22,16 @@ import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class IndexTypeLogic
         extends BaseLogic {
+
+    @Inject
+    IndexControl indexControl;
 
     protected IndexTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class IndexTypeLogic
     }
     
     public IndexType getIndexTypeByName(final ExecutionErrorAccumulator eea, final String indexTypeName) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType == null) {

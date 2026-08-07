@@ -33,14 +33,20 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionTimeTypeLogic
         extends BaseLogic {
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TransactionTimeTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class TransactionTimeTypeLogic
 
     public TransactionTimeType createTransactionTimeType(final ExecutionErrorAccumulator eea, final String transactionTimeTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName);
 
         if(transactionTimeType == null) {
@@ -71,7 +76,6 @@ public class TransactionTimeTypeLogic
 
     public TransactionTimeType getTransactionTimeTypeByName(final ExecutionErrorAccumulator eea, final String transactionTimeTypeName,
             final EntityPermission entityPermission) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName, entityPermission);
 
         if(transactionTimeType == null) {
@@ -92,10 +96,9 @@ public class TransactionTimeTypeLogic
 
     public TransactionTimeType getTransactionTimeTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final TransactionTimeTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeTypeName = universalSpec.getTransactionTimeTypeName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(transactionTimeTypeName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         TransactionTimeType transactionTimeType = null;
 
         if(nameParameterCount == 1 && possibleEntitySpecs == 0) {
@@ -113,7 +116,7 @@ public class TransactionTimeTypeLogic
                 transactionTimeType = getTransactionTimeTypeByName(eea, transactionTimeTypeName, entityPermission);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionTimeType.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -138,15 +141,11 @@ public class TransactionTimeTypeLogic
 
     public void updateTransactionTimeTypeFromValue(final ExecutionErrorAccumulator eea, TransactionTimeTypeDetailValue transactionTimeTypeDetailValue,
             BasePK updatedBy) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
-
         transactionTimeControl.updateTransactionTimeTypeFromValue(transactionTimeTypeDetailValue, updatedBy);
     }
 
     public void deleteTransactionTimeType(final ExecutionErrorAccumulator eea, final TransactionTimeType transactionTimeType,
             final BasePK deletedBy) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
-
         transactionTimeControl.deleteTransactionTimeType(transactionTimeType, deletedBy);
     }
 

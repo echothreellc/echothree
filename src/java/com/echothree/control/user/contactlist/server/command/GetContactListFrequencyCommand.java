@@ -57,12 +57,14 @@ public class GetContactListFrequencyCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     ContactListControl contactListControl;
-    
+
     @Inject
     ContactListFrequencyLogic contactListFrequencyLogic;
+
+
 
     /** Creates a new instance of GetContactListFrequencyCommand */
     public GetContactListFrequencyCommand() {

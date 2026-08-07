@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemPriceCommand
@@ -63,8 +63,21 @@ public class CreateItemPriceCommand
                 new FieldDefinition("MinimumUnitPrice:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_UNIT, false, null, null),
                 new FieldDefinition("MaximumUnitPrice:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_UNIT, false, null, null),
                 new FieldDefinition("UnitPriceIncrement:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreateItemPriceCommand */
     public CreateItemPriceCommand() {
@@ -73,12 +86,10 @@ public class CreateItemPriceCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryConditionName = form.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
@@ -88,7 +99,6 @@ public class CreateItemPriceCommand
                         inventoryCondition);
                 
                 if(inventoryConditionUse != null) {
-                    var uomControl = Session.getModelController(UomControl.class);
                     var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                     var itemDetail = item.getLastDetail();
                     var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -98,7 +108,6 @@ public class CreateItemPriceCommand
                         var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                         
                         if(itemUnitOfMeasureType != null) {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
                             var currencyIsoName = form.getCurrencyIsoName();
                             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                             

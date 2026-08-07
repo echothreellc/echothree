@@ -85,6 +85,9 @@ import javax.inject.Inject;
 public class LetterControl
         extends BaseModelControl {
     
+    @Inject
+    protected ChainControl chainControl;
+
     /** Creates a new instance of LetterControl */
     protected LetterControl() {
         super();
@@ -115,7 +118,13 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Letter Sources
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LetterSourceFactory letterSourceFactory;
+
+    @Inject
+    protected LetterSourceDetailFactory letterSourceDetailFactory;
+
     public LetterSource createLetterSource(String letterSourceName, Party companyParty,
             PartyContactMechanism emailAddressPartyContactMechanism, PartyContactMechanism postalAddressPartyContactMechanism,
             PartyContactMechanism letterSourcePartyContactMechanism, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -131,13 +140,13 @@ public class LetterControl
             isDefault = true;
         }
 
-        var letterSource = LetterSourceFactory.getInstance().create();
-        var letterSourceDetail = LetterSourceDetailFactory.getInstance().create(letterSource,
+        var letterSource = letterSourceFactory.create();
+        var letterSourceDetail = letterSourceDetailFactory.create(letterSource,
                 letterSourceName, companyParty, emailAddressPartyContactMechanism, postalAddressPartyContactMechanism,
                 letterSourcePartyContactMechanism, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        letterSource = LetterSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, letterSource.getPrimaryKey());
+        letterSource = letterSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE, letterSource.getPrimaryKey());
         letterSource.setActiveDetail(letterSourceDetail);
         letterSource.setLastDetail(letterSourceDetail);
         letterSource.store();
@@ -151,7 +160,7 @@ public class LetterControl
     public LetterSource getLetterSourceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LetterSourcePK(entityInstance.getEntityUniqueId());
 
-        return LetterSourceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return letterSourceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public LetterSource getLetterSourceByEntityInstance(EntityInstance entityInstance) {
@@ -227,11 +236,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
+            var ps = letterSourceFactory.prepareStatement(query);
             
             ps.setString(1, letterSourceName);
             
-            letterSource = LetterSourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            letterSource = letterSourceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -273,9 +282,9 @@ public class LetterControl
                     """;
         }
 
-        var ps = LetterSourceFactory.getInstance().prepareStatement(query);
+        var ps = letterSourceFactory.prepareStatement(query);
         
-        return LetterSourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return letterSourceFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public LetterSource getDefaultLetterSource() {
@@ -310,9 +319,9 @@ public class LetterControl
                     """;
         }
 
-        var ps = LetterSourceFactory.getInstance().prepareStatement(query);
+        var ps = letterSourceFactory.prepareStatement(query);
         
-        return LetterSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<LetterSource> getLetterSources() {
@@ -347,11 +356,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
+            var ps = letterSourceFactory.prepareStatement(query);
             
             ps.setLong(1, emailAddressPartyContactMechanism.getPrimaryKey().getEntityId());
             
-            letterSources = LetterSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letterSources = letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -391,11 +400,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
+            var ps = letterSourceFactory.prepareStatement(query);
             
             ps.setLong(1, postalAddressPartyContactMechanism.getPrimaryKey().getEntityId());
             
-            letterSources = LetterSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letterSources = letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -435,11 +444,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterSourceFactory.getInstance().prepareStatement(query);
+            var ps = letterSourceFactory.prepareStatement(query);
             
             ps.setLong(1, letterSourcePartyContactMechanism.getPrimaryKey().getEntityId());
             
-            letterSources = LetterSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letterSources = letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -508,7 +517,7 @@ public class LetterControl
     
     private void updateLetterSourceFromValue(LetterSourceDetailValue letterSourceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(letterSourceDetailValue.hasBeenModified()) {
-            var letterSource = LetterSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterSource = letterSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      letterSourceDetailValue.getLetterSourcePK());
             var letterSourceDetail = letterSource.getActiveDetailForUpdate();
             
@@ -540,7 +549,7 @@ public class LetterControl
                 }
             }
             
-            letterSourceDetail = LetterSourceDetailFactory.getInstance().create(letterSourcePK, letterSourceName,
+            letterSourceDetail = letterSourceDetailFactory.create(letterSourcePK, letterSourceName,
                     companyPartyPK, emailAddressPartyContactMechanismPK, postalAddressPartyContactMechanismPK,
                     letterSourcePartyContactMechanismPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
@@ -611,9 +620,12 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Letter Source Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LetterSourceDescriptionFactory letterSourceDescriptionFactory;
+
     public LetterSourceDescription createLetterSourceDescription(LetterSource letterSource, Language language, String description, BasePK createdBy) {
-        var letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource, language, description,
+        var letterSourceDescription = letterSourceDescriptionFactory.create(letterSource, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -642,13 +654,13 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = letterSourceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            letterSourceDescription = LetterSourceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            letterSourceDescription = letterSourceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -697,12 +709,12 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = letterSourceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            letterSourceDescriptions = LetterSourceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letterSourceDescriptions = letterSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -757,7 +769,7 @@ public class LetterControl
     
     public void updateLetterSourceDescriptionFromValue(LetterSourceDescriptionValue letterSourceDescriptionValue, BasePK updatedBy) {
         if(letterSourceDescriptionValue.hasBeenModified()) {
-            var letterSourceDescription = LetterSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterSourceDescription = letterSourceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      letterSourceDescriptionValue.getPrimaryKey());
             
             letterSourceDescription.setThruTime(session.getStartTime());
@@ -767,7 +779,7 @@ public class LetterControl
             var language = letterSourceDescription.getLanguage();
             var description = letterSourceDescriptionValue.getDescription();
             
-            letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource,
+            letterSourceDescription = letterSourceDescriptionFactory.create(letterSource,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -791,7 +803,13 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Letters
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LetterFactory letterFactory;
+
+    @Inject
+    protected LetterDetailFactory letterDetailFactory;
+
     public Letter createLetter(ChainType chainType, String letterName, LetterSource letterSource, ContactList contactList,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultLetter = getDefaultLetter(chainType);
@@ -806,12 +824,12 @@ public class LetterControl
             isDefault = true;
         }
 
-        var letter = LetterFactory.getInstance().create();
-        var letterDetail = LetterDetailFactory.getInstance().create(letter, chainType, letterName,
+        var letter = letterFactory.create();
+        var letterDetail = letterDetailFactory.create(letter, chainType, letterName,
                 letterSource, contactList, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        letter = LetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, letter.getPrimaryKey());
+        letter = letterFactory.getEntityFromPK(EntityPermission.READ_WRITE, letter.getPrimaryKey());
         letter.setActiveDetail(letterDetail);
         letter.setLastDetail(letterDetail);
         letter.store();
@@ -825,7 +843,7 @@ public class LetterControl
     public Letter getLetterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LetterPK(entityInstance.getEntityUniqueId());
 
-        return LetterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return letterFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Letter getLetterByEntityInstance(EntityInstance entityInstance) {
@@ -884,12 +902,12 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterFactory.getInstance().prepareStatement(query);
+            var ps = letterFactory.prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             ps.setString(2, letterName);
             
-            letter = LetterFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            letter = letterFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -934,11 +952,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterFactory.getInstance().prepareStatement(query);
+            var ps = letterFactory.prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             
-            letter = LetterFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            letter = letterFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -981,11 +999,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterFactory.getInstance().prepareStatement(query);
+            var ps = letterFactory.prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             
-            letters = LetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letters = letterFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1024,11 +1042,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterFactory.getInstance().prepareStatement(query);
+            var ps = letterFactory.prepareStatement(query);
             
             ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
             
-            letters = LetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letters = letterFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1067,11 +1085,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterFactory.getInstance().prepareStatement(query);
+            var ps = letterFactory.prepareStatement(query);
             
             ps.setLong(1, contactList.getPrimaryKey().getEntityId());
             
-            letters = LetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letters = letterFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1144,7 +1162,7 @@ public class LetterControl
     
     private void updateLetterFromValue(LetterDetailValue letterDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(letterDetailValue.hasBeenModified()) {
-            var letter = LetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letter = letterFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      letterDetailValue.getLetterPK());
             var letterDetail = letter.getActiveDetailForUpdate();
             
@@ -1176,7 +1194,7 @@ public class LetterControl
                 }
             }
             
-            letterDetail = LetterDetailFactory.getInstance().create(letterPK, chainTypePK, letterName, letterSourcePK,
+            letterDetail = letterDetailFactory.create(letterPK, chainTypePK, letterName, letterSourcePK,
                     contactListPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             letter.setActiveDetail(letterDetail);
@@ -1237,9 +1255,12 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Letter Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LetterDescriptionFactory letterDescriptionFactory;
+
     public LetterDescription createLetterDescription(Letter letter, Language language, String description, BasePK createdBy) {
-        var letterDescription = LetterDescriptionFactory.getInstance().create(letter, language, description,
+        var letterDescription = letterDescriptionFactory.create(letter, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1268,13 +1289,13 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = letterDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            letterDescription = LetterDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            letterDescription = letterDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1323,12 +1344,12 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = letterDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            letterDescriptions = LetterDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letterDescriptions = letterDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1383,7 +1404,7 @@ public class LetterControl
     
     public void updateLetterDescriptionFromValue(LetterDescriptionValue letterDescriptionValue, BasePK updatedBy) {
         if(letterDescriptionValue.hasBeenModified()) {
-            var letterDescription = LetterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterDescription = letterDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      letterDescriptionValue.getPrimaryKey());
             
             letterDescription.setThruTime(session.getStartTime());
@@ -1393,7 +1414,7 @@ public class LetterControl
             var language = letterDescription.getLanguage();
             var description = letterDescriptionValue.getDescription();
             
-            letterDescription = LetterDescriptionFactory.getInstance().create(letter,
+            letterDescription = letterDescriptionFactory.create(letter,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1417,16 +1438,22 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Contact List Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LetterContactMechanismPurposeFactory letterContactMechanismPurposeFactory;
+
+    @Inject
+    protected LetterContactMechanismPurposeDetailFactory letterContactMechanismPurposeDetailFactory;
+
     public LetterContactMechanismPurpose createLetterContactMechanismPurpose(Letter letter, Integer priority,
             ContactMechanismPurpose contactMechanismPurpose, BasePK createdBy) {
-        var letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().create();
-        var letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(
+        var letterContactMechanismPurpose = letterContactMechanismPurposeFactory.create();
+        var letterContactMechanismPurposeDetail = letterContactMechanismPurposeDetailFactory.create(
                 letterContactMechanismPurpose, letter, priority, contactMechanismPurpose, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        letterContactMechanismPurpose = letterContactMechanismPurposeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 letterContactMechanismPurpose.getPrimaryKey());
         letterContactMechanismPurpose.setActiveDetail(letterContactMechanismPurposeDetail);
         letterContactMechanismPurpose.setLastDetail(letterContactMechanismPurposeDetail);
@@ -1441,7 +1468,7 @@ public class LetterControl
     public LetterContactMechanismPurpose getLetterContactMechanismPurposeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LetterContactMechanismPurposePK(entityInstance.getEntityUniqueId());
 
-        return LetterContactMechanismPurposeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return letterContactMechanismPurposeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public LetterContactMechanismPurpose getLetterContactMechanismPurposeByEntityInstance(EntityInstance entityInstance) {
@@ -1494,12 +1521,12 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+            var ps = letterContactMechanismPurposeFactory.prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             ps.setInt(2, priority);
             
-            letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            letterContactMechanismPurpose = letterContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1549,11 +1576,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
+            var ps = letterContactMechanismPurposeFactory.prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             
-            letterContactMechanismPurposes = LetterContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            letterContactMechanismPurposes = letterContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1589,7 +1616,7 @@ public class LetterControl
     
     public void updateLetterContactMechanismPurposeFromValue(LetterContactMechanismPurposeDetailValue letterContactMechanismPurposeDetailValue, BasePK updatedBy) {
         if(letterContactMechanismPurposeDetailValue.hasBeenModified()) {
-            var letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var letterContactMechanismPurpose = letterContactMechanismPurposeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      letterContactMechanismPurposeDetailValue.getLetterContactMechanismPurposePK());
             var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getActiveDetailForUpdate();
             
@@ -1601,7 +1628,7 @@ public class LetterControl
             var priority = letterContactMechanismPurposeDetailValue.getPriority();
             var contactMechanismPurposePK = letterContactMechanismPurposeDetailValue.getContactMechanismPurposePK();
             
-            letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(
+            letterContactMechanismPurposeDetail = letterContactMechanismPurposeDetailFactory.create(
                     letterContactMechanismPurposePK, letterPK, priority, contactMechanismPurposePK, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -1632,9 +1659,11 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Queued Letters
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected QueuedLetterFactory queuedLetterFactory;
+
     public QueuedLetter createQueuedLetter(ChainInstance chainInstance, Letter letter) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainInstanceStatus = chainControl.getChainInstanceStatusForUpdate(chainInstance);
         Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence() + 1;
 
@@ -1644,7 +1673,7 @@ public class LetterControl
     }
 
     public QueuedLetter createQueuedLetter(ChainInstance chainInstance, Integer queuedLetterSequence, Letter letter) {
-        return QueuedLetterFactory.getInstance().create(chainInstance, queuedLetterSequence, letter);
+        return queuedLetterFactory.create(chainInstance, queuedLetterSequence, letter);
     }
 
     public long countQueuedLetters() {
@@ -1705,7 +1734,7 @@ public class LetterControl
     }
 
     private QueuedLetter getQueuedLetter(ChainInstance chainInstance, Integer queuedLetterSequence, EntityPermission entityPermission) {
-        return QueuedLetterFactory.getInstance().getEntityFromQuery(entityPermission, getQueuedLetterQueries,
+        return queuedLetterFactory.getEntityFromQuery(entityPermission, getQueuedLetterQueries,
                 chainInstance, queuedLetterSequence);
     }
 
@@ -1734,9 +1763,9 @@ public class LetterControl
                     """;
         }
 
-        var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
+        var ps = queuedLetterFactory.prepareStatement(query);
         
-        return QueuedLetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return queuedLetterFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<QueuedLetter> getQueuedLetters() {
@@ -1770,11 +1799,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
+            var ps = queuedLetterFactory.prepareStatement(query);
             
             ps.setLong(1, chainInstance.getPrimaryKey().getEntityId());
             
-            queuedLetters = QueuedLetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            queuedLetters = queuedLetterFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1813,11 +1842,11 @@ public class LetterControl
                         """;
             }
 
-            var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
+            var ps = queuedLetterFactory.prepareStatement(query);
             
             ps.setLong(1, letter.getPrimaryKey().getEntityId());
             
-            queuedLetters = QueuedLetterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            queuedLetters = queuedLetterFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1858,7 +1887,6 @@ public class LetterControl
         queuedLetter.remove();
 
         if(checkChainInstance) {
-            var chainControl = Session.getModelController(ChainControl.class);
 
             chainControl.deleteChainInstanceIfUnused(queuedLetter.getChainInstanceForUpdate(), removedBy);
         }

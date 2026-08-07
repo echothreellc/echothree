@@ -128,6 +128,15 @@ import javax.inject.Inject;
 public class CampaignControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of CampaignControl */
     protected CampaignControl() {
         super();
@@ -174,10 +183,15 @@ public class CampaignControl
     //   Campaigns
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignFactory campaignFactory;
+
+    @Inject
+    protected CampaignDetailFactory campaignDetailFactory;
+
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
-        var campaignName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaign(campaignName, value, isDefault, sortOrder, createdBy);
     }
@@ -196,12 +210,12 @@ public class CampaignControl
             isDefault = true;
         }
 
-        var campaign = CampaignFactory.getInstance().create();
-        var campaignDetail = CampaignDetailFactory.getInstance().create(campaign, campaignName, valueSha1Hash, value,
+        var campaign = campaignFactory.create();
+        var campaignDetail = campaignDetailFactory.create(campaign, campaignName, valueSha1Hash, value,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaign.getPrimaryKey());
+        campaign = campaignFactory.getEntityFromPK(EntityPermission.READ_WRITE, campaign.getPrimaryKey());
         campaign.setActiveDetail(campaignDetail);
         campaign.setLastDetail(campaignDetail);
         campaign.store();
@@ -209,7 +223,6 @@ public class CampaignControl
         var campaignPK = campaign.getPrimaryKey();
         sendEvent(campaignPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 CampaignStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -221,7 +234,7 @@ public class CampaignControl
     public Campaign getCampaignByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignPK(entityInstance.getEntityUniqueId());
 
-        return CampaignFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return campaignFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
@@ -246,21 +259,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "AND cmpgndt_campaignname = ?");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                AND cmpgndt_campaignname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "AND cmpgndt_campaignname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                AND cmpgndt_campaignname = ?
+                FOR UPDATE
+                """);
         getCampaignByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public Campaign getCampaignByName(String campaignName, EntityPermission entityPermission) {
-        return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByNameQueries, campaignName);
+        return campaignFactory.getEntityFromQuery(entityPermission, getCampaignByNameQueries, campaignName);
     }
 
     public Campaign getCampaignByName(String campaignName) {
@@ -277,21 +294,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "AND cmpgndt_valuesha1hash = ?");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                AND cmpgndt_valuesha1hash = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "AND cmpgndt_valuesha1hash = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                AND cmpgndt_valuesha1hash = ?
+                FOR UPDATE
+                """);
         getCampaignByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
-        return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByValueQueries, 
+        return campaignFactory.getEntityFromQuery(entityPermission, getCampaignByValueQueries,
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
@@ -317,21 +338,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "AND cmpgndt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                AND cmpgndt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "AND cmpgndt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                AND cmpgndt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultCampaignQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private Campaign getDefaultCampaign(EntityPermission entityPermission) {
-        return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignQueries);
+        return campaignFactory.getEntityFromQuery(entityPermission, getDefaultCampaignQueries);
     }
 
     public Campaign getDefaultCampaign() {
@@ -352,21 +377,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "ORDER BY cmpgndt_sortorder, cmpgndt_campaignname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                ORDER BY cmpgndt_sortorder, cmpgndt_campaignname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigns, campaigndetails " +
-                "WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigns, campaigndetails
+                WHERE cmpgn_activedetailid = cmpgndt_campaigndetailid
+                FOR UPDATE
+                """);
         getCampaignsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Campaign> getCampaigns(EntityPermission entityPermission) {
-        return CampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignsQueries);
+        return campaignFactory.getEntitiesFromQuery(entityPermission, getCampaignsQueries);
     }
 
     public List<Campaign> getCampaigns() {
@@ -385,7 +414,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                     entityInstance);
@@ -465,7 +493,7 @@ public class CampaignControl
 
     private void updateCampaignFromValue(CampaignDetailValue campaignDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignDetailValue.hasBeenModified()) {
-            var campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaign = campaignFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignDetailValue.getCampaignPK());
             var campaignDetail = campaign.getActiveDetailForUpdate();
 
@@ -495,7 +523,7 @@ public class CampaignControl
                 }
             }
 
-            campaignDetail = CampaignDetailFactory.getInstance().create(campaignPK, campaignName, valueSha1Hash, value, isDefault,
+            campaignDetail = campaignDetailFactory.create(campaignPK, campaignName, valueSha1Hash, value, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaign.setActiveDetail(campaignDetail);
@@ -558,8 +586,11 @@ public class CampaignControl
     //   Campaign Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignDescriptionFactory campaignDescriptionFactory;
+
     public CampaignDescription createCampaignDescription(Campaign campaign, Language language, String description, BasePK createdBy) {
-        var campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
+        var campaignDescription = campaignDescriptionFactory.create(campaign, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -573,19 +604,23 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigndescriptions " +
-                "WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_lang_languageid = ? AND cmpgnd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM campaigndescriptions
+                WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_lang_languageid = ? AND cmpgnd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigndescriptions " +
-                "WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_lang_languageid = ? AND cmpgnd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigndescriptions
+                WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_lang_languageid = ? AND cmpgnd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignDescription getCampaignDescription(Campaign campaign, Language language, EntityPermission entityPermission) {
-        return CampaignDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignDescriptionQueries,
+        return campaignDescriptionFactory.getEntityFromQuery(entityPermission, getCampaignDescriptionQueries,
                 campaign, language, Session.MAX_TIME);
     }
 
@@ -611,20 +646,24 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigndescriptions, languages " +
-                "WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_thrutime = ? AND cmpgnd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM campaigndescriptions, languages
+                WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_thrutime = ? AND cmpgnd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigndescriptions " +
-                "WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigndescriptions
+                WHERE cmpgnd_cmpgn_campaignid = ? AND cmpgnd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignDescriptionsByCampaignQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignDescription> getCampaignDescriptionsByCampaign(Campaign campaign, EntityPermission entityPermission) {
-        return CampaignDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignDescriptionsByCampaignQueries,
+        return campaignDescriptionFactory.getEntitiesFromQuery(entityPermission, getCampaignDescriptionsByCampaignQueries,
                 campaign, Session.MAX_TIME);
     }
 
@@ -670,7 +709,7 @@ public class CampaignControl
 
     public void updateCampaignDescriptionFromValue(CampaignDescriptionValue campaignDescriptionValue, BasePK updatedBy) {
         if(campaignDescriptionValue.hasBeenModified()) {
-            var campaignDescription = CampaignDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignDescription = campaignDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignDescriptionValue.getPrimaryKey());
 
             campaignDescription.setThruTime(session.getStartTime());
@@ -680,7 +719,7 @@ public class CampaignControl
             var language = campaignDescription.getLanguage();
             var description = campaignDescriptionValue.getDescription();
 
-            campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
+            campaignDescription = campaignDescriptionFactory.create(campaign, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -706,10 +745,15 @@ public class CampaignControl
     //   Campaign Sources
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignSourceFactory campaignSourceFactory;
+
+    @Inject
+    protected CampaignSourceDetailFactory campaignSourceDetailFactory;
+
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
-        var campaignSourceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignSourceName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignSource(campaignSourceName, value, isDefault, sortOrder, createdBy);
     }
@@ -728,12 +772,12 @@ public class CampaignControl
             isDefault = true;
         }
 
-        var campaignSource = CampaignSourceFactory.getInstance().create();
-        var campaignSourceDetail = CampaignSourceDetailFactory.getInstance().create(campaignSource, campaignSourceName, valueSha1Hash, value,
+        var campaignSource = campaignSourceFactory.create();
+        var campaignSourceDetail = campaignSourceDetailFactory.create(campaignSource, campaignSourceName, valueSha1Hash, value,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignSource.getPrimaryKey());
+        campaignSource = campaignSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE, campaignSource.getPrimaryKey());
         campaignSource.setActiveDetail(campaignSourceDetail);
         campaignSource.setLastDetail(campaignSourceDetail);
         campaignSource.store();
@@ -741,7 +785,6 @@ public class CampaignControl
         var campaignSourcePK = campaignSource.getPrimaryKey();
         sendEvent(campaignSourcePK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSourcePK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 CampaignSourceStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -753,7 +796,7 @@ public class CampaignControl
     public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
 
-        return CampaignSourceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return campaignSourceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
@@ -778,21 +821,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "AND cmpgnsrcdt_campaignsourcename = ?");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                AND cmpgnsrcdt_campaignsourcename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "AND cmpgnsrcdt_campaignsourcename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                AND cmpgnsrcdt_campaignsourcename = ?
+                FOR UPDATE
+                """);
         getCampaignSourceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignSource getCampaignSourceByName(String campaignSourceName, EntityPermission entityPermission) {
-        return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByNameQueries, campaignSourceName);
+        return campaignSourceFactory.getEntityFromQuery(entityPermission, getCampaignSourceByNameQueries, campaignSourceName);
     }
 
     public CampaignSource getCampaignSourceByName(String campaignSourceName) {
@@ -809,21 +856,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "AND cmpgnsrcdt_valuesha1hash = ?");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                AND cmpgnsrcdt_valuesha1hash = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "AND cmpgnsrcdt_valuesha1hash = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                AND cmpgnsrcdt_valuesha1hash = ?
+                FOR UPDATE
+                """);
         getCampaignSourceByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
-        return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries, 
+        return campaignSourceFactory.getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries,
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
@@ -849,21 +900,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "AND cmpgnsrcdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                AND cmpgnsrcdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "AND cmpgnsrcdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                AND cmpgnsrcdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultCampaignSourceQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignSource getDefaultCampaignSource(EntityPermission entityPermission) {
-        return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignSourceQueries);
+        return campaignSourceFactory.getEntityFromQuery(entityPermission, getDefaultCampaignSourceQueries);
     }
 
     public CampaignSource getDefaultCampaignSource() {
@@ -884,21 +939,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "ORDER BY cmpgnsrcdt_sortorder, cmpgnsrcdt_campaignsourcename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                ORDER BY cmpgnsrcdt_sortorder, cmpgnsrcdt_campaignsourcename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignsources, campaignsourcedetails " +
-                "WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignsources, campaignsourcedetails
+                WHERE cmpgnsrc_activedetailid = cmpgnsrcdt_campaignsourcedetailid
+                FOR UPDATE
+                """);
         getCampaignSourcesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<CampaignSource> getCampaignSources(EntityPermission entityPermission) {
-        return CampaignSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignSourcesQueries);
+        return campaignSourceFactory.getEntitiesFromQuery(entityPermission, getCampaignSourcesQueries);
     }
 
     public List<CampaignSource> getCampaignSources() {
@@ -917,7 +976,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignSourceStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                     entityInstance);
@@ -1004,7 +1062,7 @@ public class CampaignControl
 
     private void updateCampaignSourceFromValue(CampaignSourceDetailValue campaignSourceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignSourceDetailValue.hasBeenModified()) {
-            var campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignSource = campaignSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignSourceDetailValue.getCampaignSourcePK());
             var campaignSourceDetail = campaignSource.getActiveDetailForUpdate();
 
@@ -1034,7 +1092,7 @@ public class CampaignControl
                 }
             }
 
-            campaignSourceDetail = CampaignSourceDetailFactory.getInstance().create(campaignSourcePK, campaignSourceName, valueSha1Hash, value, isDefault,
+            campaignSourceDetail = campaignSourceDetailFactory.create(campaignSourcePK, campaignSourceName, valueSha1Hash, value, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignSource.setActiveDetail(campaignSourceDetail);
@@ -1097,8 +1155,11 @@ public class CampaignControl
     //   Campaign Source Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignSourceDescriptionFactory campaignSourceDescriptionFactory;
+
     public CampaignSourceDescription createCampaignSourceDescription(CampaignSource campaignSource, Language language, String description, BasePK createdBy) {
-        var campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
+        var campaignSourceDescription = campaignSourceDescriptionFactory.create(campaignSource, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1112,19 +1173,23 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignsourcedescriptions " +
-                "WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_lang_languageid = ? AND cmpgnsrcd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM campaignsourcedescriptions
+                WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_lang_languageid = ? AND cmpgnsrcd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignsourcedescriptions " +
-                "WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_lang_languageid = ? AND cmpgnsrcd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignsourcedescriptions
+                WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_lang_languageid = ? AND cmpgnsrcd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignSourceDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignSourceDescription getCampaignSourceDescription(CampaignSource campaignSource, Language language, EntityPermission entityPermission) {
-        return CampaignSourceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceDescriptionQueries,
+        return campaignSourceDescriptionFactory.getEntityFromQuery(entityPermission, getCampaignSourceDescriptionQueries,
                 campaignSource, language, Session.MAX_TIME);
     }
 
@@ -1150,20 +1215,24 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignsourcedescriptions, languages " +
-                "WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_thrutime = ? AND cmpgnsrcd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM campaignsourcedescriptions, languages
+                WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_thrutime = ? AND cmpgnsrcd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignsourcedescriptions " +
-                "WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignsourcedescriptions
+                WHERE cmpgnsrcd_cmpgnsrc_campaignsourceid = ? AND cmpgnsrcd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignSourceDescriptionsByCampaignSourceQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignSourceDescription> getCampaignSourceDescriptionsByCampaignSource(CampaignSource campaignSource, EntityPermission entityPermission) {
-        return CampaignSourceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignSourceDescriptionsByCampaignSourceQueries,
+        return campaignSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, getCampaignSourceDescriptionsByCampaignSourceQueries,
                 campaignSource, Session.MAX_TIME);
     }
 
@@ -1209,7 +1278,7 @@ public class CampaignControl
 
     public void updateCampaignSourceDescriptionFromValue(CampaignSourceDescriptionValue campaignSourceDescriptionValue, BasePK updatedBy) {
         if(campaignSourceDescriptionValue.hasBeenModified()) {
-            var campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignSourceDescription = campaignSourceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignSourceDescriptionValue.getPrimaryKey());
 
             campaignSourceDescription.setThruTime(session.getStartTime());
@@ -1219,7 +1288,7 @@ public class CampaignControl
             var language = campaignSourceDescription.getLanguage();
             var description = campaignSourceDescriptionValue.getDescription();
 
-            campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
+            campaignSourceDescription = campaignSourceDescriptionFactory.create(campaignSource, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1245,10 +1314,15 @@ public class CampaignControl
     //   Campaign Mediums
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignMediumFactory campaignMediumFactory;
+
+    @Inject
+    protected CampaignMediumDetailFactory campaignMediumDetailFactory;
+
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
-        var campaignMediumName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignMediumName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignMedium(campaignMediumName, value, isDefault, sortOrder, createdBy);
     }
@@ -1267,12 +1341,12 @@ public class CampaignControl
             isDefault = true;
         }
 
-        var campaignMedium = CampaignMediumFactory.getInstance().create();
-        var campaignMediumDetail = CampaignMediumDetailFactory.getInstance().create(campaignMedium, campaignMediumName, valueSha1Hash, value,
+        var campaignMedium = campaignMediumFactory.create();
+        var campaignMediumDetail = campaignMediumDetailFactory.create(campaignMedium, campaignMediumName, valueSha1Hash, value,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignMedium.getPrimaryKey());
+        campaignMedium = campaignMediumFactory.getEntityFromPK(EntityPermission.READ_WRITE, campaignMedium.getPrimaryKey());
         campaignMedium.setActiveDetail(campaignMediumDetail);
         campaignMedium.setLastDetail(campaignMediumDetail);
         campaignMedium.store();
@@ -1280,7 +1354,6 @@ public class CampaignControl
         var campaignMediumPK = campaignMedium.getPrimaryKey();
         sendEvent(campaignMediumPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMediumPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 CampaignMediumStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -1292,7 +1365,7 @@ public class CampaignControl
     public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
 
-        return CampaignMediumFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return campaignMediumFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
@@ -1317,21 +1390,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "AND cmpgnmdmdt_campaignmediumname = ?");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                AND cmpgnmdmdt_campaignmediumname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "AND cmpgnmdmdt_campaignmediumname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                AND cmpgnmdmdt_campaignmediumname = ?
+                FOR UPDATE
+                """);
         getCampaignMediumByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignMedium getCampaignMediumByName(String campaignMediumName, EntityPermission entityPermission) {
-        return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByNameQueries, campaignMediumName);
+        return campaignMediumFactory.getEntityFromQuery(entityPermission, getCampaignMediumByNameQueries, campaignMediumName);
     }
 
     public CampaignMedium getCampaignMediumByName(String campaignMediumName) {
@@ -1348,21 +1425,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "AND cmpgnmdmdt_valuesha1hash = ?");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                AND cmpgnmdmdt_valuesha1hash = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "AND cmpgnmdmdt_valuesha1hash = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                AND cmpgnmdmdt_valuesha1hash = ?
+                FOR UPDATE
+                """);
         getCampaignMediumByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignMedium getCampaignMediumByValue(String value, EntityPermission entityPermission) {
-        return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByValueQueries, 
+        return campaignMediumFactory.getEntityFromQuery(entityPermission, getCampaignMediumByValueQueries,
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
@@ -1388,21 +1469,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "AND cmpgnmdmdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                AND cmpgnmdmdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "AND cmpgnmdmdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                AND cmpgnmdmdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultCampaignMediumQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignMedium getDefaultCampaignMedium(EntityPermission entityPermission) {
-        return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignMediumQueries);
+        return campaignMediumFactory.getEntityFromQuery(entityPermission, getDefaultCampaignMediumQueries);
     }
 
     public CampaignMedium getDefaultCampaignMedium() {
@@ -1423,21 +1508,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "ORDER BY cmpgnmdmdt_sortorder, cmpgnmdmdt_campaignmediumname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                ORDER BY cmpgnmdmdt_sortorder, cmpgnmdmdt_campaignmediumname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignmediums, campaignmediumdetails " +
-                "WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignmediums, campaignmediumdetails
+                WHERE cmpgnmdm_activedetailid = cmpgnmdmdt_campaignmediumdetailid
+                FOR UPDATE
+                """);
         getCampaignMediumsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignMedium> getCampaignMediums(EntityPermission entityPermission) {
-        return CampaignMediumFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignMediumsQueries);
+        return campaignMediumFactory.getEntitiesFromQuery(entityPermission, getCampaignMediumsQueries);
     }
 
     public List<CampaignMedium> getCampaignMediums() {
@@ -1456,7 +1545,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignMediumStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                     entityInstance);
@@ -1536,7 +1624,7 @@ public class CampaignControl
 
     private void updateCampaignMediumFromValue(CampaignMediumDetailValue campaignMediumDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignMediumDetailValue.hasBeenModified()) {
-            var campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignMedium = campaignMediumFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignMediumDetailValue.getCampaignMediumPK());
             var campaignMediumDetail = campaignMedium.getActiveDetailForUpdate();
 
@@ -1566,7 +1654,7 @@ public class CampaignControl
                 }
             }
 
-            campaignMediumDetail = CampaignMediumDetailFactory.getInstance().create(campaignMediumPK, campaignMediumName, valueSha1Hash, value, isDefault,
+            campaignMediumDetail = campaignMediumDetailFactory.create(campaignMediumPK, campaignMediumName, valueSha1Hash, value, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignMedium.setActiveDetail(campaignMediumDetail);
@@ -1629,8 +1717,11 @@ public class CampaignControl
     //   Campaign Medium Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignMediumDescriptionFactory campaignMediumDescriptionFactory;
+
     public CampaignMediumDescription createCampaignMediumDescription(CampaignMedium campaignMedium, Language language, String description, BasePK createdBy) {
-        var campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
+        var campaignMediumDescription = campaignMediumDescriptionFactory.create(campaignMedium, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1644,19 +1735,23 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignmediumdescriptions " +
-                "WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_lang_languageid = ? AND cmpgnmdmd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM campaignmediumdescriptions
+                WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_lang_languageid = ? AND cmpgnmdmd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignmediumdescriptions " +
-                "WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_lang_languageid = ? AND cmpgnmdmd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignmediumdescriptions
+                WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_lang_languageid = ? AND cmpgnmdmd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignMediumDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignMediumDescription getCampaignMediumDescription(CampaignMedium campaignMedium, Language language, EntityPermission entityPermission) {
-        return CampaignMediumDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumDescriptionQueries,
+        return campaignMediumDescriptionFactory.getEntityFromQuery(entityPermission, getCampaignMediumDescriptionQueries,
                 campaignMedium, language, Session.MAX_TIME);
     }
 
@@ -1682,20 +1777,24 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignmediumdescriptions, languages " +
-                "WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_thrutime = ? AND cmpgnmdmd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM campaignmediumdescriptions, languages
+                WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_thrutime = ? AND cmpgnmdmd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignmediumdescriptions " +
-                "WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignmediumdescriptions
+                WHERE cmpgnmdmd_cmpgnmdm_campaignmediumid = ? AND cmpgnmdmd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignMediumDescriptionsByCampaignMediumQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignMediumDescription> getCampaignMediumDescriptionsByCampaignMedium(CampaignMedium campaignMedium, EntityPermission entityPermission) {
-        return CampaignMediumDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignMediumDescriptionsByCampaignMediumQueries,
+        return campaignMediumDescriptionFactory.getEntitiesFromQuery(entityPermission, getCampaignMediumDescriptionsByCampaignMediumQueries,
                 campaignMedium, Session.MAX_TIME);
     }
 
@@ -1741,7 +1840,7 @@ public class CampaignControl
 
     public void updateCampaignMediumDescriptionFromValue(CampaignMediumDescriptionValue campaignMediumDescriptionValue, BasePK updatedBy) {
         if(campaignMediumDescriptionValue.hasBeenModified()) {
-            var campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignMediumDescription = campaignMediumDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignMediumDescriptionValue.getPrimaryKey());
 
             campaignMediumDescription.setThruTime(session.getStartTime());
@@ -1751,7 +1850,7 @@ public class CampaignControl
             var language = campaignMediumDescription.getLanguage();
             var description = campaignMediumDescriptionValue.getDescription();
 
-            campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
+            campaignMediumDescription = campaignMediumDescriptionFactory.create(campaignMedium, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1777,10 +1876,15 @@ public class CampaignControl
     //   Campaign Terms
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignTermFactory campaignTermFactory;
+
+    @Inject
+    protected CampaignTermDetailFactory campaignTermDetailFactory;
+
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
-        var campaignTermName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignTermName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignTerm(campaignTermName, value, isDefault, sortOrder, createdBy);
     }
@@ -1799,12 +1903,12 @@ public class CampaignControl
             isDefault = true;
         }
 
-        var campaignTerm = CampaignTermFactory.getInstance().create();
-        var campaignTermDetail = CampaignTermDetailFactory.getInstance().create(campaignTerm, campaignTermName, valueSha1Hash, value,
+        var campaignTerm = campaignTermFactory.create();
+        var campaignTermDetail = campaignTermDetailFactory.create(campaignTerm, campaignTermName, valueSha1Hash, value,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignTerm.getPrimaryKey());
+        campaignTerm = campaignTermFactory.getEntityFromPK(EntityPermission.READ_WRITE, campaignTerm.getPrimaryKey());
         campaignTerm.setActiveDetail(campaignTermDetail);
         campaignTerm.setLastDetail(campaignTermDetail);
         campaignTerm.store();
@@ -1812,7 +1916,6 @@ public class CampaignControl
         var campaignTermPK = campaignTerm.getPrimaryKey();
         sendEvent(campaignTermPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTermPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 CampaignTermStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -1824,7 +1927,7 @@ public class CampaignControl
     public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
 
-        return CampaignTermFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return campaignTermFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
@@ -1849,21 +1952,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "AND cmpgntrmdt_campaigntermname = ?");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                AND cmpgntrmdt_campaigntermname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "AND cmpgntrmdt_campaigntermname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                AND cmpgntrmdt_campaigntermname = ?
+                FOR UPDATE
+                """);
         getCampaignTermByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignTerm getCampaignTermByName(String campaignTermName, EntityPermission entityPermission) {
-        return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByNameQueries, campaignTermName);
+        return campaignTermFactory.getEntityFromQuery(entityPermission, getCampaignTermByNameQueries, campaignTermName);
     }
 
     public CampaignTerm getCampaignTermByName(String campaignTermName) {
@@ -1880,21 +1987,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "AND cmpgntrmdt_valuesha1hash = ?");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                AND cmpgntrmdt_valuesha1hash = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "AND cmpgntrmdt_valuesha1hash = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                AND cmpgntrmdt_valuesha1hash = ?
+                FOR UPDATE
+                """);
         getCampaignTermByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignTerm getCampaignTermByValue(String value, EntityPermission entityPermission) {
-        return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByValueQueries, 
+        return campaignTermFactory.getEntityFromQuery(entityPermission, getCampaignTermByValueQueries,
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
@@ -1920,21 +2031,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "AND cmpgntrmdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                AND cmpgntrmdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "AND cmpgntrmdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                AND cmpgntrmdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultCampaignTermQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignTerm getDefaultCampaignTerm(EntityPermission entityPermission) {
-        return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignTermQueries);
+        return campaignTermFactory.getEntityFromQuery(entityPermission, getDefaultCampaignTermQueries);
     }
 
     public CampaignTerm getDefaultCampaignTerm() {
@@ -1955,21 +2070,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "ORDER BY cmpgntrmdt_sortorder, cmpgntrmdt_campaigntermname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                ORDER BY cmpgntrmdt_sortorder, cmpgntrmdt_campaigntermname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaignterms, campaigntermdetails " +
-                "WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaignterms, campaigntermdetails
+                WHERE cmpgntrm_activedetailid = cmpgntrmdt_campaigntermdetailid
+                FOR UPDATE
+                """);
         getCampaignTermsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignTerm> getCampaignTerms(EntityPermission entityPermission) {
-        return CampaignTermFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignTermsQueries);
+        return campaignTermFactory.getEntitiesFromQuery(entityPermission, getCampaignTermsQueries);
     }
 
     public List<CampaignTerm> getCampaignTerms() {
@@ -1988,7 +2107,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignTermStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                     entityInstance);
@@ -2068,7 +2186,7 @@ public class CampaignControl
 
     private void updateCampaignTermFromValue(CampaignTermDetailValue campaignTermDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignTermDetailValue.hasBeenModified()) {
-            var campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignTerm = campaignTermFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignTermDetailValue.getCampaignTermPK());
             var campaignTermDetail = campaignTerm.getActiveDetailForUpdate();
 
@@ -2098,7 +2216,7 @@ public class CampaignControl
                 }
             }
 
-            campaignTermDetail = CampaignTermDetailFactory.getInstance().create(campaignTermPK, campaignTermName, valueSha1Hash, value, isDefault,
+            campaignTermDetail = campaignTermDetailFactory.create(campaignTermPK, campaignTermName, valueSha1Hash, value, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignTerm.setActiveDetail(campaignTermDetail);
@@ -2161,8 +2279,11 @@ public class CampaignControl
     //   Campaign Term Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignTermDescriptionFactory campaignTermDescriptionFactory;
+
     public CampaignTermDescription createCampaignTermDescription(CampaignTerm campaignTerm, Language language, String description, BasePK createdBy) {
-        var campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
+        var campaignTermDescription = campaignTermDescriptionFactory.create(campaignTerm, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2176,19 +2297,23 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigntermdescriptions " +
-                "WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_lang_languageid = ? AND cmpgntrmd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM campaigntermdescriptions
+                WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_lang_languageid = ? AND cmpgntrmd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigntermdescriptions " +
-                "WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_lang_languageid = ? AND cmpgntrmd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigntermdescriptions
+                WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_lang_languageid = ? AND cmpgntrmd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignTermDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignTermDescription getCampaignTermDescription(CampaignTerm campaignTerm, Language language, EntityPermission entityPermission) {
-        return CampaignTermDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermDescriptionQueries,
+        return campaignTermDescriptionFactory.getEntityFromQuery(entityPermission, getCampaignTermDescriptionQueries,
                 campaignTerm, language, Session.MAX_TIME);
     }
 
@@ -2214,20 +2339,24 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigntermdescriptions, languages " +
-                "WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_thrutime = ? AND cmpgntrmd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM campaigntermdescriptions, languages
+                WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_thrutime = ? AND cmpgntrmd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigntermdescriptions " +
-                "WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigntermdescriptions
+                WHERE cmpgntrmd_cmpgntrm_campaigntermid = ? AND cmpgntrmd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignTermDescriptionsByCampaignTermQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignTermDescription> getCampaignTermDescriptionsByCampaignTerm(CampaignTerm campaignTerm, EntityPermission entityPermission) {
-        return CampaignTermDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignTermDescriptionsByCampaignTermQueries,
+        return campaignTermDescriptionFactory.getEntitiesFromQuery(entityPermission, getCampaignTermDescriptionsByCampaignTermQueries,
                 campaignTerm, Session.MAX_TIME);
     }
 
@@ -2273,7 +2402,7 @@ public class CampaignControl
 
     public void updateCampaignTermDescriptionFromValue(CampaignTermDescriptionValue campaignTermDescriptionValue, BasePK updatedBy) {
         if(campaignTermDescriptionValue.hasBeenModified()) {
-            var campaignTermDescription = CampaignTermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignTermDescription = campaignTermDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignTermDescriptionValue.getPrimaryKey());
 
             campaignTermDescription.setThruTime(session.getStartTime());
@@ -2283,7 +2412,7 @@ public class CampaignControl
             var language = campaignTermDescription.getLanguage();
             var description = campaignTermDescriptionValue.getDescription();
 
-            campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
+            campaignTermDescription = campaignTermDescriptionFactory.create(campaignTerm, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2309,10 +2438,15 @@ public class CampaignControl
     //   Campaign Contents
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignContentFactory campaignContentFactory;
+
+    @Inject
+    protected CampaignContentDetailFactory campaignContentDetailFactory;
+
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
-        var campaignContentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignContentName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignContent(campaignContentName, value, isDefault, sortOrder, createdBy);
     }
@@ -2331,12 +2465,12 @@ public class CampaignControl
             isDefault = true;
         }
 
-        var campaignContent = CampaignContentFactory.getInstance().create();
-        var campaignContentDetail = CampaignContentDetailFactory.getInstance().create(campaignContent, campaignContentName, valueSha1Hash, value,
+        var campaignContent = campaignContentFactory.create();
+        var campaignContentDetail = campaignContentDetailFactory.create(campaignContent, campaignContentName, valueSha1Hash, value,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignContent.getPrimaryKey());
+        campaignContent = campaignContentFactory.getEntityFromPK(EntityPermission.READ_WRITE, campaignContent.getPrimaryKey());
         campaignContent.setActiveDetail(campaignContentDetail);
         campaignContent.setLastDetail(campaignContentDetail);
         campaignContent.store();
@@ -2344,7 +2478,6 @@ public class CampaignControl
         var campaignContentPK = campaignContent.getPrimaryKey();
         sendEvent(campaignContentPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContentPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 CampaignContentStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -2356,7 +2489,7 @@ public class CampaignControl
     public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
 
-        return CampaignContentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return campaignContentFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
@@ -2381,21 +2514,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "AND cmpgncntdt_campaigncontentname = ?");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                AND cmpgncntdt_campaigncontentname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "AND cmpgncntdt_campaigncontentname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                AND cmpgncntdt_campaigncontentname = ?
+                FOR UPDATE
+                """);
         getCampaignContentByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignContent getCampaignContentByName(String campaignContentName, EntityPermission entityPermission) {
-        return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByNameQueries, campaignContentName);
+        return campaignContentFactory.getEntityFromQuery(entityPermission, getCampaignContentByNameQueries, campaignContentName);
     }
 
     public CampaignContent getCampaignContentByName(String campaignContentName) {
@@ -2412,21 +2549,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "AND cmpgncntdt_valuesha1hash = ?");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                AND cmpgncntdt_valuesha1hash = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "AND cmpgncntdt_valuesha1hash = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                AND cmpgncntdt_valuesha1hash = ?
+                FOR UPDATE
+                """);
         getCampaignContentByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
-        return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByValueQueries, 
+        return campaignContentFactory.getEntityFromQuery(entityPermission, getCampaignContentByValueQueries,
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
@@ -2452,21 +2593,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "AND cmpgncntdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                AND cmpgncntdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "AND cmpgncntdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                AND cmpgncntdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultCampaignContentQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignContent getDefaultCampaignContent(EntityPermission entityPermission) {
-        return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignContentQueries);
+        return campaignContentFactory.getEntityFromQuery(entityPermission, getDefaultCampaignContentQueries);
     }
 
     public CampaignContent getDefaultCampaignContent() {
@@ -2487,21 +2632,25 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "ORDER BY cmpgncntdt_sortorder, cmpgncntdt_campaigncontentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                ORDER BY cmpgncntdt_sortorder, cmpgncntdt_campaigncontentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigncontents, campaigncontentdetails " +
-                "WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigncontents, campaigncontentdetails
+                WHERE cmpgncnt_activedetailid = cmpgncntdt_campaigncontentdetailid
+                FOR UPDATE
+                """);
         getCampaignContentsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignContent> getCampaignContents(EntityPermission entityPermission) {
-        return CampaignContentFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignContentsQueries);
+        return campaignContentFactory.getEntitiesFromQuery(entityPermission, getCampaignContentsQueries);
     }
 
     public List<CampaignContent> getCampaignContents() {
@@ -2520,7 +2669,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignContentStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                     entityInstance);
@@ -2600,7 +2748,7 @@ public class CampaignControl
 
     private void updateCampaignContentFromValue(CampaignContentDetailValue campaignContentDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(campaignContentDetailValue.hasBeenModified()) {
-            var campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignContent = campaignContentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      campaignContentDetailValue.getCampaignContentPK());
             var campaignContentDetail = campaignContent.getActiveDetailForUpdate();
 
@@ -2630,7 +2778,7 @@ public class CampaignControl
                 }
             }
 
-            campaignContentDetail = CampaignContentDetailFactory.getInstance().create(campaignContentPK, campaignContentName, valueSha1Hash, value, isDefault,
+            campaignContentDetail = campaignContentDetailFactory.create(campaignContentPK, campaignContentName, valueSha1Hash, value, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignContent.setActiveDetail(campaignContentDetail);
@@ -2693,8 +2841,11 @@ public class CampaignControl
     //   Campaign Content Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CampaignContentDescriptionFactory campaignContentDescriptionFactory;
+
     public CampaignContentDescription createCampaignContentDescription(CampaignContent campaignContent, Language language, String description, BasePK createdBy) {
-        var campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
+        var campaignContentDescription = campaignContentDescriptionFactory.create(campaignContent, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2708,19 +2859,23 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigncontentdescriptions " +
-                "WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_lang_languageid = ? AND cmpgncntd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM campaigncontentdescriptions
+                WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_lang_languageid = ? AND cmpgncntd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigncontentdescriptions " +
-                "WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_lang_languageid = ? AND cmpgncntd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigncontentdescriptions
+                WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_lang_languageid = ? AND cmpgncntd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignContentDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private CampaignContentDescription getCampaignContentDescription(CampaignContent campaignContent, Language language, EntityPermission entityPermission) {
-        return CampaignContentDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentDescriptionQueries,
+        return campaignContentDescriptionFactory.getEntityFromQuery(entityPermission, getCampaignContentDescriptionQueries,
                 campaignContent, language, Session.MAX_TIME);
     }
 
@@ -2746,20 +2901,24 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM campaigncontentdescriptions, languages " +
-                "WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_thrutime = ? AND cmpgncntd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM campaigncontentdescriptions, languages
+                WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_thrutime = ? AND cmpgncntd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM campaigncontentdescriptions " +
-                "WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM campaigncontentdescriptions
+                WHERE cmpgncntd_cmpgncnt_campaigncontentid = ? AND cmpgncntd_thrutime = ?
+                FOR UPDATE
+                """);
         getCampaignContentDescriptionsByCampaignContentQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<CampaignContentDescription> getCampaignContentDescriptionsByCampaignContent(CampaignContent campaignContent, EntityPermission entityPermission) {
-        return CampaignContentDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignContentDescriptionsByCampaignContentQueries,
+        return campaignContentDescriptionFactory.getEntitiesFromQuery(entityPermission, getCampaignContentDescriptionsByCampaignContentQueries,
                 campaignContent, Session.MAX_TIME);
     }
 
@@ -2805,7 +2964,7 @@ public class CampaignControl
 
     public void updateCampaignContentDescriptionFromValue(CampaignContentDescriptionValue campaignContentDescriptionValue, BasePK updatedBy) {
         if(campaignContentDescriptionValue.hasBeenModified()) {
-            var campaignContentDescription = CampaignContentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var campaignContentDescription = campaignContentDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignContentDescriptionValue.getPrimaryKey());
 
             campaignContentDescription.setThruTime(session.getStartTime());
@@ -2815,7 +2974,7 @@ public class CampaignControl
             var language = campaignContentDescription.getLanguage();
             var description = campaignContentDescriptionValue.getDescription();
 
-            campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
+            campaignContentDescription = campaignContentDescriptionFactory.create(campaignContent, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2841,9 +3000,11 @@ public class CampaignControl
     //   User Visit Tracks
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected UserVisitCampaignFactory userVisitCampaignFactory;
+
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Long time, Campaign campaign, CampaignSource campaignSource,
             CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
-        var userControl = Session.getModelController(UserControl.class);
         var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitCampaignSequence = userVisitStatus.getUserVisitCampaignSequence()+ 1;
         
@@ -2854,7 +3015,7 @@ public class CampaignControl
 
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Integer userVisitCampaignSequence, Long time, Campaign campaign,
             CampaignSource campaignSource, CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
-        var userVisitCampaign = UserVisitCampaignFactory.getInstance().create(userVisit, userVisitCampaignSequence, time, campaign,
+        var userVisitCampaign = userVisitCampaignFactory.create(userVisit, userVisitCampaignSequence, time, campaign,
                 campaignSource, campaignMedium, campaignTerm, campaignContent, session.getStartTime(), Session.MAX_TIME);
 
         return userVisitCampaign;
@@ -2910,9 +3071,11 @@ public class CampaignControl
 
     public Integer getMinimumUserVisitCampaignSequence(UserVisit userVisit) {
         return session.queryForInteger(
-                "SELECT MIN(uviscmpgn_uservisitcampaignsequence) " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ?",
+                """
+                SELECT MIN(uviscmpgn_uservisitcampaignsequence)
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ?
+                """,
                 userVisit, Session.MAX_TIME);
     }
 
@@ -2922,19 +3085,23 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_uservisitcampaignsequence = ? AND uviscmpgn_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_uservisitcampaignsequence = ? AND uviscmpgn_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_uservisitcampaignsequence = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_uservisitcampaignsequence = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private UserVisitCampaign getUserVisitCampaign(UserVisit userVisit, Integer userVisitCampaignSequence, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntityFromQuery(entityPermission, getUserVisitCampaignQueries,
+        return userVisitCampaignFactory.getEntityFromQuery(entityPermission, getUserVisitCampaignQueries,
                 userVisit, userVisitCampaignSequence, Session.MAX_TIME);
     }
 
@@ -2952,20 +3119,24 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ? " +
-                "ORDER BY uviscmpgn_uservisitcampaignsequence");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ?
+                ORDER BY uviscmpgn_uservisitcampaignsequence
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignsByUserVisitQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<UserVisitCampaign> getUserVisitCampaignsByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByUserVisitQueries,
+        return userVisitCampaignFactory.getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByUserVisitQueries,
                 userVisit, Session.MAX_TIME);
     }
 
@@ -2983,15 +3154,17 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_cmpgn_campaignid = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_cmpgn_campaignid = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignsByCampaignQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<UserVisitCampaign> getUserVisitCampaignsByCampaign(Campaign campaign, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignQueries,
+        return userVisitCampaignFactory.getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignQueries,
                 campaign, Session.MAX_TIME);
     }
 
@@ -3005,15 +3178,17 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_cmpgnsrc_campaignsourceid = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_cmpgnsrc_campaignsourceid = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignsByCampaignSourceQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<UserVisitCampaign> getUserVisitCampaignsByCampaignSource(CampaignSource campaignSource, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignSourceQueries,
+        return userVisitCampaignFactory.getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignSourceQueries,
                 campaignSource, Session.MAX_TIME);
     }
 
@@ -3027,15 +3202,17 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_cmpgnmdm_campaignmediumid = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_cmpgnmdm_campaignmediumid = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignsByCampaignMediumQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<UserVisitCampaign> getUserVisitCampaignsByCampaignMedium(CampaignMedium campaignMedium, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignMediumQueries,
+        return userVisitCampaignFactory.getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignMediumQueries,
                 campaignMedium, Session.MAX_TIME);
     }
 
@@ -3049,15 +3226,17 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_cmpgntrm_campaigntermid = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_cmpgntrm_campaigntermid = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignsByCampaignTermQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<UserVisitCampaign> getUserVisitCampaignsByCampaignTerm(CampaignTerm campaignTerm, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignTermQueries,
+        return userVisitCampaignFactory.getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignTermQueries,
                 campaignTerm, Session.MAX_TIME);
     }
 
@@ -3071,15 +3250,17 @@ public class CampaignControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisitcampaigns " +
-                "WHERE uviscmpgn_cmpgncnt_campaigncontentid = ? AND uviscmpgn_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitcampaigns
+                WHERE uviscmpgn_cmpgncnt_campaigncontentid = ? AND uviscmpgn_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitCampaignsByCampaignContentQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<UserVisitCampaign> getUserVisitCampaignsByCampaignContent(CampaignContent campaignContent, EntityPermission entityPermission) {
-        return UserVisitCampaignFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignContentQueries,
+        return userVisitCampaignFactory.getEntitiesFromQuery(entityPermission, getUserVisitCampaignsByCampaignContentQueries,
                 campaignContent, Session.MAX_TIME);
     }
 

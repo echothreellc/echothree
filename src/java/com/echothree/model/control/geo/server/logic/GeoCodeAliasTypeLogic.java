@@ -23,13 +23,16 @@ import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GeoCodeAliasTypeLogic
         extends BaseLogic {
+
+    @Inject
+    GeoControl geoControl;
 
     protected GeoCodeAliasTypeLogic() {
         super();
@@ -41,7 +44,6 @@ public class GeoCodeAliasTypeLogic
 
     public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType,
             final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
 
         if(geoCodeAliasType == null) {

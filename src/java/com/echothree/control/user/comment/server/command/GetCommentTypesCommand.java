@@ -44,12 +44,13 @@ public class GetCommentTypesCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CommentControl commentControl;
 
     @Inject
     EntityTypeLogic entityTypeLogic;
+
 
     /** Creates a new instance of GetCommentTypesCommand */
     public GetCommentTypesCommand() {

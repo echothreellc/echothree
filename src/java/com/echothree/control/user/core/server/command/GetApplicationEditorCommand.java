@@ -57,7 +57,7 @@ public class GetApplicationEditorCommand
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     protected ApplicationControl applicationControl;
 
@@ -66,6 +66,7 @@ public class GetApplicationEditorCommand
 
     @Inject
     protected EditorLogic editorLogic;
+
 
     /** Creates a new instance of GetApplicationEditorCommand */
     public GetApplicationEditorCommand() {

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainEntityRoleTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditChainEntityRoleTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ChainEntityRoleType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,6 +69,12 @@ public class EditChainEntityRoleTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditChainEntityRoleTypeDescriptionCommand */
     public EditChainEntityRoleTypeDescriptionCommand() {
@@ -87,7 +93,6 @@ public class EditChainEntityRoleTypeDescriptionCommand
 
     @Override
     public ChainEntityRoleTypeDescription getEntity(EditChainEntityRoleTypeDescriptionResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = null;
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -101,7 +106,6 @@ public class EditChainEntityRoleTypeDescriptionCommand
                 var chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -138,8 +142,6 @@ public class EditChainEntityRoleTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditChainEntityRoleTypeDescriptionResult result, ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainEntityRoleTypeDescription(chainControl.getChainEntityRoleTypeDescriptionTransfer(getUserVisit(), chainEntityRoleTypeDescription));
     }
 
@@ -150,7 +152,6 @@ public class EditChainEntityRoleTypeDescriptionCommand
 
     @Override
     public void doUpdate(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainEntityRoleTypeDescriptionValue = chainControl.getChainEntityRoleTypeDescriptionValue(chainEntityRoleTypeDescription);
 
         chainEntityRoleTypeDescriptionValue.setDescription(edit.getDescription());

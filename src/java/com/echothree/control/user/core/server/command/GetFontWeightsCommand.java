@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFontWeightsCommand
@@ -52,6 +52,10 @@ public class GetFontWeightsCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    FontControl fontControl;
+
     
     /** Creates a new instance of GetFontWeightsCommand */
     public GetFontWeightsCommand() {
@@ -65,15 +69,11 @@ public class GetFontWeightsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var fontControl = Session.getModelController(FontControl.class);
-
         return fontControl.countFontWeights();
     }
 
     @Override
     protected Collection<FontWeight> getEntities() {
-        var fontControl = Session.getModelController(FontControl.class);
-        
         return fontControl.getFontWeights();
     }
     
@@ -82,8 +82,6 @@ public class GetFontWeightsCommand
         var result = CoreResultFactory.getGetFontWeightsResult();
 
         if(entities != null) {
-            var fontControl = Session.getModelController(FontControl.class);
-
             result.setFontWeights(fontControl.getFontWeightTransfers(getUserVisit(), entities));
         }
 

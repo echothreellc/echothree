@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerCommand
@@ -66,6 +66,21 @@ public class GetCustomerCommand
         );
     }
 
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    CustomerLogic customerLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetCustomerCommand */
     public GetCustomerCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -84,7 +99,7 @@ public class GetCustomerCommand
         partyName = form.getPartyName();
         universalEntitySpec = form;
         parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+                entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -100,15 +115,13 @@ public class GetCustomerCommand
         if(parameterCount == 0) {
             var party = getParty();
 
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+            partyLogic.checkPartyType(this, party, PartyTypes.CUSTOMER.name());
 
             if(!hasExecutionErrors()) {
-                var customerControl = Session.getModelController(CustomerControl.class);
-
                 customer = customerControl.getCustomer(party);
             }
         } else {
-            customer = CustomerLogic.getInstance().getCustomerByName(this, customerName, partyName, universalEntitySpec);
+            customer = customerLogic.getCustomerByName(this, customerName, partyName, universalEntitySpec);
         }
 
         if(customer != null) {
@@ -123,15 +136,12 @@ public class GetCustomerCommand
         var result = CustomerResultFactory.getGetCustomerResult();
 
         if(customer != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
             var userVisit = getUserVisit();
             var companyParty = getCompanyParty();
 
             result.setCustomer(customerControl.getCustomerTransfer(userVisit, customer));
 
             if(companyParty != null) {
-                var wishlistControl = Session.getModelController(WishlistControl.class);
-
                 result.setWishlists(wishlistControl.getWishlistTransfers(userVisit, companyParty, customer.getParty()));
             }
         }

@@ -57,12 +57,13 @@ public class GetPartyCarrierCommand
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CarrierControl carrierControl;
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyCarrierCommand */
     public GetPartyCarrierCommand() {

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFreeOnBoardCommand
@@ -53,8 +53,8 @@ public class EditFreeOnBoardCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FreeOnBoard.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
@@ -69,6 +69,13 @@ public class EditFreeOnBoardCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
     
     /** Creates a new instance of EditFreeOnBoardCommand */
     public EditFreeOnBoardCommand() {
@@ -87,7 +94,7 @@ public class EditFreeOnBoardCommand
     
     @Override
     public FreeOnBoard getEntity(EditFreeOnBoardResult result) {
-        return FreeOnBoardLogic.getInstance().getFreeOnBoardByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return freeOnBoardLogic.getFreeOnBoardByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -97,14 +104,11 @@ public class EditFreeOnBoardCommand
     
     @Override
     public void fillInResult(EditFreeOnBoardResult result, FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        
         result.setFreeOnBoard(freeOnBoardControl.getFreeOnBoardTransfer(getUserVisit(), freeOnBoard));
     }
     
     @Override
     public void doLock(FreeOnBoardEdit edit, FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, getPreferredLanguage());
         var freeOnBoardDetail = freeOnBoard.getLastDetail();
         
@@ -119,7 +123,6 @@ public class EditFreeOnBoardCommand
         
     @Override
     public void canUpdate(FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardName = edit.getFreeOnBoardName();
         var duplicateFreeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
 
@@ -130,7 +133,6 @@ public class EditFreeOnBoardCommand
     
     @Override
     public void doUpdate(FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var partyPK = getPartyPK();
         var freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueForUpdate(freeOnBoard);
         var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescriptionForUpdate(freeOnBoard, getPreferredLanguage());

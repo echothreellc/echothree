@@ -46,10 +46,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemAliasTypeLogic
     extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    QueueTypeLogic queueTypeLogic;
 
     protected ItemAliasTypeLogic() {
         super();
@@ -63,7 +76,6 @@ public class ItemAliasTypeLogic
             final String validationPattern, final ItemAliasChecksumType itemAliasChecksumType, final Boolean allowMultiple,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
         if(itemAliasType == null) {
@@ -82,7 +94,6 @@ public class ItemAliasTypeLogic
 
     public ItemAliasType getItemAliasTypeByName(final ExecutionErrorAccumulator eea, final String itemAliasTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName, entityPermission);
 
         if(itemAliasType == null) {
@@ -103,9 +114,8 @@ public class ItemAliasTypeLogic
     public ItemAliasType getItemAliasTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemAliasTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemAliasType itemAliasType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasTypeName = universalSpec.getItemAliasTypeName();
-        var parameterCount = (itemAliasTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemAliasTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -121,7 +131,7 @@ public class ItemAliasTypeLogic
             }
             case 1 -> {
                 if(itemAliasTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -154,11 +164,8 @@ public class ItemAliasTypeLogic
 
     public void updateItemAliasTypeFromValue(final Session session, final ItemAliasTypeDetailValue itemAliasTypeDetailValue,
             final BasePK updatedBy) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-
         if(itemAliasTypeDetailValue.getItemAliasTypeNameHasBeenModified()) {
-            final var queueControl = Session.getModelController(QueueControl.class);
-            final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
+            final var queueTypePK = queueTypeLogic.getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
             final var itemEntityInstanceResults = getItemEntityInstanceResultsByItemAliasType(itemAliasTypeDetailValue.getItemAliasTypePK());
             final var queuedEntities = new ArrayList<QueuedEntityValue>(itemEntityInstanceResults.size());
 
@@ -174,8 +181,6 @@ public class ItemAliasTypeLogic
     
     public void deleteItemAliasType(final ExecutionErrorAccumulator eea, final ItemAliasType itemAliasType,
             final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.deleteItemAliasType(itemAliasType, deletedBy);
     }
 

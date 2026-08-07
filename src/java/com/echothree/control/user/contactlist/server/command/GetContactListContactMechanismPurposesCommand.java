@@ -57,12 +57,13 @@ public class GetContactListContactMechanismPurposesCommand
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ContactListControl contactListControl;
 
     @Inject
     ContactListLogic contactListLogic;
+
 
     /** Creates a new instance of GetContactListContactMechanismPurposesCommand */
     public GetContactListContactMechanismPurposesCommand() {

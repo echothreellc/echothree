@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFreeOnBoardCommand
@@ -43,8 +43,15 @@ public class GetFreeOnBoardCommand
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
     
     /** Creates a new instance of GetFreeOnBoardCommand */
     public GetFreeOnBoardCommand() {
@@ -53,7 +60,7 @@ public class GetFreeOnBoardCommand
     
     @Override
     protected FreeOnBoard getEntity() {
-        var freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByUniversalSpec(this, form, true);
+        var freeOnBoard = freeOnBoardLogic.getFreeOnBoardByUniversalSpec(this, form, true);
 
         if(freeOnBoard != null) {
             sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetFreeOnBoardCommand
     
     @Override
     protected BaseResult getResult(FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var result = ShipmentResultFactory.getGetFreeOnBoardResult();
 
         if(freeOnBoard != null) {

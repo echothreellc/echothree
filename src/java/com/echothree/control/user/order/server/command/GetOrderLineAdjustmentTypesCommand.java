@@ -58,7 +58,7 @@ public class GetOrderLineAdjustmentTypesCommand
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     OrderLineAdjustmentControl orderLineAdjustmentControl;
 
@@ -67,6 +67,7 @@ public class GetOrderLineAdjustmentTypesCommand
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
 
     /** Creates a new instance of GetOrderLineAdjustmentTypesCommand */
     public GetOrderLineAdjustmentTypesCommand() {

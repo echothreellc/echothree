@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSequenceChecksumTypesCommand
@@ -54,6 +54,9 @@ public class GetSequenceChecksumTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    SequenceControl sequenceControl;
+
     /** Creates a new instance of GetSequenceChecksumTypesCommand */
     public GetSequenceChecksumTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,15 +69,11 @@ public class GetSequenceChecksumTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-
         return sequenceControl.countSequenceChecksumTypes();
     }
 
     @Override
     protected Collection<SequenceChecksumType> getEntities() {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-
         return sequenceControl.getSequenceChecksumTypes();
     }
 
@@ -83,8 +82,6 @@ public class GetSequenceChecksumTypesCommand
         var result = SequenceResultFactory.getGetSequenceChecksumTypesResult();
 
         if(entities != null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-
             if(session.hasLimit(SequenceChecksumTypeFactory.class)) {
                 result.setSequenceChecksumTypeCount(getTotalEntities());
             }

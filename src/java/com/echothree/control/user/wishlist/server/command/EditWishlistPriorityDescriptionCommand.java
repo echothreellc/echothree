@@ -66,18 +66,19 @@ public class EditWishlistPriorityDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
-    @Inject
-    WishlistControl wishlistControl;
 
     @Inject
-    WishlistPriorityLogic wishlistPriorityLogic;
+    WishlistControl wishlistControl;
 
     @Inject
     LanguageLogic languageLogic;
 
     @Inject
+    WishlistPriorityLogic wishlistPriorityLogic;
+
+    @Inject
     WishlistTypeLogic wishlistTypeLogic;
+
 
     /** Creates a new instance of EditWishlistPriorityDescriptionCommand */
     public EditWishlistPriorityDescriptionCommand() {

@@ -73,17 +73,18 @@ public class EditLocationVolumeCommand
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
-    
-    /** Creates a new instance of EditLocationVolumeCommand */
-    public EditLocationVolumeCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     UomControl uomControl;
 
     @Inject
     WarehouseControl warehouseControl;
+
+
+    /** Creates a new instance of EditLocationVolumeCommand */
+    public EditLocationVolumeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditLocationVolumeResult getResult() {

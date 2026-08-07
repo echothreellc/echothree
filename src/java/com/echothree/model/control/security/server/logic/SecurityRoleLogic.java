@@ -34,7 +34,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
@@ -48,8 +47,14 @@ public class SecurityRoleLogic
     protected SecurityControl securityControl;
 
     @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     protected SecurityRoleGroupLogic securityRoleGroupLogic;
-    
+
     protected SecurityRoleLogic() {
         super();
     }
@@ -137,7 +142,7 @@ public class SecurityRoleLogic
         var securityRoleGroupName = universalSpec.getSecurityRoleGroupName();
         var securityRoleName = universalSpec.getSecurityRoleName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(securityRoleGroupName, securityRoleName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         SecurityRole securityRole = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -165,7 +170,7 @@ public class SecurityRoleLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRole.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -203,8 +208,6 @@ public class SecurityRoleLogic
                     var partySelector = securityRolePartyType.getPartySelector();
 
                     if(partySelector != null) {
-                        var selectorControl = Session.getModelController(SelectorControl.class);
-
                         if(selectorControl.getSelectorParty(partySelector, party) != null) {
                             result = true;
                         }

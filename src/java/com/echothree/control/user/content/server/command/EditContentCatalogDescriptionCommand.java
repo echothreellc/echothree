@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentCatalogDescriptionCommand
@@ -55,8 +55,8 @@ public class EditContentCatalogDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCatalog.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,6 +68,13 @@ public class EditContentCatalogDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContentCatalogDescriptionCommand */
     public EditContentCatalogDescriptionCommand() {
@@ -86,7 +93,6 @@ public class EditContentCatalogDescriptionCommand
     
     @Override
     public ContentCatalogDescription getEntity(EditContentCatalogDescriptionResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentCatalogDescription contentCatalogDescription = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -96,7 +102,6 @@ public class EditContentCatalogDescriptionCommand
             var contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,8 +137,6 @@ public class EditContentCatalogDescriptionCommand
     
     @Override
     public void fillInResult(EditContentCatalogDescriptionResult result, ContentCatalogDescription contentCatalogDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentCatalogDescription(contentControl.getContentCatalogDescriptionTransfer(getUserVisit(), contentCatalogDescription));
     }
     
@@ -144,7 +147,6 @@ public class EditContentCatalogDescriptionCommand
     
     @Override
     public void doUpdate(ContentCatalogDescription contentCatalogDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCatalogDescriptionValue = contentControl.getContentCatalogDescriptionValue(contentCatalogDescription);
         contentCatalogDescriptionValue.setDescription(edit.getDescription());
 

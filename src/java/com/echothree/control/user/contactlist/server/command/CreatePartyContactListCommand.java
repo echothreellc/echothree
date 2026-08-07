@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyContactListCommand
@@ -49,15 +49,28 @@ public class CreatePartyContactListCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyContactList.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PreferredContactMechanismPurposeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
     
     /** Creates a new instance of CreatePartyContactListCommand */
     public CreatePartyContactListCommand() {
@@ -66,12 +79,10 @@ public class CreatePartyContactListCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListName = form.getContactListName();
             var contactList = contactListControl.getContactListByName(contactListName);
             
@@ -79,7 +90,6 @@ public class CreatePartyContactListCommand
                 var partyContactList = contactListControl.getPartyContactList(party, contactList);
                 
                 if(partyContactList == null) {
-                    var contactControl = Session.getModelController(ContactControl.class);
                     var preferredContactMechanismPurposeName = form.getPreferredContactMechanismPurposeName();
                     var preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
 
@@ -88,7 +98,7 @@ public class CreatePartyContactListCommand
 
                         if(preferredContactMechanismPurpose == null || preferredContactListContactMechanismPurpose != null) {
                             // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                            ContactListLogic.getInstance().addContactListToParty(null, party, contactList, preferredContactListContactMechanismPurpose, getPartyPK());
+                            contactListLogic.addContactListToParty(null, party, contactList, preferredContactListContactMechanismPurpose, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownContactListContactMechanismPurpose.name(), contactListName, preferredContactMechanismPurposeName);
                         }

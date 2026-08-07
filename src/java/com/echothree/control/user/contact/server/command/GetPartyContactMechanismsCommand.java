@@ -44,7 +44,7 @@ public class GetPartyContactMechanismsCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     ContactControl contactControl;
 
@@ -53,6 +53,7 @@ public class GetPartyContactMechanismsCommand
 
     @Inject
     PartyLogic partyLogic;
+
 
     private Party party;
 

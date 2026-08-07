@@ -84,6 +84,7 @@ public class PeriodControl
         extends BaseModelControl {
     
     /** Creates a new instance of PeriodControl */
+
     protected PeriodControl() {
         super();
     }
@@ -113,7 +114,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     //   Period Kinds
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PeriodKindFactory periodKindFactory;
+
+    @Inject
+    protected PeriodKindDetailFactory periodKindDetailFactory;
+
     public PeriodKind createPeriodKind(String periodKindName, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPeriodKind = getDefaultPeriodKind();
         var defaultFound = defaultPeriodKind != null;
@@ -127,12 +134,12 @@ public class PeriodControl
             isDefault = true;
         }
 
-        var periodKind = PeriodKindFactory.getInstance().create();
-        var periodKindDetail = PeriodKindDetailFactory.getInstance().create(periodKind, periodKindName, workflowEntrance, isDefault, sortOrder, session.getStartTime(),
+        var periodKind = periodKindFactory.create();
+        var periodKindDetail = periodKindDetailFactory.create(periodKind, periodKindName, workflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        periodKind = PeriodKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        periodKind = periodKindFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 periodKind.getPrimaryKey());
         periodKind.setActiveDetail(periodKindDetail);
         periodKind.setLastDetail(periodKindDetail);
@@ -147,7 +154,7 @@ public class PeriodControl
     public PeriodKind getPeriodKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PeriodKindPK(entityInstance.getEntityUniqueId());
 
-        return PeriodKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return periodKindFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PeriodKind getPeriodKindByEntityInstance(EntityInstance entityInstance) {
@@ -173,21 +180,25 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodKindFactory.getInstance().prepareStatement(query);
+            var ps = periodKindFactory.prepareStatement(query);
             
             ps.setString(1, periodKindName);
             
-            periodKind = PeriodKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            periodKind = periodKindFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -215,19 +226,23 @@ public class PeriodControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = PeriodKindFactory.getInstance().prepareStatement(query);
+        var ps = periodKindFactory.prepareStatement(query);
         
-        return PeriodKindFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return periodKindFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public PeriodKind getDefaultPeriodKind() {
@@ -246,21 +261,25 @@ public class PeriodControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid " +
-                    "ORDER BY prdkdt_sortorder, prdkdt_periodkindname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid
+                    ORDER BY prdkdt_sortorder, prdkdt_periodkindname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = PeriodKindFactory.getInstance().prepareStatement(query);
+        var ps = periodKindFactory.prepareStatement(query);
         
-        return PeriodKindFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return periodKindFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<PeriodKind> getPeriodKinds() {
@@ -324,7 +343,7 @@ public class PeriodControl
     }
     
     private void updatePeriodKindFromValue(PeriodKindDetailValue periodKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var periodKind = PeriodKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodKindDetailValue.getPeriodKindPK());
+        var periodKind = periodKindFactory.getEntityFromPK(EntityPermission.READ_WRITE, periodKindDetailValue.getPeriodKindPK());
         var periodKindDetail = periodKind.getActiveDetailForUpdate();
         
         periodKindDetail.setThruTime(session.getStartTime());
@@ -352,7 +371,7 @@ public class PeriodControl
             }
         }
         
-        periodKindDetail = PeriodKindDetailFactory.getInstance().create(periodKindPK, periodKindName, workflowEntrancePK, isDefault, sortOrder, session.getStartTime(),
+        periodKindDetail = periodKindDetailFactory.create(periodKindPK, periodKindName, workflowEntrancePK, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         periodKind.setActiveDetail(periodKindDetail);
@@ -398,10 +417,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     //   Period Kind Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PeriodKindDescriptionFactory periodKindDescriptionFactory;
+
     public PeriodKindDescription createPeriodKindDescription(PeriodKind periodKind, Language language, String description,
             BasePK createdBy) {
-        var periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind,
+        var periodKindDescription = periodKindDescriptionFactory.create(periodKind,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -416,23 +438,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = periodKindDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            periodKindDescription = PeriodKindDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            periodKindDescription = periodKindDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -463,23 +489,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions, languages " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? AND prdkd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions, languages
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? AND prdkd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = periodKindDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            periodKindDescriptions = PeriodKindDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periodKindDescriptions = periodKindDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -529,7 +559,7 @@ public class PeriodControl
     
     public void updatePeriodKindDescriptionFromValue(PeriodKindDescriptionValue periodKindDescriptionValue, BasePK updatedBy) {
         if(periodKindDescriptionValue.hasBeenModified()) {
-            var periodKindDescription = PeriodKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var periodKindDescription = periodKindDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      periodKindDescriptionValue.getPrimaryKey());
             
             periodKindDescription.setThruTime(session.getStartTime());
@@ -539,7 +569,7 @@ public class PeriodControl
             var language = periodKindDescription.getLanguage();
             var description = periodKindDescriptionValue.getDescription();
             
-            periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind, language, description,
+            periodKindDescription = periodKindDescriptionFactory.create(periodKind, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -564,7 +594,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     //   Period Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PeriodTypeFactory periodTypeFactory;
+
+    @Inject
+    protected PeriodTypeDetailFactory periodTypeDetailFactory;
+
     public PeriodType createPeriodType(PeriodKind periodKind, String periodTypeName, PeriodType parentPeriodType, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultPeriodType = getDefaultPeriodType(periodKind);
@@ -579,12 +615,12 @@ public class PeriodControl
             isDefault = true;
         }
 
-        var periodType = PeriodTypeFactory.getInstance().create();
-        var periodTypeDetail = PeriodTypeDetailFactory.getInstance().create(periodType, periodKind, periodTypeName, parentPeriodType, workflowEntrance, isDefault, sortOrder,
+        var periodType = periodTypeFactory.create();
+        var periodTypeDetail = periodTypeDetailFactory.create(periodType, periodKind, periodTypeName, parentPeriodType, workflowEntrance, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        periodType = PeriodTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        periodType = periodTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 periodType.getPrimaryKey());
         periodType.setActiveDetail(periodTypeDetail);
         periodType.setLastDetail(periodTypeDetail);
@@ -599,7 +635,7 @@ public class PeriodControl
     public PeriodType getPeriodTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PeriodTypePK(entityInstance.getEntityUniqueId());
 
-        return PeriodTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return periodTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PeriodType getPeriodTypeByEntityInstance(EntityInstance entityInstance) {
@@ -626,22 +662,26 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ? " +
-                        "ORDER BY prdtdt_sortorder, prdtdt_periodtypename";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ?
+                        ORDER BY prdtdt_sortorder, prdtdt_periodtypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
+            var ps = periodTypeFactory.prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             
-            periodTypes = PeriodTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periodTypes = periodTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -664,23 +704,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
+            var ps = periodTypeFactory.prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             
-            periodType = PeriodTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            periodType = periodTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -707,24 +751,28 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
+            var ps = periodTypeFactory.prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setString(2, periodTypeName);
             
-            periodType = PeriodTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            periodType = periodTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -821,7 +869,7 @@ public class PeriodControl
     private void updatePeriodTypeFromValue(PeriodTypeDetailValue periodTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(periodTypeDetailValue.hasBeenModified()) {
-            var periodType = PeriodTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodTypeDetailValue.getPeriodTypePK());
+            var periodType = periodTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, periodTypeDetailValue.getPeriodTypePK());
             var periodTypeDetail = periodType.getActiveDetailForUpdate();
             
             periodTypeDetail.setThruTime(session.getStartTime());
@@ -852,7 +900,7 @@ public class PeriodControl
                 }
             }
             
-            periodTypeDetail = PeriodTypeDetailFactory.getInstance().create(periodTypePK, periodKindPK, periodTypeName, parentPeriodTypePK, workflowEntrancePK, isDefault, sortOrder,
+            periodTypeDetail = periodTypeDetailFactory.create(periodTypePK, periodKindPK, periodTypeName, parentPeriodTypePK, workflowEntrancePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             periodType.setActiveDetail(periodTypeDetail);
@@ -907,10 +955,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     //   Period Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PeriodTypeDescriptionFactory periodTypeDescriptionFactory;
+
     public PeriodTypeDescription createPeriodTypeDescription(PeriodType periodType, Language language, String description,
             BasePK createdBy) {
-        var periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType,
+        var periodTypeDescription = periodTypeDescriptionFactory.create(periodType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -925,23 +976,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = periodTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, periodType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            periodTypeDescription = periodTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -972,23 +1027,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions, languages " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? AND prdtd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions, languages
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? AND prdtd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = periodTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, periodType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            periodTypeDescriptions = PeriodTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periodTypeDescriptions = periodTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1038,7 +1097,7 @@ public class PeriodControl
     
     public void updatePeriodTypeDescriptionFromValue(PeriodTypeDescriptionValue periodTypeDescriptionValue, BasePK updatedBy) {
         if(periodTypeDescriptionValue.hasBeenModified()) {
-            var periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var periodTypeDescription = periodTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      periodTypeDescriptionValue.getPrimaryKey());
             
             periodTypeDescription.setThruTime(session.getStartTime());
@@ -1048,7 +1107,7 @@ public class PeriodControl
             var language = periodTypeDescription.getLanguage();
             var description = periodTypeDescriptionValue.getDescription();
             
-            periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType, language, description,
+            periodTypeDescription = periodTypeDescriptionFactory.create(periodType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1072,14 +1131,20 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     //   Periods
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PeriodFactory periodFactory;
+
+    @Inject
+    protected PeriodDetailFactory periodDetailFactory;
+
     public Period createPeriod(PeriodKind periodKind, String periodName, Period parentPeriod, PeriodType periodType, Long startTime, Long endTime, BasePK createdBy) {
-        var period = PeriodFactory.getInstance().create();
-        var periodDetail = PeriodDetailFactory.getInstance().create(period, periodKind, periodName, parentPeriod, periodType, startTime,
+        var period = periodFactory.create();
+        var periodDetail = periodDetailFactory.create(period, periodKind, periodName, parentPeriod, periodType, startTime,
                 endTime, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        period = PeriodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        period = periodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 period.getPrimaryKey());
         period.setActiveDetail(periodDetail);
         period.setLastDetail(periodDetail);
@@ -1097,28 +1162,32 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails, periods, perioddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
-                        "AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid " +
-                        "AND prddt_starttime <= ? AND prddt_endtime >= ? " +
-                        "ORDER BY prddt_periodname";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails, periods, perioddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid
+                        AND prddt_starttime <= ? AND prddt_endtime >= ?
+                        ORDER BY prddt_periodname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails, periods, perioddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
-                        "AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid " +
-                        "AND prddt_starttime <= ? AND prddt_endtime >= ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails, periods, perioddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid
+                        AND prddt_starttime <= ? AND prddt_endtime >= ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodFactory.getInstance().prepareStatement(query);
+            var ps = periodFactory.prepareStatement(query);
             
             ps.setString(1, periodKindName);
             ps.setLong(2, time);
             ps.setLong(3, time);
             
-            periods = PeriodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periods = periodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1141,22 +1210,26 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ? " +
-                        "ORDER BY prddt_sortorder, prddt_periodname";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ?
+                        ORDER BY prddt_sortorder, prddt_periodname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodFactory.getInstance().prepareStatement(query);
+            var ps = periodFactory.prepareStatement(query);
             
             ps.setLong(1, periodType.getPrimaryKey().getEntityId());
             
-            periods = PeriodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periods = periodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1179,22 +1252,26 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ? " +
-                        "ORDER BY prddt_sortorder, prddt_periodname";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ?
+                        ORDER BY prddt_sortorder, prddt_periodname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodFactory.getInstance().prepareStatement(query);
+            var ps = periodFactory.prepareStatement(query);
             
             ps.setLong(1, parentPeriod.getPrimaryKey().getEntityId());
             
-            periods = PeriodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periods = periodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1228,24 +1305,28 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid " +
-                        "AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid
+                        AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid " +
-                        "AND prddt_prdk_periodkindid = ? AND prddt_periodname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid
+                        AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodFactory.getInstance().prepareStatement(query);
+            var ps = periodFactory.prepareStatement(query);
             
             ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
             ps.setString(2, periodName);
             
-            period = PeriodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            period = periodFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1307,7 +1388,7 @@ public class PeriodControl
     
     public void updatePeriodFromValue(PeriodDetailValue periodDetailValue, BasePK updatedBy) {
         if(periodDetailValue.hasBeenModified()) {
-            var period = PeriodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, periodDetailValue.getPeriodPK());
+            var period = periodFactory.getEntityFromPK(EntityPermission.READ_WRITE, periodDetailValue.getPeriodPK());
             var periodDetail = period.getActiveDetailForUpdate();
             
             periodDetail.setThruTime(session.getStartTime());
@@ -1321,7 +1402,7 @@ public class PeriodControl
             var startTime = periodDetailValue.getStartTime();
             var endTime = periodDetailValue.getEndTime();
             
-            periodDetail = PeriodDetailFactory.getInstance().create(periodPK, periodKindPK, periodName, parentPeriodPK, periodTypePK, startTime,
+            periodDetail = periodDetailFactory.create(periodPK, periodKindPK, periodName, parentPeriodPK, periodTypePK, startTime,
                     endTime, session.getStartTime(), Session.MAX_TIME);
             
             period.setActiveDetail(periodDetail);
@@ -1364,10 +1445,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
     //   Period Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PeriodDescriptionFactory periodDescriptionFactory;
+
     public PeriodDescription createPeriodDescription(Period period, Language language, String description,
             BasePK createdBy) {
-        var periodDescription = PeriodDescriptionFactory.getInstance().create(period,
+        var periodDescription = periodDescriptionFactory.create(period,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1382,23 +1466,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions
+                        WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions
+                        WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = periodDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, period.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            periodDescription = PeriodDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            periodDescription = periodDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1429,23 +1517,27 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions, languages " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? AND prdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions, languages
+                        WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? AND prdd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions
+                        WHERE prdd_prd_periodid = ? AND prdd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = periodDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, period.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            periodDescriptions = PeriodDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            periodDescriptions = periodDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1495,7 +1587,7 @@ public class PeriodControl
     
     public void updatePeriodDescriptionFromValue(PeriodDescriptionValue periodDescriptionValue, BasePK updatedBy) {
         if(periodDescriptionValue.hasBeenModified()) {
-            var periodDescription = PeriodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var periodDescription = periodDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      periodDescriptionValue.getPrimaryKey());
             
             periodDescription.setThruTime(session.getStartTime());
@@ -1505,7 +1597,7 @@ public class PeriodControl
             var language = periodDescription.getLanguage();
             var description = periodDescriptionValue.getDescription();
             
-            periodDescription = PeriodDescriptionFactory.getInstance().create(period, language, description,
+            periodDescription = periodDescriptionFactory.create(period, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1538,7 +1630,6 @@ public class PeriodControl
             workflowControl.getWorkflowEntranceChoices(fiscalPeriodStatusChoicesBean, defaultFiscalPeriodStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                     entityInstance);

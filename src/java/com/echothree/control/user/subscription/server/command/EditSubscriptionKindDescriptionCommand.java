@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSubscriptionKindDescriptionCommand
@@ -66,6 +66,12 @@ public class EditSubscriptionKindDescriptionCommand
         );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     /** Creates a new instance of EditSubscriptionKindDescriptionCommand */
     public EditSubscriptionKindDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -83,13 +89,11 @@ public class EditSubscriptionKindDescriptionCommand
 
     @Override
     public SubscriptionKindDescription getEntity(EditSubscriptionKindDescriptionResult result) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKindDescription subscriptionKindDescription = null;
         var subscriptionKindName = spec.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
 
         if(subscriptionKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -120,8 +124,6 @@ public class EditSubscriptionKindDescriptionCommand
 
     @Override
     public void fillInResult(EditSubscriptionKindDescriptionResult result, SubscriptionKindDescription subscriptionKindDescription) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-
         result.setSubscriptionKindDescription(subscriptionControl.getSubscriptionKindDescriptionTransfer(getUserVisit(), subscriptionKindDescription));
     }
 
@@ -132,7 +134,6 @@ public class EditSubscriptionKindDescriptionCommand
 
     @Override
     public void doUpdate(SubscriptionKindDescription subscriptionKindDescription) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindDescriptionValue = subscriptionControl.getSubscriptionKindDescriptionValue(subscriptionKindDescription);
 
         subscriptionKindDescriptionValue.setDescription(edit.getDescription());

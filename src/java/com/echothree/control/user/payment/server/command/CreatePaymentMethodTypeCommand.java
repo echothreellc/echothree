@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentMethodTypeCommand
@@ -45,16 +46,20 @@ public class CreatePaymentMethodTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
     
     /** Creates a new instance of CreatePaymentMethodTypeCommand */
     public CreatePaymentMethodTypeCommand() {
@@ -69,7 +74,7 @@ public class CreatePaymentMethodTypeCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var paymentMethodType = PaymentMethodTypeLogic.getInstance().createPaymentMethodType(this,
+        var paymentMethodType = paymentMethodTypeLogic.createPaymentMethodType(this,
                 paymentMethodTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(paymentMethodType != null && !hasExecutionErrors()) {

@@ -45,6 +45,8 @@ public class ChainActionLogic
         extends BaseLogic {
 
     @Inject
+    ParameterUtils parameterUtils;
+    @Inject
     ChainControl chainControl;
 
     @Inject
@@ -61,9 +63,6 @@ public class ChainActionLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
-
-    @Inject
-    ParameterUtils parameterUtils;
 
     protected ChainActionLogic() {
         super();

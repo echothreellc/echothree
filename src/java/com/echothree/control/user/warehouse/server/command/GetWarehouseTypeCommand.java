@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWarehouseTypeCommand
@@ -59,6 +59,12 @@ public class GetWarehouseTypeCommand
         );
     }
 
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WarehouseTypeLogic warehouseTypeLogic;
+
     /** Creates a new instance of GetWarehouseTypeCommand */
     public GetWarehouseTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetWarehouseTypeCommand
 
     @Override
     protected WarehouseType getEntity() {
-        var warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByUniversalSpec(this, form, true);
+        var warehouseType = warehouseTypeLogic.getWarehouseTypeByUniversalSpec(this, form, true);
 
         if(warehouseType != null) {
             sendEvent(warehouseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetWarehouseTypeCommand
 
     @Override
     protected BaseResult getResult(WarehouseType warehouseType) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var result = WarehouseResultFactory.getGetWarehouseTypeResult();
 
         if(warehouseType != null) {

@@ -39,10 +39,38 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class EmployeeLogic
         extends BaseLogic {
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    UserKeyLogic userKeyLogic;
+
+    @Inject
+    UserSessionLogic userSessionLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
 
     protected EmployeeLogic() {
         super();
@@ -57,8 +85,6 @@ public class EmployeeLogic
         PartyEmployee partyEmployee = null;
 
         if(parameterCount == 1) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-
             if(employeeName != null) {
                 partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
 
@@ -66,11 +92,10 @@ public class EmployeeLogic
                     handleExecutionError(UnknownEmployeeNameException.class, eea, ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 } else {
@@ -85,23 +110,20 @@ public class EmployeeLogic
     }
 
     public void setEmployeeStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
+        var workflow = workflowLogic.getWorkflowByName(eea, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = employeeStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), employeeStatusChoice);
 
         if(workflowDestination != null || employeeStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(EmployeeStatusConstants.WorkflowStep_ACTIVE)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS, EmployeeStatusConstants.WorkflowStep_INACTIVE)) {
-                    UserKeyLogic.getInstance().clearUserKeysByParty(party);
-                    UserSessionLogic.getInstance().deleteUserSessionsByParty(party);
+                    userKeyLogic.clearUserKeysByParty(party);
+                    userSessionLogic.deleteUserSessionsByParty(party);
                 }
             } else if(currentWorkflowStepName.equals(EmployeeStatusConstants.WorkflowStep_INACTIVE)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS, EmployeeStatusConstants.WorkflowStep_ACTIVE)) {

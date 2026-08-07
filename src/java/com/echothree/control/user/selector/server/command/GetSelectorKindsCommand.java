@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorKindsCommand
@@ -54,6 +54,9 @@ public class GetSelectorKindsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    SelectorControl selectorControl;
+
     /** Creates a new instance of GetSelectorKindsCommand */
     public GetSelectorKindsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,15 +69,11 @@ public class GetSelectorKindsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
         return selectorControl.countSelectorKinds();
     }
 
     @Override
     protected Collection<SelectorKind> getEntities() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
         return selectorControl.getSelectorKinds();
     }
 
@@ -83,8 +82,6 @@ public class GetSelectorKindsCommand
         var result = SelectorResultFactory.getGetSelectorKindsResult();
 
         if(entities != null) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
-
             if(session.hasLimit(SelectorKindFactory.class)) {
                 result.setSelectorKindCount(getTotalEntities());
             }

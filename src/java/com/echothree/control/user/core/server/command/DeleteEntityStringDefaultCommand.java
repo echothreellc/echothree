@@ -32,6 +32,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityStringDefaultCommand
@@ -54,8 +55,15 @@ public class DeleteEntityStringDefaultCommand
                 new FieldDefinition("EntityDefaultName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of DeleteEntityStringDefaultCommand */
     public DeleteEntityStringDefaultCommand() {
@@ -64,11 +72,11 @@ public class DeleteEntityStringDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
-        var language = LanguageLogic.getInstance().getLanguage(this, form, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
+        var language = languageLogic.getLanguage(this, form, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttributeLogic.getInstance().deleteEntityStringDefault(this, entityAttribute, language, getPartyPK());
+            entityAttributeLogic.deleteEntityStringDefault(this, entityAttribute, language, getPartyPK());
         }
 
         return null;

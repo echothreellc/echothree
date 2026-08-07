@@ -29,9 +29,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateClubItemTypeCommand
@@ -55,6 +55,10 @@ public class CreateClubItemTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    ClubControl clubControl;
+
     
     /** Creates a new instance of CreateClubItemTypeCommand */
     public CreateClubItemTypeCommand() {
@@ -63,7 +67,6 @@ public class CreateClubItemTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = Session.getModelController(ClubControl.class);
         var clubItemTypeName = form.getClubItemTypeName();
         var clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
         

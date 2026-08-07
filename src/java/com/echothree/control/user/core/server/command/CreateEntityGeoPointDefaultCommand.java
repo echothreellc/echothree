@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityGeoPointDefaultCommand
@@ -64,6 +65,12 @@ public class CreateEntityGeoPointDefaultCommand
         );
     }
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
     public CreateEntityGeoPointDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -71,10 +78,9 @@ public class CreateEntityGeoPointDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
             var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
                     form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
                     null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
@@ -91,7 +97,7 @@ public class CreateEntityGeoPointDefaultCommand
                     var longitude = Integer.valueOf(form.getLongitude());
                     var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                    EntityAttributeLogic.getInstance().createEntityGeoPointDefault(this, entityAttribute, latitude,
+                    entityAttributeLogic.createEntityGeoPointDefault(this, entityAttribute, latitude,
                             longitude, elevation, altitude, addMissingAttributes, getPartyPK());
                 }
             }

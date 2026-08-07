@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteOfferNameElementCommand
@@ -44,13 +45,17 @@ public class DeleteOfferNameElementCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferNameElement.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferNameElementName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OfferNameElementLogic offerNameElementLogic;
+
     
     /** Creates a new instance of DeleteOfferNameElementCommand */
     public DeleteOfferNameElementCommand() {
@@ -60,10 +65,10 @@ public class DeleteOfferNameElementCommand
     @Override
     protected BaseResult execute() {
         var offerNameElementName = form.getOfferNameElementName();
-        var offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByNameForUpdate(this, offerNameElementName);
+        var offerNameElement = offerNameElementLogic.getOfferNameElementByNameForUpdate(this, offerNameElementName);
         
         if(!hasExecutionErrors()) {
-            OfferNameElementLogic.getInstance().deleteOfferNameElement(this, offerNameElement, getPartyPK());
+            offerNameElementLogic.deleteOfferNameElement(this, offerNameElement, getPartyPK());
         }
         
         return null;

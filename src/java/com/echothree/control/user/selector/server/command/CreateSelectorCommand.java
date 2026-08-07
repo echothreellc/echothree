@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorCommand
@@ -57,6 +58,10 @@ public class CreateSelectorCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    SelectorLogic selectorLogic;
+
     
     /** Creates a new instance of CreateSelectorCommand */
     public CreateSelectorCommand() {
@@ -74,7 +79,7 @@ public class CreateSelectorCommand
         var description = form.getDescription();
         var createdBy = getPartyPK();
 
-        var selector = SelectorLogic.getInstance().createSelector(this, selectorKindName, selectorTypeName,
+        var selector = selectorLogic.createSelector(this, selectorKindName, selectorTypeName,
                 selectorName, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
         if(selector != null) {

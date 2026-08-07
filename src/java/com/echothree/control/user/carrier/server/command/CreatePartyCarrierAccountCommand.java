@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyCarrierAccountCommand
@@ -48,16 +48,23 @@ public class CreatePartyCarrierAccountCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyCarrierAccount.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Account", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AlwaysUseThirdPartyBilling", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreatePartyCarrierAccountCommand */
     public CreatePartyCarrierAccountCommand() {
@@ -66,12 +73,10 @@ public class CreatePartyCarrierAccountCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
             var carrierName = form.getCarrierName();
             var carrier = carrierControl.getCarrierByName(carrierName);
 

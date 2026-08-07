@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetColorCommand
@@ -49,6 +49,16 @@ public class GetColorCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ColorControl colorControl;
+
+    @Inject
+    ColorLogic colorLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of GetColorCommand */
     public GetColorCommand() {
@@ -59,20 +69,18 @@ public class GetColorCommand
     protected Color getEntity() {
         Color color = null;
         var colorName = form.getColorName();
-        var parameterCount = (colorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (colorName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(colorName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.Color.name());
 
                 if(!hasExecutionErrors()) {
-                    var colorControl = Session.getModelController(ColorControl.class);
-
                     color = colorControl.getColorByEntityInstance(entityInstance);
                 }
             } else {
-                color = ColorLogic.getInstance().getColorByName(this, colorName);
+                color = colorLogic.getColorByName(this, colorName);
             }
 
             if(color != null) {
@@ -90,8 +98,6 @@ public class GetColorCommand
         var result = CoreResultFactory.getGetColorResult();
 
         if(color != null) {
-            var colorControl = Session.getModelController(ColorControl.class);
-
             result.setColor(colorControl.getColorTransfer(getUserVisit(), color));
         }
 

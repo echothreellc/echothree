@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -62,6 +61,9 @@ public class GetChainCommand
     }
 
     @Inject
+    ChainControl chainControl;
+
+    @Inject
     ChainLogic chainLogic;
 
     /** Creates a new instance of GetChainCommand */
@@ -85,8 +87,6 @@ public class GetChainCommand
         var result = ChainResultFactory.getGetChainResult();
 
         if(chain != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
-
             result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));
         }
 

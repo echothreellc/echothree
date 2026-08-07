@@ -71,6 +71,7 @@ public class EditLocationNameElementCommand
 
     @Inject
     WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of EditLocationNameElementCommand */
     public EditLocationNameElementCommand() {

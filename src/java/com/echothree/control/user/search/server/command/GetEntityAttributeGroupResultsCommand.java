@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeGroupResultsCommand
@@ -58,6 +58,15 @@ public class GetEntityAttributeGroupResultsCommand
         );
     }
 
+    @Inject
+    EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetEntityAttributeGroupResultsCommand */
     public GetEntityAttributeGroupResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +75,6 @@ public class GetEntityAttributeGroupResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetEntityAttributeGroupResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_ATTRIBUTE_GROUP.name());
         
         if(searchKind != null) {
@@ -78,10 +86,10 @@ public class GetEntityAttributeGroupResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityListItemControl = Session.getModelController(EntityAttributeGroupControl.class);
+                    var entityListItemControl = entityAttributeGroupControl;
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setEntityAttributeGroupResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setEntityAttributeGroupResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setEntityAttributeGroupResults(entityListItemControl.getEntityAttributeGroupResultTransfers(userVisit, userVisitSearch));

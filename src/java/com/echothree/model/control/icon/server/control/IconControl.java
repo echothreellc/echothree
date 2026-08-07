@@ -61,6 +61,9 @@ import javax.inject.Inject;
 public class IconControl
         extends BaseModelControl {
     
+    @Inject
+    protected DocumentControl documentControl;
+
     /** Creates a new instance of IconControl */
     protected IconControl() {
         super();
@@ -85,14 +88,20 @@ public class IconControl
     // --------------------------------------------------------------------------------
     //   Icon
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected IconFactory iconFactory;
+
+    @Inject
+    protected IconDetailFactory iconDetailFactory;
+
     public Icon createIcon(String iconName, Document document, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var icon = IconFactory.getInstance().create();
-        var iconDetail = IconDetailFactory.getInstance().create(icon, iconName, document, isDefault, sortOrder,
+        var icon = iconFactory.create();
+        var iconDetail = iconDetailFactory.create(icon, iconName, document, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        icon = IconFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, icon.getPrimaryKey());
+        icon = iconFactory.getEntityFromPK(EntityPermission.READ_WRITE, icon.getPrimaryKey());
         icon.setActiveDetail(iconDetail);
         icon.setLastDetail(iconDetail);
         icon.store();
@@ -106,20 +115,24 @@ public class IconControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM icons, icondetails " +
-                    "WHERE icn_activedetailid = icndt_icondetailid " +
-                    "ORDER BY icndt_sortorder, icndt_iconname";
+            query = """
+                    SELECT _ALL_
+                    FROM icons, icondetails
+                    WHERE icn_activedetailid = icndt_icondetailid
+                    ORDER BY icndt_sortorder, icndt_iconname
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM icons, icondetails " +
-                    "WHERE icn_activedetailid = icndt_icondetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM icons, icondetails
+                    WHERE icn_activedetailid = icndt_icondetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = IconFactory.getInstance().prepareStatement(query);
+        var ps = iconFactory.prepareStatement(query);
         
-        return IconFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return iconFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Icon> getIcons() {
@@ -137,21 +150,25 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM icons, icondetails " +
-                        "WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM icons, icondetails
+                        WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM icons, icondetails " +
-                        "WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM icons, icondetails
+                        WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconFactory.getInstance().prepareStatement(query);
+            var ps = iconFactory.prepareStatement(query);
             
             ps.setString(1, iconName);
             
-            icon = IconFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            icon = iconFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -169,7 +186,6 @@ public class IconControl
     
     public IconChoicesBean getIconChoicesByIconUsageType(IconUsageType iconUsageType, String defaultIconChoice, Language language,
             boolean allowNullChoice) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var iconUsages = getIconUsagesByIconUsageType(iconUsageType);
         var icons = getIcons();
         var size = icons.size();
@@ -228,7 +244,13 @@ public class IconControl
     // --------------------------------------------------------------------------------
     //   Icon Usage Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected IconUsageTypeFactory iconUsageTypeFactory;
+
+    @Inject
+    protected IconUsageTypeDetailFactory iconUsageTypeDetailFactory;
+
     public IconUsageType createIconUsageType(String iconUsageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultIconUsageType = getDefaultIconUsageType();
         var defaultFound = defaultIconUsageType != null;
@@ -242,12 +264,12 @@ public class IconControl
             isDefault = true;
         }
 
-        var iconUsageType = IconUsageTypeFactory.getInstance().create();
-        var iconUsageTypeDetail = IconUsageTypeDetailFactory.getInstance().create(iconUsageType,
+        var iconUsageType = iconUsageTypeFactory.create();
+        var iconUsageTypeDetail = iconUsageTypeDetailFactory.create(iconUsageType,
                 iconUsageTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        iconUsageType = iconUsageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 iconUsageType.getPrimaryKey());
         iconUsageType.setActiveDetail(iconUsageTypeDetail);
         iconUsageType.setLastDetail(iconUsageTypeDetail);
@@ -265,21 +287,25 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypes, iconusagetypedetails " +
-                        "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypes, iconusagetypedetails
+                        WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypes, iconusagetypedetails " +
-                        "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypes, iconusagetypedetails
+                        WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageTypeFactory.prepareStatement(query);
             
             ps.setString(1, iconUsageTypeName);
             
-            iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            iconUsageType = iconUsageTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -307,19 +333,23 @@ public class IconControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
+        var ps = iconUsageTypeFactory.prepareStatement(query);
         
-        return IconUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return iconUsageTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public IconUsageType getDefaultIconUsageType() {
@@ -338,20 +368,24 @@ public class IconControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid " +
-                    "ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid
+                    ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
+        var ps = iconUsageTypeFactory.prepareStatement(query);
         
-        return IconUsageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return iconUsageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<IconUsageType> getIconUsageTypes() {
@@ -412,7 +446,7 @@ public class IconControl
     }
     
     private void updateIconUsageTypeFromValue(IconUsageTypeDetailValue iconUsageTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(
+        var iconUsageType = iconUsageTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, iconUsageTypeDetailValue.getIconUsageTypePK());
         var iconUsageTypeDetail = iconUsageType.getActiveDetailForUpdate();
         
@@ -440,7 +474,7 @@ public class IconControl
             }
         }
         
-        iconUsageTypeDetail = IconUsageTypeDetailFactory.getInstance().create(iconUsageTypePK, iconUsageTypeName,
+        iconUsageTypeDetail = iconUsageTypeDetailFactory.create(iconUsageTypePK, iconUsageTypeName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         iconUsageType.setActiveDetail(iconUsageTypeDetail);
@@ -485,10 +519,13 @@ public class IconControl
     // --------------------------------------------------------------------------------
     //   Icon Usage Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected IconUsageTypeDescriptionFactory iconUsageTypeDescriptionFactory;
+
     public IconUsageTypeDescription createIconUsageTypeDescription(IconUsageType iconUsageType, Language language, String description,
             BasePK createdBy) {
-        var iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType,
+        var iconUsageTypeDescription = iconUsageTypeDescriptionFactory.create(iconUsageType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -503,23 +540,27 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            iconUsageTypeDescription = iconUsageTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -550,23 +591,27 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions, languages " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? AND icnutypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions, languages
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? AND icnutypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            iconUsageTypeDescriptions = IconUsageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            iconUsageTypeDescriptions = iconUsageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -616,7 +661,7 @@ public class IconControl
     
     public void updateIconUsageTypeDescriptionFromValue(IconUsageTypeDescriptionValue iconUsageTypeDescriptionValue, BasePK updatedBy) {
         if(iconUsageTypeDescriptionValue.hasBeenModified()) {
-            var iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var iconUsageTypeDescription = iconUsageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      iconUsageTypeDescriptionValue.getPrimaryKey());
             
             iconUsageTypeDescription.setThruTime(session.getStartTime());
@@ -626,7 +671,7 @@ public class IconControl
             var language = iconUsageTypeDescription.getLanguage();
             var description = iconUsageTypeDescriptionValue.getDescription();
             
-            iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType, language, description,
+            iconUsageTypeDescription = iconUsageTypeDescriptionFactory.create(iconUsageType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -651,7 +696,10 @@ public class IconControl
     // --------------------------------------------------------------------------------
     //   Icon Usage
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected IconUsageFactory iconUsageFactory;
+
     public IconUsage createIconUsage(IconUsageType iconUsageType, Icon icon, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultIconUsage = getDefaultIconUsage(iconUsageType);
@@ -666,7 +714,7 @@ public class IconControl
             isDefault = true;
         }
 
-        var iconUsage = IconUsageFactory.getInstance().create(iconUsageType, icon,
+        var iconUsage = iconUsageFactory.create(iconUsageType, icon,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -681,23 +729,27 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageFactory.prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, icon.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            iconUsage = IconUsageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            iconUsage = iconUsageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -726,22 +778,26 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageFactory.prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            iconUsage = IconUsageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            iconUsage = iconUsageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -770,24 +826,28 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages, icons, icondetails " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ? " +
-                        "AND icnu_icn_iconid = icn_iconid AND icn_lastdetailid = icndt_icondetailid " +
-                        "ORDER BY icndt_sortorder, icndt_iconname";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages, icons, icondetails
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ?
+                        AND icnu_icn_iconid = icn_iconid AND icn_lastdetailid = icndt_icondetailid
+                        ORDER BY icndt_sortorder, icndt_iconname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageFactory.prepareStatement(query);
             
             ps.setLong(1, iconUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            iconUsages = IconUsageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            iconUsages = iconUsageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -810,25 +870,29 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages, iconusagetypes, iconusagetypedetails, returnkinds, returnkinddetails " +
-                        "WHERE icnu_icn_iconid = ? AND icnu_thrutime = ? " +
-                        "AND icnu_icnutyp_iconusagetypeid = icnutyp_iconusagetypeid AND icnutyp_lastdetailid = icnutypdt_iconusagetypedetailid " +
-                        "AND icnutypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid " +
-                        "ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename, rtnkdt_sortorder, rtnkdt_returnkindname";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages, iconusagetypes, iconusagetypedetails, returnkinds, returnkinddetails
+                        WHERE icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        AND icnu_icnutyp_iconusagetypeid = icnutyp_iconusagetypeid AND icnutyp_lastdetailid = icnutypdt_iconusagetypedetailid
+                        AND icnutypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid
+                        ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename, rtnkdt_sortorder, rtnkdt_returnkindname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icn_iconid = ? AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = IconUsageFactory.getInstance().prepareStatement(query);
+            var ps = iconUsageFactory.prepareStatement(query);
             
             ps.setLong(1, icon.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            iconUsages = IconUsageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            iconUsages = iconUsageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -868,7 +932,7 @@ public class IconControl
     
     private void updateIconUsageFromValue(IconUsageValue iconUsageValue, boolean checkDefault, BasePK updatedBy) {
         if(iconUsageValue.hasBeenModified()) {
-            var iconUsage = IconUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var iconUsage = iconUsageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      iconUsageValue.getPrimaryKey());
             
             iconUsage.setThruTime(session.getStartTime());
@@ -896,7 +960,7 @@ public class IconControl
                 }
             }
             
-            iconUsage = IconUsageFactory.getInstance().create(iconUsageTypePK, iconPK,
+            iconUsage = iconUsageFactory.create(iconUsageTypePK, iconPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(iconUsageTypePK, EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

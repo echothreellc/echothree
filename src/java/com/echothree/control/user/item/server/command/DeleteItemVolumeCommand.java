@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemVolumeCommand
@@ -56,6 +56,16 @@ public class DeleteItemVolumeCommand
                 new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of DeleteItemVolumeCommand */
     public DeleteItemVolumeCommand() {
@@ -64,18 +74,16 @@ public class DeleteItemVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-        var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
                     unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
+                var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
 
                 if(!hasExecutionErrors()) {
                     var itemVolume = itemControl.getItemVolumeForUpdate(item, unitOfMeasureType, itemVolumeType);

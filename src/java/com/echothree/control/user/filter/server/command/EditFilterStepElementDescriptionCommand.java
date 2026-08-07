@@ -75,6 +75,7 @@ public class EditFilterStepElementDescriptionCommand
 
     @Inject
     PartyControl partyControl;
+
     
     /** Creates a new instance of EditFilterStepElementDescriptionCommand */
     public EditFilterStepElementDescriptionCommand() {

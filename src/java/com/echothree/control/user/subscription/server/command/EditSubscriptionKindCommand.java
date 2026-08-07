@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSubscriptionKindCommand
@@ -66,6 +66,9 @@ public class EditSubscriptionKindCommand
         );
     }
 
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     /** Creates a new instance of EditSubscriptionKindCommand */
     public EditSubscriptionKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -83,7 +86,6 @@ public class EditSubscriptionKindCommand
 
     @Override
     public SubscriptionKind getEntity(EditSubscriptionKindResult result) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKind subscriptionKind;
         var subscriptionKindName = spec.getSubscriptionKindName();
 
@@ -107,14 +109,11 @@ public class EditSubscriptionKindCommand
 
     @Override
     public void fillInResult(EditSubscriptionKindResult result, SubscriptionKind subscriptionKind) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-
         result.setSubscriptionKind(subscriptionControl.getSubscriptionKindTransfer(getUserVisit(), subscriptionKind));
     }
 
     @Override
     public void doLock(SubscriptionKindEdit edit, SubscriptionKind subscriptionKind) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescription(subscriptionKind, getPreferredLanguage());
         var subscriptionKindDetail = subscriptionKind.getLastDetail();
 
@@ -129,7 +128,6 @@ public class EditSubscriptionKindCommand
 
     @Override
     public void canUpdate(SubscriptionKind subscriptionKind) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindName = edit.getSubscriptionKindName();
         var duplicateSubscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
 
@@ -140,7 +138,6 @@ public class EditSubscriptionKindCommand
 
     @Override
     public void doUpdate(SubscriptionKind subscriptionKind) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var partyPK = getPartyPK();
         var subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueForUpdate(subscriptionKind);
         var subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescriptionForUpdate(subscriptionKind, getPreferredLanguage());

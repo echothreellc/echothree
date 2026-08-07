@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSequenceCommand
@@ -60,6 +60,12 @@ public class GetSequenceCommand
         );
     }
 
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceLogic sequenceLogic;
+
     /** Creates a new instance of GetSequenceCommand */
     public GetSequenceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,7 +73,7 @@ public class GetSequenceCommand
 
     @Override
     protected Sequence getEntity() {
-        var sequence = SequenceLogic.getInstance().getSequenceByUniversalSpec(this, form, true);
+        var sequence = sequenceLogic.getSequenceByUniversalSpec(this, form, true);
 
         if(sequence != null) {
             sendEvent(sequence.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +84,6 @@ public class GetSequenceCommand
 
     @Override
     protected BaseResult getResult(Sequence sequence) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceResult();
 
         if(sequence != null) {

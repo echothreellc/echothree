@@ -30,7 +30,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -40,13 +39,16 @@ public class ContactListChainLogic
         extends BaseLogic {
 
     @Inject
+    ChainControl chainControl;
+
+    @Inject
+    protected ChainInstanceLogic chainInstanceLogic;
+
+    @Inject
     protected ChainLogic chainLogic;
 
     @Inject
     protected ChainTypeLogic chainTypeLogic;
-
-    @Inject
-    protected ChainInstanceLogic chainInstanceLogic;
 
     protected ContactListChainLogic() {
         super();
@@ -97,7 +99,6 @@ public class ContactListChainLogic
         var chainInstance = createChainInstance(eea, ChainKinds.CONTACT_LIST.name(), chainTypeName, partyContactList, createdBy);
         
         if(chainInstance != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
             
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,

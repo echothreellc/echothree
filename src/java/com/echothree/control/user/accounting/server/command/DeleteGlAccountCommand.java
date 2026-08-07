@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGlAccountCommand
@@ -53,6 +54,10 @@ public class DeleteGlAccountCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    GlAccountLogic glAccountLogic;
+
     
     /** Creates a new instance of DeleteGlAccountCommand */
     public DeleteGlAccountCommand() {
@@ -61,10 +66,10 @@ public class DeleteGlAccountCommand
     
     @Override
     protected BaseResult execute() {
-        var glAccount = GlAccountLogic.getInstance().getGlAccountByUniversalSpecForUpdate(this, form, false, null);
+        var glAccount = glAccountLogic.getGlAccountByUniversalSpecForUpdate(this, form, false, null);
 
         if(!hasExecutionErrors()) {
-            GlAccountLogic.getInstance().deleteGlAccount(this, glAccount, getPartyPK());
+            glAccountLogic.deleteGlAccount(this, glAccount, getPartyPK());
         }
 
         return null;

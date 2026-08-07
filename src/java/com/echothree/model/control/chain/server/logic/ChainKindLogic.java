@@ -41,6 +41,12 @@ import javax.inject.Inject;
 public class ChainKindLogic
         extends BaseLogic {
 
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ChainKindLogic() {
         super();
     }
@@ -48,9 +54,6 @@ public class ChainKindLogic
     public static ChainKindLogic getInstance() {
         return CDI.current().select(ChainKindLogic.class).get();
     }
-
-    @Inject
-    ChainControl chainControl;
 
     public ChainKind createChainKind(final ExecutionErrorAccumulator eea, final String chainKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
@@ -93,7 +96,7 @@ public class ChainKindLogic
             final ChainKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ChainKind chainKind = null;
         var chainKindName = universalSpec.getChainKindName();
-        var parameterCount = (chainKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (chainKindName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class ChainKindLogic
             }
             case 1 -> {
                 if(chainKindName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainKind.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

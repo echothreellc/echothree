@@ -39,15 +39,16 @@ public class GetPaymentProcessorActionTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
+
     
     /** Creates a new instance of GetPaymentProcessorActionTypesCommand */
     public GetPaymentProcessorActionTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
-
     @Override
     protected void handleForm() {
         // No form fields.

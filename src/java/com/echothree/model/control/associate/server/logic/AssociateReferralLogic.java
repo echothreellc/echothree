@@ -28,10 +28,17 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class AssociateReferralLogic
         extends BaseLogic {
+
+    @Inject
+    AssociateControl associateControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
 
     protected AssociateReferralLogic() {
         super();
@@ -47,7 +54,6 @@ public class AssociateReferralLogic
         AssociateReferral associateReferral;
 
         if(associateName != null) {
-            var associateControl = Session.getModelController(AssociateControl.class);
             var associateProgramName = spec.getAssociateProgramName();
             var associateProgram = associateProgramName == null ? associateControl.getDefaultAssociateProgram() :
                 associateControl.getAssociateProgramByName(associateProgramName);
@@ -66,8 +72,6 @@ public class AssociateReferralLogic
                                 associateProgram.getLastDetail().getAssociateProgramName(),
                                 associate.getLastDetail().getAssociateName(), associatePartyContactMechanismName);
                     } else {
-                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
                         associateReferral = associateControl.createAssociateReferral(associate, associatePartyContactMechanism,
                                 entityInstanceControl.getEntityInstanceByBasePK(targetPK), session.getStartTime(), partyPK);
 

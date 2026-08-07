@@ -53,14 +53,14 @@ public class GetCancellationReasonTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationReasonType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationReasonName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject
@@ -68,6 +68,7 @@ public class GetCancellationReasonTypesCommand
 
     @Inject
     CancellationKindLogic cancellationKindLogic;
+
     
     /** Creates a new instance of GetCancellationReasonTypesCommand */
     public GetCancellationReasonTypesCommand() {

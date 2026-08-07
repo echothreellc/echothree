@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLocationCapacityCommand
@@ -56,8 +56,15 @@ public class CreateLocationCapacityCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Capacity", FieldType.UNSIGNED_LONG, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of CreateLocationCapacityCommand */
     public CreateLocationCapacityCommand() {
@@ -66,7 +73,6 @@ public class CreateLocationCapacityCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -75,7 +81,6 @@ public class CreateLocationCapacityCommand
             var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 

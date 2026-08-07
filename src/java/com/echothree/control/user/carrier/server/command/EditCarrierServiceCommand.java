@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCarrierServiceCommand
@@ -58,8 +58,8 @@ public class EditCarrierServiceCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CarrierService.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null),
@@ -75,6 +75,13 @@ public class EditCarrierServiceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of EditCarrierServiceCommand */
     public EditCarrierServiceCommand() {
@@ -95,7 +102,6 @@ public class EditCarrierServiceCommand
 
     @Override
     public CarrierService getEntity(EditCarrierServiceResult result) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierService carrierService = null;
         var carrierName = spec.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
@@ -130,8 +136,6 @@ public class EditCarrierServiceCommand
 
     @Override
     public void fillInResult(EditCarrierServiceResult result, CarrierService carrierService) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
-
         result.setCarrierService(carrierControl.getCarrierServiceTransfer(getUserVisit(), carrierService));
     }
 
@@ -140,7 +144,6 @@ public class EditCarrierServiceCommand
 
     @Override
     public void doLock(CarrierServiceEdit edit, CarrierService carrierService) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierServiceDescription = carrierControl.getCarrierServiceDescription(carrierService, getPreferredLanguage());
         var carrierServiceDetail = carrierService.getLastDetail();
 
@@ -160,7 +163,6 @@ public class EditCarrierServiceCommand
 
     @Override
     public void canUpdate(CarrierService carrierService) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierServiceName = edit.getCarrierServiceName();
         var duplicateCarrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
 
@@ -168,7 +170,6 @@ public class EditCarrierServiceCommand
             var geoCodeSelectorName = edit.getGeoCodeSelectorName();
 
             if(geoCodeSelectorName != null) {
-                var selectorControl = Session.getModelController(SelectorControl.class);
                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                 if(selectorKind != null) {
@@ -190,7 +191,6 @@ public class EditCarrierServiceCommand
                 var itemSelectorName = edit.getItemSelectorName();
 
                 if(itemSelectorName != null) {
-                    var selectorControl = Session.getModelController(SelectorControl.class);
                     var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
@@ -221,7 +221,6 @@ public class EditCarrierServiceCommand
 
     @Override
     public void doUpdate(CarrierService carrierService) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
         var carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueForUpdate(carrierService);
         var carrierServiceDescription = carrierControl.getCarrierServiceDescriptionForUpdate(carrierService, getPreferredLanguage());

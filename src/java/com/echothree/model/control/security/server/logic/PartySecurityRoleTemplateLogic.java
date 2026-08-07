@@ -50,6 +50,9 @@ public class PartySecurityRoleTemplateLogic
     @Inject
     protected TrainingControl trainingControl;
 
+    @Inject
+    PartyTrainingClassLogic partyTrainingClassLogic;
+
     protected PartySecurityRoleTemplateLogic() {
         super();
     }
@@ -182,7 +185,7 @@ public class PartySecurityRoleTemplateLogic
                         PartyTrainingClassStatusConstants.WorkflowStep_ASSIGNED, PartyTrainingClassStatusConstants.WorkflowStep_TRAINING);
 
                 if(partyTrainingClasses.isEmpty()) {
-                    preparedPartyTrainingClasses.add(PartyTrainingClassLogic.getInstance().preparePartyTrainingClass(eea, party, trainingClass, null, null));
+                    preparedPartyTrainingClasses.add(partyTrainingClassLogic.preparePartyTrainingClass(eea, party, trainingClass, null, null));
                 }
 
                 if(eea.hasExecutionErrors()) {
@@ -204,7 +207,7 @@ public class PartySecurityRoleTemplateLogic
 
         // If Party does not have a PartyTrainingClass for this TrainingClass in either ASSIGNED or TRAINING, then assign it to them.
         preparedPartySecurityRoleTemplateTrainingClass.getPreparedPartyTrainingClasses().forEach((preparedPartyTrainingClass) -> {
-            PartyTrainingClassLogic.getInstance().createPartyTrainingClass(session, preparedPartyTrainingClass, createdBy);
+            partyTrainingClassLogic.createPartyTrainingClass(session, preparedPartyTrainingClass, createdBy);
         });
 
         return partySecurityRoleTemplateTrainingClass;
@@ -224,7 +227,7 @@ public class PartySecurityRoleTemplateLogic
             partySecurityRoleTemplateUses.stream().map((partySecurityRoleTemplateUse) -> partySecurityRoleTemplateUse.getParty()).map((party) -> trainingControl.getPartyTrainingClassesByStatusesForUpdate(party, trainingClass,
                     PartyTrainingClassStatusConstants.WorkflowStep_ASSIGNED)).filter((partyTrainingClasses) -> (partyTrainingClasses.size() > 0)).forEach((partyTrainingClasses) -> {
                         partyTrainingClasses.forEach((partyTrainingClass) -> {
-                            PartyTrainingClassLogic.getInstance().deletePartyTrainingClass(partyTrainingClass, deletedBy);
+                            partyTrainingClassLogic.deletePartyTrainingClass(partyTrainingClass, deletedBy);
                 });
             });
         }

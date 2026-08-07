@@ -62,6 +62,7 @@ public class GetApplicationEditorUseCommand
 
     @Inject
     ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of GetApplicationEditorUseCommand */
     public GetApplicationEditorUseCommand() {

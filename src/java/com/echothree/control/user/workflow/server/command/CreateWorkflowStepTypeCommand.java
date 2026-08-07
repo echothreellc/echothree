@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkflowStepTypeCommand
@@ -47,6 +48,10 @@ public class CreateWorkflowStepTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    WorkflowStepTypeLogic workflowStepTypeLogic;
+
     
     /** Creates a new instance of CreateWorkflowStepTypeCommand */
     public CreateWorkflowStepTypeCommand() {
@@ -59,7 +64,7 @@ public class CreateWorkflowStepTypeCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        WorkflowStepTypeLogic.getInstance().createWorkflowStepType(this, workflowStepTypeName, isDefault, sortOrder, null,
+        workflowStepTypeLogic.createWorkflowStepType(this, workflowStepTypeName, isDefault, sortOrder, null,
                 null, getPartyPK());
 
         return null;

@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSecurityRolePartyTypeCommand
@@ -59,8 +59,8 @@ public class EditSecurityRolePartyTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SecurityRolePartyType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,6 +72,15 @@ public class EditSecurityRolePartyTypeCommand
                 new FieldDefinition("PartySelectorName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SelectorControl selectorControl;
 
     /** Creates a new instance of EditSecurityRolePartyTypeCommand */
     public EditSecurityRolePartyTypeCommand() {
@@ -92,7 +101,6 @@ public class EditSecurityRolePartyTypeCommand
     
     @Override
     public SecurityRolePartyType getEntity(EditSecurityRolePartyTypeResult result) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRolePartyType securityRolePartyType = null;
         var securityRoleGroupName = spec.getSecurityRoleGroupName();
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
@@ -102,7 +110,6 @@ public class EditSecurityRolePartyTypeCommand
             var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
             if(securityRole != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyTypeName = spec.getPartyTypeName();
                 
                 partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -137,8 +144,6 @@ public class EditSecurityRolePartyTypeCommand
 
     @Override
     public void fillInResult(EditSecurityRolePartyTypeResult result, SecurityRolePartyType securityRolePartyType) {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         result.setSecurityRolePartyType(securityControl.getSecurityRolePartyTypeTransfer(getUserVisit(), securityRolePartyType));
     }
 
@@ -159,7 +164,6 @@ public class EditSecurityRolePartyTypeCommand
             var partyTypeName = partyType.getPartyTypeName();
             
             if(partyType.getAllowUserLogins()) {
-                var selectorControl = Session.getModelController(SelectorControl.class);
                 var selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                 if(selectorKind != null) {
@@ -186,7 +190,6 @@ public class EditSecurityRolePartyTypeCommand
     
     @Override
     public void doUpdate(SecurityRolePartyType securityRolePartyType) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRolePartyTypeValue = securityControl.getSecurityRolePartyTypeValue(securityRolePartyType);
         
         securityRolePartyTypeValue.setPartySelectorPK(partySelector == null? null: partySelector.getPrimaryKey());

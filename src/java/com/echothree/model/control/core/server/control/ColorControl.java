@@ -42,10 +42,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ColorControl
         extends BaseCoreControl {
+
+    @Inject
+    protected AppearanceControl appearanceControl;
 
     /** Creates a new instance of ColorControl */
     protected ColorControl() {
@@ -55,6 +59,12 @@ public class ColorControl
     // --------------------------------------------------------------------------------
     //   Colors
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ColorFactory colorFactory;
+
+    @Inject
+    protected ColorDetailFactory colorDetailFactory;
 
     public Color createColor(String colorName, Integer red, Integer green, Integer blue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultColor = getDefaultColor();
@@ -69,12 +79,12 @@ public class ColorControl
             isDefault = true;
         }
 
-        var color = ColorFactory.getInstance().create();
-        var colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
+        var color = colorFactory.create();
+        var colorDetail = colorDetailFactory.create(color, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, color.getPrimaryKey());
+        color = colorFactory.getEntityFromPK(EntityPermission.READ_WRITE, color.getPrimaryKey());
         color.setActiveDetail(colorDetail);
         color.setLastDetail(colorDetail);
         color.store();
@@ -88,7 +98,7 @@ public class ColorControl
     public Color getColorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ColorPK(entityInstance.getEntityUniqueId());
 
-        return ColorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return colorFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Color getColorByEntityInstance(EntityInstance entityInstance) {
@@ -113,21 +123,25 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_colorname = ?");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_colorname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_colorname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_colorname = ?
+                FOR UPDATE
+                """);
         getColorByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private Color getColorByName(String colorName, EntityPermission entityPermission) {
-        return ColorFactory.getInstance().getEntityFromQuery(entityPermission, getColorByNameQueries, colorName);
+        return colorFactory.getEntityFromQuery(entityPermission, getColorByNameQueries, colorName);
     }
 
     public Color getColorByName(String colorName) {
@@ -152,21 +166,25 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultColorQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private Color getDefaultColor(EntityPermission entityPermission) {
-        return ColorFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultColorQueries);
+        return colorFactory.getEntityFromQuery(entityPermission, getDefaultColorQueries);
     }
 
     public Color getDefaultColor() {
@@ -187,21 +205,25 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "ORDER BY clrdt_sortorder, clrdt_colorname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                ORDER BY clrdt_sortorder, clrdt_colorname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                FOR UPDATE
+                """);
         getColorsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Color> getColors(EntityPermission entityPermission) {
-        return ColorFactory.getInstance().getEntitiesFromQuery(entityPermission, getColorsQueries);
+        return colorFactory.getEntitiesFromQuery(entityPermission, getColorsQueries);
     }
 
     public List<Color> getColors() {
@@ -266,7 +288,7 @@ public class ColorControl
 
     private void updateColorFromValue(ColorDetailValue colorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(colorDetailValue.hasBeenModified()) {
-            var color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var color = colorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     colorDetailValue.getColorPK());
             var colorDetail = color.getActiveDetailForUpdate();
 
@@ -297,7 +319,7 @@ public class ColorControl
                 }
             }
 
-            colorDetail = ColorDetailFactory.getInstance().create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
+            colorDetail = colorDetailFactory.create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             color.setActiveDetail(colorDetail);
@@ -312,7 +334,6 @@ public class ColorControl
     }
 
     private void deleteColor(Color color, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var colorDetail = color.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearancesByColor(color, deletedBy);
@@ -361,8 +382,11 @@ public class ColorControl
     //   Color Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ColorDescriptionFactory colorDescriptionFactory;
+
     public ColorDescription createColorDescription(Color color, Language language, String description, BasePK createdBy) {
-        var colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
+        var colorDescription = colorDescriptionFactory.create(color, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -376,19 +400,23 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM colordescriptions
+                WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colordescriptions
+                WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?
+                FOR UPDATE
+                """);
         getColorDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private ColorDescription getColorDescription(Color color, Language language, EntityPermission entityPermission) {
-        return ColorDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getColorDescriptionQueries,
+        return colorDescriptionFactory.getEntityFromQuery(entityPermission, getColorDescriptionQueries,
                 color, language, Session.MAX_TIME);
     }
 
@@ -414,20 +442,24 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions, languages " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? AND clrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM colordescriptions, languages
+                WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? AND clrd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colordescriptions
+                WHERE clrd_clr_colorid = ? AND clrd_thrutime = ?
+                FOR UPDATE
+                """);
         getColorDescriptionsByColorQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<ColorDescription> getColorDescriptionsByColor(Color color, EntityPermission entityPermission) {
-        return ColorDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getColorDescriptionsByColorQueries,
+        return colorDescriptionFactory.getEntitiesFromQuery(entityPermission, getColorDescriptionsByColorQueries,
                 color, Session.MAX_TIME);
     }
 
@@ -473,7 +505,7 @@ public class ColorControl
 
     public void updateColorDescriptionFromValue(ColorDescriptionValue colorDescriptionValue, BasePK updatedBy) {
         if(colorDescriptionValue.hasBeenModified()) {
-            var colorDescription = ColorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var colorDescription = colorDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     colorDescriptionValue.getPrimaryKey());
 
             colorDescription.setThruTime(session.getStartTime());
@@ -483,7 +515,7 @@ public class ColorControl
             var language = colorDescription.getLanguage();
             var description = colorDescriptionValue.getDescription();
 
-            colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
+            colorDescription = colorDescriptionFactory.create(color, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

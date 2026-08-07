@@ -58,8 +58,8 @@ public class EditPartyTrainingClassSessionAnswerCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClassSessionAnswer.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -75,7 +75,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
                 new FieldDefinition("QuestionEndTime", FieldType.DATE_TIME, false, null, null)
                 );
     }
-    
+
     @Inject
     private TrainingControl trainingControl;
 
@@ -93,6 +93,8 @@ public class EditPartyTrainingClassSessionAnswerCommand
 
     @Inject
     private TrainingClassSectionLogic trainingClassSectionLogic;
+
+
     
     /** Creates a new instance of EditPartyTrainingClassSessionAnswerCommand */
     public EditPartyTrainingClassSessionAnswerCommand() {

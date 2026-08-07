@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetBaseEncryptionKeyStatusCommand
@@ -42,13 +42,17 @@ public class SetBaseEncryptionKeyStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("BaseEncryptionKeyName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("BaseEncryptionKeyStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("BaseEncryptionKeyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("BaseEncryptionKeyStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EncryptionKeyControl encryptionKeyControl;
+
     
     /** Creates a new instance of SetBaseEncryptionKeyStatusCommand */
     public SetBaseEncryptionKeyStatusCommand() {
@@ -57,7 +61,6 @@ public class SetBaseEncryptionKeyStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
         var baseEncryptionKey = encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         

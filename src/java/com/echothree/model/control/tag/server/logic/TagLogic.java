@@ -31,13 +31,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TagLogic
     extends BaseLogic {
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TagScopeLogic tagScopeLogic;
 
     protected TagLogic() {
         super();
@@ -49,7 +58,6 @@ public class TagLogic
 
     public Tag createTag(final ExecutionErrorAccumulator eea, final TagScope tagScope, final String tagName,
             final BasePK createdBy) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tag = tagControl.getTagByName(tagScope, tagName);
 
         if(tag == null) {
@@ -64,7 +72,6 @@ public class TagLogic
 
     public Tag getTagByName(final ExecutionErrorAccumulator eea, final TagScope tagScope, final String tagName,
             final EntityPermission entityPermission) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tag = tagControl.getTagByName(tagScope, tagName, entityPermission);
 
         if(tag == null) {
@@ -85,7 +92,7 @@ public class TagLogic
 
     public Tag getTagByName(final ExecutionErrorAccumulator eea, final String tagScopeName, final String tagName,
             final EntityPermission entityPermission) {
-        var tagScope = TagScopeLogic.getInstance().getTagScopeByName(eea, tagScopeName);
+        var tagScope = tagScopeLogic.getTagScopeByName(eea, tagScopeName);
 
         return eea.hasExecutionErrors() ? null : getTagByName(eea, tagScope, tagName, entityPermission);
     }
@@ -100,17 +107,16 @@ public class TagLogic
 
     public Tag getTagByUniversalSpec(final ExecutionErrorAccumulator eea, final TagUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = universalSpec.getTagScopeName();
         var tagName = universalSpec.getTagName();
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         var parameterCount = (tagScopeName == null ? 0 : 1) + (tagName == null ? 0 : 1) + possibleEntitySpecs;
         Tag tag = null;
 
         switch(parameterCount) {
             case 1 -> {
                 if(possibleEntitySpecs == 1) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Tag.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -144,8 +150,6 @@ public class TagLogic
 
     public void deleteTag(final ExecutionErrorAccumulator eea, final Tag tag,
             final BasePK deletedBy) {
-        var tagControl = Session.getModelController(TagControl.class);
-
         tagControl.deleteTag(tag, deletedBy);
     }
 

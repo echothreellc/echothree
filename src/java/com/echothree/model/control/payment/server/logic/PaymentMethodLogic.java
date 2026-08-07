@@ -35,10 +35,14 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentMethodLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
 
     protected PaymentMethodLogic() {
         super();
@@ -49,7 +53,6 @@ public class PaymentMethodLogic
     }
 
     private PaymentMethod getPaymentMethodByName(final ExecutionErrorAccumulator eea, final String paymentMethodName, final EntityPermission entityPermission) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName, entityPermission);
 
         if(paymentMethod == null) {

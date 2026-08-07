@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSequenceTypeCommand
@@ -55,8 +55,8 @@ public class EditSequenceTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SequenceType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -74,6 +74,10 @@ public class EditSequenceTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditSequenceTypeCommand */
     public EditSequenceTypeCommand() {
@@ -92,7 +96,6 @@ public class EditSequenceTypeCommand
     
     @Override
     public SequenceType getEntity(EditSequenceTypeResult result) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceType sequenceType;
         var sequenceTypeName = spec.getSequenceTypeName();
 
@@ -118,8 +121,6 @@ public class EditSequenceTypeCommand
     
     @Override
     public void fillInResult(EditSequenceTypeResult result, SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-        
         result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));
     }
     
@@ -127,7 +128,6 @@ public class EditSequenceTypeCommand
     
     @Override
     public void doLock(SequenceTypeEdit edit, SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeDescription = sequenceControl.getSequenceTypeDescription(sequenceType, getPreferredLanguage());
         var sequenceTypeDetail = sequenceType.getLastDetail();
         var chunkSize = sequenceTypeDetail.getChunkSize();
@@ -151,7 +151,6 @@ public class EditSequenceTypeCommand
     
     @Override
     public void canUpdate(SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = edit.getSequenceTypeName();
         var duplicateSequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
@@ -194,7 +193,6 @@ public class EditSequenceTypeCommand
     
     @Override
     public void doUpdate(SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var partyPK = getPartyPK();
         var sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueForUpdate(sequenceType);
         var sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, getPreferredLanguage());

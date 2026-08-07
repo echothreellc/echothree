@@ -61,16 +61,16 @@ public class GetFilterAdjustmentPercentsCommand
         );
     }
 
-    /** Creates a new instance of GetFilterAdjustmentPercentsCommand */
-    public GetFilterAdjustmentPercentsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterAdjustmentLogic filterAdjustmentLogic;
+
+    /** Creates a new instance of GetFilterAdjustmentPercentsCommand */
+    public GetFilterAdjustmentPercentsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     FilterAdjustment filterAdjustment;
 

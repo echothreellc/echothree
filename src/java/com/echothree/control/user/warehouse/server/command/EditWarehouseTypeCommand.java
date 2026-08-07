@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWarehouseTypeCommand
@@ -53,8 +53,8 @@ public class EditWarehouseTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WarehouseType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -68,6 +68,9 @@ public class EditWarehouseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
 
     /** Creates a new instance of EditWarehouseTypeCommand */
     public EditWarehouseTypeCommand() {
@@ -86,7 +89,6 @@ public class EditWarehouseTypeCommand
 
     @Override
     public WarehouseType getEntity(EditWarehouseTypeResult result) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         WarehouseType warehouseType;
         var warehouseTypeName = spec.getWarehouseTypeName();
 
@@ -110,14 +112,11 @@ public class EditWarehouseTypeCommand
 
     @Override
     public void fillInResult(EditWarehouseTypeResult result, WarehouseType warehouseType) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         result.setWarehouseType(warehouseControl.getWarehouseTypeTransfer(getUserVisit(), warehouseType));
     }
 
     @Override
     public void doLock(WarehouseTypeEdit edit, WarehouseType warehouseType) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescription(warehouseType, getPreferredLanguage());
         var warehouseTypeDetail = warehouseType.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditWarehouseTypeCommand
 
     @Override
     public void canUpdate(WarehouseType warehouseType) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseTypeName = edit.getWarehouseTypeName();
         var duplicateWarehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
 
@@ -144,7 +142,6 @@ public class EditWarehouseTypeCommand
 
     @Override
     public void doUpdate(WarehouseType warehouseType) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var partyPK = getPartyPK();
         var warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueForUpdate(warehouseType);
         var warehouseTypeDescription = warehouseControl.getWarehouseTypeDescriptionForUpdate(warehouseType, getPreferredLanguage());

@@ -55,17 +55,19 @@ public class GetPartyTrainingClassStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetPartyTrainingClassStatusChoicesCommand */
-    public GetPartyTrainingClassStatusChoicesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     TrainingControl trainingControl;
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
+
+    /** Creates a new instance of GetPartyTrainingClassStatusChoicesCommand */
+    public GetPartyTrainingClassStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
     
     @Override
     protected BaseResult execute() {

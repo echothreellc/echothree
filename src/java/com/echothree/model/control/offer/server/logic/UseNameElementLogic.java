@@ -31,13 +31,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UseNameElementLogic
         extends BaseLogic {
+
+    @Inject
+    UseNameElementControl useNameElementControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected UseNameElementLogic() {
         super();
@@ -50,7 +56,6 @@ public class UseNameElementLogic
     public UseNameElement createUseNameElement(final ExecutionErrorAccumulator eea, final String useNameElementName,
             final Integer offset, final Integer length, final String validationPattern, final Language language, final String description,
             final BasePK createdBy) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
 
         if(useNameElement == null) {
@@ -70,7 +75,6 @@ public class UseNameElementLogic
 
     public UseNameElement getUseNameElementByName(final ExecutionErrorAccumulator eea, final String useNameElementName,
             final EntityPermission entityPermission) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName, entityPermission);
 
         if(useNameElement == null) {
@@ -90,14 +94,13 @@ public class UseNameElementLogic
 
     public UseNameElement getUseNameElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElementName = universalSpec.getUseNameElementName();
-        var parameterCount = (useNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (useNameElementName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         UseNameElement useNameElement = null;
 
         if(parameterCount == 1) {
             if(useNameElementName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.UseNameElement.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {
@@ -125,8 +128,6 @@ public class UseNameElementLogic
 
     public void deleteUseNameElement(final ExecutionErrorAccumulator eea, final UseNameElement useNameElement,
             final BasePK deletedBy) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
-
         useNameElementControl.deleteUseNameElement(useNameElement, deletedBy);
     }
 

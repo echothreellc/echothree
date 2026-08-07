@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionTimeTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetTransactionTimeTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TransactionTimeType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultTransactionTimeTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
     
     /** Creates a new instance of GetTransactionTimeTypeChoicesCommand */
     public GetTransactionTimeTypeChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetTransactionTimeTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var result = AccountingResultFactory.getGetTransactionTimeTypeChoicesResult();
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var defaultTransactionTimeTypeChoice = form.getDefaultTransactionTimeTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

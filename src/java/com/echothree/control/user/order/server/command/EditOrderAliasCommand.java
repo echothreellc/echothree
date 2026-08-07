@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderAliasCommand
@@ -59,6 +59,16 @@ public class EditOrderAliasCommand
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of EditOrderAliasCommand */
     public EditOrderAliasCommand() {
@@ -89,18 +99,15 @@ public class EditOrderAliasCommand
     
     @Override
     public OrderAlias getEntity(EditOrderAliasResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAlias orderAlias = null;
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderControl = Session.getModelController(OrderControl.class);
             var orderName = spec.getOrderName();
             var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
-                var orderAliasControl = Session.getModelController(OrderAliasControl.class);
                 var orderAliasTypeName = spec.getOrderAliasTypeName();
 
                 orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
@@ -137,8 +144,6 @@ public class EditOrderAliasCommand
 
     @Override
     public void fillInResult(EditOrderAliasResult result, OrderAlias orderAlias) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-
         result.setOrderAlias(orderAliasControl.getOrderAliasTransfer(getUserVisit(), orderAlias));
     }
 
@@ -149,7 +154,6 @@ public class EditOrderAliasCommand
 
     @Override
     public void canUpdate(OrderAlias orderAlias) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var alias = edit.getAlias();
         var duplicateOrderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
 
@@ -163,7 +167,6 @@ public class EditOrderAliasCommand
 
     @Override
     public void doUpdate(OrderAlias orderAlias) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var orderAliasValue = orderAliasControl.getOrderAliasValue(orderAlias);
 
         orderAliasValue.setAlias(edit.getAlias());

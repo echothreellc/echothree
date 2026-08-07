@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemImageTypeCommand
@@ -44,8 +45,8 @@ public class DeleteItemImageTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -53,6 +54,10 @@ public class DeleteItemImageTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ItemImageTypeLogic itemImageTypeLogic;
+
     
     /** Creates a new instance of DeleteItemImageTypeCommand */
     public DeleteItemImageTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteItemImageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemImageType = ItemImageTypeLogic.getInstance().getItemImageTypeByUniversalSpecForUpdate(this, form, false);
+        var itemImageType = itemImageTypeLogic.getItemImageTypeByUniversalSpecForUpdate(this, form, false);
         
         if(!hasExecutionErrors()) {
-            ItemImageTypeLogic.getInstance().deleteItemImageType(this, itemImageType, getPartyPK());
+            itemImageTypeLogic.deleteItemImageType(this, itemImageType, getPartyPK());
         }
         
         return null;

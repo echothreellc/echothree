@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFontWeightDescriptionCommand
@@ -55,8 +55,8 @@ public class EditFontWeightDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FontWeight.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FontWeightName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditFontWeightDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    FontControl fontControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditFontWeightDescriptionCommand */
     public EditFontWeightDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditFontWeightDescriptionCommand
 
     @Override
     public FontWeightDescription getEntity(EditFontWeightDescriptionResult result) {
-        var fontControl = Session.getModelController(FontControl.class);
         FontWeightDescription fontWeightDescription = null;
         var fontWeightName = spec.getFontWeightName();
         var fontWeight = fontControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditFontWeightDescriptionCommand
 
     @Override
     public void fillInResult(EditFontWeightDescriptionResult result, FontWeightDescription fontWeightDescription) {
-        var fontControl = Session.getModelController(FontControl.class);
-
         result.setFontWeightDescription(fontControl.getFontWeightDescriptionTransfer(getUserVisit(), fontWeightDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditFontWeightDescriptionCommand
 
     @Override
     public void doUpdate(FontWeightDescription fontWeightDescription) {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontWeightDescriptionValue = fontControl.getFontWeightDescriptionValue(fontWeightDescription);
         fontWeightDescriptionValue.setDescription(edit.getDescription());
 

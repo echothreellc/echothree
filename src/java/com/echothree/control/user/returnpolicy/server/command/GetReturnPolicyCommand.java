@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnPolicyCommand
@@ -46,6 +46,13 @@ public class GetReturnPolicyCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ReturnPolicyLogic returnPolicyLogic;
+
     
     /** Creates a new instance of GetReturnPolicyCommand */
     public GetReturnPolicyCommand() {
@@ -54,7 +61,7 @@ public class GetReturnPolicyCommand
 
     @Override
     protected ReturnPolicy getEntity() {
-        var returnPolicy = ReturnPolicyLogic.getInstance().getReturnPolicyByUniversalSpec(this, form, true);
+        var returnPolicy = returnPolicyLogic.getReturnPolicyByUniversalSpec(this, form, true);
 
         if(returnPolicy != null) {
             sendEvent(returnPolicy.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,8 +75,6 @@ public class GetReturnPolicyCommand
         var result = ReturnPolicyResultFactory.getGetReturnPolicyResult();
 
         if(returnPolicy != null) {
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
             result.setReturnPolicy(returnPolicyControl.getReturnPolicyTransfer(getUserVisit(), returnPolicy));
         }
 

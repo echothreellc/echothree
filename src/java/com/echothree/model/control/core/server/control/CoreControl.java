@@ -232,10 +232,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeTypeFactory entityAttributeTypeFactory;
-    
+
     public EntityAttributeType createEntityAttributeType(String entityAttributeTypeName) {
         var entityAttributeType = entityAttributeTypeFactory.create(entityAttributeTypeName);
         
@@ -346,10 +346,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeTypeDescriptionFactory entityAttributeTypeDescriptionFactory;
-    
+
     public EntityAttributeTypeDescription createEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language, String description) {
         var entityAttributeTypeDescription = entityAttributeTypeDescriptionFactory.create(entityAttributeType, language, description);
         
@@ -398,13 +398,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Groups
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeGroupFactory entityAttributeGroupFactory;
-    
+
     @Inject
     protected EntityAttributeGroupDetailFactory entityAttributeGroupDetailFactory;
-    
+
     public EntityAttributeGroup createEntityAttributeGroup(String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
         var defaultFound = defaultEntityAttributeGroup != null;
@@ -780,10 +780,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Group Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeGroupDescriptionFactory entityAttributeGroupDescriptionFactory;
-    
+
     public EntityAttributeGroupDescription createEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language, String description,
             BasePK createdBy) {
         var entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.create(entityAttributeGroup,
@@ -959,13 +959,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeFactory entityAttributeFactory;
-    
+
     @Inject
     protected EntityAttributeDetailFactory entityAttributeDetailFactory;
-    
+
     public EntityAttribute createEntityAttribute(EntityType entityType, String entityAttributeName,
             EntityAttributeType entityAttributeType, Boolean trackRevisions, Integer sortOrder, BasePK createdBy) {
         var entityAttribute = entityAttributeFactory.create();
@@ -1492,10 +1492,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeDescriptionFactory entityAttributeDescriptionFactory;
-    
+
     public EntityAttributeDescription createEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             String description, BasePK createdBy) {
         var entityAttributeDescription = entityAttributeDescriptionFactory.create(
@@ -1672,10 +1672,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Blobs
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeBlobFactory entityAttributeBlobFactory;
-    
+
     public EntityAttributeBlob createEntityAttributeBlob(EntityAttribute entityAttribute, Boolean checkContentWebAddress,
             BasePK createdBy) {
         var entityAttributeBlob = entityAttributeBlobFactory.create(
@@ -1761,10 +1761,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Strings
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeStringFactory entityAttributeStringFactory;
-    
+
     public EntityAttributeString createEntityAttributeString(EntityAttribute entityAttribute, String validationPattern,
             BasePK createdBy) {
         var entityAttributeString = entityAttributeStringFactory.create(
@@ -1850,10 +1850,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Integers
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeIntegerFactory entityAttributeIntegerFactory;
-    
+
     public EntityAttributeInteger createEntityAttributeInteger(EntityAttribute entityAttribute, Integer upperRangeIntegerValue,
             Integer upperLimitIntegerValue, Integer lowerLimitIntegerValue, Integer lowerRangeIntegerValue, BasePK createdBy) {
         var entityAttributeInteger = entityAttributeIntegerFactory.create(
@@ -1944,10 +1944,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Longs
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeLongFactory entityAttributeLongFactory;
-    
+
     public EntityAttributeLong createEntityAttributeLong(EntityAttribute entityAttribute, Long upperRangeLongValue,
             Long upperLimitLongValue, Long lowerLimitLongValue, Long lowerRangeLongValue, BasePK createdBy) {
         var entityAttributeLong = entityAttributeLongFactory.create(
@@ -2037,10 +2037,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Numerics
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeNumericFactory entityAttributeNumericFactory;
-    
+
     public EntityAttributeNumeric createEntityAttributeNumeric(EntityAttribute entityAttribute, UnitOfMeasureType unitOfMeasureType,
             BasePK createdBy) {
         var entityAttributeNumeric = entityAttributeNumericFactory.create(
@@ -2138,10 +2138,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute List Items
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeListItemFactory entityAttributeListItemFactory;
-    
+
     public EntityAttributeListItem createEntityAttributeListItem(EntityAttribute entityAttribute, Sequence entityListItemSequence,
             BasePK createdBy) {
         var entityAttributeListItem = entityAttributeListItemFactory.create(
@@ -2240,7 +2240,7 @@ public class CoreControl
 
     @Inject
     protected EntityAttributeWorkflowFactory entityAttributeWorkflowFactory;
-    
+
     public EntityAttributeWorkflow createEntityAttributeWorkflow(EntityAttribute entityAttribute, Workflow workflow,
             BasePK createdBy) {
         var entityAttributeWorkflow = entityAttributeWorkflowFactory.create(
@@ -2338,10 +2338,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Entity Attribute Groups
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeEntityAttributeGroupFactory entityAttributeEntityAttributeGroupFactory;
-    
+
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {
         var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(
@@ -2585,13 +2585,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity List Items
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityListItemFactory entityListItemFactory;
-    
+
     @Inject
     protected EntityListItemDetailFactory entityListItemDetailFactory;
-    
+
     public EntityListItem createEntityListItem(EntityAttribute entityAttribute, String entityListItemName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
@@ -2999,10 +2999,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity List Item Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityListItemDescriptionFactory entityListItemDescriptionFactory;
-    
+
     public EntityListItemDescription createEntityListItemDescription(EntityListItem entityListItem, Language language, String description, BasePK createdBy) {
         var entityListItemDescription = entityListItemDescriptionFactory.create(entityListItem, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -3174,13 +3174,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Integer Ranges
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityIntegerRangeFactory entityIntegerRangeFactory;
-    
+
     @Inject
     protected EntityIntegerRangeDetailFactory entityIntegerRangeDetailFactory;
-    
+
     public EntityIntegerRange createEntityIntegerRange(EntityAttribute entityAttribute, String entityIntegerRangeName, Integer minimumIntegerValue,
             Integer maximumIntegerValue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
@@ -3517,10 +3517,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Integer Range Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityIntegerRangeDescriptionFactory entityIntegerRangeDescriptionFactory;
-    
+
     public EntityIntegerRangeDescription createEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, String description, BasePK createdBy) {
         var entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.create(entityIntegerRange, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -3692,13 +3692,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Long Ranges
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityLongRangeFactory entityLongRangeFactory;
-    
+
     @Inject
     protected EntityLongRangeDetailFactory entityLongRangeDetailFactory;
-    
+
     public EntityLongRange createEntityLongRange(EntityAttribute entityAttribute, String entityLongRangeName, Long minimumLongValue, Long maximumLongValue,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
@@ -4035,10 +4035,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Long Range Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityLongRangeDescriptionFactory entityLongRangeDescriptionFactory;
-    
+
     public EntityLongRangeDescription createEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, String description, BasePK createdBy) {
         var entityLongRangeDescription = entityLongRangeDescriptionFactory.create(entityLongRange, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -4213,7 +4213,7 @@ public class CoreControl
 
     @Inject
     protected EntityBooleanDefaultFactory entityBooleanDefaultFactory;
-    
+
     public EntityBooleanDefault createEntityBooleanDefault(EntityAttribute entityAttribute, Boolean booleanAttribute,
             BasePK createdBy) {
         var entityBooleanDefault = entityBooleanDefaultFactory.create(entityAttribute,
@@ -4350,7 +4350,7 @@ public class CoreControl
 
     @Inject
     protected EntityBooleanAttributeFactory entityBooleanAttributeFactory;
-    
+
     public EntityBooleanAttribute createEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Boolean booleanAttribute, BasePK createdBy) {
         return createEntityBooleanAttribute(entityAttribute.getPrimaryKey(), entityInstance, booleanAttribute,
@@ -4548,7 +4548,7 @@ public class CoreControl
 
     @Inject
     protected EntityDateDefaultFactory entityDateDefaultFactory;
-    
+
     public EntityDateDefault createEntityDateDefault(EntityAttribute entityAttribute, Integer dateAttribute,
             BasePK createdBy) {
         var entityDateDefault = entityDateDefaultFactory.create(entityAttribute,
@@ -4685,7 +4685,7 @@ public class CoreControl
 
     @Inject
     protected EntityDateAttributeFactory entityDateAttributeFactory;
-    
+
     public EntityDateAttribute createEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer dateAttribute, BasePK createdBy) {
         return createEntityDateAttribute(entityAttribute.getPrimaryKey(), entityInstance, dateAttribute,
@@ -4882,7 +4882,7 @@ public class CoreControl
 
     @Inject
     protected EntityIntegerDefaultFactory entityIntegerDefaultFactory;
-    
+
     public EntityIntegerDefault createEntityIntegerDefault(EntityAttribute entityAttribute, Integer integerAttribute,
             BasePK createdBy) {
         var entityIntegerDefault = entityIntegerDefaultFactory.create(entityAttribute,
@@ -5019,7 +5019,7 @@ public class CoreControl
 
     @Inject
     protected EntityIntegerAttributeFactory entityIntegerAttributeFactory;
-    
+
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
         return createEntityIntegerAttribute(entityAttribute.getPrimaryKey(), entityInstance, integerAttribute,
@@ -5216,7 +5216,7 @@ public class CoreControl
 
     @Inject
     protected EntityListItemDefaultFactory entityListItemDefaultFactory;
-    
+
     public EntityListItemDefault createEntityListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
         var entityListItemDefault = entityListItemDefaultFactory.create(
@@ -5395,7 +5395,7 @@ public class CoreControl
 
     @Inject
     protected EntityListItemAttributeFactory entityListItemAttributeFactory;
-    
+
     public EntityListItemAttribute createEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
         return createEntityListItemAttribute(entityAttribute.getPrimaryKey(), entityInstance, entityListItem, createdBy);
@@ -5615,7 +5615,7 @@ public class CoreControl
 
     @Inject
     protected EntityLongDefaultFactory entityLongDefaultFactory;
-    
+
     public EntityLongDefault createEntityLongDefault(EntityAttribute entityAttribute, Long longAttribute,
             BasePK createdBy) {
         var entityLongDefault = entityLongDefaultFactory.create(entityAttribute,
@@ -5752,7 +5752,7 @@ public class CoreControl
 
     @Inject
     protected EntityLongAttributeFactory entityLongAttributeFactory;
-    
+
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
         return createEntityLongAttribute(entityAttribute.getPrimaryKey(), entityInstance, longAttribute,
@@ -5950,7 +5950,7 @@ public class CoreControl
 
     @Inject
     protected EntityMultipleListItemDefaultFactory entityMultipleListItemDefaultFactory;
-    
+
     public EntityMultipleListItemDefault createEntityMultipleListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
         var entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.create(
@@ -6157,7 +6157,7 @@ public class CoreControl
 
     @Inject
     protected EntityMultipleListItemAttributeFactory entityMultipleListItemAttributeFactory;
-    
+
     public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
         return createEntityMultipleListItemAttribute(entityAttribute.getPrimaryKey(), entityInstance, entityListItem, createdBy);
@@ -6377,10 +6377,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Name Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityNameAttributeFactory entityNameAttributeFactory;
-    
+
     public EntityNameAttribute createEntityNameAttribute(EntityAttribute entityAttribute, String nameAttribute,
             EntityInstance entityInstance, BasePK createdBy) {
         var entityNameAttribute = entityNameAttributeFactory.create(entityAttribute,
@@ -6595,7 +6595,7 @@ public class CoreControl
 
     @Inject
     protected EntityStringDefaultFactory entityStringDefaultFactory;
-    
+
     public EntityStringDefault createEntityStringDefault(EntityAttribute entityAttribute, Language language,
             String stringAttribute, BasePK createdBy) {
         var entityStringDefault = entityStringDefaultFactory.create(entityAttribute, language,
@@ -6781,7 +6781,7 @@ public class CoreControl
 
     @Inject
     protected EntityStringAttributeFactory entityStringAttributeFactory;
-    
+
     public EntityStringAttribute createEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String stringAttribute, BasePK createdBy) {
         return createEntityStringAttribute(entityAttribute.getPrimaryKey(), entityInstance, language, stringAttribute,
@@ -6993,7 +6993,7 @@ public class CoreControl
 
     @Inject
     protected EntityGeoPointDefaultFactory entityGeoPointDefaultFactory;
-    
+
     public EntityGeoPointDefault createEntityGeoPointDefault(EntityAttribute entityAttribute, Integer latitude,
             Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
         var entityGeoPointDefault = entityGeoPointDefaultFactory.create(entityAttribute,
@@ -7128,7 +7128,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Geo Point Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityGeoPointAttributeFactory entityGeoPointAttributeFactory;
 
@@ -7331,7 +7331,7 @@ public class CoreControl
 
     @Inject
     protected EntityTimeDefaultFactory entityTimeDefaultFactory;
-    
+
     public EntityTimeDefault createEntityTimeDefault(EntityAttribute entityAttribute, Long timeAttribute,
             BasePK createdBy) {
         var entityTimeDefault = entityTimeDefaultFactory.create(entityAttribute,
@@ -7465,7 +7465,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityTimeAttributeFactory entityTimeAttributeFactory;
 
@@ -7662,10 +7662,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Blob Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityBlobAttributeFactory entityBlobAttributeFactory;
-    
+
     public EntityBlobAttribute createEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, ByteArray blobAttribute, MimeType mimeType, BasePK createdBy) {
         var entityBlobAttribute = entityBlobAttributeFactory.create(entityAttribute,
@@ -7842,10 +7842,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Clob Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityClobAttributeFactory entityClobAttributeFactory;
-    
+
     public EntityClobAttribute createEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String clobAttribute, MimeType mimeType, BasePK createdBy) {
         var entityClobAttribute = entityClobAttributeFactory.create(entityAttribute,
@@ -8048,10 +8048,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Entity Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityAttributeEntityTypeFactory entityAttributeEntityTypeFactory;
-    
+
     public EntityAttributeEntityType createEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, BasePK createdBy) {
         var entityAttributeEntityType = entityAttributeEntityTypeFactory.create(entityAttribute, allowedEntityType,
                 session.getStartTime(), Session.MAX_TIME);
@@ -8236,10 +8236,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Entity Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityEntityAttributeFactory entityEntityAttributeFactory;
-    
+
     public EntityEntityAttribute createEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
         var entityEntityAttribute = entityEntityAttributeFactory.create(entityAttribute, entityInstance,
@@ -8453,10 +8453,10 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Collection Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityCollectionAttributeFactory entityCollectionAttributeFactory;
-    
+
     public EntityCollectionAttribute createEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
         var entityCollectionAttribute = entityCollectionAttributeFactory.create(entityAttribute, entityInstance,

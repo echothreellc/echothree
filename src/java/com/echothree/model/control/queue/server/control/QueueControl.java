@@ -81,6 +81,12 @@ public class QueueControl
     //   Queue Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected QueueTypeFactory queueTypeFactory;
+
+    @Inject
+    protected QueueTypeDetailFactory queueTypeDetailFactory;
+
     public QueueType createQueueType(String queueTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultQueueType = getDefaultQueueType();
         var defaultFound = defaultQueueType != null;
@@ -94,12 +100,12 @@ public class QueueControl
             isDefault = true;
         }
 
-        var queueType = QueueTypeFactory.getInstance().create();
-        var queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.getStartTime(),
+        var queueType = queueTypeFactory.create();
+        var queueTypeDetail = queueTypeDetailFactory.create(queueType, queueTypeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, queueType.getPrimaryKey());
+        queueType = queueTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, queueType.getPrimaryKey());
         queueType.setActiveDetail(queueTypeDetail);
         queueType.setLastDetail(queueTypeDetail);
         queueType.store();
@@ -113,7 +119,7 @@ public class QueueControl
     public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new QueueTypePK(entityInstance.getEntityUniqueId());
 
-        return QueueTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return queueTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance) {
@@ -138,21 +144,25 @@ public class QueueControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM queuetypes, queuetypedetails " +
-                "WHERE qtyp_activedetailid = qtypdt_queuetypedetailid " +
-                "AND qtypdt_queuetypename = ?");
+                """
+                SELECT _ALL_
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                AND qtypdt_queuetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM queuetypes, queuetypedetails " +
-                "WHERE qtyp_activedetailid = qtypdt_queuetypedetailid " +
-                "AND qtypdt_queuetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                AND qtypdt_queuetypename = ?
+                FOR UPDATE
+                """);
         getQueueTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private QueueType getQueueTypeByName(String queueTypeName, EntityPermission entityPermission) {
-        return QueueTypeFactory.getInstance().getEntityFromQuery(entityPermission, getQueueTypeByNameQueries, queueTypeName);
+        return queueTypeFactory.getEntityFromQuery(entityPermission, getQueueTypeByNameQueries, queueTypeName);
     }
 
     public QueueType getQueueTypeByName(String queueTypeName) {
@@ -177,21 +187,25 @@ public class QueueControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM queuetypes, queuetypedetails " +
-                "WHERE qtyp_activedetailid = qtypdt_queuetypedetailid " +
-                "AND qtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                AND qtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM queuetypes, queuetypedetails " +
-                "WHERE qtyp_activedetailid = qtypdt_queuetypedetailid " +
-                "AND qtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                AND qtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultQueueTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private QueueType getDefaultQueueType(EntityPermission entityPermission) {
-        return QueueTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultQueueTypeQueries);
+        return queueTypeFactory.getEntityFromQuery(entityPermission, getDefaultQueueTypeQueries);
     }
 
     public QueueType getDefaultQueueType() {
@@ -212,21 +226,25 @@ public class QueueControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM queuetypes, queuetypedetails " +
-                "WHERE qtyp_activedetailid = qtypdt_queuetypedetailid " +
-                "ORDER BY qtypdt_sortorder, qtypdt_queuetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                ORDER BY qtypdt_sortorder, qtypdt_queuetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM queuetypes, queuetypedetails " +
-                "WHERE qtyp_activedetailid = qtypdt_queuetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                FOR UPDATE
+                """);
         getQueueTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<QueueType> getQueueTypes(EntityPermission entityPermission) {
-        return QueueTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getQueueTypesQueries);
+        return queueTypeFactory.getEntitiesFromQuery(entityPermission, getQueueTypesQueries);
     }
 
     public List<QueueType> getQueueTypes() {
@@ -291,7 +309,7 @@ public class QueueControl
 
     private void updateQueueTypeFromValue(QueueTypeDetailValue queueTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(queueTypeDetailValue.hasBeenModified()) {
-            var queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var queueType = queueTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      queueTypeDetailValue.getQueueTypePK());
             var queueTypeDetail = queueType.getActiveDetailForUpdate();
 
@@ -319,7 +337,7 @@ public class QueueControl
                 }
             }
 
-            queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueTypePK, queueTypeName, isDefault, sortOrder, session.getStartTime(),
+            queueTypeDetail = queueTypeDetailFactory.create(queueTypePK, queueTypeName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             queueType.setActiveDetail(queueTypeDetail);
@@ -382,8 +400,11 @@ public class QueueControl
     //   Queue Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected QueueTypeDescriptionFactory queueTypeDescriptionFactory;
+
     public QueueTypeDescription createQueueTypeDescription(QueueType queueType, Language language, String description, BasePK createdBy) {
-        var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
+        var queueTypeDescription = queueTypeDescriptionFactory.create(queueType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -397,19 +418,23 @@ public class QueueControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM queuetypedescriptions " +
-                "WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_lang_languageid = ? AND qtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM queuetypedescriptions
+                WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_lang_languageid = ? AND qtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM queuetypedescriptions " +
-                "WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_lang_languageid = ? AND qtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuetypedescriptions
+                WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_lang_languageid = ? AND qtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getQueueTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private QueueTypeDescription getQueueTypeDescription(QueueType queueType, Language language, EntityPermission entityPermission) {
-        return QueueTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getQueueTypeDescriptionQueries,
+        return queueTypeDescriptionFactory.getEntityFromQuery(entityPermission, getQueueTypeDescriptionQueries,
                 queueType, language, Session.MAX_TIME);
     }
 
@@ -435,20 +460,24 @@ public class QueueControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM queuetypedescriptions, languages " +
-                "WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_thrutime = ? AND qtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM queuetypedescriptions, languages
+                WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_thrutime = ? AND qtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM queuetypedescriptions " +
-                "WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuetypedescriptions
+                WHERE qtypd_qtyp_queuetypeid = ? AND qtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getQueueTypeDescriptionsByQueueTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<QueueTypeDescription> getQueueTypeDescriptionsByQueueType(QueueType queueType, EntityPermission entityPermission) {
-        return QueueTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getQueueTypeDescriptionsByQueueTypeQueries,
+        return queueTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getQueueTypeDescriptionsByQueueTypeQueries,
                 queueType, Session.MAX_TIME);
     }
 
@@ -494,7 +523,7 @@ public class QueueControl
 
     public void updateQueueTypeDescriptionFromValue(QueueTypeDescriptionValue queueTypeDescriptionValue, BasePK updatedBy) {
         if(queueTypeDescriptionValue.hasBeenModified()) {
-            var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var queueTypeDescription = queueTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     queueTypeDescriptionValue.getPrimaryKey());
 
             queueTypeDescription.setThruTime(session.getStartTime());
@@ -504,7 +533,7 @@ public class QueueControl
             var language = queueTypeDescription.getLanguage();
             var description = queueTypeDescriptionValue.getDescription();
 
-            queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
+            queueTypeDescription = queueTypeDescriptionFactory.create(queueType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -529,54 +558,67 @@ public class QueueControl
     // --------------------------------------------------------------------------------
     //   Queued Entities
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected QueuedEntityFactory queuedEntityFactory;
+
     public QueuedEntity createQueuedEntity(QueueType queueType, EntityInstance entityInstance) {
-        return QueuedEntityFactory.getInstance().create(queueType, entityInstance, session.getStartTime());
+        return queuedEntityFactory.create(queueType, entityInstance, session.getStartTime());
     }
 
     public void createQueuedEntities(Collection<QueuedEntityValue> queuedEntities) {
-        QueuedEntityFactory.getInstance().create(queuedEntities);
+        queuedEntityFactory.create(queuedEntities);
     }
     
     public Long countQueuedEntitiesByQueueType(final QueueType queueType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM queuedentities "
-                + "WHERE qeni_qtyp_queuetypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM queuedentities
+                WHERE qeni_qtyp_queuetypeid = ?
+                """,
                 queueType);
     }
 
     public Long oldestQueuedEntityTimeByQueueType(final QueueType queueType) {
         return session.queryForLong(
-                "SELECT MIN(qeni_time) "
-                + "FROM queuedentities "
-                + "WHERE qeni_qtyp_queuetypeid = ?",
+                """
+                SELECT MIN(qeni_time)
+                FROM queuedentities
+                WHERE qeni_qtyp_queuetypeid = ?
+                """,
                 queueType);
     }
 
     public Long latestQueuedEntityTimeByQueueType(final QueueType queueType) {
         return session.queryForLong(
-                "SELECT MAX(qeni_time) "
-                + "FROM queuedentities "
-                + "WHERE qeni_qtyp_queuetypeid = ?",
+                """
+                SELECT MAX(qeni_time)
+                FROM queuedentities
+                WHERE qeni_qtyp_queuetypeid = ?
+                """,
                 queueType);
     }
 
     public Long countQueuedEntitiesByEntityInstance(final EntityInstance entityInstance) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM queuedentities "
-                + "WHERE qeni_eni_entityinstanceid = ?",
+                """
+                SELECT COUNT(*)
+                FROM queuedentities
+                WHERE qeni_eni_entityinstanceid = ?
+                """,
                 entityInstance);
     }
 
     public Long countQueuedEntitiesByEntityType(final QueueType queueType, final EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM queuedentities, entityinstances "
-                + "WHERE qeni_qtyp_queuetypeid = ? "
-                + "AND qeni_eni_entityinstanceid = eni_entityinstanceid "
-                + "AND eni_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM queuedentities, entityinstances
+                WHERE qeni_qtyp_queuetypeid = ?
+                AND qeni_eni_entityinstanceid = eni_entityinstanceid
+                AND eni_ent_entitytypeid = ?
+                """,
                 queueType, entityType);
     }
 
@@ -594,20 +636,24 @@ public class QueueControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM queuedentities "
-                + "WHERE qeni_qtyp_queuetypeid = ? AND qeni_eni_entityinstanceid = ? "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM queuedentities
+                WHERE qeni_qtyp_queuetypeid = ? AND qeni_eni_entityinstanceid = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM queuedentities "
-                + "WHERE qeni_qtyp_queuetypeid = ? AND qeni_eni_entityinstanceid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuedentities
+                WHERE qeni_qtyp_queuetypeid = ? AND qeni_eni_entityinstanceid = ?
+                FOR UPDATE
+                """);
         getQueuedEntitiesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<QueuedEntity> getQueuedEntities(QueueType queueType, EntityInstance entityInstance, EntityPermission entityPermission) {
-        return QueuedEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, getQueuedEntitiesQueries,
+        return queuedEntityFactory.getEntitiesFromQuery(entityPermission, getQueuedEntitiesQueries,
                 queueType, entityInstance);
     }
 
@@ -626,25 +672,29 @@ public class QueueControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedentities " +
-                        "WHERE qeni_qtyp_queuetypeid = ? " +
-                        "ORDER BY qeni_queuedentityid " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedentities
+                        WHERE qeni_qtyp_queuetypeid = ?
+                        ORDER BY qeni_queuedentityid
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedentities " +
-                        "WHERE qeni_qtyp_queuetypeid = ? " +
-                        "ORDER BY qeni_queuedentityid " +
-                        "_LIMIT_ " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedentities
+                        WHERE qeni_qtyp_queuetypeid = ?
+                        ORDER BY qeni_queuedentityid
+                        _LIMIT_
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = QueuedEntityFactory.getInstance().prepareStatement(query);
+            var ps = queuedEntityFactory.prepareStatement(query);
             
             ps.setLong(1, queueType.getPrimaryKey().getEntityId());
             
-            queuedEntities = QueuedEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            queuedEntities = queuedEntityFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -667,23 +717,27 @@ public class QueueControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedentities " +
-                        "WHERE qeni_eni_entityinstanceid = ? " +
-                        "ORDER BY qeni_queuedentityid " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedentities
+                        WHERE qeni_eni_entityinstanceid = ?
+                        ORDER BY qeni_queuedentityid
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedentities " +
-                        "WHERE qeni_eni_entityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedentities
+                        WHERE qeni_eni_entityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = QueuedEntityFactory.getInstance().prepareStatement(query);
+            var ps = queuedEntityFactory.prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             
-            queuedEntities = QueuedEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            queuedEntities = queuedEntityFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

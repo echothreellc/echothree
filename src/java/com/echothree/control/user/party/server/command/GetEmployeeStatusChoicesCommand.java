@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmployeeStatusChoicesCommand
@@ -45,16 +45,20 @@ public class GetEmployeeStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.EmployeeStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.EmployeeStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultEmployeeStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultEmployeeStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of GetEmployeeStatusChoicesCommand */
     public GetEmployeeStatusChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetEmployeeStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = PartyResultFactory.getGetEmployeeStatusChoicesResult();
         var employeeName = form.getEmployeeName();
         var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);

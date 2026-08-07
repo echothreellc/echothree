@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditDocumentTypeUsageTypeCommand
@@ -52,9 +52,9 @@ public class EditDocumentTypeUsageTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.DocumentTypeUsageType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.DocumentTypeUsageType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,10 @@ public class EditDocumentTypeUsageTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of EditDocumentTypeUsageTypeCommand */
     public EditDocumentTypeUsageTypeCommand() {
@@ -85,7 +89,6 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public DocumentTypeUsageType getEntity(EditDocumentTypeUsageTypeResult result) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsageType documentTypeUsageType;
         var documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
 
@@ -111,14 +114,11 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public void fillInResult(EditDocumentTypeUsageTypeResult result, DocumentTypeUsageType documentTypeUsageType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-
         result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(getUserVisit(), documentTypeUsageType));
     }
 
     @Override
     public void doLock(DocumentTypeUsageTypeEdit edit, DocumentTypeUsageType documentTypeUsageType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, getPreferredLanguage());
         var documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
 
@@ -133,7 +133,6 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public void canUpdate(DocumentTypeUsageType documentTypeUsageType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeUsageTypeName = edit.getDocumentTypeUsageTypeName();
         var duplicateDocumentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
@@ -144,7 +143,6 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public void doUpdate(DocumentTypeUsageType documentTypeUsageType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var partyPK = getPartyPK();
         var documentTypeUsageTypeDetailValue = documentControl.getDocumentTypeUsageTypeDetailValueForUpdate(documentTypeUsageType);
         var documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescriptionForUpdate(documentTypeUsageType, getPreferredLanguage());

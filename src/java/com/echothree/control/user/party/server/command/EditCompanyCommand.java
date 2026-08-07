@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCompanyCommand
@@ -58,6 +58,13 @@ public class EditCompanyCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCompanyCommand */
     public EditCompanyCommand() {
@@ -66,7 +73,6 @@ public class EditCompanyCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getEditCompanyResult();
         var originalCompanyName = spec.getCompanyName();
         var partyCompany = partyControl.getPartyCompanyByNameForUpdate(originalCompanyName);
@@ -126,7 +132,6 @@ public class EditCompanyCommand
                                 if(preferredCurrencyIsoName == null)
                                     preferredCurrency = null;
                                 else {
-                                    var accountingControl = Session.getModelController(AccountingControl.class);
                                     preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                 }
                                 

@@ -24,10 +24,15 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
 import java.util.List;
+import javax.inject.Inject;
 
     public abstract class BaseCreateSearchResultActionCommand<F extends BaseCreateSearchResultActionForm>
         extends BaseSimpleCommand<F> {
     
+    @Inject
+    SearchLogic searchLogic;
+
+
     /** Creates a new instance of BaseCreateItemSearchResultActionCommand */
     protected BaseCreateSearchResultActionCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
             List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
@@ -35,7 +40,7 @@ import java.util.List;
     }
     
     protected BaseResult execute(String searchKindName, BaseEntity baseEntity) {
-        SearchLogic.getInstance().createSearchResultAction(this, getUserVisit(), searchKindName, form.getSearchTypeName(),
+        searchLogic.createSearchResultAction(this, getUserVisit(), searchKindName, form.getSearchTypeName(),
                 form.getSearchResultActionTypeName(), baseEntity, getPartyPK());
         
         return null;

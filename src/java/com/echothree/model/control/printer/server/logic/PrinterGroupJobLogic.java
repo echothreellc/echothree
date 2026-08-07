@@ -31,13 +31,25 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PrinterGroupJobLogic
         extends BaseLogic {
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    DocumentLogic documentLogic;
 
     protected PrinterGroupJobLogic() {
         super();
@@ -48,8 +60,6 @@ public class PrinterGroupJobLogic
     }
     
     private void insertPrinterGroupJobIntoWorkflow(final PrinterGroupJob printerGroupJob, final PartyPK createdBy) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         workflowControl.addEntityToWorkflowUsingNames(null, PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, null,
                 getEntityInstanceByBaseEntity(printerGroupJob), null, null, createdBy);
     }
@@ -57,18 +67,15 @@ public class PrinterGroupJobLogic
     public PrinterGroupJob createPrinterGroupJob(final ExecutionErrorAccumulator ema, final PrinterGroup printerGroup, final Integer copies,
             final Integer priority, final MimeType mimeType, final Language preferredLanguage, final String description, final ByteArray blob, final String clob,
             final PartyPK createdBy) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         PrinterGroupJob printerGroupJob = null;
         var documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_PRINTER_GROUP_JOB);
 
         if(documentType == null) {
             addExecutionError(ema, ExecutionErrors.UnknownDocumentTypeName.name(), DocumentConstants.DocumentType_PRINTER_GROUP_JOB);
         } else {
-            var document = DocumentLogic.getInstance().createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
+            var document = documentLogic.createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
 
             if(document != null) {
-                var printerControl = Session.getModelController(PrinterControl.class);
-
                 printerGroupJob = printerControl.createPrinterGroupJob(printerGroup, document, copies, priority, createdBy);
                 insertPrinterGroupJobIntoWorkflow(printerGroupJob, createdBy);
             }
@@ -78,7 +85,6 @@ public class PrinterGroupJobLogic
     }
 
     public void deletePrinterGroupJob(final ExecutionErrorAccumulator ema, final PrinterGroupJob printerGroupJob, final PartyPK deletedBy) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
         var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
@@ -89,8 +95,6 @@ public class PrinterGroupJobLogic
             var keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
 
             if(keepPrintedJobsTime == null) {
-                var printerControl = Session.getModelController(PrinterControl.class);
-                
                 printerControl.removePrinterGroupJob(printerGroupJob);
             } else {
                 var workflowDestinationName = workflowStepName + "_TO_DELETED";

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorCommand
@@ -61,6 +61,12 @@ public class GetSelectorCommand
         );
     }
 
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SelectorLogic selectorLogic;
+
     /** Creates a new instance of GetSelectorCommand */
     public GetSelectorCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -68,7 +74,7 @@ public class GetSelectorCommand
 
     @Override
     protected Selector getEntity() {
-        var selector = SelectorLogic.getInstance().getSelectorByUniversalSpec(this, form, true);
+        var selector = selectorLogic.getSelectorByUniversalSpec(this, form, true);
 
         if(selector != null) {
             sendEvent(selector.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -79,7 +85,6 @@ public class GetSelectorCommand
 
     @Override
     protected BaseResult getResult(Selector selector) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorResult();
 
         if(selector != null) {

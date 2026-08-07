@@ -41,13 +41,31 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class OfferLogic
         extends BaseLogic {
+
+    @Inject
+    OfferFactory offerFactory;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    OfferItemLogic offerItemLogic;
 
     protected OfferLogic() {
         super();
@@ -60,7 +78,6 @@ public class OfferLogic
     public Offer createOffer(final ExecutionErrorAccumulator eea, final String offerName, final Sequence salesOrderSequence,
             final Party departmentParty, final Selector offerItemSelector, final Filter offerItemPriceFilter, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var offerControl = Session.getModelController(OfferControl.class);
         var offer = offerControl.getOfferByName(offerName);
 
         if(offer == null) {
@@ -79,7 +96,6 @@ public class OfferLogic
 
     public Offer getOfferByName(final ExecutionErrorAccumulator eea, final String offerName,
             final EntityPermission entityPermission) {
-        var offerControl = Session.getModelController(OfferControl.class);
         var offer = offerControl.getOfferByName(offerName, entityPermission);
 
         if(offer == null) {
@@ -100,9 +116,8 @@ public class OfferLogic
     public Offer getOfferByUniversalSpec(final ExecutionErrorAccumulator eea,
             final OfferUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         Offer offer = null;
-        var offerControl = Session.getModelController(OfferControl.class);
         var offerName = universalSpec.getOfferName();
-        var parameterCount = (offerName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (offerName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -118,7 +133,7 @@ public class OfferLogic
             }
             case 1 -> {
                 if(offerName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Offer.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -146,15 +161,12 @@ public class OfferLogic
     }
 
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
-        var offerControl = Session.getModelController(OfferControl.class);
-
         if(offerDetailValue.getOfferItemSelectorPKHasBeenModified() && offerDetailValue.getOfferItemSelectorPK() != null) {
-            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+            var offer = offerFactory.getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
 
-            OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, updatedBy);
+            offerItemLogic.deleteOfferItemsByOffer(offer, updatedBy);
         } else if(offerDetailValue.getOfferItemPriceFilterPKHasBeenModified() && offerDetailValue.getOfferItemPriceFilterPK() != null) {
-            var offerItemControl = Session.getModelController(OfferItemControl.class);
-            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+            var offer = offerFactory.getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
 
             var offerItems = offerItemControl.getOfferItemsByOffer(offer);
             for(var offerItem : offerItems) {
@@ -170,11 +182,7 @@ public class OfferLogic
     }
 
     public void deleteOffer(final ExecutionErrorAccumulator eea, final Offer offer, final BasePK deletedBy) {
-        var offerUseControl = Session.getModelController(OfferUseControl.class);
-
         if(offerUseControl.countOfferUsesByOffer(offer) == 0) {
-            var offerControl = Session.getModelController(OfferControl.class);
-
             offerControl.deleteOffer(offer, deletedBy);
         } else {
             handleExecutionError(CannotDeleteOfferInUseException.class, eea, ExecutionErrors.CannotDeleteOfferInUse.name());

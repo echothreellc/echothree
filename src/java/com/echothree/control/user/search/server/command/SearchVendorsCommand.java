@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchVendorsCommand
@@ -53,8 +53,8 @@ public class SearchVendorsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,8 +72,17 @@ public class SearchVendorsCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of SearchVendorsCommand */
     public SearchVendorsCommand() {
@@ -83,7 +92,6 @@ public class SearchVendorsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchVendorsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.VENDOR.name());
         
         if(searchKind != null) {
@@ -96,7 +104,6 @@ public class SearchVendorsCommand
                 PartyAliasType partyAliasType = null;
 
                 if(partyAliasTypeName != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
 
                     if(partyType != null) {
@@ -111,7 +118,6 @@ public class SearchVendorsCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var searchLogic = SearchLogic.getInstance();
                     var userVisit = getUserVisit();
                     var vendorSearchEvaluator = new VendorSearchEvaluator(userVisit, searchType,
                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),

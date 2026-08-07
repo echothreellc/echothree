@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchSortDirectionLogic
         extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SearchSortDirectionLogic() {
         super();
@@ -51,7 +57,6 @@ public class SearchSortDirectionLogic
     public SearchSortDirection createSearchSortDirection(final ExecutionErrorAccumulator eea, final String searchSortDirectionName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection == null) {
@@ -69,7 +74,6 @@ public class SearchSortDirectionLogic
 
     public SearchSortDirection getSearchSortDirectionByName(final ExecutionErrorAccumulator eea, final String searchSortDirectionName,
             final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName, entityPermission);
 
         if(searchSortDirection == null) {
@@ -90,9 +94,8 @@ public class SearchSortDirectionLogic
     public SearchSortDirection getSearchSortDirectionByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SearchSortDirectionUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SearchSortDirection searchSortDirection = null;
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirectionName = universalSpec.getSearchSortDirectionName();
-        var parameterCount = (searchSortDirectionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (searchSortDirectionName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,7 +111,7 @@ public class SearchSortDirectionLogic
             }
             case 1 -> {
                 if(searchSortDirectionName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchSortDirection.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -137,8 +140,6 @@ public class SearchSortDirectionLogic
 
     public void deleteSearchSortDirection(final ExecutionErrorAccumulator eea, final SearchSortDirection searchSortDirection,
             final BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.deleteSearchSortDirection(searchSortDirection, deletedBy);
     }
 

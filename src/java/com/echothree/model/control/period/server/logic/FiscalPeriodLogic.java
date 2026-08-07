@@ -25,16 +25,25 @@ import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Formatter;
 import java.util.Locale;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FiscalPeriodLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    PeriodLogic periodLogic;
 
     protected FiscalPeriodLogic() {
         super();
@@ -46,7 +55,6 @@ public class FiscalPeriodLogic {
     
     private void createMonth(final PeriodKind periodKind, final Period quarterPeriod, final ZonedDateTime yearStart, final int month,
             final PartyPK createdBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var year = yearStart.getYear();
         var periodName = new StringBuilder().append(year).append('_').append('M');
         var monthPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_MONTH);
@@ -54,7 +62,7 @@ public class FiscalPeriodLogic {
         var monthEnd = monthStart.plusMonths(1).minusNanos(1);
         
         new Formatter(periodName, Locale.US).format("%02d", month);
-        var monthPeriod = PeriodLogic.getInstance().createPeriod(periodKind, periodName.toString(), quarterPeriod, monthPeriodType,
+        var monthPeriod = periodLogic.createPeriod(periodKind, periodName.toString(), quarterPeriod, monthPeriodType,
                 monthStart.toInstant().toEpochMilli(), monthEnd.toInstant().toEpochMilli(), createdBy);
 
         var periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
@@ -79,14 +87,13 @@ public class FiscalPeriodLogic {
     
     private void createQuarter(final PeriodKind periodKind, final Period yearPeriod, final ZonedDateTime yearStart, final int quarter,
             final PartyPK createdBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var year = yearStart.getYear();
         var periodName = String.valueOf(year) + '_' + 'Q' + quarter;
         var quarterPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_QUARTER);
         var monthOfQuarterStart = 1 + (quarter - 1) * 3;
         var quarterStart = yearStart.withMonth(monthOfQuarterStart);
         var quarterEnd = quarterStart.plusMonths(3).minusNanos(1);
-        var quarterPeriod = PeriodLogic.getInstance().createPeriod(periodKind, periodName, yearPeriod, quarterPeriodType,
+        var quarterPeriod = periodLogic.createPeriod(periodKind, periodName, yearPeriod, quarterPeriodType,
                 quarterStart.toInstant().toEpochMilli(), quarterEnd.toInstant().toEpochMilli(), createdBy);
 
         var periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
@@ -115,7 +122,6 @@ public class FiscalPeriodLogic {
     
     private Period createYear(final ExecutionErrorAccumulator eea, final Period perpetualPeriod, final int year,
             final ZoneId zone, final PartyPK createdBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodName = String.valueOf(year);
         var periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
         var yearPeriod = periodControl.getPeriodByName(periodKind, periodName);
@@ -125,7 +131,7 @@ public class FiscalPeriodLogic {
             var yearStart = ZonedDateTime.of(year, 1, 1, 0, 0, 0, 0, zone);
             var yearEnd = yearStart.plusYears(1).minusNanos(1);
 
-            yearPeriod = PeriodLogic.getInstance().createPeriod(periodKind, periodName, perpetualPeriod, periodType,
+            yearPeriod = periodLogic.createPeriod(periodKind, periodName, perpetualPeriod, periodType,
                     yearStart.toInstant().toEpochMilli(), yearEnd.toInstant().toEpochMilli(), createdBy);
 
             var periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
@@ -153,14 +159,13 @@ public class FiscalPeriodLogic {
     }
 
     public Period ensurePerpetual(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
         var perpetualPeriod = periodControl.getPeriodByName(periodKind, PeriodConstants.Period_PERPETUAL);
 
         if(perpetualPeriod == null) {
             var periodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_PERPETUAL);
 
-            perpetualPeriod = PeriodLogic.getInstance().createPeriod(periodKind, PeriodConstants.Period_PERPETUAL, null,
+            perpetualPeriod = periodLogic.createPeriod(periodKind, PeriodConstants.Period_PERPETUAL, null,
                     periodType, 0L, Long.MAX_VALUE, createdBy);
 
         }
@@ -169,7 +174,6 @@ public class FiscalPeriodLogic {
     }
     
     public Period createFiscalYear(final ExecutionErrorAccumulator eea, final Integer year, final PartyPK createdBy) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var defaultPartyCompany = partyControl.getDefaultPartyCompany();
         Period fiscalYear = null;
         
@@ -188,7 +192,6 @@ public class FiscalPeriodLogic {
     
     private Period getFiscalPeriodByName(final ExecutionErrorAccumulator eea, final String periodName,
             final EntityPermission entityPermission) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
         var period = periodControl.getPeriodByName(periodKind, periodName, entityPermission);
         

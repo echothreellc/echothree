@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteQueuedLetterCommand
@@ -48,14 +48,21 @@ public class DeleteQueuedLetterCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.QueuedLetter.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainInstanceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("QueuedLetterSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of DeleteQueuedLetterCommand */
     public DeleteQueuedLetterCommand() {
@@ -64,13 +71,11 @@ public class DeleteQueuedLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = LetterResultFactory.getGetQueuedLetterResult();
         var chainInstanceName = form.getChainInstanceName();
         var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
         
         if(chainInstance != null) {
-            var letterControl = Session.getModelController(LetterControl.class);
             var queuedLetterSequence = Integer.valueOf(form.getQueuedLetterSequence());
             var queuedLetter = letterControl.getQueuedLetterForUpdate(chainInstance, queuedLetterSequence);
 

@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetPurchaseOrderStatusCommand
@@ -47,6 +48,10 @@ public class SetPurchaseOrderStatusCommand
                 new FieldDefinition("PurchaseOrderStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PurchaseOrderLogic purchaseOrderLogic;
+
     
     /** Creates a new instance of SetPurchaseOrderStatusCommand */
     public SetPurchaseOrderStatusCommand() {
@@ -55,7 +60,6 @@ public class SetPurchaseOrderStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var purchaseOrderLogic = PurchaseOrderLogic.getInstance();
         var order = purchaseOrderLogic.getOrderByName(this, form.getOrderName());
         
         if(!hasExecutionErrors()) {

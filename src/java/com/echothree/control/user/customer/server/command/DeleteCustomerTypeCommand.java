@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteCustomerTypeCommand
@@ -53,6 +54,10 @@ public class DeleteCustomerTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
     
     /** Creates a new instance of DeleteCustomerTypeCommand */
     public DeleteCustomerTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var customerType = CustomerTypeLogic.getInstance().getCustomerTypeByUniversalSpecForUpdate(this, form, false);
+        var customerType = customerTypeLogic.getCustomerTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            CustomerTypeLogic.getInstance().deleteCustomerType(this, customerType, getPartyPK());
+            customerTypeLogic.deleteCustomerType(this, customerType, getPartyPK());
         }
 
         return null;

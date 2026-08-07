@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentProcessorActionTypeCommand
@@ -53,8 +53,8 @@ public class EditPaymentProcessorActionTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorActionType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorActionTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -69,6 +69,13 @@ public class EditPaymentProcessorActionTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
+
+    @Inject
+    PaymentProcessorActionTypeLogic paymentProcessorActionTypeLogic;
+
     
     /** Creates a new instance of EditPaymentProcessorActionTypeCommand */
     public EditPaymentProcessorActionTypeCommand() {
@@ -87,7 +94,7 @@ public class EditPaymentProcessorActionTypeCommand
     
     @Override
     public PaymentProcessorActionType getEntity(EditPaymentProcessorActionTypeResult result) {
-        return PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return paymentProcessorActionTypeLogic.getPaymentProcessorActionTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -97,14 +104,11 @@ public class EditPaymentProcessorActionTypeCommand
     
     @Override
     public void fillInResult(EditPaymentProcessorActionTypeResult result, PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-        
         result.setPaymentProcessorActionType(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(getUserVisit(), paymentProcessorActionType));
     }
     
     @Override
     public void doLock(PaymentProcessorActionTypeEdit edit, PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, getPreferredLanguage());
         var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
         
@@ -119,7 +123,6 @@ public class EditPaymentProcessorActionTypeCommand
         
     @Override
     public void canUpdate(PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorActionTypeName = edit.getPaymentProcessorActionTypeName();
         var duplicatePaymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
 
@@ -130,7 +133,6 @@ public class EditPaymentProcessorActionTypeCommand
     
     @Override
     public void doUpdate(PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var partyPK = getPartyPK();
         var paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueForUpdate(paymentProcessorActionType);
         var paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionForUpdate(paymentProcessorActionType, getPreferredLanguage());

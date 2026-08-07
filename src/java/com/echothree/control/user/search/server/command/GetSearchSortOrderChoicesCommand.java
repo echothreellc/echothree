@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortOrderChoicesCommand
@@ -45,17 +45,24 @@ public class GetSearchSortOrderChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SearchSortOrder.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SearchSortOrder.name(), SecurityRoles.Choices.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSearchSortOrderChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     
     /** Creates a new instance of GetSearchSortOrderChoicesCommand */
     public GetSearchSortOrderChoicesCommand() {
@@ -64,7 +71,6 @@ public class GetSearchSortOrderChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getGetSearchSortOrderChoicesResult();
         var searchKindName = form.getSearchKindName();
         var searchKind = searchLogic.getSearchKindByName(this, searchKindName);
@@ -73,10 +79,9 @@ public class GetSearchSortOrderChoicesCommand
             var defaultSearchSortOrderChoice = form.getDefaultSearchSortOrderChoice();
             var party = getParty();
             var searchTypeName = form.getSearchTypeName();
-            var searchType = searchTypeName != null && defaultSearchSortOrderChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKind, searchTypeName) : null;
+            var searchType = searchTypeName != null && defaultSearchSortOrderChoice == null && party != null ? searchLogic.getSearchTypeByName(this, searchKind, searchTypeName) : null;
             
             if(!hasExecutionErrors()) {
-                var searchControl = Session.getModelController(SearchControl.class);
                 var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {

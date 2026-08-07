@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeResultsCommand
@@ -58,6 +58,15 @@ public class GetEntityAttributeResultsCommand
         );
     }
 
+    @Inject
+    EntityAttributeControl entityAttributeControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetEntityAttributeResultsCommand */
     public GetEntityAttributeResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +75,6 @@ public class GetEntityAttributeResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetEntityAttributeResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_ATTRIBUTE.name());
         
         if(searchKind != null) {
@@ -78,10 +86,8 @@ public class GetEntityAttributeResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityAttributeControl = Session.getModelController(EntityAttributeControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setEntityAttributeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setEntityAttributeResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setEntityAttributeResults(entityAttributeControl.getEntityAttributeResultTransfers(userVisit, userVisitSearch));

@@ -59,17 +59,18 @@ public class GetVendorItemCostsCommand
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetVendorItemCostsCommand */
-    public GetVendorItemCostsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     VendorControl vendorControl;
 
     @Inject
     VendorLogic vendorLogic;
+
+
+    /** Creates a new instance of GetVendorItemCostsCommand */
+    public GetVendorItemCostsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private VendorItem vendorItem;
 

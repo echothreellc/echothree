@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationPoliciesCommand
@@ -57,6 +57,13 @@ public class GetCancellationPoliciesCommand
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
     
     /** Creates a new instance of GetCancellationPoliciesCommand */
     public GetCancellationPoliciesCommand() {
@@ -69,13 +76,11 @@ public class GetCancellationPoliciesCommand
     protected void handleForm() {
         var cancellationKindName = form.getCancellationKindName();
 
-        cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(this, cancellationKindName);
+        cancellationKind = cancellationKindLogic.getCancellationKindByName(this, cancellationKindName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-
         return hasExecutionErrors() ? null :
                 cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
     }
@@ -85,8 +90,6 @@ public class GetCancellationPoliciesCommand
         Collection<CancellationPolicy> cancellationPolicies = null;
 
         if(!hasExecutionErrors()) {
-            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-
             cancellationPolicies = cancellationPolicyControl.getCancellationPolicies(cancellationKind);
         }
 
@@ -98,7 +101,6 @@ public class GetCancellationPoliciesCommand
         var result = CancellationPolicyResultFactory.getGetCancellationPoliciesResult();
 
         if(entities != null) {
-            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(CancellationPolicyFactory.class)) {

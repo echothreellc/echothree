@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemDescriptionTypeUseTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemDescriptionTypeUseType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemDescriptionTypeUseTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditItemDescriptionTypeUseTypeDescriptionCommand */
     public EditItemDescriptionTypeUseTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
 
     @Override
     public ItemDescriptionTypeUseTypeDescription getEntity(EditItemDescriptionTypeUseTypeDescriptionResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = null;
         var itemDescriptionTypeUseTypeName = spec.getItemDescriptionTypeUseTypeName();
         var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
         if(itemDescriptionTypeUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemDescriptionTypeUseTypeDescriptionResult result, ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemDescriptionTypeUseTypeDescription(itemControl.getItemDescriptionTypeUseTypeDescriptionTransfer(getUserVisit(), itemDescriptionTypeUseTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeUseTypeDescriptionValue = itemControl.getItemDescriptionTypeUseTypeDescriptionValue(itemDescriptionTypeUseTypeDescription);
         
         itemDescriptionTypeUseTypeDescriptionValue.setDescription(edit.getDescription());

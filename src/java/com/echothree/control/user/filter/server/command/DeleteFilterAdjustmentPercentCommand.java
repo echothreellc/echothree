@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFilterAdjustmentPercentCommand
@@ -62,6 +62,16 @@ public class DeleteFilterAdjustmentPercentCommand
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of DeleteFilterAdjustmentPercentCommand */
     public DeleteFilterAdjustmentPercentCommand() {
@@ -70,7 +80,6 @@ public class DeleteFilterAdjustmentPercentCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -80,7 +89,6 @@ public class DeleteFilterAdjustmentPercentCommand
             
             if(filterAdjustment != null) {
                 if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.PERCENT.name())) {
-                    var uomControl = Session.getModelController(UomControl.class);
                     var unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
@@ -104,7 +112,6 @@ public class DeleteFilterAdjustmentPercentCommand
                             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 var currencyIsoName = form.getCurrencyIsoName();
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 

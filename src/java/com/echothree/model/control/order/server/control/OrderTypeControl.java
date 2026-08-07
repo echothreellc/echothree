@@ -45,10 +45,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderTypeControl
         extends BaseOrderControl {
+
+    @Inject
+    protected OrderAliasControl orderAliasControl;
 
     /** Creates a new instance of OrderControl */
     protected OrderTypeControl() {
@@ -58,6 +62,12 @@ public class OrderTypeControl
     // --------------------------------------------------------------------------------
     //   Order Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OrderTypeFactory orderTypeFactory;
+
+    @Inject
+    protected OrderTypeDetailFactory orderTypeDetailFactory;
 
     public OrderType createOrderType(String orderTypeName, SequenceType orderSequenceType, Workflow orderWorkflow,
             WorkflowEntrance orderWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -73,13 +83,13 @@ public class OrderTypeControl
             isDefault = true;
         }
 
-        var orderType = OrderTypeFactory.getInstance().create();
-        var orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, orderSequenceType,
+        var orderType = orderTypeFactory.create();
+        var orderTypeDetail = orderTypeDetailFactory.create(orderType, orderTypeName, orderSequenceType,
                 orderWorkflow, orderWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        orderType = OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderType = orderTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderType.getPrimaryKey());
         orderType.setActiveDetail(orderTypeDetail);
         orderType.setLastDetail(orderTypeDetail);
@@ -94,7 +104,7 @@ public class OrderTypeControl
     public OrderType getOrderTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderTypePK(entityInstance.getEntityUniqueId());
 
-        return OrderTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderType getOrderTypeByEntityInstance(EntityInstance entityInstance) {
@@ -137,7 +147,7 @@ public class OrderTypeControl
     }
 
     public OrderType getOrderTypeByName(String orderTypeName, EntityPermission entityPermission) {
-        return OrderTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTypeByNameQueries, orderTypeName);
+        return orderTypeFactory.getEntityFromQuery(entityPermission, getOrderTypeByNameQueries, orderTypeName);
     }
 
     public OrderType getOrderTypeByName(String orderTypeName) {
@@ -180,7 +190,7 @@ public class OrderTypeControl
     }
 
     public OrderType getDefaultOrderType(EntityPermission entityPermission) {
-        return OrderTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderTypeQueries);
+        return orderTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderTypeQueries);
     }
 
     public OrderType getDefaultOrderType() {
@@ -219,7 +229,7 @@ public class OrderTypeControl
     }
 
     private List<OrderType> getOrderTypes(EntityPermission entityPermission) {
-        return OrderTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTypesQueries);
+        return orderTypeFactory.getEntitiesFromQuery(entityPermission, getOrderTypesQueries);
     }
 
     public List<OrderType> getOrderTypes() {
@@ -286,7 +296,7 @@ public class OrderTypeControl
     private void updateOrderTypeFromValue(OrderTypeDetailValue orderTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderTypeDetailValue.hasBeenModified()) {
-            var orderType = OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderType = orderTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderTypeDetailValue.getOrderTypePK());
             var orderTypeDetail = orderType.getActiveDetailForUpdate();
 
@@ -317,7 +327,7 @@ public class OrderTypeControl
                 }
             }
 
-            orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderTypePK, orderTypeName, orderSequenceTypePK,
+            orderTypeDetail = orderTypeDetailFactory.create(orderTypePK, orderTypeName, orderSequenceTypePK,
                     orderWorkflowPK, orderWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderType.setActiveDetail(orderTypeDetail);
@@ -332,7 +342,6 @@ public class OrderTypeControl
     }
 
     private void deleteOrderType(OrderType orderType, boolean checkDefault, BasePK deletedBy) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var orderTypeDetail = orderType.getLastDetailForUpdate();
 
         deleteOrderTypeDescriptionsByOrderType(orderType, deletedBy);
@@ -381,8 +390,11 @@ public class OrderTypeControl
     //   Order Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderTypeDescriptionFactory orderTypeDescriptionFactory;
+
     public OrderTypeDescription createOrderTypeDescription(OrderType orderType, Language language, String description, BasePK createdBy) {
-        var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
+        var orderTypeDescription = orderTypeDescriptionFactory.create(orderType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -412,7 +424,7 @@ public class OrderTypeControl
     }
 
     private OrderTypeDescription getOrderTypeDescription(OrderType orderType, Language language, EntityPermission entityPermission) {
-        return OrderTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTypeDescriptionQueries,
+        return orderTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderTypeDescriptionQueries,
                 orderType, language, Session.MAX_TIME);
     }
 
@@ -456,7 +468,7 @@ public class OrderTypeControl
     }
 
     private List<OrderTypeDescription> getOrderTypeDescriptionsByOrderType(OrderType orderType, EntityPermission entityPermission) {
-        return OrderTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTypeDescriptionsByOrderTypeQueries,
+        return orderTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderTypeDescriptionsByOrderTypeQueries,
                 orderType, Session.MAX_TIME);
     }
 
@@ -502,7 +514,7 @@ public class OrderTypeControl
 
     public void updateOrderTypeDescriptionFromValue(OrderTypeDescriptionValue orderTypeDescriptionValue, BasePK updatedBy) {
         if(orderTypeDescriptionValue.hasBeenModified()) {
-            var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderTypeDescription = orderTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTypeDescriptionValue.getPrimaryKey());
 
             orderTypeDescription.setThruTime(session.getStartTime());
@@ -512,7 +524,7 @@ public class OrderTypeControl
             var language = orderTypeDescription.getLanguage();
             var description = orderTypeDescriptionValue.getDescription();
 
-            orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
+            orderTypeDescription = orderTypeDescriptionFactory.create(orderType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

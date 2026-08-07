@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetProtocolDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetProtocolDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Protocol.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ProtocolName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of GetProtocolDescriptionsCommand */
     public GetProtocolDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetProtocolDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetProtocolDescriptionsResult();
         var protocolName = form.getProtocolName();
         var protocol = serverControl.getProtocolByName(protocolName);

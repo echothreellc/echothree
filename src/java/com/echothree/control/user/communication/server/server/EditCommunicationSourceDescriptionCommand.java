@@ -30,10 +30,10 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommunicationSourceDescriptionCommand
@@ -52,6 +52,12 @@ public class EditCommunicationSourceDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of EditCommunicationSourceDescriptionCommand */
     public EditCommunicationSourceDescriptionCommand() {
@@ -60,13 +66,11 @@ public class EditCommunicationSourceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var result = CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
         var communicationSourceName = spec.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -28,9 +28,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityListItemResultsCommand
@@ -45,6 +45,15 @@ public class GetEntityListItemResultsCommand
         );
     }
 
+    @Inject
+    EntityListItemControl entityListItemControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetEntityListItemResultsCommand */
     public GetEntityListItemResultsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -53,7 +62,6 @@ public class GetEntityListItemResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetEntityListItemResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_LIST_ITEM.name());
         
         if(searchKind != null) {
@@ -65,10 +73,8 @@ public class GetEntityListItemResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityListItemControl = Session.getModelController(EntityListItemControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setEntityListItemResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setEntityListItemResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setEntityListItemResults(entityListItemControl.getEntityListItemResultTransfers(userVisit, userVisitSearch));

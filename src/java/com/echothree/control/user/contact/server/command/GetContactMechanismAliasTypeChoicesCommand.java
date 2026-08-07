@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactMechanismAliasTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetContactMechanismAliasTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanismAliasType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultContactMechanismAliasTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of GetContactMechanismAliasTypeChoicesCommand */
     public GetContactMechanismAliasTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetContactMechanismAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var result = ContactResultFactory.getGetContactMechanismAliasTypeChoicesResult();
         var defaultContactMechanismAliasTypeChoice = form.getDefaultContactMechanismAliasTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -58,7 +58,7 @@ public class GetInvoiceLineTypesCommand
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     InvoiceControl invoiceControl;
 
@@ -67,6 +67,8 @@ public class GetInvoiceLineTypesCommand
 
     @Inject
     InvoiceLogic invoiceLogic;
+
+
     
     /** Creates a new instance of GetInvoiceLineTypesCommand */
     public GetInvoiceLineTypesCommand() {

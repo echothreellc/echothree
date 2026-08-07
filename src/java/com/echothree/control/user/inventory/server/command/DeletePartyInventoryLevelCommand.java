@@ -64,6 +64,7 @@ public class DeletePartyInventoryLevelCommand
 
     @Inject
     ItemControl itemControl;
+
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 

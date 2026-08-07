@@ -44,9 +44,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOfferCommand
@@ -60,8 +60,8 @@ public class CreateOfferCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Offer.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
@@ -74,8 +74,24 @@ public class CreateOfferCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
     
     /** Creates a new instance of CreateOfferCommand */
     public CreateOfferCommand() {
@@ -90,7 +106,6 @@ public class CreateOfferCommand
         Sequence salesOrderSequence = null;
 
         if(salesOrderSequenceName != null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
 
             if(sequenceType != null) {
@@ -101,7 +116,6 @@ public class CreateOfferCommand
         }
 
         if(salesOrderSequenceName == null || salesOrderSequence != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var companyName = form.getCompanyName();
             var partyCompany = companyName == null? partyControl.getDefaultPartyCompany():
                 partyControl.getPartyCompanyByName(companyName);
@@ -124,7 +138,6 @@ public class CreateOfferCommand
                         Selector offerItemSelector = null;
 
                         if(offerItemSelectorName != null) {
-                            var selectorControl = Session.getModelController(SelectorControl.class);
                             var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                             if(selectorKind != null) {
@@ -146,7 +159,6 @@ public class CreateOfferCommand
                             Filter offerItemPriceFilter = null;
 
                             if(offerItemPriceFilterName != null) {
-                                var filterControl = Session.getModelController(FilterControl.class);
                                 var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
                                 var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
 
@@ -161,7 +173,7 @@ public class CreateOfferCommand
                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                 var description = form.getDescription();
 
-                                offer = OfferLogic.getInstance().createOffer(this, offerName, salesOrderSequence,
+                                offer = offerLogic.createOffer(this, offerName, salesOrderSequence,
                                         partyDepartmentParty, offerItemSelector, offerItemPriceFilter, isDefault, sortOrder,
                                         getPreferredLanguage(), description, getPartyPK());
                             } else {

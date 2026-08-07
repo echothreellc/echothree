@@ -23,9 +23,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteDepartmentCommand
@@ -38,8 +38,12 @@ public class DeleteDepartmentCommand
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DepartmentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteDepartmentCommand */
     public DeleteDepartmentCommand() {
@@ -48,7 +52,6 @@ public class DeleteDepartmentCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var companyName = form.getCompanyName();
         var partyCompany = partyControl.getPartyCompanyByName(companyName);
         

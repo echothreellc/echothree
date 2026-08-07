@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemInventoryTypeChoicesCommand
@@ -36,10 +36,14 @@ public class GetItemInventoryTypeChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("DefaultItemInventoryTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("DefaultItemInventoryTypeChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemInventoryTypeChoicesCommand */
     public GetItemInventoryTypeChoicesCommand() {
@@ -48,7 +52,6 @@ public class GetItemInventoryTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemInventoryTypeChoicesResult();
         var defaultItemInventoryTypeChoice = form.getDefaultItemInventoryTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

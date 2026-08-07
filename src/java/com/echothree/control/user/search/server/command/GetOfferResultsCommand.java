@@ -28,9 +28,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferResultsCommand
@@ -41,8 +41,17 @@ public class GetOfferResultsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of GetOfferResultsCommand */
     public GetOfferResultsCommand() {
@@ -52,7 +61,6 @@ public class GetOfferResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetOfferResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.OFFER.name());
         
         if(searchKind != null) {
@@ -64,10 +72,8 @@ public class GetOfferResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var offerControl = Session.getModelController(OfferControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setOfferResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setOfferResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setOfferResults(offerControl.getOfferResultTransfers(userVisit, userVisitSearch));

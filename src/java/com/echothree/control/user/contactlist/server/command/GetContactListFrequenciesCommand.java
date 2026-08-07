@@ -52,9 +52,10 @@ public class GetContactListFrequenciesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     ContactListControl contactListControl;
+
 
     /** Creates a new instance of GetContactListFrequenciesCommand */
     public GetContactListFrequenciesCommand() {

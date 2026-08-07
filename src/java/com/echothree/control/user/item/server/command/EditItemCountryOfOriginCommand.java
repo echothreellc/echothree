@@ -32,10 +32,10 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemCountryOfOriginCommand
@@ -54,6 +54,13 @@ public class EditItemCountryOfOriginCommand
                 new FieldDefinition("Percent", FieldType.FRACTIONAL_PERCENT, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of EditItemCountryOfOriginCommand */
     public EditItemCountryOfOriginCommand() {
@@ -72,13 +79,11 @@ public class EditItemCountryOfOriginCommand
 
     @Override
     public ItemCountryOfOrigin getEntity(EditItemCountryOfOriginResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemCountryOfOrigin itemCountryOfOrigin = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = spec.getCountryName();
             var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
@@ -109,8 +114,6 @@ public class EditItemCountryOfOriginCommand
 
     @Override
     public void fillInResult(EditItemCountryOfOriginResult result, ItemCountryOfOrigin itemCountryOfOrigin) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemCountryOfOrigin(itemControl.getItemCountryOfOriginTransfer(getUserVisit(), itemCountryOfOrigin));
     }
 
@@ -121,7 +124,6 @@ public class EditItemCountryOfOriginCommand
 
     @Override
     public void doUpdate(ItemCountryOfOrigin itemCountryOfOrigin) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemCountryOfOriginValue = itemControl.getItemCountryOfOriginValue(itemCountryOfOrigin);
 
         itemCountryOfOriginValue.setPercent(Integer.valueOf(edit.getPercent()));

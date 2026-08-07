@@ -23,7 +23,6 @@ import javax.enterprise.inject.spi.CDI;
 @ApplicationScoped
 public class SalesOrderPriorityLogic
         extends BaseOrderPriorityLogic {
-
     protected SalesOrderPriorityLogic() {
         super();
     }

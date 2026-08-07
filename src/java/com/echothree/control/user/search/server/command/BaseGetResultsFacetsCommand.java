@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.LinkedHashMap;
 import java.util.List;
+import javax.inject.Inject;
 
 public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacetsForm, R extends BaseGetResultsFacetsResult>
         extends BaseSimpleCommand<F> {
@@ -46,6 +46,18 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
+    @Inject
+    UserVisitSearchFacetLogic userVisitSearchFacetLogic;
+
     /** Creates a new instance of BaseGetResultsFacetsCommand */
     protected BaseGetResultsFacetsCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -54,11 +66,10 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
     // Substantial portions of this are duplicated in BaseResultsObject.
     protected BaseResult execute(final String componentVendorName, final String entityTypeName, final String searchKindName,
             final BaseGetResultsFacetsResult result) {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
-        var searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
+        var searchType = searchLogic.getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
 
         if(!hasExecutionErrors()) {
-            var searchControl = Session.getModelController(SearchControl.class);
             var userVisitSearch = searchControl.getUserVisitSearch(getUserVisit(), searchType);
 
             if(userVisitSearch != null) {
@@ -72,7 +83,7 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
                             || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())
                             || entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())
                             || entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        var userVisitSearchFacet = UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute);
+                        var userVisitSearchFacet = userVisitSearchFacetLogic.getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute);
 
                         if ((userVisitSearchFacet.getUserVisitSearchFacetListItems() != null && userVisitSearchFacet.getUserVisitSearchFacetListItems().getSize() > 0)
                                 || (userVisitSearchFacet.getUserVisitSearchFacetIntegers() != null && userVisitSearchFacet.getUserVisitSearchFacetIntegers().getSize() > 0)

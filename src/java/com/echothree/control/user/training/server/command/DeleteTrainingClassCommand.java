@@ -53,9 +53,10 @@ public class DeleteTrainingClassCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     TrainingClassLogic trainingClassLogic;
+
 
     /** Creates a new instance of DeleteTrainingClassCommand */
     public DeleteTrainingClassCommand() {

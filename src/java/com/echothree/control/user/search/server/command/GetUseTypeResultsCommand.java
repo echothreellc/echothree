@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUseTypeResultsCommand
@@ -41,8 +41,17 @@ public class GetUseTypeResultsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    UseTypeControl useTypeControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of GetUseTypeResultsCommand */
     public GetUseTypeResultsCommand() {
@@ -52,7 +61,6 @@ public class GetUseTypeResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetUseTypeResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.USE_TYPE.name());
         
         if(searchKind != null) {
@@ -64,10 +72,8 @@ public class GetUseTypeResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var useTypeControl = Session.getModelController(UseTypeControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setUseTypeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setUseTypeResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setUseTypeResults(useTypeControl.getUseTypeResultTransfers(userVisit, userVisitSearch));

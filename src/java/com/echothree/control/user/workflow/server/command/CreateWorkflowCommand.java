@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkflowCommand
@@ -48,9 +48,9 @@ public class CreateWorkflowCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,8 +59,18 @@ public class CreateWorkflowCommand
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateWorkflowCommand */
     public CreateWorkflowCommand() {
@@ -70,12 +80,10 @@ public class CreateWorkflowCommand
     @Override
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowResult();
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow == null) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
             var selectorKindName = form.getSelectorKindName();
             var selectorTypeName = form.getSelectorTypeName();
             var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
@@ -87,7 +95,6 @@ public class CreateWorkflowCommand
                     var selectorType = selectorTypeName == null? null: selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
                     if(selectorTypeName == null || selectorType != null) {
-                        var securityControl = Session.getModelController(SecurityControl.class);
                         var securityRoleGroupName = form.getSecurityRoleGroupName();
                         var securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 

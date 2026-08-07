@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemDescriptionTypeCommand
@@ -45,6 +45,13 @@ public class GetItemDescriptionTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemDescriptionTypeLogic itemDescriptionTypeLogic;
+
     
     /** Creates a new instance of GetItemDescriptionTypeCommand */
     public GetItemDescriptionTypeCommand() {
@@ -53,7 +60,7 @@ public class GetItemDescriptionTypeCommand
 
     @Override
     protected ItemDescriptionType getEntity() {
-        var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this, form, true);
+        var itemDescriptionType = itemDescriptionTypeLogic.getItemDescriptionTypeByUniversalSpec(this, form, true);
 
         if(itemDescriptionType != null) {
             sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,7 @@ public class GetItemDescriptionTypeCommand
 
     @Override
     protected BaseResult getResult(ItemDescriptionType itemDescriptionType) {
-        var itemDescriptionTypeControl = Session.getModelController(ItemControl.class);
+        var itemDescriptionTypeControl = itemControl;
         var result = ItemResultFactory.getGetItemDescriptionTypeResult();
 
         if(itemDescriptionType != null) {

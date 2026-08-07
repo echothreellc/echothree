@@ -50,9 +50,11 @@ public class EditUnitOfMeasureKindUseCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
-    
+
     @Inject
     UomControl uomControl;
+
+
     
     /** Creates a new instance of EditUnitOfMeasureKindUseCommand */
     public EditUnitOfMeasureKindUseCommand() {

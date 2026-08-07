@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTransactionTimeTypeCommand
@@ -53,6 +54,10 @@ public class DeleteTransactionTimeTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    TransactionTimeTypeLogic transactionTimeTypeLogic;
+
     
     /** Creates a new instance of DeleteTransactionTimeTypeCommand */
     public DeleteTransactionTimeTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteTransactionTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var transactionTimeType = TransactionTimeTypeLogic.getInstance().getTransactionTimeTypeByUniversalSpecForUpdate(this, form, false);
+        var transactionTimeType = transactionTimeTypeLogic.getTransactionTimeTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            TransactionTimeTypeLogic.getInstance().deleteTransactionTimeType(this, transactionTimeType, getPartyPK());
+            transactionTimeTypeLogic.deleteTransactionTimeType(this, transactionTimeType, getPartyPK());
         }
 
         return null;

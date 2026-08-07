@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSalesOrderBatchCommand
@@ -44,13 +45,17 @@ public class DeleteSalesOrderBatchCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatch.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SalesOrderBatchLogic salesOrderBatchLogic;
+
     
     /** Creates a new instance of DeleteSalesOrderBatchCommand */
     public DeleteSalesOrderBatchCommand() {
@@ -59,10 +64,10 @@ public class DeleteSalesOrderBatchCommand
     
     @Override
     protected BaseResult execute() {
-        var batch = SalesOrderBatchLogic.getInstance().getBatchByNameForUpdate(this, form.getBatchName());
+        var batch = salesOrderBatchLogic.getBatchByNameForUpdate(this, form.getBatchName());
 
         if(batch != null) {
-            SalesOrderBatchLogic.getInstance().deleteBatch(this, batch, getPartyPK());
+            salesOrderBatchLogic.deleteBatch(this, batch, getPartyPK());
         }
         
         return null;

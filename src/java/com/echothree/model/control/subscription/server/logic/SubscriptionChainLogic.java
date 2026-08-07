@@ -30,7 +30,6 @@ import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -40,13 +39,19 @@ public class SubscriptionChainLogic
         extends BaseLogic {
 
     @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    protected ChainInstanceLogic chainInstanceLogic;
+
+    @Inject
     protected ChainLogic chainLogic;
 
     @Inject
     protected ChainTypeLogic chainTypeLogic;
-
-    @Inject
-    protected ChainInstanceLogic chainInstanceLogic;
 
     protected SubscriptionChainLogic() {
         super();
@@ -68,7 +73,6 @@ public class SubscriptionChainLogic
      */
     protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final Subscription subscription, final BasePK createdBy) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionType = subscription.getLastDetail().getSubscriptionType();
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
         var party = subscription.getLastDetail().getParty();
@@ -95,7 +99,6 @@ public class SubscriptionChainLogic
         var chainInstance = createChainInstance(eea, ChainKinds.SUBSCRIPTION.name(), chainTypeName, subscription, createdBy);
         
         if(chainInstance != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
         
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,

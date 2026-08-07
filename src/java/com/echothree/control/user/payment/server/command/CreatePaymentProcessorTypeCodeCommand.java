@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorTypeCodeCommand
@@ -45,8 +46,8 @@ public class CreatePaymentProcessorTypeCodeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorTypeCodeType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,8 +56,12 @@ public class CreatePaymentProcessorTypeCodeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorTypeCodeLogic paymentProcessorTypeCodeLogic;
+
     
     /** Creates a new instance of CreatePaymentProcessorTypeCodeTypeCommand */
     public CreatePaymentProcessorTypeCodeCommand() {
@@ -73,7 +78,7 @@ public class CreatePaymentProcessorTypeCodeCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var paymentProcessorTypeCode = PaymentProcessorTypeCodeLogic.getInstance().createPaymentProcessorTypeCode(this,
+        var paymentProcessorTypeCode = paymentProcessorTypeCodeLogic.createPaymentProcessorTypeCode(this,
                 paymentProcessorTypeName, paymentProcessorTypeCodeTypeName, paymentProcessorTypeCodeName, isDefault,
                 sortOrder, getPreferredLanguage(), description, getPartyPK());
 

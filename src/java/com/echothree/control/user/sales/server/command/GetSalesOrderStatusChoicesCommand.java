@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderStatusChoicesCommand
@@ -43,16 +44,20 @@ public class GetSalesOrderStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSalesOrderStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
     
     /** Creates a new instance of GetSalesOrderStatusChoicesCommand */
     public GetSalesOrderStatusChoicesCommand() {
@@ -63,13 +68,13 @@ public class GetSalesOrderStatusChoicesCommand
     protected BaseResult execute() {
         var result = SalesResultFactory.getGetSalesOrderStatusChoicesResult();
         var orderName = form.getOrderName();
-        var order = orderName == null? null: SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var order = orderName == null? null: salesOrderLogic.getOrderByName(this, orderName);
 
         if(!hasExecutionErrors()) {
             var defaultSalesOrderStatusChoice = form.getDefaultSalesOrderStatusChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setSalesOrderStatusChoices(SalesOrderLogic.getInstance().getSalesOrderStatusChoices(defaultSalesOrderStatusChoice,
+            result.setSalesOrderStatusChoices(salesOrderLogic.getSalesOrderStatusChoices(defaultSalesOrderStatusChoice,
                     getPreferredLanguage(), allowNullChoice, order, getPartyPK()));
         }
 

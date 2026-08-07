@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterStepCommand
@@ -61,6 +61,13 @@ public class GetFilterStepCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
     
     /** Creates a new instance of GetFilterStepCommand */
     public GetFilterStepCommand() {
@@ -69,7 +76,7 @@ public class GetFilterStepCommand
 
     @Override
     protected FilterStep getEntity() {
-        var filterStep = FilterStepLogic.getInstance().getFilterStepByUniversalSpec(this, form, true);
+        var filterStep = filterStepLogic.getFilterStepByUniversalSpec(this, form, true);
 
         if(filterStep != null) {
             sendEvent(filterStep.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -83,8 +90,6 @@ public class GetFilterStepCommand
         var result = FilterResultFactory.getGetFilterStepResult();
 
         if(filterStep != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
             result.setFilterStep(filterControl.getFilterStepTransfer(getUserVisit(), filterStep));
         }
 

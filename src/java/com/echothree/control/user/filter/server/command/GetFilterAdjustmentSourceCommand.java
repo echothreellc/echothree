@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentSourceCommand
@@ -56,6 +56,12 @@ public class GetFilterAdjustmentSourceCommand
         );
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterAdjustmentSourceLogic filterAdjustmentSourceLogic;
+
     /** Creates a new instance of GetFilterAdjustmentSourceCommand */
     public GetFilterAdjustmentSourceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -63,12 +69,11 @@ public class GetFilterAdjustmentSourceCommand
 
     @Override
     protected FilterAdjustmentSource getEntity() {
-        return FilterAdjustmentSourceLogic.getInstance().getFilterAdjustmentSourceByName(this, form.getFilterAdjustmentSourceName());
+        return filterAdjustmentSourceLogic.getFilterAdjustmentSourceByName(this, form.getFilterAdjustmentSourceName());
     }
 
     @Override
     protected BaseResult getResult(FilterAdjustmentSource filterAdjustmentSource) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterAdjustmentSourceResult();
 
         if(filterAdjustmentSource != null) {

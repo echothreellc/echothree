@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionGlAccountCategoryDescriptionsCommand
@@ -47,14 +47,18 @@ public class GetTransactionGlAccountCategoryDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TransactionGlAccountCategory.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TransactionGlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetTransactionGlAccountCategoryDescriptionsCommand */
     public GetTransactionGlAccountCategoryDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetTransactionGlAccountCategoryDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetTransactionGlAccountCategoryDescriptionsResult();
         var transactionTypeName = form.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);

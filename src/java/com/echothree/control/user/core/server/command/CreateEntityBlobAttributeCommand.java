@@ -33,6 +33,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityBlobAttributeCommand
@@ -55,8 +56,21 @@ public class CreateEntityBlobAttributeCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateEntityBlobAttributeCommand */
     public CreateEntityBlobAttributeCommand() {
@@ -65,10 +79,10 @@ public class CreateEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -78,8 +92,8 @@ public class CreateEntityBlobAttributeCommand
                 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
@@ -93,14 +107,14 @@ public class CreateEntityBlobAttributeCommand
 
                                 if(parameterCount == 1) {
                                     var language = languageIsoName == null ?
-                                            LanguageLogic.getInstance().getLanguageByUuid(this, languageUuid) :
-                                            LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                                            languageLogic.getLanguageByUuid(this, languageUuid) :
+                                            languageLogic.getLanguageByName(this, languageIsoName);
 
                                     if(!hasExecutionErrors()) {
                                         var entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
 
                                         if(entityBlobAttribute == null) {
-                                            var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, form.getMimeTypeName());
+                                            var mimeType = mimeTypeLogic.getMimeTypeByName(this, form.getMimeTypeName());
 
                                             if(!hasExecutionErrors()) {
                                                 if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {
@@ -117,7 +131,7 @@ public class CreateEntityBlobAttributeCommand
                                             }
                                         } else {
                                             addExecutionError(ExecutionErrors.DuplicateEntityBlobAttribute.name(),
-                                                    EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                                     entityAttribute.getLastDetail().getEntityAttributeName(),
                                                     language.getLanguageIsoName());
                                         }

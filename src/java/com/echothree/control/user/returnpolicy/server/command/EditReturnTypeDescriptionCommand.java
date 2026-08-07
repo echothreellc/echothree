@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditReturnTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditReturnTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ReturnType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,12 @@ public class EditReturnTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
 
     /** Creates a new instance of EditReturnTypeDescriptionCommand */
     public EditReturnTypeDescriptionCommand() {
@@ -85,7 +91,6 @@ public class EditReturnTypeDescriptionCommand
 
     @Override
     public ReturnTypeDescription getEntity(EditReturnTypeDescriptionResult result) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnTypeDescription returnTypeDescription = null;
         var returnKindName = spec.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
@@ -95,7 +100,6 @@ public class EditReturnTypeDescriptionCommand
             var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
 
             if(returnType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -129,8 +133,6 @@ public class EditReturnTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditReturnTypeDescriptionResult result, ReturnTypeDescription returnTypeDescription) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         result.setReturnTypeDescription(returnPolicyControl.getReturnTypeDescriptionTransfer(getUserVisit(), returnTypeDescription));
     }
 
@@ -141,7 +143,6 @@ public class EditReturnTypeDescriptionCommand
 
     @Override
     public void doUpdate(ReturnTypeDescription returnTypeDescription) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnTypeDescriptionValue = returnPolicyControl.getReturnTypeDescriptionValue(returnTypeDescription);
 
         returnTypeDescriptionValue.setDescription(edit.getDescription());

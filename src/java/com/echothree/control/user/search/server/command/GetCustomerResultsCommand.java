@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerResultsCommand
@@ -56,6 +56,12 @@ public class GetCustomerResultsCommand
         );
     }
 
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetCustomerResultsCommand */
     public GetCustomerResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,14 +72,12 @@ public class GetCustomerResultsCommand
         var result = SearchResultFactory.getGetCustomerResultsResult();
         var searchTypeName = form.getSearchTypeName();
         var userVisit = getUserVisit();
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+        var userVisitSearch = searchLogic.getUserVisitSearchByName(this, userVisit,
                 SearchKinds.CUSTOMER.name(), searchTypeName);
         
         if(!hasExecutionErrors()) {
-            var customerControl = Session.getModelController(CustomerControl.class);
-
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                result.setCustomerResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                result.setCustomerResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
             }
 
             result.setCustomerResults(customerControl.getCustomerResultTransfers(userVisit, userVisitSearch));

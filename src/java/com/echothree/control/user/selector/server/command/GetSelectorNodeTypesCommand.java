@@ -43,12 +43,13 @@ public class GetSelectorNodeTypesCommand
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     SelectorControl selectorControl;
 
     @Inject
     SelectorKindLogic selectorKindLogic;
+
 
     /** Creates a new instance of GetSelectorNodeTypesCommand */
     public GetSelectorNodeTypesCommand() {

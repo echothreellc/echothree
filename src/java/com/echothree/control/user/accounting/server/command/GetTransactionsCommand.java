@@ -34,10 +34,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionsCommand
@@ -58,6 +58,13 @@ public class GetTransactionsCommand
                 new FieldDefinition("TransactionGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    TransactionGroupLogic transactionGroupLogic;
+
     
     /** Creates a new instance of GetTransactionsCommand */
     public GetTransactionsCommand() {
@@ -71,7 +78,7 @@ public class GetTransactionsCommand
         final var transactionGroupName = form.getTransactionGroupName();
 
         if(transactionGroupName != null) {
-            transactionGroup = TransactionGroupLogic.getInstance().getTransactionGroupByName(this, transactionGroupName);
+            transactionGroup = transactionGroupLogic.getTransactionGroupByName(this, transactionGroupName);
         }
     }
 
@@ -80,8 +87,6 @@ public class GetTransactionsCommand
         Long totalEntities = null;
 
         if(!hasExecutionErrors()) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             totalEntities = transactionGroup == null ?
                     accountingControl.countTransactions() :
                     accountingControl.countTransactionsByTransactionGroup(transactionGroup);
@@ -95,8 +100,6 @@ public class GetTransactionsCommand
         Collection<Transaction> entities = null;
 
         if(!hasExecutionErrors()) {
-            final var accountingControl = Session.getModelController(AccountingControl.class);
-
             entities = transactionGroup == null ?
                     accountingControl.getTransactions() :
                     accountingControl.getTransactionsByTransactionGroup(transactionGroup);
@@ -110,7 +113,6 @@ public class GetTransactionsCommand
         final var result = AccountingResultFactory.getGetTransactionsResult();
 
         if(entities != null) {
-            final var accountingControl = Session.getModelController(AccountingControl.class);
             final var userVisit = getUserVisit();
 
             if(session.hasLimit(TransactionFactory.class)) {

@@ -53,6 +53,7 @@ public class GetCustomerTypeCreditLimitsCommand
 
     @Inject
     CustomerTypeLogic customerTypeLogic;
+
     
     /** Creates a new instance of GetCustomerTypeCreditLimitsCommand */
     public GetCustomerTypeCreditLimitsCommand() {

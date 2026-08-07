@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGeoCodeTypeCommand
@@ -58,6 +58,13 @@ public class GetGeoCodeTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    GeoCodeTypeLogic geoCodeTypeLogic;
+
     
     /** Creates a new instance of GetGeoCodeTypeCommand */
     public GetGeoCodeTypeCommand() {
@@ -66,7 +73,7 @@ public class GetGeoCodeTypeCommand
 
     @Override
     protected GeoCodeType getEntity() {
-        var geoCodeType = GeoCodeTypeLogic.getInstance().getGeoCodeTypeByUniversalSpec(this, form, true);
+        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByUniversalSpec(this, form, true);
 
         if(geoCodeType != null) {
             sendEvent(geoCodeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetGeoCodeTypeCommand
 
     @Override
     protected BaseResult getResult(GeoCodeType entity) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var result = GeoResultFactory.getGetGeoCodeTypeResult();
 
         if(entity != null) {

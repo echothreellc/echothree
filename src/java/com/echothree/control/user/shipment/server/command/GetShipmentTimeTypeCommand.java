@@ -56,9 +56,10 @@ public class GetShipmentTimeTypeCommand
                 new FieldDefinition("ShipmentTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ShipmentControl shipmentControl;
+
 
     /** Creates a new instance of GetShipmentTimeTypeCommand */
     public GetShipmentTimeTypeCommand() {

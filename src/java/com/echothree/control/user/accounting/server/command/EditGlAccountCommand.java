@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGlAccountCommand
@@ -53,9 +53,9 @@ public class EditGlAccountCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.Edit.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.Edit.name())
                 ))
-                ));
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, false, null, null),
@@ -73,6 +73,13 @@ public class EditGlAccountCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GlAccountLogic glAccountLogic;
+
     
     /** Creates a new instance of EditGlAccountCommand */
     public EditGlAccountCommand() {
@@ -81,11 +88,10 @@ public class EditGlAccountCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getEditGlAccountResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            var glAccount = GlAccountLogic.getInstance().getGlAccountByUniversalSpec(this, spec, false, null);
+            var glAccount = glAccountLogic.getGlAccountByUniversalSpec(this, spec, false, null);
 
             if(!hasExecutionErrors()) {
                 if(editMode.equals(EditMode.LOCK)) {
@@ -120,7 +126,7 @@ public class EditGlAccountCommand
                 }
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            var glAccount = GlAccountLogic.getInstance().getGlAccountByUniversalSpecForUpdate(this, spec, false, null);
+            var glAccount = glAccountLogic.getGlAccountByUniversalSpecForUpdate(this, spec, false, null);
 
             if(!hasExecutionErrors()) {
                 var glAccountName = edit.getGlAccountName();
@@ -163,7 +169,7 @@ public class EditGlAccountCommand
                                                 glAccountDetailValue.setGlResourceTypePK(glResourceType.getPrimaryKey());
                                                 glAccountDetailValue.setIsDefault(isDefault);
                                                 
-                                                GlAccountLogic.getInstance().updateGlAccountFromValue(glAccountDetailValue, partyPK);
+                                                glAccountLogic.updateGlAccountFromValue(glAccountDetailValue, partyPK);
                                                 
                                                 if(glAccountDescription == null && description != null) {
                                                     accountingControl.createGlAccountDescription(glAccount, getPreferredLanguage(), description, partyPK);

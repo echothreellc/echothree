@@ -45,7 +45,7 @@ public class GetItemVolumeCommand
                 new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ItemControl itemControl;
 
@@ -57,6 +57,7 @@ public class GetItemVolumeCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
 
     /** Creates a new instance of GetItemVolumeCommand */
     public GetItemVolumeCommand() {

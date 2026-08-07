@@ -26,9 +26,9 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUserSessionCommand
@@ -41,6 +41,12 @@ public class GetUserSessionCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     /** Creates a new instance of GetUserSessionCommand */
     public GetUserSessionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -48,13 +54,10 @@ public class GetUserSessionCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = UserResultFactory.getGetUserSessionResult();
         var userSession = getUserSession();
         
         if(userSession != null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(getPartyPK());
             var party = userSession.getParty();
             var partyTypeName = party == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();

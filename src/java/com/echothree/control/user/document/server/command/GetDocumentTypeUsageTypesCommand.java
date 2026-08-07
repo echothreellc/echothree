@@ -29,9 +29,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDocumentTypeUsageTypesCommand
@@ -45,12 +45,15 @@ public class GetDocumentTypeUsageTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.DocumentTypeUsageType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of GetDocumentTypeUsageTypesCommand */
     public GetDocumentTypeUsageTypesCommand() {
@@ -59,7 +62,6 @@ public class GetDocumentTypeUsageTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var result = DocumentResultFactory.getGetDocumentTypeUsageTypesResult();
         
         result.setDocumentTypeUsageTypes(documentControl.getDocumentTypeUsageTypeTransfers(getUserVisit()));
