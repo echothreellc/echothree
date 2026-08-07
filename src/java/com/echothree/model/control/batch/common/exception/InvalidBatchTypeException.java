@@ -14,13 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.sales.common.form;
+package com.echothree.model.control.batch.common.exception;
 
-import com.echothree.control.user.sales.common.spec.SalesOrderBatchUniversalSpec;
+import com.echothree.util.common.message.Message;
 
-public interface GetSalesOrderBatchForm
-        extends SalesOrderBatchUniversalSpec {
+public class InvalidBatchTypeException
+        extends BaseBatchException {
     
-    // Nothing additional beyond SalesOrderBatchSpec
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException() {
+        super();
+    }
     
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException(Message message) {
+        super(message);
+    }
+
 }

@@ -16,10 +16,16 @@
 
 package com.echothree.model.control.sales.server.logic;
 
+import com.echothree.control.user.sales.common.spec.SalesOrderBatchUniversalSpec;
 import com.echothree.model.control.batch.common.BatchTypes;
+import com.echothree.model.control.batch.common.exception.InvalidBatchTypeException;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
@@ -47,6 +53,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import java.util.ArrayList;
@@ -157,12 +164,62 @@ public class SalesOrderBatchLogic
         }
     }
 
+    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchName, final EntityPermission entityPermission) {
+        return batchLogic.getBatchByName(eea, BatchTypes.SALES_ORDER.name(), batchName, entityPermission);
+    }
+
     public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchName) {
-        return batchLogic.getBatchByName(eea, BatchTypes.SALES_ORDER.name(), batchName);
+        return getBatchByName(eea, batchName, EntityPermission.READ_ONLY);
     }
 
     public Batch getBatchByNameForUpdate(final ExecutionErrorAccumulator eea, final String batchName) {
-        return batchLogic.getBatchByNameForUpdate(eea, BatchTypes.SALES_ORDER.name(), batchName);
+        return getBatchByName(eea, batchName, EntityPermission.READ_WRITE);
+    }
+
+    public Batch getBatchByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final SalesOrderBatchUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Batch batch = null;
+        var batchName = universalSpec.getBatchName();
+        var parameterCount = (batchName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(batchName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Batch.name());
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        batch = batchControl.getBatchByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    batch = getBatchByName(eea, batchName, entityPermission);
+                }
+
+                if(!hasExecutionErrors(eea)) {
+                    var batchTypeName = batch.getLastDetail().getBatchType().getLastDetail().getBatchTypeName();
+
+                    if(!batchTypeName.equals(BatchTypes.SALES_ORDER.name())) {
+                        batch = null;
+                        // Purposefully disclose nothing about the BatchType of the Batch that was found.
+                        handleExecutionError(InvalidBatchTypeException.class, eea, ExecutionErrors.InvalidBatchType.name());
+                    }
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return batch;
+    }
+
+    public Batch getBatchByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final SalesOrderBatchUniversalSpec universalSpec) {
+        return getBatchByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Batch getBatchByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final SalesOrderBatchUniversalSpec universalSpec) {
+        return getBatchByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public SalesOrderBatchStatusChoicesBean getSalesOrderBatchStatusChoices(String defaultSalesOrderBatchStatusChoice, Language language, boolean allowNullChoice,
