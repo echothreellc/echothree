@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OfferItemControl
@@ -65,9 +66,12 @@ public class OfferItemControl
     //   Offer Items
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferItemFactory offerItemFactory;
+
     /** Use the function in OfferLogic instead. */
     public OfferItem createOfferItem(Offer offer, Item item, BasePK createdBy) {
-        var offerItem = OfferItemFactory.getInstance().create(offer, item, session.getStartTime(), Session.MAX_TIME);
+        var offerItem = offerItemFactory.create(offer, item, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -97,7 +101,7 @@ public class OfferItemControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferItem */
     public OfferItem getOfferItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferItemPK(entityInstance.getEntityUniqueId());
-        var offerItem = OfferItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var offerItem = offerItemFactory.getEntityFromPK(entityPermission, pk);
 
         return offerItem;
     }
@@ -132,7 +136,7 @@ public class OfferItemControl
     }
 
     public OfferItem getOfferItem(Offer offer, Item item, EntityPermission entityPermission) {
-        return OfferItemFactory.getInstance().getEntityFromQuery(entityPermission, getOfferItemQueries,
+        return offerItemFactory.getEntityFromQuery(entityPermission, getOfferItemQueries,
                 offer, item, Session.MAX_TIME);
     }
 
@@ -169,7 +173,7 @@ public class OfferItemControl
     }
 
     private List<OfferItem> getOfferItemsByOffer(Offer offer, EntityPermission entityPermission) {
-        return OfferItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getOfferItemsByOfferQueries,
+        return offerItemFactory.getEntitiesFromQuery(entityPermission, getOfferItemsByOfferQueries,
                 offer, Session.MAX_TIME);
     }
 
@@ -206,7 +210,7 @@ public class OfferItemControl
     }
 
     private List<OfferItem> getOfferItemsByItem(Item item, EntityPermission entityPermission) {
-        return OfferItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getOfferItemsByItemQueries,
+        return offerItemFactory.getEntitiesFromQuery(entityPermission, getOfferItemsByItemQueries,
                 item, Session.MAX_TIME);
     }
 
@@ -254,10 +258,13 @@ public class OfferItemControl
     //   Offer Item Prices
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferItemPriceFactory offerItemPriceFactory;
+
     /** Use the function in OfferItemLogic instead. */
     public OfferItemPrice createOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
-        var offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
+        var offerItemPrice = offerItemPriceFactory.create(offerItem, inventoryCondition, unitOfMeasureType, currency,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -331,7 +338,7 @@ public class OfferItemControl
     }
 
     private List<OfferItemPrice> getOfferItemPricesByOfferItem(OfferItem offerItem, EntityPermission entityPermission) {
-        return OfferItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, getOfferItemPricesByOfferItemQueries1,
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesByOfferItemQueries1,
                 offerItem, Session.MAX_TIME);
     }
 
@@ -368,7 +375,7 @@ public class OfferItemControl
     }
 
     private List<OfferItemPrice> getOfferItemPricesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        return OfferItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, getOfferItemPricesByItemAndUnitOfMeasureTypeQueries,
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesByItemAndUnitOfMeasureTypeQueries,
                 item, Session.MAX_TIME, unitOfMeasureType, Session.MAX_TIME);
     }
 
@@ -406,7 +413,7 @@ public class OfferItemControl
 
     private List<OfferItemPrice> getOfferItemPricesByOfferItem(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             EntityPermission entityPermission) {
-        return OfferItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, getOfferItemPricesByOfferItemQueries2,
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesByOfferItemQueries2,
                 offerItem, inventoryCondition, unitOfMeasureType, Session.MAX_TIME);
     }
 
@@ -446,7 +453,7 @@ public class OfferItemControl
 
     private List<OfferItemPrice> getOfferItemPrices(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, EntityPermission entityPermission) {
-        return OfferItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, getOfferItemPricesQueries,
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesQueries,
                 item, Session.MAX_TIME, inventoryCondition, unitOfMeasureType, currency, Session.MAX_TIME);
     }
 
@@ -485,7 +492,7 @@ public class OfferItemControl
 
     private OfferItemPrice getOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        return OfferItemPriceFactory.getInstance().getEntityFromQuery(entityPermission, getOfferItemPriceQueries,
+        return offerItemPriceFactory.getEntityFromQuery(entityPermission, getOfferItemPriceQueries,
                 offerItem, inventoryCondition, unitOfMeasureType, currency, Session.MAX_TIME);
     }
 
@@ -548,9 +555,12 @@ public class OfferItemControl
     //   Offer Item Fixed Prices
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferItemFixedPriceFactory offerItemFixedPriceFactory;
+
     /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice createOfferItemFixedPrice(OfferItemPrice offerItemPrice, Long unitPrice, BasePK createdBy) {
-        var offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
+        var offerItemFixedPrice = offerItemFixedPriceFactory.create(offerItemPrice,
                 unitPrice, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemFixedPrice.getPrimaryKey(),
@@ -581,7 +591,7 @@ public class OfferItemControl
     }
 
     private OfferItemFixedPrice getOfferItemFixedPrice(OfferItemPrice offerItemPrice, EntityPermission entityPermission) {
-        return OfferItemFixedPriceFactory.getInstance().getEntityFromQuery(entityPermission, getOfferItemFixedPriceQueries,
+        return offerItemFixedPriceFactory.getEntityFromQuery(entityPermission, getOfferItemFixedPriceQueries,
                 offerItemPrice, Session.MAX_TIME);
     }
 
@@ -615,7 +625,7 @@ public class OfferItemControl
     }
 
     public List<OfferItemFixedPrice> getOfferItemFixedPriceHistory(OfferItemPrice offerItemPrice) {
-        return OfferItemFixedPriceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getOfferItemFixedPriceHistoryQueries,
+        return offerItemFixedPriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getOfferItemFixedPriceHistoryQueries,
                 offerItemPrice);
     }
 
@@ -624,7 +634,7 @@ public class OfferItemControl
         OfferItemFixedPrice offerItemFixedPrice = null;
 
         if(offerItemFixedPriceValue.hasBeenModified()) {
-            offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            offerItemFixedPrice = offerItemFixedPriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     offerItemFixedPriceValue.getPrimaryKey());
 
             offerItemFixedPrice.setThruTime(session.getStartTime());
@@ -633,7 +643,7 @@ public class OfferItemControl
             var offerItemPricePK = offerItemFixedPrice.getOfferItemPricePK();
             var unitPrice = offerItemFixedPriceValue.getUnitPrice();
 
-            offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPricePK, unitPrice,
+            offerItemFixedPrice = offerItemFixedPriceFactory.create(offerItemPricePK, unitPrice,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
@@ -655,10 +665,13 @@ public class OfferItemControl
     //   Offer Item Variable Prices
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferItemVariablePriceFactory offerItemVariablePriceFactory;
+
     /** Use the function in OfferItemLogic instead. */
     public OfferItemVariablePrice createOfferItemVariablePrice(OfferItemPrice offerItemPrice, Long minimumUnitPrice, Long maximumUnitPrice,
             Long unitPriceIncrement, BasePK createdBy) {
-        var offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
+        var offerItemVariablePrice = offerItemVariablePriceFactory.create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
                 unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemVariablePrice.getPrimaryKey(),
@@ -689,7 +702,7 @@ public class OfferItemControl
     }
 
     private OfferItemVariablePrice getOfferItemVariablePrice(OfferItemPrice offerItemPrice, EntityPermission entityPermission) {
-        return OfferItemVariablePriceFactory.getInstance().getEntityFromQuery(entityPermission, getOfferItemVariablePriceQueries,
+        return offerItemVariablePriceFactory.getEntityFromQuery(entityPermission, getOfferItemVariablePriceQueries,
                 offerItemPrice, Session.MAX_TIME);
     }
 
@@ -723,7 +736,7 @@ public class OfferItemControl
     }
 
     public List<OfferItemVariablePrice> getOfferItemVariablePriceHistory(OfferItemPrice offerItemPrice) {
-        return OfferItemVariablePriceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getOfferItemVariablePriceHistoryQueries,
+        return offerItemVariablePriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getOfferItemVariablePriceHistoryQueries,
                 offerItemPrice);
     }
 
@@ -732,7 +745,7 @@ public class OfferItemControl
         OfferItemVariablePrice offerItemVariablePrice = null;
 
         if(offerItemVariablePriceValue.hasBeenModified()) {
-            offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            offerItemVariablePrice = offerItemVariablePriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     offerItemVariablePriceValue.getPrimaryKey());
 
             offerItemVariablePrice.setThruTime(session.getStartTime());
@@ -743,7 +756,7 @@ public class OfferItemControl
             var minimumUnitPrice = offerItemVariablePriceValue.getMinimumUnitPrice();
             var unitPriceIncrement = offerItemVariablePriceValue.getUnitPriceIncrement();
 
-            offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPricePK, maximumUnitPrice,
+            offerItemVariablePrice = offerItemVariablePriceFactory.create(offerItemPricePK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,

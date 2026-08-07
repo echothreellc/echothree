@@ -65,11 +65,11 @@ public class EntityAliasControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    EntityAliasTypeFactory entityAliasTypeFactory;
-    
+    protected EntityAliasTypeFactory entityAliasTypeFactory;
+
     @Inject
-    EntityAliasTypeDetailFactory entityAliasTypeDetailFactory;
-    
+    protected EntityAliasTypeDetailFactory entityAliasTypeDetailFactory;
+
     public EntityAliasType createEntityAliasType(EntityType entityType, String entityAliasTypeName,
             String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityAliasType = getDefaultEntityAliasType(entityType);
@@ -467,8 +467,8 @@ public class EntityAliasControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    private EntityAliasTypeDescriptionFactory entityAliasTypeDescriptionFactory;
-    
+    protected EntityAliasTypeDescriptionFactory entityAliasTypeDescriptionFactory;
+
     public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
             String description, BasePK createdBy) {
         var entityAliasTypeDescription = entityAliasTypeDescriptionFactory.create(
@@ -646,8 +646,8 @@ public class EntityAliasControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    EntityAliasFactory entityAliasFactory;
-    
+    protected EntityAliasFactory entityAliasFactory;
+
     public EntityAlias createEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType, String alias,
             BasePK createdBy) {
         var entityAlias = entityAliasFactory.create(entityInstance, entityAliasType,

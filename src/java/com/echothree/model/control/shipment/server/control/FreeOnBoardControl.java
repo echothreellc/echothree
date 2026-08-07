@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class FreeOnBoardControl
@@ -53,6 +54,12 @@ public class FreeOnBoardControl
     // --------------------------------------------------------------------------------
     //   Free On Boards
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected FreeOnBoardFactory freeOnBoardFactory;
+
+    @Inject
+    protected FreeOnBoardDetailFactory freeOnBoardDetailFactory;
 
     public FreeOnBoard createFreeOnBoard(final String freeOnBoardName, Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
@@ -68,12 +75,12 @@ public class FreeOnBoardControl
             isDefault = true;
         }
 
-        var freeOnBoard = FreeOnBoardFactory.getInstance().create();
-        var freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(
+        var freeOnBoard = freeOnBoardFactory.create();
+        var freeOnBoardDetail = freeOnBoardDetailFactory.create(
                 freeOnBoard, freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        freeOnBoard = FreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoard.getPrimaryKey());
+        freeOnBoard = freeOnBoardFactory.getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoard.getPrimaryKey());
         freeOnBoard.setActiveDetail(freeOnBoardDetail);
         freeOnBoard.setLastDetail(freeOnBoardDetail);
         freeOnBoard.store();
@@ -88,7 +95,7 @@ public class FreeOnBoardControl
             final EntityPermission entityPermission) {
         var pk = new FreeOnBoardPK(entityInstance.getEntityUniqueId());
 
-        return FreeOnBoardFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return freeOnBoardFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FreeOnBoard getFreeOnBoardByEntityInstance(final EntityInstance entityInstance) {
@@ -124,7 +131,7 @@ public class FreeOnBoardControl
             """);
 
     public FreeOnBoard getFreeOnBoardByName(final String freeOnBoardName, final EntityPermission entityPermission) {
-        return FreeOnBoardFactory.getInstance().getEntityFromQuery(entityPermission, getFreeOnBoardByNameQueries,
+        return freeOnBoardFactory.getEntityFromQuery(entityPermission, getFreeOnBoardByNameQueries,
                 freeOnBoardName);
     }
 
@@ -160,7 +167,7 @@ public class FreeOnBoardControl
             """);
 
     public FreeOnBoard getDefaultFreeOnBoard(final EntityPermission entityPermission) {
-        return FreeOnBoardFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFreeOnBoardQueries);
+        return freeOnBoardFactory.getEntityFromQuery(entityPermission, getDefaultFreeOnBoardQueries);
     }
 
     public FreeOnBoard getDefaultFreeOnBoard() {
@@ -192,7 +199,7 @@ public class FreeOnBoardControl
             """);
 
     private List<FreeOnBoard> getFreeOnBoards(final EntityPermission entityPermission) {
-        return FreeOnBoardFactory.getInstance().getEntitiesFromQuery(entityPermission, getFreeOnBoardsQueries);
+        return freeOnBoardFactory.getEntitiesFromQuery(entityPermission, getFreeOnBoardsQueries);
     }
 
     public List<FreeOnBoard> getFreeOnBoards() {
@@ -261,7 +268,7 @@ public class FreeOnBoardControl
     private void updateFreeOnBoardFromValue(final FreeOnBoardDetailValue freeOnBoardDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(freeOnBoardDetailValue.hasBeenModified()) {
-            var freeOnBoard = FreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var freeOnBoard = freeOnBoardFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     freeOnBoardDetailValue.getFreeOnBoardPK());
             var freeOnBoardDetail = freeOnBoard.getActiveDetailForUpdate();
 
@@ -289,7 +296,7 @@ public class FreeOnBoardControl
                 }
             }
 
-            freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(freeOnBoardPK,
+            freeOnBoardDetail = freeOnBoardDetailFactory.create(freeOnBoardPK,
                     freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             freeOnBoard.setActiveDetail(freeOnBoardDetail);
@@ -339,9 +346,12 @@ public class FreeOnBoardControl
     //   Free On Board Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FreeOnBoardDescriptionFactory freeOnBoardDescriptionFactory;
+
     public FreeOnBoardDescription createFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final String description, final BasePK createdBy) {
-        var freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard,
+        var freeOnBoardDescription = freeOnBoardDescriptionFactory.create(freeOnBoard,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -366,7 +376,7 @@ public class FreeOnBoardControl
 
     private FreeOnBoardDescription getFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final EntityPermission entityPermission) {
-        return FreeOnBoardDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getFreeOnBoardDescriptionQueries,
+        return freeOnBoardDescriptionFactory.getEntityFromQuery(entityPermission, getFreeOnBoardDescriptionQueries,
                 freeOnBoard, language, Session.MAX_TIME);
     }
 
@@ -407,7 +417,7 @@ public class FreeOnBoardControl
 
     private List<FreeOnBoardDescription> getFreeOnBoardDescriptionsByFreeOnBoard(final FreeOnBoard freeOnBoard,
             final EntityPermission entityPermission) {
-        return FreeOnBoardDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return freeOnBoardDescriptionFactory.getEntitiesFromQuery(entityPermission,
                 getFreeOnBoardDescriptionsByFreeOnBoardQueries,
                 freeOnBoard, Session.MAX_TIME);
     }
@@ -457,7 +467,7 @@ public class FreeOnBoardControl
     public void updateFreeOnBoardDescriptionFromValue(final FreeOnBoardDescriptionValue freeOnBoardDescriptionValue,
             final BasePK updatedBy) {
         if(freeOnBoardDescriptionValue.hasBeenModified()) {
-            var freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoardDescriptionValue.getPrimaryKey());
+            var freeOnBoardDescription = freeOnBoardDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoardDescriptionValue.getPrimaryKey());
 
             freeOnBoardDescription.setThruTime(session.getStartTime());
             freeOnBoardDescription.store();
@@ -466,7 +476,7 @@ public class FreeOnBoardControl
             var language = freeOnBoardDescription.getLanguage();
             var description = freeOnBoardDescriptionValue.getDescription();
 
-            freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard, language, description,
+            freeOnBoardDescription = freeOnBoardDescriptionFactory.create(freeOnBoard, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

@@ -246,6 +246,12 @@ public class ChainControl
     //   Chain Kinds
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainKindFactory chainKindFactory;
+
+    @Inject
+    protected ChainKindDetailFactory chainKindDetailFactory;
+
     public ChainKind createChainKind(String chainKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultChainKind = getDefaultChainKind();
         var defaultFound = defaultChainKind != null;
@@ -259,12 +265,12 @@ public class ChainControl
             isDefault = true;
         }
 
-        var chainKind = ChainKindFactory.getInstance().create();
-        var chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKind, chainKindName, isDefault, sortOrder,
+        var chainKind = chainKindFactory.create();
+        var chainKindDetail = chainKindDetailFactory.create(chainKind, chainKindName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        chainKind = ChainKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        chainKind = chainKindFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 chainKind.getPrimaryKey());
         chainKind.setActiveDetail(chainKindDetail);
         chainKind.setLastDetail(chainKindDetail);
@@ -279,7 +285,7 @@ public class ChainControl
     public ChainKind getChainKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainKindPK(entityInstance.getEntityUniqueId());
 
-        return ChainKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainKindFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainKind getChainKindByEntityInstance(EntityInstance entityInstance) {
@@ -320,7 +326,7 @@ public class ChainControl
     }
 
     public ChainKind getChainKindByName(String chainKindName, EntityPermission entityPermission) {
-        return ChainKindFactory.getInstance().getEntityFromQuery(entityPermission, getChainKindByNameQueries,
+        return chainKindFactory.getEntityFromQuery(entityPermission, getChainKindByNameQueries,
                 chainKindName);
     }
 
@@ -362,7 +368,7 @@ public class ChainControl
     }
 
     public ChainKind getDefaultChainKind(EntityPermission entityPermission) {
-        return ChainKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainKindQueries);
+        return chainKindFactory.getEntityFromQuery(entityPermission, getDefaultChainKindQueries);
     }
 
     public ChainKind getDefaultChainKind() {
@@ -401,7 +407,7 @@ public class ChainControl
     }
 
     private List<ChainKind> getChainKinds(EntityPermission entityPermission) {
-        return ChainKindFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainKindsQueries);
+        return chainKindFactory.getEntitiesFromQuery(entityPermission, getChainKindsQueries);
     }
 
     public List<ChainKind> getChainKinds() {
@@ -465,7 +471,7 @@ public class ChainControl
     }
 
     private void updateChainKindFromValue(ChainKindDetailValue chainKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var chainKind = ChainKindFactory.getInstance().getEntityFromPK(
+        var chainKind = chainKindFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, chainKindDetailValue.getChainKindPK());
         var chainKindDetail = chainKind.getActiveDetailForUpdate();
 
@@ -493,7 +499,7 @@ public class ChainControl
             }
         }
 
-        chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKindPK, chainKindName, isDefault, sortOrder, session.getStartTime(),
+        chainKindDetail = chainKindDetailFactory.create(chainKindPK, chainKindName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         chainKind.setActiveDetail(chainKindDetail);
@@ -540,9 +546,12 @@ public class ChainControl
     //   Chain Kind Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainKindDescriptionFactory chainKindDescriptionFactory;
+
     public ChainKindDescription createChainKindDescription(ChainKind chainKind, Language language, String description,
             BasePK createdBy) {
-        var chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind,
+        var chainKindDescription = chainKindDescriptionFactory.create(chainKind,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainKind.getPrimaryKey(), EventTypes.MODIFY, chainKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -572,7 +581,7 @@ public class ChainControl
     }
 
     private ChainKindDescription getChainKindDescription(ChainKind chainKind, Language language, EntityPermission entityPermission) {
-        return ChainKindDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainKindDescriptionQueries,
+        return chainKindDescriptionFactory.getEntityFromQuery(entityPermission, getChainKindDescriptionQueries,
                 chainKind, language, Session.MAX_TIME);
     }
 
@@ -616,7 +625,7 @@ public class ChainControl
     }
 
     private List<ChainKindDescription> getChainKindDescriptionsByChainKind(ChainKind chainKind, EntityPermission entityPermission) {
-        return ChainKindDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainKindDescriptionsByChainKindQueries,
+        return chainKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainKindDescriptionsByChainKindQueries,
                 chainKind, Session.MAX_TIME);
     }
 
@@ -662,7 +671,7 @@ public class ChainControl
 
     public void updateChainKindDescriptionFromValue(ChainKindDescriptionValue chainKindDescriptionValue, BasePK updatedBy) {
         if(chainKindDescriptionValue.hasBeenModified()) {
-            var chainKindDescription = ChainKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainKindDescription = chainKindDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainKindDescriptionValue.getPrimaryKey());
 
             chainKindDescription.setThruTime(session.getStartTime());
@@ -672,7 +681,7 @@ public class ChainControl
             var language = chainKindDescription.getLanguage();
             var description = chainKindDescriptionValue.getDescription();
 
-            chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind, language, description,
+            chainKindDescription = chainKindDescriptionFactory.create(chainKind, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainKind.getPrimaryKey(), EventTypes.MODIFY, chainKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -698,6 +707,12 @@ public class ChainControl
     //   Chain Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainTypeFactory chainTypeFactory;
+
+    @Inject
+    protected ChainTypeDetailFactory chainTypeDetailFactory;
+
     public ChainType createChainType(ChainKind chainKind, String chainTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultChainType = getDefaultChainType(chainKind);
         var defaultFound = defaultChainType != null;
@@ -711,12 +726,12 @@ public class ChainControl
             isDefault = true;
         }
 
-        var chainType = ChainTypeFactory.getInstance().create();
-        var chainTypeDetail = ChainTypeDetailFactory.getInstance().create( chainType, chainKind, chainTypeName, isDefault, sortOrder,
+        var chainType = chainTypeFactory.create();
+        var chainTypeDetail = chainTypeDetailFactory.create( chainType, chainKind, chainTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        chainType = ChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        chainType = chainTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 chainType.getPrimaryKey());
         chainType.setActiveDetail(chainTypeDetail);
         chainType.setLastDetail(chainTypeDetail);
@@ -731,7 +746,7 @@ public class ChainControl
     public ChainType getChainTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainTypePK(entityInstance.getEntityUniqueId());
 
-        return ChainTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainType getChainTypeByEntityInstance(EntityInstance entityInstance) {
@@ -775,7 +790,7 @@ public class ChainControl
     }
 
     private List<ChainType> getChainTypesByChainKind(ChainKind chainKind, EntityPermission entityPermission) {
-        return ChainTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainTypesByChainKindQueries,
+        return chainTypeFactory.getEntitiesFromQuery(entityPermission, getChainTypesByChainKindQueries,
                 chainKind);
     }
 
@@ -812,7 +827,7 @@ public class ChainControl
     }
 
     private List<ChainType> getChainTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        return ChainTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainTypesByEntityTypeQueries,
+        return chainTypeFactory.getEntitiesFromQuery(entityPermission, getChainTypesByEntityTypeQueries,
                 entityType);
     }
 
@@ -848,7 +863,7 @@ public class ChainControl
     }
 
     public ChainType getDefaultChainType(ChainKind chainKind, EntityPermission entityPermission) {
-        return ChainTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainTypeQueries,
+        return chainTypeFactory.getEntityFromQuery(entityPermission, getDefaultChainTypeQueries,
                 chainKind);
     }
 
@@ -888,7 +903,7 @@ public class ChainControl
     }
 
     public ChainType getChainTypeByName(ChainKind chainKind, String chainTypeName, EntityPermission entityPermission) {
-        return ChainTypeFactory.getInstance().getEntityFromQuery(entityPermission, getChainTypeByNameQueries,
+        return chainTypeFactory.getEntityFromQuery(entityPermission, getChainTypeByNameQueries,
                 chainKind, chainTypeName);
     }
 
@@ -963,7 +978,7 @@ public class ChainControl
     private void updateChainTypeFromValue(ChainTypeDetailValue chainTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(chainTypeDetailValue.hasBeenModified()) {
-            var chainType = ChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainType = chainTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainTypeDetailValue.getChainTypePK());
             var chainTypeDetail = chainType.getActiveDetailForUpdate();
 
@@ -993,7 +1008,7 @@ public class ChainControl
                 }
             }
 
-            chainTypeDetail = ChainTypeDetailFactory.getInstance().create(chainTypePK, chainKindPK, chainTypeName, isDefault, sortOrder,
+            chainTypeDetail = chainTypeDetailFactory.create(chainTypePK, chainKindPK, chainTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             chainType.setActiveDetail(chainTypeDetail);
@@ -1056,9 +1071,12 @@ public class ChainControl
     //   Chain Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainTypeDescriptionFactory chainTypeDescriptionFactory;
+
     public ChainTypeDescription createChainTypeDescription(ChainType chainType, Language language, String description,
             BasePK createdBy) {
-        var chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType,
+        var chainTypeDescription = chainTypeDescriptionFactory.create(chainType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainType.getPrimaryKey(), EventTypes.MODIFY, chainTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1088,7 +1106,7 @@ public class ChainControl
     }
 
     private ChainTypeDescription getChainTypeDescription(ChainType chainType, Language language, EntityPermission entityPermission) {
-        return ChainTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainTypeDescriptionQueries,
+        return chainTypeDescriptionFactory.getEntityFromQuery(entityPermission, getChainTypeDescriptionQueries,
                 chainType, language, Session.MAX_TIME);
     }
 
@@ -1132,7 +1150,7 @@ public class ChainControl
     }
 
     private List<ChainTypeDescription> getChainTypeDescriptionsByChainType(ChainType chainType, EntityPermission entityPermission) {
-        return ChainTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainTypeDescriptionsByChainTypeQueries,
+        return chainTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainTypeDescriptionsByChainTypeQueries,
                 chainType, Session.MAX_TIME);
     }
 
@@ -1178,7 +1196,7 @@ public class ChainControl
 
     public void updateChainTypeDescriptionFromValue(ChainTypeDescriptionValue chainTypeDescriptionValue, BasePK updatedBy) {
         if(chainTypeDescriptionValue.hasBeenModified()) {
-            var chainTypeDescription = ChainTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainTypeDescription = chainTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainTypeDescriptionValue.getPrimaryKey());
 
             chainTypeDescription.setThruTime(session.getStartTime());
@@ -1188,7 +1206,7 @@ public class ChainControl
             var language = chainTypeDescription.getLanguage();
             var description = chainTypeDescriptionValue.getDescription();
 
-            chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType, language, description,
+            chainTypeDescription = chainTypeDescriptionFactory.create(chainType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainType.getPrimaryKey(), EventTypes.MODIFY, chainTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1214,14 +1232,20 @@ public class ChainControl
     //   Chain Entity Role Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainEntityRoleTypeFactory chainEntityRoleTypeFactory;
+
+    @Inject
+    protected ChainEntityRoleTypeDetailFactory chainEntityRoleTypeDetailFactory;
+
     public ChainEntityRoleType createChainEntityRoleType(ChainType chainType, String chainEntityRoleTypeName, EntityType entityType, Integer sortOrder,
             BasePK createdBy) {
-        var chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().create();
-        var chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create( chainEntityRoleType, chainType,
+        var chainEntityRoleType = chainEntityRoleTypeFactory.create();
+        var chainEntityRoleTypeDetail = chainEntityRoleTypeDetailFactory.create( chainEntityRoleType, chainType,
                 chainEntityRoleTypeName, entityType, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        chainEntityRoleType = chainEntityRoleTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 chainEntityRoleType.getPrimaryKey());
         chainEntityRoleType.setActiveDetail(chainEntityRoleTypeDetail);
         chainEntityRoleType.setLastDetail(chainEntityRoleTypeDetail);
@@ -1236,7 +1260,7 @@ public class ChainControl
     public ChainEntityRoleType getChainEntityRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainEntityRoleTypePK(entityInstance.getEntityUniqueId());
 
-        return ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainEntityRoleTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainEntityRoleType getChainEntityRoleTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1289,7 +1313,7 @@ public class ChainControl
     }
 
     private List<ChainEntityRoleType> getChainEntityRoleTypes(ChainType chainType, EntityPermission entityPermission) {
-        return ChainEntityRoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainEntityRoleTypesQueries,
+        return chainEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, getChainEntityRoleTypesQueries,
                 chainType);
     }
 
@@ -1325,7 +1349,7 @@ public class ChainControl
     }
 
     public ChainEntityRoleType getChainEntityRoleTypeByName(ChainType chainType, String chainEntityRoleTypeName, EntityPermission entityPermission) {
-        return ChainEntityRoleTypeFactory.getInstance().getEntityFromQuery(entityPermission, getChainEntityRoleTypeByNameQueries,
+        return chainEntityRoleTypeFactory.getEntityFromQuery(entityPermission, getChainEntityRoleTypeByNameQueries,
                 chainType, chainEntityRoleTypeName);
     }
 
@@ -1362,7 +1386,7 @@ public class ChainControl
 
     public void updateChainEntityRoleTypeFromValue(ChainEntityRoleTypeDetailValue chainEntityRoleTypeDetailValue, BasePK updatedBy) {
         if(chainEntityRoleTypeDetailValue.hasBeenModified()) {
-            var chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainEntityRoleType = chainEntityRoleTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainEntityRoleTypeDetailValue.getChainEntityRoleTypePK());
             var chainEntityRoleTypeDetail = chainEntityRoleType.getActiveDetailForUpdate();
 
@@ -1376,7 +1400,7 @@ public class ChainControl
             var entityTypePK = chainEntityRoleTypeDetailValue.getEntityTypePK();
             var sortOrder = chainEntityRoleTypeDetailValue.getSortOrder();
 
-            chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(chainEntityRoleTypePK, chainTypePK, chainEntityRoleTypeName,
+            chainEntityRoleTypeDetail = chainEntityRoleTypeDetailFactory.create(chainEntityRoleTypePK, chainTypePK, chainEntityRoleTypeName,
                     entityTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             chainEntityRoleType.setActiveDetail(chainEntityRoleTypeDetail);
@@ -1410,9 +1434,12 @@ public class ChainControl
     //   Chain Entity Role Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainEntityRoleTypeDescriptionFactory chainEntityRoleTypeDescriptionFactory;
+
     public ChainEntityRoleTypeDescription createChainEntityRoleTypeDescription(ChainEntityRoleType chainEntityRoleType, Language language, String description,
             BasePK createdBy) {
-        var chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType,
+        var chainEntityRoleTypeDescription = chainEntityRoleTypeDescriptionFactory.create(chainEntityRoleType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, chainEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1442,7 +1469,7 @@ public class ChainControl
     }
 
     private ChainEntityRoleTypeDescription getChainEntityRoleTypeDescription(ChainEntityRoleType chainEntityRoleType, Language language, EntityPermission entityPermission) {
-        return ChainEntityRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainEntityRoleTypeDescriptionQueries,
+        return chainEntityRoleTypeDescriptionFactory.getEntityFromQuery(entityPermission, getChainEntityRoleTypeDescriptionQueries,
                 chainEntityRoleType, language, Session.MAX_TIME);
     }
 
@@ -1486,7 +1513,7 @@ public class ChainControl
     }
 
     private List<ChainEntityRoleTypeDescription> getChainEntityRoleTypeDescriptionsByChainEntityRoleType(ChainEntityRoleType chainEntityRoleType, EntityPermission entityPermission) {
-        return ChainEntityRoleTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainEntityRoleTypeDescriptionsByChainEntityRoleTypeQueries,
+        return chainEntityRoleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainEntityRoleTypeDescriptionsByChainEntityRoleTypeQueries,
                 chainEntityRoleType, Session.MAX_TIME);
     }
 
@@ -1532,7 +1559,7 @@ public class ChainControl
 
     public void updateChainEntityRoleTypeDescriptionFromValue(ChainEntityRoleTypeDescriptionValue chainEntityRoleTypeDescriptionValue, BasePK updatedBy) {
         if(chainEntityRoleTypeDescriptionValue.hasBeenModified()) {
-            var chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainEntityRoleTypeDescription = chainEntityRoleTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainEntityRoleTypeDescriptionValue.getPrimaryKey());
 
             chainEntityRoleTypeDescription.setThruTime(session.getStartTime());
@@ -1542,7 +1569,7 @@ public class ChainControl
             var language = chainEntityRoleTypeDescription.getLanguage();
             var description = chainEntityRoleTypeDescriptionValue.getDescription();
 
-            chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType, language, description,
+            chainEntityRoleTypeDescription = chainEntityRoleTypeDescriptionFactory.create(chainEntityRoleType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, chainEntityRoleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1568,6 +1595,12 @@ public class ChainControl
     //   Chains
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainFactory chainFactory;
+
+    @Inject
+    protected ChainDetailFactory chainDetailFactory;
+
     public Chain createChain(ChainType chainType, String chainName, Sequence chainInstanceSequence, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultChain = getDefaultChain(chainType);
         var defaultFound = defaultChain != null;
@@ -1581,12 +1614,12 @@ public class ChainControl
             isDefault = true;
         }
 
-        var chain = ChainFactory.getInstance().create();
-        var chainDetail = ChainDetailFactory.getInstance().create( chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
+        var chain = chainFactory.create();
+        var chainDetail = chainDetailFactory.create( chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        chain = ChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chain.getPrimaryKey());
+        chain = chainFactory.getEntityFromPK(EntityPermission.READ_WRITE, chain.getPrimaryKey());
         chain.setActiveDetail(chainDetail);
         chain.setLastDetail(chainDetail);
         chain.store();
@@ -1600,7 +1633,7 @@ public class ChainControl
     public Chain getChainByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainPK(entityInstance.getEntityUniqueId());
 
-        return ChainFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Chain getChainByEntityInstance(EntityInstance entityInstance) {
@@ -1653,7 +1686,7 @@ public class ChainControl
     }
 
     private List<Chain> getChainsByChainType(ChainType chainType, EntityPermission entityPermission) {
-        return ChainFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainsByChainTypeQueries,
+        return chainFactory.getEntitiesFromQuery(entityPermission, getChainsByChainTypeQueries,
                 chainType);
     }
 
@@ -1691,7 +1724,7 @@ public class ChainControl
     }
 
     private List<Chain> getChainsByChainInstanceSequence(Sequence chainInstanceSequence, EntityPermission entityPermission) {
-        return ChainFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainsByChainInstanceSequenceQueries,
+        return chainFactory.getEntitiesFromQuery(entityPermission, getChainsByChainInstanceSequenceQueries,
                 chainInstanceSequence);
     }
 
@@ -1727,7 +1760,7 @@ public class ChainControl
     }
 
     public Chain getDefaultChain(ChainType chainType, EntityPermission entityPermission) {
-        return ChainFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainQueries,
+        return chainFactory.getEntityFromQuery(entityPermission, getDefaultChainQueries,
                 chainType);
     }
 
@@ -1767,7 +1800,7 @@ public class ChainControl
     }
 
     public Chain getChainByName(ChainType chainType, String chainName, EntityPermission entityPermission) {
-        return ChainFactory.getInstance().getEntityFromQuery(entityPermission, getChainByNameQueries,
+        return chainFactory.getEntityFromQuery(entityPermission, getChainByNameQueries,
                 chainType, chainName);
     }
 
@@ -1839,7 +1872,7 @@ public class ChainControl
     private void updateChainFromValue(ChainDetailValue chainDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(chainDetailValue.hasBeenModified()) {
-            var chain = ChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chain = chainFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainDetailValue.getChainPK());
             var chainDetail = chain.getActiveDetailForUpdate();
 
@@ -1870,7 +1903,7 @@ public class ChainControl
                 }
             }
 
-            chainDetail = ChainDetailFactory.getInstance().create(chainPK, chainTypePK, chainName, chainInstanceSequencePK, isDefault, sortOrder,
+            chainDetail = chainDetailFactory.create(chainPK, chainTypePK, chainName, chainInstanceSequencePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             chain.setActiveDetail(chainDetail);
@@ -1938,9 +1971,12 @@ public class ChainControl
     //   Chain Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainDescriptionFactory chainDescriptionFactory;
+
     public ChainDescription createChainDescription(Chain chain, Language language, String description,
             BasePK createdBy) {
-        var chainDescription = ChainDescriptionFactory.getInstance().create(chain,
+        var chainDescription = chainDescriptionFactory.create(chain,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chain.getPrimaryKey(), EventTypes.MODIFY, chainDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1970,7 +2006,7 @@ public class ChainControl
     }
 
     private ChainDescription getChainDescription(Chain chain, Language language, EntityPermission entityPermission) {
-        return ChainDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainDescriptionQueries,
+        return chainDescriptionFactory.getEntityFromQuery(entityPermission, getChainDescriptionQueries,
                 chain, language, Session.MAX_TIME);
     }
 
@@ -2014,7 +2050,7 @@ public class ChainControl
     }
 
     private List<ChainDescription> getChainDescriptionsByChain(Chain chain, EntityPermission entityPermission) {
-        return ChainDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainDescriptionsByChainQueries,
+        return chainDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainDescriptionsByChainQueries,
                 chain, Session.MAX_TIME);
     }
 
@@ -2060,7 +2096,7 @@ public class ChainControl
 
     public void updateChainDescriptionFromValue(ChainDescriptionValue chainDescriptionValue, BasePK updatedBy) {
         if(chainDescriptionValue.hasBeenModified()) {
-            var chainDescription = ChainDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainDescription = chainDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainDescriptionValue.getPrimaryKey());
 
             chainDescription.setThruTime(session.getStartTime());
@@ -2070,7 +2106,7 @@ public class ChainControl
             var language = chainDescription.getLanguage();
             var description = chainDescriptionValue.getDescription();
 
-            chainDescription = ChainDescriptionFactory.getInstance().create(chain, language, description,
+            chainDescription = chainDescriptionFactory.create(chain, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chain.getPrimaryKey(), EventTypes.MODIFY, chainDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2096,6 +2132,12 @@ public class ChainControl
     //   Chain Action Sets
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainActionSetFactory chainActionSetFactory;
+
+    @Inject
+    protected ChainActionSetDetailFactory chainActionSetDetailFactory;
+
     public ChainActionSet createChainActionSet(Chain chain, String chainActionSetName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultChainActionSet = getDefaultChainActionSet(chain);
         var defaultFound = defaultChainActionSet != null;
@@ -2109,12 +2151,12 @@ public class ChainControl
             isDefault = true;
         }
 
-        var chainActionSet = ChainActionSetFactory.getInstance().create();
-        var chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create( chainActionSet, chain, chainActionSetName,
+        var chainActionSet = chainActionSetFactory.create();
+        var chainActionSetDetail = chainActionSetDetailFactory.create( chainActionSet, chain, chainActionSetName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        chainActionSet = ChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionSet.getPrimaryKey());
+        chainActionSet = chainActionSetFactory.getEntityFromPK(EntityPermission.READ_WRITE, chainActionSet.getPrimaryKey());
         chainActionSet.setActiveDetail(chainActionSetDetail);
         chainActionSet.setLastDetail(chainActionSetDetail);
         chainActionSet.store();
@@ -2128,7 +2170,7 @@ public class ChainControl
     public ChainActionSet getChainActionSetByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainActionSetPK(entityInstance.getEntityUniqueId());
 
-        return ChainActionSetFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainActionSetFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainActionSet getChainActionSetByEntityInstance(EntityInstance entityInstance) {
@@ -2172,7 +2214,7 @@ public class ChainControl
     }
 
     private List<ChainActionSet> getChainActionSetsByChain(Chain chain, EntityPermission entityPermission) {
-        return ChainActionSetFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainActionSetsByChainQueries,
+        return chainActionSetFactory.getEntitiesFromQuery(entityPermission, getChainActionSetsByChainQueries,
                 chain);
     }
 
@@ -2208,7 +2250,7 @@ public class ChainControl
     }
 
     public ChainActionSet getDefaultChainActionSet(Chain chain, EntityPermission entityPermission) {
-        return ChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainActionSetQueries,
+        return chainActionSetFactory.getEntityFromQuery(entityPermission, getDefaultChainActionSetQueries,
                 chain);
     }
 
@@ -2248,7 +2290,7 @@ public class ChainControl
     }
 
     public ChainActionSet getChainActionSetByName(Chain chain, String chainActionSetName, EntityPermission entityPermission) {
-        return ChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionSetByNameQueries,
+        return chainActionSetFactory.getEntityFromQuery(entityPermission, getChainActionSetByNameQueries,
                 chain, chainActionSetName);
     }
 
@@ -2319,7 +2361,7 @@ public class ChainControl
     private void updateChainActionSetFromValue(ChainActionSetDetailValue chainActionSetDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(chainActionSetDetailValue.hasBeenModified()) {
-            var chainActionSet = ChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionSet = chainActionSetFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionSetDetailValue.getChainActionSetPK());
             var chainActionSetDetail = chainActionSet.getActiveDetailForUpdate();
 
@@ -2349,7 +2391,7 @@ public class ChainControl
                 }
             }
 
-            chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create(chainActionSetPK, chainPK, chainActionSetName, isDefault, sortOrder,
+            chainActionSetDetail = chainActionSetDetailFactory.create(chainActionSetPK, chainPK, chainActionSetName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             chainActionSet.setActiveDetail(chainActionSetDetail);
@@ -2408,8 +2450,11 @@ public class ChainControl
     //   Chain Action Set Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainActionSetDescriptionFactory chainActionSetDescriptionFactory;
+
     public ChainActionSetDescription createChainActionSetDescription(ChainActionSet chainActionSet, Language language, String description, BasePK createdBy) {
-        var chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet,
+        var chainActionSetDescription = chainActionSetDescriptionFactory.create(chainActionSet,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainActionSet.getPrimaryKey(), EventTypes.MODIFY, chainActionSetDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2439,7 +2484,7 @@ public class ChainControl
     }
 
     private ChainActionSetDescription getChainActionSetDescription(ChainActionSet chainActionSet, Language language, EntityPermission entityPermission) {
-        return ChainActionSetDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionSetDescriptionQueries,
+        return chainActionSetDescriptionFactory.getEntityFromQuery(entityPermission, getChainActionSetDescriptionQueries,
                 chainActionSet, language, Session.MAX_TIME);
     }
 
@@ -2483,7 +2528,7 @@ public class ChainControl
     }
 
     private List<ChainActionSetDescription> getChainActionSetDescriptionsByChainActionSet(ChainActionSet chainActionSet, EntityPermission entityPermission) {
-        return ChainActionSetDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainActionSetDescriptionsByChainActionSetQueries,
+        return chainActionSetDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainActionSetDescriptionsByChainActionSetQueries,
                 chainActionSet, Session.MAX_TIME);
     }
 
@@ -2529,7 +2574,7 @@ public class ChainControl
 
     public void updateChainActionSetDescriptionFromValue(ChainActionSetDescriptionValue chainActionSetDescriptionValue, BasePK updatedBy) {
         if(chainActionSetDescriptionValue.hasBeenModified()) {
-            var chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionSetDescription = chainActionSetDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionSetDescriptionValue.getPrimaryKey());
 
             chainActionSetDescription.setThruTime(session.getStartTime());
@@ -2539,7 +2584,7 @@ public class ChainControl
             var language = chainActionSetDescription.getLanguage();
             var description = chainActionSetDescriptionValue.getDescription();
 
-            chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet, language, description,
+            chainActionSetDescription = chainActionSetDescriptionFactory.create(chainActionSet, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainActionSet.getPrimaryKey(), EventTypes.MODIFY, chainActionSetDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2565,6 +2610,12 @@ public class ChainControl
     //   Chain Action Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainActionTypeFactory chainActionTypeFactory;
+
+    @Inject
+    protected ChainActionTypeDetailFactory chainActionTypeDetailFactory;
+
     public ChainActionType createChainActionType(String chainActionTypeName, Boolean allowMultiple, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultChainActionType = getDefaultChainActionType();
         var defaultFound = defaultChainActionType != null;
@@ -2578,12 +2629,12 @@ public class ChainControl
             isDefault = true;
         }
 
-        var chainActionType = ChainActionTypeFactory.getInstance().create();
-        var chainActionTypeDetail = ChainActionTypeDetailFactory.getInstance().create(chainActionType, chainActionTypeName, allowMultiple,
+        var chainActionType = chainActionTypeFactory.create();
+        var chainActionTypeDetail = chainActionTypeDetailFactory.create(chainActionType, chainActionTypeName, allowMultiple,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        chainActionType = chainActionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 chainActionType.getPrimaryKey());
         chainActionType.setActiveDetail(chainActionTypeDetail);
         chainActionType.setLastDetail(chainActionTypeDetail);
@@ -2598,7 +2649,7 @@ public class ChainControl
     public ChainActionType getChainActionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainActionTypePK(entityInstance.getEntityUniqueId());
 
-        return ChainActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainActionTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainActionType getChainActionTypeByEntityInstance(EntityInstance entityInstance) {
@@ -2639,7 +2690,7 @@ public class ChainControl
     }
 
     public ChainActionType getChainActionTypeByName(String chainActionTypeName, EntityPermission entityPermission) {
-        return ChainActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionTypeByNameQueries,
+        return chainActionTypeFactory.getEntityFromQuery(entityPermission, getChainActionTypeByNameQueries,
                 chainActionTypeName);
     }
 
@@ -2681,7 +2732,7 @@ public class ChainControl
     }
 
     public ChainActionType getDefaultChainActionType(EntityPermission entityPermission) {
-        return ChainActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainActionTypeQueries);
+        return chainActionTypeFactory.getEntityFromQuery(entityPermission, getDefaultChainActionTypeQueries);
     }
 
     public ChainActionType getDefaultChainActionType() {
@@ -2720,7 +2771,7 @@ public class ChainControl
     }
 
     private List<ChainActionType> getChainActionTypes(EntityPermission entityPermission) {
-        return ChainActionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainActionTypesQueries);
+        return chainActionTypeFactory.getEntitiesFromQuery(entityPermission, getChainActionTypesQueries);
     }
 
     public List<ChainActionType> getChainActionTypes() {
@@ -2784,7 +2835,7 @@ public class ChainControl
     }
 
     private void updateChainActionTypeFromValue(ChainActionTypeDetailValue chainActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(
+        var chainActionType = chainActionTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, chainActionTypeDetailValue.getChainActionTypePK());
         var chainActionTypeDetail = chainActionType.getActiveDetailForUpdate();
 
@@ -2813,7 +2864,7 @@ public class ChainControl
             }
         }
 
-        chainActionTypeDetail = ChainActionTypeDetailFactory.getInstance().create(chainActionTypePK, chainActionTypeName, allowMultiple, isDefault, sortOrder,
+        chainActionTypeDetail = chainActionTypeDetailFactory.create(chainActionTypePK, chainActionTypeName, allowMultiple, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         chainActionType.setActiveDetail(chainActionTypeDetail);
@@ -2859,9 +2910,12 @@ public class ChainControl
     //   Chain Action Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainActionTypeDescriptionFactory chainActionTypeDescriptionFactory;
+
     public ChainActionTypeDescription createChainActionTypeDescription(ChainActionType chainActionType, Language language, String description,
             BasePK createdBy) {
-        var chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType,
+        var chainActionTypeDescription = chainActionTypeDescriptionFactory.create(chainActionType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainActionType.getPrimaryKey(), EventTypes.MODIFY, chainActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2891,7 +2945,7 @@ public class ChainControl
     }
 
     private ChainActionTypeDescription getChainActionTypeDescription(ChainActionType chainActionType, Language language, EntityPermission entityPermission) {
-        return ChainActionTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionTypeDescriptionQueries,
+        return chainActionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getChainActionTypeDescriptionQueries,
                 chainActionType, language, Session.MAX_TIME);
     }
 
@@ -2935,7 +2989,7 @@ public class ChainControl
     }
 
     private List<ChainActionTypeDescription> getChainActionTypeDescriptionsByChainActionType(ChainActionType chainActionType, EntityPermission entityPermission) {
-        return ChainActionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainActionTypeDescriptionsByChainActionTypeQueries,
+        return chainActionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainActionTypeDescriptionsByChainActionTypeQueries,
                 chainActionType, Session.MAX_TIME);
     }
 
@@ -2981,7 +3035,7 @@ public class ChainControl
 
     public void updateChainActionTypeDescriptionFromValue(ChainActionTypeDescriptionValue chainActionTypeDescriptionValue, BasePK updatedBy) {
         if(chainActionTypeDescriptionValue.hasBeenModified()) {
-            var chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionTypeDescription = chainActionTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionTypeDescriptionValue.getPrimaryKey());
 
             chainActionTypeDescription.setThruTime(session.getStartTime());
@@ -2991,7 +3045,7 @@ public class ChainControl
             var language = chainActionTypeDescription.getLanguage();
             var description = chainActionTypeDescriptionValue.getDescription();
 
-            chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType, language, description,
+            chainActionTypeDescription = chainActionTypeDescriptionFactory.create(chainActionType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainActionType.getPrimaryKey(), EventTypes.MODIFY, chainActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3016,10 +3070,13 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Action Type Uses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainActionTypeUseFactory chainActionTypeUseFactory;
+
     public ChainActionTypeUse createChainActionTypeUse(ChainKind chainKind, ChainActionType chainActionType,
             Boolean isDefault) {
-        return ChainActionTypeUseFactory.getInstance().create(chainKind, chainActionType, isDefault);
+        return chainActionTypeUseFactory.create(chainKind, chainActionType, isDefault);
     }
 
     public long countChainActionTypeUsesByChainKind(final ChainKind chainKind) {
@@ -3042,7 +3099,7 @@ public class ChainControl
         ChainActionTypeUse chainActionTypeUse;
         
         try {
-            var ps = ChainActionTypeUseFactory.getInstance().prepareStatement(
+            var ps = chainActionTypeUseFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM chainactiontypeuses
@@ -3052,7 +3109,7 @@ public class ChainControl
             ps.setLong(1, chainKind.getPrimaryKey().getEntityId());
             ps.setLong(2, chainActionType.getPrimaryKey().getEntityId());
             
-            chainActionTypeUse = ChainActionTypeUseFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            chainActionTypeUse = chainActionTypeUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3063,15 +3120,21 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Actions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainActionFactory chainActionFactory;
+
+    @Inject
+    protected ChainActionDetailFactory chainActionDetailFactory;
+
     public ChainAction createChainAction(ChainActionSet chainActionSet, String chainActionName, ChainActionType chainActionType, Integer sortOrder,
             BasePK createdBy) {
-        var chainAction = ChainActionFactory.getInstance().create();
-        var chainActionDetail = ChainActionDetailFactory.getInstance().create(chainAction, chainActionSet, chainActionName, chainActionType, sortOrder, session.getStartTime(),
+        var chainAction = chainActionFactory.create();
+        var chainActionDetail = chainActionDetailFactory.create(chainAction, chainActionSet, chainActionName, chainActionType, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        chainAction = ChainActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainAction.getPrimaryKey());
+        chainAction = chainActionFactory.getEntityFromPK(EntityPermission.READ_WRITE, chainAction.getPrimaryKey());
         chainAction.setActiveDetail(chainActionDetail);
         chainAction.setLastDetail(chainActionDetail);
         chainAction.store();
@@ -3085,7 +3148,7 @@ public class ChainControl
     public ChainAction getChainActionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainActionPK(entityInstance.getEntityUniqueId());
 
-        return ChainActionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainActionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainAction getChainActionByEntityInstance(EntityInstance entityInstance) {
@@ -3136,7 +3199,7 @@ public class ChainControl
     }
 
     private ChainAction getChainActionByName(ChainActionSet chainActionSet, String chainActionName, EntityPermission entityPermission) {
-        return ChainActionFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionByNameQueries,
+        return chainActionFactory.getEntityFromQuery(entityPermission, getChainActionByNameQueries,
                 chainActionSet, chainActionName);
     }
 
@@ -3180,7 +3243,7 @@ public class ChainControl
     }
 
     private List<ChainAction> getChainActionsByChainActionSet(ChainActionSet chainActionSet, EntityPermission entityPermission) {
-        return ChainActionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainActionsByChainActionSetQueries,
+        return chainActionFactory.getEntitiesFromQuery(entityPermission, getChainActionsByChainActionSetQueries,
                 chainActionSet);
     }
 
@@ -3209,7 +3272,7 @@ public class ChainControl
 
     public void updateChainActionFromValue(ChainActionDetailValue chainActionDetailValue, BasePK updatedBy) {
         if(chainActionDetailValue.hasBeenModified()) {
-            var chainAction = ChainActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionDetailValue.getChainActionPK());
+            var chainAction = chainActionFactory.getEntityFromPK(EntityPermission.READ_WRITE, chainActionDetailValue.getChainActionPK());
             var chainActionDetail = chainAction.getActiveDetailForUpdate();
 
             chainActionDetail.setThruTime(session.getStartTime());
@@ -3222,7 +3285,7 @@ public class ChainControl
             var chainActionTypePK = chainActionDetail.getChainActionTypePK(); // Not updated
             var sortOrder = chainActionDetailValue.getSortOrder();
 
-            chainActionDetail = ChainActionDetailFactory.getInstance().create(chainActionPK, chainActionSetPK, chainActionName, chainActionTypePK, sortOrder,
+            chainActionDetail = chainActionDetailFactory.create(chainActionPK, chainActionSetPK, chainActionName, chainActionTypePK, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             chainAction.setActiveDetail(chainActionDetail);
@@ -3266,9 +3329,12 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Action Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainActionDescriptionFactory chainActionDescriptionFactory;
+
     public ChainActionDescription createChainActionDescription(ChainAction chainAction, Language language, String description, BasePK createdBy) {
-        var chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction,
+        var chainActionDescription = chainActionDescriptionFactory.create(chainAction,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3298,7 +3364,7 @@ public class ChainControl
     }
 
     private ChainActionDescription getChainActionDescription(ChainAction chainAction, Language language, EntityPermission entityPermission) {
-        return ChainActionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getChainActionDescriptionQueries,
+        return chainActionDescriptionFactory.getEntityFromQuery(entityPermission, getChainActionDescriptionQueries,
                 chainAction, language, Session.MAX_TIME);
     }
 
@@ -3342,7 +3408,7 @@ public class ChainControl
     }
 
     private List<ChainActionDescription> getChainActionDescriptionsByChainAction(ChainAction chainAction, EntityPermission entityPermission) {
-        return ChainActionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainActionDescriptionsByChainActionQueries,
+        return chainActionDescriptionFactory.getEntitiesFromQuery(entityPermission, getChainActionDescriptionsByChainActionQueries,
                 chainAction, Session.MAX_TIME);
     }
 
@@ -3388,7 +3454,7 @@ public class ChainControl
 
     public void updateChainActionDescriptionFromValue(ChainActionDescriptionValue chainActionDescriptionValue, BasePK updatedBy) {
         if(chainActionDescriptionValue.hasBeenModified()) {
-            var chainActionDescription = ChainActionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionDescription = chainActionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionDescriptionValue.getPrimaryKey());
 
             chainActionDescription.setThruTime(session.getStartTime());
@@ -3398,7 +3464,7 @@ public class ChainControl
             var language = chainActionDescription.getLanguage();
             var description = chainActionDescriptionValue.getDescription();
 
-            chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction, language, description,
+            chainActionDescription = chainActionDescriptionFactory.create(chainAction, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3423,9 +3489,12 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Action Letters
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainActionLetterFactory chainActionLetterFactory;
+
     public ChainActionLetter createChainActionLetter(ChainAction chainAction, Letter letter, BasePK createdBy) {
-        var chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction, letter, session.getStartTime(),
+        var chainActionLetter = chainActionLetterFactory.create(chainAction, letter, session.getStartTime(),
                 Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionLetter.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3470,12 +3539,12 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainActionLetterFactory.getInstance().prepareStatement(query);
+            var ps = chainActionLetterFactory.prepareStatement(query);
 
             ps.setLong(1, chainAction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            chainActionLetter = ChainActionLetterFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            chainActionLetter = chainActionLetterFactory.getEntityFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3507,7 +3576,7 @@ public class ChainControl
 
     public void updateChainActionLetterFromValue(ChainActionLetterValue chainActionLetterValue, BasePK updatedBy) {
         if(chainActionLetterValue.hasBeenModified()) {
-            var chainActionLetter = ChainActionLetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionLetterValue.getPrimaryKey());
+            var chainActionLetter = chainActionLetterFactory.getEntityFromPK(EntityPermission.READ_WRITE, chainActionLetterValue.getPrimaryKey());
 
             chainActionLetter.setThruTime(session.getStartTime());
             chainActionLetter.store();
@@ -3515,7 +3584,7 @@ public class ChainControl
             var chainAction = chainActionLetter.getChainAction();
             var letterPK = chainActionLetterValue.getLetterPK();
 
-            chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction.getPrimaryKey(), letterPK, session.getStartTime(),
+            chainActionLetter = chainActionLetterFactory.create(chainAction.getPrimaryKey(), letterPK, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionLetter.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3532,8 +3601,11 @@ public class ChainControl
     //   Chain Action Surveys
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ChainActionSurveyFactory chainActionSurveyFactory;
+
     public ChainActionSurvey createChainActionSurvey(ChainAction chainAction, Survey survey, BasePK createdBy) {
-        var chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction, survey, session.getStartTime(),
+        var chainActionSurvey = chainActionSurveyFactory.create(chainAction, survey, session.getStartTime(),
                 Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3578,12 +3650,12 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainActionSurveyFactory.getInstance().prepareStatement(query);
+            var ps = chainActionSurveyFactory.prepareStatement(query);
 
             ps.setLong(1, chainAction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            chainActionSurvey = ChainActionSurveyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            chainActionSurvey = chainActionSurveyFactory.getEntityFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3615,7 +3687,7 @@ public class ChainControl
 
     public void updateChainActionSurveyFromValue(ChainActionSurveyValue chainActionSurveyValue, BasePK updatedBy) {
         if(chainActionSurveyValue.hasBeenModified()) {
-            var chainActionSurvey = ChainActionSurveyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionSurveyValue.getPrimaryKey());
+            var chainActionSurvey = chainActionSurveyFactory.getEntityFromPK(EntityPermission.READ_WRITE, chainActionSurveyValue.getPrimaryKey());
 
             chainActionSurvey.setThruTime(session.getStartTime());
             chainActionSurvey.store();
@@ -3623,7 +3695,7 @@ public class ChainControl
             var chainAction = chainActionSurvey.getChainAction();
             var surveyPK = chainActionSurveyValue.getSurveyPK();
 
-            chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction.getPrimaryKey(), surveyPK, session.getStartTime(),
+            chainActionSurvey = chainActionSurveyFactory.create(chainAction.getPrimaryKey(), surveyPK, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3639,9 +3711,12 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Action Chain Action Sets
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainActionChainActionSetFactory chainActionChainActionSetFactory;
+
     public ChainActionChainActionSet createChainActionChainActionSet(ChainAction chainAction, ChainActionSet nextChainActionSet, Long delayTime, BasePK createdBy) {
-        var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction, nextChainActionSet, delayTime, session.getStartTime(),
+        var chainActionChainActionSet = chainActionChainActionSetFactory.create(chainAction, nextChainActionSet, delayTime, session.getStartTime(),
                 Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3686,12 +3761,12 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainActionChainActionSetFactory.getInstance().prepareStatement(query);
+            var ps = chainActionChainActionSetFactory.prepareStatement(query);
 
             ps.setLong(1, chainAction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            chainActionChainActionSet = chainActionChainActionSetFactory.getEntityFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3723,7 +3798,7 @@ public class ChainControl
 
     public void updateChainActionChainActionSetFromValue(ChainActionChainActionSetValue chainActionChainActionSetValue, BasePK updatedBy) {
         if(chainActionChainActionSetValue.hasBeenModified()) {
-            var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var chainActionChainActionSet = chainActionChainActionSetFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionChainActionSetValue.getPrimaryKey());
 
             chainActionChainActionSet.setThruTime(session.getStartTime());
@@ -3733,7 +3808,7 @@ public class ChainControl
             var nextChainActionSetPK = chainActionChainActionSetValue.getNextChainActionSetPK();
             var delayTime = chainActionChainActionSetValue.getDelayTime();
 
-            chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction.getPrimaryKey(), nextChainActionSetPK, delayTime, session.getStartTime(),
+            chainActionChainActionSet = chainActionChainActionSetFactory.create(chainAction.getPrimaryKey(), nextChainActionSetPK, delayTime, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3749,14 +3824,20 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Instances
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainInstanceFactory chainInstanceFactory;
+
+    @Inject
+    protected ChainInstanceDetailFactory chainInstanceDetailFactory;
+
     public ChainInstance createChainInstance(String chainInstanceName, ChainActionSet defaultChainActionSet, BasePK createdBy) {
-        var chainInstance = ChainInstanceFactory.getInstance().create();
-        var chainInstanceDetail = ChainInstanceDetailFactory.getInstance().create(chainInstance,
+        var chainInstance = chainInstanceFactory.create();
+        var chainInstanceDetail = chainInstanceDetailFactory.create(chainInstance,
                 chainInstanceName, defaultChainActionSet.getLastDetail().getChain(), session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        chainInstance = ChainInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        chainInstance = chainInstanceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 chainInstance.getPrimaryKey());
         chainInstance.setActiveDetail(chainInstanceDetail);
         chainInstance.setLastDetail(chainInstanceDetail);
@@ -3773,7 +3854,7 @@ public class ChainControl
     public ChainInstance getChainInstanceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ChainInstancePK(entityInstance.getEntityUniqueId());
 
-        return ChainInstanceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return chainInstanceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ChainInstance getChainInstanceByEntityInstance(EntityInstance entityInstance) {
@@ -3820,11 +3901,11 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainInstanceFactory.getInstance().prepareStatement(query);
+            var ps = chainInstanceFactory.prepareStatement(query);
             
             ps.setString(1, chainInstanceName);
             
-            chainInstance = ChainInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            chainInstance = chainInstanceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3871,11 +3952,11 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainInstanceFactory.getInstance().prepareStatement(query);
+            var ps = chainInstanceFactory.prepareStatement(query);
             
             ps.setLong(1, chain.getPrimaryKey().getEntityId());
             
-            chainInstances = ChainInstanceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            chainInstances = chainInstanceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3958,13 +4039,16 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Instance Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainInstanceStatusFactory chainInstanceStatusFactory;
+
     public ChainInstanceStatus createChainInstanceStatus(ChainInstance chainInstance, ChainActionSet defaultChainActionSet) {
         return createChainInstanceStatus(chainInstance, defaultChainActionSet, session.getStartTime());
     }
     
     public ChainInstanceStatus createChainInstanceStatus(ChainInstance chainInstance, ChainActionSet nextChainActionSet, Long nextChainActionSetTime) {
-        return ChainInstanceStatusFactory.getInstance().create(chainInstance, nextChainActionSet, nextChainActionSetTime, 0);
+        return chainInstanceStatusFactory.create(chainInstance, nextChainActionSet, nextChainActionSetTime, 0);
     }
     
     private static final Map<EntityPermission, String> getChainInstanceStatusQueries;
@@ -3989,7 +4073,7 @@ public class ChainControl
     }
 
     public ChainInstanceStatus getChainInstanceStatus(ChainInstance chainInstance, EntityPermission entityPermission) {
-        return ChainInstanceStatusFactory.getInstance().getEntityFromQuery(entityPermission, getChainInstanceStatusQueries,
+        return chainInstanceStatusFactory.getEntityFromQuery(entityPermission, getChainInstanceStatusQueries,
                 chainInstance);
     }
 
@@ -4025,7 +4109,7 @@ public class ChainControl
     }
 
     public List<ChainInstanceStatus> getChainInstanceStatusesByNextChainActionSet(ChainActionSet nextChainActionSet, EntityPermission entityPermission) {
-        return ChainInstanceStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainInstanceStatusesByNextChainActionSetQueries,
+        return chainInstanceStatusFactory.getEntitiesFromQuery(entityPermission, getChainInstanceStatusesByNextChainActionSetQueries,
                 nextChainActionSet);
     }
 
@@ -4061,7 +4145,7 @@ public class ChainControl
     }
 
     public List<ChainInstanceStatus> getChainInstanceStatusesByNextChainActionSetTime(Long nextChainActionSetTime, EntityPermission entityPermission) {
-        return ChainInstanceStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getChainInstanceStatusesByNextChainActionSetTimeQueries,
+        return chainInstanceStatusFactory.getEntitiesFromQuery(entityPermission, getChainInstanceStatusesByNextChainActionSetTimeQueries,
                 nextChainActionSetTime);
     }
 
@@ -4094,7 +4178,10 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     //   Chain Instance Entity Roles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ChainInstanceEntityRoleFactory chainInstanceEntityRoleFactory;
+
     public ChainInstanceEntityRole createChainInstanceEntityRole(ChainInstance chainInstance, ChainEntityRoleType chainEntityRoleType, BasePK pk,
             BasePK createdBy) {
         var entityInstance = getEntityInstanceByBasePK(pk);
@@ -4104,7 +4191,7 @@ public class ChainControl
     
     public ChainInstanceEntityRole createChainInstanceEntityRole(ChainInstance chainInstance, ChainEntityRoleType chainEntityRoleType,
             EntityInstance entityInstance, BasePK createdBy) {
-        var chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().create( chainInstance, chainEntityRoleType,
+        var chainInstanceEntityRole = chainInstanceEntityRoleFactory.create( chainInstance, chainEntityRoleType,
                 entityInstance, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(chainInstance.getPrimaryKey(), EventTypes.MODIFY, chainInstanceEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4147,7 +4234,7 @@ public class ChainControl
         ChainInstanceEntityRole chainInstanceEntityRole;
         
         try {
-            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(
+            var ps = chainInstanceEntityRoleFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM chaininstanceentityroles
@@ -4158,7 +4245,7 @@ public class ChainControl
             ps.setLong(2, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().getEntityFromQuery(
+            chainInstanceEntityRole = chainInstanceEntityRoleFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4190,13 +4277,13 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+            var ps = chainInstanceEntityRoleFactory.prepareStatement(query);
             
             ps.setLong(1, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(
+            chainInstanceEntityRoles = chainInstanceEntityRoleFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4238,12 +4325,12 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+            var ps = chainInstanceEntityRoleFactory.prepareStatement(query);
             
             ps.setLong(1, chainInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(
+            chainInstanceEntityRoles = chainInstanceEntityRoleFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4283,12 +4370,12 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+            var ps = chainInstanceEntityRoleFactory.prepareStatement(query);
             
             ps.setLong(1, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery( entityPermission, ps);
+            chainInstanceEntityRoles = chainInstanceEntityRoleFactory.getEntitiesFromQuery( entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4327,12 +4414,12 @@ public class ChainControl
                         """;
             }
 
-            var ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(query);
+            var ps = chainInstanceEntityRoleFactory.prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(
+            chainInstanceEntityRoles = chainInstanceEntityRoleFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

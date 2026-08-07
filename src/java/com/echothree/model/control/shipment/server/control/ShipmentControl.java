@@ -87,6 +87,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.inject.Inject;
 
 @CommandScope
 public class ShipmentControl
@@ -100,6 +101,12 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
     //   Shipment Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ShipmentTypeFactory shipmentTypeFactory;
+
+    @Inject
+    protected ShipmentTypeDetailFactory shipmentTypeDetailFactory;
 
     public ShipmentType createShipmentType(String shipmentTypeName, ShipmentType parentShipmentType, SequenceType shipmentSequenceType,
             SequenceType shipmentPackageSequenceType, Workflow shipmentWorkflow, WorkflowEntrance shipmentWorkflowEntrance, Boolean isDefault, Integer sortOrder,
@@ -116,13 +123,13 @@ public class ShipmentControl
             isDefault = true;
         }
 
-        var shipmentType = ShipmentTypeFactory.getInstance().create();
-        var shipmentTypeDetail = ShipmentTypeDetailFactory.getInstance().create(shipmentType, shipmentTypeName, parentShipmentType,
+        var shipmentType = shipmentTypeFactory.create();
+        var shipmentTypeDetail = shipmentTypeDetailFactory.create(shipmentType, shipmentTypeName, parentShipmentType,
                 shipmentSequenceType, shipmentPackageSequenceType, shipmentWorkflow, shipmentWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        shipmentType = ShipmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        shipmentType = shipmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 shipmentType.getPrimaryKey());
         shipmentType.setActiveDetail(shipmentTypeDetail);
         shipmentType.setLastDetail(shipmentTypeDetail);
@@ -137,7 +144,7 @@ public class ShipmentControl
     public ShipmentType getShipmentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ShipmentTypePK(entityInstance.getEntityUniqueId());
 
-        return ShipmentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return shipmentTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ShipmentType getShipmentTypeByEntityInstance(EntityInstance entityInstance) {
@@ -223,7 +230,7 @@ public class ShipmentControl
     }
 
     private ShipmentType getShipmentTypeByName(String shipmentTypeName, EntityPermission entityPermission) {
-        return ShipmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentTypeByNameQueries, shipmentTypeName);
+        return shipmentTypeFactory.getEntityFromQuery(entityPermission, getShipmentTypeByNameQueries, shipmentTypeName);
     }
 
     public ShipmentType getShipmentTypeByName(String shipmentTypeName) {
@@ -264,7 +271,7 @@ public class ShipmentControl
     }
 
     private ShipmentType getDefaultShipmentType(EntityPermission entityPermission) {
-        return ShipmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultShipmentTypeQueries);
+        return shipmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultShipmentTypeQueries);
     }
 
     public ShipmentType getDefaultShipmentType() {
@@ -301,7 +308,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentType> getShipmentTypes(EntityPermission entityPermission) {
-        return ShipmentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTypesQueries);
+        return shipmentTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentTypesQueries);
     }
 
     public List<ShipmentType> getShipmentTypes() {
@@ -335,7 +342,7 @@ public class ShipmentControl
 
     private List<ShipmentType> getShipmentTypesByParentShipmentType(ShipmentType parentShipmentType,
             EntityPermission entityPermission) {
-        return ShipmentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTypesByParentShipmentTypeQueries,
+        return shipmentTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentTypesByParentShipmentTypeQueries,
                 parentShipmentType);
     }
 
@@ -425,7 +432,7 @@ public class ShipmentControl
     private void updateShipmentTypeFromValue(ShipmentTypeDetailValue shipmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(shipmentTypeDetailValue.hasBeenModified()) {
-            var shipmentType = ShipmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentType = shipmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTypeDetailValue.getShipmentTypePK());
             var shipmentTypeDetail = shipmentType.getActiveDetailForUpdate();
 
@@ -458,7 +465,7 @@ public class ShipmentControl
                 }
             }
 
-            shipmentTypeDetail = ShipmentTypeDetailFactory.getInstance().create(shipmentTypePK, shipmentTypeName, parentShipmentTypePK, shipmentSequenceTypePK,
+            shipmentTypeDetail = shipmentTypeDetailFactory.create(shipmentTypePK, shipmentTypeName, parentShipmentTypePK, shipmentSequenceTypePK,
                     shipmentPackageSequenceTypePK, shipmentWorkflowPK, shipmentWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
@@ -528,8 +535,11 @@ public class ShipmentControl
     //   Shipment Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentTypeDescriptionFactory shipmentTypeDescriptionFactory;
+
     public ShipmentTypeDescription createShipmentTypeDescription(ShipmentType shipmentType, Language language, String description, BasePK createdBy) {
-        var shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
+        var shipmentTypeDescription = shipmentTypeDescriptionFactory.create(shipmentType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(shipmentType.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -557,7 +567,7 @@ public class ShipmentControl
     }
 
     private ShipmentTypeDescription getShipmentTypeDescription(ShipmentType shipmentType, Language language, EntityPermission entityPermission) {
-        return ShipmentTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentTypeDescriptionQueries,
+        return shipmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getShipmentTypeDescriptionQueries,
                 shipmentType, language, Session.MAX_TIME);
     }
 
@@ -599,7 +609,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentTypeDescription> getShipmentTypeDescriptionsByShipmentType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return ShipmentTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTypeDescriptionsByShipmentTypeQueries,
+        return shipmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getShipmentTypeDescriptionsByShipmentTypeQueries,
                 shipmentType, Session.MAX_TIME);
     }
 
@@ -645,7 +655,7 @@ public class ShipmentControl
 
     public void updateShipmentTypeDescriptionFromValue(ShipmentTypeDescriptionValue shipmentTypeDescriptionValue, BasePK updatedBy) {
         if(shipmentTypeDescriptionValue.hasBeenModified()) {
-            var shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTypeDescription = shipmentTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTypeDescriptionValue.getPrimaryKey());
 
             shipmentTypeDescription.setThruTime(session.getStartTime());
@@ -655,7 +665,7 @@ public class ShipmentControl
             var language = shipmentTypeDescription.getLanguage();
             var description = shipmentTypeDescriptionValue.getDescription();
 
-            shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
+            shipmentTypeDescription = shipmentTypeDescriptionFactory.create(shipmentType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(shipmentType.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -681,6 +691,12 @@ public class ShipmentControl
     //   Shipment Time Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentTimeTypeFactory shipmentTimeTypeFactory;
+
+    @Inject
+    protected ShipmentTimeTypeDetailFactory shipmentTimeTypeDetailFactory;
+
     public ShipmentTimeType createShipmentTimeType(ShipmentType shipmentType, String shipmentTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
         var defaultFound = defaultShipmentTimeType != null;
@@ -694,12 +710,12 @@ public class ShipmentControl
             isDefault = true;
         }
 
-        var shipmentTimeType = ShipmentTimeTypeFactory.getInstance().create();
-        var shipmentTimeTypeDetail = ShipmentTimeTypeDetailFactory.getInstance().create(shipmentTimeType, shipmentType, shipmentTimeTypeName, isDefault,
+        var shipmentTimeType = shipmentTimeTypeFactory.create();
+        var shipmentTimeTypeDetail = shipmentTimeTypeDetailFactory.create(shipmentTimeType, shipmentType, shipmentTimeTypeName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        shipmentTimeType = ShipmentTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        shipmentTimeType = shipmentTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 shipmentTimeType.getPrimaryKey());
         shipmentTimeType.setActiveDetail(shipmentTimeTypeDetail);
         shipmentTimeType.setLastDetail(shipmentTimeTypeDetail);
@@ -714,7 +730,7 @@ public class ShipmentControl
     public ShipmentTimeType getShipmentTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ShipmentTimeTypePK(entityInstance.getEntityUniqueId());
 
-        return ShipmentTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return shipmentTimeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ShipmentTimeType getShipmentTimeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -756,7 +772,7 @@ public class ShipmentControl
     }
 
     private ShipmentTimeType getShipmentTimeTypeByName(ShipmentType shipmentType, String shipmentTimeTypeName, EntityPermission entityPermission) {
-        return ShipmentTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentTimeTypeByNameQueries,
+        return shipmentTimeTypeFactory.getEntityFromQuery(entityPermission, getShipmentTimeTypeByNameQueries,
                 shipmentType, shipmentTimeTypeName);
     }
 
@@ -798,7 +814,7 @@ public class ShipmentControl
     }
 
     private ShipmentTimeType getDefaultShipmentTimeType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return ShipmentTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultShipmentTimeTypeQueries,
+        return shipmentTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultShipmentTimeTypeQueries,
                 shipmentType);
     }
 
@@ -838,7 +854,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentTimeType> getShipmentTimeTypes(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return ShipmentTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTimeTypesQueries,
+        return shipmentTimeTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentTimeTypesQueries,
                 shipmentType);
     }
 
@@ -906,7 +922,7 @@ public class ShipmentControl
     private void updateShipmentTimeTypeFromValue(ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(shipmentTimeTypeDetailValue.hasBeenModified()) {
-            var shipmentTimeType = ShipmentTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTimeType = shipmentTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTimeTypeDetailValue.getShipmentTimeTypePK());
             var shipmentTimeTypeDetail = shipmentTimeType.getActiveDetailForUpdate();
 
@@ -936,7 +952,7 @@ public class ShipmentControl
                 }
             }
 
-            shipmentTimeTypeDetail = ShipmentTimeTypeDetailFactory.getInstance().create(shipmentTimeTypePK, shipmentTypePK, shipmentTimeTypeName, isDefault, sortOrder,
+            shipmentTimeTypeDetail = shipmentTimeTypeDetailFactory.create(shipmentTimeTypePK, shipmentTypePK, shipmentTimeTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             shipmentTimeType.setActiveDetail(shipmentTimeTypeDetail);
@@ -984,8 +1000,11 @@ public class ShipmentControl
     //   Shipment Time Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentTimeTypeDescriptionFactory shipmentTimeTypeDescriptionFactory;
+
     public ShipmentTimeTypeDescription createShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language, String description, BasePK createdBy) {
-        var shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
+        var shipmentTimeTypeDescription = shipmentTimeTypeDescriptionFactory.create(shipmentTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.MODIFY, shipmentTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1013,7 +1032,7 @@ public class ShipmentControl
     }
 
     private ShipmentTimeTypeDescription getShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language, EntityPermission entityPermission) {
-        return ShipmentTimeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentTimeTypeDescriptionQueries,
+        return shipmentTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getShipmentTimeTypeDescriptionQueries,
                 shipmentTimeType, language, Session.MAX_TIME);
     }
 
@@ -1055,7 +1074,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentTimeTypeDescription> getShipmentTimeTypeDescriptionsByShipmentTimeType(ShipmentTimeType shipmentTimeType, EntityPermission entityPermission) {
-        return ShipmentTimeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTimeTypeDescriptionsByShipmentTimeTypeQueries,
+        return shipmentTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getShipmentTimeTypeDescriptionsByShipmentTimeTypeQueries,
                 shipmentTimeType, Session.MAX_TIME);
     }
 
@@ -1101,7 +1120,7 @@ public class ShipmentControl
 
     public void updateShipmentTimeTypeDescriptionFromValue(ShipmentTimeTypeDescriptionValue shipmentTimeTypeDescriptionValue, BasePK updatedBy) {
         if(shipmentTimeTypeDescriptionValue.hasBeenModified()) {
-            var shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTimeTypeDescription = shipmentTimeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTimeTypeDescriptionValue.getPrimaryKey());
 
             shipmentTimeTypeDescription.setThruTime(session.getStartTime());
@@ -1111,7 +1130,7 @@ public class ShipmentControl
             var language = shipmentTimeTypeDescription.getLanguage();
             var description = shipmentTimeTypeDescriptionValue.getDescription();
 
-            shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
+            shipmentTimeTypeDescription = shipmentTimeTypeDescriptionFactory.create(shipmentTimeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.MODIFY, shipmentTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1136,7 +1155,10 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
     //   Shipment Type Shipping Methods
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ShipmentTypeShippingMethodFactory shipmentTypeShippingMethodFactory;
+
     public ShipmentTypeShippingMethod createShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
@@ -1151,7 +1173,7 @@ public class ShipmentControl
             isDefault = true;
         }
 
-        var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentType, shippingMethod,
+        var shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.create(shipmentType, shippingMethod,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1196,13 +1218,13 @@ public class ShipmentControl
                         """;
             }
 
-            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1245,12 +1267,12 @@ public class ShipmentControl
                         """;
             }
 
-            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1296,12 +1318,12 @@ public class ShipmentControl
                         """;
             }
 
-            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            shipmentTypeShippingMethods = ShipmentTypeShippingMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            shipmentTypeShippingMethods = shipmentTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1342,12 +1364,12 @@ public class ShipmentControl
                         """;
             }
 
-            var ps = ShipmentTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            shipmentTypeShippingMethods = ShipmentTypeShippingMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            shipmentTypeShippingMethods = shipmentTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1387,7 +1409,7 @@ public class ShipmentControl
     
     private void updateShipmentTypeShippingMethodFromValue(ShipmentTypeShippingMethodValue shipmentTypeShippingMethodValue, boolean checkDefault, BasePK updatedBy) {
         if(shipmentTypeShippingMethodValue.hasBeenModified()) {
-            var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTypeShippingMethodValue.getPrimaryKey());
             
             shipmentTypeShippingMethod.setThruTime(session.getStartTime());
@@ -1415,7 +1437,7 @@ public class ShipmentControl
                 }
             }
             
-            shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentTypePK, shippingMethodPK,
+            shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.create(shipmentTypePK, shippingMethodPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(shippingMethodPK, EventTypes.MODIFY, shipmentTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1469,8 +1491,11 @@ public class ShipmentControl
     //   Shipment Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentTimeFactory shipmentTimeFactory;
+
     public ShipmentTime createShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType, Long time, BasePK createdBy) {
-        var shipmentTime = ShipmentTimeFactory.getInstance().create(shipment, shipmentTimeType, time, session.getStartTime(), Session.MAX_TIME);
+        var shipmentTime = shipmentTimeFactory.create(shipment, shipmentTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(shipment.getPrimaryKey(), EventTypes.MODIFY, shipmentTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1513,7 +1538,7 @@ public class ShipmentControl
     }
 
     private ShipmentTime getShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType, EntityPermission entityPermission) {
-        return ShipmentTimeFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentTimeQueries, shipment, shipmentTimeType, Session.MAX_TIME);
+        return shipmentTimeFactory.getEntityFromQuery(entityPermission, getShipmentTimeQueries, shipment, shipmentTimeType, Session.MAX_TIME);
     }
 
     public ShipmentTime getShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType) {
@@ -1555,7 +1580,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentTime> getShipmentTimesByShipment(Shipment shipment, EntityPermission entityPermission) {
-        return ShipmentTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTimesByShipmentQueries, shipment, Session.MAX_TIME);
+        return shipmentTimeFactory.getEntitiesFromQuery(entityPermission, getShipmentTimesByShipmentQueries, shipment, Session.MAX_TIME);
     }
 
     public List<ShipmentTime> getShipmentTimesByShipment(Shipment shipment) {
@@ -1589,7 +1614,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentTime> getShipmentTimesByShipmentTimeType(ShipmentTimeType shipmentTimeType, EntityPermission entityPermission) {
-        return ShipmentTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentTimesByShipmentTimeTypeQueries, shipmentTimeType, Session.MAX_TIME);
+        return shipmentTimeFactory.getEntitiesFromQuery(entityPermission, getShipmentTimesByShipmentTimeTypeQueries, shipmentTimeType, Session.MAX_TIME);
     }
 
     public List<ShipmentTime> getShipmentTimesByShipmentTimeType(ShipmentTimeType shipmentTimeType) {
@@ -1624,7 +1649,7 @@ public class ShipmentControl
 
     public void updateShipmentTimeFromValue(ShipmentTimeValue shipmentTimeValue, BasePK updatedBy) {
         if(shipmentTimeValue.hasBeenModified()) {
-            var shipmentTime = ShipmentTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentTime = shipmentTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTimeValue.getPrimaryKey());
 
             shipmentTime.setThruTime(session.getStartTime());
@@ -1634,7 +1659,7 @@ public class ShipmentControl
             var shipmentTimeTypePK = shipmentTime.getShipmentTimeTypePK(); // Not updated
             var time = shipmentTimeValue.getTime();
 
-            shipmentTime = ShipmentTimeFactory.getInstance().create(shipmentPK, shipmentTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
+            shipmentTime = shipmentTimeFactory.create(shipmentPK, shipmentTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(shipmentPK, EventTypes.MODIFY, shipmentTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1665,6 +1690,12 @@ public class ShipmentControl
     //   Shipment Alias Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentAliasTypeFactory shipmentAliasTypeFactory;
+
+    @Inject
+    protected ShipmentAliasTypeDetailFactory shipmentAliasTypeDetailFactory;
+
     public ShipmentAliasType createShipmentAliasType(ShipmentType shipmentType, String shipmentAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultShipmentAliasType = getDefaultShipmentAliasType(shipmentType);
@@ -1679,12 +1710,12 @@ public class ShipmentControl
             isDefault = true;
         }
 
-        var shipmentAliasType = ShipmentAliasTypeFactory.getInstance().create();
-        var shipmentAliasTypeDetail = ShipmentAliasTypeDetailFactory.getInstance().create(shipmentAliasType, shipmentType, shipmentAliasTypeName,
+        var shipmentAliasType = shipmentAliasTypeFactory.create();
+        var shipmentAliasTypeDetail = shipmentAliasTypeDetailFactory.create(shipmentAliasType, shipmentType, shipmentAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        shipmentAliasType = ShipmentAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasType.getPrimaryKey());
+        shipmentAliasType = shipmentAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasType.getPrimaryKey());
         shipmentAliasType.setActiveDetail(shipmentAliasTypeDetail);
         shipmentAliasType.setLastDetail(shipmentAliasTypeDetail);
         shipmentAliasType.store();
@@ -1698,7 +1729,7 @@ public class ShipmentControl
     public ShipmentAliasType getShipmentAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ShipmentAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return ShipmentAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return shipmentAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ShipmentAliasType getShipmentAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1740,7 +1771,7 @@ public class ShipmentControl
     }
 
     private ShipmentAliasType getShipmentAliasTypeByName(ShipmentType shipmentType, String shipmentAliasTypeName, EntityPermission entityPermission) {
-        return ShipmentAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentAliasTypeByNameQueries,
+        return shipmentAliasTypeFactory.getEntityFromQuery(entityPermission, getShipmentAliasTypeByNameQueries,
                 shipmentType, shipmentAliasTypeName);
     }
 
@@ -1783,7 +1814,7 @@ public class ShipmentControl
     }
 
     private ShipmentAliasType getDefaultShipmentAliasType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return ShipmentAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultShipmentAliasTypeQueries, shipmentType);
+        return shipmentAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultShipmentAliasTypeQueries, shipmentType);
     }
 
     public ShipmentAliasType getDefaultShipmentAliasType(ShipmentType shipmentType) {
@@ -1820,7 +1851,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentAliasType> getShipmentAliasTypes(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return ShipmentAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentAliasTypesQueries, shipmentType);
+        return shipmentAliasTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasTypesQueries, shipmentType);
     }
 
     public List<ShipmentAliasType> getShipmentAliasTypes(ShipmentType shipmentType) {
@@ -1887,7 +1918,7 @@ public class ShipmentControl
     private void updateShipmentAliasTypeFromValue(ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(shipmentAliasTypeDetailValue.hasBeenModified()) {
-            var shipmentAliasType = ShipmentAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentAliasType = shipmentAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentAliasTypeDetailValue.getShipmentAliasTypePK());
             var shipmentAliasTypeDetail = shipmentAliasType.getActiveDetailForUpdate();
 
@@ -1918,7 +1949,7 @@ public class ShipmentControl
                 }
             }
 
-            shipmentAliasTypeDetail = ShipmentAliasTypeDetailFactory.getInstance().create(shipmentAliasTypePK, shipmentTypePK, shipmentAliasTypeName,
+            shipmentAliasTypeDetail = shipmentAliasTypeDetailFactory.create(shipmentAliasTypePK, shipmentTypePK, shipmentAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             shipmentAliasType.setActiveDetail(shipmentAliasTypeDetail);
@@ -1976,8 +2007,11 @@ public class ShipmentControl
     //   Shipment Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentAliasTypeDescriptionFactory shipmentAliasTypeDescriptionFactory;
+
     public ShipmentAliasTypeDescription createShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language, String description, BasePK createdBy) {
-        var shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language,
+        var shipmentAliasTypeDescription = shipmentAliasTypeDescriptionFactory.create(shipmentAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(shipmentAliasType.getPrimaryKey(), EventTypes.MODIFY, shipmentAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2005,7 +2039,7 @@ public class ShipmentControl
     }
 
     private ShipmentAliasTypeDescription getShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language, EntityPermission entityPermission) {
-        return ShipmentAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentAliasTypeDescriptionQueries,
+        return shipmentAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getShipmentAliasTypeDescriptionQueries,
                 shipmentAliasType, language, Session.MAX_TIME);
     }
 
@@ -2047,7 +2081,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentAliasTypeDescription> getShipmentAliasTypeDescriptionsByShipmentAliasType(ShipmentAliasType shipmentAliasType, EntityPermission entityPermission) {
-        return ShipmentAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentAliasTypeDescriptionsByShipmentAliasTypeQueries,
+        return shipmentAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasTypeDescriptionsByShipmentAliasTypeQueries,
                 shipmentAliasType, Session.MAX_TIME);
     }
 
@@ -2093,7 +2127,7 @@ public class ShipmentControl
 
     public void updateShipmentAliasTypeDescriptionFromValue(ShipmentAliasTypeDescriptionValue shipmentAliasTypeDescriptionValue, BasePK updatedBy) {
         if(shipmentAliasTypeDescriptionValue.hasBeenModified()) {
-            var shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shipmentAliasTypeDescription = shipmentAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentAliasTypeDescriptionValue.getPrimaryKey());
 
             shipmentAliasTypeDescription.setThruTime(session.getStartTime());
@@ -2103,7 +2137,7 @@ public class ShipmentControl
             var language = shipmentAliasTypeDescription.getLanguage();
             var description = shipmentAliasTypeDescriptionValue.getDescription();
 
-            shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language, description,
+            shipmentAliasTypeDescription = shipmentAliasTypeDescriptionFactory.create(shipmentAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(shipmentAliasType.getPrimaryKey(), EventTypes.MODIFY, shipmentAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2129,8 +2163,11 @@ public class ShipmentControl
     //   Shipment Aliases
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ShipmentAliasFactory shipmentAliasFactory;
+
     public ShipmentAlias createShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType, String alias, BasePK createdBy) {
-        var shipmentAlias = ShipmentAliasFactory.getInstance().create(shipment, shipmentAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var shipmentAlias = shipmentAliasFactory.create(shipment, shipmentAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(shipment.getPrimaryKey(), EventTypes.MODIFY, shipmentAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2173,7 +2210,7 @@ public class ShipmentControl
     }
 
     private ShipmentAlias getShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType, EntityPermission entityPermission) {
-        return ShipmentAliasFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentAliasQueries,
+        return shipmentAliasFactory.getEntityFromQuery(entityPermission, getShipmentAliasQueries,
                 shipment, shipmentAliasType, Session.MAX_TIME);
     }
 
@@ -2213,7 +2250,7 @@ public class ShipmentControl
     }
 
     private ShipmentAlias getShipmentAliasByAlias(ShipmentAliasType shipmentAliasType, String alias, EntityPermission entityPermission) {
-        return ShipmentAliasFactory.getInstance().getEntityFromQuery(entityPermission, getShipmentAliasByAliasQueries, shipmentAliasType, alias, Session.MAX_TIME);
+        return shipmentAliasFactory.getEntityFromQuery(entityPermission, getShipmentAliasByAliasQueries, shipmentAliasType, alias, Session.MAX_TIME);
     }
 
     public ShipmentAlias getShipmentAliasByAlias(ShipmentAliasType shipmentAliasType, String alias) {
@@ -2247,7 +2284,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentAlias> getShipmentAliasesByShipment(Shipment shipment, EntityPermission entityPermission) {
-        return ShipmentAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentAliasesByShipmentQueries,
+        return shipmentAliasFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasesByShipmentQueries,
                 shipment, Session.MAX_TIME);
     }
 
@@ -2282,7 +2319,7 @@ public class ShipmentControl
     }
 
     private List<ShipmentAlias> getShipmentAliasesByShipmentAliasType(ShipmentAliasType shipmentAliasType, EntityPermission entityPermission) {
-        return ShipmentAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getShipmentAliasesByShipmentAliasTypeQueries,
+        return shipmentAliasFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasesByShipmentAliasTypeQueries,
                 shipmentAliasType, Session.MAX_TIME);
     }
 
@@ -2314,7 +2351,7 @@ public class ShipmentControl
 
     public void updateShipmentAliasFromValue(ShipmentAliasValue shipmentAliasValue, BasePK updatedBy) {
         if(shipmentAliasValue.hasBeenModified()) {
-            var shipmentAlias = ShipmentAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasValue.getPrimaryKey());
+            var shipmentAlias = shipmentAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasValue.getPrimaryKey());
 
             shipmentAlias.setThruTime(session.getStartTime());
             shipmentAlias.store();
@@ -2323,7 +2360,7 @@ public class ShipmentControl
             var shipmentAliasTypePK = shipmentAlias.getShipmentAliasTypePK();
             var alias  = shipmentAliasValue.getAlias();
 
-            shipmentAlias = ShipmentAliasFactory.getInstance().create(shipmentPK, shipmentAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            shipmentAlias = shipmentAliasFactory.create(shipmentPK, shipmentAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(shipmentPK, EventTypes.MODIFY, shipmentAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

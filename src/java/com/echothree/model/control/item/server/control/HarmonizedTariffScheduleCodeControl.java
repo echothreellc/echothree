@@ -31,6 +31,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 @CommandScope
 public class HarmonizedTariffScheduleCodeControl
@@ -45,6 +46,12 @@ public class HarmonizedTariffScheduleCodeControl
     //   Harmonized Tariff Schedule Code Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeFactory harmonizedTariffScheduleCodeFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<HarmonizedTariffScheduleCodeResultTransfer> getHarmonizedTariffScheduleCodeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var harmonizedTariffScheduleCodeResultTransfers = new ArrayList<HarmonizedTariffScheduleCodeResultTransfer>();
@@ -57,7 +64,7 @@ public class HarmonizedTariffScheduleCodeControl
 
         try {
             var itemControl = Session.getModelController(ItemControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement("""
+            var ps = searchResultFactory.prepareStatement("""
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
                     WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
@@ -69,7 +76,7 @@ public class HarmonizedTariffScheduleCodeControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new HarmonizedTariffScheduleCodePK(rs.getLong(1)));
+                    var harmonizedTariffScheduleCode = harmonizedTariffScheduleCodeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new HarmonizedTariffScheduleCodePK(rs.getLong(1)));
                     var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
 
                     harmonizedTariffScheduleCodeResultTransfers.add(new HarmonizedTariffScheduleCodeResultTransfer(

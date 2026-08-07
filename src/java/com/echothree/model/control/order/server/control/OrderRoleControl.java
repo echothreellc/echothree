@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderRoleControl
@@ -54,16 +55,19 @@ public class OrderRoleControl
     // --------------------------------------------------------------------------------
     //   Order Role Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderRoleTypeFactory orderRoleTypeFactory;
+
     public OrderRoleType createOrderRoleType(String orderRoleTypeName, Integer sortOrder) {
-        return OrderRoleTypeFactory.getInstance().create(orderRoleTypeName, sortOrder);
+        return orderRoleTypeFactory.create(orderRoleTypeName, sortOrder);
     }
     
     public OrderRoleType getOrderRoleTypeByName(String orderRoleTypeName) {
         OrderRoleType orderRoleType;
         
         try {
-            var ps = OrderRoleTypeFactory.getInstance().prepareStatement(
+            var ps = orderRoleTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM orderroletypes
@@ -72,7 +76,7 @@ public class OrderRoleControl
             
             ps.setString(1, orderRoleTypeName);
             
-            orderRoleType = OrderRoleTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            orderRoleType = orderRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -87,17 +91,20 @@ public class OrderRoleControl
     // --------------------------------------------------------------------------------
     //   Order Role Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderRoleTypeDescriptionFactory orderRoleTypeDescriptionFactory;
+
     public OrderRoleTypeDescription createOrderRoleTypeDescription(OrderRoleType orderRoleType, Language language,
             String description) {
-        return OrderRoleTypeDescriptionFactory.getInstance().create(orderRoleType, language, description);
+        return orderRoleTypeDescriptionFactory.create(orderRoleType, language, description);
     }
     
     public OrderRoleTypeDescription getOrderRoleTypeDescription(OrderRoleType orderRoleType, Language language) {
         OrderRoleTypeDescription orderRoleTypeDescription;
         
         try {
-            var ps = OrderRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = orderRoleTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM orderroletypedescriptions
@@ -107,7 +114,7 @@ public class OrderRoleControl
             ps.setLong(1, orderRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            orderRoleTypeDescription = OrderRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            orderRoleTypeDescription = orderRoleTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -137,12 +144,15 @@ public class OrderRoleControl
     //   Order Roles
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderRoleFactory orderRoleFactory;
+
     public OrderRole createOrderRoleUsingNames(Order order, Party party, String orderRoleTypeName, BasePK createdBy) {
         return createOrderRole(order, party, getOrderRoleTypeByName(orderRoleTypeName), createdBy);
     }
 
     public OrderRole createOrderRole(Order order, Party party, OrderRoleType orderRoleType, BasePK createdBy) {
-        var orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.getStartTime(), Session.MAX_TIME);
+        var orderRole = orderRoleFactory.create(order, party, orderRoleType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -184,7 +194,7 @@ public class OrderRoleControl
     }
 
     private List<OrderRole> getOrderRolesByOrderAndOrderRoleType(Order order, OrderRoleType orderRoleType, EntityPermission entityPermission) {
-        return OrderRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderRolesByOrderAndOrderRoleTypeQueries,
+        return orderRoleFactory.getEntitiesFromQuery(entityPermission, getOrderRolesByOrderAndOrderRoleTypeQueries,
                 order, orderRoleType, Session.MAX_TIME);
     }
 
@@ -257,7 +267,7 @@ public class OrderRoleControl
     }
 
     private List<OrderRole> getOrderRolesByOrder(Order order, EntityPermission entityPermission) {
-        return OrderRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderRolesByOrderQueries,
+        return orderRoleFactory.getEntitiesFromQuery(entityPermission, getOrderRolesByOrderQueries,
                 order, Session.MAX_TIME);
     }
 

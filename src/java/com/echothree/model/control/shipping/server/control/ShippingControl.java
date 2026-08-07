@@ -49,6 +49,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
 
 @CommandScope
 public class ShippingControl
@@ -62,16 +63,22 @@ public class ShippingControl
     // --------------------------------------------------------------------------------
     //   Shipping Methods
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ShippingMethodFactory shippingMethodFactory;
+
+    @Inject
+    protected ShippingMethodDetailFactory shippingMethodDetailFactory;
+
     public ShippingMethod createShippingMethod(String shippingMethodName, Selector geoCodeSelector, Selector itemSelector, Integer sortOrder,
             BasePK createdBy) {
-        var shippingMethod = ShippingMethodFactory.getInstance().create();
-        var shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(
+        var shippingMethod = shippingMethodFactory.create();
+        var shippingMethodDetail = shippingMethodDetailFactory.create(
                 shippingMethod, shippingMethodName, geoCodeSelector, itemSelector, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        shippingMethod = shippingMethodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 shippingMethod.getPrimaryKey());
         shippingMethod.setActiveDetail(shippingMethodDetail);
         shippingMethod.setLastDetail(shippingMethodDetail);
@@ -86,7 +93,7 @@ public class ShippingControl
     public ShippingMethod getShippingMethodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ShippingMethodPK(entityInstance.getEntityUniqueId());
 
-        return ShippingMethodFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return shippingMethodFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ShippingMethod getShippingMethodByEntityInstance(EntityInstance entityInstance) {
@@ -143,9 +150,9 @@ public class ShippingControl
                     """;
         }
 
-        var ps = ShippingMethodFactory.getInstance().prepareStatement(query);
+        var ps = shippingMethodFactory.prepareStatement(query);
         
-        return ShippingMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return shippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<ShippingMethod> getShippingMethods() {
@@ -179,11 +186,11 @@ public class ShippingControl
                         """;
             }
 
-            var ps = ShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = shippingMethodFactory.prepareStatement(query);
             
             ps.setString(1, shippingMethodName);
             
-            shippingMethod = ShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            shippingMethod = shippingMethodFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -297,7 +304,7 @@ public class ShippingControl
 
     public void updateShippingMethodFromValue(ShippingMethodDetailValue shippingMethodDetailValue, BasePK updatedBy) {
         if(shippingMethodDetailValue.hasBeenModified()) {
-            var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shippingMethod = shippingMethodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      shippingMethodDetailValue.getShippingMethodPK());
             var shippingMethodDetail = shippingMethod.getActiveDetailForUpdate();
             
@@ -310,7 +317,7 @@ public class ShippingControl
             var itemSelectorPK = shippingMethodDetailValue.getItemSelectorPK();
             var sortOrder = shippingMethodDetailValue.getSortOrder();
             
-            shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(shippingMethodPK, shippingMethodName,
+            shippingMethodDetail = shippingMethodDetailFactory.create(shippingMethodPK, shippingMethodName,
                     geoCodeSelectorPK, itemSelectorPK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             shippingMethod.setActiveDetail(shippingMethodDetail);
@@ -321,7 +328,7 @@ public class ShippingControl
     }
 
     public ShippingMethod getShippingMethodByPK(ShippingMethodPK pk) {
-        return ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return shippingMethodFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public void deleteShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
@@ -344,10 +351,13 @@ public class ShippingControl
     // --------------------------------------------------------------------------------
     //   Shipping Method Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ShippingMethodDescriptionFactory shippingMethodDescriptionFactory;
+
     public ShippingMethodDescription createShippingMethodDescription(ShippingMethod shippingMethod, Language language, String description,
             BasePK createdBy) {
-        var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod,
+        var shippingMethodDescription = shippingMethodDescriptionFactory.create(shippingMethod,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
@@ -377,13 +387,13 @@ public class ShippingControl
                         """;
             }
 
-            var ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = shippingMethodDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            shippingMethodDescription = shippingMethodDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -430,12 +440,12 @@ public class ShippingControl
                         """;
             }
 
-            var ps = ShippingMethodDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = shippingMethodDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            shippingMethodDescriptions = ShippingMethodDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            shippingMethodDescriptions = shippingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -485,7 +495,7 @@ public class ShippingControl
     
     public void updateShippingMethodDescriptionFromValue(ShippingMethodDescriptionValue shippingMethodDescriptionValue, BasePK updatedBy) {
         if(shippingMethodDescriptionValue.hasBeenModified()) {
-            var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var shippingMethodDescription = shippingMethodDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      shippingMethodDescriptionValue.getPrimaryKey());
             
             shippingMethodDescription.setThruTime(session.getStartTime());
@@ -495,7 +505,7 @@ public class ShippingControl
             var language = shippingMethodDescription.getLanguage();
             var description = shippingMethodDescriptionValue.getDescription();
             
-            shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod, language,
+            shippingMethodDescription = shippingMethodDescriptionFactory.create(shippingMethod, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
@@ -521,10 +531,13 @@ public class ShippingControl
     // --------------------------------------------------------------------------------
     //   Carrier Service Options
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ShippingMethodCarrierServiceFactory shippingMethodCarrierServiceFactory;
+
     public ShippingMethodCarrierService createShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             BasePK createdBy) {
-        var shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(
+        var shippingMethodCarrierService = shippingMethodCarrierServiceFactory.create(
                 shippingMethod, carrierService, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
@@ -573,13 +586,13 @@ public class ShippingControl
                         """;
             }
 
-            var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
+            var ps = shippingMethodCarrierServiceFactory.prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            shippingMethodCarrierService = shippingMethodCarrierServiceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -627,12 +640,12 @@ public class ShippingControl
                         """;
             }
 
-            var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
+            var ps = shippingMethodCarrierServiceFactory.prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            shippingMethodCarrierServices = ShippingMethodCarrierServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            shippingMethodCarrierServices = shippingMethodCarrierServiceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -672,12 +685,12 @@ public class ShippingControl
                         """;
             }
 
-            var ps = ShippingMethodCarrierServiceFactory.getInstance().prepareStatement(query);
+            var ps = shippingMethodCarrierServiceFactory.prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            shippingMethodCarrierServices = ShippingMethodCarrierServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            shippingMethodCarrierServices = shippingMethodCarrierServiceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

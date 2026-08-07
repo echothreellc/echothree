@@ -216,6 +216,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class PartyControl
@@ -229,9 +230,12 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Languages
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LanguageFactory languageFactory;
+
     public Language createLanguage(String languageIsoName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var language = LanguageFactory.getInstance().create(languageIsoName, isDefault, sortOrder);
+        var language = languageFactory.create(languageIsoName, isDefault, sortOrder);
         
         sendEvent(language.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -242,7 +246,7 @@ public class PartyControl
     public Language getLanguageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LanguagePK(entityInstance.getEntityUniqueId());
 
-        return LanguageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return languageFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Language getLanguageByEntityInstance(EntityInstance entityInstance) {
@@ -263,14 +267,14 @@ public class PartyControl
 
     public Language getDefaultLanguage() {
         Language language;
-        var ps = LanguageFactory.getInstance().prepareStatement(
+        var ps = languageFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM languages
                 WHERE lang_isdefault = 1
                 """);
         
-        language = LanguageFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        language = languageFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         
         return language;
     }
@@ -297,7 +301,7 @@ public class PartyControl
     }
     
     public Language getLanguageByIsoName(String languageIsoName, EntityPermission entityPermission) {
-        return LanguageFactory.getInstance().getEntityFromQuery(entityPermission, getLanguageByIsoNameQueries, languageIsoName);
+        return languageFactory.getEntityFromQuery(entityPermission, getLanguageByIsoNameQueries, languageIsoName);
     }
     
     public Language getLanguageByIsoName(String languageIsoName) {
@@ -310,7 +314,7 @@ public class PartyControl
     
     public List<Language> getLanguages() {
         List<Language> languages;
-        var ps = LanguageFactory.getInstance().prepareStatement(
+        var ps = languageFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM languages
@@ -318,7 +322,7 @@ public class PartyControl
                 _LIMIT_
                 """);
         
-        languages = LanguageFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        languages = languageFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         
         return languages;
     }
@@ -376,10 +380,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Language Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LanguageDescriptionFactory languageDescriptionFactory;
+
     public LanguageDescription createLanguageDescription(Language language, Language descriptionLanguage, String description,
             BasePK createdBy) {
-        var languageDescription = LanguageDescriptionFactory.getInstance().create(language, descriptionLanguage, description);
+        var languageDescription = languageDescriptionFactory.create(language, descriptionLanguage, description);
         
         sendEvent(language.getPrimaryKey(), EventTypes.MODIFY, languageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -390,7 +397,7 @@ public class PartyControl
         LanguageDescription languageDescription;
         
         try {
-            var ps = LanguageDescriptionFactory.getInstance().prepareStatement(
+            var ps = languageDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM languagedescriptions
@@ -400,7 +407,7 @@ public class PartyControl
             ps.setLong(1, language.getPrimaryKey().getEntityId());
             ps.setLong(2, descriptionLanguage.getPrimaryKey().getEntityId());
             
-            languageDescription = LanguageDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            languageDescription = languageDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -429,10 +436,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeFactory partyTypeFactory;
+
     public PartyType createPartyType(String partyTypeName, PartyType parentPartyType, SequenceType billingAccountSequenceType, Boolean allowUserLogins,
             Boolean allowPartyAliases, Boolean isDefault, Integer sortOrder) {
-        return PartyTypeFactory.getInstance().create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowPartyAliases, isDefault,
+        return partyTypeFactory.create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowPartyAliases, isDefault,
                 sortOrder);
     }
 
@@ -440,7 +450,7 @@ public class PartyControl
     public PartyType getPartyTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyTypePK(entityInstance.getEntityUniqueId());
 
-        return PartyTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return partyTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PartyType getPartyTypeByEntityInstance(EntityInstance entityInstance) {
@@ -481,7 +491,7 @@ public class PartyControl
     }
 
     public PartyType getPartyTypeByName(String partyTypeName, EntityPermission entityPermission) {
-        return PartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTypeByNameQueries,
+        return partyTypeFactory.getEntityFromQuery(entityPermission, getPartyTypeByNameQueries,
                 partyTypeName);
     }
 
@@ -525,7 +535,7 @@ public class PartyControl
     }
 
     public PartyType getDefaultPartyType(EntityPermission entityPermission) {
-        return PartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyTypeQueries);
+        return partyTypeFactory.getEntityFromQuery(entityPermission, getDefaultPartyTypeQueries);
     }
 
     public PartyType getDefaultPartyType() {
@@ -562,7 +572,7 @@ public class PartyControl
     }
 
     private List<PartyType> getPartyTypes(EntityPermission entityPermission) {
-        return PartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypesQueries);
+        return partyTypeFactory.getEntitiesFromQuery(entityPermission, getPartyTypesQueries);
     }
 
     public List<PartyType> getPartyTypes() {
@@ -622,16 +632,19 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeDescriptionFactory partyTypeDescriptionFactory;
+
     public PartyTypeDescription createPartyTypeDescription(PartyType partyType, Language language, String description) {
-        return PartyTypeDescriptionFactory.getInstance().create(partyType, language, description);
+        return partyTypeDescriptionFactory.create(partyType, language, description);
     }
     
     public PartyTypeDescription getPartyTypeDescription(PartyType partyType, Language language) {
         PartyTypeDescription partyTypeDescription;
         
         try {
-            var ps = PartyTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = partyTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM partytypedescriptions
@@ -641,7 +654,7 @@ public class PartyControl
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            partyTypeDescription = PartyTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            partyTypeDescription = partyTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -669,16 +682,19 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeUseTypeFactory partyTypeUseTypeFactory;
+
     public PartyTypeUseType createPartyTypeUseType(String partyTypeUseTypeName, Boolean isDefault, Integer sortOrder) {
-        return PartyTypeUseTypeFactory.getInstance().create(partyTypeUseTypeName, isDefault, sortOrder);
+        return partyTypeUseTypeFactory.create(partyTypeUseTypeName, isDefault, sortOrder);
     }
     
     public PartyTypeUseType getPartyTypeUseTypeByName(String partyTypeUseTypeName) {
         PartyTypeUseType partyTypeUseType;
         
         try {
-            var ps = PartyTypeUseTypeFactory.getInstance().prepareStatement(
+            var ps = partyTypeUseTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM partytypeusetypes
@@ -687,7 +703,7 @@ public class PartyControl
             
             ps.setString(1, partyTypeUseTypeName);
             
-            partyTypeUseType = PartyTypeUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            partyTypeUseType = partyTypeUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -698,17 +714,20 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Use Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeUseTypeDescriptionFactory partyTypeUseTypeDescriptionFactory;
+
     public PartyTypeUseTypeDescription createPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language,
             String description) {
-        return PartyTypeUseTypeDescriptionFactory.getInstance().create(partyTypeUseType, language, description);
+        return partyTypeUseTypeDescriptionFactory.create(partyTypeUseType, language, description);
     }
     
     public PartyTypeUseTypeDescription getPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language) {
         PartyTypeUseTypeDescription partyTypeUseTypeDescription;
         
         try {
-            var ps = PartyTypeUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = partyTypeUseTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM partytypeusetypedescriptions
@@ -718,7 +737,7 @@ public class PartyControl
             ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            partyTypeUseTypeDescription = PartyTypeUseTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            partyTypeUseTypeDescription = partyTypeUseTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -747,16 +766,19 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Uses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeUseFactory partyTypeUseFactory;
+
     public PartyTypeUse createPartyTypeUse(PartyTypeUseType partyTypeUseType, PartyType partyType, Boolean isDefault) {
-        return PartyTypeUseFactory.getInstance().create(partyTypeUseType, partyType, isDefault);
+        return partyTypeUseFactory.create(partyTypeUseType, partyType, isDefault);
     }
     
     public PartyTypeUse getPartyTypeUse(PartyTypeUseType partyTypeUseType, PartyType partyType) {
         PartyTypeUse partyTypeUse;
         
         try {
-            var ps = PartyTypeUseFactory.getInstance().prepareStatement(
+            var ps = partyTypeUseFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM partytypeuses
@@ -766,7 +788,7 @@ public class PartyControl
             ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, partyType.getPrimaryKey().getEntityId());
             
-            partyTypeUse = PartyTypeUseFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            partyTypeUse = partyTypeUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -777,7 +799,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Personal Titles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PersonalTitleFactory personalTitleFactory;
+
+    @Inject
+    protected PersonalTitleDetailFactory personalTitleDetailFactory;
+
     public PersonalTitle createPersonalTitle(String description, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPersonalTitle = getDefaultPersonalTitle();
         var defaultFound = defaultPersonalTitle != null;
@@ -791,13 +819,13 @@ public class PartyControl
             isDefault = true;
         }
 
-        var personalTitle = PersonalTitleFactory.getInstance().create((PersonalTitleDetailPK)null,
+        var personalTitle = personalTitleFactory.create((PersonalTitleDetailPK)null,
                 (PersonalTitleDetailPK)null);
-        var personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle,
+        var personalTitleDetail = personalTitleDetailFactory.create(personalTitle,
                 description, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        personalTitle = personalTitleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 personalTitle.getPrimaryKey());
         personalTitle.setActiveDetail(personalTitleDetail);
         personalTitle.setLastDetail(personalTitleDetail);
@@ -812,7 +840,7 @@ public class PartyControl
     public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PersonalTitlePK(entityInstance.getEntityUniqueId());
 
-        return PersonalTitleFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return personalTitleFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance) {
@@ -853,9 +881,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = PersonalTitleFactory.getInstance().prepareStatement(query);
+        var ps = personalTitleFactory.prepareStatement(query);
         
-        return PersonalTitleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return personalTitleFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<PersonalTitle> getPersonalTitles() {
@@ -867,7 +895,7 @@ public class PartyControl
     }
     
     public List<PersonalTitleDetail> getPersonalTitleDetails() {
-        var ps = PersonalTitleDetailFactory.getInstance().prepareStatement(
+        var ps = personalTitleDetailFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM personaltitles, personaltitledetails
@@ -875,7 +903,7 @@ public class PartyControl
                 ORDER BY pertd_sortorder, pertd_description
                 """);
         
-        return PersonalTitleDetailFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return personalTitleDetailFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     private PersonalTitle getDefaultPersonalTitle(EntityPermission entityPermission) {
@@ -896,9 +924,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = PersonalTitleFactory.getInstance().prepareStatement(query);
+        var ps = personalTitleFactory.prepareStatement(query);
         
-        return PersonalTitleFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return personalTitleFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public PersonalTitle getDefaultPersonalTitle() {
@@ -946,7 +974,7 @@ public class PartyControl
     }
     
     public boolean validPersonalTitlePK(PersonalTitlePK personalTitlePK) {
-        return PersonalTitleFactory.getInstance().validPK(personalTitlePK);
+        return personalTitleFactory.validPK(personalTitlePK);
     }
     
     public PersonalTitlePK convertPersonalTitleIdToPK(String personalTitleId) {
@@ -957,14 +985,14 @@ public class PartyControl
     
     public PersonalTitle convertPersonalTitleIdToEntity(String personalTitleId, EntityPermission entityPermission) {
         var personalTitlePK = convertPersonalTitleIdToPK(personalTitleId);
-        var personalTitle = personalTitlePK == null? null: PersonalTitleFactory.getInstance().getEntityFromPK(
+        var personalTitle = personalTitlePK == null? null: personalTitleFactory.getEntityFromPK(
                 entityPermission, personalTitlePK);
         
         return personalTitle;
     }
     
     public PersonalTitleDetailValue getPersonalTitleDetailValueByPKForUpdate(PersonalTitlePK personalTitlePK) {
-        var personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        var personalTitle = personalTitleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 personalTitlePK);
         var personalTitleDetail = personalTitle.getActiveDetailForUpdate();
         
@@ -974,7 +1002,7 @@ public class PartyControl
     private void updatePersonalTitleFromValue(PersonalTitleDetailValue personalTitleDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(personalTitleDetailValue.hasBeenModified()) {
-            var personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var personalTitle = personalTitleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     personalTitleDetailValue.getPersonalTitlePK());
             var personalTitleDetail = personalTitle.getActiveDetailForUpdate();
             
@@ -1001,7 +1029,7 @@ public class PartyControl
                 }
             }
             
-            personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle, description, isDefault,
+            personalTitleDetail = personalTitleDetailFactory.create(personalTitle, description, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             personalTitle.setActiveDetail(personalTitleDetail);
@@ -1062,7 +1090,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Name Suffixes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected NameSuffixFactory nameSuffixFactory;
+
+    @Inject
+    protected NameSuffixDetailFactory nameSuffixDetailFactory;
+
     public NameSuffix createNameSuffix(String description, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultNameSuffix = getDefaultNameSuffix();
         var defaultFound = defaultNameSuffix != null;
@@ -1076,12 +1110,12 @@ public class PartyControl
             isDefault = true;
         }
 
-        var nameSuffix = NameSuffixFactory.getInstance().create();
-        var nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
+        var nameSuffix = nameSuffixFactory.create();
+        var nameSuffixDetail = nameSuffixDetailFactory.create(nameSuffix, description,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffix.getPrimaryKey());
+        nameSuffix = nameSuffixFactory.getEntityFromPK(EntityPermission.READ_WRITE, nameSuffix.getPrimaryKey());
         nameSuffix.setActiveDetail(nameSuffixDetail);
         nameSuffix.setLastDetail(nameSuffixDetail);
         nameSuffix.store();
@@ -1095,7 +1129,7 @@ public class PartyControl
     public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new NameSuffixPK(entityInstance.getEntityUniqueId());
 
-        return NameSuffixFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return nameSuffixFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance) {
@@ -1136,9 +1170,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = NameSuffixFactory.getInstance().prepareStatement(query);
+        var ps = nameSuffixFactory.prepareStatement(query);
         
-        return NameSuffixFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return nameSuffixFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<NameSuffix> getNameSuffixes() {
@@ -1150,7 +1184,7 @@ public class PartyControl
     }
     
     public List<NameSuffixDetail> getNameSuffixDetails() {
-        var ps = NameSuffixDetailFactory.getInstance().prepareStatement(
+        var ps = nameSuffixDetailFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM namesuffixes, namesuffixdetails
@@ -1158,7 +1192,7 @@ public class PartyControl
                 ORDER BY nsfxd_sortorder, nsfxd_description
                 """);
         
-        return NameSuffixDetailFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return nameSuffixDetailFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     private NameSuffix getDefaultNameSuffix(EntityPermission entityPermission) {
@@ -1179,9 +1213,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = NameSuffixFactory.getInstance().prepareStatement(query);
+        var ps = nameSuffixFactory.prepareStatement(query);
         
-        return NameSuffixFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return nameSuffixFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public NameSuffix getDefaultNameSuffix() {
@@ -1229,7 +1263,7 @@ public class PartyControl
     }
     
     public boolean validNameSuffixPK(NameSuffixPK nameSuffixPK) {
-        return NameSuffixFactory.getInstance().validPK(nameSuffixPK);
+        return nameSuffixFactory.validPK(nameSuffixPK);
     }
     
     public NameSuffixPK convertNameSuffixIdToPK(String nameSuffixId) {
@@ -1240,14 +1274,14 @@ public class PartyControl
     
     public NameSuffix convertNameSuffixIdToEntity(String nameSuffixId, EntityPermission entityPermission) {
         var nameSuffixPK = convertNameSuffixIdToPK(nameSuffixId);
-        var nameSuffix = nameSuffixPK == null? null: NameSuffixFactory.getInstance().getEntityFromPK(
+        var nameSuffix = nameSuffixPK == null? null: nameSuffixFactory.getEntityFromPK(
                 entityPermission, nameSuffixPK);
         
         return nameSuffix;
     }
     
     public NameSuffixDetailValue getNameSuffixDetailValueByPKForUpdate(NameSuffixPK nameSuffixPK) {
-        var nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffixPK);
+        var nameSuffix = nameSuffixFactory.getEntityFromPK(EntityPermission.READ_WRITE, nameSuffixPK);
         var nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
         
         return nameSuffixDetail.getNameSuffixDetailValue().clone();
@@ -1255,7 +1289,7 @@ public class PartyControl
     
     private void updateNameSuffixFromValue(NameSuffixDetailValue nameSuffixDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(nameSuffixDetailValue.hasBeenModified()) {
-            var nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var nameSuffix = nameSuffixFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     nameSuffixDetailValue.getNameSuffixPK());
             var nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
             
@@ -1282,7 +1316,7 @@ public class PartyControl
                 }
             }
             
-            nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description, isDefault, sortOrder,
+            nameSuffixDetail = nameSuffixDetailFactory.create(nameSuffix, description, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             nameSuffix.setActiveDetail(nameSuffixDetail);
@@ -1343,16 +1377,22 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Time Zones
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TimeZoneFactory timeZoneFactory;
+
+    @Inject
+    protected TimeZoneDetailFactory timeZoneDetailFactory;
+
     public TimeZone createTimeZone(String javaTimeZoneName, String unixTimeZoneName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
 
-        var timeZone = TimeZoneFactory.getInstance().create();
-        var timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
+        var timeZone = timeZoneFactory.create();
+        var timeZoneDetail = timeZoneDetailFactory.create(timeZone, javaTimeZoneName,
                 unixTimeZoneName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        timeZone = TimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, timeZone.getPrimaryKey());
+        timeZone = timeZoneFactory.getEntityFromPK(EntityPermission.READ_WRITE, timeZone.getPrimaryKey());
         timeZone.setActiveDetail(timeZoneDetail);
         timeZone.setLastDetail(timeZoneDetail);
         timeZone.store();
@@ -1366,7 +1406,7 @@ public class PartyControl
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
 
-        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return timeZoneFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
@@ -1390,7 +1430,7 @@ public class PartyControl
         List<TimeZone> timeZones;
         
         try {
-            var ps = TimeZoneFactory.getInstance().prepareStatement(
+            var ps = timeZoneFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM timezones, timezonedetails
@@ -1401,7 +1441,7 @@ public class PartyControl
             
             ps.setLong(1, Session.MAX_TIME);
             
-            timeZones = TimeZoneFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            timeZones = timeZoneFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1413,7 +1453,7 @@ public class PartyControl
         TimeZone timeZone;
         
         try {
-            var ps = TimeZoneFactory.getInstance().prepareStatement(
+            var ps = timeZoneFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM timezones, timezonedetails
@@ -1422,7 +1462,7 @@ public class PartyControl
             
             ps.setLong(1, Session.MAX_TIME);
             
-            timeZone = TimeZoneFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            timeZone = timeZoneFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1434,7 +1474,7 @@ public class PartyControl
         TimeZone timeZone;
         
         try {
-            var ps = TimeZoneFactory.getInstance().prepareStatement(
+            var ps = timeZoneFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM timezones, timezonedetails
@@ -1444,7 +1484,7 @@ public class PartyControl
             ps.setString(1, javaTimeZoneName);
             ps.setLong(2, Session.MAX_TIME);
             
-            timeZone = TimeZoneFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            timeZone = timeZoneFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1505,9 +1545,12 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Time Zone Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TimeZoneDescriptionFactory timeZoneDescriptionFactory;
+
     public TimeZoneDescription createTimeZoneDescription(TimeZone timeZone, Language language, String description, BasePK createdBy) {
-        var timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
+        var timeZoneDescription = timeZoneDescriptionFactory.create(timeZone, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1538,12 +1581,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = timeZoneDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            timeZoneDescriptions = TimeZoneDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            timeZoneDescriptions = timeZoneDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1580,13 +1623,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = timeZoneDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            timeZoneDescription = timeZoneDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1644,7 +1687,7 @@ public class PartyControl
     
     public void updateTimeZoneDescriptionFromValue(TimeZoneDescriptionValue timeZoneDescriptionValue, BasePK updatedBy) {
         if(timeZoneDescriptionValue.hasBeenModified()) {
-            var timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var timeZoneDescription = timeZoneDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      timeZoneDescriptionValue.getPrimaryKey());
             
             timeZoneDescription.setThruTime(session.getStartTime());
@@ -1654,7 +1697,7 @@ public class PartyControl
             var language = timeZoneDescription.getLanguage();
             var description = timeZoneDescriptionValue.getDescription();
             
-            timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language, description,
+            timeZoneDescription = timeZoneDescriptionFactory.create(timeZone, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1678,23 +1721,29 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Date Time Formats
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DateTimeFormatFactory dateTimeFormatFactory;
+
+    @Inject
+    protected DateTimeFormatDetailFactory dateTimeFormatDetailFactory;
+
     public DateTimeFormat createDateTimeFormat(String dateTimeFormatName, String javaShortDateFormat, String javaAbbrevDateFormat,
             String javaAbbrevDateFormatWeekday, String javaLongDateFormat, String javaLongDateFormatWeekday, String javaTimeFormat,
             String javaTimeFormatSeconds, String unixShortDateFormat, String unixAbbrevDateFormat,
             String unixAbbrevDateFormatWeekday, String unixLongDateFormat, String unixLongDateFormatWeekday, String unixTimeFormat,
             String unixTimeFormatSeconds, String shortDateSeparator, String timeSeparator, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        var dateTimeFormat = DateTimeFormatFactory.getInstance().create((DateTimeFormatDetailPK)null,
+        var dateTimeFormat = dateTimeFormatFactory.create((DateTimeFormatDetailPK)null,
                 (DateTimeFormatDetailPK)null);
-        var dateTimeFormatDetail = DateTimeFormatDetailFactory.getInstance().create(dateTimeFormat,
+        var dateTimeFormatDetail = dateTimeFormatDetailFactory.create(dateTimeFormat,
                 dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat, javaAbbrevDateFormatWeekday, javaLongDateFormat,
                 javaLongDateFormatWeekday, javaTimeFormat, javaTimeFormatSeconds, unixShortDateFormat, unixAbbrevDateFormat,
                 unixAbbrevDateFormatWeekday, unixLongDateFormat, unixLongDateFormatWeekday, unixTimeFormat, unixTimeFormatSeconds,
                 shortDateSeparator, timeSeparator, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        dateTimeFormat = dateTimeFormatFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 dateTimeFormat.getPrimaryKey());
         dateTimeFormat.setActiveDetail(dateTimeFormatDetail);
         dateTimeFormat.setLastDetail(dateTimeFormatDetail);
@@ -1709,7 +1758,7 @@ public class PartyControl
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
 
-        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return dateTimeFormatFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
@@ -1733,7 +1782,7 @@ public class PartyControl
         List<DateTimeFormat> dateTimeFormats;
         
         try {
-            var ps = DateTimeFormatFactory.getInstance().prepareStatement(
+            var ps = dateTimeFormatFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM datetimeformats, datetimeformatdetails
@@ -1744,7 +1793,7 @@ public class PartyControl
             
             ps.setLong(1, Session.MAX_TIME);
             
-            dateTimeFormats = DateTimeFormatFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            dateTimeFormats = dateTimeFormatFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1756,7 +1805,7 @@ public class PartyControl
         DateTimeFormat dateTimeFormat;
         
         try {
-            var ps = DateTimeFormatFactory.getInstance().prepareStatement(
+            var ps = dateTimeFormatFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM datetimeformats, datetimeformatdetails
@@ -1765,7 +1814,7 @@ public class PartyControl
             
             ps.setLong(1, Session.MAX_TIME);
             
-            dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            dateTimeFormat = dateTimeFormatFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1777,7 +1826,7 @@ public class PartyControl
         DateTimeFormat dateTimeFormat;
         
         try {
-            var ps = DateTimeFormatFactory.getInstance().prepareStatement(
+            var ps = dateTimeFormatFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM datetimeformats, datetimeformatdetails
@@ -1787,7 +1836,7 @@ public class PartyControl
             ps.setString(1, dateTimeFormatName);
             ps.setLong(2, Session.MAX_TIME);
             
-            dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            dateTimeFormat = dateTimeFormatFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1848,10 +1897,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Date Time Format Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DateTimeFormatDescriptionFactory dateTimeFormatDescriptionFactory;
+
     public DateTimeFormatDescription createDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language,
             String description, BasePK createdBy) {
-        var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(
+        var dateTimeFormatDescription = dateTimeFormatDescriptionFactory.create(
                 dateTimeFormat, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1882,12 +1934,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = dateTimeFormatDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            dateTimeFormatDescriptions = DateTimeFormatDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            dateTimeFormatDescriptions = dateTimeFormatDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1924,13 +1976,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = dateTimeFormatDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            dateTimeFormatDescription = dateTimeFormatDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1988,7 +2040,7 @@ public class PartyControl
     
     public void updateDateTimeFormatDescriptionFromValue(DateTimeFormatDescriptionValue dateTimeFormatDescriptionValue, BasePK updatedBy) {
         if(dateTimeFormatDescriptionValue.hasBeenModified()) {
-            var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var dateTimeFormatDescription = dateTimeFormatDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      dateTimeFormatDescriptionValue.getPrimaryKey());
             
             dateTimeFormatDescription.setThruTime(session.getStartTime());
@@ -1998,7 +2050,7 @@ public class PartyControl
             var language = dateTimeFormatDescription.getLanguage();
             var description = dateTimeFormatDescriptionValue.getDescription();
             
-            dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(dateTimeFormat, language,
+            dateTimeFormatDescription = dateTimeFormatDescriptionFactory.create(dateTimeFormat, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2023,10 +2075,16 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Parties
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyFactory partyFactory;
+
+    @Inject
+    protected PartyDetailFactory partyDetailFactory;
+
     public Party createParty(String partyName, PartyType partyType, Language preferredLanguage, Currency preferredCurrency,
             TimeZone preferredTimeZone, DateTimeFormat preferredDateTimeFormat, BasePK createdBy) {
-        var party = PartyFactory.getInstance().create();
+        var party = partyFactory.create();
         
         if(createdBy == null) {
             createdBy = party.getPrimaryKey();
@@ -2048,11 +2106,11 @@ public class PartyControl
             party.remove();
             party = null;
         } else {
-            var partyDetail = PartyDetailFactory.getInstance().create(party, partyName, partyType, preferredLanguage,
+            var partyDetail = partyDetailFactory.create(party, partyName, partyType, preferredLanguage,
                     preferredCurrency, preferredTimeZone, preferredDateTimeFormat, session.getStartTime(), Session.MAX_TIME);
             
             // Convert to R/W
-            party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, party.getPrimaryKey());
+            party = partyFactory.getEntityFromPK(EntityPermission.READ_WRITE, party.getPrimaryKey());
             party.setActiveDetail(partyDetail);
             party.setLastDetail(partyDetail);
             
@@ -2114,7 +2172,7 @@ public class PartyControl
     }
     
     public Party getPartyByName(String partyName, EntityPermission entityPermission) {
-        return PartyFactory.getInstance().getEntityFromQuery(entityPermission, getPartyByNameQueries, partyName);
+        return partyFactory.getEntityFromQuery(entityPermission, getPartyByNameQueries, partyName);
     }
     
     public Party getPartyByName(String partyName) {
@@ -2134,7 +2192,7 @@ public class PartyControl
     }
     
     public PartyDetailValue getPartyDetailValueByPKForUpdate(PartyPK partyPK) {
-        var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
+        var party = partyFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
         var partyDetail = party.getActiveDetailForUpdate();
         
         return partyDetail.getPartyDetailValue().clone();
@@ -2166,7 +2224,7 @@ public class PartyControl
     }
 
     private Party getPartyByAlias(PartyAliasType partyAliasType, String alias, EntityPermission entityPermission) {
-        return PartyFactory.getInstance().getEntityFromQuery(entityPermission, getPartyByAliasQueries, partyAliasType, alias, Session.MAX_TIME);
+        return partyFactory.getEntityFromQuery(entityPermission, getPartyByAliasQueries, partyAliasType, alias, Session.MAX_TIME);
     }
 
     public Party getPartyByAlias(PartyAliasType partyAliasType, String alias) {
@@ -2178,7 +2236,7 @@ public class PartyControl
     }
 
     public List<Party> getParties() {
-        var ps = PartyFactory.getInstance().prepareStatement(
+        var ps = partyFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM parties, partydetails
@@ -2186,14 +2244,14 @@ public class PartyControl
                 _LIMIT_
                 """);
 
-        return PartyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return partyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public List<Party> getPartiesByPartyType(PartyType partyType) {
         List<Party> parties;
 
         try {
-            var ps = PartyFactory.getInstance().prepareStatement(
+            var ps = partyFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM parties, partydetails
@@ -2204,7 +2262,7 @@ public class PartyControl
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            parties = PartyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            parties = partyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2275,7 +2333,7 @@ public class PartyControl
     public void updatePartyFromValue(PartyDetailValue partyDetailValue, BasePK updatedBy) {
         if(partyDetailValue.hasBeenModified()) {
             var partyPK = partyDetailValue.getPartyPK();
-            var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
+            var party = partyFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
             var partyDetail = party.getActiveDetailForUpdate();
             
             partyDetail.setThruTime(session.getStartTime());
@@ -2288,7 +2346,7 @@ public class PartyControl
             var preferredTimeZonePK = partyDetailValue.getPreferredTimeZonePK();
             var preferredDateTimeFormatPK = partyDetailValue.getPreferredDateTimeFormatPK();
             
-            partyDetail = PartyDetailFactory.getInstance().create(partyPK, partyName, partyTypePK, preferredLanguagePK,
+            partyDetail = partyDetailFactory.create(partyPK, partyName, partyTypePK, preferredLanguagePK,
                     preferredCurrencyPK, preferredTimeZonePK, preferredDateTimeFormatPK, session.getStartTime(), Session.MAX_TIME);
             
             party.setActiveDetail(partyDetail);
@@ -2299,14 +2357,14 @@ public class PartyControl
     }
     
     public Party getPartyByPK(PartyPK partyPK) {
-        return PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
+        return partyFactory.getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
     }
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Party */
     public Party getPartyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyPK(entityInstance.getEntityUniqueId());
 
-        return PartyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return partyFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Party getPartyByEntityInstance(EntityInstance entityInstance) {
@@ -2489,8 +2547,11 @@ public class PartyControl
     //   Party Statuses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyStatusFactory partyStatusFactory;
+
     public PartyStatus createPartyStatus(Party party) {
-        return PartyStatusFactory.getInstance().create(party, 0);
+        return partyStatusFactory.create(party, 0);
     }
 
     private static final Map<EntityPermission, String> getPartyStatusQueries;
@@ -2515,7 +2576,7 @@ public class PartyControl
     }
 
     private PartyStatus getPartyStatus(Party party, EntityPermission entityPermission) {
-        return PartyStatusFactory.getInstance().getEntityFromQuery(entityPermission, getPartyStatusQueries, party);
+        return partyStatusFactory.getEntityFromQuery(entityPermission, getPartyStatusQueries, party);
     }
 
     public PartyStatus getPartyStatus(Party party) {
@@ -2528,7 +2589,7 @@ public class PartyControl
         var partyStatus = getPartyStatus(party, EntityPermission.READ_WRITE);
 
         return partyStatus == null
-                ? PartyStatusFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, createPartyStatus(party).getPrimaryKey())
+                ? partyStatusFactory.getEntityFromPK(EntityPermission.READ_WRITE, createPartyStatus(party).getPrimaryKey())
                 : partyStatus;
     }
 
@@ -2544,8 +2605,11 @@ public class PartyControl
     //   Party Aliases
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyAliasFactory partyAliasFactory;
+
     public PartyAlias createPartyAlias(Party party, PartyAliasType partyAliasType, String alias, BasePK createdBy) {
-        var partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var partyAlias = partyAliasFactory.create(party, partyAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2594,7 +2658,7 @@ public class PartyControl
     }
 
     private PartyAlias getPartyAlias(Party party, PartyAliasType partyAliasType, EntityPermission entityPermission) {
-        return PartyAliasFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasQueries,
+        return partyAliasFactory.getEntityFromQuery(entityPermission, getPartyAliasQueries,
                 party, partyAliasType, Session.MAX_TIME);
     }
 
@@ -2636,7 +2700,7 @@ public class PartyControl
     }
 
     private PartyAlias getPartyAliasByAlias(PartyAliasType partyAliasType, String alias, EntityPermission entityPermission) {
-        return PartyAliasFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasByAliasQueries, partyAliasType, alias, Session.MAX_TIME);
+        return partyAliasFactory.getEntityFromQuery(entityPermission, getPartyAliasByAliasQueries, partyAliasType, alias, Session.MAX_TIME);
     }
 
     public PartyAlias getPartyAliasByAlias(PartyAliasType partyAliasType, String alias) {
@@ -2672,7 +2736,7 @@ public class PartyControl
     }
 
     private List<PartyAlias> getPartyAliasesByParty(Party party, EntityPermission entityPermission) {
-        return PartyAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasesByPartyQueries,
+        return partyAliasFactory.getEntitiesFromQuery(entityPermission, getPartyAliasesByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -2709,7 +2773,7 @@ public class PartyControl
     }
 
     private List<PartyAlias> getPartyAliasesByPartyAliasType(PartyAliasType partyAliasType, EntityPermission entityPermission) {
-        return PartyAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasesByPartyAliasTypeQueries,
+        return partyAliasFactory.getEntitiesFromQuery(entityPermission, getPartyAliasesByPartyAliasTypeQueries,
                 partyAliasType, Session.MAX_TIME);
     }
 
@@ -2741,7 +2805,7 @@ public class PartyControl
 
     public void updatePartyAliasFromValue(PartyAliasValue partyAliasValue, BasePK updatedBy) {
         if(partyAliasValue.hasBeenModified()) {
-            var partyAlias = PartyAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasValue.getPrimaryKey());
+            var partyAlias = partyAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyAliasValue.getPrimaryKey());
 
             partyAlias.setThruTime(session.getStartTime());
             partyAlias.store();
@@ -2750,7 +2814,7 @@ public class PartyControl
             var partyAliasTypePK = partyAlias.getPartyAliasTypePK();
             var alias  = partyAliasValue.getAlias();
 
-            partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            partyAlias = partyAliasFactory.create(partyPK, partyAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2782,16 +2846,19 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Relationship Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyRelationshipTypeFactory partyRelationshipTypeFactory;
+
     public PartyRelationshipType createPartyRelationshipType(String partyRelationshipTypeName) {
-        return PartyRelationshipTypeFactory.getInstance().create(partyRelationshipTypeName);
+        return partyRelationshipTypeFactory.create(partyRelationshipTypeName);
     }
     
     public PartyRelationshipType getPartyRelationshipTypeByName(String partyRelationshipTypeName) {
         PartyRelationshipType partyRelationshipType;
         
         try {
-            var ps = PartyRelationshipTypeFactory.getInstance().prepareStatement(
+            var ps = partyRelationshipTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM partyrelationshiptypes
@@ -2800,7 +2867,7 @@ public class PartyControl
             
             ps.setString(1, partyRelationshipTypeName);
             
-            partyRelationshipType = PartyRelationshipTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            partyRelationshipType = partyRelationshipTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2811,10 +2878,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Relationship Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyRelationshipTypeDescriptionFactory partyRelationshipTypeDescriptionFactory;
+
     public PartyRelationshipTypeDescription createPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType,
             Language language, String description) {
-        return PartyRelationshipTypeDescriptionFactory.getInstance().create(partyRelationshipType, language, description);
+        return partyRelationshipTypeDescriptionFactory.create(partyRelationshipType, language, description);
     }
     
     public PartyRelationshipTypeDescription getPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType,
@@ -2822,7 +2892,7 @@ public class PartyControl
         PartyRelationshipTypeDescription partyRelationshipTypeDescription;
         
         try {
-            var ps = PartyRelationshipTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = partyRelationshipTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM partyrelationshiptypedescriptions
@@ -2832,7 +2902,7 @@ public class PartyControl
             ps.setLong(1, partyRelationshipType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            partyRelationshipTypeDescription = PartyRelationshipTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            partyRelationshipTypeDescription = partyRelationshipTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2862,6 +2932,12 @@ public class PartyControl
     //   Party Alias Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyAliasTypeFactory partyAliasTypeFactory;
+
+    @Inject
+    protected PartyAliasTypeDetailFactory partyAliasTypeDetailFactory;
+
     public PartyAliasType createPartyAliasType(PartyType partyType, String partyAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultPartyAliasType = getDefaultPartyAliasType(partyType);
@@ -2876,12 +2952,12 @@ public class PartyControl
             isDefault = true;
         }
 
-        var partyAliasType = PartyAliasTypeFactory.getInstance().create();
-        var partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasType, partyType, partyAliasTypeName,
+        var partyAliasType = partyAliasTypeFactory.create();
+        var partyAliasTypeDetail = partyAliasTypeDetailFactory.create(partyAliasType, partyType, partyAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasType.getPrimaryKey());
+        partyAliasType = partyAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyAliasType.getPrimaryKey());
         partyAliasType.setActiveDetail(partyAliasTypeDetail);
         partyAliasType.setLastDetail(partyAliasTypeDetail);
         partyAliasType.store();
@@ -2895,7 +2971,7 @@ public class PartyControl
     public PartyAliasType getPartyAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return PartyAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return partyAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PartyAliasType getPartyAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -2939,7 +3015,7 @@ public class PartyControl
     }
 
     public PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName, EntityPermission entityPermission) {
-        return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasTypeByNameQueries,
+        return partyAliasTypeFactory.getEntityFromQuery(entityPermission, getPartyAliasTypeByNameQueries,
                 partyType, partyAliasTypeName);
     }
 
@@ -2984,7 +3060,7 @@ public class PartyControl
     }
 
     public PartyAliasType getDefaultPartyAliasType(PartyType partyType, EntityPermission entityPermission) {
-        return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyAliasTypeQueries, partyType);
+        return partyAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultPartyAliasTypeQueries, partyType);
     }
 
     public PartyAliasType getDefaultPartyAliasType(PartyType partyType) {
@@ -3023,7 +3099,7 @@ public class PartyControl
     }
 
     private List<PartyAliasType> getPartyAliasTypes(PartyType partyType, EntityPermission entityPermission) {
-        return PartyAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasTypesQueries, partyType);
+        return partyAliasTypeFactory.getEntitiesFromQuery(entityPermission, getPartyAliasTypesQueries, partyType);
     }
 
     public List<PartyAliasType> getPartyAliasTypes(PartyType partyType) {
@@ -3090,7 +3166,7 @@ public class PartyControl
     private void updatePartyAliasTypeFromValue(PartyAliasTypeDetailValue partyAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(partyAliasTypeDetailValue.hasBeenModified()) {
-            var partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyAliasType = partyAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyAliasTypeDetailValue.getPartyAliasTypePK());
             var partyAliasTypeDetail = partyAliasType.getActiveDetailForUpdate();
 
@@ -3121,7 +3197,7 @@ public class PartyControl
                 }
             }
 
-            partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasTypePK, partyTypePK, partyAliasTypeName,
+            partyAliasTypeDetail = partyAliasTypeDetailFactory.create(partyAliasTypePK, partyTypePK, partyAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             partyAliasType.setActiveDetail(partyAliasTypeDetail);
@@ -3179,8 +3255,11 @@ public class PartyControl
     //   Party Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyAliasTypeDescriptionFactory partyAliasTypeDescriptionFactory;
+
     public PartyAliasTypeDescription createPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language, String description, BasePK createdBy) {
-        var partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
+        var partyAliasTypeDescription = partyAliasTypeDescriptionFactory.create(partyAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3210,7 +3289,7 @@ public class PartyControl
     }
 
     private PartyAliasTypeDescription getPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language, EntityPermission entityPermission) {
-        return PartyAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasTypeDescriptionQueries,
+        return partyAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPartyAliasTypeDescriptionQueries,
                 partyAliasType, language, Session.MAX_TIME);
     }
 
@@ -3254,7 +3333,7 @@ public class PartyControl
     }
 
     private List<PartyAliasTypeDescription> getPartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType, EntityPermission entityPermission) {
-        return PartyAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasTypeDescriptionsByPartyAliasTypeQueries,
+        return partyAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPartyAliasTypeDescriptionsByPartyAliasTypeQueries,
                 partyAliasType, Session.MAX_TIME);
     }
 
@@ -3300,7 +3379,7 @@ public class PartyControl
 
     public void updatePartyAliasTypeDescriptionFromValue(PartyAliasTypeDescriptionValue partyAliasTypeDescriptionValue, BasePK updatedBy) {
         if(partyAliasTypeDescriptionValue.hasBeenModified()) {
-            var partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyAliasTypeDescription = partyAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyAliasTypeDescriptionValue.getPrimaryKey());
 
             partyAliasTypeDescription.setThruTime(session.getStartTime());
@@ -3310,7 +3389,7 @@ public class PartyControl
             var language = partyAliasTypeDescription.getLanguage();
             var description = partyAliasTypeDescriptionValue.getDescription();
 
-            partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language, description,
+            partyAliasTypeDescription = partyAliasTypeDescriptionFactory.create(partyAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3335,16 +3414,19 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Role Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RoleTypeFactory roleTypeFactory;
+
     public RoleType createRoleType(String roleTypeName, RoleType parentRoleType) {
-        return RoleTypeFactory.getInstance().create(roleTypeName, parentRoleType);
+        return roleTypeFactory.create(roleTypeName, parentRoleType);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.RoleType */
     public RoleType getRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new RoleTypePK(entityInstance.getEntityUniqueId());
 
-        return RoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return roleTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public RoleType getRoleTypeByEntityInstance(EntityInstance entityInstance) {
@@ -3384,7 +3466,7 @@ public class PartyControl
     }
 
     public RoleType getRoleTypeByName(String roleTypeName, EntityPermission entityPermission) {
-        return RoleTypeFactory.getInstance().getEntityFromQuery(entityPermission, getRoleTypeByNameQueries,
+        return roleTypeFactory.getEntityFromQuery(entityPermission, getRoleTypeByNameQueries,
                 roleTypeName);
     }
 
@@ -3418,7 +3500,7 @@ public class PartyControl
     }
 
     private List<RoleType> getRoleTypes(EntityPermission entityPermission) {
-        return RoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getRoleTypesQueries);
+        return roleTypeFactory.getEntitiesFromQuery(entityPermission, getRoleTypesQueries);
     }
 
     public List<RoleType> getRoleTypes() {
@@ -3450,16 +3532,19 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Role Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected RoleTypeDescriptionFactory roleTypeDescriptionFactory;
+
     public RoleTypeDescription createRoleTypeDescription(RoleType roleType, Language language, String description) {
-        return RoleTypeDescriptionFactory.getInstance().create(roleType, language, description);
+        return roleTypeDescriptionFactory.create(roleType, language, description);
     }
     
     public RoleTypeDescription getRoleTypeDescription(RoleType roleType, Language language) {
         RoleTypeDescription roleTypeDescription;
         
         try {
-            var ps = RoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = roleTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM roletypedescriptions
@@ -3469,7 +3554,7 @@ public class PartyControl
             ps.setLong(1, roleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            roleTypeDescription = RoleTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            roleTypeDescription = roleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3497,9 +3582,12 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Groups
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyGroupFactory partyGroupFactory;
+
     public PartyGroup createPartyGroup(Party party, String name, BasePK createdBy) {
-        var partyGroup = PartyGroupFactory.getInstance().create(party, name, session.getStartTime(), Session.MAX_TIME);
+        var partyGroup = partyGroupFactory.create(party, name, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3527,12 +3615,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyGroupFactory.getInstance().prepareStatement(query);
+            var ps = partyGroupFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyGroup = PartyGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyGroup = partyGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3558,7 +3646,7 @@ public class PartyControl
     
     public void updatePartyGroupFromValue(PartyGroupValue partyGroupValue, BasePK updatedBy) {
         if(partyGroupValue.hasBeenModified()) {
-            var partyGroup = PartyGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyGroup = partyGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyGroupValue.getPrimaryKey());
             
             partyGroup.setThruTime(session.getStartTime());
@@ -3567,7 +3655,7 @@ public class PartyControl
             var partyPK = partyGroup.getPartyPK();
             var name = partyGroupValue.getName();
             
-            partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.getStartTime(), Session.MAX_TIME);
+            partyGroup = partyGroupFactory.create(partyPK, name, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3595,7 +3683,10 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Companies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyCompanyFactory partyCompanyFactory;
+
     public PartyCompany createPartyCompany(Party party, String partyCompanyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultPartyCompany = getDefaultPartyCompany();
@@ -3610,7 +3701,7 @@ public class PartyControl
             isDefault = true;
         }
 
-        var partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
+        var partyCompany = partyCompanyFactory.create(party, partyCompanyName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3653,12 +3744,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            var ps = partyCompanyFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyCompany = PartyCompanyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyCompany = partyCompanyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3701,12 +3792,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            var ps = partyCompanyFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, Session.MAX_TIME);
             
-            partyCompany = PartyCompanyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyCompany = partyCompanyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3749,13 +3840,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            var ps = partyCompanyFactory.prepareStatement(query);
             
             ps.setString(1, partyCompanyName);
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
             
-            partyCompany = PartyCompanyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyCompany = partyCompanyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3798,12 +3889,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            var ps = partyCompanyFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, Session.MAX_TIME);
             
-            partyCompanies = PartyCompanyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyCompanies = partyCompanyFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3878,7 +3969,7 @@ public class PartyControl
     
     private void updatePartyCompanyFromValue(PartyCompanyValue partyCompanyValue, boolean checkDefault, BasePK updatedBy) {
         if(partyCompanyValue.hasBeenModified()) {
-            var partyCompany = PartyCompanyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyCompany = partyCompanyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCompanyValue.getPrimaryKey());
             
             partyCompany.setThruTime(session.getStartTime());
@@ -3905,7 +3996,7 @@ public class PartyControl
                 }
             }
             
-            partyCompany = PartyCompanyFactory.getInstance().create(partyPK, partyCompanyName, isDefault, sortOrder,
+            partyCompany = partyCompanyFactory.create(partyPK, partyCompanyName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3919,7 +4010,10 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Divisions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyDivisionFactory partyDivisionFactory;
+
     public PartyDivision createPartyDivision(Party party, Party companyParty, String partyDivisionName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultPartyDivision = getDefaultPartyDivision(companyParty);
@@ -3934,7 +4028,7 @@ public class PartyControl
             isDefault = true;
         }
 
-        var partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
+        var partyDivision = partyDivisionFactory.create(party, companyParty, partyDivisionName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3977,12 +4071,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = partyDivisionFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyDivision = PartyDivisionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyDivision = partyDivisionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4025,13 +4119,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = partyDivisionFactory.prepareStatement(query);
             
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
             
-            partyDivision = PartyDivisionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyDivision = partyDivisionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4074,14 +4168,14 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = partyDivisionFactory.prepareStatement(query);
             
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setString(2, partyDivisionName);
             ps.setLong(3, Session.MAX_TIME);
             ps.setLong(4, Session.MAX_TIME);
             
-            partyDivision = PartyDivisionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyDivision = partyDivisionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4126,13 +4220,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = partyDivisionFactory.prepareStatement(query);
 
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
 
-            partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyDivisions = partyDivisionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4173,12 +4267,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            var ps = partyDivisionFactory.prepareStatement(query);
 
             ps.setString(1, partyDivisionName);
             ps.setLong(2, Session.MAX_TIME);
 
-            partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyDivisions = partyDivisionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4253,7 +4347,7 @@ public class PartyControl
     
     private void updatePartyDivisionFromValue(PartyDivisionValue partyDivisionValue, boolean checkDefault, BasePK updatedBy) {
         if(partyDivisionValue.hasBeenModified()) {
-            var partyDivision = PartyDivisionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyDivision = partyDivisionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyDivisionValue.getPrimaryKey());
             
             partyDivision.setThruTime(session.getStartTime());
@@ -4281,7 +4375,7 @@ public class PartyControl
                 }
             }
             
-            partyDivision = PartyDivisionFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDivisionName,
+            partyDivision = partyDivisionFactory.create(partyPK, companyParty.getPrimaryKey(), partyDivisionName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4295,7 +4389,10 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Departments
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyDepartmentFactory partyDepartmentFactory;
+
     public PartyDepartment createPartyDepartment(Party party, Party divisionParty, String partyDepartmentName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultPartyDepartment = getDefaultPartyDepartment(divisionParty);
@@ -4310,7 +4407,7 @@ public class PartyControl
             isDefault = true;
         }
 
-        var partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
+        var partyDepartment = partyDepartmentFactory.create(party, divisionParty,
                 partyDepartmentName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4353,12 +4450,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = partyDepartmentFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyDepartment = partyDepartmentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4401,13 +4498,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = partyDepartmentFactory.prepareStatement(query);
             
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
             
-            partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyDepartment = partyDepartmentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4451,14 +4548,14 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = partyDepartmentFactory.prepareStatement(query);
             
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setString(2, partyDepartmentName);
             ps.setLong(3, Session.MAX_TIME);
             ps.setLong(4, Session.MAX_TIME);
             
-            partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyDepartment = partyDepartmentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4503,13 +4600,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = partyDepartmentFactory.prepareStatement(query);
 
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
 
-            partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyDepartments = partyDepartmentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4550,12 +4647,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            var ps = partyDepartmentFactory.prepareStatement(query);
 
             ps.setString(1, partyDepartmentName);
             ps.setLong(2, Session.MAX_TIME);
 
-            partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyDepartments = partyDepartmentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4630,7 +4727,7 @@ public class PartyControl
     
     private void updatePartyDepartmentFromValue(PartyDepartmentValue partyDepartmentValue, boolean checkDefault, BasePK updatedBy) {
         if(partyDepartmentValue.hasBeenModified()) {
-            var partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyDepartment = partyDepartmentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyDepartmentValue.getPrimaryKey());
             
             partyDepartment.setThruTime(session.getStartTime());
@@ -4658,7 +4755,7 @@ public class PartyControl
                 }
             }
             
-            partyDepartment = PartyDepartmentFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDepartmentName,
+            partyDepartment = partyDepartmentFactory.create(partyPK, companyParty.getPrimaryKey(), partyDepartmentName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4672,10 +4769,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   People
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PersonFactory personFactory;
+
     public Person createPerson(Party party, PersonalTitle personalTitle, String firstName, String firstNameSdx, String middleName, String middleNameSdx,
             String lastName, String lastNameSdx, NameSuffix nameSuffix, BasePK createdBy) {
-        var person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
+        var person = personFactory.create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                 nameSuffix, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4724,12 +4824,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = PersonFactory.getInstance().prepareStatement(query);
+            var ps = personFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            person = PersonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            person = personFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4755,7 +4855,7 @@ public class PartyControl
     
     public void updatePersonFromValue(PersonValue personValue, BasePK updatedBy) {
         if(personValue.hasBeenModified()) {
-            var person = PersonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var person = personFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     personValue.getPrimaryKey());
             
             person.setThruTime(session.getStartTime());
@@ -4771,7 +4871,7 @@ public class PartyControl
             var lastNameSdx = personValue.getLastNameSdx();
             var nameSuffixPK = personValue.getNameSuffixPK();
             
-            person = PersonFactory.getInstance().create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
+            person = personFactory.create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                     nameSuffixPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4800,10 +4900,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Relationships
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyRelationshipFactory partyRelationshipFactory;
+
     public PartyRelationship createPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty,
             RoleType fromRoleType, Party toParty, RoleType toRoleType, BasePK createdBy) {
-        var partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
+        var partyRelationship = partyRelationshipFactory.create(partyRelationshipType,
                 fromParty, fromRoleType, toParty, toRoleType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4865,7 +4968,7 @@ public class PartyControl
 
     public PartyRelationship getPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty, RoleType fromRoleType, Party toParty,
             RoleType toRoleType, EntityPermission entityPermission) {
-        return PartyRelationshipFactory.getInstance().getEntityFromQuery(entityPermission, getPartyRelationshipQueries, partyRelationshipType, fromParty,
+        return partyRelationshipFactory.getEntityFromQuery(entityPermission, getPartyRelationshipQueries, partyRelationshipType, fromParty,
                 fromRoleType, toParty, toRoleType, Session.MAX_TIME);
     }
 
@@ -4905,7 +5008,7 @@ public class PartyControl
 
     private List<PartyRelationship> getPartyRelationshipsByFromRelationship(PartyRelationshipType partyRelationshipType,
             Party fromParty, RoleType fromRoleType, EntityPermission entityPermission) {
-        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByFromRelationshipQueries,
+        return partyRelationshipFactory.getEntitiesFromQuery(entityPermission, getPartyRelationshipsByFromRelationshipQueries,
                 partyRelationshipType, fromParty, fromRoleType, Session.MAX_TIME);
     }
     
@@ -4945,7 +5048,7 @@ public class PartyControl
 
     private List<PartyRelationship> getPartyRelationshipsByToRelationship(PartyRelationshipType partyRelationshipType,
             Party toParty, RoleType toRoleType, EntityPermission entityPermission) {
-        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByToRelationshipQueries, partyRelationshipType,
+        return partyRelationshipFactory.getEntitiesFromQuery(entityPermission, getPartyRelationshipsByToRelationshipQueries, partyRelationshipType,
                 toParty, toRoleType, Session.MAX_TIME);
     }
     
@@ -4982,7 +5085,7 @@ public class PartyControl
     }
 
     private List<PartyRelationship> getPartyRelationshipsByFromParty(Party fromParty, EntityPermission entityPermission) {
-        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByFromPartyQueries, fromParty,
+        return partyRelationshipFactory.getEntitiesFromQuery(entityPermission, getPartyRelationshipsByFromPartyQueries, fromParty,
                 Session.MAX_TIME);
     }
     
@@ -5017,7 +5120,7 @@ public class PartyControl
     }
 
     private List<PartyRelationship> getPartyRelationshipsByToParty(Party toParty, EntityPermission entityPermission) {
-        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByToPartyQueries, toParty,
+        return partyRelationshipFactory.getEntitiesFromQuery(entityPermission, getPartyRelationshipsByToPartyQueries, toParty,
                 Session.MAX_TIME);
     }
     
@@ -5084,14 +5187,20 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Audit Policies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeAuditPolicyFactory partyTypeAuditPolicyFactory;
+
+    @Inject
+    protected PartyTypeAuditPolicyDetailFactory partyTypeAuditPolicyDetailFactory;
+
     public PartyTypeAuditPolicy createPartyTypeAuditPolicy(PartyType partyType, Boolean auditCommands, Long retainUserVisitsTime, BasePK createdBy) {
-        var partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().create();
-        var partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicy, partyType, auditCommands, retainUserVisitsTime,
+        var partyTypeAuditPolicy = partyTypeAuditPolicyFactory.create();
+        var partyTypeAuditPolicyDetail = partyTypeAuditPolicyDetailFactory.create(partyTypeAuditPolicy, partyType, auditCommands, retainUserVisitsTime,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyTypeAuditPolicy.getPrimaryKey());
+        partyTypeAuditPolicy = partyTypeAuditPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyTypeAuditPolicy.getPrimaryKey());
         partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
         partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
         partyTypeAuditPolicy.store();
@@ -5122,11 +5231,11 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyTypeAuditPolicyFactory.getInstance().prepareStatement(query);
+            var ps = partyTypeAuditPolicyFactory.prepareStatement(query);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             
-            partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyTypeAuditPolicy = partyTypeAuditPolicyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5160,7 +5269,7 @@ public class PartyControl
     
     public void updatePartyTypeAuditPolicyFromValue(PartyTypeAuditPolicyDetailValue partyTypeAuditPolicyDetailValue, BasePK updatedBy) {
         if(partyTypeAuditPolicyDetailValue.hasBeenModified()) {
-            var partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeAuditPolicy = partyTypeAuditPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTypeAuditPolicyDetailValue.getPartyTypeAuditPolicyPK());
             var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getActiveDetailForUpdate();
 
@@ -5172,7 +5281,7 @@ public class PartyControl
             var auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
             var retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
 
-            partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicyPK, partyTypePK, auditCommands, retainUserVisitsTime,
+            partyTypeAuditPolicyDetail = partyTypeAuditPolicyDetailFactory.create(partyTypeAuditPolicyPK, partyTypePK, auditCommands, retainUserVisitsTime,
                     session.getStartTime(), Session.MAX_TIME);
 
             partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
@@ -5194,16 +5303,22 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Lockout Policies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeLockoutPolicyFactory partyTypeLockoutPolicyFactory;
+
+    @Inject
+    protected PartyTypeLockoutPolicyDetailFactory partyTypeLockoutPolicyDetailFactory;
+
     public PartyTypeLockoutPolicy createPartyTypeLockoutPolicy(PartyType partyType, Integer lockoutFailureCount,
             Long resetFailureCountTime, Boolean manualLockoutReset, Long lockoutInactiveTime, BasePK createdBy) {
-        var partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().create();
-        var partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(
+        var partyTypeLockoutPolicy = partyTypeLockoutPolicyFactory.create();
+        var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicyDetailFactory.create(
                 partyTypeLockoutPolicy, partyType, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
                 lockoutInactiveTime, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        partyTypeLockoutPolicy = partyTypeLockoutPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 partyTypeLockoutPolicy.getPrimaryKey());
         partyTypeLockoutPolicy.setActiveDetail(partyTypeLockoutPolicyDetail);
         partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
@@ -5235,11 +5350,11 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyTypeLockoutPolicyFactory.getInstance().prepareStatement(query);
+            var ps = partyTypeLockoutPolicyFactory.prepareStatement(query);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             
-            partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyTypeLockoutPolicy = partyTypeLockoutPolicyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5273,7 +5388,7 @@ public class PartyControl
     
     public void updatePartyTypeLockoutPolicyFromValue(PartyTypeLockoutPolicyDetailValue partyTypeLockoutPolicyDetailValue, BasePK updatedBy) {
         if(partyTypeLockoutPolicyDetailValue.hasBeenModified()) {
-            var partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeLockoutPolicy = partyTypeLockoutPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeLockoutPolicyDetailValue.getPartyTypeLockoutPolicyPK());
             var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getActiveDetailForUpdate();
             
@@ -5287,7 +5402,7 @@ public class PartyControl
             var manualLockoutReset = partyTypeLockoutPolicyDetailValue.getManualLockoutReset();
             var lockoutInactiveTime = partyTypeLockoutPolicyDetailValue.getLockoutInactiveTime();
             
-            partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(
+            partyTypeLockoutPolicyDetail = partyTypeLockoutPolicyDetailFactory.create(
                     partyTypeLockoutPolicyPK, partyTypePK, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
                     lockoutInactiveTime, session.getStartTime(), Session.MAX_TIME);
             
@@ -5310,21 +5425,27 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Party Type Password String Policies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypePasswordStringPolicyFactory partyTypePasswordStringPolicyFactory;
+
+    @Inject
+    protected PartyTypePasswordStringPolicyDetailFactory partyTypePasswordStringPolicyDetailFactory;
+
     public PartyTypePasswordStringPolicy createPartyTypePasswordStringPolicy(PartyType partyType, Boolean forceChangeAfterCreate,
             Boolean forceChangeAfterReset, Boolean allowChange, Integer passwordHistory, Long minimumPasswordLifetime, Long maximumPasswordLifetime,
             Long expirationWarningTime, Integer expiredLoginsPermitted, Integer minimumLength, Integer maximumLength,
             Integer requiredDigitCount, Integer requiredLetterCount, Integer requiredUpperCaseCount, Integer requiredLowerCaseCount,
             Integer maximumRepeated, Integer minimumCharacterTypes, BasePK createdBy) {
-        var partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().create();
-        var partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(
+        var partyTypePasswordStringPolicy = partyTypePasswordStringPolicyFactory.create();
+        var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicyDetailFactory.create(
                 partyTypePasswordStringPolicy, partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                 minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                 maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
                 maximumRepeated, minimumCharacterTypes, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(
+        partyTypePasswordStringPolicy = partyTypePasswordStringPolicyFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, partyTypePasswordStringPolicy.getPrimaryKey());
         partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
         partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
@@ -5356,11 +5477,11 @@ public class PartyControl
                         """;
             }
 
-            var ps = PartyTypePasswordStringPolicyFactory.getInstance().prepareStatement(query);
+            var ps = partyTypePasswordStringPolicyFactory.prepareStatement(query);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             
-            partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyTypePasswordStringPolicy = partyTypePasswordStringPolicyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5394,7 +5515,7 @@ public class PartyControl
     
     public void updatePartyTypePasswordStringPolicyFromValue(PartyTypePasswordStringPolicyDetailValue partyTypePasswordStringPolicyDetailValue, BasePK updatedBy) {
         if(partyTypePasswordStringPolicyDetailValue.hasBeenModified()) {
-            var partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypePasswordStringPolicy = partyTypePasswordStringPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypePasswordStringPolicyDetailValue.getPartyTypePasswordStringPolicyPK());
             var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getActiveDetailForUpdate();
             
@@ -5420,7 +5541,7 @@ public class PartyControl
             var maximumRepeated = partyTypePasswordStringPolicyDetailValue.getMaximumRepeated();
             var minimumCharacterTypes = partyTypePasswordStringPolicyDetailValue.getMinimumCharacterTypes();
             
-            partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(
+            partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicyDetailFactory.create(
                     partyTypePasswordStringPolicyPK, partyTypePK, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                     minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                     maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
@@ -5445,7 +5566,13 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Genders
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GenderFactory genderFactory;
+
+    @Inject
+    protected GenderDetailFactory genderDetailFactory;
+
     public Gender createGender(String genderName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGender = getDefaultGender();
         var defaultFound = defaultGender != null;
@@ -5459,12 +5586,12 @@ public class PartyControl
             isDefault = true;
         }
 
-        var gender = GenderFactory.getInstance().create();
-        var genderDetail = GenderDetailFactory.getInstance().create(gender, genderName, isDefault, sortOrder,
+        var gender = genderFactory.create();
+        var genderDetail = genderDetailFactory.create(gender, genderName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        gender = GenderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, gender.getPrimaryKey());
+        gender = genderFactory.getEntityFromPK(EntityPermission.READ_WRITE, gender.getPrimaryKey());
         gender.setActiveDetail(genderDetail);
         gender.setLastDetail(genderDetail);
         gender.store();
@@ -5478,7 +5605,7 @@ public class PartyControl
     public Gender getGenderByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GenderPK(entityInstance.getEntityUniqueId());
 
-        return GenderFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return genderFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Gender getGenderByEntityInstance(EntityInstance entityInstance) {
@@ -5518,11 +5645,11 @@ public class PartyControl
                         """;
             }
 
-            var ps = GenderFactory.getInstance().prepareStatement(query);
+            var ps = genderFactory.prepareStatement(query);
             
             ps.setString(1, genderName);
             
-            gender = GenderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            gender = genderFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5564,9 +5691,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = GenderFactory.getInstance().prepareStatement(query);
+        var ps = genderFactory.prepareStatement(query);
         
-        return GenderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return genderFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public Gender getDefaultGender() {
@@ -5601,9 +5728,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = GenderFactory.getInstance().prepareStatement(query);
+        var ps = genderFactory.prepareStatement(query);
         
-        return GenderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return genderFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Gender> getGenders() {
@@ -5667,7 +5794,7 @@ public class PartyControl
     }
     
     private void updateGenderFromValue(GenderDetailValue genderDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var gender = GenderFactory.getInstance().getEntityFromPK(
+        var gender = genderFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, genderDetailValue.getGenderPK());
         var genderDetail = gender.getActiveDetailForUpdate();
         
@@ -5695,7 +5822,7 @@ public class PartyControl
             }
         }
         
-        genderDetail = GenderDetailFactory.getInstance().create(genderPK, genderName, isDefault, sortOrder,
+        genderDetail = genderDetailFactory.create(genderPK, genderName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         gender.setActiveDetail(genderDetail);
@@ -5740,9 +5867,12 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Gender Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GenderDescriptionFactory genderDescriptionFactory;
+
     public GenderDescription createGenderDescription(Gender gender, Language language, String description, BasePK createdBy) {
-        var genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
+        var genderDescription = genderDescriptionFactory.create(gender, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5771,13 +5901,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = genderDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, gender.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            genderDescription = GenderDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            genderDescription = genderDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5824,12 +5954,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = genderDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, gender.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            genderDescriptions = GenderDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            genderDescriptions = genderDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5879,7 +6009,7 @@ public class PartyControl
     
     public void updateGenderDescriptionFromValue(GenderDescriptionValue genderDescriptionValue, BasePK updatedBy) {
         if(genderDescriptionValue.hasBeenModified()) {
-            var genderDescription = GenderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var genderDescription = genderDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      genderDescriptionValue.getPrimaryKey());
             
             genderDescription.setThruTime(session.getStartTime());
@@ -5889,7 +6019,7 @@ public class PartyControl
             var language = genderDescription.getLanguage();
             var description = genderDescriptionValue.getDescription();
             
-            genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
+            genderDescription = genderDescriptionFactory.create(gender, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -5915,6 +6045,12 @@ public class PartyControl
     //   Birthday Formats
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected BirthdayFormatFactory birthdayFormatFactory;
+
+    @Inject
+    protected BirthdayFormatDetailFactory birthdayFormatDetailFactory;
+
     public BirthdayFormat createBirthdayFormat(String birthdayFormatName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultBirthdayFormat = getDefaultBirthdayFormat();
         var defaultFound = defaultBirthdayFormat != null;
@@ -5928,12 +6064,12 @@ public class PartyControl
             isDefault = true;
         }
 
-        var birthdayFormat = BirthdayFormatFactory.getInstance().create();
-        var birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormat,
+        var birthdayFormat = birthdayFormatFactory.create();
+        var birthdayFormatDetail = birthdayFormatDetailFactory.create(birthdayFormat,
                 birthdayFormatName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        birthdayFormat = birthdayFormatFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 birthdayFormat.getPrimaryKey());
         birthdayFormat.setActiveDetail(birthdayFormatDetail);
         birthdayFormat.setLastDetail(birthdayFormatDetail);
@@ -5948,7 +6084,7 @@ public class PartyControl
     public BirthdayFormat getBirthdayFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new BirthdayFormatPK(entityInstance.getEntityUniqueId());
 
-        return BirthdayFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return birthdayFormatFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public BirthdayFormat getBirthdayFormatByEntityInstance(EntityInstance entityInstance) {
@@ -5987,9 +6123,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+        var ps = birthdayFormatFactory.prepareStatement(query);
 
-        return BirthdayFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return birthdayFormatFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<BirthdayFormat> getBirthdayFormats() {
@@ -6025,12 +6161,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+            var ps = birthdayFormatFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            birthdayFormats = BirthdayFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            birthdayFormats = birthdayFormatFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6064,9 +6200,9 @@ public class PartyControl
                     """;
         }
 
-        var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+        var ps = birthdayFormatFactory.prepareStatement(query);
 
-        return BirthdayFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return birthdayFormatFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public BirthdayFormat getDefaultBirthdayFormat() {
@@ -6102,11 +6238,11 @@ public class PartyControl
                         """;
             }
 
-            var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+            var ps = birthdayFormatFactory.prepareStatement(query);
 
             ps.setString(1, birthdayFormatName);
 
-            birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            birthdayFormat = birthdayFormatFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6187,7 +6323,7 @@ public class PartyControl
 
     private void updateBirthdayFormatFromValue(BirthdayFormatDetailValue birthdayFormatDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(birthdayFormatDetailValue.hasBeenModified()) {
-            var birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var birthdayFormat = birthdayFormatFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      birthdayFormatDetailValue.getBirthdayFormatPK());
             var birthdayFormatDetail = birthdayFormat.getActiveDetailForUpdate();
 
@@ -6215,7 +6351,7 @@ public class PartyControl
                 }
             }
 
-            birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormatPK, birthdayFormatName,
+            birthdayFormatDetail = birthdayFormatDetailFactory.create(birthdayFormatPK, birthdayFormatName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             birthdayFormat.setActiveDetail(birthdayFormatDetail);
@@ -6261,9 +6397,12 @@ public class PartyControl
     //   Birthday Format Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected BirthdayFormatDescriptionFactory birthdayFormatDescriptionFactory;
+
     public BirthdayFormatDescription createBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language, String description,
             BasePK createdBy) {
-        var birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat,
+        var birthdayFormatDescription = birthdayFormatDescriptionFactory.create(birthdayFormat,
                 language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
@@ -6293,13 +6432,13 @@ public class PartyControl
                         """;
             }
 
-            var ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = birthdayFormatDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, birthdayFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            birthdayFormatDescription = birthdayFormatDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6347,12 +6486,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = birthdayFormatDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, birthdayFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            birthdayFormatDescriptions = BirthdayFormatDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            birthdayFormatDescriptions = birthdayFormatDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6402,7 +6541,7 @@ public class PartyControl
 
     public void updateBirthdayFormatDescriptionFromValue(BirthdayFormatDescriptionValue birthdayFormatDescriptionValue, BasePK updatedBy) {
         if(birthdayFormatDescriptionValue.hasBeenModified()) {
-            var birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var birthdayFormatDescription = birthdayFormatDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      birthdayFormatDescriptionValue.getPrimaryKey());
 
             birthdayFormatDescription.setThruTime(session.getStartTime());
@@ -6412,7 +6551,7 @@ public class PartyControl
             var language = birthdayFormatDescription.getLanguage();
             var description = birthdayFormatDescriptionValue.getDescription();
 
-            birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat, language,
+            birthdayFormatDescription = birthdayFormatDescriptionFactory.create(birthdayFormat, language,
                     description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -6436,11 +6575,14 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     //   Profiles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ProfileFactory profileFactory;
+
     public Profile createProfile(Party party, String nickname, Icon icon, String pronunciation, Gender gender, String pronouns,
             Integer birthday, BirthdayFormat birthdayFormat, String occupation, String hobbies, String location, MimeType bioMimeType,
             String bio, MimeType signatureMimeType, String signature, BasePK createdBy) {
-        var profile = ProfileFactory.getInstance().create(party, nickname, icon, pronunciation, gender, pronouns,
+        var profile = profileFactory.create(party, nickname, icon, pronunciation, gender, pronouns,
                 birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -6470,12 +6612,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = ProfileFactory.getInstance().prepareStatement(query);
+            var ps = profileFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            profile = ProfileFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            profile = profileFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6520,12 +6662,12 @@ public class PartyControl
                         """;
             }
 
-            var ps = ProfileFactory.getInstance().prepareStatement(query);
+            var ps = profileFactory.prepareStatement(query);
             
             ps.setString(1, nickname);
             ps.setLong(2, Session.MAX_TIME);
             
-            profile = ProfileFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            profile = profileFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6543,7 +6685,7 @@ public class PartyControl
     
     public void updateProfileFromValue(ProfileValue profileValue, BasePK updatedBy) {
         if(profileValue.hasBeenModified()) {
-            var profile = ProfileFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var profile = profileFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     profileValue.getPrimaryKey());
             
             profile.setThruTime(session.getStartTime());
@@ -6565,7 +6707,7 @@ public class PartyControl
             var signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
             var signature = profileValue.getSignature();
             
-            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, pronunciation, genderPK, pronouns,
+            profile = profileFactory.create(partyPK, nickname, iconPK, pronunciation, genderPK, pronouns,
                     birthday, birthdayFormatPK, occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK,
                     signature, session.getStartTime(), Session.MAX_TIME);
             

@@ -52,6 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityInstanceControl
@@ -66,8 +67,11 @@ public class EntityInstanceControl
     //   Entity Instances
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityInstanceFactory entityInstanceFactory;
+
     public EntityInstance createEntityInstance(EntityType entityType, Long entityUniqueId) {
-        return EntityInstanceFactory.getInstance().create(entityType, entityUniqueId, null);
+        return entityInstanceFactory.create(entityType, entityUniqueId, null);
     }
 
     public EntityInstance createEntityAttributeDefaults(EntityInstance entityInstance, BasePK createdBy) {
@@ -184,7 +188,7 @@ public class EntityInstanceControl
         List<EntityInstance> entityInstances;
 
         try {
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(
+            var ps = entityInstanceFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM entityinstances
@@ -195,7 +199,7 @@ public class EntityInstanceControl
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
 
-            entityInstances = EntityInstanceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityInstances = entityInstanceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -224,12 +228,12 @@ public class EntityInstanceControl
                         """;
             }
 
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+            var ps = entityInstanceFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityUniqueId);
 
-            entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityInstance = entityInstanceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -266,11 +270,11 @@ public class EntityInstanceControl
                         """;
             }
 
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+            var ps = entityInstanceFactory.prepareStatement(query);
 
             ps.setString(1, uuid);
 
-            entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityInstance = entityInstanceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -292,7 +296,7 @@ public class EntityInstanceControl
         if(uuid == null || forceRegeneration) {
             // Convert to READ_WRITE if necessary...
             if(entityInstance.getEntityPermission().equals(EntityPermission.READ_ONLY)) {
-                entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
+                entityInstance = entityInstanceFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
             }
 
             // Keep generating UUIDs until a unique one is found...
@@ -381,7 +385,7 @@ public class EntityInstanceControl
 
                         if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                             // Convert to R/W
-                            entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(
+                            entityInstance = entityInstanceFactory.getEntityFromPK(
                                     EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
                         }
                     }
@@ -467,7 +471,7 @@ public class EntityInstanceControl
     }
 
     public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK) {
-        return EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
+        return entityInstanceFactory.getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
     }
 
     /** This function is a little odd. It doesn't actually delete the Entity Instance, rather, it cleans up all the
@@ -515,7 +519,7 @@ public class EntityInstanceControl
 
     public void deleteEntityInstancesByEntityTypeWithNullDeletedTime(final EntityType entityType, final BasePK deletedBy) {
         for(var entityInstanceResult : new EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
-            deleteEntityInstance(EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            deleteEntityInstance(entityInstanceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityInstanceResult.getEntityInstancePK()), deletedBy);
         }
     }

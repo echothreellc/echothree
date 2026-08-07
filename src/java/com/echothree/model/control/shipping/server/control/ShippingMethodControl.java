@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ShippingMethodControl
@@ -50,6 +51,15 @@ public class ShippingMethodControl
     // --------------------------------------------------------------------------------
     //   Shipping Method Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
+    @Inject
+    protected ShippingMethodFactory shippingMethodFactory;
 
     public List<ShippingMethodResultTransfer> getShippingMethodResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
@@ -68,7 +78,7 @@ public class ShippingMethodControl
 
             try {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                var ps = SearchResultFactory.getInstance().prepareStatement(
+                var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM searchresults, entityinstances
@@ -81,7 +91,7 @@ public class ShippingMethodControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
+                        var shippingMethod = shippingMethodFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
                         var shippingMethodDetail = shippingMethod.getLastDetail();
 
                         shippingMethodResultTransfers.add(new ShippingMethodResultTransfer(shippingMethodDetail.getShippingMethodName(),
@@ -102,7 +112,7 @@ public class ShippingMethodControl
 
             try {
                 var shippingControl = Session.getModelController(ShippingControl.class);
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM cachedexecutedsearchresults, entityinstances
@@ -115,7 +125,7 @@ public class ShippingMethodControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
+                        var shippingMethod = shippingMethodFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
                         var shippingMethodDetail = shippingMethod.getLastDetail();
 
                         shippingMethodResultTransfers.add(new ShippingMethodResultTransfer(shippingMethodDetail.getShippingMethodName(),

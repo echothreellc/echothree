@@ -117,8 +117,11 @@ public class TermControl
     //   Term Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected TermTypeFactory termTypeFactory;
+
     public TermType createTermType(String termTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var termType = TermTypeFactory.getInstance().create(termTypeName, isDefault, sortOrder);
+        var termType = termTypeFactory.create(termTypeName, isDefault, sortOrder);
 
         sendEvent(termType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -129,7 +132,7 @@ public class TermControl
     public TermType getTermTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TermTypePK(entityInstance.getEntityUniqueId());
 
-        return TermTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return termTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TermType getTermTypeByEntityInstance(EntityInstance entityInstance) {
@@ -170,7 +173,7 @@ public class TermControl
     }
 
     public TermType getTermTypeByName(String termTypeName, EntityPermission entityPermission) {
-        return TermTypeFactory.getInstance().getEntityFromQuery(entityPermission, getTermTypeByNameQueries, termTypeName);
+        return termTypeFactory.getEntityFromQuery(entityPermission, getTermTypeByNameQueries, termTypeName);
     }
 
     public TermType getTermTypeByName(String termTypeName) {
@@ -203,7 +206,7 @@ public class TermControl
     }
 
     public TermType getDefaultTermType(EntityPermission entityPermission) {
-        return TermTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultTermTypeQueries);
+        return termTypeFactory.getEntityFromQuery(entityPermission, getDefaultTermTypeQueries);
     }
 
     public TermType getDefaultTermType() {
@@ -236,7 +239,7 @@ public class TermControl
     }
 
     private List<TermType> getTermTypes(EntityPermission entityPermission) {
-        return TermTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getTermTypesQueries);
+        return termTypeFactory.getEntitiesFromQuery(entityPermission, getTermTypesQueries);
     }
 
     public List<TermType> getTermTypes() {
@@ -302,9 +305,12 @@ public class TermControl
     //   Term Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected TermTypeDescriptionFactory termTypeDescriptionFactory;
+
     public TermTypeDescription createTermTypeDescription(TermType termType, Language language,
             String description, BasePK createdBy) {
-        var termTypeDescription = TermTypeDescriptionFactory.getInstance().create(termType, language, description);
+        var termTypeDescription = termTypeDescriptionFactory.create(termType, language, description);
 
         sendEvent(termType.getPrimaryKey(), EventTypes.MODIFY, termTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -315,7 +321,7 @@ public class TermControl
         TermTypeDescription termTypeDescription;
 
         try {
-            var ps = TermTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = termTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM termtypedescriptions
@@ -325,7 +331,7 @@ public class TermControl
             ps.setLong(1, termType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
 
-            termTypeDescription = TermTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            termTypeDescription = termTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -353,7 +359,13 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Terms
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TermFactory termFactory;
+
+    @Inject
+    protected TermDetailFactory termDetailFactory;
+
     public Term createTerm(String termName, TermType termType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultTerm = getDefaultTerm();
         var defaultFound = defaultTerm != null;
@@ -367,12 +379,12 @@ public class TermControl
             isDefault = true;
         }
 
-        var term = TermFactory.getInstance().create();
-        var termDetail = TermDetailFactory.getInstance().create(term, termName, termType, isDefault, sortOrder,
+        var term = termFactory.create();
+        var termDetail = termDetailFactory.create(term, termName, termType, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        term = TermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        term = termFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 term.getPrimaryKey());
         term.setActiveDetail(termDetail);
         term.setLastDetail(termDetail);
@@ -387,7 +399,7 @@ public class TermControl
     public Term getTermByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TermPK(entityInstance.getEntityUniqueId());
 
-        return TermFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return termFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Term getTermByEntityInstance(EntityInstance entityInstance) {
@@ -428,11 +440,11 @@ public class TermControl
                 """;
             }
 
-            var ps = TermFactory.getInstance().prepareStatement(query);
+            var ps = termFactory.prepareStatement(query);
             
             ps.setString(1, termName);
             
-            term = TermFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            term = termFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -470,9 +482,9 @@ public class TermControl
             """;
         }
 
-        var ps = TermFactory.getInstance().prepareStatement(query);
+        var ps = termFactory.prepareStatement(query);
         
-        return TermFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return termFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public Term getDefaultTerm() {
@@ -507,9 +519,9 @@ public class TermControl
             """;
         }
 
-        var ps = TermFactory.getInstance().prepareStatement(query);
+        var ps = termFactory.prepareStatement(query);
         
-        return TermFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return termFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Term> getTerms() {
@@ -573,7 +585,7 @@ public class TermControl
     }
 
     private void updateTermFromValue(TermDetailValue termDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var term = TermFactory.getInstance().getEntityFromPK(
+        var term = termFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, termDetailValue.getTermPK());
         var termDetail = term.getActiveDetailForUpdate();
         
@@ -602,7 +614,7 @@ public class TermControl
             }
         }
         
-        termDetail = TermDetailFactory.getInstance().create(termPK, termName, termTypePK, isDefault, sortOrder,
+        termDetail = termDetailFactory.create(termPK, termName, termTypePK, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         term.setActiveDetail(termDetail);
@@ -655,9 +667,12 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Term Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TermDescriptionFactory termDescriptionFactory;
+
     public TermDescription createTermDescription(Term term, Language language, String description, BasePK createdBy) {
-        var termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
+        var termDescription = termDescriptionFactory.create(term, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -686,13 +701,13 @@ public class TermControl
                 """;
             }
 
-            var ps = TermDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = termDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            termDescription = TermDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            termDescription = termDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -739,12 +754,12 @@ public class TermControl
                 """;
             }
 
-            var ps = TermDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = termDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            termDescriptions = TermDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            termDescriptions = termDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -794,7 +809,7 @@ public class TermControl
     
     public void updateTermDescriptionFromValue(TermDescriptionValue termDescriptionValue, BasePK updatedBy) {
         if(termDescriptionValue.hasBeenModified()) {
-            var termDescription = TermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, termDescriptionValue.getPrimaryKey());
+            var termDescription = termDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, termDescriptionValue.getPrimaryKey());
             
             termDescription.setThruTime(session.getStartTime());
             termDescription.store();
@@ -803,7 +818,7 @@ public class TermControl
             var language = termDescription.getLanguage();
             var description = termDescriptionValue.getDescription();
             
-            termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
+            termDescription = termDescriptionFactory.create(term, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -828,10 +843,13 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Standard Terms
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected StandardTermFactory standardTermFactory;
+
     public StandardTerm createStandardTerm(Term term, Integer netDueDays, Integer discountPercentage, Integer discountDays,
             BasePK createdBy) {
-        var standardTerm = StandardTermFactory.getInstance().create(term, netDueDays, discountPercentage,
+        var standardTerm = standardTermFactory.create(term, netDueDays, discountPercentage,
                 discountDays, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -860,12 +878,12 @@ public class TermControl
                 """;
             }
 
-            var ps = StandardTermFactory.getInstance().prepareStatement(query);
+            var ps = standardTermFactory.prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            standardTerm = StandardTermFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            standardTerm = standardTermFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -891,7 +909,7 @@ public class TermControl
     
     public void updateStandardTermFromValue(StandardTermValue standardTermValue, BasePK updatedBy) {
         if(standardTermValue.hasBeenModified()) {
-            var standardTerm = StandardTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var standardTerm = standardTermFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     standardTermValue.getPrimaryKey());
             
             standardTerm.setThruTime(session.getStartTime());
@@ -902,7 +920,7 @@ public class TermControl
             var discountPercentage = standardTermValue.getDiscountPercentage();
             var discountDays = standardTermValue.getDiscountDays();
             
-            standardTerm = StandardTermFactory.getInstance().create(termPK, netDueDays, discountPercentage, discountDays,
+            standardTerm = standardTermFactory.create(termPK, netDueDays, discountPercentage, discountDays,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(termPK, EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -926,10 +944,13 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Date Driven Terms
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected DateDrivenTermFactory dateDrivenTermFactory;
+
     public DateDrivenTerm createDateDrivenTerm(Term term, Integer netDueDayOfMonth, Integer dueNextMonthDays,
             Integer discountPercentage, Integer discountBeforeDayOfMonth, BasePK createdBy) {
-        var dateDrivenTerm = DateDrivenTermFactory.getInstance().create(term, netDueDayOfMonth,
+        var dateDrivenTerm = dateDrivenTermFactory.create(term, netDueDayOfMonth,
                 dueNextMonthDays, discountPercentage, discountBeforeDayOfMonth, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -958,12 +979,12 @@ public class TermControl
                 """;
             }
 
-            var ps = DateDrivenTermFactory.getInstance().prepareStatement(query);
+            var ps = dateDrivenTermFactory.prepareStatement(query);
             
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            dateDrivenTerm = DateDrivenTermFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            dateDrivenTerm = dateDrivenTermFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -989,7 +1010,7 @@ public class TermControl
     
     public void updateDateDrivenTermFromValue(DateDrivenTermValue dateDrivenTermValue, BasePK updatedBy) {
         if(dateDrivenTermValue.hasBeenModified()) {
-            var dateDrivenTerm = DateDrivenTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var dateDrivenTerm = dateDrivenTermFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     dateDrivenTermValue.getPrimaryKey());
             
             dateDrivenTerm.setThruTime(session.getStartTime());
@@ -1001,7 +1022,7 @@ public class TermControl
             var discountPercentage = dateDrivenTermValue.getDiscountPercentage();
             var discountBeforeDayOfMonth = dateDrivenTermValue.getDiscountBeforeDayOfMonth();
             
-            dateDrivenTerm = DateDrivenTermFactory.getInstance().create(termPK, netDueDayOfMonth, dueNextMonthDays,
+            dateDrivenTerm = dateDrivenTermFactory.create(termPK, netDueDayOfMonth, dueNextMonthDays,
                     discountPercentage, discountBeforeDayOfMonth, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(termPK, EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1025,10 +1046,13 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Customer Type Credit Limits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CustomerTypeCreditLimitFactory customerTypeCreditLimitFactory;
+
     public CustomerTypeCreditLimit createCustomerTypeCreditLimit(CustomerType customerType, Currency currency, Long creditLimit,
             Long potentialCreditLimit, BasePK createdBy) {
-        var customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerType,
+        var customerTypeCreditLimit = customerTypeCreditLimitFactory.create(customerType,
                 currency, creditLimit, potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1075,13 +1099,13 @@ public class TermControl
                 """;
             }
 
-            var ps = CustomerTypeCreditLimitFactory.getInstance().prepareStatement(query);
+            var ps = customerTypeCreditLimitFactory.prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            customerTypeCreditLimit = customerTypeCreditLimitFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1130,12 +1154,12 @@ public class TermControl
                 """;
             }
 
-            var ps = CustomerTypeCreditLimitFactory.getInstance().prepareStatement(query);
+            var ps = customerTypeCreditLimitFactory.prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            customerTypeCreditLimits = CustomerTypeCreditLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            customerTypeCreditLimits = customerTypeCreditLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1172,7 +1196,7 @@ public class TermControl
     
     public void updateCustomerTypeCreditLimitFromValue(CustomerTypeCreditLimitValue customerTypeCreditLimitValue, BasePK updatedBy) {
         if(customerTypeCreditLimitValue.hasBeenModified()) {
-            var customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeCreditLimit = customerTypeCreditLimitFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeCreditLimitValue.getPrimaryKey());
             
             customerTypeCreditLimit.setThruTime(session.getStartTime());
@@ -1183,7 +1207,7 @@ public class TermControl
             var creditLimit = customerTypeCreditLimitValue.getCreditLimit();
             var potentialCreditLimit = customerTypeCreditLimitValue.getPotentialCreditLimit();
             
-            customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerTypePK, currencyPK, creditLimit,
+            customerTypeCreditLimit = customerTypeCreditLimitFactory.create(customerTypePK, currencyPK, creditLimit,
                     potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1207,10 +1231,13 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Party Credit Limits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyCreditLimitFactory partyCreditLimitFactory;
+
     public PartyCreditLimit createPartyCreditLimit(Party party, Currency currency, Long creditLimit, Long potentialCreditLimit,
             BasePK createdBy) {
-        var partyCreditLimit = PartyCreditLimitFactory.getInstance().create(party, currency, creditLimit,
+        var partyCreditLimit = partyCreditLimitFactory.create(party, currency, creditLimit,
                 potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1255,13 +1282,13 @@ public class TermControl
                 """;
             }
 
-            var ps = PartyCreditLimitFactory.getInstance().prepareStatement(query);
+            var ps = partyCreditLimitFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partyCreditLimit = PartyCreditLimitFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyCreditLimit = partyCreditLimitFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1309,12 +1336,12 @@ public class TermControl
                 """;
             }
 
-            var ps = PartyCreditLimitFactory.getInstance().prepareStatement(query);
+            var ps = partyCreditLimitFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyCreditLimits = PartyCreditLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyCreditLimits = partyCreditLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1350,7 +1377,7 @@ public class TermControl
     
     public void updatePartyCreditLimitFromValue(PartyCreditLimitValue partyCreditLimitValue, BasePK updatedBy) {
         if(partyCreditLimitValue.hasBeenModified()) {
-            var partyCreditLimit = PartyCreditLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyCreditLimit = partyCreditLimitFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCreditLimitValue.getPrimaryKey());
             
             partyCreditLimit.setThruTime(session.getStartTime());
@@ -1361,7 +1388,7 @@ public class TermControl
             var creditLimit = partyCreditLimitValue.getCreditLimit();
             var potentialCreditLimit = partyCreditLimitValue.getPotentialCreditLimit();
             
-            partyCreditLimit = PartyCreditLimitFactory.getInstance().create(partyPK, currencyPK, creditLimit,
+            partyCreditLimit = partyCreditLimitFactory.create(partyPK, currencyPK, creditLimit,
                     potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1385,9 +1412,12 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Party Terms
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTermFactory partyTermFactory;
+
     public PartyTerm createPartyTerm(Party party, Term term, Boolean taxable, BasePK createdBy) {
-        var partyTerm = PartyTermFactory.getInstance().create(party, term, taxable, session.getStartTime(),
+        var partyTerm = partyTermFactory.create(party, term, taxable, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1432,12 +1462,12 @@ public class TermControl
                 """;
             }
 
-            var ps = PartyTermFactory.getInstance().prepareStatement(query);
+            var ps = partyTermFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyTerm = PartyTermFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyTerm = partyTermFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1485,12 +1515,12 @@ public class TermControl
                 """;
             }
 
-            var ps = PartyTermFactory.getInstance().prepareStatement(query);
+            var ps = partyTermFactory.prepareStatement(query);
 
             ps.setLong(1, term.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyTerms = PartyTermFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyTerms = partyTermFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1518,7 +1548,7 @@ public class TermControl
     
     public void updatePartyTermFromValue(PartyTermValue partyTermValue, BasePK updatedBy) {
         if(partyTermValue.hasBeenModified()) {
-            var partyTerm = PartyTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTerm = partyTermFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTermValue.getPrimaryKey());
             
             partyTerm.setThruTime(session.getStartTime());
@@ -1528,7 +1558,7 @@ public class TermControl
             var termPK = partyTermValue.getTermPK();
             var taxable = partyTermValue.getTaxable();
             
-            partyTerm = PartyTermFactory.getInstance().create(partyPK, termPK, taxable, session.getStartTime(),
+            partyTerm = partyTermFactory.create(partyPK, termPK, taxable, session.getStartTime(),
                     Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

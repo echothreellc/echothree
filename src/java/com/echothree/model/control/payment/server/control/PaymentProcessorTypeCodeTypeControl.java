@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorTypeCodeTypeControl
@@ -54,6 +55,12 @@ public class PaymentProcessorTypeCodeTypeControl
     // --------------------------------------------------------------------------------
     //   Payment Processor Type Code Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected PaymentProcessorTypeCodeTypeFactory paymentProcessorTypeCodeTypeFactory;
+
+    @Inject
+    protected PaymentProcessorTypeCodeTypeDetailFactory paymentProcessorTypeCodeTypeDetailFactory;
 
     public PaymentProcessorTypeCodeType createPaymentProcessorTypeCodeType(final PaymentProcessorType paymentProcessorType,
             final String paymentProcessorTypeCodeTypeName, Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
@@ -69,13 +76,13 @@ public class PaymentProcessorTypeCodeTypeControl
             isDefault = true;
         }
 
-        var paymentProcessorTypeCodeType = PaymentProcessorTypeCodeTypeFactory.getInstance().create();
-        var paymentProcessorTypeCodeTypeDetail = PaymentProcessorTypeCodeTypeDetailFactory.getInstance().create(
+        var paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeFactory.create();
+        var paymentProcessorTypeCodeTypeDetail = paymentProcessorTypeCodeTypeDetailFactory.create(
                 paymentProcessorTypeCodeType, paymentProcessorType, paymentProcessorTypeCodeTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        paymentProcessorTypeCodeType = PaymentProcessorTypeCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeCodeType.getPrimaryKey());
+        paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeCodeType.getPrimaryKey());
         paymentProcessorTypeCodeType.setActiveDetail(paymentProcessorTypeCodeTypeDetail);
         paymentProcessorTypeCodeType.setLastDetail(paymentProcessorTypeCodeTypeDetail);
         paymentProcessorTypeCodeType.store();
@@ -90,7 +97,7 @@ public class PaymentProcessorTypeCodeTypeControl
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorTypeCodeTypePK(entityInstance.getEntityUniqueId());
 
-        return PaymentProcessorTypeCodeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return paymentProcessorTypeCodeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -120,7 +127,7 @@ public class PaymentProcessorTypeCodeTypeControl
 
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByName(final PaymentProcessorType paymentProcessorType,
             final String paymentProcessorTypeCodeTypeName, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorTypeCodeTypeByNameQueries,
+        return paymentProcessorTypeCodeTypeFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTypeCodeTypeByNameQueries,
                 paymentProcessorType, paymentProcessorTypeCodeTypeName);
     }
 
@@ -161,7 +168,7 @@ public class PaymentProcessorTypeCodeTypeControl
             """);
 
     public PaymentProcessorTypeCodeType getDefaultPaymentProcessorTypeCodeType(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentProcessorTypeCodeTypeQueries,
+        return paymentProcessorTypeCodeTypeFactory.getEntityFromQuery(entityPermission, getDefaultPaymentProcessorTypeCodeTypeQueries,
                 paymentProcessorType);
     }
 
@@ -195,7 +202,7 @@ public class PaymentProcessorTypeCodeTypeControl
             """);
 
     private List<PaymentProcessorTypeCodeType> getPaymentProcessorTypeCodeTypes(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeCodeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeCodeTypesQueries,
+        return paymentProcessorTypeCodeTypeFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeCodeTypesQueries,
                 paymentProcessorType);
     }
 
@@ -265,7 +272,7 @@ public class PaymentProcessorTypeCodeTypeControl
     private void updatePaymentProcessorTypeCodeTypeFromValue(final PaymentProcessorTypeCodeTypeDetailValue paymentProcessorTypeCodeTypeDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(paymentProcessorTypeCodeTypeDetailValue.hasBeenModified()) {
-            var paymentProcessorTypeCodeType = PaymentProcessorTypeCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     paymentProcessorTypeCodeTypeDetailValue.getPaymentProcessorTypeCodeTypePK());
             var paymentProcessorTypeCodeTypeDetail = paymentProcessorTypeCodeType.getActiveDetailForUpdate();
 
@@ -295,7 +302,7 @@ public class PaymentProcessorTypeCodeTypeControl
                 }
             }
 
-            paymentProcessorTypeCodeTypeDetail = PaymentProcessorTypeCodeTypeDetailFactory.getInstance().create(paymentProcessorTypeCodeTypePK,
+            paymentProcessorTypeCodeTypeDetail = paymentProcessorTypeCodeTypeDetailFactory.create(paymentProcessorTypeCodeTypePK,
                     paymentProcessorTypePK, paymentProcessorTypeCodeTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorTypeCodeType.setActiveDetail(paymentProcessorTypeCodeTypeDetail);
@@ -354,9 +361,12 @@ public class PaymentProcessorTypeCodeTypeControl
     //   Payment Processor Type Code Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PaymentProcessorTypeCodeTypeDescriptionFactory paymentProcessorTypeCodeTypeDescriptionFactory;
+
     public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final Language language, final String description, final BasePK createdBy) {
-        var paymentProcessorTypeCodeTypeDescription = PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().create(paymentProcessorTypeCodeType,
+        var paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeDescriptionFactory.create(paymentProcessorTypeCodeType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -381,7 +391,7 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private PaymentProcessorTypeCodeTypeDescription getPaymentProcessorTypeCodeTypeDescription(final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final Language language, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorTypeCodeTypeDescriptionQueries,
+        return paymentProcessorTypeCodeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTypeCodeTypeDescriptionQueries,
                 paymentProcessorTypeCodeType, language, Session.MAX_TIME);
     }
 
@@ -423,7 +433,7 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private List<PaymentProcessorTypeCodeTypeDescription> getPaymentProcessorTypeCodeTypeDescriptionsByPaymentProcessorTypeCodeType(final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return paymentProcessorTypeCodeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorTypeCodeTypeDescriptionsByPaymentProcessorTypeCodeTypeQueries,
                 paymentProcessorTypeCodeType, Session.MAX_TIME);
     }
@@ -473,7 +483,7 @@ public class PaymentProcessorTypeCodeTypeControl
     public void updatePaymentProcessorTypeCodeTypeDescriptionFromValue(final PaymentProcessorTypeCodeTypeDescriptionValue paymentProcessorTypeCodeTypeDescriptionValue,
             final BasePK updatedBy) {
         if(paymentProcessorTypeCodeTypeDescriptionValue.hasBeenModified()) {
-            var paymentProcessorTypeCodeTypeDescription = PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeCodeTypeDescriptionValue.getPrimaryKey());
+            var paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeCodeTypeDescriptionValue.getPrimaryKey());
 
             paymentProcessorTypeCodeTypeDescription.setThruTime(session.getStartTime());
             paymentProcessorTypeCodeTypeDescription.store();
@@ -482,7 +492,7 @@ public class PaymentProcessorTypeCodeTypeControl
             var language = paymentProcessorTypeCodeTypeDescription.getLanguage();
             var description = paymentProcessorTypeCodeTypeDescriptionValue.getDescription();
 
-            paymentProcessorTypeCodeTypeDescription = PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().create(paymentProcessorTypeCodeType, language, description,
+            paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeDescriptionFactory.create(paymentProcessorTypeCodeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class TagControl
@@ -70,7 +71,13 @@ public class TagControl
     // --------------------------------------------------------------------------------
     //   Tag Scopes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TagScopeFactory tagScopeFactory;
+
+    @Inject
+    protected TagScopeDetailFactory tagScopeDetailFactory;
+
     public TagScope createTagScope(String tagScopeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultTagScope = getDefaultTagScope();
         var defaultFound = defaultTagScope != null;
@@ -84,12 +91,12 @@ public class TagControl
             isDefault = true;
         }
 
-        var tagScope = TagScopeFactory.getInstance().create();
-        var tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScope,
+        var tagScope = tagScopeFactory.create();
+        var tagScopeDetail = tagScopeDetailFactory.create(tagScope,
                 tagScopeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        tagScope = TagScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        tagScope = tagScopeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 tagScope.getPrimaryKey());
         tagScope.setActiveDetail(tagScopeDetail);
         tagScope.setLastDetail(tagScopeDetail);
@@ -122,7 +129,7 @@ public class TagControl
             final EntityPermission entityPermission) {
         var pk = new TagScopePK(entityInstance.getEntityUniqueId());
 
-        return TagScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return tagScopeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance) {
@@ -153,9 +160,9 @@ public class TagControl
                     """;
         }
 
-        var ps = TagScopeFactory.getInstance().prepareStatement(query);
+        var ps = tagScopeFactory.prepareStatement(query);
         
-        return TagScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return tagScopeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<TagScope> getTagScopes() {
@@ -191,12 +198,12 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            tagScopes = TagScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            tagScopes = tagScopeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -230,9 +237,9 @@ public class TagControl
                     """;
         }
 
-        var ps = TagScopeFactory.getInstance().prepareStatement(query);
+        var ps = tagScopeFactory.prepareStatement(query);
         
-        return TagScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return tagScopeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public TagScope getDefaultTagScope() {
@@ -268,11 +275,11 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeFactory.prepareStatement(query);
             
             ps.setString(1, tagScopeName);
             
-            tagScope = TagScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            tagScope = tagScopeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -353,7 +360,7 @@ public class TagControl
     
     private void updateTagScopeFromValue(TagScopeDetailValue tagScopeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(tagScopeDetailValue.hasBeenModified()) {
-            var tagScope = TagScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tagScope = tagScopeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      tagScopeDetailValue.getTagScopePK());
             var tagScopeDetail = tagScope.getActiveDetailForUpdate();
             
@@ -381,7 +388,7 @@ public class TagControl
                 }
             }
             
-            tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScopePK, tagScopeName,
+            tagScopeDetail = tagScopeDetailFactory.create(tagScopePK, tagScopeName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             tagScope.setActiveDetail(tagScopeDetail);
@@ -428,10 +435,13 @@ public class TagControl
     // --------------------------------------------------------------------------------
     //   Tag Scope Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TagScopeDescriptionFactory tagScopeDescriptionFactory;
+
     public TagScopeDescription createTagScopeDescription(TagScope tagScope, Language language, String description,
             BasePK createdBy) {
-        var tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope,
+        var tagScopeDescription = tagScopeDescriptionFactory.create(tagScope,
                 language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -461,13 +471,13 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            tagScopeDescription = TagScopeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            tagScopeDescription = tagScopeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -515,12 +525,12 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            tagScopeDescriptions = TagScopeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            tagScopeDescriptions = tagScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -570,7 +580,7 @@ public class TagControl
     
     public void updateTagScopeDescriptionFromValue(TagScopeDescriptionValue tagScopeDescriptionValue, BasePK updatedBy) {
         if(tagScopeDescriptionValue.hasBeenModified()) {
-            var tagScopeDescription = TagScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tagScopeDescription = tagScopeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      tagScopeDescriptionValue.getPrimaryKey());
             
             tagScopeDescription.setThruTime(session.getStartTime());
@@ -580,7 +590,7 @@ public class TagControl
             var language = tagScopeDescription.getLanguage();
             var description = tagScopeDescriptionValue.getDescription();
             
-            tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope, language,
+            tagScopeDescription = tagScopeDescriptionFactory.create(tagScope, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -604,9 +614,12 @@ public class TagControl
     // --------------------------------------------------------------------------------
     //   Tag Scope Entity Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TagScopeEntityTypeFactory tagScopeEntityTypeFactory;
+
     public TagScopeEntityType createTagScopeEntityType(TagScope tagScope, EntityType entityType, BasePK createdBy) {
-        var tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
+        var tagScopeEntityType = tagScopeEntityTypeFactory.create(tagScope, entityType,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -635,7 +648,7 @@ public class TagControl
             final EntityPermission entityPermission) {
         var pk = new TagScopeEntityTypePK(entityInstance.getEntityUniqueId());
 
-        return TagScopeEntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return tagScopeEntityTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TagScopeEntityType getTagScopeEntityTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -667,13 +680,13 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeEntityTypeFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            tagScopeEntityType = tagScopeEntityTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -713,12 +726,12 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeEntityTypeFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            tagScopeEntityTypes = TagScopeEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            tagScopeEntityTypes = tagScopeEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -758,12 +771,12 @@ public class TagControl
                         """;
             }
 
-            var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = tagScopeEntityTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            tagScopeEntityTypes = TagScopeEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            tagScopeEntityTypes = tagScopeEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -824,14 +837,20 @@ public class TagControl
     // --------------------------------------------------------------------------------
     //   Tags
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TagFactory tagFactory;
+
+    @Inject
+    protected TagDetailFactory tagDetailFactory;
+
     public Tag createTag(TagScope tagScope, String tagName, BasePK createdBy) {
-        var tag = TagFactory.getInstance().create();
-        var tagDetail = TagDetailFactory.getInstance().create(tag, tagScope, tagName, session.getStartTime(),
+        var tag = tagFactory.create();
+        var tagDetail = tagDetailFactory.create(tag, tagScope, tagName, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        tag = TagFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        tag = tagFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 tag.getPrimaryKey());
         tag.setActiveDetail(tagDetail);
         tag.setLastDetail(tagDetail);
@@ -865,7 +884,7 @@ public class TagControl
             final EntityPermission entityPermission) {
         var pk = new TagPK(entityInstance.getEntityUniqueId());
 
-        return TagFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return tagFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Tag getTagByEntityInstance(final EntityInstance entityInstance) {
@@ -899,11 +918,11 @@ public class TagControl
                         """;
             }
 
-            var ps = TagFactory.getInstance().prepareStatement(query);
+            var ps = tagFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             
-            tags = TagFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            tags = tagFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -945,13 +964,13 @@ public class TagControl
                         """;
             }
 
-            var ps = TagFactory.getInstance().prepareStatement(query);
+            var ps = tagFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            tags = TagFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            tags = tagFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -988,12 +1007,12 @@ public class TagControl
                         """;
             }
 
-            var ps = TagFactory.getInstance().prepareStatement(query);
+            var ps = tagFactory.prepareStatement(query);
             
             ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
             ps.setString(2, tagName);
             
-            tag = TagFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            tag = tagFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1071,7 +1090,7 @@ public class TagControl
     
     public void updateTagFromValue(TagDetailValue tagDetailValue, BasePK updatedBy) {
         if(tagDetailValue.hasBeenModified()) {
-            var tag = TagFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tag = tagFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      tagDetailValue.getTagPK());
             var tagDetail = tag.getActiveDetailForUpdate();
             
@@ -1082,7 +1101,7 @@ public class TagControl
             var tagScopePK = tagDetail.getTagScopePK(); // Not updated
             var tagName = tagDetailValue.getTagName();
             
-            tagDetail = TagDetailFactory.getInstance().create(tagPK, tagScopePK, tagName, session.getStartTime(),
+            tagDetail = tagDetailFactory.create(tagPK, tagScopePK, tagName, session.getStartTime(),
                     Session.MAX_TIME);
             
             tag.setActiveDetail(tagDetail);
@@ -1116,9 +1135,12 @@ public class TagControl
     // --------------------------------------------------------------------------------
     //   Entity Tags
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected EntityTagFactory entityTagFactory;
+
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
-        var entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.getStartTime(), Session.MAX_TIME);
+        var entityTag = entityTagFactory.create(taggedEntityInstance, tag, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1166,13 +1188,13 @@ public class TagControl
                         """;
             }
 
-            var ps = EntityTagFactory.getInstance().prepareStatement(query);
+            var ps = entityTagFactory.prepareStatement(query);
             
             ps.setLong(1, taggedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, tag.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityTag = EntityTagFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityTag = entityTagFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1220,12 +1242,12 @@ public class TagControl
                         """;
             }
 
-            var ps = EntityTagFactory.getInstance().prepareStatement(query);
+            var ps = entityTagFactory.prepareStatement(query);
             
             ps.setLong(1, taggedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityTags = EntityTagFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityTags = entityTagFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1267,12 +1289,12 @@ public class TagControl
                         """;
             }
 
-            var ps = EntityTagFactory.getInstance().prepareStatement(query);
+            var ps = entityTagFactory.prepareStatement(query);
             
             ps.setLong(1, tag.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityTags = EntityTagFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityTags = entityTagFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

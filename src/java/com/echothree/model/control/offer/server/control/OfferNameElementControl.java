@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OfferNameElementControl
@@ -52,16 +53,22 @@ public class OfferNameElementControl
     // --------------------------------------------------------------------------------
     //   Offer Name Elements
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OfferNameElementFactory offerNameElementFactory;
+
+    @Inject
+    protected OfferNameElementDetailFactory offerNameElementDetailFactory;
+
     public OfferNameElement createOfferNameElement(String offerNameElementName, Integer offset, Integer length,
             String validationPattern, BasePK createdBy) {
-        var offerNameElement = OfferNameElementFactory.getInstance().create();
-        var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(
+        var offerNameElement = offerNameElementFactory.create();
+        var offerNameElementDetail = offerNameElementDetailFactory.create(
                 offerNameElement, offerNameElementName, offset, length, validationPattern, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        offerNameElement = offerNameElementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 offerNameElement.getPrimaryKey());
         offerNameElement.setActiveDetail(offerNameElementDetail);
         offerNameElement.setLastDetail(offerNameElementDetail);
@@ -84,7 +91,7 @@ public class OfferNameElementControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferNameElement */
     public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferNameElementPK(entityInstance.getEntityUniqueId());
-        var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var offerNameElement = offerNameElementFactory.getEntityFromPK(entityPermission, pk);
 
         return offerNameElement;
     }
@@ -118,11 +125,11 @@ public class OfferNameElementControl
                         """;
             }
 
-            var ps = OfferNameElementFactory.getInstance().prepareStatement(query);
+            var ps = offerNameElementFactory.prepareStatement(query);
             
             ps.setString(1, offerNameElementName);
             
-            offerNameElement = OfferNameElementFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerNameElement = offerNameElementFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -166,9 +173,9 @@ public class OfferNameElementControl
                     """;
         }
 
-        var ps = OfferNameElementFactory.getInstance().prepareStatement(query);
+        var ps = offerNameElementFactory.prepareStatement(query);
         
-        return OfferNameElementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return offerNameElementFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<OfferNameElement> getOfferNameElements() {
@@ -199,7 +206,7 @@ public class OfferNameElementControl
     
     public void updateOfferNameElementFromValue(OfferNameElementDetailValue offerNameElementDetailValue, BasePK updatedBy) {
         if(offerNameElementDetailValue.hasBeenModified()) {
-            var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerNameElement = offerNameElementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      offerNameElementDetailValue.getOfferNameElementPK());
             var offerNameElementDetail = offerNameElement.getActiveDetailForUpdate();
             
@@ -212,7 +219,7 @@ public class OfferNameElementControl
             var length = offerNameElementDetailValue.getLength();
             var validationPattern = offerNameElementDetailValue.getValidationPattern();
             
-            offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(offerNameElementPK,
+            offerNameElementDetail = offerNameElementDetailFactory.create(offerNameElementPK,
                     offerNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME);
             
             offerNameElement.setActiveDetail(offerNameElementDetail);
@@ -236,10 +243,13 @@ public class OfferNameElementControl
     // --------------------------------------------------------------------------------
     //   Offer Name Element Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OfferNameElementDescriptionFactory offerNameElementDescriptionFactory;
+
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
-        var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(
+        var offerNameElementDescription = offerNameElementDescriptionFactory.create(
                 offerNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
@@ -270,13 +280,13 @@ public class OfferNameElementControl
                         """;
             }
 
-            var ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = offerNameElementDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, offerNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerNameElementDescription = offerNameElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -323,12 +333,12 @@ public class OfferNameElementControl
                         """;
             }
 
-            var ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = offerNameElementDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, offerNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            offerNameElementDescriptions = OfferNameElementDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerNameElementDescriptions = offerNameElementDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -379,7 +389,7 @@ public class OfferNameElementControl
     
     public void updateOfferNameElementDescriptionFromValue(OfferNameElementDescriptionValue offerNameElementDescriptionValue, BasePK updatedBy) {
         if(offerNameElementDescriptionValue.hasBeenModified()) {
-            var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerNameElementDescription = offerNameElementDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      offerNameElementDescriptionValue.getPrimaryKey());
             
             offerNameElementDescription.setThruTime(session.getStartTime());
@@ -389,7 +399,7 @@ public class OfferNameElementControl
             var language = offerNameElementDescription.getLanguage();
             var description = offerNameElementDescriptionValue.getDescription();
             
-            offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
+            offerNameElementDescription = offerNameElementDescriptionFactory.create(offerNameElement,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,

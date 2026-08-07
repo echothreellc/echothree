@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class SourceControl
@@ -52,6 +53,12 @@ public class SourceControl
     //   Sources
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SourceFactory sourceFactory;
+
+    @Inject
+    protected SourceDetailFactory sourceDetailFactory;
+
     public Source createSource(String sourceName, OfferUse offerUse, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSource = getDefaultSource();
         var defaultFound = defaultSource != null;
@@ -65,12 +72,12 @@ public class SourceControl
             isDefault = true;
         }
 
-        var source = SourceFactory.getInstance().create();
-        var sourceDetail = SourceDetailFactory.getInstance().create(source, sourceName, offerUse, isDefault,
+        var source = sourceFactory.create();
+        var sourceDetail = sourceDetailFactory.create(source, sourceName, offerUse, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, source.getPrimaryKey());
+        source = sourceFactory.getEntityFromPK(EntityPermission.READ_WRITE, source.getPrimaryKey());
         source.setActiveDetail(sourceDetail);
         source.setLastDetail(sourceDetail);
         source.store();
@@ -102,7 +109,7 @@ public class SourceControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Source */
     public Source getSourceByEntityInstance(EntityInstance entityInstance) {
         var pk = new SourcePK(entityInstance.getEntityUniqueId());
-        var source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var source = sourceFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
         return source;
     }
@@ -125,9 +132,9 @@ public class SourceControl
                     """;
         }
 
-        var ps = SourceFactory.getInstance().prepareStatement(query);
+        var ps = sourceFactory.prepareStatement(query);
 
-        return SourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return sourceFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public Source getDefaultSource() {
@@ -162,9 +169,9 @@ public class SourceControl
                     """;
         }
 
-        var ps = SourceFactory.getInstance().prepareStatement(query);
+        var ps = sourceFactory.prepareStatement(query);
 
-        return SourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return sourceFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<Source> getSources() {
@@ -196,11 +203,11 @@ public class SourceControl
                         """;
             }
 
-            var ps = SourceFactory.getInstance().prepareStatement(query);
+            var ps = sourceFactory.prepareStatement(query);
 
             ps.setString(1, sourceName);
 
-            source = SourceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            source = sourceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -246,11 +253,11 @@ public class SourceControl
                         """;
             }
 
-            var ps = SourceFactory.getInstance().prepareStatement(query);
+            var ps = sourceFactory.prepareStatement(query);
 
             ps.setLong(1, offerUse.getPrimaryKey().getEntityId());
 
-            sources = SourceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            sources = sourceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -333,7 +340,7 @@ public class SourceControl
     private void updateSourceFromValue(SourceDetailValue sourceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(sourceDetailValue.hasBeenModified()) {
-            var source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var source = sourceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     sourceDetailValue.getSourcePK());
             var sourceDetail = source.getActiveDetailForUpdate();
 
@@ -362,7 +369,7 @@ public class SourceControl
                 }
             }
 
-            sourceDetail = SourceDetailFactory.getInstance().create(sourcePK, sourceName, offerUse.getPrimaryKey(), isDefault,
+            sourceDetail = sourceDetailFactory.create(sourcePK, sourceName, offerUse.getPrimaryKey(), isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             source.setActiveDetail(sourceDetail);

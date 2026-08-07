@@ -32,6 +32,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 @CommandScope
 public class PartyEntityTypeControl
@@ -46,8 +47,11 @@ public class PartyEntityTypeControl
     //   Party Entity Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyEntityTypeFactory partyEntityTypeFactory;
+
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
-        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.getStartTime(), Session.MAX_TIME);
+        var partyEntityType = partyEntityTypeFactory.create(party, entityType, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -91,13 +95,13 @@ public class PartyEntityTypeControl
                         """;
             }
 
-            var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = partyEntityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyEntityType = partyEntityTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -145,12 +149,12 @@ public class PartyEntityTypeControl
                         """;
             }
 
-            var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = partyEntityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            partyEntityTypes = PartyEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyEntityTypes = partyEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -183,7 +187,7 @@ public class PartyEntityTypeControl
 
     public void updatePartyEntityTypeFromValue(PartyEntityTypeValue partyEntityTypeValue, BasePK updatedBy) {
         if(partyEntityTypeValue.hasBeenModified()) {
-            var partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
+            var partyEntityType = partyEntityTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
 
             partyEntityType.setThruTime(session.getStartTime());
             partyEntityType.store();
@@ -192,7 +196,7 @@ public class PartyEntityTypeControl
             var entityTypePK = partyEntityType.getEntityTypePK(); // Not updated
             var confirmDelete = partyEntityTypeValue.getConfirmDelete();
 
-            partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.getStartTime(), Session.MAX_TIME);
+            partyEntityType = partyEntityTypeFactory.create(partyPK, entityTypePK, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

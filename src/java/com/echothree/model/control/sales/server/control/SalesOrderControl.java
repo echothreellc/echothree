@@ -43,6 +43,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 @CommandScope
 public class SalesOrderControl
@@ -57,8 +58,11 @@ public class SalesOrderControl
     //   Sales Orders
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SalesOrderFactory salesOrderFactory;
+
     public SalesOrder createSalesOrder(Order order, OfferUse offerUse, AssociateReferral associateReferral, BasePK createdBy) {
-        var salesOrder = SalesOrderFactory.getInstance().create(order, offerUse, associateReferral,
+        var salesOrder = salesOrderFactory.create(order, offerUse, associateReferral,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, salesOrder.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -105,12 +109,12 @@ public class SalesOrderControl
                         """;
             }
 
-            var ps = SalesOrderFactory.getInstance().prepareStatement(query);
+            var ps = salesOrderFactory.prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            salesOrder = SalesOrderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            salesOrder = salesOrderFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -136,7 +140,7 @@ public class SalesOrderControl
 
     public void updateSalesOrderFromValue(SalesOrderValue salesOrderValue, BasePK updatedBy) {
         if(salesOrderValue.hasBeenModified()) {
-            var salesOrder = SalesOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var salesOrder = salesOrderFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderValue.getPrimaryKey());
 
             salesOrder.setThruTime(session.getStartTime());
@@ -146,7 +150,7 @@ public class SalesOrderControl
             var offerUsePK = salesOrderValue.getOfferUsePK();
             var associateReferralPK = salesOrderValue.getAssociateReferralPK();
 
-            salesOrder = SalesOrderFactory.getInstance().create(orderPK, offerUsePK, associateReferralPK,
+            salesOrder = salesOrderFactory.create(orderPK, offerUsePK, associateReferralPK,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPK, EventTypes.MODIFY, salesOrder.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -163,9 +167,12 @@ public class SalesOrderControl
     //   Sales Order Lines
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SalesOrderLineFactory salesOrderLineFactory;
+
     public SalesOrderLine createSalesOrderLine(OrderLine orderLine, OfferUse offerUse, AssociateReferral associateReferral,
             BasePK createdBy) {
-        var salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLine, offerUse, associateReferral,
+        var salesOrderLine = salesOrderLineFactory.create(orderLine, offerUse, associateReferral,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, salesOrderLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -212,12 +219,12 @@ public class SalesOrderControl
                         """;
             }
 
-            var ps = SalesOrderLineFactory.getInstance().prepareStatement(query);
+            var ps = salesOrderLineFactory.prepareStatement(query);
 
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            salesOrderLine = SalesOrderLineFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            salesOrderLine = salesOrderLineFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -243,7 +250,7 @@ public class SalesOrderControl
 
     public void updateSalesOrderLineFromValue(SalesOrderLineValue salesOrderLineValue, BasePK updatedBy) {
         if(salesOrderLineValue.hasBeenModified()) {
-            var salesOrderLine = SalesOrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var salesOrderLine = salesOrderLineFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderLineValue.getPrimaryKey());
 
             salesOrderLine.setThruTime(session.getStartTime());
@@ -253,7 +260,7 @@ public class SalesOrderControl
             var offerUsePK = salesOrderLineValue.getOfferUsePK();
             var associateReferralPK = salesOrderLineValue.getAssociateReferralPK();
 
-            salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLinePK, offerUsePK, associateReferralPK,
+            salesOrderLine = salesOrderLineFactory.create(orderLinePK, offerUsePK, associateReferralPK,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderLinePK, EventTypes.MODIFY, salesOrderLine.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -274,13 +281,19 @@ public class SalesOrderControl
     //   Sales Order Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderFactory orderFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<SalesOrderResultTransfer> getSalesOrderResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>();
 
         try {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement("""
+            var ps = searchResultFactory.prepareStatement("""
                             SELECT eni_entityuniqueid
                             FROM searchresults, entityinstances
                             WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
@@ -293,7 +306,7 @@ public class SalesOrderControl
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
                     var orderPK = new OrderPK(rs.getLong(1));
-                    var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
+                    var order = orderFactory.getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
 
                     var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(orderPK);
                     var orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,

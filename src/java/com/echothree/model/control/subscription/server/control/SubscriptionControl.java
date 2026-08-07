@@ -118,6 +118,12 @@ public class SubscriptionControl
     //   Subscription Kinds
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SubscriptionKindFactory subscriptionKindFactory;
+
+    @Inject
+    protected SubscriptionKindDetailFactory subscriptionKindDetailFactory;
+
     public SubscriptionKind createSubscriptionKind(String subscriptionKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSubscriptionKind = getDefaultSubscriptionKind();
         var defaultFound = defaultSubscriptionKind != null;
@@ -131,12 +137,12 @@ public class SubscriptionControl
             isDefault = true;
         }
 
-        var subscriptionKind = SubscriptionKindFactory.getInstance().create();
-        var subscriptionKindDetail = SubscriptionKindDetailFactory.getInstance().create(subscriptionKind, subscriptionKindName, isDefault, sortOrder,
+        var subscriptionKind = subscriptionKindFactory.create();
+        var subscriptionKindDetail = subscriptionKindDetailFactory.create(subscriptionKind, subscriptionKindName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        subscriptionKind = subscriptionKindFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 subscriptionKind.getPrimaryKey());
         subscriptionKind.setActiveDetail(subscriptionKindDetail);
         subscriptionKind.setLastDetail(subscriptionKindDetail);
@@ -151,7 +157,7 @@ public class SubscriptionControl
     public SubscriptionKind getSubscriptionKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SubscriptionKindPK(entityInstance.getEntityUniqueId());
 
-        return SubscriptionKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return subscriptionKindFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public SubscriptionKind getSubscriptionKindByEntityInstance(EntityInstance entityInstance) {
@@ -190,7 +196,7 @@ public class SubscriptionControl
     }
 
     public SubscriptionKind getSubscriptionKindByName(String subscriptionKindName, EntityPermission entityPermission) {
-        return SubscriptionKindFactory.getInstance().getEntityFromQuery(entityPermission, getSubscriptionKindByNameQueries,
+        return subscriptionKindFactory.getEntityFromQuery(entityPermission, getSubscriptionKindByNameQueries,
                 subscriptionKindName);
     }
 
@@ -230,7 +236,7 @@ public class SubscriptionControl
     }
 
     public SubscriptionKind getDefaultSubscriptionKind(EntityPermission entityPermission) {
-        return SubscriptionKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSubscriptionKindQueries);
+        return subscriptionKindFactory.getEntityFromQuery(entityPermission, getDefaultSubscriptionKindQueries);
     }
 
     public SubscriptionKind getDefaultSubscriptionKind() {
@@ -267,7 +273,7 @@ public class SubscriptionControl
     }
 
     public List<SubscriptionKind> getSubscriptionKinds(EntityPermission entityPermission) {
-        return SubscriptionKindFactory.getInstance().getEntitiesFromQuery(entityPermission, getSubscriptionKindsQueries);
+        return subscriptionKindFactory.getEntitiesFromQuery(entityPermission, getSubscriptionKindsQueries);
     }
 
     public List<SubscriptionKind> getSubscriptionKinds() {
@@ -331,7 +337,7 @@ public class SubscriptionControl
     }
 
     private void updateSubscriptionKindFromValue(SubscriptionKindDetailValue subscriptionKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(
+        var subscriptionKind = subscriptionKindFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, subscriptionKindDetailValue.getSubscriptionKindPK());
         var subscriptionKindDetail = subscriptionKind.getActiveDetailForUpdate();
 
@@ -359,7 +365,7 @@ public class SubscriptionControl
             }
         }
 
-        subscriptionKindDetail = SubscriptionKindDetailFactory.getInstance().create(subscriptionKindPK, subscriptionKindName, isDefault, sortOrder, session.getStartTime(),
+        subscriptionKindDetail = subscriptionKindDetailFactory.create(subscriptionKindPK, subscriptionKindName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         subscriptionKind.setActiveDetail(subscriptionKindDetail);
@@ -405,9 +411,12 @@ public class SubscriptionControl
     //   Subscription Kind Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SubscriptionKindDescriptionFactory subscriptionKindDescriptionFactory;
+
     public SubscriptionKindDescription createSubscriptionKindDescription(SubscriptionKind subscriptionKind, Language language, String description,
             BasePK createdBy) {
-        var subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().create(subscriptionKind,
+        var subscriptionKindDescription = subscriptionKindDescriptionFactory.create(subscriptionKind,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -435,7 +444,7 @@ public class SubscriptionControl
     }
 
     private SubscriptionKindDescription getSubscriptionKindDescription(SubscriptionKind subscriptionKind, Language language, EntityPermission entityPermission) {
-        return SubscriptionKindDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getSubscriptionKindDescriptionQueries,
+        return subscriptionKindDescriptionFactory.getEntityFromQuery(entityPermission, getSubscriptionKindDescriptionQueries,
                 subscriptionKind, language, Session.MAX_TIME);
     }
 
@@ -477,7 +486,7 @@ public class SubscriptionControl
     }
 
     private List<SubscriptionKindDescription> getSubscriptionKindDescriptionsBySubscriptionKind(SubscriptionKind subscriptionKind, EntityPermission entityPermission) {
-        return SubscriptionKindDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getSubscriptionKindDescriptionsBySubscriptionKindQueries,
+        return subscriptionKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getSubscriptionKindDescriptionsBySubscriptionKindQueries,
                 subscriptionKind, Session.MAX_TIME);
     }
 
@@ -523,7 +532,7 @@ public class SubscriptionControl
 
     public void updateSubscriptionKindDescriptionFromValue(SubscriptionKindDescriptionValue subscriptionKindDescriptionValue, BasePK updatedBy) {
         if(subscriptionKindDescriptionValue.hasBeenModified()) {
-            var subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var subscriptionKindDescription = subscriptionKindDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionKindDescriptionValue.getPrimaryKey());
 
             subscriptionKindDescription.setThruTime(session.getStartTime());
@@ -533,7 +542,7 @@ public class SubscriptionControl
             var language = subscriptionKindDescription.getLanguage();
             var description = subscriptionKindDescriptionValue.getDescription();
 
-            subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().create(subscriptionKind, language, description,
+            subscriptionKindDescription = subscriptionKindDescriptionFactory.create(subscriptionKind, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -558,7 +567,13 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
     //   Subscription Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SubscriptionTypeFactory subscriptionTypeFactory;
+
+    @Inject
+    protected SubscriptionTypeDetailFactory subscriptionTypeDetailFactory;
+
     public SubscriptionType createSubscriptionType(SubscriptionKind subscriptionKind, String subscriptionTypeName,
             Sequence subscriptionSequence, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSubscriptionType = getDefaultSubscriptionType(subscriptionKind);
@@ -573,13 +588,13 @@ public class SubscriptionControl
             isDefault = true;
         }
 
-        var subscriptionType = SubscriptionTypeFactory.getInstance().create();
-        var subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(
+        var subscriptionType = subscriptionTypeFactory.create();
+        var subscriptionTypeDetail = subscriptionTypeDetailFactory.create(
                 subscriptionType, subscriptionKind, subscriptionTypeName, subscriptionSequence, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        subscriptionType = SubscriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        subscriptionType = subscriptionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 subscriptionType.getPrimaryKey());
         subscriptionType.setActiveDetail(subscriptionTypeDetail);
         subscriptionType.setLastDetail(subscriptionTypeDetail);
@@ -594,7 +609,7 @@ public class SubscriptionControl
     public SubscriptionType getSubscriptionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SubscriptionTypePK(entityInstance.getEntityUniqueId());
 
-        return SubscriptionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return subscriptionTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public SubscriptionType getSubscriptionTypeByEntityInstance(EntityInstance entityInstance) {
@@ -649,11 +664,11 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionKind.getPrimaryKey().getEntityId());
             
-            subscriptionTypes = SubscriptionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            subscriptionTypes = subscriptionTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -692,11 +707,11 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionKind.getPrimaryKey().getEntityId());
             
-            subscriptionType = SubscriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            subscriptionType = subscriptionTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -740,12 +755,12 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionKind.getPrimaryKey().getEntityId());
             ps.setString(2, subscriptionTypeName);
             
-            subscriptionType = SubscriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            subscriptionType = subscriptionTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -818,7 +833,7 @@ public class SubscriptionControl
     private void updateSubscriptionTypeFromValue(SubscriptionTypeDetailValue subscriptionTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(subscriptionTypeDetailValue.hasBeenModified()) {
-            var subscriptionType = SubscriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var subscriptionType = subscriptionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionTypeDetailValue.getSubscriptionTypePK());
             var subscriptionTypeDetail = subscriptionType.getActiveDetailForUpdate();
             
@@ -849,7 +864,7 @@ public class SubscriptionControl
                 }
             }
             
-            subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(subscriptionTypePK,
+            subscriptionTypeDetail = subscriptionTypeDetailFactory.create(subscriptionTypePK,
                     subscriptionKindPK, subscriptionTypeName, subscriptionSequencePK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -904,10 +919,13 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
     //   Subscription Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SubscriptionTypeDescriptionFactory subscriptionTypeDescriptionFactory;
+
     public SubscriptionTypeDescription createSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             String description, BasePK createdBy) {
-        var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(
+        var subscriptionTypeDescription = subscriptionTypeDescriptionFactory.create(
                 subscriptionType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY,
@@ -940,13 +958,13 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            subscriptionTypeDescription = subscriptionTypeDescriptionFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -998,12 +1016,12 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            subscriptionTypeDescriptions = SubscriptionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(
+            subscriptionTypeDescriptions = subscriptionTypeDescriptionFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1061,7 +1079,7 @@ public class SubscriptionControl
     public void updateSubscriptionTypeDescriptionFromValue(SubscriptionTypeDescriptionValue subscriptionTypeDescriptionValue,
             BasePK updatedBy) {
         if(subscriptionTypeDescriptionValue.hasBeenModified()) {
-            var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var subscriptionTypeDescription = subscriptionTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionTypeDescriptionValue.getPrimaryKey());
             
             subscriptionTypeDescription.setThruTime(session.getStartTime());
@@ -1071,7 +1089,7 @@ public class SubscriptionControl
             var language = subscriptionTypeDescription.getLanguage();
             var description = subscriptionTypeDescriptionValue.getDescription();
             
-            subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(subscriptionType,
+            subscriptionTypeDescription = subscriptionTypeDescriptionFactory.create(subscriptionType,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY, subscriptionTypeDescription.getPrimaryKey(),
@@ -1097,10 +1115,13 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
     //   Subscription Type Chains
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SubscriptionTypeChainFactory subscriptionTypeChainFactory;
+
     public SubscriptionTypeChain createSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain, Long remainingTime,
             BasePK createdBy) {
-        var subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().create(subscriptionType,
+        var subscriptionTypeChain = subscriptionTypeChainFactory.create(subscriptionType,
                 chain, remainingTime, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY, subscriptionTypeChain.getPrimaryKey(),
@@ -1149,13 +1170,13 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeChainFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeChainFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, chain.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            subscriptionTypeChain = subscriptionTypeChainFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1204,12 +1225,12 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeChainFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeChainFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            subscriptionTypeChains = SubscriptionTypeChainFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            subscriptionTypeChains = subscriptionTypeChainFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1249,13 +1270,13 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionTypeChainFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionTypeChainFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, chainType.getPrimaryKey().getEntityId());
             
-            subscriptionTypeChains = SubscriptionTypeChainFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            subscriptionTypeChains = subscriptionTypeChainFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1288,7 +1309,7 @@ public class SubscriptionControl
     
     public void updateSubscriptionTypeChainFromValue(SubscriptionTypeChainValue subscriptionTypeChainValue, BasePK updatedBy) {
         if(subscriptionTypeChainValue.hasBeenModified()) {
-            var subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var subscriptionTypeChain = subscriptionTypeChainFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionTypeChainValue.getPrimaryKey());
             
             subscriptionTypeChain.setThruTime(session.getStartTime());
@@ -1298,7 +1319,7 @@ public class SubscriptionControl
             var chainPK = subscriptionTypeChain.getChainPK(); // Not updated
             var remainingTime = subscriptionTypeChainValue.getRemainingTime();
             
-            subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().create(subscriptionTypePK, chainPK,
+            subscriptionTypeChain = subscriptionTypeChainFactory.create(subscriptionTypePK, chainPK,
                     remainingTime, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY,
@@ -1326,7 +1347,13 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
     //   Subscriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SubscriptionFactory subscriptionFactory;
+
+    @Inject
+    protected SubscriptionDetailFactory subscriptionDetailFactory;
+
     public Subscription createSubscription(SubscriptionType subscriptionType, Party party, Long startTime, Long endTime,
             BasePK createdBy) {
         var sequence = subscriptionType.getLastDetail().getSubscriptionSequence();
@@ -1337,13 +1364,13 @@ public class SubscriptionControl
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
 
-        var subscription = SubscriptionFactory.getInstance().create();
-        var subscriptionDetail = SubscriptionDetailFactory.getInstance().create(subscription,
+        var subscription = subscriptionFactory.create();
+        var subscriptionDetail = subscriptionDetailFactory.create(subscription,
                 SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), subscriptionType, party, startTime, endTime,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        subscription = SubscriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        subscription = subscriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 subscription.getPrimaryKey());
         subscription.setActiveDetail(subscriptionDetail);
         subscription.setLastDetail(subscriptionDetail);
@@ -1358,7 +1385,7 @@ public class SubscriptionControl
     public Subscription getSubscriptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SubscriptionPK(entityInstance.getEntityUniqueId());
 
-        return SubscriptionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return subscriptionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Subscription getSubscriptionByEntityInstance(EntityInstance entityInstance) {
@@ -1418,12 +1445,12 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, party.getPrimaryKey().getEntityId());
             
-            subscription = SubscriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            subscription = subscriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1460,11 +1487,11 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionFactory.prepareStatement(query);
             
             ps.setString(1, subscriptionName);
             
-            subscription = SubscriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            subscription = subscriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1508,11 +1535,11 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionFactory.prepareStatement(query);
             
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             
-            subscriptions = SubscriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            subscriptions = subscriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1553,11 +1580,11 @@ public class SubscriptionControl
                         """;
             }
 
-            var ps = SubscriptionFactory.getInstance().prepareStatement(query);
+            var ps = subscriptionFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
-            subscriptions = SubscriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            subscriptions = subscriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1598,7 +1625,7 @@ public class SubscriptionControl
     
     public void updateSubscriptionFromValue(SubscriptionDetailValue subscriptionDetailValue, BasePK updatedBy) {
         if(subscriptionDetailValue.hasBeenModified()) {
-            var subscription = SubscriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var subscription = subscriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionDetailValue.getSubscriptionPK());
             var subscriptionDetail = subscription.getActiveDetailForUpdate();
             
@@ -1612,7 +1639,7 @@ public class SubscriptionControl
             var startTime = subscriptionDetailValue.getStartTime();
             var endTime = subscriptionDetailValue.getEndTime();
             
-            subscriptionDetail = SubscriptionDetailFactory.getInstance().create(subscriptionPK, subscriptionName,
+            subscriptionDetail = subscriptionDetailFactory.create(subscriptionPK, subscriptionName,
                     subscriptionTypePK, partyPK, startTime, endTime, session.getStartTime(), Session.MAX_TIME);
             
             subscription.setActiveDetail(subscriptionDetail);

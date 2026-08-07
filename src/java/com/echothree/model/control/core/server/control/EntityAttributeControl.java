@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityAttributeControl
@@ -50,6 +51,15 @@ public class EntityAttributeControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected EntityAttributeFactory entityAttributeFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<EntityAttributeResultTransfer> getEntityAttributeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
@@ -68,7 +78,7 @@ public class EntityAttributeControl
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
-                var ps = SearchResultFactory.getInstance().prepareStatement(
+                var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM searchresults, entityinstances
@@ -81,7 +91,7 @@ public class EntityAttributeControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributePK(rs.getLong(1)));
+                        var entityAttribute = entityAttributeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributePK(rs.getLong(1)));
                         var entityAttributeDetail = entityAttribute.getLastDetail();
                         var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
 
@@ -104,7 +114,7 @@ public class EntityAttributeControl
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM cachedexecutedsearchresults, entityinstances
@@ -117,7 +127,7 @@ public class EntityAttributeControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributePK(rs.getLong(1)));
+                        var entityAttribute = entityAttributeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributePK(rs.getLong(1)));
                         var entityAttributeDetail = entityAttribute.getLastDetail();
                         var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
 

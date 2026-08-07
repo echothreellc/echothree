@@ -111,7 +111,13 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SequenceTypeFactory sequenceTypeFactory;
+
+    @Inject
+    protected SequenceTypeDetailFactory sequenceTypeDetailFactory;
+
     public SequenceType createSequenceType(String sequenceTypeName, String prefix, String suffix,
             SequenceEncoderType sequenceEncoderType, SequenceChecksumType sequenceChecksumType, Integer chunkSize, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -127,13 +133,13 @@ public class SequenceControl
             isDefault = true;
         }
 
-        var sequenceType = SequenceTypeFactory.getInstance().create();
-        var sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
+        var sequenceType = sequenceTypeFactory.create();
+        var sequenceTypeDetail = sequenceTypeDetailFactory.create(sequenceType,
                 sequenceTypeName, prefix, suffix, sequenceEncoderType, sequenceChecksumType, chunkSize, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceType.getPrimaryKey());
+        sequenceType = sequenceTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, sequenceType.getPrimaryKey());
         sequenceType.setActiveDetail(sequenceTypeDetail);
         sequenceType.setLastDetail(sequenceTypeDetail);
         sequenceType.store();
@@ -146,7 +152,7 @@ public class SequenceControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SequenceType */
     public SequenceType getSequenceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequenceTypePK(entityInstance.getEntityUniqueId());
-        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var sequenceType = sequenceTypeFactory.getEntityFromPK(entityPermission, pk);
 
         return sequenceType;
     }
@@ -187,9 +193,9 @@ public class SequenceControl
                     """;
         }
 
-        var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+        var ps = sequenceTypeFactory.prepareStatement(query);
         
-        return SequenceTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return sequenceTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<SequenceType> getSequenceTypes() {
@@ -218,9 +224,9 @@ public class SequenceControl
                     """;
         }
 
-        var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+        var ps = sequenceTypeFactory.prepareStatement(query);
         
-        return SequenceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public SequenceType getDefaultSequenceType() {
@@ -256,11 +262,11 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+            var ps = sequenceTypeFactory.prepareStatement(query);
             
             ps.setString(1, sequenceTypeName);
             
-            sequenceType = SequenceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequenceType = sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -297,11 +303,11 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+            var ps = sequenceTypeFactory.prepareStatement(query);
             
             ps.setString(1, sequenceTypePrefix);
             
-            sequenceType = SequenceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequenceType = sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -338,11 +344,11 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
+            var ps = sequenceTypeFactory.prepareStatement(query);
             
             ps.setString(1, sequenceTypeSuffix);
             
-            sequenceType = SequenceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequenceType = sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -419,7 +425,7 @@ public class SequenceControl
 
     private void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(
+        var sequenceType = sequenceTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, sequenceTypeDetailValue.getSequenceTypePK());
         var sequenceTypeDetail = sequenceType.getActiveDetailForUpdate();
         
@@ -452,7 +458,7 @@ public class SequenceControl
             }
         }
         
-        sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceTypePK, sequenceTypeName, prefix,
+        sequenceTypeDetail = sequenceTypeDetailFactory.create(sequenceTypePK, sequenceTypeName, prefix,
                 suffix, sequenceEncoderTypePK, sequenceChecksumTypePK, chunkSize, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -499,9 +505,12 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SequenceTypeDescriptionFactory sequenceTypeDescriptionFactory;
+
     public SequenceTypeDescription createSequenceTypeDescription(SequenceType sequenceType, Language language, String description, BasePK createdBy) {
-        var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(),
+        var sequenceTypeDescription = sequenceTypeDescriptionFactory.create(sequenceType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -531,12 +540,12 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = sequenceTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            sequenceTypeDescriptions = SequenceTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            sequenceTypeDescriptions = sequenceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -573,13 +582,13 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = sequenceTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequenceTypeDescription = sequenceTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -637,7 +646,7 @@ public class SequenceControl
     
     public void updateSequenceTypeDescriptionFromValue(SequenceTypeDescriptionValue sequenceTypeDescriptionValue, BasePK updatedBy) {
         if(sequenceTypeDescriptionValue.hasBeenModified()) {
-            var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceTypeDescriptionValue.getPrimaryKey());
+            var sequenceTypeDescription = sequenceTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, sequenceTypeDescriptionValue.getPrimaryKey());
             
             sequenceTypeDescription.setThruTime(session.getStartTime());
             sequenceTypeDescription.store();
@@ -646,7 +655,7 @@ public class SequenceControl
             var language = sequenceTypeDescription.getLanguage();
             var description = sequenceTypeDescriptionValue.getDescription();
             
-            sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(), Session.MAX_TIME);
+            sequenceTypeDescription = sequenceTypeDescriptionFactory.create(sequenceType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -670,9 +679,12 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Checksum Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SequenceChecksumTypeFactory sequenceChecksumTypeFactory;
+
     public SequenceChecksumType createSequenceChecksumType(String sequenceChecksumTypeName, Boolean isDefault, Integer sortOrder) {
-        return SequenceChecksumTypeFactory.getInstance().create(sequenceChecksumTypeName, isDefault, sortOrder);
+        return sequenceChecksumTypeFactory.create(sequenceChecksumTypeName, isDefault, sortOrder);
     }
 
     public long countSequenceChecksumTypes() {
@@ -683,21 +695,21 @@ public class SequenceControl
     }
 
     public List<SequenceChecksumType> getSequenceChecksumTypes() {
-        var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
+        var ps = sequenceChecksumTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM sequencechecksumtypes
                 ORDER BY sqct_sortorder, sqct_sequencechecksumtypename
                 """);
         
-        return SequenceChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return sequenceChecksumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public SequenceChecksumType getSequenceChecksumTypeByName(String sequenceChecksumTypeName) {
         SequenceChecksumType sequenceChecksumType;
         
         try {
-            var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
+            var ps = sequenceChecksumTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM sequencechecksumtypes
@@ -707,7 +719,7 @@ public class SequenceControl
             
             ps.setString(1, sequenceChecksumTypeName);
             
-            sequenceChecksumType = SequenceChecksumTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            sequenceChecksumType = sequenceChecksumTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -769,16 +781,19 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Checksum Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SequenceChecksumTypeDescriptionFactory sequenceChecksumTypeDescriptionFactory;
+
     public SequenceChecksumTypeDescription createSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language, String description) {
-        return SequenceChecksumTypeDescriptionFactory.getInstance().create(sequenceChecksumType, language, description);
+        return sequenceChecksumTypeDescriptionFactory.create(sequenceChecksumType, language, description);
     }
     
     public SequenceChecksumTypeDescription getSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language) {
         SequenceChecksumTypeDescription sequenceChecksumTypeDescription;
         
         try {
-            var ps = SequenceChecksumTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = sequenceChecksumTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM sequencechecksumtypedescriptions
@@ -788,7 +803,7 @@ public class SequenceControl
             ps.setLong(1, sequenceChecksumType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            sequenceChecksumTypeDescription = SequenceChecksumTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            sequenceChecksumTypeDescription = sequenceChecksumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -816,9 +831,12 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Encoder Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SequenceEncoderTypeFactory sequenceEncoderTypeFactory;
+
     public SequenceEncoderType createSequenceEncoderType(String sequenceEncoderTypeName, Boolean isDefault, Integer sortOrder) {
-        return SequenceEncoderTypeFactory.getInstance().create(sequenceEncoderTypeName, isDefault, sortOrder);
+        return sequenceEncoderTypeFactory.create(sequenceEncoderTypeName, isDefault, sortOrder);
     }
 
     public long countSequenceEncoderTypes() {
@@ -829,7 +847,7 @@ public class SequenceControl
     }
 
     public List<SequenceEncoderType> getSequenceEncoderTypes() {
-        var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
+        var ps = sequenceEncoderTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM sequenceencodertypes
@@ -837,14 +855,14 @@ public class SequenceControl
                 _LIMIT_
                 """);
         
-        return SequenceEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return sequenceEncoderTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public SequenceEncoderType getSequenceEncoderTypeByName(String sequenceEncoderTypeName) {
         SequenceEncoderType sequenceEncoderType;
         
         try {
-            var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
+            var ps = sequenceEncoderTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM sequenceencodertypes
@@ -853,7 +871,7 @@ public class SequenceControl
             
             ps.setString(1, sequenceEncoderTypeName);
             
-            sequenceEncoderType = SequenceEncoderTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            sequenceEncoderType = sequenceEncoderTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -915,15 +933,18 @@ public class SequenceControl
     //   Sequence Encoder Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SequenceEncoderTypeDescriptionFactory sequenceEncoderTypeDescriptionFactory;
+
     public SequenceEncoderTypeDescription createSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language, String description) {
-        return SequenceEncoderTypeDescriptionFactory.getInstance().create(sequenceEncoderType, language, description);
+        return sequenceEncoderTypeDescriptionFactory.create(sequenceEncoderType, language, description);
     }
     
     public SequenceEncoderTypeDescription getSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language) {
         SequenceEncoderTypeDescription sequenceEncoderTypeDescription;
         
         try {
-            var ps = SequenceEncoderTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = sequenceEncoderTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM sequenceencodertypedescriptions
@@ -933,7 +954,7 @@ public class SequenceControl
             ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            sequenceEncoderTypeDescription = SequenceEncoderTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            sequenceEncoderTypeDescription = sequenceEncoderTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -961,7 +982,13 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequences
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SequenceFactory sequenceFactory;
+
+    @Inject
+    protected SequenceDetailFactory sequenceDetailFactory;
+
     public Sequence createSequence(SequenceType sequenceType, String sequenceName, String mask, Integer chunkSize, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultSequence = getDefaultSequence(sequenceType);
@@ -976,12 +1003,12 @@ public class SequenceControl
             isDefault = true;
         }
 
-        var sequence = SequenceFactory.getInstance().create();
-        var sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
+        var sequence = sequenceFactory.create();
+        var sequenceDetail = sequenceDetailFactory.create(sequence, sequenceType, sequenceName,
                 mask, chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        sequence = SequenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequence.getPrimaryKey());
+        sequence = sequenceFactory.getEntityFromPK(EntityPermission.READ_WRITE, sequence.getPrimaryKey());
         sequence.setActiveDetail(sequenceDetail);
         sequence.setLastDetail(sequenceDetail);
         sequence.store();
@@ -1013,7 +1040,7 @@ public class SequenceControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Sequence */
     public Sequence getSequenceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequencePK(entityInstance.getEntityUniqueId());
-        var sequence = SequenceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var sequence = sequenceFactory.getEntityFromPK(entityPermission, pk);
 
         return sequence;
     }
@@ -1049,11 +1076,11 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceFactory.getInstance().prepareStatement(query);
+            var ps = sequenceFactory.prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             
-            sequences = SequenceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            sequences = sequenceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1090,11 +1117,11 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceFactory.getInstance().prepareStatement(query);
+            var ps = sequenceFactory.prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             
-            sequence = SequenceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequence = sequenceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1148,12 +1175,12 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceFactory.getInstance().prepareStatement(query);
+            var ps = sequenceFactory.prepareStatement(query);
             
             ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
             ps.setString(2, sequenceName);
             
-            sequence = SequenceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequence = sequenceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1231,7 +1258,7 @@ public class SequenceControl
 
     private void updateSequenceFromValue(SequenceDetailValue sequenceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        var sequence = SequenceFactory.getInstance().getEntityFromPK(
+        var sequence = sequenceFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, sequenceDetailValue.getSequencePK());
         var sequenceDetail = sequence.getActiveDetailForUpdate();
         
@@ -1263,7 +1290,7 @@ public class SequenceControl
             }
         }
         
-        sequenceDetail = SequenceDetailFactory.getInstance().create(sequencePK, sequenceTypePK, sequenceName, mask,
+        sequenceDetail = sequenceDetailFactory.create(sequencePK, sequenceTypePK, sequenceName, mask,
                 chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sequence.setActiveDetail(sequenceDetail);
@@ -1326,8 +1353,11 @@ public class SequenceControl
     //   Sequence Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SequenceDescriptionFactory sequenceDescriptionFactory;
+
     public SequenceDescription createSequenceDescription(Sequence sequence, Language language, String description, BasePK createdBy) {
-        var sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
+        var sequenceDescription = sequenceDescriptionFactory.create(sequence, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1357,12 +1387,12 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = sequenceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            sequenceDescriptions = SequenceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            sequenceDescriptions = sequenceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1399,13 +1429,13 @@ public class SequenceControl
                         """;
             }
 
-            var ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = sequenceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            sequenceDescription = SequenceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            sequenceDescription = sequenceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1463,7 +1493,7 @@ public class SequenceControl
     
     public void updateSequenceDescriptionFromValue(SequenceDescriptionValue sequenceDescriptionValue, BasePK updatedBy) {
         if(sequenceDescriptionValue.hasBeenModified()) {
-            var sequenceDescription = SequenceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceDescriptionValue.getPrimaryKey());
+            var sequenceDescription = sequenceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, sequenceDescriptionValue.getPrimaryKey());
             
             sequenceDescription.setThruTime(session.getStartTime());
             sequenceDescription.store();
@@ -1472,7 +1502,7 @@ public class SequenceControl
             var language = sequenceDescription.getLanguage();
             var description = sequenceDescriptionValue.getDescription();
             
-            sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.getStartTime(), Session.MAX_TIME);
+            sequenceDescription = sequenceDescriptionFactory.create(sequence, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1496,15 +1526,18 @@ public class SequenceControl
     //   Sequence Values
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SequenceValueFactory sequenceValueFactory;
+
     public SequenceValue createSequenceValue(Sequence sequence, String value) {
-        return SequenceValueFactory.getInstance().create(sequence, value);
+        return sequenceValueFactory.create(sequence, value);
     }
     
     public SequenceValue getSequenceValue(Sequence sequence) {
         SequenceValue sequenceValue;
         
         try {
-            var ps = SequenceValueFactory.getInstance().prepareStatement(
+            var ps = sequenceValueFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM sequencevalues
@@ -1513,7 +1546,7 @@ public class SequenceControl
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             
-            sequenceValue = SequenceValueFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            sequenceValue = sequenceValueFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1535,7 +1568,7 @@ public class SequenceControl
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             
-            sequenceValue = SequenceValueFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
+            sequenceValue = sequenceValueFactory.getEntityFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

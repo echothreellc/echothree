@@ -556,10 +556,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Security Role Group Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected SecurityRoleGroupDescriptionFactory securityRoleGroupDescriptionFactory;
-    
+
     public SecurityRoleGroupDescription createSecurityRoleGroupDescription(SecurityRoleGroup securityRoleGroup, Language language, String description, BasePK createdBy) {
         var securityRoleGroupDescription = securityRoleGroupDescriptionFactory.create(securityRoleGroup, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -732,13 +732,13 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Security Roles
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected SecurityRoleFactory securityRoleFactory;
-    
+
     @Inject
     protected SecurityRoleDetailFactory securityRoleDetailFactory;
-    
+
     public SecurityRole createSecurityRole(SecurityRoleGroup securityRoleGroup, String securityRoleName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultSecurityRole = getDefaultSecurityRole(securityRoleGroup);
@@ -1100,10 +1100,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Security Role Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected SecurityRoleDescriptionFactory securityRoleDescriptionFactory;
-    
+
     public SecurityRoleDescription createSecurityRoleDescription(SecurityRole securityRole, Language language, String description, BasePK createdBy) {
         var securityRoleDescription = securityRoleDescriptionFactory.create(securityRole, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1276,10 +1276,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Security Role Party Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected SecurityRolePartyTypeFactory securityRolePartyTypeFactory;
-    
+
     public SecurityRolePartyType createSecurityRolePartyType(SecurityRole securityRole, PartyType partyType, Selector partySelector, BasePK createdBy) {
         var securityRolePartyType = securityRolePartyTypeFactory.create(securityRole, partyType, partySelector,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1492,13 +1492,13 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Security Role Templates
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartySecurityRoleTemplateFactory partySecurityRoleTemplateFactory;
-    
+
     @Inject
-    PartySecurityRoleTemplateDetailFactory partySecurityRoleTemplateDetailFactory;
-    
+    protected PartySecurityRoleTemplateDetailFactory partySecurityRoleTemplateDetailFactory;
+
     public PartySecurityRoleTemplate createPartySecurityRoleTemplate(String partySecurityRoleTemplateName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultPartySecurityRoleTemplate = getDefaultPartySecurityRoleTemplate();
@@ -1533,7 +1533,7 @@ public class SecurityControl
     public PartySecurityRoleTemplate getPartySecurityRoleTemplateByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartySecurityRoleTemplatePK(entityInstance.getEntityUniqueId());
 
-        return PartySecurityRoleTemplateFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return partySecurityRoleTemplateFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PartySecurityRoleTemplate getPartySecurityRoleTemplateByEntityInstance(EntityInstance entityInstance) {
@@ -1805,10 +1805,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Security Role Template Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartySecurityRoleTemplateDescriptionFactory partySecurityRoleTemplateDescriptionFactory;
-    
+
     public PartySecurityRoleTemplateDescription createPartySecurityRoleTemplateDescription(PartySecurityRoleTemplate partySecurityRoleTemplate,
             Language language, String description, BasePK createdBy) {
         var partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(
@@ -1986,10 +1986,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Security Role Template Roles
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartySecurityRoleTemplateRoleFactory partySecurityRoleTemplateRoleFactory;
-    
+
     public PartySecurityRoleTemplateRole createPartySecurityRoleTemplateRole(PartySecurityRoleTemplate partySecurityRoleTemplate, SecurityRole securityRole,
             BasePK createdBy) {
         var partySecurityRoleTemplateRole = partySecurityRoleTemplateRoleFactory.create(partySecurityRoleTemplate,
@@ -2182,10 +2182,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Security Role Template Training Classes
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartySecurityRoleTemplateTrainingClassFactory partySecurityRoleTemplateTrainingClassFactory;
-    
+
     public PartySecurityRoleTemplateTrainingClass createPartySecurityRoleTemplateTrainingClass(PartySecurityRoleTemplate partySecurityRoleTemplate,
             TrainingClass trainingClass, BasePK createdBy) {
         var partySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateTrainingClassFactory.create(partySecurityRoleTemplate,
@@ -2384,10 +2384,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Security Role Template Uses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartySecurityRoleTemplateUseFactory partySecurityRoleTemplateUseFactory;
-    
+
     public PartySecurityRoleTemplateUse createPartySecurityRoleTemplateUse(Party party, PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK createdBy) {
         var partySecurityRoleTemplateUse = partySecurityRoleTemplateUseFactory.create(party, partySecurityRoleTemplate,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2568,10 +2568,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Security Roles
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartySecurityRoleFactory partySecurityRoleFactory;
-    
+
     public PartySecurityRole createPartySecurityRole(Party party, SecurityRole securityRole, BasePK createdBy) {
         var partySecurityRole = partySecurityRoleFactory.create(party, securityRole,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2746,10 +2746,10 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
     //   Party Entity Security Roles
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected PartyEntitySecurityRoleFactory partyEntitySecurityRoleFactory;
-    
+
     public PartyEntitySecurityRole createPartyEntitySecurityRole(Party party, EntityInstance entityInstance, SecurityRole securityRole,
             BasePK createdBy) {
         var partyEntitySecurityRole = partyEntitySecurityRoleFactory.create(party, entityInstance,

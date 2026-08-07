@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorActionControl
@@ -45,9 +46,12 @@ public class PaymentProcessorActionControl
     //   Payment Processor Actions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PaymentProcessorActionFactory paymentProcessorActionFactory;
+
     public PaymentProcessorAction createPaymentProcessorAction(final PaymentProcessor paymentProcessor,
             final PaymentProcessorTypeAction paymentProcessorTypeAction, final BasePK createdBy) {
-        var paymentProcessorAction = PaymentProcessorActionFactory.getInstance().create(paymentProcessor,
+        var paymentProcessorAction = paymentProcessorActionFactory.create(paymentProcessor,
                 paymentProcessorTypeAction, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -72,7 +76,7 @@ public class PaymentProcessorActionControl
 
     public PaymentProcessorAction getPaymentProcessorAction(final PaymentProcessor paymentProcessor,
             final PaymentProcessorTypeAction paymentProcessorTypeAction, final EntityPermission entityPermission) {
-        return PaymentProcessorActionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorActionQueries,
+        return paymentProcessorActionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorActionQueries,
                 paymentProcessor, paymentProcessorTypeAction, Session.MAX_TIME);
     }
 
@@ -116,7 +120,7 @@ public class PaymentProcessorActionControl
 
     public List<PaymentProcessorAction> getPaymentProcessorActionsByPaymentProcessor(final PaymentProcessor paymentProcessor,
             final EntityPermission entityPermission) {
-        return PaymentProcessorActionFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return paymentProcessorActionFactory.getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorActionsByPaymentProcessorQueries,
                 paymentProcessor, Session.MAX_TIME);
     }
@@ -149,7 +153,7 @@ public class PaymentProcessorActionControl
 
     public List<PaymentProcessorAction> getPaymentProcessorActionsByPaymentProcessorTypeAction(final PaymentProcessorTypeAction paymentProcessorTypeAction,
             final EntityPermission entityPermission) {
-        return PaymentProcessorActionFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return paymentProcessorActionFactory.getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorActionsByPaymentProcessorTypeActionQueries,
                 paymentProcessorTypeAction, Session.MAX_TIME);
     }

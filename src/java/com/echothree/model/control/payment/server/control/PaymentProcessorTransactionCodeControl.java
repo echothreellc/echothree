@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorTransactionCodeControl
@@ -46,9 +47,12 @@ public class PaymentProcessorTransactionCodeControl
     //   Payment Processor Transaction Codes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PaymentProcessorTransactionCodeFactory paymentProcessorTransactionCodeFactory;
+
     public PaymentProcessorTransactionCode createPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final BasePK createdBy) {
-        var paymentProcessorTransactionCode = PaymentProcessorTransactionCodeFactory.getInstance().create(paymentProcessorTransaction,
+        var paymentProcessorTransactionCode = paymentProcessorTransactionCodeFactory.create(paymentProcessorTransaction,
                 paymentProcessorTypeCode, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -89,7 +93,7 @@ public class PaymentProcessorTransactionCodeControl
 
     public PaymentProcessorTransactionCode getPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionCodeFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorTransactionCodeQueries,
+        return paymentProcessorTransactionCodeFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTransactionCodeQueries,
                 paymentProcessorTransaction, paymentProcessorTypeCode, Session.MAX_TIME);
     }
 
@@ -133,7 +137,7 @@ public class PaymentProcessorTransactionCodeControl
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionCodeFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return paymentProcessorTransactionCodeFactory.getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorTransactionCodesByPaymentProcessorTransactionQueries,
                 paymentProcessorTransaction, Session.MAX_TIME);
     }
@@ -166,7 +170,7 @@ public class PaymentProcessorTransactionCodeControl
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionCodeFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return paymentProcessorTransactionCodeFactory.getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorTransactionCodesByPaymentProcessorTypeCodeQueries,
                 paymentProcessorTypeCode, Session.MAX_TIME);
     }

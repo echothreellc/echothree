@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderBatchControl
@@ -43,8 +44,11 @@ public class OrderBatchControl
     //    Order Batches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderBatchFactory orderBatchFactory;
+
     public OrderBatch createOrderBatch(Batch batch, Currency currency, Long count, Long amount, BasePK createdBy) {
-        var orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.getStartTime(), Session.MAX_TIME);
+        var orderBatch = orderBatchFactory.create(batch, currency, count, amount, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -73,7 +77,7 @@ public class OrderBatchControl
     }
 
     private OrderBatch getOrderBatch(Batch batch, EntityPermission entityPermission) {
-        return OrderBatchFactory.getInstance().getEntityFromQuery(entityPermission, getOrderBatchQueries,
+        return orderBatchFactory.getEntityFromQuery(entityPermission, getOrderBatchQueries,
                 batch, Session.MAX_TIME);
     }
 
@@ -95,7 +99,7 @@ public class OrderBatchControl
 
     public void updateOrderBatchFromValue(OrderBatchValue orderBatchValue, BasePK updatedBy) {
         if(orderBatchValue.hasBeenModified()) {
-            var orderBatch = OrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderBatch = orderBatchFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderBatchValue.getPrimaryKey());
 
             orderBatch.setThruTime(session.getStartTime());
@@ -106,7 +110,7 @@ public class OrderBatchControl
             var count = orderBatchValue.getCount();
             var amount = orderBatchValue.getAmount();
 
-            orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.getStartTime(), Session.MAX_TIME);
+            orderBatch = orderBatchFactory.create(batchPK, currencyPK, count, amount, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(batchPK, EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ContentCategoryControl
@@ -49,6 +50,12 @@ public class ContentCategoryControl
     //   Content Category Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContentCategoryFactory contentCategoryFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<ContentCategoryResultTransfer> getContentCategoryResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var contentCategoryResultTransfers = new ArrayList<ContentCategoryResultTransfer>();
@@ -61,7 +68,7 @@ public class ContentCategoryControl
 
         try {
             var contentControl = Session.getModelController(ContentControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -74,7 +81,7 @@ public class ContentCategoryControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCategoryPK(rs.getLong(1)));
+                    var contentCategory = contentCategoryFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ContentCategoryPK(rs.getLong(1)));
                     var contentCategoryDetail = contentCategory.getLastDetail();
                     var contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
 

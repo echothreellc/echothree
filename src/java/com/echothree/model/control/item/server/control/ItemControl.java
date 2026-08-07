@@ -548,9 +548,12 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemTypeFactory itemTypeFactory;
+
     public ItemType createItemType(String itemTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var itemType = ItemTypeFactory.getInstance().create(itemTypeName, isDefault, sortOrder);
+        var itemType = itemTypeFactory.create(itemTypeName, isDefault, sortOrder);
 
         sendEvent(itemType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -568,7 +571,7 @@ public class ItemControl
     public ItemType getItemTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemType getItemTypeByEntityInstance(EntityInstance entityInstance) {
@@ -600,11 +603,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemTypeName);
 
-            itemType = ItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemType = itemTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -638,9 +641,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemTypeFactory.prepareStatement(query);
 
-        return ItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemType getDefaultItemType() {
@@ -656,14 +659,14 @@ public class ItemControl
     }
     
     public List<ItemType> getItemTypes() {
-        var ps = ItemTypeFactory.getInstance().prepareStatement("""
+        var ps = itemTypeFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM itemtypes
                 ORDER BY ityp_sortorder, ityp_itemtypename
                 _LIMIT_
                 """);
         
-        return ItemTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public ItemTypeChoicesBean getItemTypeChoices(String defaultItemTypeChoice, Language language, boolean allowNullChoice) {
@@ -719,10 +722,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemTypeDescriptionFactory itemTypeDescriptionFactory;
+
     public ItemTypeDescription createItemTypeDescription(ItemType itemType, Language language, String description,
             BasePK createdBy) {
-        var itemTypeDescription = ItemTypeDescriptionFactory.getInstance().create(itemType, language, description);
+        var itemTypeDescription = itemTypeDescriptionFactory.create(itemType, language, description);
 
         sendEvent(itemType.getPrimaryKey(), EventTypes.MODIFY, itemTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -733,7 +739,7 @@ public class ItemControl
         ItemTypeDescription itemTypeDescription;
         
         try {
-            var ps = ItemTypeDescriptionFactory.getInstance().prepareStatement("""
+            var ps = itemTypeDescriptionFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM itemtypedescriptions
                     WHERE itypd_ityp_itemtypeid = ? AND itypd_lang_languageid = ?
@@ -742,7 +748,7 @@ public class ItemControl
             ps.setLong(1, itemType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            itemTypeDescription = ItemTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemTypeDescription = itemTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -770,10 +776,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Delivery Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemDeliveryTypeFactory itemDeliveryTypeFactory;
+
     public ItemDeliveryType createItemDeliveryType(String itemDeliveryTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        var itemDeliveryType = ItemDeliveryTypeFactory.getInstance().create(itemDeliveryTypeName, isDefault, sortOrder);
+        var itemDeliveryType = itemDeliveryTypeFactory.create(itemDeliveryTypeName, isDefault, sortOrder);
 
         sendEvent(itemDeliveryType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -791,7 +800,7 @@ public class ItemControl
     public ItemDeliveryType getItemDeliveryTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemDeliveryTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemDeliveryTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemDeliveryTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemDeliveryType getItemDeliveryTypeByEntityInstance(EntityInstance entityInstance) {
@@ -823,11 +832,11 @@ public class ItemControl
                         """;
             }
             
-            var ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemDeliveryTypeFactory.prepareStatement(query);
             
             ps.setString(1, itemDeliveryTypeName);
             
-            itemDeliveryType = ItemDeliveryTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemDeliveryType = itemDeliveryTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -861,9 +870,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemDeliveryTypeFactory.prepareStatement(query);
 
-        return ItemDeliveryTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemDeliveryTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemDeliveryType getDefaultItemDeliveryType() {
@@ -879,14 +888,14 @@ public class ItemControl
     }
     
     public List<ItemDeliveryType> getItemDeliveryTypes() {
-        var ps = ItemDeliveryTypeFactory.getInstance().prepareStatement("""
+        var ps = itemDeliveryTypeFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM itemdeliverytypes
                 ORDER BY idlvrtyp_sortorder, idlvrtyp_itemdeliverytypename
                 _LIMIT_
                 """);
         
-        return ItemDeliveryTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemDeliveryTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public ItemDeliveryTypeChoicesBean getItemDeliveryTypeChoices(String defaultItemDeliveryTypeChoice, Language language, boolean allowNullChoice) {
@@ -942,10 +951,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Delivery Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemDeliveryTypeDescriptionFactory itemDeliveryTypeDescriptionFactory;
+
     public ItemDeliveryTypeDescription createItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language,
             String description, BasePK createdBy) {
-        var itemDeliveryTypeDescription = ItemDeliveryTypeDescriptionFactory.getInstance().create(itemDeliveryType, language, description);
+        var itemDeliveryTypeDescription = itemDeliveryTypeDescriptionFactory.create(itemDeliveryType, language, description);
 
         sendEvent(itemDeliveryType.getPrimaryKey(), EventTypes.MODIFY, itemDeliveryTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -956,7 +968,7 @@ public class ItemControl
         ItemDeliveryTypeDescription itemDeliveryTypeDescription;
         
         try {
-            var ps = ItemDeliveryTypeDescriptionFactory.getInstance().prepareStatement("""
+            var ps = itemDeliveryTypeDescriptionFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM itemdeliverytypedescriptions
                     WHERE idlvrtypd_idlvrtyp_itemdeliverytypeid = ? AND idlvrtypd_lang_languageid = ?
@@ -965,7 +977,7 @@ public class ItemControl
             ps.setLong(1, itemDeliveryType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            itemDeliveryTypeDescription = ItemDeliveryTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemDeliveryTypeDescription = itemDeliveryTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -993,10 +1005,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Inventory Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemInventoryTypeFactory itemInventoryTypeFactory;
+
     public ItemInventoryType createItemInventoryType(String itemInventoryTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        var itemInventoryType = ItemInventoryTypeFactory.getInstance().create(itemInventoryTypeName, isDefault, sortOrder);
+        var itemInventoryType = itemInventoryTypeFactory.create(itemInventoryTypeName, isDefault, sortOrder);
 
         sendEvent(itemInventoryType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -1014,7 +1029,7 @@ public class ItemControl
     public ItemInventoryType getItemInventoryTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemInventoryTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemInventoryTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemInventoryTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemInventoryType getItemInventoryTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1046,11 +1061,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemInventoryTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemInventoryTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemInventoryTypeName);
 
-            itemInventoryType = ItemInventoryTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemInventoryType = itemInventoryTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1084,9 +1099,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemInventoryTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemInventoryTypeFactory.prepareStatement(query);
 
-        return ItemInventoryTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemInventoryTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemInventoryType getDefaultItemInventoryType() {
@@ -1102,14 +1117,14 @@ public class ItemControl
     }
 
     public List<ItemInventoryType> getItemInventoryTypes() {
-        var ps = ItemInventoryTypeFactory.getInstance().prepareStatement("""
+        var ps = itemInventoryTypeFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM iteminventorytypes
                 ORDER BY iinvtyp_sortorder, iinvtyp_iteminventorytypename
                 _LIMIT_
                 """);
         
-        return ItemInventoryTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemInventoryTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public ItemInventoryTypeChoicesBean getItemInventoryTypeChoices(String defaultItemInventoryTypeChoice, Language language, boolean allowNullChoice) {
@@ -1165,10 +1180,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Inventory Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemInventoryTypeDescriptionFactory itemInventoryTypeDescriptionFactory;
+
     public ItemInventoryTypeDescription createItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language,
             String description, BasePK createdBy) {
-        var itemInventoryTypeDescription = ItemInventoryTypeDescriptionFactory.getInstance().create(itemInventoryType, language, description);
+        var itemInventoryTypeDescription = itemInventoryTypeDescriptionFactory.create(itemInventoryType, language, description);
 
         sendEvent(itemInventoryType.getPrimaryKey(), EventTypes.MODIFY, itemInventoryTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1179,7 +1197,7 @@ public class ItemControl
         ItemInventoryTypeDescription itemInventoryTypeDescription;
         
         try {
-            var ps = ItemInventoryTypeDescriptionFactory.getInstance().prepareStatement("""
+            var ps = itemInventoryTypeDescriptionFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM iteminventorytypedescriptions
                     WHERE iinvtypd_iinvtyp_iteminventorytypeid = ? AND iinvtypd_lang_languageid = ?
@@ -1188,7 +1206,7 @@ public class ItemControl
             ps.setLong(1, itemInventoryType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            itemInventoryTypeDescription = ItemInventoryTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemInventoryTypeDescription = itemInventoryTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1217,9 +1235,12 @@ public class ItemControl
     //   Item Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemUseTypeFactory itemUseTypeFactory;
+
     public ItemUseType createItemUseType(String itemUseTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        var itemUseType = ItemUseTypeFactory.getInstance().create(itemUseTypeName, isDefault, sortOrder);
+        var itemUseType = itemUseTypeFactory.create(itemUseTypeName, isDefault, sortOrder);
 
         sendEvent(itemUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -1237,7 +1258,7 @@ public class ItemControl
     public ItemUseType getItemUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemUseTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemUseType getItemUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1269,11 +1290,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemUseTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemUseTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemUseTypeName);
 
-            itemUseType = ItemUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemUseType = itemUseTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1307,9 +1328,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemUseTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemUseTypeFactory.prepareStatement(query);
 
-        return ItemUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemUseTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemUseType getDefaultItemUseType() {
@@ -1325,14 +1346,14 @@ public class ItemControl
     }
 
     public List<ItemUseType> getItemUseTypes() {
-        var ps = ItemUseTypeFactory.getInstance().prepareStatement("""
+        var ps = itemUseTypeFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM itemusetypes
                 ORDER BY iutyp_sortorder, iutyp_itemusetypename
                 _LIMIT_
                 """);
 
-        return ItemUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public ItemUseTypeChoicesBean getItemUseTypeChoices(String defaultItemUseTypeChoice, Language language, boolean allowNullChoice) {
@@ -1389,9 +1410,12 @@ public class ItemControl
     //   Item Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemUseTypeDescriptionFactory itemUseTypeDescriptionFactory;
+
     public ItemUseTypeDescription createItemUseTypeDescription(ItemUseType itemUseType, Language language,
             String description, BasePK createdBy) {
-        var itemUseTypeDescription = ItemUseTypeDescriptionFactory.getInstance().create(itemUseType, language, description);
+        var itemUseTypeDescription = itemUseTypeDescriptionFactory.create(itemUseType, language, description);
 
         sendEvent(itemUseType.getPrimaryKey(), EventTypes.MODIFY, itemUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1402,7 +1426,7 @@ public class ItemControl
         ItemUseTypeDescription itemUseTypeDescription;
         
         try {
-            var ps = ItemUseTypeDescriptionFactory.getInstance().prepareStatement("""
+            var ps = itemUseTypeDescriptionFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM itemusetypedescriptions
                     WHERE iutypd_iutyp_itemusetypeid = ? AND iutypd_lang_languageid = ?
@@ -1411,7 +1435,7 @@ public class ItemControl
             ps.setLong(1, itemUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            itemUseTypeDescription = ItemUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemUseTypeDescription = itemUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1439,7 +1463,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Categories
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemCategoryFactory itemCategoryFactory;
+
+    @Inject
+    protected ItemCategoryDetailFactory itemCategoryDetailFactory;
+
     public ItemCategory createItemCategory(String itemCategoryName, ItemCategory parentItemCategory, Sequence itemSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultItemCategory = getDefaultItemCategory();
@@ -1454,13 +1484,13 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemCategory = ItemCategoryFactory.getInstance().create();
-        var itemCategoryDetail = ItemCategoryDetailFactory.getInstance().create(
+        var itemCategory = itemCategoryFactory.create();
+        var itemCategoryDetail = itemCategoryDetailFactory.create(
                 itemCategory, itemCategoryName, parentItemCategory, itemSequence, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        itemCategory = ItemCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemCategory = itemCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemCategory.getPrimaryKey());
         itemCategory.setActiveDetail(itemCategoryDetail);
         itemCategory.setLastDetail(itemCategoryDetail);
@@ -1493,7 +1523,7 @@ public class ItemControl
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
 
-        return ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemCategoryFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -1525,11 +1555,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+            var ps = itemCategoryFactory.prepareStatement(query);
             
             ps.setString(1, itemCategoryName);
             
-            itemCategory = ItemCategoryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemCategory = itemCategoryFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1571,9 +1601,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+        var ps = itemCategoryFactory.prepareStatement(query);
         
-        return ItemCategoryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemCategoryFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public ItemCategory getDefaultItemCategory() {
@@ -1607,9 +1637,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+        var ps = itemCategoryFactory.prepareStatement(query);
         
-        return ItemCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return itemCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<ItemCategory> getItemCategories() {
@@ -1643,11 +1673,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemCategoryFactory.getInstance().prepareStatement(query);
+            var ps = itemCategoryFactory.prepareStatement(query);
 
             ps.setLong(1, parentItemCategory.getPrimaryKey().getEntityId());
 
-            itemCategories = ItemCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemCategories = itemCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1745,7 +1775,7 @@ public class ItemControl
     private void updateItemCategoryFromValue(ItemCategoryDetailValue itemCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemCategoryDetailValue.hasBeenModified()) {
-            var itemCategory = ItemCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemCategory = itemCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemCategoryDetailValue.getItemCategoryPK());
             var itemCategoryDetail = itemCategory.getActiveDetailForUpdate();
             
@@ -1775,7 +1805,7 @@ public class ItemControl
                 }
             }
             
-            itemCategoryDetail = ItemCategoryDetailFactory.getInstance().create(itemCategoryPK,
+            itemCategoryDetail = itemCategoryDetailFactory.create(itemCategoryPK,
                     itemCategoryName, parentItemCategoryPK, itemSequencePK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -1841,9 +1871,12 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Category Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemCategoryDescriptionFactory itemCategoryDescriptionFactory;
+
     public ItemCategoryDescription createItemCategoryDescription(ItemCategory itemCategory, Language language, String description, BasePK createdBy) {
-        var itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().create(itemCategory, language, description, session.getStartTime(),
+        var itemCategoryDescription = itemCategoryDescriptionFactory.create(itemCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(itemCategory.getPrimaryKey(), EventTypes.MODIFY, itemCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1872,13 +1905,13 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemCategoryDescription = itemCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1924,12 +1957,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemCategoryDescriptions = ItemCategoryDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemCategoryDescriptions = itemCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1979,7 +2012,7 @@ public class ItemControl
     
     public void updateItemCategoryDescriptionFromValue(ItemCategoryDescriptionValue itemCategoryDescriptionValue, BasePK updatedBy) {
         if(itemCategoryDescriptionValue.hasBeenModified()) {
-            var itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemCategoryDescription = itemCategoryDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemCategoryDescriptionValue.getPrimaryKey());
             
             itemCategoryDescription.setThruTime(session.getStartTime());
@@ -1989,7 +2022,7 @@ public class ItemControl
             var language = itemCategoryDescription.getLanguage();
             var description = itemCategoryDescriptionValue.getDescription();
             
-            itemCategoryDescription = ItemCategoryDescriptionFactory.getInstance().create(itemCategory, language, description,
+            itemCategoryDescription = itemCategoryDescriptionFactory.create(itemCategory, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemCategory.getPrimaryKey(), EventTypes.MODIFY, itemCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2014,7 +2047,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Items
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemFactory itemFactory;
+
+    @Inject
+    protected ItemDetailFactory itemDetailFactory;
+
     public Item createItem(String itemName, ItemType itemType, ItemUseType itemUseType, ItemCategory itemCategory,
             ItemAccountingCategory itemAccountingCategory, ItemPurchasingCategory itemPurchasingCategory, Party companyParty,
             ItemDeliveryType itemDeliveryType, ItemInventoryType itemInventoryType, Boolean inventorySerialized, Sequence serialNumberSequence,
@@ -2022,15 +2061,15 @@ public class ItemControl
             Long purchaseOrderStartTime, Long purchaseOrderEndTime, Boolean allowClubDiscounts, Boolean allowCouponDiscounts, Boolean allowAssociatePayments,
             UnitOfMeasureKind unitOfMeasureKind, ItemPriceType itemPriceType, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy,
             StylePath stylePath, BasePK createdBy) {
-        var item = ItemFactory.getInstance().create();
-        var itemDetail = ItemDetailFactory.getInstance().create(item, itemName, itemType, itemUseType, itemCategory, itemAccountingCategory,
+        var item = itemFactory.create();
+        var itemDetail = itemDetailFactory.create(item, itemName, itemType, itemUseType, itemCategory, itemAccountingCategory,
                 itemPurchasingCategory, companyParty, itemDeliveryType, itemInventoryType, inventorySerialized, serialNumberSequence, shippingChargeExempt,
                 shippingStartTime, shippingEndTime, salesOrderStartTime, salesOrderEndTime, purchaseOrderStartTime, purchaseOrderEndTime, allowClubDiscounts,
                 allowCouponDiscounts, allowAssociatePayments, unitOfMeasureKind, itemPriceType, cancellationPolicy, returnPolicy, stylePath,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, item.getPrimaryKey());
+        item = itemFactory.getEntityFromPK(EntityPermission.READ_WRITE, item.getPrimaryKey());
         item.setActiveDetail(itemDetail);
         item.setLastDetail(itemDetail);
         item.store();
@@ -2132,7 +2171,7 @@ public class ItemControl
     public Item getItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemPK(entityInstance.getEntityUniqueId());
 
-        return ItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Item getItemByEntityInstance(EntityInstance entityInstance) {
@@ -2163,9 +2202,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemFactory.getInstance().prepareStatement(query);
+        var ps = itemFactory.prepareStatement(query);
 
-        return ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return itemFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
 
@@ -2200,11 +2239,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = itemFactory.prepareStatement(query);
 
             ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
 
-            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2244,11 +2283,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = itemFactory.prepareStatement(query);
 
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
 
-            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2287,11 +2326,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = itemFactory.prepareStatement(query);
 
             ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
 
-            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2331,11 +2370,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = itemFactory.prepareStatement(query);
 
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
 
-            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2375,11 +2414,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = itemFactory.prepareStatement(query);
 
             ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
 
-            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2416,11 +2455,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemFactory.getInstance().prepareStatement(query);
+            var ps = itemFactory.prepareStatement(query);
             
             ps.setString(1, itemName);
             
-            item = ItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            item = itemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2520,7 +2559,7 @@ public class ItemControl
     
     public void updateItemFromValue(ItemDetailValue itemDetailValue, BasePK updatedBy) {
         if(itemDetailValue.hasBeenModified()) {
-            var item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var item = itemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemDetailValue.getItemPK());
             var itemDetail = item.getActiveDetailForUpdate();
             
@@ -2555,7 +2594,7 @@ public class ItemControl
             var returnPolicyPK = itemDetailValue.getReturnPolicyPK();
             var stylePathPK = itemDetail.getStylePathPK(); // Not updated
                     
-            itemDetail = ItemDetailFactory.getInstance().create(itemPK, itemName, itemTypePK, itemUseTypePK, itemCategoryPK, itemAccountingCategoryPK,
+            itemDetail = itemDetailFactory.create(itemPK, itemName, itemTypePK, itemUseTypePK, itemCategoryPK, itemAccountingCategoryPK,
                     itemPurchasingCategoryPK, companyPartyPK, itemDeliveryTypePK, itemInventoryTypePK, inventorySerialized, serialNumberSequencePK,
                     shippingChargeExempt, shippingStartTime, shippingEndTime, salesOrderStartTime, salesOrderEndTime, purchaseOrderStartTime,
                     purchaseOrderEndTime, allowClubDiscounts, allowCouponDiscounts, allowAssociatePayments, unitOfMeasureKindPK, itemPriceTypePK,
@@ -2569,13 +2608,16 @@ public class ItemControl
     }
 
     public Item getItemByPK(ItemPK itemPK) {
-        return ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, itemPK);
+        return itemFactory.getEntityFromPK(EntityPermission.READ_ONLY, itemPK);
     }
 
     // --------------------------------------------------------------------------------
     //   Item Unit Of Measure Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemUnitOfMeasureTypeFactory itemUnitOfMeasureTypeFactory;
+
     public ItemUnitOfMeasureType createItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
@@ -2590,7 +2632,7 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().create(item, unitOfMeasureType,
+        var itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.create(item, unitOfMeasureType,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemUnitOfMeasureType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2637,13 +2679,13 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2690,12 +2732,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2742,12 +2784,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitOfMeasureTypes = ItemUnitOfMeasureTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitOfMeasureTypes = itemUnitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2787,12 +2829,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemUnitOfMeasureTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitOfMeasureTypes = ItemUnitOfMeasureTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitOfMeasureTypes = itemUnitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2832,7 +2874,7 @@ public class ItemControl
     
     private void updateItemUnitOfMeasureTypeFromValue(ItemUnitOfMeasureTypeValue itemUnitOfMeasureTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(itemUnitOfMeasureTypeValue.hasBeenModified()) {
-            var itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemUnitOfMeasureTypeValue.getPrimaryKey());
             
             itemUnitOfMeasureType.setThruTime(session.getStartTime());
@@ -2860,7 +2902,7 @@ public class ItemControl
                 }
             }
             
-            itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().create(itemPK, unitOfMeasureTypePK,
+            itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.create(itemPK, unitOfMeasureTypePK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2928,10 +2970,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Shipping Times
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemShippingTimeFactory itemShippingTimeFactory;
+
     public ItemShippingTime createItemShippingTime(Item item, CustomerType customerType, Long shippingStartTime, Long shippingEndTime,
             BasePK createdBy) {
-        var itemShippingTime = ItemShippingTimeFactory.getInstance().create(item, customerType,
+        var itemShippingTime = itemShippingTimeFactory.create(item, customerType,
                 shippingStartTime, shippingEndTime, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemShippingTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2976,13 +3021,13 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
+            var ps = itemShippingTimeFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, customerType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemShippingTime = ItemShippingTimeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemShippingTime = itemShippingTimeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3030,12 +3075,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
+            var ps = itemShippingTimeFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemShippingTimes = ItemShippingTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemShippingTimes = itemShippingTimeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3075,12 +3120,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemShippingTimeFactory.getInstance().prepareStatement(query);
+            var ps = itemShippingTimeFactory.prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemShippingTimes = ItemShippingTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemShippingTimes = itemShippingTimeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3099,7 +3144,7 @@ public class ItemControl
     public void updateItemShippingTimeFromValue(ItemShippingTimeValue itemShippingTimeValue, BasePK updatedBy) {
         if(itemShippingTimeValue.hasBeenModified()) {
             var itemShippingTimePK = itemShippingTimeValue.getPrimaryKey();
-            var itemShippingTime = ItemShippingTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemShippingTimePK);
+            var itemShippingTime = itemShippingTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemShippingTimePK);
             
             itemShippingTime.setThruTime(session.getStartTime());
             itemShippingTime.store();
@@ -3109,7 +3154,7 @@ public class ItemControl
             var shippingStartTime = itemShippingTimeValue.getShippingStartTime();
             var shippingEndTime = itemShippingTimeValue.getShippingEndTime();
             
-            itemShippingTime = ItemShippingTimeFactory.getInstance().create(itemPK, customerTypePK, shippingStartTime, shippingEndTime,
+            itemShippingTime = itemShippingTimeFactory.create(itemPK, customerTypePK, shippingStartTime, shippingEndTime,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemShippingTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3164,9 +3209,12 @@ public class ItemControl
     //   Item Alias Checksum Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemAliasChecksumTypeFactory itemAliasChecksumTypeFactory;
+
     public ItemAliasChecksumType createItemAliasChecksumType(String itemAliasChecksumTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        var itemAliasChecksumType = ItemAliasChecksumTypeFactory.getInstance().create(itemAliasChecksumTypeName, isDefault, sortOrder);
+        var itemAliasChecksumType = itemAliasChecksumTypeFactory.create(itemAliasChecksumTypeName, isDefault, sortOrder);
 
         sendEvent(itemAliasChecksumType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -3184,7 +3232,7 @@ public class ItemControl
     public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemAliasChecksumTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemAliasChecksumTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemAliasChecksumTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstance(EntityInstance entityInstance) {
@@ -3216,11 +3264,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasChecksumTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemAliasChecksumTypeName);
 
-            itemAliasChecksumType = ItemAliasChecksumTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemAliasChecksumType = itemAliasChecksumTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3254,9 +3302,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemAliasChecksumTypeFactory.prepareStatement(query);
 
-        return ItemAliasChecksumTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemAliasChecksumTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemAliasChecksumType getDefaultItemAliasChecksumType() {
@@ -3272,14 +3320,14 @@ public class ItemControl
     }
 
     public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
-        var ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement("""
+        var ps = itemAliasChecksumTypeFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM itemaliaschecksumtypes
                 ORDER BY iact_sortorder, iact_itemaliaschecksumtypename
                 _LIMIT_
                 """);
 
-        return ItemAliasChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemAliasChecksumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public ItemAliasChecksumTypeChoicesBean getItemAliasChecksumTypeChoices(String defaultItemAliasChecksumTypeChoice, Language language, boolean allowNullChoice) {
@@ -3336,9 +3384,12 @@ public class ItemControl
     //   Item Alias Checksum Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemAliasChecksumTypeDescriptionFactory itemAliasChecksumTypeDescriptionFactory;
+
     public ItemAliasChecksumTypeDescription createItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType,
             Language language, String description, BasePK createdBy) {
-        var itemAliasChecksumTypeDescription = ItemAliasChecksumTypeDescriptionFactory.getInstance().create(itemAliasChecksumType, language, description);
+        var itemAliasChecksumTypeDescription = itemAliasChecksumTypeDescriptionFactory.create(itemAliasChecksumType, language, description);
 
         sendEvent(itemAliasChecksumType.getPrimaryKey(), EventTypes.MODIFY, itemAliasChecksumTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3349,7 +3400,7 @@ public class ItemControl
         ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription;
 
         try {
-            var ps = ItemAliasChecksumTypeDescriptionFactory.getInstance().prepareStatement("""
+            var ps = itemAliasChecksumTypeDescriptionFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM itemaliaschecksumtypedescriptions
                     WHERE iactd_iact_itemaliaschecksumtypeid = ? AND iactd_lang_languageid = ?
@@ -3358,7 +3409,7 @@ public class ItemControl
             ps.setLong(1, itemAliasChecksumType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
 
-            itemAliasChecksumTypeDescription = ItemAliasChecksumTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemAliasChecksumTypeDescription = itemAliasChecksumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3386,7 +3437,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Alias Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemAliasTypeFactory itemAliasTypeFactory;
+
+    @Inject
+    protected ItemAliasTypeDetailFactory itemAliasTypeDetailFactory;
+
     public ItemAliasType createItemAliasType(String itemAliasTypeName, String validationPattern, ItemAliasChecksumType itemAliasChecksumType, Boolean allowMultiple,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultItemAliasType = getDefaultItemAliasType();
@@ -3401,12 +3458,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemAliasType = ItemAliasTypeFactory.getInstance().create();
-        var itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create( itemAliasType, itemAliasTypeName, validationPattern,
+        var itemAliasType = itemAliasTypeFactory.create();
+        var itemAliasTypeDetail = itemAliasTypeDetailFactory.create( itemAliasType, itemAliasTypeName, validationPattern,
                 itemAliasChecksumType, allowMultiple, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        itemAliasType = ItemAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAliasType.getPrimaryKey());
+        itemAliasType = itemAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemAliasType.getPrimaryKey());
         itemAliasType.setActiveDetail(itemAliasTypeDetail);
         itemAliasType.setLastDetail(itemAliasTypeDetail);
         itemAliasType.store();
@@ -3421,7 +3478,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new ItemAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemAliasType getItemAliasTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -3433,7 +3490,7 @@ public class ItemControl
     }
 
     public ItemAliasType getItemAliasTypeByPK(ItemAliasTypePK pk) {
-        return ItemAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return itemAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countItemAliasTypes() {
@@ -3465,11 +3522,11 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasTypeFactory.prepareStatement(query);
             
             ps.setString(1, itemAliasTypeName);
             
-            itemAliasType = ItemAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemAliasType = itemAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3511,9 +3568,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemAliasTypeFactory.prepareStatement(query);
         
-        return ItemAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public ItemAliasType getDefaultItemAliasType() {
@@ -3547,9 +3604,9 @@ public class ItemControl
                     """;
         }
 
-        var ps = ItemAliasTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemAliasTypeFactory.prepareStatement(query);
         
-        return ItemAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return itemAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<ItemAliasType> getItemAliasTypes() {
@@ -3616,7 +3673,7 @@ public class ItemControl
     private void updateItemAliasTypeFromValue(final ItemAliasTypeDetailValue itemAliasTypeDetailValue, final boolean checkDefault,
             final BasePK updatedBy) {
         if(itemAliasTypeDetailValue.hasBeenModified()) {
-            final var itemAliasType = ItemAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            final var itemAliasType = itemAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemAliasTypeDetailValue.getItemAliasTypePK());
             var itemAliasTypeDetail = itemAliasType.getActiveDetailForUpdate();
             
@@ -3647,7 +3704,7 @@ public class ItemControl
                 }
             }
             
-            itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(itemAliasTypePK, itemAliasTypeName,
+            itemAliasTypeDetail = itemAliasTypeDetailFactory.create(itemAliasTypePK, itemAliasTypeName,
                     validationPattern, itemAliasChecksumTypePK, allowMultiple, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -3704,10 +3761,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Alias Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemAliasTypeDescriptionFactory itemAliasTypeDescriptionFactory;
+
     public ItemAliasTypeDescription createItemAliasTypeDescription(ItemAliasType itemAliasType, Language language,
             String description, BasePK createdBy) {
-        var itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(
+        var itemAliasTypeDescription = itemAliasTypeDescriptionFactory.create(
                 itemAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemAliasType.getPrimaryKey(), EventTypes.MODIFY, itemAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3736,13 +3796,13 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemAliasTypeDescription = itemAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3789,12 +3849,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemAliasTypeDescriptions = ItemAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemAliasTypeDescriptions = itemAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3844,7 +3904,7 @@ public class ItemControl
     
     public void updateItemAliasTypeDescriptionFromValue(ItemAliasTypeDescriptionValue itemAliasTypeDescriptionValue, BasePK updatedBy) {
         if(itemAliasTypeDescriptionValue.hasBeenModified()) {
-            var itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemAliasTypeDescription = itemAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemAliasTypeDescriptionValue.getPrimaryKey());
             
             itemAliasTypeDescription.setThruTime(session.getStartTime());
@@ -3854,7 +3914,7 @@ public class ItemControl
             var language = itemAliasTypeDescription.getLanguage();
             var description = itemAliasTypeDescriptionValue.getDescription();
             
-            itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(itemAliasType, language, description,
+            itemAliasTypeDescription = itemAliasTypeDescriptionFactory.create(itemAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemAliasType.getPrimaryKey(), EventTypes.MODIFY, itemAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3879,10 +3939,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Aliases
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemAliasFactory itemAliasFactory;
+
     public ItemAlias createItemAlias(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType, String alias,
             BasePK createdBy) {
-        var itemAlias = ItemAliasFactory.getInstance().create(item, unitOfMeasureType, itemAliasType, alias,
+        var itemAlias = itemAliasFactory.create(item, unitOfMeasureType, itemAliasType, alias,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3943,12 +4006,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasFactory.prepareStatement(query);
             
             ps.setString(1, alias);
             ps.setLong(2, Session.MAX_TIME);
             
-            itemAlias = ItemAliasFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemAlias = itemAliasFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3996,14 +4059,14 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            itemAliases = ItemAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4043,12 +4106,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemAliases = ItemAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4088,12 +4151,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemAliases = ItemAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4133,12 +4196,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemAliasFactory.getInstance().prepareStatement(query);
+            var ps = itemAliasFactory.prepareStatement(query);
             
             ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemAliases = ItemAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4158,7 +4221,7 @@ public class ItemControl
         List<ItemAlias> itemAliases;
         
         try {
-            var ps = ItemAliasFactory.getInstance().prepareStatement("""
+            var ps = itemAliasFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM itemaliases
                     WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ?
@@ -4170,7 +4233,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemAliases = ItemAliasFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            itemAliases = itemAliasFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4181,7 +4244,7 @@ public class ItemControl
     public void updateItemAliasFromValue(ItemAliasValue itemAliasValue, BasePK updatedBy) {
         if(itemAliasValue.hasBeenModified()) {
             var itemAliasPK = itemAliasValue.getPrimaryKey();
-            var itemAlias = ItemAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAliasPK);
+            var itemAlias = itemAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemAliasPK);
             
             itemAlias.setThruTime(session.getStartTime());
             itemAlias.store();
@@ -4191,7 +4254,7 @@ public class ItemControl
             var itemAliasTypePK = itemAliasValue.getItemAliasTypePK();
             var alias = itemAliasValue.getAlias();
             
-            itemAlias = ItemAliasFactory.getInstance().create(itemPK, unitOfMeasureTypePK, itemAliasTypePK, alias,
+            itemAlias = itemAliasFactory.create(itemPK, unitOfMeasureTypePK, itemAliasTypePK, alias,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4247,9 +4310,12 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Kit Options
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemKitOptionFactory itemKitOptionFactory;
+
     public ItemKitOption createItemKitOption(Item item, Boolean allowPartialShipments, BasePK createdBy) {
-        var itemKitOption = ItemKitOptionFactory.getInstance().create(item, allowPartialShipments,
+        var itemKitOption = itemKitOptionFactory.create(item, allowPartialShipments,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemKitOption.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4278,12 +4344,12 @@ public class ItemControl
                         """;
             }
 
-            var ps = ItemKitOptionFactory.getInstance().prepareStatement(query);
+            var ps = itemKitOptionFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitOption = ItemKitOptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemKitOption = itemKitOptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4306,7 +4372,7 @@ public class ItemControl
     public void updateItemKitOptionFromValue(ItemKitOptionValue itemKitOptionValue, BasePK updatedBy) {
         if(itemKitOptionValue.hasBeenModified()) {
             var itemKitOptionPK = itemKitOptionValue.getPrimaryKey();
-            var itemKitOption = ItemKitOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemKitOptionPK);
+            var itemKitOption = itemKitOptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemKitOptionPK);
             
             itemKitOption.setThruTime(session.getStartTime());
             itemKitOption.store();
@@ -4314,7 +4380,7 @@ public class ItemControl
             var itemPK = itemKitOption.getItemPK();
             var allowPartialShipments = itemKitOptionValue.getAllowPartialShipments();
             
-            itemKitOption = ItemKitOptionFactory.getInstance().create(itemPK, allowPartialShipments,
+            itemKitOption = itemKitOptionFactory.create(itemPK, allowPartialShipments,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemKitOption.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4330,9 +4396,12 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Country Of Origins
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemCountryOfOriginFactory itemCountryOfOriginFactory;
+
     public ItemCountryOfOrigin createItemCountryOfOrigin(Item item, GeoCode countryGeoCode, Integer percent, BasePK createdBy) {
-        var itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().create(item, countryGeoCode, percent,
+        var itemCountryOfOrigin = itemCountryOfOriginFactory.create(item, countryGeoCode, percent,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemCountryOfOrigin.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4377,13 +4446,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
+            var ps = itemCountryOfOriginFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, countryGeoCode.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemCountryOfOrigin = itemCountryOfOriginFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4430,12 +4499,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
+            var ps = itemCountryOfOriginFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemCountryOfOrigins = ItemCountryOfOriginFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemCountryOfOrigins = itemCountryOfOriginFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4474,12 +4543,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
+            var ps = itemCountryOfOriginFactory.prepareStatement(query);
             
             ps.setLong(1, countryGeoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemCountryOfOrigins = ItemCountryOfOriginFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemCountryOfOrigins = itemCountryOfOriginFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4498,7 +4567,7 @@ public class ItemControl
     public void updateItemCountryOfOriginFromValue(ItemCountryOfOriginValue itemCountryOfOriginValue, BasePK updatedBy) {
         if(itemCountryOfOriginValue.hasBeenModified()) {
             var itemCountryOfOriginPK = itemCountryOfOriginValue.getPrimaryKey();
-            var itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemCountryOfOriginPK);
+            var itemCountryOfOrigin = itemCountryOfOriginFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemCountryOfOriginPK);
             
             itemCountryOfOrigin.setThruTime(session.getStartTime());
             itemCountryOfOrigin.store();
@@ -4507,7 +4576,7 @@ public class ItemControl
             var countryGeoCodePK = itemCountryOfOrigin.getCountryGeoCodePK();
             var percent = itemCountryOfOriginValue.getPercent();
             
-            itemCountryOfOrigin = ItemCountryOfOriginFactory.getInstance().create(itemPK, countryGeoCodePK, percent, session.getStartTime(),
+            itemCountryOfOrigin = itemCountryOfOriginFactory.create(itemPK, countryGeoCodePK, percent, session.getStartTime(),
                     Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemCountryOfOrigin.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4556,11 +4625,14 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Kit Members
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemKitMemberFactory itemKitMemberFactory;
+
     public ItemKitMember createItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Item memberItem, InventoryCondition memberInventoryCondition, UnitOfMeasureType memberUnitOfMeasureType,
             Long quantity, BasePK createdBy) {
-        var itemKitMember = ItemKitMemberFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType,
+        var itemKitMember = itemKitMemberFactory.create(item, inventoryCondition, unitOfMeasureType,
                 memberItem, memberInventoryCondition, memberUnitOfMeasureType, quantity, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -4643,7 +4715,7 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -4653,7 +4725,7 @@ public class ItemControl
             ps.setLong(6, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(7, Session.MAX_TIME);
             
-            itemKitMember = ItemKitMemberFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemKitMember = itemKitMemberFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4706,14 +4778,14 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4756,14 +4828,14 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
             ps.setLong(2, memberInventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(3, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4803,12 +4875,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4846,12 +4918,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4889,12 +4961,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4932,12 +5004,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, memberInventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4975,12 +5047,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5000,7 +5072,7 @@ public class ItemControl
         List<ItemKitMember> itemKitMembers;
         
         try {
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement("""
+            var ps = itemKitMemberFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM itemkitmembers
                 WHERE ikm_itm_itemid = ? AND ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
@@ -5011,7 +5083,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5041,12 +5113,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
+            var ps = itemKitMemberFactory.prepareStatement(query);
             
             ps.setLong(1, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5066,7 +5138,7 @@ public class ItemControl
         List<ItemKitMember> itemKitMembers;
         
         try {
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(
+            var ps = itemKitMemberFactory.prepareStatement(
                     """
                 SELECT _ALL_
                 FROM itemkitmembers
@@ -5078,7 +5150,7 @@ public class ItemControl
             ps.setLong(2, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemKitMembers = ItemKitMemberFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5088,7 +5160,7 @@ public class ItemControl
     
     public void updateItemKitMemberFromValue(ItemKitMemberValue itemKitMemberValue, BasePK updatedBy) {
         if(itemKitMemberValue.hasBeenModified()) {
-            var itemKitMember = ItemKitMemberFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemKitMember = itemKitMemberFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemKitMemberValue.getPrimaryKey());
             
             itemKitMember.setThruTime(session.getStartTime());
@@ -5102,7 +5174,7 @@ public class ItemControl
             var memberUnitOfMeasureTypePK = itemKitMember.getMemberUnitOfMeasureTypePK();
             var quantity = itemKitMemberValue.getQuantity();
             
-            itemKitMember = ItemKitMemberFactory.getInstance().create(itemPK, inventoryConditionPK, unitOfMeasureTypePK,
+            itemKitMember = itemKitMemberFactory.create(itemPK, inventoryConditionPK, unitOfMeasureTypePK,
                     memberItemPK, memberInventoryConditionPK, memberUnitOfMeasureTypePK, quantity, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -5170,10 +5242,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Pack Check Requirements
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemPackCheckRequirementFactory itemPackCheckRequirementFactory;
+
     public ItemPackCheckRequirement createItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType,
             Long minimumQuantity, Long maximumQuantity, BasePK createdBy) {
-        var itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().create(item,
+        var itemPackCheckRequirement = itemPackCheckRequirementFactory.create(item,
                 unitOfMeasureType, minimumQuantity, maximumQuantity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemPackCheckRequirement.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5218,13 +5293,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
+            var ps = itemPackCheckRequirementFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemPackCheckRequirement = itemPackCheckRequirementFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5272,12 +5347,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
+            var ps = itemPackCheckRequirementFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemPackCheckRequirements = ItemPackCheckRequirementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPackCheckRequirements = itemPackCheckRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5316,12 +5391,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
+            var ps = itemPackCheckRequirementFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemPackCheckRequirements = ItemPackCheckRequirementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPackCheckRequirements = itemPackCheckRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5342,7 +5417,7 @@ public class ItemControl
         List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
-            var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(
+            var ps = itemPackCheckRequirementFactory.prepareStatement(
                     """
                 SELECT _ALL_
                 FROM itempackcheckrequirements
@@ -5354,7 +5429,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemPackCheckRequirements = ItemPackCheckRequirementFactory.getInstance().getEntitiesFromQuery(
+            itemPackCheckRequirements = itemPackCheckRequirementFactory.getEntitiesFromQuery(
                     EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5366,7 +5441,7 @@ public class ItemControl
     public void updateItemPackCheckRequirementFromValue(ItemPackCheckRequirementValue itemPackCheckRequirementValue, BasePK updatedBy) {
         if(itemPackCheckRequirementValue.hasBeenModified()) {
             var itemPackCheckRequirementPK = itemPackCheckRequirementValue.getPrimaryKey();
-            var itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPackCheckRequirementPK);
+            var itemPackCheckRequirement = itemPackCheckRequirementFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemPackCheckRequirementPK);
             
             itemPackCheckRequirement.setThruTime(session.getStartTime());
             itemPackCheckRequirement.store();
@@ -5376,7 +5451,7 @@ public class ItemControl
             var minimumQuantity = itemPackCheckRequirementValue.getMinimumQuantity();
             var maximumQuantity = itemPackCheckRequirementValue.getMaximumQuantity();
             
-            itemPackCheckRequirement = ItemPackCheckRequirementFactory.getInstance().create(itemPK, unitOfMeasureTypePK,
+            itemPackCheckRequirement = itemPackCheckRequirementFactory.create(itemPK, unitOfMeasureTypePK,
                     minimumQuantity, maximumQuantity, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemPackCheckRequirement.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -5431,11 +5506,14 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Unit Customer Type Limits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemUnitCustomerTypeLimitFactory itemUnitCustomerTypeLimitFactory;
+
     public ItemUnitCustomerTypeLimit createItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, CustomerType customerType, Long minimumQuantity, Long maximumQuantity,
             BasePK createdBy) {
-        var itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().create(item,
+        var itemUnitCustomerTypeLimit = itemUnitCustomerTypeLimitFactory.create(item,
                 inventoryCondition, unitOfMeasureType, customerType, minimumQuantity, maximumQuantity, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -5500,7 +5578,7 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -5508,7 +5586,7 @@ public class ItemControl
             ps.setLong(4, customerType.getPrimaryKey().getEntityId());
             ps.setLong(5, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemUnitCustomerTypeLimit = itemUnitCustomerTypeLimitFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5560,12 +5638,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5606,12 +5684,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5652,12 +5730,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5678,7 +5756,7 @@ public class ItemControl
         List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
-            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(
+            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(
                     """
                 SELECT _ALL_
                 FROM itemunitcustomertypelimits
@@ -5690,7 +5768,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(
+            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(
                     EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5724,12 +5802,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
             
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5747,7 +5825,7 @@ public class ItemControl
     
     public void updateItemUnitCustomerTypeLimitFromValue(ItemUnitCustomerTypeLimitValue itemUnitCustomerTypeLimitValue, BasePK updatedBy) {
         if(itemUnitCustomerTypeLimitValue.hasBeenModified()) {
-            var itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitCustomerTypeLimit = itemUnitCustomerTypeLimitFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemUnitCustomerTypeLimitValue.getPrimaryKey());
             
             itemUnitCustomerTypeLimit.setThruTime(session.getStartTime());
@@ -5760,7 +5838,7 @@ public class ItemControl
             var minimumQuantity = itemUnitCustomerTypeLimitValue.getMinimumQuantity();
             var maximumQuantity = itemUnitCustomerTypeLimitValue.getMaximumQuantity();
             
-            itemUnitCustomerTypeLimit = ItemUnitCustomerTypeLimitFactory.getInstance().create(itemPK, inventoryConditionPK,
+            itemUnitCustomerTypeLimit = itemUnitCustomerTypeLimitFactory.create(itemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, customerTypePK, minimumQuantity, maximumQuantity, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -5826,10 +5904,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Unit Limits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemUnitLimitFactory itemUnitLimitFactory;
+
     public ItemUnitLimit createItemUnitLimit(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Long minimumQuantity, Long maximumQuantity, BasePK createdBy) {
-        var itemUnitLimit = ItemUnitLimitFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType,
+        var itemUnitLimit = itemUnitLimitFactory.create(item, inventoryCondition, unitOfMeasureType,
                 minimumQuantity, maximumQuantity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemUnitLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5885,14 +5966,14 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitLimitFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            itemUnitLimit = ItemUnitLimitFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemUnitLimit = itemUnitLimitFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5942,12 +6023,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitLimitFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitLimits = ItemUnitLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5987,12 +6068,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitLimitFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitLimits = ItemUnitLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6032,12 +6113,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitLimitFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitLimits = ItemUnitLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6057,7 +6138,7 @@ public class ItemControl
         List<ItemUnitLimit> itemUnitLimits;
         
         try {
-            var ps = ItemUnitLimitFactory.getInstance().prepareStatement(
+            var ps = itemUnitLimitFactory.prepareStatement(
                     """
                 SELECT _ALL_
                 FROM itemunitlimits
@@ -6069,7 +6150,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemUnitLimits = ItemUnitLimitFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6079,7 +6160,7 @@ public class ItemControl
     
     public void updateItemUnitLimitFromValue(ItemUnitLimitValue itemUnitLimitValue, BasePK updatedBy) {
         if(itemUnitLimitValue.hasBeenModified()) {
-            var itemUnitLimit = ItemUnitLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitLimit = itemUnitLimitFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemUnitLimitValue.getPrimaryKey());
             
             itemUnitLimit.setThruTime(session.getStartTime());
@@ -6091,7 +6172,7 @@ public class ItemControl
             var minimumQuantity = itemUnitLimitValue.getMinimumQuantity();
             var maximumQuantity = itemUnitLimitValue.getMaximumQuantity();
             
-            itemUnitLimit = ItemUnitLimitFactory.getInstance().create(itemPK, inventoryConditionPK, unitOfMeasureTypePK,
+            itemUnitLimit = itemUnitLimitFactory.create(itemPK, inventoryConditionPK, unitOfMeasureTypePK,
                     minimumQuantity, maximumQuantity, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemUnitLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -6152,11 +6233,14 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Unit Price Limits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemUnitPriceLimitFactory itemUnitPriceLimitFactory;
+
     public ItemUnitPriceLimit createItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long minimumUnitPrice, Long maximumUnitPrice,
             BasePK createdBy) {
-        var itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().create(item, inventoryCondition,
+        var itemUnitPriceLimit = itemUnitPriceLimitFactory.create(item, inventoryCondition,
                 unitOfMeasureType, currency, minimumUnitPrice, maximumUnitPrice, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemUnitPriceLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6220,7 +6304,7 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -6228,7 +6312,7 @@ public class ItemControl
             ps.setLong(4, currency.getPrimaryKey().getEntityId());
             ps.setLong(5, Session.MAX_TIME);
             
-            itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemUnitPriceLimit = itemUnitPriceLimitFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6280,12 +6364,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitPriceLimits = ItemUnitPriceLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6326,12 +6410,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitPriceLimits = ItemUnitPriceLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6372,12 +6456,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
+            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemUnitPriceLimits = ItemUnitPriceLimitFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6398,7 +6482,7 @@ public class ItemControl
         List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
-            var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(
+            var ps = itemUnitPriceLimitFactory.prepareStatement(
                     """
                 SELECT _ALL_
                 FROM itemunitpricelimits
@@ -6410,7 +6494,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemUnitPriceLimits = ItemUnitPriceLimitFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6420,7 +6504,7 @@ public class ItemControl
     
     public void updateItemUnitPriceLimitFromValue(ItemUnitPriceLimitValue itemUnitPriceLimitValue, BasePK updatedBy) {
         if(itemUnitPriceLimitValue.hasBeenModified()) {
-            var itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemUnitPriceLimit = itemUnitPriceLimitFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemUnitPriceLimitValue.getPrimaryKey());
             
             itemUnitPriceLimit.setThruTime(session.getStartTime());
@@ -6433,7 +6517,7 @@ public class ItemControl
             var minimumUnitPrice = itemUnitPriceLimitValue.getMinimumUnitPrice();
             var maximumUnitPrice = itemUnitPriceLimitValue.getMaximumUnitPrice();
             
-            itemUnitPriceLimit = ItemUnitPriceLimitFactory.getInstance().create(itemPK, inventoryConditionPK,
+            itemUnitPriceLimit = itemUnitPriceLimitFactory.create(itemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, currencyPK, minimumUnitPrice, maximumUnitPrice, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemUnitPriceLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -6494,10 +6578,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Price Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemPriceTypeFactory itemPriceTypeFactory;
+
     public ItemPriceType createItemPriceType(String itemPriceTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        var itemPriceType = ItemPriceTypeFactory.getInstance().create(itemPriceTypeName, isDefault, sortOrder);
+        var itemPriceType = itemPriceTypeFactory.create(itemPriceTypeName, isDefault, sortOrder);
 
         sendEvent(itemPriceType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -6516,7 +6603,7 @@ public class ItemControl
     public ItemPriceType getItemPriceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemPriceTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemPriceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemPriceTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemPriceType getItemPriceTypeByEntityInstance(EntityInstance entityInstance) {
@@ -6548,11 +6635,11 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemPriceTypeName);
 
-            itemPriceType = ItemPriceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemPriceType = itemPriceTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6586,9 +6673,9 @@ public class ItemControl
                 """;
         }
 
-        var ps = ItemPriceTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemPriceTypeFactory.prepareStatement(query);
 
-        return ItemPriceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemPriceTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemPriceType getDefaultItemPriceType() {
@@ -6604,7 +6691,7 @@ public class ItemControl
     }
 
     public List<ItemPriceType> getItemPriceTypes() {
-        var ps = ItemPriceTypeFactory.getInstance().prepareStatement(
+        var ps = itemPriceTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM itempricetypes
@@ -6612,7 +6699,7 @@ public class ItemControl
                 _LIMIT_
                 """);
         
-        return ItemPriceTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemPriceTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public ItemPriceTypeChoicesBean getItemPriceTypeChoices(String defaultItemPriceTypeChoice, Language language,
@@ -6669,10 +6756,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Price Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemPriceTypeDescriptionFactory itemPriceTypeDescriptionFactory;
+
     public ItemPriceTypeDescription createItemPriceTypeDescription(ItemPriceType itemPriceType, Language language,
             String description, BasePK createdBy) {
-        var itemPriceTypeDescription = ItemPriceTypeDescriptionFactory.getInstance().create(itemPriceType, language, description);
+        var itemPriceTypeDescription = itemPriceTypeDescriptionFactory.create(itemPriceType, language, description);
 
         sendEvent(itemPriceType.getPrimaryKey(), EventTypes.MODIFY, itemPriceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -6683,7 +6773,7 @@ public class ItemControl
         ItemPriceTypeDescription itemPriceTypeDescription;
         
         try {
-            var ps = ItemPriceTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = itemPriceTypeDescriptionFactory.prepareStatement(
                     """
                 SELECT _ALL_
                 FROM itempricetypedescriptions
@@ -6693,7 +6783,7 @@ public class ItemControl
             ps.setLong(1, itemPriceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            itemPriceTypeDescription = ItemPriceTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemPriceTypeDescription = itemPriceTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6721,10 +6811,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Prices
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemPriceFactory itemPriceFactory;
+
     public ItemPrice createItemPrice(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
-        var itemPrice = ItemPriceFactory.getInstance().create(item, inventoryCondition, unitOfMeasureType, currency,
+        var itemPrice = itemPriceFactory.create(item, inventoryCondition, unitOfMeasureType, currency,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6790,12 +6883,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6837,12 +6930,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6884,12 +6977,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceFactory.prepareStatement(query);
 
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6931,12 +7024,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceFactory.prepareStatement(query);
 
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6956,7 +7049,7 @@ public class ItemControl
         List<ItemPrice> itemPrices;
         
         try {
-            var ps = ItemPriceFactory.getInstance().prepareStatement("""
+            var ps = itemPriceFactory.prepareStatement("""
                 SELECT _ALL_
                 FROM itemprices
                 WHERE itmp_itm_itemid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
@@ -6967,7 +7060,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            itemPrices = itemPriceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7001,14 +7094,14 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7048,7 +7141,7 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemPriceFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
@@ -7056,7 +7149,7 @@ public class ItemControl
             ps.setLong(4, currency.getPrimaryKey().getEntityId());
             ps.setLong(5, Session.MAX_TIME);
             
-            itemPrice = ItemPriceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemPrice = itemPriceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7150,9 +7243,12 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Fixed Prices
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemFixedPriceFactory itemFixedPriceFactory;
+
     public ItemFixedPrice createItemFixedPrice(ItemPrice itemPrice, Long unitPrice, BasePK createdBy) {
-        var itemFixedPrice = ItemFixedPriceFactory.getInstance().create(itemPrice, unitPrice, session.getStartTime(), Session.MAX_TIME);
+        var itemFixedPrice = itemFixedPriceFactory.create(itemPrice, unitPrice, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemPrice.getItemPK(), EventTypes.MODIFY, itemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -7180,12 +7276,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemFixedPriceFactory.getInstance().prepareStatement(query);
+            var ps = itemFixedPriceFactory.prepareStatement(query);
             
             ps.setLong(1, itemPrice.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemFixedPrice = ItemFixedPriceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemFixedPrice = itemFixedPriceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7226,13 +7322,13 @@ public class ItemControl
     }
 
     public List<ItemFixedPrice> getItemFixedPriceHistory(ItemPrice itemPrice) {
-        return ItemFixedPriceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getItemFixedPriceHistoryQueries,
+        return itemFixedPriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getItemFixedPriceHistoryQueries,
                 itemPrice);
     }
     
     public void updateItemFixedPriceFromValue(ItemFixedPriceValue itemFixedPriceValue, BasePK updatedBy) {
         if(itemFixedPriceValue.hasBeenModified()) {
-            var itemFixedPrice = ItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemFixedPrice = itemFixedPriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemFixedPriceValue.getPrimaryKey());
             
             itemFixedPrice.setThruTime(session.getStartTime());
@@ -7241,7 +7337,7 @@ public class ItemControl
             var itemPricePK = itemFixedPrice.getItemPricePK();
             var unitPrice = itemFixedPriceValue.getUnitPrice();
             
-            itemFixedPrice = ItemFixedPriceFactory.getInstance().create(itemPricePK, unitPrice,
+            itemFixedPrice = itemFixedPriceFactory.create(itemPricePK, unitPrice,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemFixedPrice.getItemPrice().getItemPK(), EventTypes.MODIFY, itemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -7258,10 +7354,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Variable Prices
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemVariablePriceFactory itemVariablePriceFactory;
+
     public ItemVariablePrice createItemVariablePrice(ItemPrice itemPrice, Long minimumUnitPrice, Long maximumUnitPrice, Long unitPriceIncrement,
             BasePK createdBy) {
-        var itemVariablePrice = ItemVariablePriceFactory.getInstance().create(itemPrice, minimumUnitPrice,
+        var itemVariablePrice = itemVariablePriceFactory.create(itemPrice, minimumUnitPrice,
                 maximumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemPrice.getItemPK(), EventTypes.MODIFY, itemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7290,12 +7389,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVariablePriceFactory.getInstance().prepareStatement(query);
+            var ps = itemVariablePriceFactory.prepareStatement(query);
             
             ps.setLong(1, itemPrice.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemVariablePrice = ItemVariablePriceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemVariablePrice = itemVariablePriceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7336,13 +7435,13 @@ public class ItemControl
     }
 
     public List<ItemVariablePrice> getItemVariablePriceHistory(ItemPrice itemPrice) {
-        return ItemVariablePriceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getItemVariablePriceHistoryQueries,
+        return itemVariablePriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getItemVariablePriceHistoryQueries,
                 itemPrice);
     }
     
     public void updateItemVariablePriceFromValue(ItemVariablePriceValue itemVariablePriceValue, BasePK updatedBy) {
         if(itemVariablePriceValue.hasBeenModified()) {
-            var itemVariablePrice = ItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemVariablePrice = itemVariablePriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemVariablePriceValue.getPrimaryKey());
             
             itemVariablePrice.setThruTime(session.getStartTime());
@@ -7353,7 +7452,7 @@ public class ItemControl
             var minimumUnitPrice = itemVariablePriceValue.getMinimumUnitPrice();
             var unitPriceIncrement = itemVariablePriceValue.getUnitPriceIncrement();
             
-            itemVariablePrice = ItemVariablePriceFactory.getInstance().create(itemPricePK, maximumUnitPrice,
+            itemVariablePrice = itemVariablePriceFactory.create(itemPricePK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemVariablePrice.getItemPrice().getItemPK(), EventTypes.MODIFY, itemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -7371,6 +7470,12 @@ public class ItemControl
     //   Item Description Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemDescriptionTypeFactory itemDescriptionTypeFactory;
+
+    @Inject
+    protected ItemDescriptionTypeDetailFactory itemDescriptionTypeDetailFactory;
+
     public ItemDescriptionType createItemDescriptionType(String itemDescriptionTypeName, ItemDescriptionType parentItemDescriptionType,
             Boolean useParentIfMissing, MimeTypeUsageType mimeTypeUsageType, Boolean checkContentWebAddress, Boolean includeInIndex, Boolean indexDefault,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -7386,13 +7491,13 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemDescriptionType = ItemDescriptionTypeFactory.getInstance().create();
-        var itemDescriptionTypeDetail = ItemDescriptionTypeDetailFactory.getInstance().create(itemDescriptionType, itemDescriptionTypeName,
+        var itemDescriptionType = itemDescriptionTypeFactory.create();
+        var itemDescriptionTypeDetail = itemDescriptionTypeDetailFactory.create(itemDescriptionType, itemDescriptionTypeName,
                 parentItemDescriptionType, useParentIfMissing, mimeTypeUsageType, checkContentWebAddress, includeInIndex, indexDefault, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        itemDescriptionType = ItemDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemDescriptionType = itemDescriptionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemDescriptionType.getPrimaryKey());
         itemDescriptionType.setActiveDetail(itemDescriptionTypeDetail);
         itemDescriptionType.setLastDetail(itemDescriptionTypeDetail);
@@ -7408,7 +7513,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new ItemDescriptionTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemDescriptionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemDescriptionTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemDescriptionType getItemDescriptionTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -7463,7 +7568,7 @@ public class ItemControl
     }
 
     public ItemDescriptionType getItemDescriptionTypeByName(String itemDescriptionTypeName, EntityPermission entityPermission) {
-        return ItemDescriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeByNameQueries, itemDescriptionTypeName);
+        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeByNameQueries, itemDescriptionTypeName);
     }
 
     public ItemDescriptionType getItemDescriptionTypeByName(String itemDescriptionTypeName) {
@@ -7502,7 +7607,7 @@ public class ItemControl
     }
 
     private List<ItemDescriptionType> getItemDescriptionTypesByIncludeInIndex(EntityPermission entityPermission) {
-        return ItemDescriptionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypesByIncludeInIndexQueries);
+        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypesByIncludeInIndexQueries);
     }
 
     public List<ItemDescriptionType> getItemDescriptionTypesByIncludeInIndex() {
@@ -7535,7 +7640,7 @@ public class ItemControl
     }
 
     private ItemDescriptionType getIndexDefaultItemDescriptionType(EntityPermission entityPermission) {
-        return ItemDescriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getIndexDefaultItemDescriptionTypeQueries);
+        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, getIndexDefaultItemDescriptionTypeQueries);
     }
 
     public ItemDescriptionType getIndexDefaultItemDescriptionType() {
@@ -7572,7 +7677,7 @@ public class ItemControl
     }
 
     public ItemDescriptionType getDefaultItemDescriptionType(EntityPermission entityPermission) {
-        return ItemDescriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeQueries);
+        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeQueries);
     }
 
     public ItemDescriptionType getDefaultItemDescriptionType() {
@@ -7609,7 +7714,7 @@ public class ItemControl
     }
 
     private List<ItemDescriptionType> getItemDescriptionTypes(EntityPermission entityPermission) {
-        return ItemDescriptionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypesQueries);
+        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypesQueries);
     }
 
     public List<ItemDescriptionType> getItemDescriptionTypes() {
@@ -7643,7 +7748,7 @@ public class ItemControl
 
     private List<ItemDescriptionType> getItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType,
             EntityPermission entityPermission) {
-        return ItemDescriptionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypesByParentItemDescriptionTypeQueries,
+        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypesByParentItemDescriptionTypeQueries,
                 parentItemDescriptionType);
     }
 
@@ -7737,7 +7842,7 @@ public class ItemControl
     private void updateItemDescriptionTypeFromValue(ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemDescriptionTypeDetailValue.hasBeenModified()) {
-            var itemDescriptionType = ItemDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionType = itemDescriptionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemDescriptionTypeDetailValue.getItemDescriptionTypePK());
             var itemDescriptionTypeDetail = itemDescriptionType.getActiveDetailForUpdate();
 
@@ -7771,7 +7876,7 @@ public class ItemControl
                 }
             }
 
-            itemDescriptionTypeDetail = ItemDescriptionTypeDetailFactory.getInstance().create(itemDescriptionTypePK, itemDescriptionTypeName,
+            itemDescriptionTypeDetail = itemDescriptionTypeDetailFactory.create(itemDescriptionTypePK, itemDescriptionTypeName,
                     parentItemDescriptionTypePK, useParentIfMissing, mimeTypeUsageTypePK, checkContentWebAddress, includeInIndex, indexDefault, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
@@ -7850,8 +7955,11 @@ public class ItemControl
     //   Item Description Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemDescriptionTypeDescriptionFactory itemDescriptionTypeDescriptionFactory;
+
     public ItemDescriptionTypeDescription createItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language, String description, BasePK createdBy) {
-        var itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().create(itemDescriptionType, language, description,
+        var itemDescriptionTypeDescription = itemDescriptionTypeDescriptionFactory.create(itemDescriptionType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7879,7 +7987,7 @@ public class ItemControl
     }
 
     private ItemDescriptionTypeDescription getItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language, EntityPermission entityPermission) {
-        return ItemDescriptionTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeDescriptionQueries,
+        return itemDescriptionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeDescriptionQueries,
                 itemDescriptionType, language, Session.MAX_TIME);
     }
 
@@ -7921,7 +8029,7 @@ public class ItemControl
     }
 
     private List<ItemDescriptionTypeDescription> getItemDescriptionTypeDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        return ItemDescriptionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypeDescriptionsByItemDescriptionTypeQueries,
+        return itemDescriptionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeDescriptionsByItemDescriptionTypeQueries,
                 itemDescriptionType, Session.MAX_TIME);
     }
 
@@ -7967,7 +8075,7 @@ public class ItemControl
 
     public void updateItemDescriptionTypeDescriptionFromValue(ItemDescriptionTypeDescriptionValue itemDescriptionTypeDescriptionValue, BasePK updatedBy) {
         if(itemDescriptionTypeDescriptionValue.hasBeenModified()) {
-            var itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionTypeDescription = itemDescriptionTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemDescriptionTypeDescriptionValue.getPrimaryKey());
 
             itemDescriptionTypeDescription.setThruTime(session.getStartTime());
@@ -7977,7 +8085,7 @@ public class ItemControl
             var language = itemDescriptionTypeDescription.getLanguage();
             var description = itemDescriptionTypeDescriptionValue.getDescription();
 
-            itemDescriptionTypeDescription = ItemDescriptionTypeDescriptionFactory.getInstance().create(itemDescriptionType, language, description,
+            itemDescriptionTypeDescription = itemDescriptionTypeDescriptionFactory.create(itemDescriptionType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -8003,10 +8111,13 @@ public class ItemControl
     //   Item Image Description Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemImageDescriptionTypeFactory itemImageDescriptionTypeFactory;
+
     public ItemImageDescriptionType createItemImageDescriptionType(ItemDescriptionType itemDescriptionType, Integer minimumHeight, Integer minimumWidth,
             Integer maximumHeight, Integer maximumWidth, Integer preferredHeight, Integer preferredWidth, MimeType preferredMimeType, Integer quality,
             Boolean scaleFromParent, BasePK createdBy) {
-        var itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().create(itemDescriptionType, minimumHeight,
+        var itemImageDescriptionType = itemImageDescriptionTypeFactory.create(itemDescriptionType, minimumHeight,
                 minimumWidth, maximumHeight, maximumWidth, preferredHeight, preferredWidth, preferredMimeType, quality, scaleFromParent,
                 session.getStartTime(), Session.MAX_TIME);
 
@@ -8035,7 +8146,7 @@ public class ItemControl
     }
 
     private ItemImageDescriptionType getItemImageDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        return ItemImageDescriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemImageDescriptionTypeQueries,
+        return itemImageDescriptionTypeFactory.getEntityFromQuery(entityPermission, getItemImageDescriptionTypeQueries,
                 itemDescriptionType, Session.MAX_TIME);
     }
 
@@ -8058,7 +8169,7 @@ public class ItemControl
     /** Use the version located in ItemDescriptionLogic instead. */
     public void updateItemImageDescriptionTypeFromValue(ItemImageDescriptionTypeValue itemImageDescriptionTypeValue, BasePK updatedBy) {
         if(itemImageDescriptionTypeValue.hasBeenModified()) {
-            var itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageDescriptionType = itemImageDescriptionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemImageDescriptionTypeValue.getPrimaryKey());
 
             itemImageDescriptionType.setThruTime(session.getStartTime());
@@ -8075,7 +8186,7 @@ public class ItemControl
             var quality = itemImageDescriptionTypeValue.getQuality();
             var scaleFromParent = itemImageDescriptionTypeValue.getScaleFromParent();
 
-            itemImageDescriptionType = ItemImageDescriptionTypeFactory.getInstance().create(itemDescriptionTypePK, minimumHeight, minimumWidth, maximumHeight,
+            itemImageDescriptionType = itemImageDescriptionTypeFactory.create(itemDescriptionTypePK, minimumHeight, minimumWidth, maximumHeight,
                     maximumWidth, preferredHeight, preferredWidth, preferredMimeTypePK, quality, scaleFromParent, session.getStartTime(),
                     Session.MAX_TIME);
 
@@ -8101,6 +8212,12 @@ public class ItemControl
     //   Item Description Type Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemDescriptionTypeUseTypeFactory itemDescriptionTypeUseTypeFactory;
+
+    @Inject
+    protected ItemDescriptionTypeUseTypeDetailFactory itemDescriptionTypeUseTypeDetailFactory;
+
     public ItemDescriptionTypeUseType createItemDescriptionTypeUseType(String itemDescriptionTypeUseTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultItemDescriptionTypeUseType = getDefaultItemDescriptionTypeUseType();
@@ -8115,12 +8232,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().create();
-        var itemDescriptionTypeUseTypeDetail = ItemDescriptionTypeUseTypeDetailFactory.getInstance().create(itemDescriptionTypeUseType,
+        var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeFactory.create();
+        var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseTypeDetailFactory.create(itemDescriptionTypeUseType,
                 itemDescriptionTypeUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemDescriptionTypeUseType = itemDescriptionTypeUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemDescriptionTypeUseType.getPrimaryKey());
         itemDescriptionTypeUseType.setActiveDetail(itemDescriptionTypeUseTypeDetail);
         itemDescriptionTypeUseType.setLastDetail(itemDescriptionTypeUseTypeDetail);
@@ -8136,7 +8253,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new ItemDescriptionTypeUseTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemDescriptionTypeUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -8177,7 +8294,7 @@ public class ItemControl
     }
 
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByName(String itemDescriptionTypeUseTypeName, EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeByNameQueries, itemDescriptionTypeUseTypeName);
+        return itemDescriptionTypeUseTypeFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeByNameQueries, itemDescriptionTypeUseTypeName);
     }
 
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByName(String itemDescriptionTypeUseTypeName) {
@@ -8218,7 +8335,7 @@ public class ItemControl
     }
 
     public ItemDescriptionTypeUseType getDefaultItemDescriptionTypeUseType(EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeUseTypeQueries);
+        return itemDescriptionTypeUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeUseTypeQueries);
     }
 
     public ItemDescriptionTypeUseType getDefaultItemDescriptionTypeUseType() {
@@ -8255,7 +8372,7 @@ public class ItemControl
     }
 
     private List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypes(EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUseTypesQueries);
+        return itemDescriptionTypeUseTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUseTypesQueries);
     }
 
     public List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypes() {
@@ -8289,11 +8406,11 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemDescriptionTypeUseTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemDescriptionTypeUseTypeFactory.prepareStatement(query);
 
             ps.setLong(1, parentItemDescriptionTypeUseType.getPrimaryKey().getEntityId());
 
-            itemDescriptionTypeUseTypes = ItemDescriptionTypeUseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemDescriptionTypeUseTypes = itemDescriptionTypeUseTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -8369,7 +8486,7 @@ public class ItemControl
     private void updateItemDescriptionTypeUseTypeFromValue(ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemDescriptionTypeUseTypeDetailValue.hasBeenModified()) {
-            var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemDescriptionTypeUseTypeDetailValue.getItemDescriptionTypeUseTypePK());
             var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getActiveDetailForUpdate();
 
@@ -8397,7 +8514,7 @@ public class ItemControl
                 }
             }
 
-            itemDescriptionTypeUseTypeDetail = ItemDescriptionTypeUseTypeDetailFactory.getInstance().create(itemDescriptionTypeUseTypePK,
+            itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseTypeDetailFactory.create(itemDescriptionTypeUseTypePK,
                     itemDescriptionTypeUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             itemDescriptionTypeUseType.setActiveDetail(itemDescriptionTypeUseTypeDetail);
@@ -8444,9 +8561,12 @@ public class ItemControl
     //   Item Description Type Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemDescriptionTypeUseTypeDescriptionFactory itemDescriptionTypeUseTypeDescriptionFactory;
+
     public ItemDescriptionTypeUseTypeDescription createItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             Language language, String description, BasePK createdBy) {
-        var itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().create(itemDescriptionTypeUseType,
+        var itemDescriptionTypeUseTypeDescription = itemDescriptionTypeUseTypeDescriptionFactory.create(itemDescriptionTypeUseType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemDescriptionTypeUseType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -8475,7 +8595,7 @@ public class ItemControl
 
     private ItemDescriptionTypeUseTypeDescription getItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             Language language, EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeDescriptionQueries,
+        return itemDescriptionTypeUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeDescriptionQueries,
                 itemDescriptionTypeUseType, language, Session.MAX_TIME);
     }
 
@@ -8518,7 +8638,7 @@ public class ItemControl
 
     private List<ItemDescriptionTypeUseTypeDescription> getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeQueries,
+        return itemDescriptionTypeUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeQueries,
                 itemDescriptionTypeUseType, Session.MAX_TIME);
     }
 
@@ -8564,7 +8684,7 @@ public class ItemControl
 
     public void updateItemDescriptionTypeUseTypeDescriptionFromValue(ItemDescriptionTypeUseTypeDescriptionValue itemDescriptionTypeUseTypeDescriptionValue, BasePK updatedBy) {
         if(itemDescriptionTypeUseTypeDescriptionValue.hasBeenModified()) {
-            var itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescriptionTypeUseTypeDescription = itemDescriptionTypeUseTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemDescriptionTypeUseTypeDescriptionValue.getPrimaryKey());
 
             itemDescriptionTypeUseTypeDescription.setThruTime(session.getStartTime());
@@ -8574,7 +8694,7 @@ public class ItemControl
             var language = itemDescriptionTypeUseTypeDescription.getLanguage();
             var description = itemDescriptionTypeUseTypeDescriptionValue.getDescription();
 
-            itemDescriptionTypeUseTypeDescription = ItemDescriptionTypeUseTypeDescriptionFactory.getInstance().create(itemDescriptionTypeUseType, language, description,
+            itemDescriptionTypeUseTypeDescription = itemDescriptionTypeUseTypeDescriptionFactory.create(itemDescriptionTypeUseType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemDescriptionTypeUseType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -8600,9 +8720,12 @@ public class ItemControl
     //   Item Description Type Uses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemDescriptionTypeUseFactory itemDescriptionTypeUseFactory;
+
     public ItemDescriptionTypeUse createItemDescriptionTypeUse(ItemDescriptionType itemDescriptionType, ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             BasePK createdBy) {
-        var itemDescriptionTypeUse = ItemDescriptionTypeUseFactory.getInstance().create(itemDescriptionType, itemDescriptionTypeUseType,
+        var itemDescriptionTypeUse = itemDescriptionTypeUseFactory.create(itemDescriptionType, itemDescriptionTypeUseType,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.MODIFY, itemDescriptionTypeUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -8648,7 +8771,7 @@ public class ItemControl
 
     private ItemDescriptionTypeUse getItemDescriptionTypeUse(ItemDescriptionType itemDescriptionType, ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeUseQueries, itemDescriptionType,
+        return itemDescriptionTypeUseFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeUseQueries, itemDescriptionType,
                 itemDescriptionTypeUseType, Session.MAX_TIME);
     }
 
@@ -8687,7 +8810,7 @@ public class ItemControl
     }
 
     private List<ItemDescriptionTypeUse> getItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUsesByItemDescriptionTypeQueries,
+        return itemDescriptionTypeUseFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUsesByItemDescriptionTypeQueries,
                 itemDescriptionType, Session.MAX_TIME);
     }
 
@@ -8723,7 +8846,7 @@ public class ItemControl
 
     private List<ItemDescriptionTypeUse> getItemDescriptionTypeUsesByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        return ItemDescriptionTypeUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUsesByItemDescriptionTypeUseTypeQueries,
+        return itemDescriptionTypeUseFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUsesByItemDescriptionTypeUseTypeQueries,
                 itemDescriptionTypeUseType, Session.MAX_TIME);
     }
 
@@ -8782,6 +8905,12 @@ public class ItemControl
     //   Item Description Type Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemImageTypeFactory itemImageTypeFactory;
+
+    @Inject
+    protected ItemImageTypeDetailFactory itemImageTypeDetailFactory;
+
     public ItemImageType createItemImageType(String itemImageTypeName, MimeType preferredMimeType, Integer quality, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultItemImageType = getDefaultItemImageType();
@@ -8796,12 +8925,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemImageType = ItemImageTypeFactory.getInstance().create();
-        var itemImageTypeDetail = ItemImageTypeDetailFactory.getInstance().create(itemImageType, itemImageTypeName, preferredMimeType, quality,
+        var itemImageType = itemImageTypeFactory.create();
+        var itemImageTypeDetail = itemImageTypeDetailFactory.create(itemImageType, itemImageTypeName, preferredMimeType, quality,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        itemImageType = ItemImageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemImageType = itemImageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemImageType.getPrimaryKey());
         itemImageType.setActiveDetail(itemImageTypeDetail);
         itemImageType.setLastDetail(itemImageTypeDetail);
@@ -8817,7 +8946,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new ItemImageTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemImageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemImageTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemImageType getItemImageTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -8862,7 +8991,7 @@ public class ItemControl
     }
 
     public ItemImageType getItemImageTypeByName(String itemImageTypeName, EntityPermission entityPermission) {
-        return ItemImageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemImageTypeByNameQueries, itemImageTypeName);
+        return itemImageTypeFactory.getEntityFromQuery(entityPermission, getItemImageTypeByNameQueries, itemImageTypeName);
     }
 
     public ItemImageType getItemImageTypeByName(String itemImageTypeName) {
@@ -8899,7 +9028,7 @@ public class ItemControl
     }
 
     public ItemImageType getDefaultItemImageType(EntityPermission entityPermission) {
-        return ItemImageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemImageTypeQueries);
+        return itemImageTypeFactory.getEntityFromQuery(entityPermission, getDefaultItemImageTypeQueries);
     }
 
     public ItemImageType getDefaultItemImageType() {
@@ -8936,7 +9065,7 @@ public class ItemControl
     }
 
     private List<ItemImageType> getItemImageTypes(EntityPermission entityPermission) {
-        return ItemImageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemImageTypesQueries);
+        return itemImageTypeFactory.getEntitiesFromQuery(entityPermission, getItemImageTypesQueries);
     }
 
     public List<ItemImageType> getItemImageTypes() {
@@ -9002,7 +9131,7 @@ public class ItemControl
     private void updateItemImageTypeFromValue(ItemImageTypeDetailValue itemImageTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemImageTypeDetailValue.hasBeenModified()) {
-            var itemImageType = ItemImageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageType = itemImageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemImageTypeDetailValue.getItemImageTypePK());
             var itemImageTypeDetail = itemImageType.getActiveDetailForUpdate();
 
@@ -9032,7 +9161,7 @@ public class ItemControl
                 }
             }
 
-            itemImageTypeDetail = ItemImageTypeDetailFactory.getInstance().create(itemImageTypePK, itemImageTypeName, preferredMimeTypePK, quality, isDefault,
+            itemImageTypeDetail = itemImageTypeDetailFactory.create(itemImageTypePK, itemImageTypeName, preferredMimeTypePK, quality, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             itemImageType.setActiveDetail(itemImageTypeDetail);
@@ -9080,9 +9209,12 @@ public class ItemControl
     //   Item Description Type Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemImageTypeDescriptionFactory itemImageTypeDescriptionFactory;
+
     public ItemImageTypeDescription createItemImageTypeDescription(ItemImageType itemImageType,
             Language language, String description, BasePK createdBy) {
-        var itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().create(itemImageType,
+        var itemImageTypeDescription = itemImageTypeDescriptionFactory.create(itemImageType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemImageType.getPrimaryKey(), EventTypes.MODIFY, itemImageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9111,7 +9243,7 @@ public class ItemControl
 
     private ItemImageTypeDescription getItemImageTypeDescription(ItemImageType itemImageType,
             Language language, EntityPermission entityPermission) {
-        return ItemImageTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getItemImageTypeDescriptionQueries,
+        return itemImageTypeDescriptionFactory.getEntityFromQuery(entityPermission, getItemImageTypeDescriptionQueries,
                 itemImageType, language, Session.MAX_TIME);
     }
 
@@ -9154,7 +9286,7 @@ public class ItemControl
 
     private List<ItemImageTypeDescription> getItemImageTypeDescriptionsByItemImageType(ItemImageType itemImageType,
             EntityPermission entityPermission) {
-        return ItemImageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemImageTypeDescriptionsByItemImageTypeQueries,
+        return itemImageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemImageTypeDescriptionsByItemImageTypeQueries,
                 itemImageType, Session.MAX_TIME);
     }
 
@@ -9200,7 +9332,7 @@ public class ItemControl
 
     public void updateItemImageTypeDescriptionFromValue(ItemImageTypeDescriptionValue itemImageTypeDescriptionValue, BasePK updatedBy) {
         if(itemImageTypeDescriptionValue.hasBeenModified()) {
-            var itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageTypeDescription = itemImageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemImageTypeDescriptionValue.getPrimaryKey());
 
             itemImageTypeDescription.setThruTime(session.getStartTime());
@@ -9210,7 +9342,7 @@ public class ItemControl
             var language = itemImageTypeDescription.getLanguage();
             var description = itemImageTypeDescriptionValue.getDescription();
 
-            itemImageTypeDescription = ItemImageTypeDescriptionFactory.getInstance().create(itemImageType, language, description,
+            itemImageTypeDescription = itemImageTypeDescriptionFactory.create(itemImageType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemImageType.getPrimaryKey(), EventTypes.MODIFY, itemImageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -9235,15 +9367,21 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemDescriptionFactory itemDescriptionFactory;
+
+    @Inject
+    protected ItemDescriptionDetailFactory itemDescriptionDetailFactory;
+
     public ItemDescription createItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language,
             MimeType mimeType, BasePK createdBy) {
-        var itemDescription = ItemDescriptionFactory.getInstance().create();
-        var itemDescriptionDetail = ItemDescriptionDetailFactory.getInstance().create(itemDescription,
+        var itemDescription = itemDescriptionFactory.create();
+        var itemDescriptionDetail = itemDescriptionDetailFactory.create(itemDescription,
                 itemDescriptionType, item, language, mimeType, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        itemDescription = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemDescription = itemDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemDescription.getPrimaryKey());
         itemDescription.setActiveDetail(itemDescriptionDetail);
         itemDescription.setLastDetail(itemDescriptionDetail);
@@ -9258,7 +9396,7 @@ public class ItemControl
     public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemDescriptionPK(entityInstance.getEntityUniqueId());
 
-        return ItemDescriptionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemDescriptionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance) {
@@ -9295,7 +9433,7 @@ public class ItemControl
     }
 
     private List<ItemDescription> getScaledItemDescriptionsByItemDescriptionTypePK(ItemDescriptionTypePK itemDescriptionTypePK, EntityPermission entityPermission) {
-        return ItemDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaledItemDescriptionsByItemDescriptionTypePKQueries,
+        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaledItemDescriptionsByItemDescriptionTypePKQueries,
                 Session.MAX_TIME, itemDescriptionTypePK);
     }
 
@@ -9332,7 +9470,7 @@ public class ItemControl
     }
 
     private List<ItemDescription> getScaledItemDescriptionsByItemImageTypePK(ItemImageTypePK itemDescriptionTypePK, EntityPermission entityPermission) {
-        return ItemDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaledItemDescriptionsByItemImageTypePKQueries,
+        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaledItemDescriptionsByItemImageTypePKQueries,
                 Session.MAX_TIME, itemDescriptionTypePK);
     }
 
@@ -9369,11 +9507,11 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
 
-            itemDescriptions = ItemDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemDescriptions = itemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -9414,11 +9552,11 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, itemDescriptionType.getPrimaryKey().getEntityId());
 
-            itemDescriptions = ItemDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemDescriptions = itemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -9468,13 +9606,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemDescriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
             ps.setLong(3, language.getPrimaryKey().getEntityId());
             
-            itemDescription = ItemDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemDescription = itemDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -9572,7 +9710,7 @@ public class ItemControl
 
     public void updateItemDescriptionFromValue(ItemDescriptionDetailValue itemDescriptionDetailValue, BasePK updatedBy) {
         if(itemDescriptionDetailValue.hasBeenModified()) {
-            var itemDescription = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemDescription = itemDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemDescriptionDetailValue.getItemDescriptionPK());
             var itemDescriptionDetail = itemDescription.getActiveDetailForUpdate();
             
@@ -9585,7 +9723,7 @@ public class ItemControl
             var languagePK = itemDescriptionDetailValue.getLanguagePK();
             var mimeTypePK = itemDescriptionDetailValue.getMimeTypePK();
             
-            itemDescriptionDetail = ItemDescriptionDetailFactory.getInstance().create(itemDescriptionPK,
+            itemDescriptionDetail = itemDescriptionDetailFactory.create(itemDescriptionPK,
                     itemDescriptionTypePK, itemPK, languagePK, mimeTypePK, session.getStartTime(), Session.MAX_TIME);
             
             itemDescription.setActiveDetail(itemDescriptionDetail);
@@ -9644,10 +9782,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Blob Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemBlobDescriptionFactory itemBlobDescriptionFactory;
+
     public ItemBlobDescription createItemBlobDescription(ItemDescription itemDescription, ByteArray blobDescription,
             BasePK createdBy) {
-        var itemBlobDescription = ItemBlobDescriptionFactory.getInstance().create(itemDescription,
+        var itemBlobDescription = itemBlobDescriptionFactory.create(itemDescription,
                 blobDescription, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemBlobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9676,12 +9817,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemBlobDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemBlobDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemBlobDescription = ItemBlobDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemBlobDescription = itemBlobDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -9708,7 +9849,7 @@ public class ItemControl
     
     public void updateItemBlobDescriptionFromValue(ItemBlobDescriptionValue itemBlobDescriptionValue, BasePK updatedBy) {
         if(itemBlobDescriptionValue.hasBeenModified()) {
-            var itemBlobDescription = ItemBlobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemBlobDescription = itemBlobDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemBlobDescriptionValue.getPrimaryKey());
             
             itemBlobDescription.setThruTime(session.getStartTime());
@@ -9717,7 +9858,7 @@ public class ItemControl
             var itemDescriptionPK = itemBlobDescription.getItemDescriptionPK(); // Not updated
             var blobDescription = itemBlobDescriptionValue.getBlobDescription();
             
-            itemBlobDescription = ItemBlobDescriptionFactory.getInstance().create(itemDescriptionPK, blobDescription,
+            itemBlobDescription = itemBlobDescriptionFactory.create(itemDescriptionPK, blobDescription,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemBlobDescription.getItemDescription().getLastDetail().getItemPK(), EventTypes.MODIFY, itemBlobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -9742,10 +9883,12 @@ public class ItemControl
     //   Item Image Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemImageDescriptionFactory itemImageDescriptionFactory;
 
     public ItemImageDescription createItemImageDescription(ItemDescription itemDescription, ItemImageType itemImageType, Integer height, Integer width,
             Boolean scaledFromParent, BasePK createdBy) {
-        var itemImageDescription = ItemImageDescriptionFactory.getInstance().create(itemDescription, itemImageType, height, width,
+        var itemImageDescription = itemImageDescriptionFactory.create(itemDescription, itemImageType, height, width,
                 scaledFromParent, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemImageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9775,7 +9918,7 @@ public class ItemControl
     }
 
     private ItemImageDescription getItemImageDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        return ItemImageDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getItemImageDescriptionQueries,
+        return itemImageDescriptionFactory.getEntityFromQuery(entityPermission, getItemImageDescriptionQueries,
                 itemDescription, Session.MAX_TIME);
     }
 
@@ -9817,7 +9960,7 @@ public class ItemControl
     }
 
     private List<ItemImageDescription> getItemImageDescriptionsByItemImageType(ItemImageType itemImageType, EntityPermission entityPermission) {
-        return ItemImageDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemImageDescriptionByItemImageTypeQueries,
+        return itemImageDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemImageDescriptionByItemImageTypeQueries,
                 itemImageType, Session.MAX_TIME);
     }
 
@@ -9831,7 +9974,7 @@ public class ItemControl
 
     public void updateItemImageDescriptionFromValue(ItemImageDescriptionValue itemImageDescriptionValue, BasePK updatedBy) {
         if(itemImageDescriptionValue.hasBeenModified()) {
-            var itemImageDescription = ItemImageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemImageDescription = itemImageDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemImageDescriptionValue.getPrimaryKey());
 
             itemImageDescription.setThruTime(session.getStartTime());
@@ -9843,7 +9986,7 @@ public class ItemControl
             var width = itemImageDescriptionValue.getWidth();
             var scaledFromParent = itemImageDescriptionValue.getScaledFromParent();
 
-            itemImageDescription = ItemImageDescriptionFactory.getInstance().create(itemDescriptionPK, itemImageTypePK, height, width, scaledFromParent,
+            itemImageDescription = itemImageDescriptionFactory.create(itemDescriptionPK, itemImageTypePK, height, width, scaledFromParent,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemImageDescription.getItemDescription().getLastDetail().getItemPK(), EventTypes.MODIFY, itemImageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -9867,10 +10010,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Clob Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemClobDescriptionFactory itemClobDescriptionFactory;
+
     public ItemClobDescription createItemClobDescription(ItemDescription itemDescription, String clobDescription,
             BasePK createdBy) {
-        var itemClobDescription = ItemClobDescriptionFactory.getInstance().create(itemDescription,
+        var itemClobDescription = itemClobDescriptionFactory.create(itemDescription,
                 clobDescription, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemClobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9899,12 +10045,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemClobDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemClobDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemClobDescription = ItemClobDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemClobDescription = itemClobDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -9930,7 +10076,7 @@ public class ItemControl
     
     public void updateItemClobDescriptionFromValue(ItemClobDescriptionValue itemClobDescriptionValue, BasePK updatedBy) {
         if(itemClobDescriptionValue.hasBeenModified()) {
-            var itemClobDescription = ItemClobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemClobDescription = itemClobDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemClobDescriptionValue.getPrimaryKey());
             
             itemClobDescription.setThruTime(session.getStartTime());
@@ -9939,7 +10085,7 @@ public class ItemControl
             var itemDescriptionPK = itemClobDescription.getItemDescriptionPK(); // Not updated
             var clobDescription = itemClobDescriptionValue.getClobDescription();
             
-            itemClobDescription = ItemClobDescriptionFactory.getInstance().create(itemDescriptionPK, clobDescription,
+            itemClobDescription = itemClobDescriptionFactory.create(itemDescriptionPK, clobDescription,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemClobDescription.getItemDescription().getLastDetail().getItemPK(), EventTypes.MODIFY, itemClobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -9963,10 +10109,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item String Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemStringDescriptionFactory itemStringDescriptionFactory;
+
     public ItemStringDescription createItemStringDescription(ItemDescription itemDescription, String stringDescription,
             BasePK createdBy) {
-        var itemStringDescription = ItemStringDescriptionFactory.getInstance().create(itemDescription,
+        var itemStringDescription = itemStringDescriptionFactory.create(itemDescription,
                 stringDescription, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemDescription.getLastDetail().getItemPK(), EventTypes.MODIFY, itemStringDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -9995,12 +10144,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemStringDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemStringDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemStringDescription = ItemStringDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemStringDescription = itemStringDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10026,7 +10175,7 @@ public class ItemControl
     
     public void updateItemStringDescriptionFromValue(ItemStringDescriptionValue itemStringDescriptionValue, BasePK updatedBy) {
         if(itemStringDescriptionValue.hasBeenModified()) {
-            var itemStringDescription = ItemStringDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemStringDescription = itemStringDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemStringDescriptionValue.getPrimaryKey());
             
             itemStringDescription.setThruTime(session.getStartTime());
@@ -10035,7 +10184,7 @@ public class ItemControl
             var itemDescriptionPK = itemStringDescription.getItemDescriptionPK(); // Not updated
             var stringDescription = itemStringDescriptionValue.getStringDescription();
             
-            itemStringDescription = ItemStringDescriptionFactory.getInstance().create(itemDescriptionPK, stringDescription,
+            itemStringDescription = itemStringDescriptionFactory.create(itemDescriptionPK, stringDescription,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemStringDescription.getItemDescription().getLastDetail().getItemPK(), EventTypes.MODIFY, itemStringDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -10060,6 +10209,12 @@ public class ItemControl
     //   Item Volume Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemVolumeTypeFactory itemVolumeTypeFactory;
+
+    @Inject
+    protected ItemVolumeTypeDetailFactory itemVolumeTypeDetailFactory;
+
     public ItemVolumeType createItemVolumeType(String itemVolumeTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultItemVolumeType = getDefaultItemVolumeType();
@@ -10074,12 +10229,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemVolumeType = ItemVolumeTypeFactory.getInstance().create();
-        var itemVolumeTypeDetail = ItemVolumeTypeDetailFactory.getInstance().create( itemVolumeType, itemVolumeTypeName,
+        var itemVolumeType = itemVolumeTypeFactory.create();
+        var itemVolumeTypeDetail = itemVolumeTypeDetailFactory.create( itemVolumeType, itemVolumeTypeName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        itemVolumeType = ItemVolumeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemVolumeType.getPrimaryKey());
+        itemVolumeType = itemVolumeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemVolumeType.getPrimaryKey());
         itemVolumeType.setActiveDetail(itemVolumeTypeDetail);
         itemVolumeType.setLastDetail(itemVolumeTypeDetail);
         itemVolumeType.store();
@@ -10094,7 +10249,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new ItemVolumeTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemVolumeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemVolumeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemVolumeType getItemVolumeTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -10106,7 +10261,7 @@ public class ItemControl
     }
 
     public ItemVolumeType getItemVolumeTypeByPK(ItemVolumeTypePK pk) {
-        return ItemVolumeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return itemVolumeTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countItemVolumeTypes() {
@@ -10139,11 +10294,11 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemVolumeTypeName);
 
-            itemVolumeType = ItemVolumeTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemVolumeType = itemVolumeTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10185,9 +10340,9 @@ public class ItemControl
                 """;
         }
 
-        var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemVolumeTypeFactory.prepareStatement(query);
 
-        return ItemVolumeTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemVolumeTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemVolumeType getDefaultItemVolumeType() {
@@ -10222,9 +10377,9 @@ public class ItemControl
                 """;
         }
 
-        var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemVolumeTypeFactory.prepareStatement(query);
 
-        return ItemVolumeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return itemVolumeTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<ItemVolumeType> getItemVolumeTypes() {
@@ -10291,7 +10446,7 @@ public class ItemControl
     private void updateItemVolumeTypeFromValue(final ItemVolumeTypeDetailValue itemVolumeTypeDetailValue, final boolean checkDefault,
             final BasePK updatedBy) {
         if(itemVolumeTypeDetailValue.hasBeenModified()) {
-            final var itemVolumeType = ItemVolumeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            final var itemVolumeType = itemVolumeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemVolumeTypeDetailValue.getItemVolumeTypePK());
             var itemVolumeTypeDetail = itemVolumeType.getActiveDetailForUpdate();
 
@@ -10319,7 +10474,7 @@ public class ItemControl
                 }
             }
 
-            itemVolumeTypeDetail = ItemVolumeTypeDetailFactory.getInstance().create(itemVolumeTypePK, itemVolumeTypeName,
+            itemVolumeTypeDetail = itemVolumeTypeDetailFactory.create(itemVolumeTypePK, itemVolumeTypeName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             itemVolumeType.setActiveDetail(itemVolumeTypeDetail);
@@ -10365,9 +10520,12 @@ public class ItemControl
     //   Item Volume Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemVolumeTypeDescriptionFactory itemVolumeTypeDescriptionFactory;
+
     public ItemVolumeTypeDescription createItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language,
             String description, BasePK createdBy) {
-        var itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().create(
+        var itemVolumeTypeDescription = itemVolumeTypeDescriptionFactory.create(
                 itemVolumeType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.MODIFY, itemVolumeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10396,13 +10554,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemVolumeTypeDescription = itemVolumeTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10449,12 +10607,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemVolumeTypeDescriptions = ItemVolumeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemVolumeTypeDescriptions = itemVolumeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10504,7 +10662,7 @@ public class ItemControl
 
     public void updateItemVolumeTypeDescriptionFromValue(ItemVolumeTypeDescriptionValue itemVolumeTypeDescriptionValue, BasePK updatedBy) {
         if(itemVolumeTypeDescriptionValue.hasBeenModified()) {
-            var itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemVolumeTypeDescription = itemVolumeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemVolumeTypeDescriptionValue.getPrimaryKey());
 
             itemVolumeTypeDescription.setThruTime(session.getStartTime());
@@ -10514,7 +10672,7 @@ public class ItemControl
             var language = itemVolumeTypeDescription.getLanguage();
             var description = itemVolumeTypeDescriptionValue.getDescription();
 
-            itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().create(itemVolumeType, language, description,
+            itemVolumeTypeDescription = itemVolumeTypeDescriptionFactory.create(itemVolumeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.MODIFY, itemVolumeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -10540,9 +10698,12 @@ public class ItemControl
     //   Item Volumes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemVolumeFactory itemVolumeFactory;
+
     public ItemVolume createItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType,
             Long height, Long width, Long depth, BasePK createdBy) {
-        var itemVolume = ItemVolumeFactory.getInstance().create(item, unitOfMeasureType, itemVolumeType, height, width, depth,
+        var itemVolume = itemVolumeFactory.create(item, unitOfMeasureType, itemVolumeType, height, width, depth,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10596,14 +10757,14 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeFactory.prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, itemVolumeType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
 
-            itemVolume = ItemVolumeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemVolume = itemVolumeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10651,13 +10812,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeFactory.prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            itemVolumes = ItemVolumeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemVolumes = itemVolumeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10699,12 +10860,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeFactory.prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemVolumes = ItemVolumeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemVolumes = itemVolumeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10746,12 +10907,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+            var ps = itemVolumeFactory.prepareStatement(query);
 
             ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemVolumes = ItemVolumeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemVolumes = itemVolumeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10769,7 +10930,7 @@ public class ItemControl
 
     public void updateItemVolumeFromValue(ItemVolumeValue itemVolumeValue, BasePK updatedBy) {
         if(itemVolumeValue.hasBeenModified()) {
-            var itemVolume = ItemVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemVolume = itemVolumeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemVolumeValue.getPrimaryKey());
 
             itemVolume.setThruTime(session.getStartTime());
@@ -10782,7 +10943,7 @@ public class ItemControl
             var width = itemVolumeValue.getWidth();
             var depth = itemVolumeValue.getDepth();
 
-            itemVolume = ItemVolumeFactory.getInstance().create(itemPK, unitOfMeasureTypePK, itemVolumeTypePK, height,
+            itemVolume = itemVolumeFactory.create(itemPK, unitOfMeasureTypePK, itemVolumeTypePK, height,
                     width, depth, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemPK, EventTypes.MODIFY, itemVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -10840,6 +11001,12 @@ public class ItemControl
     //   Item Weight Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemWeightTypeFactory itemWeightTypeFactory;
+
+    @Inject
+    protected ItemWeightTypeDetailFactory itemWeightTypeDetailFactory;
+
     public ItemWeightType createItemWeightType(String itemWeightTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultItemWeightType = getDefaultItemWeightType();
@@ -10854,12 +11021,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var itemWeightType = ItemWeightTypeFactory.getInstance().create();
-        var itemWeightTypeDetail = ItemWeightTypeDetailFactory.getInstance().create( itemWeightType, itemWeightTypeName,
+        var itemWeightType = itemWeightTypeFactory.create();
+        var itemWeightTypeDetail = itemWeightTypeDetailFactory.create( itemWeightType, itemWeightTypeName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        itemWeightType = ItemWeightTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemWeightType.getPrimaryKey());
+        itemWeightType = itemWeightTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemWeightType.getPrimaryKey());
         itemWeightType.setActiveDetail(itemWeightTypeDetail);
         itemWeightType.setLastDetail(itemWeightTypeDetail);
         itemWeightType.store();
@@ -10874,7 +11041,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new ItemWeightTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemWeightTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemWeightTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemWeightType getItemWeightTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -10886,7 +11053,7 @@ public class ItemControl
     }
 
     public ItemWeightType getItemWeightTypeByPK(ItemWeightTypePK pk) {
-        return ItemWeightTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return itemWeightTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countItemWeightTypes() {
@@ -10918,11 +11085,11 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightTypeFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightTypeFactory.prepareStatement(query);
 
             ps.setString(1, itemWeightTypeName);
 
-            itemWeightType = ItemWeightTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemWeightType = itemWeightTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -10964,9 +11131,9 @@ public class ItemControl
                 """;
         }
 
-        var ps = ItemWeightTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemWeightTypeFactory.prepareStatement(query);
 
-        return ItemWeightTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return itemWeightTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public ItemWeightType getDefaultItemWeightType() {
@@ -11001,9 +11168,9 @@ public class ItemControl
                 """;
         }
 
-        var ps = ItemWeightTypeFactory.getInstance().prepareStatement(query);
+        var ps = itemWeightTypeFactory.prepareStatement(query);
 
-        return ItemWeightTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return itemWeightTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<ItemWeightType> getItemWeightTypes() {
@@ -11070,7 +11237,7 @@ public class ItemControl
     private void updateItemWeightTypeFromValue(final ItemWeightTypeDetailValue itemWeightTypeDetailValue, final boolean checkDefault,
             final BasePK updatedBy) {
         if(itemWeightTypeDetailValue.hasBeenModified()) {
-            final var itemWeightType = ItemWeightTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            final var itemWeightType = itemWeightTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemWeightTypeDetailValue.getItemWeightTypePK());
             var itemWeightTypeDetail = itemWeightType.getActiveDetailForUpdate();
 
@@ -11098,7 +11265,7 @@ public class ItemControl
                 }
             }
 
-            itemWeightTypeDetail = ItemWeightTypeDetailFactory.getInstance().create(itemWeightTypePK, itemWeightTypeName,
+            itemWeightTypeDetail = itemWeightTypeDetailFactory.create(itemWeightTypePK, itemWeightTypeName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             itemWeightType.setActiveDetail(itemWeightTypeDetail);
@@ -11145,9 +11312,12 @@ public class ItemControl
     //   Item Weight Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemWeightTypeDescriptionFactory itemWeightTypeDescriptionFactory;
+
     public ItemWeightTypeDescription createItemWeightTypeDescription(ItemWeightType itemWeightType, Language language,
             String description, BasePK createdBy) {
-        var itemWeightTypeDescription = ItemWeightTypeDescriptionFactory.getInstance().create(
+        var itemWeightTypeDescription = itemWeightTypeDescriptionFactory.create(
                 itemWeightType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemWeightType.getPrimaryKey(), EventTypes.MODIFY, itemWeightTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11176,13 +11346,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            itemWeightTypeDescription = ItemWeightTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemWeightTypeDescription = itemWeightTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -11229,12 +11399,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemWeightTypeDescriptions = ItemWeightTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemWeightTypeDescriptions = itemWeightTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -11284,7 +11454,7 @@ public class ItemControl
 
     public void updateItemWeightTypeDescriptionFromValue(ItemWeightTypeDescriptionValue itemWeightTypeDescriptionValue, BasePK updatedBy) {
         if(itemWeightTypeDescriptionValue.hasBeenModified()) {
-            var itemWeightTypeDescription = ItemWeightTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemWeightTypeDescription = itemWeightTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemWeightTypeDescriptionValue.getPrimaryKey());
 
             itemWeightTypeDescription.setThruTime(session.getStartTime());
@@ -11294,7 +11464,7 @@ public class ItemControl
             var language = itemWeightTypeDescription.getLanguage();
             var description = itemWeightTypeDescriptionValue.getDescription();
 
-            itemWeightTypeDescription = ItemWeightTypeDescriptionFactory.getInstance().create(itemWeightType, language, description,
+            itemWeightTypeDescription = itemWeightTypeDescriptionFactory.create(itemWeightType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(itemWeightType.getPrimaryKey(), EventTypes.MODIFY, itemWeightTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -11319,10 +11489,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Weights
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemWeightFactory itemWeightFactory;
+
     public ItemWeight createItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType,
             Long weight, BasePK createdBy) {
-        var itemWeight = ItemWeightFactory.getInstance().create(item, unitOfMeasureType, itemWeightType, weight,
+        var itemWeight = itemWeightFactory.create(item, unitOfMeasureType, itemWeightType, weight,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11376,14 +11549,14 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, itemWeightType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            itemWeight = ItemWeightFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemWeight = itemWeightFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -11431,13 +11604,13 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightFactory.prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            itemWeights = ItemWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemWeights = itemWeightFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -11479,12 +11652,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightFactory.prepareStatement(query);
 
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemWeights = ItemWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemWeights = itemWeightFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -11526,12 +11699,12 @@ public class ItemControl
                 """;
             }
 
-            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
+            var ps = itemWeightFactory.prepareStatement(query);
 
             ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            itemWeights = ItemWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemWeights = itemWeightFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -11549,7 +11722,7 @@ public class ItemControl
 
     public void updateItemWeightFromValue(ItemWeightValue itemWeightValue, BasePK updatedBy) {
         if(itemWeightValue.hasBeenModified()) {
-            var itemWeight = ItemWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemWeight = itemWeightFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     itemWeightValue.getPrimaryKey());
             
             itemWeight.setThruTime(session.getStartTime());
@@ -11560,7 +11733,7 @@ public class ItemControl
             var itemWeightTypePK = itemWeight.getItemWeightTypePK();
             var weight = itemWeightValue.getWeight();
             
-            itemWeight = ItemWeightFactory.getInstance().create(itemPK, unitOfMeasureTypePK, itemWeightTypePK, weight,
+            itemWeight = itemWeightFactory.create(itemPK, unitOfMeasureTypePK, itemWeightTypePK, weight,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemWeight.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -11615,6 +11788,12 @@ public class ItemControl
     //   Related Item Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected RelatedItemTypeFactory relatedItemTypeFactory;
+
+    @Inject
+    protected RelatedItemTypeDetailFactory relatedItemTypeDetailFactory;
+
     public RelatedItemType createRelatedItemType(String relatedItemTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultRelatedItemType = getDefaultRelatedItemType();
@@ -11629,12 +11808,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var relatedItemType = RelatedItemTypeFactory.getInstance().create();
-        var relatedItemTypeDetail = RelatedItemTypeDetailFactory.getInstance().create(relatedItemType,
+        var relatedItemType = relatedItemTypeFactory.create();
+        var relatedItemTypeDetail = relatedItemTypeDetailFactory.create(relatedItemType,
                 relatedItemTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        relatedItemType = RelatedItemTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        relatedItemType = relatedItemTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 relatedItemType.getPrimaryKey());
         relatedItemType.setActiveDetail(relatedItemTypeDetail);
         relatedItemType.setLastDetail(relatedItemTypeDetail);
@@ -11650,7 +11829,7 @@ public class ItemControl
             final EntityPermission entityPermission) {
         var pk = new RelatedItemTypePK(entityInstance.getEntityUniqueId());
 
-        return RelatedItemTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return relatedItemTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public RelatedItemType getRelatedItemTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -11662,7 +11841,7 @@ public class ItemControl
     }
 
     public RelatedItemType getRelatedItemTypeByPK(RelatedItemTypePK pk) {
-        return RelatedItemTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return relatedItemTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countRelatedItemTypes() {
@@ -11695,7 +11874,7 @@ public class ItemControl
     }
 
     public RelatedItemType getRelatedItemTypeByName(String relatedItemTypeName, EntityPermission entityPermission) {
-        return RelatedItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, getRelatedItemTypeByNameQueries, relatedItemTypeName);
+        return relatedItemTypeFactory.getEntityFromQuery(entityPermission, getRelatedItemTypeByNameQueries, relatedItemTypeName);
     }
 
     public RelatedItemType getRelatedItemTypeByName(String relatedItemTypeName) {
@@ -11736,7 +11915,7 @@ public class ItemControl
     }
 
     public RelatedItemType getDefaultRelatedItemType(EntityPermission entityPermission) {
-        return RelatedItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultRelatedItemTypeQueries);
+        return relatedItemTypeFactory.getEntityFromQuery(entityPermission, getDefaultRelatedItemTypeQueries);
     }
 
     public RelatedItemType getDefaultRelatedItemType() {
@@ -11773,7 +11952,7 @@ public class ItemControl
     }
 
     private List<RelatedItemType> getRelatedItemTypes(EntityPermission entityPermission) {
-        return RelatedItemTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemTypesQueries);
+        return relatedItemTypeFactory.getEntitiesFromQuery(entityPermission, getRelatedItemTypesQueries);
     }
 
     public List<RelatedItemType> getRelatedItemTypes() {
@@ -11807,7 +11986,7 @@ public class ItemControl
     }
 
     private List<RelatedItemType> getRelatedItemTypesByParentRelatedItemType(RelatedItemType parentRelatedItemType, EntityPermission entityPermission) {
-        return RelatedItemTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemTypesByParentRelatedItemTypeQueries,
+        return relatedItemTypeFactory.getEntitiesFromQuery(entityPermission, getRelatedItemTypesByParentRelatedItemTypeQueries,
                 parentRelatedItemType);
     }
 
@@ -11879,7 +12058,7 @@ public class ItemControl
     private void updateRelatedItemTypeFromValue(RelatedItemTypeDetailValue relatedItemTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(relatedItemTypeDetailValue.hasBeenModified()) {
-            var relatedItemType = RelatedItemTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var relatedItemType = relatedItemTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      relatedItemTypeDetailValue.getRelatedItemTypePK());
             var relatedItemTypeDetail = relatedItemType.getActiveDetailForUpdate();
 
@@ -11907,7 +12086,7 @@ public class ItemControl
                 }
             }
 
-            relatedItemTypeDetail = RelatedItemTypeDetailFactory.getInstance().create(relatedItemTypePK,
+            relatedItemTypeDetail = relatedItemTypeDetailFactory.create(relatedItemTypePK,
                     relatedItemTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             relatedItemType.setActiveDetail(relatedItemTypeDetail);
@@ -11954,9 +12133,12 @@ public class ItemControl
     //   Related Item Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected RelatedItemTypeDescriptionFactory relatedItemTypeDescriptionFactory;
+
     public RelatedItemTypeDescription createRelatedItemTypeDescription(RelatedItemType relatedItemType,
             Language language, String description, BasePK createdBy) {
-        var relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().create(relatedItemType,
+        var relatedItemTypeDescription = relatedItemTypeDescriptionFactory.create(relatedItemType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(relatedItemType.getPrimaryKey(), EventTypes.MODIFY, relatedItemTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11985,7 +12167,7 @@ public class ItemControl
 
     private RelatedItemTypeDescription getRelatedItemTypeDescription(RelatedItemType relatedItemType,
             Language language, EntityPermission entityPermission) {
-        return RelatedItemTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getRelatedItemTypeDescriptionQueries,
+        return relatedItemTypeDescriptionFactory.getEntityFromQuery(entityPermission, getRelatedItemTypeDescriptionQueries,
                 relatedItemType, language, Session.MAX_TIME);
     }
 
@@ -12028,7 +12210,7 @@ public class ItemControl
 
     private List<RelatedItemTypeDescription> getRelatedItemTypeDescriptionsByRelatedItemType(RelatedItemType relatedItemType,
             EntityPermission entityPermission) {
-        return RelatedItemTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemTypeDescriptionsByRelatedItemTypeQueries,
+        return relatedItemTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getRelatedItemTypeDescriptionsByRelatedItemTypeQueries,
                 relatedItemType, Session.MAX_TIME);
     }
 
@@ -12074,7 +12256,7 @@ public class ItemControl
 
     public void updateRelatedItemTypeDescriptionFromValue(RelatedItemTypeDescriptionValue relatedItemTypeDescriptionValue, BasePK updatedBy) {
         if(relatedItemTypeDescriptionValue.hasBeenModified()) {
-            var relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var relatedItemTypeDescription = relatedItemTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     relatedItemTypeDescriptionValue.getPrimaryKey());
 
             relatedItemTypeDescription.setThruTime(session.getStartTime());
@@ -12084,7 +12266,7 @@ public class ItemControl
             var language = relatedItemTypeDescription.getLanguage();
             var description = relatedItemTypeDescriptionValue.getDescription();
 
-            relatedItemTypeDescription = RelatedItemTypeDescriptionFactory.getInstance().create(relatedItemType, language, description,
+            relatedItemTypeDescription = relatedItemTypeDescriptionFactory.create(relatedItemType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(relatedItemType.getPrimaryKey(), EventTypes.MODIFY, relatedItemTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -12110,13 +12292,19 @@ public class ItemControl
     //   Related Items
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected RelatedItemFactory relatedItemFactory;
+
+    @Inject
+    protected RelatedItemDetailFactory relatedItemDetailFactory;
+
     public RelatedItem createRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem, Integer sortOrder, BasePK createdBy) {
-        var relatedItem = RelatedItemFactory.getInstance().create();
-        var relatedItemDetail = RelatedItemDetailFactory.getInstance().create(relatedItem, relatedItemType, fromItem, toItem, sortOrder,
+        var relatedItem = relatedItemFactory.create();
+        var relatedItemDetail = relatedItemDetailFactory.create(relatedItem, relatedItemType, fromItem, toItem, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        relatedItem = RelatedItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        relatedItem = relatedItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 relatedItem.getPrimaryKey());
         relatedItem.setActiveDetail(relatedItemDetail);
         relatedItem.setLastDetail(relatedItemDetail);
@@ -12149,7 +12337,7 @@ public class ItemControl
     }
 
     private RelatedItem getRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem, EntityPermission entityPermission) {
-        return RelatedItemFactory.getInstance().getEntityFromQuery(entityPermission, getRelatedItemQueries, relatedItemType, fromItem, toItem);
+        return relatedItemFactory.getEntityFromQuery(entityPermission, getRelatedItemQueries, relatedItemType, fromItem, toItem);
     }
 
     public RelatedItem getRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem) {
@@ -12193,7 +12381,7 @@ public class ItemControl
     }
 
     private List<RelatedItem> getRelatedItemsByRelatedItemType(RelatedItemType relatedItemType, EntityPermission entityPermission) {
-        return RelatedItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeQueries, relatedItemType);
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeQueries, relatedItemType);
     }
 
     public List<RelatedItem> getRelatedItemsByRelatedItemType(RelatedItemType relatedItemType) {
@@ -12239,7 +12427,7 @@ public class ItemControl
     }
 
     private List<RelatedItem> getRelatedItemsByRelatedItemTypeAndFromItem(RelatedItemType relatedItemType, Item fromItem, EntityPermission entityPermission) {
-        return RelatedItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeAndFromItemQueries, relatedItemType, fromItem);
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeAndFromItemQueries, relatedItemType, fromItem);
     }
 
     public List<RelatedItem> getRelatedItemsByRelatedItemTypeAndFromItem(RelatedItemType relatedItemType, Item fromItem) {
@@ -12285,7 +12473,7 @@ public class ItemControl
     }
 
     private List<RelatedItem> getRelatedItemsByRelatedItemTypeAndToItem(RelatedItemType relatedItemType, Item toItem, EntityPermission entityPermission) {
-        return RelatedItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeAndToItemQueries, relatedItemType, toItem);
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeAndToItemQueries, relatedItemType, toItem);
     }
 
     public List<RelatedItem> getRelatedItemsByRelatedItemTypeAndToItem(RelatedItemType relatedItemType, Item toItem) {
@@ -12332,7 +12520,7 @@ public class ItemControl
     }
 
     private List<RelatedItem> getRelatedItemsByFromItem(Item fromItem, EntityPermission entityPermission) {
-        return RelatedItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemsByFromItemQueries, fromItem);
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByFromItemQueries, fromItem);
     }
 
     public List<RelatedItem> getRelatedItemsByFromItem(Item fromItem) {
@@ -12379,7 +12567,7 @@ public class ItemControl
     }
 
     private List<RelatedItem> getRelatedItemsByToItem(Item toItem, EntityPermission entityPermission) {
-        return RelatedItemFactory.getInstance().getEntitiesFromQuery(entityPermission, getRelatedItemsByToItemQueries, toItem);
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByToItemQueries, toItem);
     }
 
     public List<RelatedItem> getRelatedItemsByToItem(Item toItem) {
@@ -12432,7 +12620,7 @@ public class ItemControl
 
     public void updateRelatedItemFromValue(RelatedItemDetailValue relatedItemDetailValue, BasePK updatedBy) {
         if(relatedItemDetailValue.hasBeenModified()) {
-            var relatedItem = RelatedItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var relatedItem = relatedItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      relatedItemDetailValue.getRelatedItemPK());
             var relatedItemDetail = relatedItem.getActiveDetailForUpdate();
 
@@ -12445,7 +12633,7 @@ public class ItemControl
             var toItemPK = relatedItemDetail.getToItemPK(); // Not updated
             var sortOrder = relatedItemDetailValue.getSortOrder();
 
-            relatedItemDetail = RelatedItemDetailFactory.getInstance().create(relatedItemPK, relatedItemTypePK, fromItemPK, toItemPK, sortOrder,
+            relatedItemDetail = relatedItemDetailFactory.create(relatedItemPK, relatedItemTypePK, fromItemPK, toItemPK, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             relatedItem.setActiveDetail(relatedItemDetail);
@@ -12491,6 +12679,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Codes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeFactory harmonizedTariffScheduleCodeFactory;
+
+    @Inject
+    protected HarmonizedTariffScheduleCodeDetailFactory harmonizedTariffScheduleCodeDetailFactory;
+
     public HarmonizedTariffScheduleCode createHarmonizedTariffScheduleCode(GeoCode countryGeoCode, String harmonizedTariffScheduleCodeName,
             HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit, HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -12506,13 +12700,13 @@ public class ItemControl
             isDefault = true;
         }
 
-        var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().create();
-        var harmonizedTariffScheduleCodeDetail = HarmonizedTariffScheduleCodeDetailFactory.getInstance().create(
+        var harmonizedTariffScheduleCode = harmonizedTariffScheduleCodeFactory.create();
+        var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCodeDetailFactory.create(
                 harmonizedTariffScheduleCode, countryGeoCode, harmonizedTariffScheduleCodeName, firstHarmonizedTariffScheduleCodeUnit,
                 secondHarmonizedTariffScheduleCodeUnit, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        harmonizedTariffScheduleCode = harmonizedTariffScheduleCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 harmonizedTariffScheduleCode.getPrimaryKey());
         harmonizedTariffScheduleCode.setActiveDetail(harmonizedTariffScheduleCodeDetail);
         harmonizedTariffScheduleCode.setLastDetail(harmonizedTariffScheduleCodeDetail);
@@ -12527,7 +12721,7 @@ public class ItemControl
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
 
-        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return harmonizedTariffScheduleCodeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
@@ -12576,7 +12770,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries,
+        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries,
                 countryGeoCode);
     }
 
@@ -12610,7 +12804,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnitQueries,
+        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnitQueries,
                 firstHarmonizedTariffScheduleCodeUnit);
     }
 
@@ -12644,7 +12838,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnitQueries,
+        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnitQueries,
                 secondHarmonizedTariffScheduleCodeUnit);
     }
 
@@ -12678,7 +12872,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCode getDefaultHarmonizedTariffScheduleCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeQueries,
+        return harmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeQueries,
                 countryGeoCode);
     }
 
@@ -12716,7 +12910,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByName(GeoCode countryGeoCode, String harmonizedTariffScheduleCodeName, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeByNameQueries,
+        return harmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeByNameQueries,
                 countryGeoCode, harmonizedTariffScheduleCodeName);
     }
 
@@ -12793,7 +12987,7 @@ public class ItemControl
     private void updateHarmonizedTariffScheduleCodeFromValue(HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeDetailValue.hasBeenModified()) {
-            var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCode = harmonizedTariffScheduleCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodePK());
             var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getActiveDetailForUpdate();
 
@@ -12825,7 +13019,7 @@ public class ItemControl
                 }
             }
 
-            harmonizedTariffScheduleCodeDetail = HarmonizedTariffScheduleCodeDetailFactory.getInstance().create(harmonizedTariffScheduleCodePK,
+            harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCodeDetailFactory.create(harmonizedTariffScheduleCodePK,
                     countryGeoCodePK, harmonizedTariffScheduleCodeName, firstHarmonizedTariffScheduleCodeUnitPK, secondHarmonizedTariffScheduleCodeUnitPK, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
@@ -12898,9 +13092,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Code Translations
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeTranslationFactory harmonizedTariffScheduleCodeTranslationFactory;
+
     public HarmonizedTariffScheduleCodeTranslation createHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
-        var harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().create(harmonizedTariffScheduleCode,
+        var harmonizedTariffScheduleCodeTranslation = harmonizedTariffScheduleCodeTranslationFactory.create(harmonizedTariffScheduleCode,
                 language, description, overviewMimeType, overview, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(harmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -12928,7 +13125,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeTranslation getHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, Language language, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeTranslationFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeTranslationQueries,
+        return harmonizedTariffScheduleCodeTranslationFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeTranslationQueries,
                 harmonizedTariffScheduleCode, language, Session.MAX_TIME);
     }
 
@@ -12969,7 +13166,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCodeTranslation> getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeTranslationFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeQueries,
+        return harmonizedTariffScheduleCodeTranslationFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeQueries,
                 harmonizedTariffScheduleCode, Session.MAX_TIME);
     }
 
@@ -13008,7 +13205,7 @@ public class ItemControl
 
     public void updateHarmonizedTariffScheduleCodeTranslationFromValue(HarmonizedTariffScheduleCodeTranslationValue harmonizedTariffScheduleCodeTranslationValue, BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeTranslationValue.hasBeenModified()) {
-            var harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCodeTranslation = harmonizedTariffScheduleCodeTranslationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeTranslationValue.getPrimaryKey());
 
             harmonizedTariffScheduleCodeTranslation.setThruTime(session.getStartTime());
@@ -13020,7 +13217,7 @@ public class ItemControl
             var overviewMimeTypePK = harmonizedTariffScheduleCodeTranslationValue.getOverviewMimeTypePK();
             var overview = harmonizedTariffScheduleCodeTranslationValue.getOverview();
 
-            harmonizedTariffScheduleCodeTranslation = HarmonizedTariffScheduleCodeTranslationFactory.getInstance().create(harmonizedTariffScheduleCodePK,
+            harmonizedTariffScheduleCodeTranslation = harmonizedTariffScheduleCodeTranslationFactory.create(harmonizedTariffScheduleCodePK,
                     languagePK, description, overviewMimeTypePK, overview, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(harmonizedTariffScheduleCodePK, EventTypes.MODIFY, harmonizedTariffScheduleCodeTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -13046,6 +13243,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Code Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeUseTypeFactory harmonizedTariffScheduleCodeUseTypeFactory;
+
+    @Inject
+    protected HarmonizedTariffScheduleCodeUseTypeDetailFactory harmonizedTariffScheduleCodeUseTypeDetailFactory;
+
     public HarmonizedTariffScheduleCodeUseType createHarmonizedTariffScheduleCodeUseType(String harmonizedTariffScheduleCodeUseTypeName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultHarmonizedTariffScheduleCodeUseType = getDefaultHarmonizedTariffScheduleCodeUseType();
@@ -13060,12 +13263,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().create();
-        var harmonizedTariffScheduleCodeUseTypeDetail = HarmonizedTariffScheduleCodeUseTypeDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUseType,
+        var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeUseTypeFactory.create();
+        var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseTypeDetailFactory.create(harmonizedTariffScheduleCodeUseType,
                 harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 harmonizedTariffScheduleCodeUseType.getPrimaryKey());
         harmonizedTariffScheduleCodeUseType.setActiveDetail(harmonizedTariffScheduleCodeUseTypeDetail);
         harmonizedTariffScheduleCodeUseType.setLastDetail(harmonizedTariffScheduleCodeUseTypeDetail);
@@ -13080,7 +13283,7 @@ public class ItemControl
     public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new HarmonizedTariffScheduleCodeUseTypePK(entityInstance.getEntityUniqueId());
 
-        return HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -13119,7 +13322,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByName(String harmonizedTariffScheduleCodeUseTypeName, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeByNameQueries,
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeByNameQueries,
                 harmonizedTariffScheduleCodeUseTypeName);
     }
 
@@ -13159,7 +13362,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeUseType getDefaultHarmonizedTariffScheduleCodeUseType(EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeUseTypeQueries);
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeUseTypeQueries);
     }
 
     public HarmonizedTariffScheduleCodeUseType getDefaultHarmonizedTariffScheduleCodeUseType() {
@@ -13196,7 +13399,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCodeUseType> getHarmonizedTariffScheduleCodeUseTypes(EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypesQueries);
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypesQueries);
     }
 
     public List<HarmonizedTariffScheduleCodeUseType> getHarmonizedTariffScheduleCodeUseTypes() {
@@ -13260,7 +13463,7 @@ public class ItemControl
     }
 
     private void updateHarmonizedTariffScheduleCodeUseTypeFromValue(HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(
+        var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, harmonizedTariffScheduleCodeUseTypeDetailValue.getHarmonizedTariffScheduleCodeUseTypePK());
         var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getActiveDetailForUpdate();
 
@@ -13288,7 +13491,7 @@ public class ItemControl
             }
         }
 
-        harmonizedTariffScheduleCodeUseTypeDetail = HarmonizedTariffScheduleCodeUseTypeDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUseTypePK, harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, session.getStartTime(),
+        harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseTypeDetailFactory.create(harmonizedTariffScheduleCodeUseTypePK, harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         harmonizedTariffScheduleCodeUseType.setActiveDetail(harmonizedTariffScheduleCodeUseTypeDetail);
@@ -13335,9 +13538,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Code Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeUseTypeDescriptionFactory harmonizedTariffScheduleCodeUseTypeDescriptionFactory;
+
     public HarmonizedTariffScheduleCodeUseTypeDescription createHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType,
             Language language, String description, BasePK createdBy) {
-        var harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUseType,
+        var harmonizedTariffScheduleCodeUseTypeDescription = harmonizedTariffScheduleCodeUseTypeDescriptionFactory.create(harmonizedTariffScheduleCodeUseType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(harmonizedTariffScheduleCodeUseType.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13365,7 +13571,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeUseTypeDescription getHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, Language language, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeDescriptionQueries,
+        return harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeDescriptionQueries,
                 harmonizedTariffScheduleCodeUseType, language, Session.MAX_TIME);
     }
 
@@ -13406,7 +13612,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCodeUseTypeDescription> getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeQueries,
+        return harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeQueries,
                 harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
     }
 
@@ -13452,7 +13658,7 @@ public class ItemControl
 
     public void updateHarmonizedTariffScheduleCodeUseTypeDescriptionFromValue(HarmonizedTariffScheduleCodeUseTypeDescriptionValue harmonizedTariffScheduleCodeUseTypeDescriptionValue, BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeUseTypeDescriptionValue.hasBeenModified()) {
-            var harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCodeUseTypeDescription = harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeUseTypeDescriptionValue.getPrimaryKey());
 
             harmonizedTariffScheduleCodeUseTypeDescription.setThruTime(session.getStartTime());
@@ -13462,7 +13668,7 @@ public class ItemControl
             var language = harmonizedTariffScheduleCodeUseTypeDescription.getLanguage();
             var description = harmonizedTariffScheduleCodeUseTypeDescriptionValue.getDescription();
 
-            harmonizedTariffScheduleCodeUseTypeDescription = HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUseType, language, description,
+            harmonizedTariffScheduleCodeUseTypeDescription = harmonizedTariffScheduleCodeUseTypeDescriptionFactory.create(harmonizedTariffScheduleCodeUseType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(harmonizedTariffScheduleCodeUseType.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -13488,6 +13694,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Code Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeUnitFactory harmonizedTariffScheduleCodeUnitFactory;
+
+    @Inject
+    protected HarmonizedTariffScheduleCodeUnitDetailFactory harmonizedTariffScheduleCodeUnitDetailFactory;
+
     public HarmonizedTariffScheduleCodeUnit createHarmonizedTariffScheduleCodeUnit(String harmonizedTariffScheduleCodeUnitName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultHarmonizedTariffScheduleCodeUnit = getDefaultHarmonizedTariffScheduleCodeUnit();
@@ -13502,12 +13714,12 @@ public class ItemControl
             isDefault = true;
         }
 
-        var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().create();
-        var harmonizedTariffScheduleCodeUnitDetail = HarmonizedTariffScheduleCodeUnitDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUnit,
+        var harmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeUnitFactory.create();
+        var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnitDetailFactory.create(harmonizedTariffScheduleCodeUnit,
                 harmonizedTariffScheduleCodeUnitName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        harmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeUnitFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 harmonizedTariffScheduleCodeUnit.getPrimaryKey());
         harmonizedTariffScheduleCodeUnit.setActiveDetail(harmonizedTariffScheduleCodeUnitDetail);
         harmonizedTariffScheduleCodeUnit.setLastDetail(harmonizedTariffScheduleCodeUnitDetail);
@@ -13522,7 +13734,7 @@ public class ItemControl
     public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new HarmonizedTariffScheduleCodeUnitPK(entityInstance.getEntityUniqueId());
 
-        return HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByEntityInstance(EntityInstance entityInstance) {
@@ -13561,7 +13773,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByName(String harmonizedTariffScheduleCodeUnitName, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitByNameQueries,
+        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitByNameQueries,
                 harmonizedTariffScheduleCodeUnitName);
     }
 
@@ -13601,7 +13813,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeUnit getDefaultHarmonizedTariffScheduleCodeUnit(EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeUnitQueries);
+        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeUnitQueries);
     }
 
     public HarmonizedTariffScheduleCodeUnit getDefaultHarmonizedTariffScheduleCodeUnit() {
@@ -13638,7 +13850,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCodeUnit> getHarmonizedTariffScheduleCodeUnits(EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitsQueries);
+        return harmonizedTariffScheduleCodeUnitFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitsQueries);
     }
 
     public List<HarmonizedTariffScheduleCodeUnit> getHarmonizedTariffScheduleCodeUnits() {
@@ -13702,7 +13914,7 @@ public class ItemControl
     }
 
     private void updateHarmonizedTariffScheduleCodeUnitFromValue(HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(
+        var harmonizedTariffScheduleCodeUnit = harmonizedTariffScheduleCodeUnitFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, harmonizedTariffScheduleCodeUnitDetailValue.getHarmonizedTariffScheduleCodeUnitPK());
         var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getActiveDetailForUpdate();
 
@@ -13730,7 +13942,7 @@ public class ItemControl
             }
         }
 
-        harmonizedTariffScheduleCodeUnitDetail = HarmonizedTariffScheduleCodeUnitDetailFactory.getInstance().create(harmonizedTariffScheduleCodeUnitPK, harmonizedTariffScheduleCodeUnitName, isDefault, sortOrder, session.getStartTime(),
+        harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnitDetailFactory.create(harmonizedTariffScheduleCodeUnitPK, harmonizedTariffScheduleCodeUnitName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         harmonizedTariffScheduleCodeUnit.setActiveDetail(harmonizedTariffScheduleCodeUnitDetail);
@@ -13777,9 +13989,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Code Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeUnitDescriptionFactory harmonizedTariffScheduleCodeUnitDescriptionFactory;
+
     public HarmonizedTariffScheduleCodeUnitDescription createHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit,
             Language language, String description, BasePK createdBy) {
-        var harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUnit,
+        var harmonizedTariffScheduleCodeUnitDescription = harmonizedTariffScheduleCodeUnitDescriptionFactory.create(harmonizedTariffScheduleCodeUnit,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(harmonizedTariffScheduleCodeUnit.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUnitDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13807,7 +14022,7 @@ public class ItemControl
     }
 
     private HarmonizedTariffScheduleCodeUnitDescription getHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, Language language, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitDescriptionQueries,
+        return harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitDescriptionQueries,
                 harmonizedTariffScheduleCodeUnit, language, Session.MAX_TIME);
     }
 
@@ -13848,7 +14063,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCodeUnitDescription> getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitQueries,
+        return harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitQueries,
                 harmonizedTariffScheduleCodeUnit, Session.MAX_TIME);
     }
 
@@ -13894,7 +14109,7 @@ public class ItemControl
 
     public void updateHarmonizedTariffScheduleCodeUnitDescriptionFromValue(HarmonizedTariffScheduleCodeUnitDescriptionValue harmonizedTariffScheduleCodeUnitDescriptionValue, BasePK updatedBy) {
         if(harmonizedTariffScheduleCodeUnitDescriptionValue.hasBeenModified()) {
-            var harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var harmonizedTariffScheduleCodeUnitDescription = harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      harmonizedTariffScheduleCodeUnitDescriptionValue.getPrimaryKey());
 
             harmonizedTariffScheduleCodeUnitDescription.setThruTime(session.getStartTime());
@@ -13904,7 +14119,7 @@ public class ItemControl
             var language = harmonizedTariffScheduleCodeUnitDescription.getLanguage();
             var description = harmonizedTariffScheduleCodeUnitDescriptionValue.getDescription();
 
-            harmonizedTariffScheduleCodeUnitDescription = HarmonizedTariffScheduleCodeUnitDescriptionFactory.getInstance().create(harmonizedTariffScheduleCodeUnit, language, description,
+            harmonizedTariffScheduleCodeUnitDescription = harmonizedTariffScheduleCodeUnitDescriptionFactory.create(harmonizedTariffScheduleCodeUnit, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(harmonizedTariffScheduleCodeUnit.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUnitDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -13930,9 +14145,12 @@ public class ItemControl
     //   Harmonized Tariff Schedule Code Uses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected HarmonizedTariffScheduleCodeUseFactory harmonizedTariffScheduleCodeUseFactory;
+
     public HarmonizedTariffScheduleCodeUse createHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, BasePK createdBy) {
-        var harmonizedTariffScheduleCodeUse = HarmonizedTariffScheduleCodeUseFactory.getInstance().create(harmonizedTariffScheduleCode,
+        var harmonizedTariffScheduleCodeUse = harmonizedTariffScheduleCodeUseFactory.create(harmonizedTariffScheduleCode,
                 harmonizedTariffScheduleCodeUseType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(harmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.MODIFY, harmonizedTariffScheduleCodeUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -13977,7 +14195,7 @@ public class ItemControl
 
     private HarmonizedTariffScheduleCodeUse getHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseFactory.getInstance().getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseQueries,
+        return harmonizedTariffScheduleCodeUseFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseQueries,
                 harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
     }
 
@@ -14022,7 +14240,7 @@ public class ItemControl
     }
 
     private List<HarmonizedTariffScheduleCodeUse> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeQueries,
+        return harmonizedTariffScheduleCodeUseFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeQueries,
                 harmonizedTariffScheduleCode, Session.MAX_TIME);
     }
 
@@ -14057,7 +14275,7 @@ public class ItemControl
 
     private List<HarmonizedTariffScheduleCodeUse> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType,
             EntityPermission entityPermission) {
-        return HarmonizedTariffScheduleCodeUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseTypeQueries,
+        return harmonizedTariffScheduleCodeUseFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseTypeQueries,
                 harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
     }
 
@@ -14120,16 +14338,22 @@ public class ItemControl
     //   Item Harmonized Tariff Schedule Codes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemHarmonizedTariffScheduleCodeFactory itemHarmonizedTariffScheduleCodeFactory;
+
+    @Inject
+    protected ItemHarmonizedTariffScheduleCodeDetailFactory itemHarmonizedTariffScheduleCodeDetailFactory;
+
     public ItemHarmonizedTariffScheduleCode createItemHarmonizedTariffScheduleCode(Item item, GeoCode countryGeoCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             BasePK createdBy) {
-        var itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().create();
-        var itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(
+        var itemHarmonizedTariffScheduleCode = itemHarmonizedTariffScheduleCodeFactory.create();
+        var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCodeDetailFactory.create(
                 itemHarmonizedTariffScheduleCode, item, countryGeoCode, harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCode, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemHarmonizedTariffScheduleCode = itemHarmonizedTariffScheduleCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemHarmonizedTariffScheduleCode.getPrimaryKey());
         itemHarmonizedTariffScheduleCode.setActiveDetail(itemHarmonizedTariffScheduleCodeDetail);
         itemHarmonizedTariffScheduleCode.setLastDetail(itemHarmonizedTariffScheduleCodeDetail);
@@ -14144,7 +14368,7 @@ public class ItemControl
     public ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemHarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
 
-        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemHarmonizedTariffScheduleCodeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
@@ -14214,7 +14438,7 @@ public class ItemControl
     }
 
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByItem(Item item, EntityPermission entityPermission) {
-        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByItemQueries,
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByItemQueries,
                 item);
     }
 
@@ -14249,7 +14473,7 @@ public class ItemControl
     }
 
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByCountryGeoCodeQueries,
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByCountryGeoCodeQueries,
                 countryGeoCode);
     }
 
@@ -14284,7 +14508,7 @@ public class ItemControl
     }
 
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseQueries,
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseQueries,
                 harmonizedTariffScheduleCodeUseType);
     }
 
@@ -14320,7 +14544,7 @@ public class ItemControl
     }
 
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, EntityPermission entityPermission) {
-        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeQueries,
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeQueries,
                 harmonizedTariffScheduleCode);
     }
 
@@ -14355,7 +14579,7 @@ public class ItemControl
 
     private ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCode(Item item, GeoCode countryGeoCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodeQueries,
+        return itemHarmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodeQueries,
                 item, countryGeoCode, harmonizedTariffScheduleCodeUseType);
     }
 
@@ -14412,7 +14636,7 @@ public class ItemControl
     public void updateItemHarmonizedTariffScheduleCodeFromValue(ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue,
             BasePK updatedBy) {
         if(itemHarmonizedTariffScheduleCodeDetailValue.hasBeenModified()) {
-            var itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemHarmonizedTariffScheduleCode = itemHarmonizedTariffScheduleCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemHarmonizedTariffScheduleCodeDetailValue.getItemHarmonizedTariffScheduleCodePK());
             var itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCode.getActiveDetailForUpdate();
 
@@ -14425,7 +14649,7 @@ public class ItemControl
             var harmonizedTariffScheduleCodeUseTypePK = itemHarmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeUseTypePK();
             var harmonizedTariffScheduleCodePK = itemHarmonizedTariffScheduleCodeDetailValue.getHarmonizedTariffScheduleCodePK();
 
-            itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(itemHarmonizedTariffScheduleCodePK,
+            itemHarmonizedTariffScheduleCodeDetail = itemHarmonizedTariffScheduleCodeDetailFactory.create(itemHarmonizedTariffScheduleCodePK,
                     itemPK, countryGeoCodePK, harmonizedTariffScheduleCodeUseTypePK, harmonizedTariffScheduleCodePK, session.getStartTime(), Session.MAX_TIME);
 
             itemHarmonizedTariffScheduleCode.setActiveDetail(itemHarmonizedTariffScheduleCodeDetail);
@@ -14489,7 +14713,7 @@ public class ItemControl
             var itemControl = Session.getModelController(ItemControl.class);
 
             while(rs.next()) {
-                var item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var item = itemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 itemResultTransfers.add(new ItemResultTransfer(item.getLastDetail().getItemName(),
                         includeItem ? itemControl.getItemTransfer(userVisitSearch.getUserVisit(), item) : null));

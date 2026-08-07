@@ -147,6 +147,12 @@ public class CarrierControl
     //   Carrier Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CarrierTypeFactory carrierTypeFactory;
+
+    @Inject
+    protected CarrierTypeDetailFactory carrierTypeDetailFactory;
+
     public CarrierType createCarrierType(String carrierTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCarrierType = getDefaultCarrierType();
         var defaultFound = defaultCarrierType != null;
@@ -160,12 +166,12 @@ public class CarrierControl
             isDefault = true;
         }
 
-        var carrierType = CarrierTypeFactory.getInstance().create();
-        var carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierType,
+        var carrierType = carrierTypeFactory.create();
+        var carrierTypeDetail = carrierTypeDetailFactory.create(carrierType,
                 carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        carrierType = CarrierTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        carrierType = carrierTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 carrierType.getPrimaryKey());
         carrierType.setActiveDetail(carrierTypeDetail);
         carrierType.setLastDetail(carrierTypeDetail);
@@ -180,7 +186,7 @@ public class CarrierControl
     public CarrierType getCarrierTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CarrierTypePK(entityInstance.getEntityUniqueId());
 
-        return CarrierTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return carrierTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CarrierType getCarrierTypeByEntityInstance(EntityInstance entityInstance) {
@@ -221,7 +227,7 @@ public class CarrierControl
     }
 
     private CarrierType getCarrierTypeByName(String carrierTypeName, EntityPermission entityPermission) {
-        return CarrierTypeFactory.getInstance().getEntityFromQuery(entityPermission, getCarrierTypeByNameQueries, carrierTypeName);
+        return carrierTypeFactory.getEntityFromQuery(entityPermission, getCarrierTypeByNameQueries, carrierTypeName);
     }
 
     public CarrierType getCarrierTypeByName(String carrierTypeName) {
@@ -262,7 +268,7 @@ public class CarrierControl
     }
 
     private CarrierType getDefaultCarrierType(EntityPermission entityPermission) {
-        return CarrierTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCarrierTypeQueries);
+        return carrierTypeFactory.getEntityFromQuery(entityPermission, getDefaultCarrierTypeQueries);
     }
 
     public CarrierType getDefaultCarrierType() {
@@ -299,7 +305,7 @@ public class CarrierControl
     }
 
     private List<CarrierType> getCarrierTypes(EntityPermission entityPermission) {
-        return CarrierTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getCarrierTypesQueries);
+        return carrierTypeFactory.getEntitiesFromQuery(entityPermission, getCarrierTypesQueries);
     }
 
     public List<CarrierType> getCarrierTypes() {
@@ -332,7 +338,7 @@ public class CarrierControl
     }
 
     private List<CarrierType> getCarrierTypesByParentCarrierType(CarrierType parentCarrierType, EntityPermission entityPermission) {
-        return CarrierTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getCarrierTypesByParentCarrierTypeQueries,
+        return carrierTypeFactory.getEntitiesFromQuery(entityPermission, getCarrierTypesByParentCarrierTypeQueries,
                 parentCarrierType);
     }
 
@@ -404,7 +410,7 @@ public class CarrierControl
     private void updateCarrierTypeFromValue(CarrierTypeDetailValue carrierTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(carrierTypeDetailValue.hasBeenModified()) {
-            var carrierType = CarrierTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierType = carrierTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierTypeDetailValue.getCarrierTypePK());
             var carrierTypeDetail = carrierType.getActiveDetailForUpdate();
 
@@ -432,7 +438,7 @@ public class CarrierControl
                 }
             }
 
-            carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierTypePK,
+            carrierTypeDetail = carrierTypeDetailFactory.create(carrierTypePK,
                     carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             carrierType.setActiveDetail(carrierTypeDetail);
@@ -479,9 +485,12 @@ public class CarrierControl
     //   Carrier Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CarrierTypeDescriptionFactory carrierTypeDescriptionFactory;
+
     public CarrierTypeDescription createCarrierTypeDescription(CarrierType carrierType,
             Language language, String description, BasePK createdBy) {
-        var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType,
+        var carrierTypeDescription = carrierTypeDescriptionFactory.create(carrierType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -510,7 +519,7 @@ public class CarrierControl
 
     private CarrierTypeDescription getCarrierTypeDescription(CarrierType carrierType,
             Language language, EntityPermission entityPermission) {
-        return CarrierTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getCarrierTypeDescriptionQueries,
+        return carrierTypeDescriptionFactory.getEntityFromQuery(entityPermission, getCarrierTypeDescriptionQueries,
                 carrierType, language, Session.MAX_TIME);
     }
 
@@ -553,7 +562,7 @@ public class CarrierControl
 
     private List<CarrierTypeDescription> getCarrierTypeDescriptionsByCarrierType(CarrierType carrierType,
             EntityPermission entityPermission) {
-        return CarrierTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getCarrierTypeDescriptionsByCarrierTypeQueries,
+        return carrierTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getCarrierTypeDescriptionsByCarrierTypeQueries,
                 carrierType, Session.MAX_TIME);
     }
 
@@ -599,7 +608,7 @@ public class CarrierControl
 
     public void updateCarrierTypeDescriptionFromValue(CarrierTypeDescriptionValue carrierTypeDescriptionValue, BasePK updatedBy) {
         if(carrierTypeDescriptionValue.hasBeenModified()) {
-            var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierTypeDescription = carrierTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     carrierTypeDescriptionValue.getPrimaryKey());
 
             carrierTypeDescription.setThruTime(session.getStartTime());
@@ -609,7 +618,7 @@ public class CarrierControl
             var language = carrierTypeDescription.getLanguage();
             var description = carrierTypeDescriptionValue.getDescription();
 
-            carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType, language, description,
+            carrierTypeDescription = carrierTypeDescriptionFactory.create(carrierType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -634,7 +643,10 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Carriers
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CarrierFactory carrierFactory;
+
     public Carrier createCarrier(Party party, String carrierName, CarrierType carrierType, Selector geoCodeSelector, Selector itemSelector,
             String accountValidationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCarrier = getDefaultCarrier();
@@ -649,7 +661,7 @@ public class CarrierControl
             isDefault = true;
         }
 
-        var carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
+        var carrier = carrierFactory.create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, carrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -710,12 +722,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierFactory.getInstance().prepareStatement(query);
+            var ps = carrierFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            carrier = CarrierFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            carrier = carrierFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -756,12 +768,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierFactory.getInstance().prepareStatement(query);
+            var ps = carrierFactory.prepareStatement(query);
             
             ps.setString(1, carrierName);
             ps.setLong(2, Session.MAX_TIME);
             
-            carrier = CarrierFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrier = carrierFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -802,11 +814,11 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierFactory.getInstance().prepareStatement(query);
+            var ps = carrierFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            carrier = CarrierFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrier = carrierFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -849,11 +861,11 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierFactory.getInstance().prepareStatement(query);
+            var ps = carrierFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            carriers = CarrierFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carriers = carrierFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -932,7 +944,7 @@ public class CarrierControl
 
     private void updateCarrierFromValue(CarrierValue carrierValue, boolean checkDefault, BasePK updatedBy) {
         if(carrierValue.hasBeenModified()) {
-            var carrier = CarrierFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrier = carrierFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     carrierValue.getPrimaryKey());
             
             carrier.setThruTime(session.getStartTime());
@@ -963,7 +975,7 @@ public class CarrierControl
                 }
             }
             
-            carrier = CarrierFactory.getInstance().create(partyPK, carrierName, carrierTypePK, geoCodeSelectorPK, itemSelectorPK, accountValidationPattern,
+            carrier = carrierFactory.create(partyPK, carrierName, carrierTypePK, geoCodeSelectorPK, itemSelectorPK, accountValidationPattern,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, carrier.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1011,7 +1023,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Carrier Services
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CarrierServiceFactory carrierServiceFactory;
+
+    @Inject
+    protected CarrierServiceDetailFactory carrierServiceDetailFactory;
+
     public CarrierService createCarrierService(Party carrierParty, String carrierServiceName, Selector geoCodeSelector, Selector itemSelector,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCarrierService = getDefaultCarrierService(carrierParty);
@@ -1026,13 +1044,13 @@ public class CarrierControl
             isDefault = true;
         }
 
-        var carrierService = CarrierServiceFactory.getInstance().create();
-        var carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(
+        var carrierService = carrierServiceFactory.create();
+        var carrierServiceDetail = carrierServiceDetailFactory.create(
                 carrierService, carrierParty, carrierServiceName, geoCodeSelector, itemSelector, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        carrierService = CarrierServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        carrierService = carrierServiceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 carrierService.getPrimaryKey());
         carrierService.setActiveDetail(carrierServiceDetail);
         carrierService.setLastDetail(carrierServiceDetail);
@@ -1047,7 +1065,7 @@ public class CarrierControl
     public CarrierService getCarrierServiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CarrierServicePK(entityInstance.getEntityUniqueId());
 
-        return CarrierServiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return carrierServiceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CarrierService getCarrierServiceByEntityInstance(EntityInstance entityInstance) {
@@ -1108,11 +1126,11 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
-            carrierPartyPriorities = CarrierServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carrierPartyPriorities = carrierServiceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1151,11 +1169,11 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
-            carrierService = CarrierServiceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierService = carrierServiceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1198,12 +1216,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             ps.setString(2, carrierServiceName);
             
-            carrierService = CarrierServiceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierService = carrierServiceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1282,7 +1300,7 @@ public class CarrierControl
     private void updateCarrierServiceFromValue(CarrierServiceDetailValue carrierServiceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(carrierServiceDetailValue.hasBeenModified()) {
-            var carrierService = CarrierServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierService = carrierServiceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceDetailValue.getCarrierServicePK());
             var carrierServiceDetail = carrierService.getActiveDetailForUpdate();
             
@@ -1314,7 +1332,7 @@ public class CarrierControl
                 }
             }
             
-            carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(carrierServicePK, carrierPartyPK,
+            carrierServiceDetail = carrierServiceDetailFactory.create(carrierServicePK, carrierPartyPK,
                     carrierServiceName, geoCodeSelectorPK, itemSelectorPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             carrierService.setActiveDetail(carrierServiceDetail);
@@ -1381,10 +1399,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Carrier Service Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CarrierServiceDescriptionFactory carrierServiceDescriptionFactory;
+
     public CarrierServiceDescription createCarrierServiceDescription(CarrierService carrierService, Language language, String description,
             BasePK createdBy) {
-        var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService,
+        var carrierServiceDescription = carrierServiceDescriptionFactory.create(carrierService,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
@@ -1414,13 +1435,13 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierServiceDescription = carrierServiceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1467,12 +1488,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            carrierServiceDescriptions = CarrierServiceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carrierServiceDescriptions = carrierServiceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1522,7 +1543,7 @@ public class CarrierControl
     
     public void updateCarrierServiceDescriptionFromValue(CarrierServiceDescriptionValue carrierServiceDescriptionValue, BasePK updatedBy) {
         if(carrierServiceDescriptionValue.hasBeenModified()) {
-            var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierServiceDescription = carrierServiceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceDescriptionValue.getPrimaryKey());
             
             carrierServiceDescription.setThruTime(session.getStartTime());
@@ -1532,7 +1553,7 @@ public class CarrierControl
             var language = carrierServiceDescription.getLanguage();
             var description = carrierServiceDescriptionValue.getDescription();
             
-            carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService, language,
+            carrierServiceDescription = carrierServiceDescriptionFactory.create(carrierService, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
@@ -1558,7 +1579,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Carrier Options
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CarrierOptionFactory carrierOptionFactory;
+
+    @Inject
+    protected CarrierOptionDetailFactory carrierOptionDetailFactory;
+
     public CarrierOption createCarrierOption(Party carrierParty, String carrierOptionName, Boolean isRecommended, Boolean isRequired,
             Selector recommendedGeoCodeSelector, Selector requiredGeoCodeSelector, Selector recommendedItemSelector, Selector requiredItemSelector,
             Selector recommendedOrderSelector, Selector requiredOrderSelector, Selector recommendedShipmentSelector, Selector requiredShipmentSelector,
@@ -1575,13 +1602,13 @@ public class CarrierControl
             isDefault = true;
         }
 
-        var carrierOption = CarrierOptionFactory.getInstance().create();
-        var carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOption, carrierParty, carrierOptionName, isRecommended,
+        var carrierOption = carrierOptionFactory.create();
+        var carrierOptionDetail = carrierOptionDetailFactory.create(carrierOption, carrierParty, carrierOptionName, isRecommended,
                 isRequired, recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
                 requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        carrierOption = CarrierOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        carrierOption = carrierOptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 carrierOption.getPrimaryKey());
         carrierOption.setActiveDetail(carrierOptionDetail);
         carrierOption.setLastDetail(carrierOptionDetail);
@@ -1596,7 +1623,7 @@ public class CarrierControl
     public CarrierOption getCarrierOptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CarrierOptionPK(entityInstance.getEntityUniqueId());
 
-        return CarrierOptionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return carrierOptionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CarrierOption getCarrierOptionByEntityInstance(EntityInstance entityInstance) {
@@ -1711,11 +1738,11 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierOptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
-            carrierPartyPriorities = CarrierOptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carrierPartyPriorities = carrierOptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1754,11 +1781,11 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierOptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             
-            carrierOption = CarrierOptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierOption = carrierOptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1801,12 +1828,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierOptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             ps.setString(2, carrierOptionName);
             
-            carrierOption = CarrierOptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierOption = carrierOptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1885,7 +1912,7 @@ public class CarrierControl
     private void updateCarrierOptionFromValue(CarrierOptionDetailValue carrierOptionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(carrierOptionDetailValue.hasBeenModified()) {
-            var carrierOption = CarrierOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierOption = carrierOptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierOptionDetailValue.getCarrierOptionPK());
             var carrierOptionDetail = carrierOption.getActiveDetailForUpdate();
             
@@ -1925,7 +1952,7 @@ public class CarrierControl
                 }
             }
             
-            carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOptionPK, carrierPartyPK, carrierOptionName, isRecommended, isRequired,
+            carrierOptionDetail = carrierOptionDetailFactory.create(carrierOptionPK, carrierPartyPK, carrierOptionName, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
                     requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
@@ -1991,10 +2018,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Carrier Option Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CarrierOptionDescriptionFactory carrierOptionDescriptionFactory;
+
     public CarrierOptionDescription createCarrierOptionDescription(CarrierOption carrierOption, Language language, String description,
             BasePK createdBy) {
-        var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption,
+        var carrierOptionDescription = carrierOptionDescriptionFactory.create(carrierOption,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
@@ -2024,13 +2054,13 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierOptionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierOptionDescription = carrierOptionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2077,12 +2107,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierOptionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            carrierOptionDescriptions = CarrierOptionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carrierOptionDescriptions = carrierOptionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2132,7 +2162,7 @@ public class CarrierControl
     
     public void updateCarrierOptionDescriptionFromValue(CarrierOptionDescriptionValue carrierOptionDescriptionValue, BasePK updatedBy) {
         if(carrierOptionDescriptionValue.hasBeenModified()) {
-            var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierOptionDescription = carrierOptionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierOptionDescriptionValue.getPrimaryKey());
             
             carrierOptionDescription.setThruTime(session.getStartTime());
@@ -2142,7 +2172,7 @@ public class CarrierControl
             var language = carrierOptionDescription.getLanguage();
             var description = carrierOptionDescriptionValue.getDescription();
             
-            carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption, language,
+            carrierOptionDescription = carrierOptionDescriptionFactory.create(carrierOption, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
@@ -2168,12 +2198,15 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Carrier Service Options
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CarrierServiceOptionFactory carrierServiceOptionFactory;
+
     public CarrierServiceOption createCarrierServiceOption(CarrierService carrierService, CarrierOption carrierOption, Boolean isRecommended,
             Boolean isRequired, Selector recommendedGeoCodeSelector, Selector requiredGeoCodeSelector, Selector recommendedItemSelector,
             Selector requiredItemSelector, Selector recommendedOrderSelector, Selector requiredOrderSelector, Selector recommendedShipmentSelector,
             Selector requiredShipmentSelector, BasePK createdBy) {
-        var carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierService, carrierOption, isRecommended, isRequired,
+        var carrierServiceOption = carrierServiceOptionFactory.create(carrierService, carrierOption, isRecommended, isRequired,
                 recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
                 requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2286,13 +2319,13 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceOptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            carrierServiceOption = CarrierServiceOptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            carrierServiceOption = carrierServiceOptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2340,12 +2373,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceOptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            carrierServiceOptions = CarrierServiceOptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carrierServiceOptions = carrierServiceOptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2385,12 +2418,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
+            var ps = carrierServiceOptionFactory.prepareStatement(query);
             
             ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            carrierServiceOptions = CarrierServiceOptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            carrierServiceOptions = carrierServiceOptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2432,7 +2465,7 @@ public class CarrierControl
     
     public void updateCarrierServiceOptionFromValue(CarrierServiceOptionValue carrierServiceOptionValue, BasePK updatedBy) {
         if(carrierServiceOptionValue.hasBeenModified()) {
-            var carrierServiceOption = CarrierServiceOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var carrierServiceOption = carrierServiceOptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceOptionValue.getPrimaryKey());
             
             carrierServiceOption.setThruTime(session.getStartTime());
@@ -2451,7 +2484,7 @@ public class CarrierControl
             var recommendedShipmentSelectorPK = carrierServiceOptionValue.getRecommendedShipmentSelectorPK();
             var requiredShipmentSelectorPK = carrierServiceOptionValue.getRequiredItemSelectorPK();
             
-            carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierServicePK, carrierOptionPK, isRecommended, isRequired,
+            carrierServiceOption = carrierServiceOptionFactory.create(carrierServicePK, carrierOptionPK, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
                     requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, session.getStartTime(), Session.MAX_TIME);
             
@@ -2483,9 +2516,12 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     //   Party Carriers
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyCarrierFactory partyCarrierFactory;
+
     public PartyCarrier createPartyCarrier(Party party, Party carrierParty, BasePK createdBy) {
-        var partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.getStartTime(), Session.MAX_TIME);
+        var partyCarrier = partyCarrierFactory.create(party, carrierParty, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2529,13 +2565,13 @@ public class CarrierControl
                         """;
             }
 
-            var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
+            var ps = partyCarrierFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, carrierParty.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partyCarrier = PartyCarrierFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyCarrier = partyCarrierFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2575,12 +2611,12 @@ public class CarrierControl
                         """;
             }
 
-            var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
+            var ps = partyCarrierFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyCarriers = PartyCarrierFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyCarriers = partyCarrierFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2620,7 +2656,7 @@ public class CarrierControl
                         """;
             }
 
-            var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
+            var ps = partyCarrierFactory.prepareStatement(query);
             
             ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2628,7 +2664,7 @@ public class CarrierControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            partyCarriers = PartyCarrierFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyCarriers = partyCarrierFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2694,13 +2730,19 @@ public class CarrierControl
     //   Party Carrier Accounts
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyCarrierAccountFactory partyCarrierAccountFactory;
+
+    @Inject
+    protected PartyCarrierAccountDetailFactory partyCarrierAccountDetailFactory;
+
     public PartyCarrierAccount createPartyCarrierAccount(Party party, Party carrierParty, String account, Boolean alwaysUseThirdPartyBilling, BasePK createdBy) {
-        var partyCarrierAccount = PartyCarrierAccountFactory.getInstance().create();
-        var partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccount, party, carrierParty,
+        var partyCarrierAccount = partyCarrierAccountFactory.create();
+        var partyCarrierAccountDetail = partyCarrierAccountDetailFactory.create(partyCarrierAccount, party, carrierParty,
                 account, alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        partyCarrierAccount = PartyCarrierAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyCarrierAccount.getPrimaryKey());
+        partyCarrierAccount = partyCarrierAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyCarrierAccount.getPrimaryKey());
         partyCarrierAccount.setActiveDetail(partyCarrierAccountDetail);
         partyCarrierAccount.setLastDetail(partyCarrierAccountDetail);
         partyCarrierAccount.store();
@@ -2714,7 +2756,7 @@ public class CarrierControl
     public PartyCarrierAccount getPartyCarrierAccountByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyCarrierAccountPK(entityInstance.getEntityUniqueId());
 
-        return PartyCarrierAccountFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return partyCarrierAccountFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PartyCarrierAccount getPartyCarrierAccountByEntityInstance(EntityInstance entityInstance) {
@@ -2766,7 +2808,7 @@ public class CarrierControl
     }
 
     private PartyCarrierAccount getPartyCarrierAccount(Party party, Party carrierParty, EntityPermission entityPermission) {
-        return PartyCarrierAccountFactory.getInstance().getEntityFromQuery(entityPermission, getPartyCarrierAccountQueries,
+        return partyCarrierAccountFactory.getEntityFromQuery(entityPermission, getPartyCarrierAccountQueries,
                 party, carrierParty);
     }
 
@@ -2811,7 +2853,7 @@ public class CarrierControl
     }
 
     private List<PartyCarrierAccount> getPartyCarrierAccountsByParty(Party party, EntityPermission entityPermission) {
-        return PartyCarrierAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyCarrierAccountsByPartyQueries,
+        return partyCarrierAccountFactory.getEntitiesFromQuery(entityPermission, getPartyCarrierAccountsByPartyQueries,
                 party);
     }
 
@@ -2848,7 +2890,7 @@ public class CarrierControl
     }
 
     private List<PartyCarrierAccount> getPartyCarrierAccountsByCarrierParty(Party carrierParty, EntityPermission entityPermission) {
-        return PartyCarrierAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyCarrierAccountsByCarrierPartyQueries,
+        return partyCarrierAccountFactory.getEntitiesFromQuery(entityPermission, getPartyCarrierAccountsByCarrierPartyQueries,
                 carrierParty);
     }
 
@@ -2884,7 +2926,7 @@ public class CarrierControl
 
     public void updatePartyCarrierAccountFromValue(PartyCarrierAccountDetailValue partyCarrierAccountDetailValue, BasePK updatedBy) {
         if(partyCarrierAccountDetailValue.hasBeenModified()) {
-            var partyCarrierAccount = PartyCarrierAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyCarrierAccount = partyCarrierAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCarrierAccountDetailValue.getPartyCarrierAccountPK());
             var partyCarrierAccountDetail = partyCarrierAccount.getActiveDetailForUpdate();
 
@@ -2897,7 +2939,7 @@ public class CarrierControl
             var account = partyCarrierAccountDetailValue.getAccount();
             var alwaysUseThirdPartyBilling = partyCarrierAccountDetailValue.getAlwaysUseThirdPartyBilling();
 
-            partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccountPK, partyPK, carrierPartyPK, account,
+            partyCarrierAccountDetail = partyCarrierAccountDetailFactory.create(partyCarrierAccountPK, partyPK, carrierPartyPK, account,
                     alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME);
 
             partyCarrierAccount.setActiveDetail(partyCarrierAccountDetail);

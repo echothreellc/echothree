@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ContentCatalogControl
@@ -49,6 +50,12 @@ public class ContentCatalogControl
     //   Content Catalog Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContentCatalogFactory contentCatalogFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<ContentCatalogResultTransfer> getContentCatalogResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var contentCatalogResultTransfers = new ArrayList<ContentCatalogResultTransfer>();
@@ -61,7 +68,7 @@ public class ContentCatalogControl
 
         try {
             var contentControl = Session.getModelController(ContentControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -74,7 +81,7 @@ public class ContentCatalogControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var contentCatalog = ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCatalogPK(rs.getLong(1)));
+                    var contentCatalog = contentCatalogFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ContentCatalogPK(rs.getLong(1)));
                     var contentCatalogDetail = contentCatalog.getLastDetail();
 
                     contentCatalogResultTransfers.add(new ContentCatalogResultTransfer(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),

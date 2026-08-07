@@ -53,6 +53,14 @@ public class EntityAliasTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected EntityAliasTypeFactory entityAliasTypeFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+    @Inject
     SearchControl searchControl;
 
     @Inject
@@ -73,7 +81,7 @@ public class EntityAliasTypeControl
             entityAliasTypeResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var ps = SearchResultFactory.getInstance().prepareStatement(
+                var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM searchresults, entityinstances
@@ -86,7 +94,7 @@ public class EntityAliasTypeControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
+                        var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
                         var entityAliasTypeDetail = entityAliasType.getLastDetail();
                         var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
 
@@ -108,7 +116,7 @@ public class EntityAliasTypeControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM cachedexecutedsearchresults, entityinstances
@@ -121,7 +129,7 @@ public class EntityAliasTypeControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
+                        var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
                         var entityAliasTypeDetail = entityAliasType.getLastDetail();
                         var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
 

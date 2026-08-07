@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorTypeActionControl
@@ -51,6 +52,12 @@ public class PaymentProcessorTypeActionControl
     // --------------------------------------------------------------------------------
     //   Payment Processor Type Actions
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected PaymentProcessorTypeActionFactory paymentProcessorTypeActionFactory;
+
+    @Inject
+    protected PaymentProcessorTypeActionDetailFactory paymentProcessorTypeActionDetailFactory;
 
     public PaymentProcessorTypeAction createPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final PaymentProcessorActionType paymentProcessorActionType, Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
@@ -66,13 +73,13 @@ public class PaymentProcessorTypeActionControl
             isDefault = true;
         }
 
-        var paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().create();
-        var paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(
+        var paymentProcessorTypeAction = paymentProcessorTypeActionFactory.create();
+        var paymentProcessorTypeActionDetail = paymentProcessorTypeActionDetailFactory.create(
                 paymentProcessorTypeAction, paymentProcessorType, paymentProcessorActionType, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeAction.getPrimaryKey());
+        paymentProcessorTypeAction = paymentProcessorTypeActionFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeAction.getPrimaryKey());
         paymentProcessorTypeAction.setActiveDetail(paymentProcessorTypeActionDetail);
         paymentProcessorTypeAction.setLastDetail(paymentProcessorTypeActionDetail);
         paymentProcessorTypeAction.store();
@@ -87,7 +94,7 @@ public class PaymentProcessorTypeActionControl
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorTypeActionPK(entityInstance.getEntityUniqueId());
 
-        return PaymentProcessorTypeActionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return paymentProcessorTypeActionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PaymentProcessorTypeAction getPaymentProcessorTypeActionByEntityInstance(final EntityInstance entityInstance) {
@@ -117,7 +124,7 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeAction getPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final PaymentProcessorActionType paymentProcessorActionType, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeActionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorTypeActionQueries,
+        return paymentProcessorTypeActionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTypeActionQueries,
                 paymentProcessorType, paymentProcessorActionType);
     }
 
@@ -159,7 +166,7 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeAction getDefaultPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTypeActionFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentProcessorTypeActionQueries,
+        return paymentProcessorTypeActionFactory.getEntityFromQuery(entityPermission, getDefaultPaymentProcessorTypeActionQueries,
                 paymentProcessorType);
     }
 
@@ -196,7 +203,7 @@ public class PaymentProcessorTypeActionControl
             """);
 
     private List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeActionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorTypeQueries,
+        return paymentProcessorTypeActionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorTypeQueries,
                 paymentProcessorType);
     }
 
@@ -229,7 +236,7 @@ public class PaymentProcessorTypeActionControl
             """);
 
     private List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final EntityPermission entityPermission) {
-        return PaymentProcessorTypeActionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorActionTypeQueries,
+        return paymentProcessorTypeActionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorActionTypeQueries,
                 paymentProcessorActionType);
     }
 
@@ -306,7 +313,7 @@ public class PaymentProcessorTypeActionControl
     private void updatePaymentProcessorTypeActionFromValue(final PaymentProcessorTypeActionDetailValue paymentProcessorTypeActionDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(paymentProcessorTypeActionDetailValue.hasBeenModified()) {
-            var paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessorTypeAction = paymentProcessorTypeActionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     paymentProcessorTypeActionDetailValue.getPaymentProcessorTypeActionPK());
             var paymentProcessorTypeActionDetail = paymentProcessorTypeAction.getActiveDetailForUpdate();
 
@@ -337,7 +344,7 @@ public class PaymentProcessorTypeActionControl
                 }
             }
 
-            paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(paymentProcessorTypeActionPK,
+            paymentProcessorTypeActionDetail = paymentProcessorTypeActionDetailFactory.create(paymentProcessorTypeActionPK,
                     paymentProcessorTypePK, paymentProcessorActionTypePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorTypeAction.setActiveDetail(paymentProcessorTypeActionDetail);

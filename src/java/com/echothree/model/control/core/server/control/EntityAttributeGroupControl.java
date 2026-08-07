@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityAttributeGroupControl
@@ -50,6 +51,15 @@ public class EntityAttributeGroupControl
     // --------------------------------------------------------------------------------
     //   Entity Attribute Group Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected EntityAttributeGroupFactory entityAttributeGroupFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<EntityAttributeGroupResultTransfer> getEntityAttributeGroupResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
@@ -68,7 +78,7 @@ public class EntityAttributeGroupControl
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
-                var ps = SearchResultFactory.getInstance().prepareStatement(
+                var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM searchresults, entityinstances
@@ -81,7 +91,7 @@ public class EntityAttributeGroupControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
+                        var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
                         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
                         entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
@@ -102,7 +112,7 @@ public class EntityAttributeGroupControl
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM cachedexecutedsearchresults, entityinstances
@@ -115,7 +125,7 @@ public class EntityAttributeGroupControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
+                        var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
                         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
                         entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),

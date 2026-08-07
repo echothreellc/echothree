@@ -97,10 +97,10 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
     //   Entity Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityTypeFactory entityTypeFactory;
-    
+
     @Inject
     protected EntityTypeDetailFactory entityTypeDetailFactory;
 
@@ -419,7 +419,7 @@ public class EntityTypeControl
 
     @Inject
     protected EntityTypeDescriptionFactory entityTypeDescriptionFactory;
-    
+
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
         var entityTypeDescription = entityTypeDescriptionFactory.create(entityType,
@@ -597,11 +597,9 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchControl searchControl;
-    
-    @Inject
     protected SearchResultFactory searchResultFactory;
-    
+    @Inject
+    protected SearchControl searchControl;
     public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>();

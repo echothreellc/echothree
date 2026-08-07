@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class UseNameElementControl
@@ -53,15 +54,21 @@ public class UseNameElementControl
     //   Use Name Elements
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected UseNameElementFactory useNameElementFactory;
+
+    @Inject
+    protected UseNameElementDetailFactory useNameElementDetailFactory;
+
     public UseNameElement createUseNameElement(String useNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
-        var useNameElement = UseNameElementFactory.getInstance().create();
-        var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(
+        var useNameElement = useNameElementFactory.create();
+        var useNameElementDetail = useNameElementDetailFactory.create(
                 useNameElement, useNameElementName, offset, length, validationPattern, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        useNameElement = useNameElementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 useNameElement.getPrimaryKey());
         useNameElement.setActiveDetail(useNameElementDetail);
         useNameElement.setLastDetail(useNameElementDetail);
@@ -84,7 +91,7 @@ public class UseNameElementControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseNameElement */
     public UseNameElement getUseNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UseNameElementPK(entityInstance.getEntityUniqueId());
-        var useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var useNameElement = useNameElementFactory.getEntityFromPK(entityPermission, pk);
 
         return useNameElement;
     }
@@ -118,11 +125,11 @@ public class UseNameElementControl
                         """;
             }
 
-            var ps = UseNameElementFactory.getInstance().prepareStatement(query);
+            var ps = useNameElementFactory.prepareStatement(query);
 
             ps.setString(1, useNameElementName);
 
-            useNameElement = UseNameElementFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useNameElement = useNameElementFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -166,9 +173,9 @@ public class UseNameElementControl
                     """;
         }
 
-        var ps = UseNameElementFactory.getInstance().prepareStatement(query);
+        var ps = useNameElementFactory.prepareStatement(query);
 
-        return UseNameElementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return useNameElementFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<UseNameElement> getUseNameElements() {
@@ -199,7 +206,7 @@ public class UseNameElementControl
 
     public void updateUseNameElementFromValue(UseNameElementDetailValue useNameElementDetailValue, BasePK updatedBy) {
         if(useNameElementDetailValue.hasBeenModified()) {
-            var useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useNameElement = useNameElementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     useNameElementDetailValue.getUseNameElementPK());
             var useNameElementDetail = useNameElement.getActiveDetailForUpdate();
 
@@ -212,7 +219,7 @@ public class UseNameElementControl
             var length = useNameElementDetailValue.getLength();
             var validationPattern = useNameElementDetailValue.getValidationPattern();
 
-            useNameElementDetail = UseNameElementDetailFactory.getInstance().create(useNameElementPK,
+            useNameElementDetail = useNameElementDetailFactory.create(useNameElementPK,
                     useNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME);
 
             useNameElement.setActiveDetail(useNameElementDetail);
@@ -237,9 +244,12 @@ public class UseNameElementControl
     //   Use Name Element Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected UseNameElementDescriptionFactory useNameElementDescriptionFactory;
+
     public UseNameElementDescription createUseNameElementDescription(UseNameElement useNameElement, Language language,
             String description, BasePK createdBy) {
-        var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(
+        var useNameElementDescription = useNameElementDescriptionFactory.create(
                 useNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
@@ -270,13 +280,13 @@ public class UseNameElementControl
                         """;
             }
 
-            var ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useNameElementDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            useNameElementDescription = UseNameElementDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useNameElementDescription = useNameElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -322,12 +332,12 @@ public class UseNameElementControl
                         """;
             }
 
-            var ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useNameElementDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            useNameElementDescriptions = UseNameElementDescriptionFactory.getInstance().getEntitiesFromQuery(
+            useNameElementDescriptions = useNameElementDescriptionFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -380,7 +390,7 @@ public class UseNameElementControl
     public void updateUseNameElementDescriptionFromValue(UseNameElementDescriptionValue useNameElementDescriptionValue,
             BasePK updatedBy) {
         if(useNameElementDescriptionValue.hasBeenModified()) {
-            var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useNameElementDescription = useNameElementDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     useNameElementDescriptionValue.getPrimaryKey());
 
             useNameElementDescription.setThruTime(session.getStartTime());
@@ -390,7 +400,7 @@ public class UseNameElementControl
             var language = useNameElementDescription.getLanguage();
             var description = useNameElementDescriptionValue.getDescription();
 
-            useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(useNameElement,
+            useNameElementDescription = useNameElementDescriptionFactory.create(useNameElement,
                     language, description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,

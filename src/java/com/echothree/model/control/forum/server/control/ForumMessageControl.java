@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ForumMessageControl
@@ -46,6 +47,12 @@ public class ForumMessageControl
     //   Forum Message Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ForumMessageFactory forumMessageFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<ForumMessageResultTransfer> getForumMessageResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var forumMessageResultTransfers = new ArrayList<ForumMessageResultTransfer>();
@@ -58,7 +65,7 @@ public class ForumMessageControl
 
         try {
             var forumControl = Session.getModelController(ForumControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -71,7 +78,7 @@ public class ForumMessageControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
+                    var forumMessage = forumMessageFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
 
                     forumMessageResultTransfers.add(new ForumMessageResultTransfer(forumMessage.getLastDetail().getForumMessageName(),
                             includeForumMessage ? forumControl.getForumMessageTransfer(userVisit, forumMessage) : null));

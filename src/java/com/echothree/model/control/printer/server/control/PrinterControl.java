@@ -144,6 +144,12 @@ public class PrinterControl
     //   Printer Groups
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterGroupFactory printerGroupFactory;
+
+    @Inject
+    protected PrinterGroupDetailFactory printerGroupDetailFactory;
+
     public PrinterGroup createPrinterGroup(String printerGroupName, Long keepPrintedJobsTime, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPrinterGroup = getDefaultPrinterGroup();
         var defaultFound = defaultPrinterGroup != null;
@@ -157,12 +163,12 @@ public class PrinterControl
             isDefault = true;
         }
 
-        var printerGroup = PrinterGroupFactory.getInstance().create();
-        var printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroup, printerGroupName, keepPrintedJobsTime, isDefault,
+        var printerGroup = printerGroupFactory.create();
+        var printerGroupDetail = printerGroupDetailFactory.create(printerGroup, printerGroupName, keepPrintedJobsTime, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        printerGroup = PrinterGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        printerGroup = printerGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 printerGroup.getPrimaryKey());
         printerGroup.setActiveDetail(printerGroupDetail);
         printerGroup.setLastDetail(printerGroupDetail);
@@ -177,7 +183,7 @@ public class PrinterControl
     public PrinterGroup getPrinterGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PrinterGroupPK(entityInstance.getEntityUniqueId());
 
-        return PrinterGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return printerGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PrinterGroup getPrinterGroupByEntityInstance(EntityInstance entityInstance) {
@@ -220,7 +226,7 @@ public class PrinterControl
     }
 
     private PrinterGroup getPrinterGroupByName(String printerGroupName, EntityPermission entityPermission) {
-        return PrinterGroupFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterGroupByNameQueries, printerGroupName);
+        return printerGroupFactory.getEntityFromQuery(entityPermission, getPrinterGroupByNameQueries, printerGroupName);
     }
 
     public PrinterGroup getPrinterGroupByName(String printerGroupName) {
@@ -263,7 +269,7 @@ public class PrinterControl
     }
 
     private PrinterGroup getDefaultPrinterGroup(EntityPermission entityPermission) {
-        return PrinterGroupFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPrinterGroupQueries);
+        return printerGroupFactory.getEntityFromQuery(entityPermission, getDefaultPrinterGroupQueries);
     }
 
     public PrinterGroup getDefaultPrinterGroup() {
@@ -302,7 +308,7 @@ public class PrinterControl
     }
 
     private List<PrinterGroup> getPrinterGroups(EntityPermission entityPermission) {
-        return PrinterGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupsQueries);
+        return printerGroupFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupsQueries);
     }
 
     public List<PrinterGroup> getPrinterGroups() {
@@ -368,7 +374,7 @@ public class PrinterControl
     private void updatePrinterGroupFromValue(PrinterGroupDetailValue printerGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(printerGroupDetailValue.hasBeenModified()) {
-            var printerGroup = PrinterGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroup = printerGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      printerGroupDetailValue.getPrinterGroupPK());
             var printerGroupDetail = printerGroup.getActiveDetailForUpdate();
 
@@ -397,7 +403,7 @@ public class PrinterControl
                 }
             }
 
-            printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroupPK, printerGroupName, keepPrintedJobsTime, isDefault, sortOrder,
+            printerGroupDetail = printerGroupDetailFactory.create(printerGroupPK, printerGroupName, keepPrintedJobsTime, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             printerGroup.setActiveDetail(printerGroupDetail);
@@ -473,9 +479,12 @@ public class PrinterControl
     //   Printer Group Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterGroupDescriptionFactory printerGroupDescriptionFactory;
+
     public PrinterGroupDescription createPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, String description, BasePK createdBy) {
-        var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
+        var printerGroupDescription = printerGroupDescriptionFactory.create(printerGroup,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -506,7 +515,7 @@ public class PrinterControl
 
     private PrinterGroupDescription getPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, EntityPermission entityPermission) {
-        return PrinterGroupDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterGroupDescriptionQueries,
+        return printerGroupDescriptionFactory.getEntityFromQuery(entityPermission, getPrinterGroupDescriptionQueries,
                 printerGroup, language, Session.MAX_TIME);
     }
 
@@ -551,7 +560,7 @@ public class PrinterControl
 
     private List<PrinterGroupDescription> getPrinterGroupDescriptionsByPrinterGroup(PrinterGroup printerGroup,
             EntityPermission entityPermission) {
-        return PrinterGroupDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupDescriptionsByPrinterGroupQueries,
+        return printerGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupDescriptionsByPrinterGroupQueries,
                 printerGroup, Session.MAX_TIME);
     }
 
@@ -597,7 +606,7 @@ public class PrinterControl
 
     public void updatePrinterGroupDescriptionFromValue(PrinterGroupDescriptionValue printerGroupDescriptionValue, BasePK updatedBy) {
         if(printerGroupDescriptionValue.hasBeenModified()) {
-            var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupDescription = printerGroupDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     printerGroupDescriptionValue.getPrimaryKey());
 
             printerGroupDescription.setThruTime(session.getStartTime());
@@ -607,7 +616,7 @@ public class PrinterControl
             var language = printerGroupDescription.getLanguage();
             var description = printerGroupDescriptionValue.getDescription();
 
-            printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup, language, description,
+            printerGroupDescription = printerGroupDescriptionFactory.create(printerGroup, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -633,13 +642,19 @@ public class PrinterControl
     //   Printers
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterFactory printerFactory;
+
+    @Inject
+    protected PrinterDetailFactory printerDetailFactory;
+
     public Printer createPrinter(String printerName, PrinterGroup printerGroup, Integer priority, BasePK createdBy) {
-        var printer = PrinterFactory.getInstance().create();
-        var printerDetail = PrinterDetailFactory.getInstance().create(printer, printerName, printerGroup, priority, session.getStartTime(),
+        var printer = printerFactory.create();
+        var printerDetail = printerDetailFactory.create(printer, printerName, printerGroup, priority, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        printer = PrinterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        printer = printerFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 printer.getPrimaryKey());
         printer.setActiveDetail(printerDetail);
         printer.setLastDetail(printerDetail);
@@ -654,7 +669,7 @@ public class PrinterControl
     public Printer getPrinterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PrinterPK(entityInstance.getEntityUniqueId());
 
-        return PrinterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return printerFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Printer getPrinterByEntityInstance(EntityInstance entityInstance) {
@@ -706,7 +721,7 @@ public class PrinterControl
     }
 
     private Printer getPrinterByName(String printerName, EntityPermission entityPermission) {
-        return PrinterFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterByNameQueries, printerName);
+        return printerFactory.getEntityFromQuery(entityPermission, getPrinterByNameQueries, printerName);
     }
 
     public Printer getPrinterByName(String printerName) {
@@ -749,7 +764,7 @@ public class PrinterControl
     }
 
     private Printer getDefaultPrinter(EntityPermission entityPermission) {
-        return PrinterFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPrinterQueries);
+        return printerFactory.getEntityFromQuery(entityPermission, getDefaultPrinterQueries);
     }
 
     public Printer getDefaultPrinter() {
@@ -788,7 +803,7 @@ public class PrinterControl
     }
 
     private List<Printer> getPrinters(EntityPermission entityPermission) {
-        return PrinterFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrintersQueries);
+        return printerFactory.getEntitiesFromQuery(entityPermission, getPrintersQueries);
     }
 
     public List<Printer> getPrinters() {
@@ -825,7 +840,7 @@ public class PrinterControl
     }
 
     private List<Printer> getPrintersByPrinterGroup(PrinterGroup printerGroup, EntityPermission entityPermission) {
-        return PrinterFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrintersByPrinterGroupQueries, printerGroup);
+        return printerFactory.getEntitiesFromQuery(entityPermission, getPrintersByPrinterGroupQueries, printerGroup);
     }
 
     public List<Printer> getPrintersByPrinterGroup(PrinterGroup printerGroup) {
@@ -860,7 +875,7 @@ public class PrinterControl
 
     public void updatePrinterFromValue(PrinterDetailValue printerDetailValue, BasePK updatedBy) {
         if(printerDetailValue.hasBeenModified()) {
-            var printer = PrinterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, printerDetailValue.getPrinterPK());
+            var printer = printerFactory.getEntityFromPK(EntityPermission.READ_WRITE, printerDetailValue.getPrinterPK());
             var printerDetail = printer.getActiveDetailForUpdate();
 
             printerDetail.setThruTime(session.getStartTime());
@@ -871,7 +886,7 @@ public class PrinterControl
             var printerGroupPK = printerDetailValue.getPrinterGroupPK();
             var priority = printerDetailValue.getPriority();
 
-            printerDetail = PrinterDetailFactory.getInstance().create(printerPK, printerName, printerGroupPK, priority, session.getStartTime(),
+            printerDetail = printerDetailFactory.create(printerPK, printerName, printerGroupPK, priority, session.getStartTime(),
                     Session.MAX_TIME);
 
             printer.setActiveDetail(printerDetail);
@@ -932,8 +947,11 @@ public class PrinterControl
     //   Printer Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterDescriptionFactory printerDescriptionFactory;
+
     public PrinterDescription createPrinterDescription(Printer printer, Language language, String description, BasePK createdBy) {
-        var printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.getStartTime(),
+        var printerDescription = printerDescriptionFactory.create(printer, language, description, session.getStartTime(),
                 Session.MAX_TIME);
 
         sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -964,7 +982,7 @@ public class PrinterControl
 
     private PrinterDescription getPrinterDescription(Printer printer,
             Language language, EntityPermission entityPermission) {
-        return PrinterDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterDescriptionQueries,
+        return printerDescriptionFactory.getEntityFromQuery(entityPermission, getPrinterDescriptionQueries,
                 printer, language, Session.MAX_TIME);
     }
 
@@ -1009,7 +1027,7 @@ public class PrinterControl
 
     private List<PrinterDescription> getPrinterDescriptionsByPrinter(Printer printer,
             EntityPermission entityPermission) {
-        return PrinterDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterDescriptionsByPrinterQueries,
+        return printerDescriptionFactory.getEntitiesFromQuery(entityPermission, getPrinterDescriptionsByPrinterQueries,
                 printer, Session.MAX_TIME);
     }
 
@@ -1055,7 +1073,7 @@ public class PrinterControl
 
     public void updatePrinterDescriptionFromValue(PrinterDescriptionValue printerDescriptionValue, BasePK updatedBy) {
         if(printerDescriptionValue.hasBeenModified()) {
-            var printerDescription = PrinterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerDescription = printerDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     printerDescriptionValue.getPrimaryKey());
 
             printerDescription.setThruTime(session.getStartTime());
@@ -1065,7 +1083,7 @@ public class PrinterControl
             var language = printerDescription.getLanguage();
             var description = printerDescriptionValue.getDescription();
 
-            printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description,
+            printerDescription = printerDescriptionFactory.create(printer, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1090,6 +1108,12 @@ public class PrinterControl
     //   Printer Group Jobs
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterGroupJobFactory printerGroupJobFactory;
+
+    @Inject
+    protected PrinterGroupJobDetailFactory printerGroupJobDetailFactory;
+
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
@@ -1100,12 +1124,12 @@ public class PrinterControl
 
     public PrinterGroupJob createPrinterGroupJob(String printerGroupJobName, PrinterGroup printerGroup, Document document, Integer copies, Integer priority,
             BasePK createdBy) {
-        var printerGroupJob = PrinterGroupJobFactory.getInstance().create();
-        var printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJob, printerGroupJobName, printerGroup,
+        var printerGroupJob = printerGroupJobFactory.create();
+        var printerGroupJobDetail = printerGroupJobDetailFactory.create(printerGroupJob, printerGroupJobName, printerGroup,
                 document, copies, priority, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        printerGroupJob = printerGroupJobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 printerGroupJob.getPrimaryKey());
         printerGroupJob.setActiveDetail(printerGroupJobDetail);
         printerGroupJob.setLastDetail(printerGroupJobDetail);
@@ -1120,7 +1144,7 @@ public class PrinterControl
     public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
 
-        return PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return printerGroupJobFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
@@ -1172,7 +1196,7 @@ public class PrinterControl
     }
 
     private PrinterGroupJob getPrinterGroupJobByName(String printerGroupJobName, EntityPermission entityPermission) {
-        return PrinterGroupJobFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterGroupJobByNameQueries, printerGroupJobName);
+        return printerGroupJobFactory.getEntityFromQuery(entityPermission, getPrinterGroupJobByNameQueries, printerGroupJobName);
     }
 
     public PrinterGroupJob getPrinterGroupJobByName(String printerGroupJobName) {
@@ -1215,7 +1239,7 @@ public class PrinterControl
     }
 
     private PrinterGroupJob getDefaultPrinterGroupJob(EntityPermission entityPermission) {
-        return PrinterGroupJobFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPrinterGroupJobQueries);
+        return printerGroupJobFactory.getEntityFromQuery(entityPermission, getDefaultPrinterGroupJobQueries);
     }
 
     public PrinterGroupJob getDefaultPrinterGroupJob() {
@@ -1254,7 +1278,7 @@ public class PrinterControl
     }
 
     private List<PrinterGroupJob> getPrinterGroupJobs(EntityPermission entityPermission) {
-        return PrinterGroupJobFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupJobsQueries);
+        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupJobsQueries);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobs() {
@@ -1291,7 +1315,7 @@ public class PrinterControl
     }
 
     private List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup, EntityPermission entityPermission) {
-        return PrinterGroupJobFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupQueries, printerGroup);
+        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupQueries, printerGroup);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup) {
@@ -1338,7 +1362,7 @@ public class PrinterControl
     }
 
     private List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        return PrinterGroupJobFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupJobStatusQueries,
+        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupJobStatusQueries,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name(), workflowStep, Session.MAX_TIME);
     }
 
@@ -1378,7 +1402,7 @@ public class PrinterControl
 
     public void updatePrinterGroupJobFromValue(PrinterGroupJobDetailValue printerGroupJobDetailValue, BasePK updatedBy) {
         if(printerGroupJobDetailValue.hasBeenModified()) {
-            var printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupJob = printerGroupJobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      printerGroupJobDetailValue.getPrinterGroupJobPK());
             var printerGroupJobDetail = printerGroupJob.getActiveDetailForUpdate();
 
@@ -1392,7 +1416,7 @@ public class PrinterControl
             var copies = printerGroupJobDetailValue.getCopies();
             var priority = printerGroupJobDetailValue.getPriority();
 
-            printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJobPK, printerGroupJobName, printerGroupPK, documentPK,
+            printerGroupJobDetail = printerGroupJobDetailFactory.create(printerGroupJobPK, printerGroupJobName, printerGroupPK, documentPK,
                     copies, priority, session.getStartTime(), Session.MAX_TIME);
 
             printerGroupJob.setActiveDetail(printerGroupJobDetail);
@@ -1491,6 +1515,12 @@ public class PrinterControl
     //   Printer Group Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterGroupUseTypeFactory printerGroupUseTypeFactory;
+
+    @Inject
+    protected PrinterGroupUseTypeDetailFactory printerGroupUseTypeDetailFactory;
+
     public PrinterGroupUseType createPrinterGroupUseType(String printerGroupUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
         var defaultFound = defaultPrinterGroupUseType != null;
@@ -1504,12 +1534,12 @@ public class PrinterControl
             isDefault = true;
         }
 
-        var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().create();
-        var printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseType,
+        var printerGroupUseType = printerGroupUseTypeFactory.create();
+        var printerGroupUseTypeDetail = printerGroupUseTypeDetailFactory.create(printerGroupUseType,
                 printerGroupUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        printerGroupUseType = printerGroupUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 printerGroupUseType.getPrimaryKey());
         printerGroupUseType.setActiveDetail(printerGroupUseTypeDetail);
         printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
@@ -1524,7 +1554,7 @@ public class PrinterControl
     public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PrinterGroupUseTypePK(entityInstance.getEntityUniqueId());
 
-        return PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return printerGroupUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1567,7 +1597,7 @@ public class PrinterControl
     }
 
     private PrinterGroupUseType getPrinterGroupUseTypeByName(String printerGroupUseTypeName, EntityPermission entityPermission) {
-        return PrinterGroupUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterGroupUseTypeByNameQueries, printerGroupUseTypeName);
+        return printerGroupUseTypeFactory.getEntityFromQuery(entityPermission, getPrinterGroupUseTypeByNameQueries, printerGroupUseTypeName);
     }
 
     public PrinterGroupUseType getPrinterGroupUseTypeByName(String printerGroupUseTypeName) {
@@ -1610,7 +1640,7 @@ public class PrinterControl
     }
 
     private PrinterGroupUseType getDefaultPrinterGroupUseType(EntityPermission entityPermission) {
-        return PrinterGroupUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPrinterGroupUseTypeQueries);
+        return printerGroupUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultPrinterGroupUseTypeQueries);
     }
 
     public PrinterGroupUseType getDefaultPrinterGroupUseType() {
@@ -1649,7 +1679,7 @@ public class PrinterControl
     }
 
     private List<PrinterGroupUseType> getPrinterGroupUseTypes(EntityPermission entityPermission) {
-        return PrinterGroupUseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupUseTypesQueries);
+        return printerGroupUseTypeFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupUseTypesQueries);
     }
 
     public List<PrinterGroupUseType> getPrinterGroupUseTypes() {
@@ -1715,7 +1745,7 @@ public class PrinterControl
     private void updatePrinterGroupUseTypeFromValue(PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(printerGroupUseTypeDetailValue.hasBeenModified()) {
-            var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupUseType = printerGroupUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      printerGroupUseTypeDetailValue.getPrinterGroupUseTypePK());
             var printerGroupUseTypeDetail = printerGroupUseType.getActiveDetailForUpdate();
 
@@ -1743,7 +1773,7 @@ public class PrinterControl
                 }
             }
 
-            printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseTypePK, printerGroupUseTypeName, isDefault,
+            printerGroupUseTypeDetail = printerGroupUseTypeDetailFactory.create(printerGroupUseTypePK, printerGroupUseTypeName, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             printerGroupUseType.setActiveDetail(printerGroupUseTypeDetail);
@@ -1790,9 +1820,12 @@ public class PrinterControl
     //   Printer Group Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PrinterGroupUseTypeDescriptionFactory printerGroupUseTypeDescriptionFactory;
+
     public PrinterGroupUseTypeDescription createPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, String description, BasePK createdBy) {
-        var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
+        var printerGroupUseTypeDescription = printerGroupUseTypeDescriptionFactory.create(printerGroupUseType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1823,7 +1856,7 @@ public class PrinterControl
 
     private PrinterGroupUseTypeDescription getPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, EntityPermission entityPermission) {
-        return PrinterGroupUseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPrinterGroupUseTypeDescriptionQueries,
+        return printerGroupUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPrinterGroupUseTypeDescriptionQueries,
                 printerGroupUseType, language, Session.MAX_TIME);
     }
 
@@ -1868,7 +1901,7 @@ public class PrinterControl
 
     private List<PrinterGroupUseTypeDescription> getPrinterGroupUseTypeDescriptionsByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType,
             EntityPermission entityPermission) {
-        return PrinterGroupUseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeQueries,
+        return printerGroupUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeQueries,
                 printerGroupUseType, Session.MAX_TIME);
     }
 
@@ -1914,7 +1947,7 @@ public class PrinterControl
 
     public void updatePrinterGroupUseTypeDescriptionFromValue(PrinterGroupUseTypeDescriptionValue printerGroupUseTypeDescriptionValue, BasePK updatedBy) {
         if(printerGroupUseTypeDescriptionValue.hasBeenModified()) {
-            var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var printerGroupUseTypeDescription = printerGroupUseTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     printerGroupUseTypeDescriptionValue.getPrimaryKey());
 
             printerGroupUseTypeDescription.setThruTime(session.getStartTime());
@@ -1924,7 +1957,7 @@ public class PrinterControl
             var language = printerGroupUseTypeDescription.getLanguage();
             var description = printerGroupUseTypeDescriptionValue.getDescription();
 
-            printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType, language, description,
+            printerGroupUseTypeDescription = printerGroupUseTypeDescriptionFactory.create(printerGroupUseType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1949,9 +1982,12 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
     //   Party Printer Group Uses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyPrinterGroupUseFactory partyPrinterGroupUseFactory;
+
     public PartyPrinterGroupUse createPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, PrinterGroup printerGroup, BasePK createdBy) {
-        var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
+        var partyPrinterGroupUse = partyPrinterGroupUseFactory.create(party, printerGroupUseType, printerGroup,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2008,7 +2044,7 @@ public class PrinterControl
     }
 
     private PartyPrinterGroupUse getPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, EntityPermission entityPermission) {
-        return PartyPrinterGroupUseFactory.getInstance().getEntityFromQuery(entityPermission, getPartyPrinterGroupUseQueries,
+        return partyPrinterGroupUseFactory.getEntityFromQuery(entityPermission, getPartyPrinterGroupUseQueries,
                 party, printerGroupUseType, Session.MAX_TIME);
     }
 
@@ -2056,7 +2092,7 @@ public class PrinterControl
     }
 
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByParty(Party party, EntityPermission entityPermission) {
-        return PartyPrinterGroupUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPartyQueries,
+        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -2093,7 +2129,7 @@ public class PrinterControl
     }
 
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroup(PrinterGroup printerGroup, EntityPermission entityPermission) {
-        return PartyPrinterGroupUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupQueries,
+        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupQueries,
                 printerGroup, Session.MAX_TIME);
     }
 
@@ -2130,7 +2166,7 @@ public class PrinterControl
     }
 
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType, EntityPermission entityPermission) {
-        return PartyPrinterGroupUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries,
+        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries,
                 printerGroupUseType, Session.MAX_TIME);
     }
 
@@ -2170,7 +2206,7 @@ public class PrinterControl
 
     public void updatePartyPrinterGroupUseFromValue(PartyPrinterGroupUseValue partyPrinterGroupUseValue, BasePK updatedBy) {
         if(partyPrinterGroupUseValue.hasBeenModified()) {
-            var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyPrinterGroupUse = partyPrinterGroupUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyPrinterGroupUseValue.getPrimaryKey());
             
             partyPrinterGroupUse.setThruTime(session.getStartTime());
@@ -2180,7 +2216,7 @@ public class PrinterControl
             var printerGroupUseTypePK = partyPrinterGroupUse.getPrinterGroupUseTypePK(); // Not updated
             var printerGroupPK = partyPrinterGroupUseValue.getPrinterGroupPK();
             
-            partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(partyPK, printerGroupUseTypePK,
+            partyPrinterGroupUse = partyPrinterGroupUseFactory.create(partyPK, printerGroupUseTypePK,
                     printerGroupPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

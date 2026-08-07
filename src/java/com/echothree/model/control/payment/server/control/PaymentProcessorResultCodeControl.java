@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorResultCodeControl
@@ -53,6 +54,12 @@ public class PaymentProcessorResultCodeControl
     // --------------------------------------------------------------------------------
     //   Payment Processor Result Codes
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected PaymentProcessorResultCodeFactory paymentProcessorResultCodeFactory;
+
+    @Inject
+    protected PaymentProcessorResultCodeDetailFactory paymentProcessorResultCodeDetailFactory;
 
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final String paymentProcessorResultCodeName, Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
@@ -68,12 +75,12 @@ public class PaymentProcessorResultCodeControl
             isDefault = true;
         }
 
-        var paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().create();
-        var paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(
+        var paymentProcessorResultCode = paymentProcessorResultCodeFactory.create();
+        var paymentProcessorResultCodeDetail = paymentProcessorResultCodeDetailFactory.create(
                 paymentProcessorResultCode, paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCode.getPrimaryKey());
+        paymentProcessorResultCode = paymentProcessorResultCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCode.getPrimaryKey());
         paymentProcessorResultCode.setActiveDetail(paymentProcessorResultCodeDetail);
         paymentProcessorResultCode.setLastDetail(paymentProcessorResultCodeDetail);
         paymentProcessorResultCode.store();
@@ -88,7 +95,7 @@ public class PaymentProcessorResultCodeControl
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorResultCodePK(entityInstance.getEntityUniqueId());
 
-        return PaymentProcessorResultCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return paymentProcessorResultCodeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByEntityInstance(final EntityInstance entityInstance) {
@@ -123,7 +130,7 @@ public class PaymentProcessorResultCodeControl
             """);
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final String paymentProcessorResultCodeName, final EntityPermission entityPermission) {
-        return PaymentProcessorResultCodeFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeByNameQueries,
+        return paymentProcessorResultCodeFactory.getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeByNameQueries,
                 paymentProcessorResultCodeName);
     }
 
@@ -159,7 +166,7 @@ public class PaymentProcessorResultCodeControl
             """);
 
     public PaymentProcessorResultCode getDefaultPaymentProcessorResultCode(final EntityPermission entityPermission) {
-        return PaymentProcessorResultCodeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentProcessorResultCodeQueries);
+        return paymentProcessorResultCodeFactory.getEntityFromQuery(entityPermission, getDefaultPaymentProcessorResultCodeQueries);
     }
 
     public PaymentProcessorResultCode getDefaultPaymentProcessorResultCode() {
@@ -192,7 +199,7 @@ public class PaymentProcessorResultCodeControl
             """);
 
     private List<PaymentProcessorResultCode> getPaymentProcessorResultCodes(final EntityPermission entityPermission) {
-        return PaymentProcessorResultCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorResultCodesQueries);
+        return paymentProcessorResultCodeFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorResultCodesQueries);
     }
 
     public List<PaymentProcessorResultCode> getPaymentProcessorResultCodes() {
@@ -261,7 +268,7 @@ public class PaymentProcessorResultCodeControl
     private void updatePaymentProcessorResultCodeFromValue(final PaymentProcessorResultCodeDetailValue paymentProcessorResultCodeDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(paymentProcessorResultCodeDetailValue.hasBeenModified()) {
-            var paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessorResultCode = paymentProcessorResultCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     paymentProcessorResultCodeDetailValue.getPaymentProcessorResultCodePK());
             var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getActiveDetailForUpdate();
 
@@ -289,7 +296,7 @@ public class PaymentProcessorResultCodeControl
                 }
             }
 
-            paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(paymentProcessorResultCodePK,
+            paymentProcessorResultCodeDetail = paymentProcessorResultCodeDetailFactory.create(paymentProcessorResultCodePK,
                     paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorResultCode.setActiveDetail(paymentProcessorResultCodeDetail);
@@ -339,9 +346,12 @@ public class PaymentProcessorResultCodeControl
     //   Payment Processor Result Code Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PaymentProcessorResultCodeDescriptionFactory paymentProcessorResultCodeDescriptionFactory;
+
     public PaymentProcessorResultCodeDescription createPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final String description, final BasePK createdBy) {
-        var paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode,
+        var paymentProcessorResultCodeDescription = paymentProcessorResultCodeDescriptionFactory.create(paymentProcessorResultCode,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -366,7 +376,7 @@ public class PaymentProcessorResultCodeControl
 
     private PaymentProcessorResultCodeDescription getPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final EntityPermission entityPermission) {
-        return PaymentProcessorResultCodeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeDescriptionQueries,
+        return paymentProcessorResultCodeDescriptionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeDescriptionQueries,
                 paymentProcessorResultCode, language, Session.MAX_TIME);
     }
 
@@ -408,7 +418,7 @@ public class PaymentProcessorResultCodeControl
 
     private List<PaymentProcessorResultCodeDescription> getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode,
             final EntityPermission entityPermission) {
-        return PaymentProcessorResultCodeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return paymentProcessorResultCodeDescriptionFactory.getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCodeQueries,
                 paymentProcessorResultCode, Session.MAX_TIME);
     }
@@ -458,7 +468,7 @@ public class PaymentProcessorResultCodeControl
     public void updatePaymentProcessorResultCodeDescriptionFromValue(final PaymentProcessorResultCodeDescriptionValue paymentProcessorResultCodeDescriptionValue,
             final BasePK updatedBy) {
         if(paymentProcessorResultCodeDescriptionValue.hasBeenModified()) {
-            var paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCodeDescriptionValue.getPrimaryKey());
+            var paymentProcessorResultCodeDescription = paymentProcessorResultCodeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCodeDescriptionValue.getPrimaryKey());
 
             paymentProcessorResultCodeDescription.setThruTime(session.getStartTime());
             paymentProcessorResultCodeDescription.store();
@@ -467,7 +477,7 @@ public class PaymentProcessorResultCodeControl
             var language = paymentProcessorResultCodeDescription.getLanguage();
             var description = paymentProcessorResultCodeDescriptionValue.getDescription();
 
-            paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode, language, description,
+            paymentProcessorResultCodeDescription = paymentProcessorResultCodeDescriptionFactory.create(paymentProcessorResultCode, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

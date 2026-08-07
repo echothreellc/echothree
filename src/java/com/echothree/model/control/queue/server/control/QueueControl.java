@@ -81,6 +81,12 @@ public class QueueControl
     //   Queue Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected QueueTypeFactory queueTypeFactory;
+
+    @Inject
+    protected QueueTypeDetailFactory queueTypeDetailFactory;
+
     public QueueType createQueueType(String queueTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultQueueType = getDefaultQueueType();
         var defaultFound = defaultQueueType != null;
@@ -94,12 +100,12 @@ public class QueueControl
             isDefault = true;
         }
 
-        var queueType = QueueTypeFactory.getInstance().create();
-        var queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.getStartTime(),
+        var queueType = queueTypeFactory.create();
+        var queueTypeDetail = queueTypeDetailFactory.create(queueType, queueTypeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, queueType.getPrimaryKey());
+        queueType = queueTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, queueType.getPrimaryKey());
         queueType.setActiveDetail(queueTypeDetail);
         queueType.setLastDetail(queueTypeDetail);
         queueType.store();
@@ -113,7 +119,7 @@ public class QueueControl
     public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new QueueTypePK(entityInstance.getEntityUniqueId());
 
-        return QueueTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return queueTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance) {
@@ -156,7 +162,7 @@ public class QueueControl
     }
 
     private QueueType getQueueTypeByName(String queueTypeName, EntityPermission entityPermission) {
-        return QueueTypeFactory.getInstance().getEntityFromQuery(entityPermission, getQueueTypeByNameQueries, queueTypeName);
+        return queueTypeFactory.getEntityFromQuery(entityPermission, getQueueTypeByNameQueries, queueTypeName);
     }
 
     public QueueType getQueueTypeByName(String queueTypeName) {
@@ -199,7 +205,7 @@ public class QueueControl
     }
 
     private QueueType getDefaultQueueType(EntityPermission entityPermission) {
-        return QueueTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultQueueTypeQueries);
+        return queueTypeFactory.getEntityFromQuery(entityPermission, getDefaultQueueTypeQueries);
     }
 
     public QueueType getDefaultQueueType() {
@@ -238,7 +244,7 @@ public class QueueControl
     }
 
     private List<QueueType> getQueueTypes(EntityPermission entityPermission) {
-        return QueueTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getQueueTypesQueries);
+        return queueTypeFactory.getEntitiesFromQuery(entityPermission, getQueueTypesQueries);
     }
 
     public List<QueueType> getQueueTypes() {
@@ -303,7 +309,7 @@ public class QueueControl
 
     private void updateQueueTypeFromValue(QueueTypeDetailValue queueTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(queueTypeDetailValue.hasBeenModified()) {
-            var queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var queueType = queueTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      queueTypeDetailValue.getQueueTypePK());
             var queueTypeDetail = queueType.getActiveDetailForUpdate();
 
@@ -331,7 +337,7 @@ public class QueueControl
                 }
             }
 
-            queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueTypePK, queueTypeName, isDefault, sortOrder, session.getStartTime(),
+            queueTypeDetail = queueTypeDetailFactory.create(queueTypePK, queueTypeName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             queueType.setActiveDetail(queueTypeDetail);
@@ -394,8 +400,11 @@ public class QueueControl
     //   Queue Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected QueueTypeDescriptionFactory queueTypeDescriptionFactory;
+
     public QueueTypeDescription createQueueTypeDescription(QueueType queueType, Language language, String description, BasePK createdBy) {
-        var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
+        var queueTypeDescription = queueTypeDescriptionFactory.create(queueType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -425,7 +434,7 @@ public class QueueControl
     }
 
     private QueueTypeDescription getQueueTypeDescription(QueueType queueType, Language language, EntityPermission entityPermission) {
-        return QueueTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getQueueTypeDescriptionQueries,
+        return queueTypeDescriptionFactory.getEntityFromQuery(entityPermission, getQueueTypeDescriptionQueries,
                 queueType, language, Session.MAX_TIME);
     }
 
@@ -468,7 +477,7 @@ public class QueueControl
     }
 
     private List<QueueTypeDescription> getQueueTypeDescriptionsByQueueType(QueueType queueType, EntityPermission entityPermission) {
-        return QueueTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getQueueTypeDescriptionsByQueueTypeQueries,
+        return queueTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getQueueTypeDescriptionsByQueueTypeQueries,
                 queueType, Session.MAX_TIME);
     }
 
@@ -514,7 +523,7 @@ public class QueueControl
 
     public void updateQueueTypeDescriptionFromValue(QueueTypeDescriptionValue queueTypeDescriptionValue, BasePK updatedBy) {
         if(queueTypeDescriptionValue.hasBeenModified()) {
-            var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var queueTypeDescription = queueTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     queueTypeDescriptionValue.getPrimaryKey());
 
             queueTypeDescription.setThruTime(session.getStartTime());
@@ -524,7 +533,7 @@ public class QueueControl
             var language = queueTypeDescription.getLanguage();
             var description = queueTypeDescriptionValue.getDescription();
 
-            queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
+            queueTypeDescription = queueTypeDescriptionFactory.create(queueType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -549,13 +558,16 @@ public class QueueControl
     // --------------------------------------------------------------------------------
     //   Queued Entities
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected QueuedEntityFactory queuedEntityFactory;
+
     public QueuedEntity createQueuedEntity(QueueType queueType, EntityInstance entityInstance) {
-        return QueuedEntityFactory.getInstance().create(queueType, entityInstance, session.getStartTime());
+        return queuedEntityFactory.create(queueType, entityInstance, session.getStartTime());
     }
 
     public void createQueuedEntities(Collection<QueuedEntityValue> queuedEntities) {
-        QueuedEntityFactory.getInstance().create(queuedEntities);
+        queuedEntityFactory.create(queuedEntities);
     }
     
     public Long countQueuedEntitiesByQueueType(final QueueType queueType) {
@@ -641,7 +653,7 @@ public class QueueControl
     }
 
     private List<QueuedEntity> getQueuedEntities(QueueType queueType, EntityInstance entityInstance, EntityPermission entityPermission) {
-        return QueuedEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, getQueuedEntitiesQueries,
+        return queuedEntityFactory.getEntitiesFromQuery(entityPermission, getQueuedEntitiesQueries,
                 queueType, entityInstance);
     }
 
@@ -678,11 +690,11 @@ public class QueueControl
                         """;
             }
 
-            var ps = QueuedEntityFactory.getInstance().prepareStatement(query);
+            var ps = queuedEntityFactory.prepareStatement(query);
             
             ps.setLong(1, queueType.getPrimaryKey().getEntityId());
             
-            queuedEntities = QueuedEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            queuedEntities = queuedEntityFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -721,11 +733,11 @@ public class QueueControl
                         """;
             }
 
-            var ps = QueuedEntityFactory.getInstance().prepareStatement(query);
+            var ps = queuedEntityFactory.prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             
-            queuedEntities = QueuedEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            queuedEntities = queuedEntityFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

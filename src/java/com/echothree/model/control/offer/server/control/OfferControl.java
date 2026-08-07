@@ -65,6 +65,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OfferControl
@@ -78,6 +79,15 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     //   Offers
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OfferFactory offerFactory;
+
+    @Inject
+    protected SelectorFactory selectorFactory;
+
+    @Inject
+    protected OfferDetailFactory offerDetailFactory;
 
     /** Use the function in OfferLogic instead. */
     public Offer createOffer(String offerName, Sequence salesOrderSequence, Party departmentParty, Selector offerItemSelector,
@@ -94,12 +104,12 @@ public class OfferControl
             isDefault = true;
         }
 
-        var offer = OfferFactory.getInstance().create();
-        var offerDetail = OfferDetailFactory.getInstance().create(offer, offerName, salesOrderSequence, departmentParty, offerItemSelector,
+        var offer = offerFactory.create();
+        var offerDetail = offerDetailFactory.create(offer, offerName, salesOrderSequence, departmentParty, offerItemSelector,
                 offerItemPriceFilter, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offer.getPrimaryKey());
+        offer = offerFactory.getEntityFromPK(EntityPermission.READ_WRITE, offer.getPrimaryKey());
         offer.setActiveDetail(offerDetail);
         offer.setLastDetail(offerDetail);
         offer.store();
@@ -161,7 +171,7 @@ public class OfferControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Offer */
     public Offer getOfferByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferPK(entityInstance.getEntityUniqueId());
-        var offer = OfferFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var offer = offerFactory.getEntityFromPK(entityPermission, pk);
 
         return offer;
     }
@@ -192,9 +202,9 @@ public class OfferControl
                     """;
         }
 
-        var ps = OfferFactory.getInstance().prepareStatement(query);
+        var ps = offerFactory.prepareStatement(query);
         
-        return OfferFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return offerFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public Offer getDefaultOffer() {
@@ -230,11 +240,11 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferFactory.getInstance().prepareStatement(query);
+            var ps = offerFactory.prepareStatement(query);
             
             ps.setString(1, offerName);
             
-            offer = OfferFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offer = offerFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -262,7 +272,7 @@ public class OfferControl
         List<Offer> offers;
 
         try {
-            var ps = OfferFactory.getInstance().prepareStatement(
+            var ps = offerFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM offers, offerdetails
@@ -273,7 +283,7 @@ public class OfferControl
 
             ps.setLong(1, departmentParty.getPrimaryKey().getEntityId());
 
-            offers = OfferFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            offers = offerFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -285,7 +295,7 @@ public class OfferControl
         List<Offer> offers;
 
         try {
-            var ps = OfferFactory.getInstance().prepareStatement(
+            var ps = offerFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM offers, offerdetails
@@ -295,7 +305,7 @@ public class OfferControl
 
             ps.setLong(1, offerItemSelector.getPrimaryKey().getEntityId());
 
-            offers = OfferFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            offers = offerFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -304,7 +314,7 @@ public class OfferControl
     }
 
     private List<Offer> getOffers(EntityPermission entityPermission) {
-        var ps = OfferFactory.getInstance().prepareStatement(
+        var ps = offerFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM offers, offerdetails
@@ -313,7 +323,7 @@ public class OfferControl
                 _LIMIT_
                 """);
 
-        return OfferFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return offerFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Offer> getOffers() {
@@ -326,14 +336,14 @@ public class OfferControl
     
     /** Gets a List that contains all the Selectors used by Offers. */
     public List<Selector> getDistinctOfferItemSelectors() {
-        var ps = SelectorFactory.getInstance().prepareStatement(
+        var ps = selectorFactory.prepareStatement(
                 """
                 SELECT DISTINCT _ALL_
                 FROM offers, offerdetails, selectors
                 WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = sl_selectorid
                 """);
         
-        return SelectorFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return selectorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public OfferTransfer getOfferTransfer(UserVisit userVisit, Offer offer) {
@@ -391,7 +401,7 @@ public class OfferControl
     private void updateOfferFromValue(OfferDetailValue offerDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(offerDetailValue.hasBeenModified()) {
-            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offer = offerFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      offerDetailValue.getOfferPK());
             var offerDetail = offer.getActiveDetailForUpdate();
             
@@ -423,7 +433,7 @@ public class OfferControl
                 }
             }
             
-            offerDetail = OfferDetailFactory.getInstance().create(offerPK, offerName, salesOrderSequencePK, departmentPartyPK, offerItemSelectorPK,
+            offerDetail = offerDetailFactory.create(offerPK, offerName, salesOrderSequencePK, departmentPartyPK, offerItemSelectorPK,
                     offerItemPriceFilterPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             offer.setActiveDetail(offerDetail);
@@ -478,9 +488,12 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     //   Offer Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OfferDescriptionFactory offerDescriptionFactory;
+
     public OfferDescription createOfferDescription(Offer offer, Language language, String description, BasePK createdBy) {
-        var offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
+        var offerDescription = offerDescriptionFactory.create(offer, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
@@ -510,13 +523,13 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = offerDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            offerDescription = OfferDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerDescription = offerDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -562,12 +575,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = offerDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            offerDescriptions = OfferDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerDescriptions = offerDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -617,7 +630,7 @@ public class OfferControl
     
     public void updateOfferDescriptionFromValue(OfferDescriptionValue offerDescriptionValue, BasePK updatedBy) {
         if(offerDescriptionValue.hasBeenModified()) {
-            var offerDescription = OfferDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerDescription = offerDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      offerDescriptionValue.getPrimaryKey());
             
             offerDescription.setThruTime(session.getStartTime());
@@ -627,7 +640,7 @@ public class OfferControl
             var language = offerDescription.getLanguage();
             var description = offerDescriptionValue.getDescription();
             
-            offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
+            offerDescription = offerDescriptionFactory.create(offer, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
@@ -654,8 +667,11 @@ public class OfferControl
     //   Offer Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferTimeFactory offerTimeFactory;
+
     public OfferTime createOfferTime(Offer offer) {
-        return OfferTimeFactory.getInstance().create(offer, null, null, null, null);
+        return offerTimeFactory.create(offer, null, null, null, null);
     }
 
     private static final Map<EntityPermission, String> getOfferTimeQueries = Map.of(
@@ -675,7 +691,7 @@ public class OfferControl
     );
 
     private OfferTime getOfferTime(Offer offer, EntityPermission entityPermission) {
-        return OfferTimeFactory.getInstance().getEntityFromQuery(entityPermission, getOfferTimeQueries, offer);
+        return offerTimeFactory.getEntityFromQuery(entityPermission, getOfferTimeQueries, offer);
     }
 
     public OfferTime getOfferTime(Offer offer) {
@@ -698,6 +714,9 @@ public class OfferControl
     //   Offer Customer Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferCustomerTypeFactory offerCustomerTypeFactory;
+
     public OfferCustomerType createOfferCustomerType(Offer offer, CustomerType customerType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultOfferCustomerType = getDefaultOfferCustomerType(offer);
@@ -712,7 +731,7 @@ public class OfferControl
             isDefault = true;
         }
 
-        var offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
+        var offerCustomerType = offerCustomerTypeFactory.create(offer, customerType,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -757,13 +776,13 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerCustomerTypeFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, customerType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            offerCustomerType = OfferCustomerTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerCustomerType = offerCustomerTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -806,12 +825,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerCustomerTypeFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            offerCustomerType = OfferCustomerTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerCustomerType = offerCustomerTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -857,12 +876,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerCustomerTypeFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            offerCustomerTypes = OfferCustomerTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerCustomerTypes = offerCustomerTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -902,12 +921,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerCustomerTypeFactory.prepareStatement(query);
 
             ps.setLong(1, customerType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            offerCustomerTypes = OfferCustomerTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerCustomerTypes = offerCustomerTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -947,7 +966,7 @@ public class OfferControl
 
     private void updateOfferCustomerTypeFromValue(OfferCustomerTypeValue offerCustomerTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(offerCustomerTypeValue.hasBeenModified()) {
-            var offerCustomerType = OfferCustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerCustomerType = offerCustomerTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      offerCustomerTypeValue.getPrimaryKey());
 
             offerCustomerType.setThruTime(session.getStartTime());
@@ -975,7 +994,7 @@ public class OfferControl
                 }
             }
 
-            offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offerPK, customerTypePK,
+            offerCustomerType = offerCustomerTypeFactory.create(offerPK, customerTypePK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerPK, EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1028,9 +1047,12 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     //   Offer Chain Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OfferChainTypeFactory offerChainTypeFactory;
+
     public OfferChainType createOfferChainType(Offer offer, ChainType chainType, Chain chain, BasePK createdBy) {
-        var offerChainType = OfferChainTypeFactory.getInstance().create(offer, chainType, chain,
+        var offerChainType = offerChainTypeFactory.create(offer, chainType, chain,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
@@ -1076,13 +1098,13 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerChainTypeFactory.prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, chainType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            offerChainType = OfferChainTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerChainType = offerChainTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1131,12 +1153,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerChainTypeFactory.prepareStatement(query);
             
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            offerChainTypes = OfferChainTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerChainTypes = offerChainTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1176,12 +1198,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerChainTypeFactory.prepareStatement(query);
             
             ps.setLong(1, chainType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            offerChainTypes = OfferChainTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerChainTypes = offerChainTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1221,12 +1243,12 @@ public class OfferControl
                         """;
             }
 
-            var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
+            var ps = offerChainTypeFactory.prepareStatement(query);
             
             ps.setLong(1, chain.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            offerChainTypes = OfferChainTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerChainTypes = offerChainTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1266,7 +1288,7 @@ public class OfferControl
     
     public void updateOfferChainTypeFromValue(OfferChainTypeValue offerChainTypeValue, BasePK updatedBy) {
         if(offerChainTypeValue.hasBeenModified()) {
-            var offerChainType = OfferChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerChainType = offerChainTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      offerChainTypeValue.getPrimaryKey());
             
             offerChainType.setThruTime(session.getStartTime());
@@ -1277,7 +1299,7 @@ public class OfferControl
             var chainTypePK = offerChainType.getChainTypePK(); // Not Updated
             var chainPK = offerChainTypeValue.getChainPK();
             
-            offerChainType = OfferChainTypeFactory.getInstance().create(offerPK, chainTypePK, chainPK,
+            offerChainType = offerChainTypeFactory.create(offerPK, chainTypePK, chainPK,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offerPK, EventTypes.MODIFY, offerChainType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1313,6 +1335,9 @@ public class OfferControl
     //   Offer Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<OfferResultTransfer> getOfferResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var offerResultTransfers = new ArrayList<OfferResultTransfer>();
@@ -1325,7 +1350,7 @@ public class OfferControl
 
         try {
             var offerControl = Session.getModelController(OfferControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -1338,7 +1363,7 @@ public class OfferControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
+                    var offer = offerFactory.getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
                     var offerDetail = offer.getLastDetail();
 
                     offerResultTransfers.add(new OfferResultTransfer(offerDetail.getOfferName(),

@@ -452,7 +452,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeTypeFactory geoCodeTypeFactory;
+
+    @Inject
+    protected GeoCodeTypeDetailFactory geoCodeTypeDetailFactory;
+
     public GeoCodeType createGeoCodeType(String geoCodeTypeName, GeoCodeType parentGeoCodeType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeType = getDefaultGeoCodeType();
@@ -467,12 +473,12 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeType = GeoCodeTypeFactory.getInstance().create();
-        var geoCodeTypeDetail = GeoCodeTypeDetailFactory.getInstance().create(geoCodeType, geoCodeTypeName,
+        var geoCodeType = geoCodeTypeFactory.create();
+        var geoCodeTypeDetail = geoCodeTypeDetailFactory.create(geoCodeType, geoCodeTypeName,
                 parentGeoCodeType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        geoCodeType = GeoCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        geoCodeType = geoCodeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 geoCodeType.getPrimaryKey());
         geoCodeType.setActiveDetail(geoCodeTypeDetail);
         geoCodeType.setLastDetail(geoCodeTypeDetail);
@@ -504,7 +510,7 @@ public class GeoControl
     public GeoCodeType getGeoCodeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GeoCodeTypePK(entityInstance.getEntityUniqueId());
 
-        return GeoCodeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return geoCodeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GeoCodeType getGeoCodeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -535,7 +541,7 @@ public class GeoControl
     }
 
     public GeoCodeType getGeoCodeTypeByName(String geoCodeTypeName, EntityPermission entityPermission) {
-        return GeoCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getGeoCodeTypeByNameQueries, geoCodeTypeName);
+        return geoCodeTypeFactory.getEntityFromQuery(entityPermission, getGeoCodeTypeByNameQueries, geoCodeTypeName);
     }
 
     public GeoCodeType getGeoCodeTypeByName(String geoCodeTypeName) {
@@ -578,7 +584,7 @@ public class GeoControl
     }
 
     public GeoCodeType getDefaultGeoCodeType(EntityPermission entityPermission) {
-        return GeoCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGeoCodeTypeQueries);
+        return geoCodeTypeFactory.getEntityFromQuery(entityPermission, getDefaultGeoCodeTypeQueries);
     }
 
     public GeoCodeType getDefaultGeoCodeType() {
@@ -617,7 +623,7 @@ public class GeoControl
     }
 
     private List<GeoCodeType> getGeoCodeTypes(EntityPermission entityPermission) {
-        return GeoCodeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeTypesQueries);
+        return geoCodeTypeFactory.getEntitiesFromQuery(entityPermission, getGeoCodeTypesQueries);
     }
 
     public List<GeoCodeType> getGeoCodeTypes() {
@@ -653,7 +659,7 @@ public class GeoControl
 
     private List<GeoCodeType> getGeoCodeTypesByParentGeoCodeType(GeoCodeType parentGeoCodeType,
             EntityPermission entityPermission) {
-        return GeoCodeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeTypesByParentGeoCodeTypeQueries,
+        return geoCodeTypeFactory.getEntitiesFromQuery(entityPermission, getGeoCodeTypesByParentGeoCodeTypeQueries,
                 parentGeoCodeType);
     }
 
@@ -742,7 +748,7 @@ public class GeoControl
     private void updateGeoCodeTypeFromValue(GeoCodeTypeDetailValue geoCodeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeTypeDetailValue.hasBeenModified()) {
-            var geoCodeType = GeoCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeType = geoCodeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeTypeDetailValue.getGeoCodeTypePK());
             var geoCodeTypeDetail = geoCodeType.getActiveDetailForUpdate();
             
@@ -771,7 +777,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeTypeDetail = GeoCodeTypeDetailFactory.getInstance().create(geoCodeTypePK,
+            geoCodeTypeDetail = geoCodeTypeDetailFactory.create(geoCodeTypePK,
                     geoCodeTypeName, parentGeoCodeTypePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             geoCodeType.setActiveDetail(geoCodeTypeDetail);
@@ -839,9 +845,12 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeTypeDescriptionFactory geoCodeTypeDescriptionFactory;
+
     public GeoCodeTypeDescription createGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language, String description, BasePK createdBy) {
-        var geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType,
+        var geoCodeTypeDescription = geoCodeTypeDescriptionFactory.create(geoCodeType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCodeType.getPrimaryKey(), EventTypes.MODIFY, geoCodeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -870,13 +879,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeTypeDescription = geoCodeTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -924,12 +933,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeTypeDescriptions = GeoCodeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeTypeDescriptions = geoCodeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -979,7 +988,7 @@ public class GeoControl
     
     public void updateGeoCodeTypeDescriptionFromValue(GeoCodeTypeDescriptionValue geoCodeTypeDescriptionValue, BasePK updatedBy) {
         if(geoCodeTypeDescriptionValue.hasBeenModified()) {
-            var geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeTypeDescriptionValue.getPrimaryKey());
+            var geoCodeTypeDescription = geoCodeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, geoCodeTypeDescriptionValue.getPrimaryKey());
             
             geoCodeTypeDescription.setThruTime(session.getStartTime());
             geoCodeTypeDescription.store();
@@ -988,7 +997,7 @@ public class GeoControl
             var language = geoCodeTypeDescription.getLanguage();
             var description = geoCodeTypeDescriptionValue.getDescription();
             
-            geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType, language, description, session.getStartTime(), Session.MAX_TIME);
+            geoCodeTypeDescription = geoCodeTypeDescriptionFactory.create(geoCodeType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodeType.getPrimaryKey(), EventTypes.MODIFY, geoCodeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1012,7 +1021,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Scopes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeScopeFactory geoCodeScopeFactory;
+
+    @Inject
+    protected GeoCodeScopeDetailFactory geoCodeScopeDetailFactory;
+
     public GeoCodeScope createGeoCodeScope(String geoCodeScopeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeScope = getDefaultGeoCodeScope();
         var defaultFound = defaultGeoCodeScope != null;
@@ -1026,13 +1041,13 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeScope = GeoCodeScopeFactory.getInstance().create();
-        var geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(
+        var geoCodeScope = geoCodeScopeFactory.create();
+        var geoCodeScopeDetail = geoCodeScopeDetailFactory.create(
                 geoCodeScope, geoCodeScopeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        geoCodeScope = GeoCodeScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        geoCodeScope = geoCodeScopeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 geoCodeScope.getPrimaryKey());
         geoCodeScope.setActiveDetail(geoCodeScopeDetail);
         geoCodeScope.setLastDetail(geoCodeScopeDetail);
@@ -1055,7 +1070,7 @@ public class GeoControl
     public GeoCodeScope getGeoCodeScopeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GeoCodeScopePK(entityInstance.getEntityUniqueId());
 
-        return GeoCodeScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return geoCodeScopeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GeoCodeScope getGeoCodeScopeByEntityInstance(EntityInstance entityInstance) {
@@ -1083,11 +1098,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeScopeFactory.prepareStatement(query);
             
             ps.setString(1, geoCodeScopeName);
             
-            geoCodeScope = GeoCodeScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeScope = geoCodeScopeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1129,9 +1144,9 @@ public class GeoControl
                     """;
         }
 
-        var ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
+        var ps = geoCodeScopeFactory.prepareStatement(query);
         
-        return GeoCodeScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return geoCodeScopeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public GeoCodeScope getDefaultGeoCodeScope() {
@@ -1166,9 +1181,9 @@ public class GeoControl
                     """;
         }
 
-        var ps = GeoCodeScopeFactory.getInstance().prepareStatement(query);
+        var ps = geoCodeScopeFactory.prepareStatement(query);
         
-        return GeoCodeScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return geoCodeScopeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<GeoCodeScope> getGeoCodeScopes() {
@@ -1235,7 +1250,7 @@ public class GeoControl
     private void updateGeoCodeScopeFromValue(GeoCodeScopeDetailValue geoCodeScopeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeScopeDetailValue.hasBeenModified()) {
-            var geoCodeScope = GeoCodeScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeScope = geoCodeScopeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeScopeDetailValue.getGeoCodeScopePK());
             var geoCodeScopeDetail = geoCodeScope.getActiveDetailForUpdate();
             
@@ -1263,7 +1278,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(geoCodeScopePK, geoCodeScopeName,
+            geoCodeScopeDetail = geoCodeScopeDetailFactory.create(geoCodeScopePK, geoCodeScopeName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             geoCodeScope.setActiveDetail(geoCodeScopeDetail);
@@ -1310,9 +1325,12 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Scope Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeScopeDescriptionFactory geoCodeScopeDescriptionFactory;
+
     public GeoCodeScopeDescription createGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language, String description, BasePK createdBy) {
-        var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.getStartTime(),
+        var geoCodeScopeDescription = geoCodeScopeDescriptionFactory.create(geoCodeScope, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.MODIFY, geoCodeScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1341,13 +1359,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeScopeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeScopeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeScopeDescription = geoCodeScopeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1395,12 +1413,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeScopeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeScopeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeScopeDescriptions = GeoCodeScopeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeScopeDescriptions = geoCodeScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1450,7 +1468,7 @@ public class GeoControl
     
     public void updateGeoCodeScopeDescriptionFromValue(GeoCodeScopeDescriptionValue geoCodeScopeDescriptionValue, BasePK updatedBy) {
         if(geoCodeScopeDescriptionValue.hasBeenModified()) {
-            var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeScopeDescriptionValue.getPrimaryKey());
+            var geoCodeScopeDescription = geoCodeScopeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, geoCodeScopeDescriptionValue.getPrimaryKey());
             
             geoCodeScopeDescription.setThruTime(session.getStartTime());
             geoCodeScopeDescription.store();
@@ -1459,7 +1477,7 @@ public class GeoControl
             var language = geoCodeScopeDescription.getLanguage();
             var description = geoCodeScopeDescriptionValue.getDescription();
             
-            geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.getStartTime(), Session.MAX_TIME);
+            geoCodeScopeDescription = geoCodeScopeDescriptionFactory.create(geoCodeScope, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.MODIFY, geoCodeScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1483,7 +1501,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Alias Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeAliasTypeFactory geoCodeAliasTypeFactory;
+
+    @Inject
+    protected GeoCodeAliasTypeDetailFactory geoCodeAliasTypeDetailFactory;
+
     public GeoCodeAliasType createGeoCodeAliasType(GeoCodeType geoCodeType, String geoCodeAliasTypeName, String validationPattern, Boolean isRequired,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
@@ -1498,12 +1522,12 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().create();
-        var geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create( geoCodeAliasType, geoCodeType,
+        var geoCodeAliasType = geoCodeAliasTypeFactory.create();
+        var geoCodeAliasTypeDetail = geoCodeAliasTypeDetailFactory.create( geoCodeAliasType, geoCodeType,
                 geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        geoCodeAliasType = geoCodeAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 geoCodeAliasType.getPrimaryKey());
         geoCodeAliasType.setActiveDetail(geoCodeAliasTypeDetail);
         geoCodeAliasType.setLastDetail(geoCodeAliasTypeDetail);
@@ -1547,12 +1571,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             ps.setString(2, geoCodeAliasTypeName);
             
-            geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeAliasType = geoCodeAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1600,11 +1624,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             
-            geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeAliasType = geoCodeAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1647,11 +1671,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             
-            geoCodeAliasTypes = GeoCodeAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeAliasTypes = geoCodeAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1692,11 +1716,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
             
-            geoCodeAliasTypes = GeoCodeAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeAliasTypes = geoCodeAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1768,7 +1792,7 @@ public class GeoControl
     private void updateGeoCodeAliasTypeFromValue(GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeAliasTypeDetailValue.hasBeenModified()) {
-            var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeAliasType = geoCodeAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeAliasTypeDetailValue.getGeoCodeAliasTypePK());
             var geoCodeAliasTypeDetail = geoCodeAliasType.getActiveDetailForUpdate();
             
@@ -1800,7 +1824,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create(geoCodeAliasTypePK, geoCodeTypePK, geoCodeAliasTypeName,
+            geoCodeAliasTypeDetail = geoCodeAliasTypeDetailFactory.create(geoCodeAliasTypePK, geoCodeTypePK, geoCodeAliasTypeName,
                     validationPattern, isRequired, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             geoCodeAliasType.setActiveDetail(geoCodeAliasTypeDetail);
@@ -1847,9 +1871,12 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Alias Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeAliasTypeDescriptionFactory geoCodeAliasTypeDescriptionFactory;
+
     public GeoCodeAliasTypeDescription createGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language, String description, BasePK createdBy) {
-        var geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description,
+        var geoCodeAliasTypeDescription = geoCodeAliasTypeDescriptionFactory.create(geoCodeAliasType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCodeAliasType.getPrimaryKey(), EventTypes.MODIFY, geoCodeAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1878,13 +1905,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeAliasTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeAliasTypeDescription = geoCodeAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1931,12 +1958,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeAliasTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeAliasTypeDescriptions = GeoCodeAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeAliasTypeDescriptions = geoCodeAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1986,7 +2013,7 @@ public class GeoControl
     
     public void updateGeoCodeAliasTypeDescriptionFromValue(GeoCodeAliasTypeDescriptionValue geoCodeAliasTypeDescriptionValue, BasePK updatedBy) {
         if(geoCodeAliasTypeDescriptionValue.hasBeenModified()) {
-            var geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeAliasTypeDescriptionValue.getPrimaryKey());
+            var geoCodeAliasTypeDescription = geoCodeAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, geoCodeAliasTypeDescriptionValue.getPrimaryKey());
             
             geoCodeAliasTypeDescription.setThruTime(session.getStartTime());
             geoCodeAliasTypeDescription.store();
@@ -1995,7 +2022,7 @@ public class GeoControl
             var language = geoCodeAliasTypeDescription.getLanguage();
             var description = geoCodeAliasTypeDescriptionValue.getDescription();
             
-            geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
+            geoCodeAliasTypeDescription = geoCodeAliasTypeDescriptionFactory.create(geoCodeAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodeAliasType.getPrimaryKey(), EventTypes.MODIFY, geoCodeAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2019,7 +2046,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Codes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeFactory geoCodeFactory;
+
+    @Inject
+    protected GeoCodeDetailFactory geoCodeDetailFactory;
+
     public GeoCode createGeoCode(String geoCodeName, GeoCodeType geoCodeType, GeoCodeScope geoCodeScope, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGeoCode = getDefaultGeoCode(geoCodeScope);
@@ -2034,12 +2067,12 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCode = GeoCodeFactory.getInstance().create();
-        var geoCodeDetail = GeoCodeDetailFactory.getInstance().create(geoCode, geoCodeName, geoCodeType,
+        var geoCode = geoCodeFactory.create();
+        var geoCodeDetail = geoCodeDetailFactory.create(geoCode, geoCodeName, geoCodeType,
                 geoCodeScope, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        geoCode = GeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCode.getPrimaryKey());
+        geoCode = geoCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE, geoCode.getPrimaryKey());
         geoCode.setActiveDetail(geoCodeDetail);
         geoCode.setLastDetail(geoCodeDetail);
         geoCode.store();
@@ -2053,7 +2086,7 @@ public class GeoControl
     public GeoCode getGeoCodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GeoCodePK(entityInstance.getEntityUniqueId());
 
-        return GeoCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return geoCodeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GeoCode getGeoCodeByEntityInstance(EntityInstance entityInstance) {
@@ -2111,11 +2144,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             
-            geoCode = GeoCodeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCode = geoCodeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2156,11 +2189,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeFactory.prepareStatement(query);
             
             ps.setString(1, geoCodeName);
             
-            geoCode = GeoCodeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCode = geoCodeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2203,11 +2236,11 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeFactory.prepareStatement(query);
             
             ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
             
-            geoCode = GeoCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCode = geoCodeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2244,7 +2277,7 @@ public class GeoControl
     private void updateGeoCodeFromValue(GeoCodeDetailValue geoCodeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeDetailValue.hasBeenModified()) {
-            var geoCode = GeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCode = geoCodeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeDetailValue.getGeoCodePK());
             var geoCodeDetail = geoCode.getActiveDetailForUpdate();
             
@@ -2274,7 +2307,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeDetail = GeoCodeDetailFactory.getInstance().create(geoCodePK, geoCodeName, geoCodeTypePK, geoCodeScope.getPrimaryKey(), isDefault,
+            geoCodeDetail = geoCodeDetailFactory.create(geoCodePK, geoCodeName, geoCodeTypePK, geoCodeScope.getPrimaryKey(), isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             geoCode.setActiveDetail(geoCodeDetail);
@@ -2336,9 +2369,12 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeDescriptionFactory geoCodeDescriptionFactory;
+
     public GeoCodeDescription createGeoCodeDescription(GeoCode geoCode, Language language, String description, BasePK createdBy) {
-        var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.getStartTime(),
+        var geoCodeDescription = geoCodeDescriptionFactory.create(geoCode, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2367,13 +2403,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeDescription = GeoCodeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeDescription = geoCodeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2421,12 +2457,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeDescriptions = GeoCodeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeDescriptions = geoCodeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2476,7 +2512,7 @@ public class GeoControl
     
     public void updateGeoCodeDescriptionFromValue(GeoCodeDescriptionValue geoCodeDescriptionValue, BasePK updatedBy) {
         if(geoCodeDescriptionValue.hasBeenModified()) {
-            var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeDescriptionValue.getPrimaryKey());
+            var geoCodeDescription = geoCodeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, geoCodeDescriptionValue.getPrimaryKey());
             
             geoCodeDescription.setThruTime(session.getStartTime());
             geoCodeDescription.store();
@@ -2485,7 +2521,7 @@ public class GeoControl
             var language = geoCodeDescription.getLanguage();
             var description = geoCodeDescriptionValue.getDescription();
             
-            geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.getStartTime(), Session.MAX_TIME);
+            geoCodeDescription = geoCodeDescriptionFactory.create(geoCode, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2509,9 +2545,12 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Aliases
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeAliasFactory geoCodeAliasFactory;
+
     public GeoCodeAlias createGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType, String alias, BasePK createdBy) {
-        var geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCode, geoCode.getLastDetail().getGeoCodeScope(), geoCodeAliasType, alias,
+        var geoCodeAlias = geoCodeAliasFactory.create(geoCode, geoCode.getLastDetail().getGeoCodeScope(), geoCodeAliasType, alias,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2561,7 +2600,7 @@ public class GeoControl
     }
 
     private GeoCodeAlias getGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        return GeoCodeAliasFactory.getInstance().getEntityFromQuery(entityPermission, getGeoCodeAliasQueries,
+        return geoCodeAliasFactory.getEntityFromQuery(entityPermission, getGeoCodeAliasQueries,
                 geoCode, geoCodeAliasType, Session.MAX_TIME);
     }
 
@@ -2603,7 +2642,7 @@ public class GeoControl
     }
 
     private GeoCodeAlias getGeoCodeAliasByAliasWithinScope(GeoCodeScope geoCodeScope, GeoCodeAliasType geoCodeAliasType, String alias, EntityPermission entityPermission) {
-        return GeoCodeAliasFactory.getInstance().getEntityFromQuery(entityPermission, getGeoCodeAliasByAliasWithinScopeQueries,
+        return geoCodeAliasFactory.getEntityFromQuery(entityPermission, getGeoCodeAliasByAliasWithinScopeQueries,
                 geoCodeScope, geoCodeAliasType, alias, Session.MAX_TIME);
     }
 
@@ -2641,7 +2680,7 @@ public class GeoControl
     }
 
     private List<GeoCodeAlias> getGeoCodeAliasesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        return GeoCodeAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeQueries,
+        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeQueries,
                 geoCode, Session.MAX_TIME);
     }
 
@@ -2676,7 +2715,7 @@ public class GeoControl
     }
 
     private List<GeoCodeAlias> getGeoCodeAliasesByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        return GeoCodeAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeScopeQueries,
+        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeScopeQueries,
                 geoCodeScope, Session.MAX_TIME);
     }
 
@@ -2711,7 +2750,7 @@ public class GeoControl
     }
 
     private List<GeoCodeAlias> getGeoCodeAliasesByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        return GeoCodeAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeAliasTypeQueries,
+        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeAliasTypeQueries,
                 geoCodeAliasType, Session.MAX_TIME);
     }
 
@@ -2743,7 +2782,7 @@ public class GeoControl
 
     public void updateGeoCodeAliasFromValue(GeoCodeAliasValue geoCodeAliasValue, BasePK updatedBy) {
         if(geoCodeAliasValue.hasBeenModified()) {
-            var geoCodeAlias = GeoCodeAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeAlias = geoCodeAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     geoCodeAliasValue.getPrimaryKey());
 
             geoCodeAlias.setThruTime(session.getStartTime());
@@ -2754,7 +2793,7 @@ public class GeoControl
             var geoCodeAliasTypePK = geoCodeAlias.getGeoCodeAliasTypePK(); // Not updated
             var alias = geoCodeAliasValue.getAlias();
 
-            geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCodePK, geoCodeScopePK, geoCodeAliasTypePK, alias, session.getStartTime(),
+            geoCodeAlias = geoCodeAliasFactory.create(geoCodePK, geoCodeScopePK, geoCodeAliasTypePK, alias, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2788,9 +2827,12 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Relationships
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeRelationshipFactory geoCodeRelationshipFactory;
+
     public GeoCodeRelationship createGeoCodeRelationship(GeoCode fromGeoCode, GeoCode toGeoCode, BasePK createdBy) {
-        var geoCodeRelationship = GeoCodeRelationshipFactory.getInstance().create(fromGeoCode, toGeoCode,
+        var geoCodeRelationship = geoCodeRelationshipFactory.create(fromGeoCode, toGeoCode,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromGeoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeRelationship.getPrimaryKey(), null, createdBy);
@@ -2822,7 +2864,7 @@ public class GeoControl
         GeoCodeRelationship geoCodeRelationship;
         
         try {
-            var ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
+            var ps = geoCodeRelationshipFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM geocoderelationships
@@ -2833,7 +2875,7 @@ public class GeoControl
             ps.setLong(2, toGeoCode.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeRelationship = GeoCodeRelationshipFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            geoCodeRelationship = geoCodeRelationshipFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2864,7 +2906,7 @@ public class GeoControl
     }
 
     private List<GeoCodeRelationship> getGeoCodeRelationshipsByFromGeoCode(GeoCode fromGeoCode, EntityPermission entityPermission) {
-        return GeoCodeRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeRelationshipsByFromGeoCodeQueries,
+        return geoCodeRelationshipFactory.getEntitiesFromQuery(entityPermission, getGeoCodeRelationshipsByFromGeoCodeQueries,
                 fromGeoCode, Session.MAX_TIME);
     }
 
@@ -2880,7 +2922,7 @@ public class GeoControl
         List<GeoCodeRelationship> geoCodeRelationships;
         
         try {
-            var ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
+            var ps = geoCodeRelationshipFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM geocoderelationships, geocodes, geocodedetails
@@ -2893,7 +2935,7 @@ public class GeoControl
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, geoCodeType.getPrimaryKey().getEntityId());
             
-            geoCodeRelationships = GeoCodeRelationshipFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            geoCodeRelationships = geoCodeRelationshipFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2924,7 +2966,7 @@ public class GeoControl
     }
 
     private List<GeoCodeRelationship> getGeoCodeRelationshipsByToGeoCode(GeoCode toGeoCode, EntityPermission entityPermission) {
-        return GeoCodeRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getGeoCodeRelationshipsByToGeoCodeQueries,
+        return geoCodeRelationshipFactory.getEntitiesFromQuery(entityPermission, getGeoCodeRelationshipsByToGeoCodeQueries,
                 toGeoCode, Session.MAX_TIME);
     }
 
@@ -2968,7 +3010,10 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Languages
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeLanguageFactory geoCodeLanguageFactory;
+
     public GeoCodeLanguage createGeoCodeLanguage(GeoCode geoCode, Language language, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
         var defaultFound = defaultGeoCodeLanguage != null;
@@ -2982,7 +3027,7 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCode, language, isDefault,
+        var geoCodeLanguage = geoCodeLanguageFactory.create(geoCode, language, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeLanguage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3031,13 +3076,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeLanguageFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeLanguage = GeoCodeLanguageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeLanguage = geoCodeLanguageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3082,12 +3127,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeLanguageFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeLanguage = GeoCodeLanguageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeLanguage = geoCodeLanguageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3133,12 +3178,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeLanguageFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeLanguages = GeoCodeLanguageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeLanguages = geoCodeLanguageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3178,12 +3223,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeLanguageFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeLanguageFactory.prepareStatement(query);
             
             ps.setLong(1, language.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeLanguages = GeoCodeLanguageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeLanguages = geoCodeLanguageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3223,7 +3268,7 @@ public class GeoControl
     
     private void updateGeoCodeLanguageFromValue(GeoCodeLanguageValue geoCodeLanguageValue, boolean checkDefault, BasePK updatedBy) {
         if(geoCodeLanguageValue.hasBeenModified()) {
-            var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeLanguage = geoCodeLanguageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeLanguageValue.getPrimaryKey());
             
             geoCodeLanguage.setThruTime(session.getStartTime());
@@ -3251,7 +3296,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCodePK, languagePK, isDefault, sortOrder,
+            geoCodeLanguage = geoCodeLanguageFactory.create(geoCodePK, languagePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeLanguage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3304,7 +3349,10 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Currencies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeCurrencyFactory geoCodeCurrencyFactory;
+
     public GeoCodeCurrency createGeoCodeCurrency(GeoCode geoCode, Currency currency, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
@@ -3319,7 +3367,7 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCode, currency, isDefault,
+        var geoCodeCurrency = geoCodeCurrencyFactory.create(geoCode, currency, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeCurrency.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3368,13 +3416,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeCurrencyFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeCurrency = geoCodeCurrencyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3419,12 +3467,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeCurrencyFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeCurrency = geoCodeCurrencyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3469,12 +3517,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeCurrencyFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeCurrencies = GeoCodeCurrencyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeCurrencies = geoCodeCurrencyFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3514,12 +3562,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeCurrencyFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeCurrencyFactory.prepareStatement(query);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeCurrencies = GeoCodeCurrencyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeCurrencies = geoCodeCurrencyFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3559,7 +3607,7 @@ public class GeoControl
     
     private void updateGeoCodeCurrencyFromValue(GeoCodeCurrencyValue geoCodeCurrencyValue, boolean checkDefault, BasePK updatedBy) {
         if(geoCodeCurrencyValue.hasBeenModified()) {
-            var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeCurrency = geoCodeCurrencyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeCurrencyValue.getPrimaryKey());
             
             geoCodeCurrency.setThruTime(session.getStartTime());
@@ -3587,7 +3635,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCodePK, currencyPK, isDefault, sortOrder,
+            geoCodeCurrency = geoCodeCurrencyFactory.create(geoCodePK, currencyPK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeCurrency.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3640,7 +3688,10 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Time Zones
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeTimeZoneFactory geoCodeTimeZoneFactory;
+
     public GeoCodeTimeZone createGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
@@ -3655,7 +3706,7 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCode, timeZone, isDefault,
+        var geoCodeTimeZone = geoCodeTimeZoneFactory.create(geoCode, timeZone, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTimeZone.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3704,13 +3755,13 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeTimeZone = geoCodeTimeZoneFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3755,12 +3806,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeTimeZone = geoCodeTimeZoneFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3806,12 +3857,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeTimeZones = GeoCodeTimeZoneFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeTimeZones = geoCodeTimeZoneFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3851,12 +3902,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeTimeZoneFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
             
             ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeTimeZones = GeoCodeTimeZoneFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeTimeZones = geoCodeTimeZoneFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3896,7 +3947,7 @@ public class GeoControl
     
     private void updateGeoCodeTimeZoneFromValue(GeoCodeTimeZoneValue geoCodeTimeZoneValue, boolean checkDefault, BasePK updatedBy) {
         if(geoCodeTimeZoneValue.hasBeenModified()) {
-            var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeTimeZone = geoCodeTimeZoneFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeTimeZoneValue.getPrimaryKey());
             
             geoCodeTimeZone.setThruTime(session.getStartTime());
@@ -3924,7 +3975,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCodePK, timeZonePK, isDefault, sortOrder,
+            geoCodeTimeZone = geoCodeTimeZoneFactory.create(geoCodePK, timeZonePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeTimeZone.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3977,10 +4028,10 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Date Time Formats
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    GeoCodeDateTimeFormatFactory geoCodeDateTimeFormatFactory;
-    
+    protected GeoCodeDateTimeFormatFactory geoCodeDateTimeFormatFactory;
+
     public GeoCodeDateTimeFormat createGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
@@ -4320,14 +4371,17 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     //   Geo Code Countries
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeCountryFactory geoCodeCountryFactory;
+
     public GeoCodeCountry createGeoCodeCountry(GeoCode geoCode, String telephoneCode, String areaCodePattern,
             Boolean areaCodeRequired, String areaCodeExample, String telephoneNumberPattern, String telephoneNumberExample,
             PostalAddressFormat postalAddressFormat, Boolean cityRequired, Boolean cityGeoCodeRequired, Boolean stateRequired,
             Boolean stateGeoCodeRequired, String postalCodePattern, Boolean postalCodeRequired, Boolean postalCodeGeoCodeRequired,
             Integer postalCodeLength, Integer postalCodeGeoCodeLength, String postalCodeExample, BasePK createdBy) {
 
-        var geoCodeCountry = GeoCodeCountryFactory.getInstance().create(geoCode, telephoneCode, areaCodePattern,
+        var geoCodeCountry = geoCodeCountryFactory.create(geoCode, telephoneCode, areaCodePattern,
                 areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample, postalAddressFormat,
                 cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired,
                 postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample, session.getStartTime(),
@@ -4359,12 +4413,12 @@ public class GeoControl
                         """;
             }
 
-            var ps = GeoCodeCountryFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeCountryFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeCountry = GeoCodeCountryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeCountry = geoCodeCountryFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4390,7 +4444,7 @@ public class GeoControl
     
     public void updateGeoCodeCountryFromValue(GeoCodeCountryValue geoCodeCountryValue, BasePK updatedBy) {
         if(geoCodeCountryValue.hasBeenModified()) {
-            var geoCodeCountry = GeoCodeCountryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeCountry = geoCodeCountryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeCountryValue.getPrimaryKey());
             
             geoCodeCountry.setThruTime(session.getStartTime());
@@ -4415,7 +4469,7 @@ public class GeoControl
             var postalCodeGeoCodeLength = geoCodeCountryValue.getPostalCodeGeoCodeLength();
             var postalCodeExample = geoCodeCountryValue.getPostalCodeExample();
             
-            geoCodeCountry = GeoCodeCountryFactory.getInstance().create(geoCodePK, telephoneCode, areaCodePattern,
+            geoCodeCountry = geoCodeCountryFactory.create(geoCodePK, telephoneCode, areaCodePattern,
                     areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample, postalAddressFormatPK,
                     cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired,
                     postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample,

@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderShipmentGroupControl
@@ -51,7 +52,13 @@ public class OrderShipmentGroupControl
     // --------------------------------------------------------------------------------
     //   Order Shipment Groups
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderShipmentGroupFactory orderShipmentGroupFactory;
+
+    @Inject
+    protected OrderShipmentGroupDetailFactory orderShipmentGroupDetailFactory;
+
     public OrderShipmentGroup createOrderShipmentGroup(Order order, Integer orderShipmentGroupSequence, ItemDeliveryType itemDeliveryType, Boolean isDefault,
             PartyContactMechanism partyContactMechanism, ShippingMethod shippingMethod, Boolean holdUntilComplete, BasePK createdBy) {
         var defaultOrderShipmentGroup = getDefaultOrderShipmentGroup(order, itemDeliveryType);
@@ -66,13 +73,13 @@ public class OrderShipmentGroupControl
             isDefault = true;
         }
 
-        var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
-        var orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroup, order,
+        var orderShipmentGroup = orderShipmentGroupFactory.create();
+        var orderShipmentGroupDetail = orderShipmentGroupDetailFactory.create(orderShipmentGroup, order,
                 orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        orderShipmentGroup = OrderShipmentGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderShipmentGroup.getPrimaryKey());
+        orderShipmentGroup = orderShipmentGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE, orderShipmentGroup.getPrimaryKey());
         orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);
         orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
         orderShipmentGroup.store();
@@ -106,7 +113,7 @@ public class OrderShipmentGroupControl
     }
 
     public OrderShipmentGroup getOrderShipmentGroupBySequence(Order order, Integer orderShipmentGroupSequence, EntityPermission entityPermission) {
-        return OrderShipmentGroupFactory.getInstance().getEntityFromQuery(entityPermission, getOrderShipmentGroupBySequenceQueries,
+        return orderShipmentGroupFactory.getEntityFromQuery(entityPermission, getOrderShipmentGroupBySequenceQueries,
                 order, orderShipmentGroupSequence);
     }
 
@@ -150,7 +157,7 @@ public class OrderShipmentGroupControl
     }
 
     public OrderShipmentGroup getDefaultOrderShipmentGroup(Order order, ItemDeliveryType itemDeliveryType, EntityPermission entityPermission) {
-        return OrderShipmentGroupFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderShipmentGroupQueries,
+        return orderShipmentGroupFactory.getEntityFromQuery(entityPermission, getDefaultOrderShipmentGroupQueries,
                 order, itemDeliveryType);
     }
 
@@ -191,7 +198,7 @@ public class OrderShipmentGroupControl
     }
 
     private List<OrderShipmentGroup> getOrderShipmentGroupsByOrder(Order order, EntityPermission entityPermission) {
-        return OrderShipmentGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderShipmentGroupsByOrderQueries,
+        return orderShipmentGroupFactory.getEntitiesFromQuery(entityPermission, getOrderShipmentGroupsByOrderQueries,
                 order);
     }
 
@@ -228,7 +235,7 @@ public class OrderShipmentGroupControl
     }
 
     private List<OrderShipmentGroup> getOrderShipmentGroups(Order order, ItemDeliveryType itemDeliveryType, EntityPermission entityPermission) {
-        return OrderShipmentGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderShipmentGroupsQueries,
+        return orderShipmentGroupFactory.getEntitiesFromQuery(entityPermission, getOrderShipmentGroupsQueries,
                 order, itemDeliveryType);
     }
 
@@ -261,7 +268,7 @@ public class OrderShipmentGroupControl
     private void updateOrderShipmentGroupFromValue(OrderShipmentGroupDetailValue orderShipmentGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderShipmentGroupDetailValue.hasBeenModified()) {
-            var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderShipmentGroup = orderShipmentGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderShipmentGroupDetailValue.getOrderShipmentGroupPK());
             var orderShipmentGroupDetail = orderShipmentGroup.getActiveDetailForUpdate();
 
@@ -295,7 +302,7 @@ public class OrderShipmentGroupControl
                 }
             }
 
-            orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroupPK, orderPK, orderShipmentGroupSequence,
+            orderShipmentGroupDetail = orderShipmentGroupDetailFactory.create(orderShipmentGroupPK, orderPK, orderShipmentGroupSequence,
                     itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.getStartTime(), Session.MAX_TIME);
 
             orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);

@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityListItemControl
@@ -50,6 +51,15 @@ public class EntityListItemControl
     // --------------------------------------------------------------------------------
     //   Entity List Item Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected EntityListItemFactory entityListItemFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
 
     public List<EntityListItemResultTransfer> getEntityListItemResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
@@ -68,7 +78,7 @@ public class EntityListItemControl
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
-                var ps = SearchResultFactory.getInstance().prepareStatement(
+                var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM searchresults, entityinstances
@@ -81,7 +91,7 @@ public class EntityListItemControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
+                        var entityListItem = entityListItemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
                         var entityListItemDetail = entityListItem.getLastDetail();
                         var entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
                         var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
@@ -105,7 +115,7 @@ public class EntityListItemControl
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
                         FROM cachedexecutedsearchresults, entityinstances
@@ -118,7 +128,7 @@ public class EntityListItemControl
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
+                        var entityListItem = entityListItemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
                         var entityListItemDetail = entityListItem.getLastDetail();
                         var entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
                         var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();

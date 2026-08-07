@@ -49,6 +49,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
 
 @CommandScope
 public class EncryptionKeyControl
@@ -62,6 +63,9 @@ public class EncryptionKeyControl
     // --------------------------------------------------------------------------------
     //   Base Encryption Keys
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected BaseEncryptionKeyFactory baseEncryptionKeyFactory;
 
     public BaseEncryptionKey createBaseEncryptionKey(ExecutionErrorAccumulator eea, BaseKey baseKey1, BaseKey baseKey2, PartyPK createdBy) {
         var activeBaseEncryptionKey = getActiveBaseEncryptionKey();
@@ -86,7 +90,7 @@ public class EncryptionKeyControl
     }
 
     public BaseEncryptionKey createBaseEncryptionKey(String baseEncryptionKeyName, String sha1Hash, BasePK createdBy) {
-        var baseEncryptionKey = BaseEncryptionKeyFactory.getInstance().create(baseEncryptionKeyName,
+        var baseEncryptionKey = baseEncryptionKeyFactory.create(baseEncryptionKeyName,
                 sha1Hash);
 
         sendEvent(baseEncryptionKey.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
@@ -98,7 +102,7 @@ public class EncryptionKeyControl
     public BaseEncryptionKey getBaseEncryptionKeyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new BaseEncryptionKeyPK(entityInstance.getEntityUniqueId());
 
-        return BaseEncryptionKeyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return baseEncryptionKeyFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public BaseEncryptionKey getBaseEncryptionKeyByEntityInstance(EntityInstance entityInstance) {
@@ -134,9 +138,9 @@ public class EncryptionKeyControl
                     """;
         }
 
-        var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
+        var ps = baseEncryptionKeyFactory.prepareStatement(query);
 
-        return BaseEncryptionKeyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return baseEncryptionKeyFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<BaseEncryptionKey> getBaseEncryptionKeys() {
@@ -179,14 +183,14 @@ public class EncryptionKeyControl
                             """);
                 }
 
-                var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query.toString());
+                var ps = baseEncryptionKeyFactory.prepareStatement(query.toString());
 
                 ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.BaseEncryptionKey.name());
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
 
-                baseEncryptionKeys = BaseEncryptionKeyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+                baseEncryptionKeys = baseEncryptionKeyFactory.getEntitiesFromQuery(entityPermission, ps);
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);
             }
@@ -228,11 +232,11 @@ public class EncryptionKeyControl
                         """;
             }
 
-            var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
+            var ps = baseEncryptionKeyFactory.prepareStatement(query);
 
             ps.setString(1, baseEncryptionKeyName);
 
-            baseEncryptionKey = BaseEncryptionKeyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            baseEncryptionKey = baseEncryptionKeyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -269,11 +273,11 @@ public class EncryptionKeyControl
                         """;
             }
 
-            var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
+            var ps = baseEncryptionKeyFactory.prepareStatement(query);
 
             ps.setString(1, sha1Hash);
 
-            baseEncryptionKey = BaseEncryptionKeyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            baseEncryptionKey = baseEncryptionKeyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -349,8 +353,11 @@ public class EncryptionKeyControl
     //   Entity Encryption Keys
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityEncryptionKeyFactory entityEncryptionKeyFactory;
+
     public EntityEncryptionKey createEntityEncryptionKey(String entityEncryptionKeyName, Boolean isExternal, String secretKey, String initializationVector) {
-        return EntityEncryptionKeyFactory.getInstance().create(entityEncryptionKeyName, isExternal, secretKey, initializationVector);
+        return entityEncryptionKeyFactory.create(entityEncryptionKeyName, isExternal, secretKey, initializationVector);
     }
 
     private EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName, EntityPermission entityPermission) {
@@ -374,11 +381,11 @@ public class EncryptionKeyControl
                         """;
             }
 
-            var ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(query);
+            var ps = entityEncryptionKeyFactory.prepareStatement(query);
 
             ps.setString(1, entityEncryptionKeyName);
 
-            entityEncryptionKey = EntityEncryptionKeyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityEncryptionKey = entityEncryptionKeyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -395,14 +402,14 @@ public class EncryptionKeyControl
     }
 
     public List<EntityEncryptionKey> getEntityEncryptionKeysForUpdate() {
-        var ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(
+        var ps = entityEncryptionKeyFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM entityencryptionkeys
                 FOR UPDATE
                 """);
 
-        return EntityEncryptionKeyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+        return entityEncryptionKeyFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
     }
 
     public long countEntityEncryptionKeys() {

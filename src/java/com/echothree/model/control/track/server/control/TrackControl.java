@@ -90,6 +90,12 @@ public class TrackControl
     //   Tracks
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected TrackFactory trackFactory;
+
+    @Inject
+    protected TrackDetailFactory trackDetailFactory;
+
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
@@ -112,12 +118,12 @@ public class TrackControl
             isDefault = true;
         }
 
-        var track = TrackFactory.getInstance().create();
-        var trackDetail = TrackDetailFactory.getInstance().create(track, trackName, valueSha1Hash, value,
+        var track = trackFactory.create();
+        var trackDetail = trackDetailFactory.create(track, trackName, valueSha1Hash, value,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, track.getPrimaryKey());
+        track = trackFactory.getEntityFromPK(EntityPermission.READ_WRITE, track.getPrimaryKey());
         track.setActiveDetail(trackDetail);
         track.setLastDetail(trackDetail);
         track.store();
@@ -137,7 +143,7 @@ public class TrackControl
     public Track getTrackByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TrackPK(entityInstance.getEntityUniqueId());
 
-        return TrackFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return trackFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Track getTrackByEntityInstance(EntityInstance entityInstance) {
@@ -180,7 +186,7 @@ public class TrackControl
     }
 
     private Track getTrackByName(String trackName, EntityPermission entityPermission) {
-        return TrackFactory.getInstance().getEntityFromQuery(entityPermission, getTrackByNameQueries, trackName);
+        return trackFactory.getEntityFromQuery(entityPermission, getTrackByNameQueries, trackName);
     }
 
     public Track getTrackByName(String trackName) {
@@ -215,7 +221,7 @@ public class TrackControl
     }
 
     private Track getTrackByValue(String value, EntityPermission entityPermission) {
-        return TrackFactory.getInstance().getEntityFromQuery(entityPermission, getTrackByValueQueries, 
+        return trackFactory.getEntityFromQuery(entityPermission, getTrackByValueQueries,
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
@@ -259,7 +265,7 @@ public class TrackControl
     }
 
     private Track getDefaultTrack(EntityPermission entityPermission) {
-        return TrackFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultTrackQueries);
+        return trackFactory.getEntityFromQuery(entityPermission, getDefaultTrackQueries);
     }
 
     public Track getDefaultTrack() {
@@ -298,7 +304,7 @@ public class TrackControl
     }
 
     private List<Track> getTracks(EntityPermission entityPermission) {
-        return TrackFactory.getInstance().getEntitiesFromQuery(entityPermission, getTracksQueries);
+        return trackFactory.getEntitiesFromQuery(entityPermission, getTracksQueries);
     }
 
     public List<Track> getTracks() {
@@ -404,7 +410,7 @@ public class TrackControl
 
     private void updateTrackFromValue(TrackDetailValue trackDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(trackDetailValue.hasBeenModified()) {
-            var track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var track = trackFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      trackDetailValue.getTrackPK());
             var trackDetail = track.getActiveDetailForUpdate();
 
@@ -434,7 +440,7 @@ public class TrackControl
                 }
             }
 
-            trackDetail = TrackDetailFactory.getInstance().create(trackPK, trackName, valueSha1Hash, value, isDefault,
+            trackDetail = trackDetailFactory.create(trackPK, trackName, valueSha1Hash, value, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             track.setActiveDetail(trackDetail);
@@ -497,8 +503,11 @@ public class TrackControl
     //   Track Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected TrackDescriptionFactory trackDescriptionFactory;
+
     public TrackDescription createTrackDescription(Track track, Language language, String description, BasePK createdBy) {
-        var trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
+        var trackDescription = trackDescriptionFactory.create(track, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -528,7 +537,7 @@ public class TrackControl
     }
 
     private TrackDescription getTrackDescription(Track track, Language language, EntityPermission entityPermission) {
-        return TrackDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getTrackDescriptionQueries,
+        return trackDescriptionFactory.getEntityFromQuery(entityPermission, getTrackDescriptionQueries,
                 track, language, Session.MAX_TIME);
     }
 
@@ -571,7 +580,7 @@ public class TrackControl
     }
 
     private List<TrackDescription> getTrackDescriptionsByTrack(Track track, EntityPermission entityPermission) {
-        return TrackDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getTrackDescriptionsByTrackQueries,
+        return trackDescriptionFactory.getEntitiesFromQuery(entityPermission, getTrackDescriptionsByTrackQueries,
                 track, Session.MAX_TIME);
     }
 
@@ -617,7 +626,7 @@ public class TrackControl
 
     public void updateTrackDescriptionFromValue(TrackDescriptionValue trackDescriptionValue, BasePK updatedBy) {
         if(trackDescriptionValue.hasBeenModified()) {
-            var trackDescription = TrackDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var trackDescription = trackDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     trackDescriptionValue.getPrimaryKey());
 
             trackDescription.setThruTime(session.getStartTime());
@@ -627,7 +636,7 @@ public class TrackControl
             var language = trackDescription.getLanguage();
             var description = trackDescriptionValue.getDescription();
 
-            trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
+            trackDescription = trackDescriptionFactory.create(track, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -653,6 +662,9 @@ public class TrackControl
     //   User Visit Tracks
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected UserVisitTrackFactory userVisitTrackFactory;
+
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Long time, Track track) {
         var userControl = Session.getModelController(UserControl.class);
         var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
@@ -664,7 +676,7 @@ public class TrackControl
     }
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence, Long time, Track track) {
-        var userVisitTrack = UserVisitTrackFactory.getInstance().create(userVisit, userVisitTrackSequence, time, track,
+        var userVisitTrack = userVisitTrackFactory.create(userVisit, userVisitTrackSequence, time, track,
                 session.getStartTime(), Session.MAX_TIME);
 
         return userVisitTrack;
@@ -702,7 +714,7 @@ public class TrackControl
     }
 
     private UserVisitTrack getUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence, EntityPermission entityPermission) {
-        return UserVisitTrackFactory.getInstance().getEntityFromQuery(entityPermission, getUserVisitTrackQueries,
+        return userVisitTrackFactory.getEntityFromQuery(entityPermission, getUserVisitTrackQueries,
                 userVisit, userVisitTrackSequence, Session.MAX_TIME);
     }
 
@@ -737,7 +749,7 @@ public class TrackControl
     }
 
     private List<UserVisitTrack> getUserVisitTracksByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return UserVisitTrackFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitTracksByUserVisitQueries,
+        return userVisitTrackFactory.getEntitiesFromQuery(entityPermission, getUserVisitTracksByUserVisitQueries,
                 userVisit, Session.MAX_TIME);
     }
 
@@ -765,7 +777,7 @@ public class TrackControl
     }
 
     private List<UserVisitTrack> getUserVisitTracksByTrack(Track track, EntityPermission entityPermission) {
-        return UserVisitTrackFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitTracksByTrackQueries,
+        return userVisitTrackFactory.getEntitiesFromQuery(entityPermission, getUserVisitTracksByTrackQueries,
                 track, Session.MAX_TIME);
     }
 

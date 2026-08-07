@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorControl
@@ -55,7 +56,13 @@ public class PaymentProcessorControl
     // --------------------------------------------------------------------------------
     //   Payment Processors
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PaymentProcessorFactory paymentProcessorFactory;
+
+    @Inject
+    protected PaymentProcessorDetailFactory paymentProcessorDetailFactory;
+
     public PaymentProcessor createPaymentProcessor(String paymentProcessorName, PaymentProcessorType paymentProcessorType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPaymentProcessor = getDefaultPaymentProcessor();
@@ -70,13 +77,13 @@ public class PaymentProcessorControl
             isDefault = true;
         }
 
-        var paymentProcessor = PaymentProcessorFactory.getInstance().create();
-        var paymentProcessorDetail = PaymentProcessorDetailFactory.getInstance().create(
+        var paymentProcessor = paymentProcessorFactory.create();
+        var paymentProcessorDetail = paymentProcessorDetailFactory.create(
                 paymentProcessor, paymentProcessorName, paymentProcessorType, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        paymentProcessor = PaymentProcessorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        paymentProcessor = paymentProcessorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 paymentProcessor.getPrimaryKey());
         paymentProcessor.setActiveDetail(paymentProcessorDetail);
         paymentProcessor.setLastDetail(paymentProcessorDetail);
@@ -92,7 +99,7 @@ public class PaymentProcessorControl
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorPK(entityInstance.getEntityUniqueId());
 
-        return PaymentProcessorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return paymentProcessorFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PaymentProcessor getPaymentProcessorByEntityInstance(final EntityInstance entityInstance) {
@@ -145,11 +152,11 @@ public class PaymentProcessorControl
                         """;
             }
 
-            var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+            var ps = paymentProcessorFactory.prepareStatement(query);
             
             ps.setString(1, paymentProcessorName);
             
-            paymentProcessor = PaymentProcessorFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            paymentProcessor = paymentProcessorFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -189,9 +196,9 @@ public class PaymentProcessorControl
                     """;
         }
 
-        var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+        var ps = paymentProcessorFactory.prepareStatement(query);
 
-        return PaymentProcessorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return paymentProcessorFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<PaymentProcessor> getPaymentProcessors() {
@@ -225,11 +232,11 @@ public class PaymentProcessorControl
                         """;
             }
 
-            var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+            var ps = paymentProcessorFactory.prepareStatement(query);
 
             ps.setLong(1, paymentProcessorType.getPrimaryKey().getEntityId());
 
-            paymentProcessors = PaymentProcessorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            paymentProcessors = paymentProcessorFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -263,9 +270,9 @@ public class PaymentProcessorControl
                     """;
         }
 
-        var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+        var ps = paymentProcessorFactory.prepareStatement(query);
         
-        return PaymentProcessorFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return paymentProcessorFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public PaymentProcessor getDefaultPaymentProcessor() {
@@ -330,7 +337,7 @@ public class PaymentProcessorControl
     private void updatePaymentProcessorFromValue(PaymentProcessorDetailValue paymentProcessorDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(paymentProcessorDetailValue.hasBeenModified()) {
-            var paymentProcessor = PaymentProcessorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessor = paymentProcessorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentProcessorDetailValue.getPaymentProcessorPK());
             var paymentProcessorDetail = paymentProcessor.getActiveDetailForUpdate();
             
@@ -359,7 +366,7 @@ public class PaymentProcessorControl
                 }
             }
             
-            paymentProcessorDetail = PaymentProcessorDetailFactory.getInstance().create(paymentProcessorPK,
+            paymentProcessorDetail = paymentProcessorDetailFactory.create(paymentProcessorPK,
                     paymentProcessorName, paymentProcessorTypePK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -412,10 +419,13 @@ public class PaymentProcessorControl
     // --------------------------------------------------------------------------------
     //   Payment Processor Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PaymentProcessorDescriptionFactory paymentProcessorDescriptionFactory;
+
     public PaymentProcessorDescription createPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language,
             String description, BasePK createdBy) {
-        var paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(
+        var paymentProcessorDescription = paymentProcessorDescriptionFactory.create(
                 paymentProcessor, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorDescription.getPrimaryKey(),
@@ -446,13 +456,13 @@ public class PaymentProcessorControl
                         """;
             }
 
-            var ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = paymentProcessorDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            paymentProcessorDescription = paymentProcessorDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -499,12 +509,12 @@ public class PaymentProcessorControl
                         """;
             }
 
-            var ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = paymentProcessorDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            paymentProcessorDescriptions = PaymentProcessorDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            paymentProcessorDescriptions = paymentProcessorDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -554,7 +564,7 @@ public class PaymentProcessorControl
     
     public void updatePaymentProcessorDescriptionFromValue(PaymentProcessorDescriptionValue paymentProcessorDescriptionValue, BasePK updatedBy) {
         if(paymentProcessorDescriptionValue.hasBeenModified()) {
-            var paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessorDescription = paymentProcessorDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      paymentProcessorDescriptionValue.getPrimaryKey());
             
             paymentProcessorDescription.setThruTime(session.getStartTime());
@@ -564,7 +574,7 @@ public class PaymentProcessorControl
             var language = paymentProcessorDescription.getLanguage();
             var description = paymentProcessorDescriptionValue.getDescription();
             
-            paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(paymentProcessor, language,
+            paymentProcessorDescription = paymentProcessorDescriptionFactory.create(paymentProcessor, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY,

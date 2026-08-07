@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ColorControl
@@ -56,6 +57,12 @@ public class ColorControl
     //   Colors
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ColorFactory colorFactory;
+
+    @Inject
+    protected ColorDetailFactory colorDetailFactory;
+
     public Color createColor(String colorName, Integer red, Integer green, Integer blue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultColor = getDefaultColor();
         var defaultFound = defaultColor != null;
@@ -69,12 +76,12 @@ public class ColorControl
             isDefault = true;
         }
 
-        var color = ColorFactory.getInstance().create();
-        var colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
+        var color = colorFactory.create();
+        var colorDetail = colorDetailFactory.create(color, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, color.getPrimaryKey());
+        color = colorFactory.getEntityFromPK(EntityPermission.READ_WRITE, color.getPrimaryKey());
         color.setActiveDetail(colorDetail);
         color.setLastDetail(colorDetail);
         color.store();
@@ -88,7 +95,7 @@ public class ColorControl
     public Color getColorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ColorPK(entityInstance.getEntityUniqueId());
 
-        return ColorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return colorFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Color getColorByEntityInstance(EntityInstance entityInstance) {
@@ -131,7 +138,7 @@ public class ColorControl
     }
 
     private Color getColorByName(String colorName, EntityPermission entityPermission) {
-        return ColorFactory.getInstance().getEntityFromQuery(entityPermission, getColorByNameQueries, colorName);
+        return colorFactory.getEntityFromQuery(entityPermission, getColorByNameQueries, colorName);
     }
 
     public Color getColorByName(String colorName) {
@@ -174,7 +181,7 @@ public class ColorControl
     }
 
     private Color getDefaultColor(EntityPermission entityPermission) {
-        return ColorFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultColorQueries);
+        return colorFactory.getEntityFromQuery(entityPermission, getDefaultColorQueries);
     }
 
     public Color getDefaultColor() {
@@ -213,7 +220,7 @@ public class ColorControl
     }
 
     private List<Color> getColors(EntityPermission entityPermission) {
-        return ColorFactory.getInstance().getEntitiesFromQuery(entityPermission, getColorsQueries);
+        return colorFactory.getEntitiesFromQuery(entityPermission, getColorsQueries);
     }
 
     public List<Color> getColors() {
@@ -278,7 +285,7 @@ public class ColorControl
 
     private void updateColorFromValue(ColorDetailValue colorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(colorDetailValue.hasBeenModified()) {
-            var color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var color = colorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     colorDetailValue.getColorPK());
             var colorDetail = color.getActiveDetailForUpdate();
 
@@ -309,7 +316,7 @@ public class ColorControl
                 }
             }
 
-            colorDetail = ColorDetailFactory.getInstance().create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
+            colorDetail = colorDetailFactory.create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             color.setActiveDetail(colorDetail);
@@ -373,8 +380,11 @@ public class ColorControl
     //   Color Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ColorDescriptionFactory colorDescriptionFactory;
+
     public ColorDescription createColorDescription(Color color, Language language, String description, BasePK createdBy) {
-        var colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
+        var colorDescription = colorDescriptionFactory.create(color, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -404,7 +414,7 @@ public class ColorControl
     }
 
     private ColorDescription getColorDescription(Color color, Language language, EntityPermission entityPermission) {
-        return ColorDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getColorDescriptionQueries,
+        return colorDescriptionFactory.getEntityFromQuery(entityPermission, getColorDescriptionQueries,
                 color, language, Session.MAX_TIME);
     }
 
@@ -447,7 +457,7 @@ public class ColorControl
     }
 
     private List<ColorDescription> getColorDescriptionsByColor(Color color, EntityPermission entityPermission) {
-        return ColorDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getColorDescriptionsByColorQueries,
+        return colorDescriptionFactory.getEntitiesFromQuery(entityPermission, getColorDescriptionsByColorQueries,
                 color, Session.MAX_TIME);
     }
 
@@ -493,7 +503,7 @@ public class ColorControl
 
     public void updateColorDescriptionFromValue(ColorDescriptionValue colorDescriptionValue, BasePK updatedBy) {
         if(colorDescriptionValue.hasBeenModified()) {
-            var colorDescription = ColorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var colorDescription = colorDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     colorDescriptionValue.getPrimaryKey());
 
             colorDescription.setThruTime(session.getStartTime());
@@ -503,7 +513,7 @@ public class ColorControl
             var language = colorDescription.getLanguage();
             var description = colorDescriptionValue.getDescription();
 
-            colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
+            colorDescription = colorDescriptionFactory.create(color, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

@@ -31,6 +31,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PartyFreeOnBoardControl
@@ -45,8 +46,11 @@ public class PartyFreeOnBoardControl
     //   Party Free On Boards
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyFreeOnBoardFactory partyFreeOnBoardFactory;
+
     public PartyFreeOnBoard createPartyFreeOnBoard(Party party, FreeOnBoard freeOnBoard, BasePK createdBy) {
-        var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.getStartTime(),
+        var partyFreeOnBoard = partyFreeOnBoardFactory.create(party, freeOnBoard, session.getStartTime(),
                 Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -75,12 +79,12 @@ public class PartyFreeOnBoardControl
                         """;
             }
 
-            var ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
+            var ps = partyFreeOnBoardFactory.prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyFreeOnBoard = partyFreeOnBoardFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -127,12 +131,12 @@ public class PartyFreeOnBoardControl
                         """;
             }
 
-            var ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
+            var ps = partyFreeOnBoardFactory.prepareStatement(query);
 
             ps.setLong(1, freeOnBoard.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            partyFreeOnBoards = PartyFreeOnBoardFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyFreeOnBoards = partyFreeOnBoardFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -160,7 +164,7 @@ public class PartyFreeOnBoardControl
 
     public void updatePartyFreeOnBoardFromValue(PartyFreeOnBoardValue partyFreeOnBoardValue, BasePK updatedBy) {
         if(partyFreeOnBoardValue.hasBeenModified()) {
-            var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyFreeOnBoard = partyFreeOnBoardFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyFreeOnBoardValue.getPrimaryKey());
 
             partyFreeOnBoard.setThruTime(session.getStartTime());
@@ -169,7 +173,7 @@ public class PartyFreeOnBoardControl
             var partyPK = partyFreeOnBoard.getPartyPK(); // Not updated
             var freeOnBoardPK = partyFreeOnBoardValue.getFreeOnBoardPK();
 
-            partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.getStartTime(),
+            partyFreeOnBoard = partyFreeOnBoardFactory.create(partyPK, freeOnBoardPK, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

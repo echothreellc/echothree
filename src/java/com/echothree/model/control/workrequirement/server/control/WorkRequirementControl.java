@@ -131,16 +131,22 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Requirement Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkRequirementTypeFactory workRequirementTypeFactory;
+
+    @Inject
+    protected WorkRequirementTypeDetailFactory workRequirementTypeDetailFactory;
+
     public WorkRequirementType createWorkRequirementType(WorkEffortType workEffortType, String workRequirementTypeName, Sequence workRequirementSequence,
             WorkflowStep workflowStep, Long estimatedTimeAllowed, Long maximumTimeAllowed, Boolean allowReassignment, Integer sortOrder, BasePK createdBy) {
-        var workRequirementType = WorkRequirementTypeFactory.getInstance().create();
-        var workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create( workRequirementType,
+        var workRequirementType = workRequirementTypeFactory.create();
+        var workRequirementTypeDetail = workRequirementTypeDetailFactory.create( workRequirementType,
                 workEffortType, workRequirementTypeName, workRequirementSequence, workflowStep, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        workRequirementType = WorkRequirementTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workRequirementType.getPrimaryKey());
+        workRequirementType = workRequirementTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, workRequirementType.getPrimaryKey());
         workRequirementType.setActiveDetail(workRequirementTypeDetail);
         workRequirementType.setLastDetail(workRequirementTypeDetail);
         workRequirementType.store();
@@ -154,7 +160,7 @@ public class WorkRequirementControl
     public WorkRequirementType getWorkRequirementTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkRequirementTypePK(entityInstance.getEntityUniqueId());
 
-        return WorkRequirementTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return workRequirementTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WorkRequirementType getWorkRequirementTypeByEntityInstance(EntityInstance entityInstance) {
@@ -215,11 +221,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementTypeFactory.prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             
-            workRequirementTypes = WorkRequirementTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirementTypes = workRequirementTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -259,11 +265,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementTypeFactory.prepareStatement(query);
             
             ps.setLong(1, workflowStep.getPrimaryKey().getEntityId());
             
-            workRequirementTypes = WorkRequirementTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirementTypes = workRequirementTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -303,12 +309,12 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementTypeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementTypeFactory.prepareStatement(query);
             
             ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
             ps.setString(2, workRequirementTypeName);
             
-            workRequirementType = WorkRequirementTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            workRequirementType = workRequirementTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -352,7 +358,7 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementTypeFromValue(WorkRequirementTypeDetailValue workRequirementTypeDetailValue, BasePK updatedBy) {
         if(workRequirementTypeDetailValue.hasBeenModified()) {
-            var workRequirementType = WorkRequirementTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirementType = workRequirementTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementTypeDetailValue.getWorkRequirementTypePK());
             var workRequirementTypeDetail = workRequirementType.getActiveDetailForUpdate();
             
@@ -369,7 +375,7 @@ public class WorkRequirementControl
             var allowReassignment = workRequirementTypeDetailValue.getAllowReassignment();
             var sortOrder = workRequirementTypeDetailValue.getSortOrder();
             
-            workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(workRequirementTypePK, workEffortTypePK, workRequirementTypeName,
+            workRequirementTypeDetail = workRequirementTypeDetailFactory.create(workRequirementTypePK, workEffortTypePK, workRequirementTypeName,
                     workRequirementSequencePK, workflowStepPK, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -411,10 +417,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Requirement Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkRequirementTypeDescriptionFactory workRequirementTypeDescriptionFactory;
+
     public WorkRequirementTypeDescription createWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             String description, BasePK createdBy) {
-        var workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType,
+        var workRequirementTypeDescription = workRequirementTypeDescriptionFactory.create(workRequirementType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -444,13 +453,13 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            workRequirementTypeDescription = workRequirementTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -497,12 +506,12 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            workRequirementTypeDescriptions = WorkRequirementTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirementTypeDescriptions = workRequirementTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -552,7 +561,7 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementTypeDescriptionFromValue(WorkRequirementTypeDescriptionValue workRequirementTypeDescriptionValue, BasePK updatedBy) {
         if(workRequirementTypeDescriptionValue.hasBeenModified()) {
-            var workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirementTypeDescription = workRequirementTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementTypeDescriptionValue.getPrimaryKey());
             
             workRequirementTypeDescription.setThruTime(session.getStartTime());
@@ -562,7 +571,7 @@ public class WorkRequirementControl
             var language = workRequirementTypeDescription.getLanguage();
             var description = workRequirementTypeDescriptionValue.getDescription();
             
-            workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType, language,
+            workRequirementTypeDescription = workRequirementTypeDescriptionFactory.create(workRequirementType, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -586,17 +595,23 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Requirement Scopes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkRequirementScopeFactory workRequirementScopeFactory;
+
+    @Inject
+    protected WorkRequirementScopeDetailFactory workRequirementScopeDetailFactory;
+
     public WorkRequirementScope createWorkRequirementScope(WorkEffortScope workEffortScope, WorkRequirementType workRequirementType,
             Sequence workRequirementSequence, Sequence workTimeSequence, Selector workAssignmentSelector, Long estimatedTimeAllowed,
             Long maximumTimeAllowed, BasePK createdBy) {
-        var workRequirementScope = WorkRequirementScopeFactory.getInstance().create();
-        var workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(
+        var workRequirementScope = workRequirementScopeFactory.create();
+        var workRequirementScopeDetail = workRequirementScopeDetailFactory.create(
                 workRequirementScope, workEffortScope, workRequirementType, workRequirementSequence, workTimeSequence,
                 workAssignmentSelector, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        workRequirementScope = WorkRequirementScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        workRequirementScope = workRequirementScopeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 workRequirementScope.getPrimaryKey());
         workRequirementScope.setActiveDetail(workRequirementScopeDetail);
         workRequirementScope.setLastDetail(workRequirementScopeDetail);
@@ -611,7 +626,7 @@ public class WorkRequirementControl
     public WorkRequirementScope getWorkRequirementScopeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkRequirementScopePK(entityInstance.getEntityUniqueId());
 
-        return WorkRequirementScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return workRequirementScopeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WorkRequirementScope getWorkRequirementScopeByEntityInstance(EntityInstance entityInstance) {
@@ -689,12 +704,12 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementScopeFactory.prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, workRequirementType.getPrimaryKey().getEntityId());
             
-            workRequirementScope = WorkRequirementScopeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            workRequirementScope = workRequirementScopeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -739,12 +754,12 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementScopeFactory.prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             ps.setLong(2, workflowStep.getPrimaryKey().getEntityId());
             
-            workRequirementScopes = WorkRequirementScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirementScopes = workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -787,11 +802,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementScopeFactory.prepareStatement(query);
             
             ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
             
-            workRequirementScopes = WorkRequirementScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirementScopes = workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -831,11 +846,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementScopeFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementScopeFactory.prepareStatement(query);
             
             ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
             
-            workRequirementScopes = WorkRequirementScopeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirementScopes = workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -879,7 +894,7 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementScopeFromValue(WorkRequirementScopeDetailValue workRequirementScopeDetailValue, BasePK updatedBy) {
         if(workRequirementScopeDetailValue.hasBeenModified()) {
-            var workRequirementScope = WorkRequirementScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirementScope = workRequirementScopeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementScopeDetailValue.getWorkRequirementScopePK());
             var workRequirementScopeDetail = workRequirementScope.getActiveDetailForUpdate();
             
@@ -895,7 +910,7 @@ public class WorkRequirementControl
             var estimatedTimeAllowed = workRequirementScopeDetailValue.getEstimatedTimeAllowed();
             var maximumTimeAllowed = workRequirementScopeDetailValue.getMaximumTimeAllowed();
             
-            workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(workRequirementScopePK,
+            workRequirementScopeDetail = workRequirementScopeDetailFactory.create(workRequirementScopePK,
                     workEffortScopePK, workRequirementTypePK, workRequirementSequencePK, workTimeSequencePK,
                     workAssignmentSelectorPK, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTime(),
                     Session.MAX_TIME);
@@ -937,16 +952,22 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Requirements
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkRequirementFactory workRequirementFactory;
+
+    @Inject
+    protected WorkRequirementDetailFactory workRequirementDetailFactory;
+
     public WorkRequirement createWorkRequirement(String workRequirementName, WorkEffort workEffort, WorkRequirementScope workRequirementScope, Long startTime,
             Long requiredTime, BasePK createdBy) {
-        var workRequirement = WorkRequirementFactory.getInstance().create();
-        var workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirement,
+        var workRequirement = workRequirementFactory.create();
+        var workRequirementDetail = workRequirementDetailFactory.create(workRequirement,
                 workRequirementName, workEffort, workRequirementScope, startTime, requiredTime, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        workRequirement = WorkRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        workRequirement = workRequirementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 workRequirement.getPrimaryKey());
         workRequirement.setActiveDetail(workRequirementDetail);
         workRequirement.setLastDetail(workRequirementDetail);
@@ -963,7 +984,7 @@ public class WorkRequirementControl
     public WorkRequirement getWorkRequirementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkRequirementPK(entityInstance.getEntityUniqueId());
 
-        return WorkRequirementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return workRequirementFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WorkRequirement getWorkRequirementByEntityInstance(EntityInstance entityInstance) {
@@ -1023,11 +1044,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementFactory.prepareStatement(query);
             
             ps.setLong(1, workRequirementScope.getPrimaryKey().getEntityId());
             
-            workRequirements = WorkRequirementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirements = workRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1066,11 +1087,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementFactory.prepareStatement(query);
             
             ps.setLong(1, workEffort.getPrimaryKey().getEntityId());
             
-            workRequirements = WorkRequirementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            workRequirements = workRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1109,11 +1130,11 @@ public class WorkRequirementControl
                         """;
             }
 
-            var ps = WorkRequirementFactory.getInstance().prepareStatement(query);
+            var ps = workRequirementFactory.prepareStatement(query);
             
             ps.setString(1, workRequirementName);
             
-            workRequirement = WorkRequirementFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            workRequirement = workRequirementFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1195,7 +1216,7 @@ public class WorkRequirementControl
     
     public void updateWorkRequirementFromValue(WorkRequirementDetailValue workRequirementDetailValue, BasePK updatedBy) {
         if(workRequirementDetailValue.hasBeenModified()) {
-            var workRequirement = WorkRequirementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workRequirement = workRequirementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementDetailValue.getWorkRequirementPK());
             var workRequirementDetail = workRequirement.getActiveDetailForUpdate();
             
@@ -1209,7 +1230,7 @@ public class WorkRequirementControl
             var startTime = workRequirementDetail.getStartTime();
             var requiredTime = workRequirementDetail.getRequiredTime();
             
-            workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirementPK,
+            workRequirementDetail = workRequirementDetailFactory.create(workRequirementPK,
                     workRequirementName, workEffortPK, workRequirementScopePK, startTime, requiredTime, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -1252,9 +1273,12 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Requirement Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkRequirementStatusFactory workRequirementStatusFactory;
+
     public WorkRequirementStatus createWorkRequirementStatus(WorkRequirement workRequirement) {
-        return WorkRequirementStatusFactory.getInstance().create(workRequirement, 0, null, 0, null);
+        return workRequirementStatusFactory.create(workRequirement, 0, null, 0, null);
     }
     
     private static final Map<EntityPermission, String> getWorkRequirementStatusQueries;
@@ -1277,7 +1301,7 @@ public class WorkRequirementControl
     }
 
     private WorkRequirementStatus getWorkRequirementStatus(WorkRequirement workRequirement, EntityPermission entityPermission) {
-        return WorkRequirementStatusFactory.getInstance().getEntityFromQuery(entityPermission, getWorkRequirementStatusQueries,
+        return workRequirementStatusFactory.getEntityFromQuery(entityPermission, getWorkRequirementStatusQueries,
                 workRequirement);
     }
 
@@ -1300,7 +1324,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Assignments
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkAssignmentFactory workAssignmentFactory;
+
+    @Inject
+    protected WorkAssignmentDetailFactory workAssignmentDetailFactory;
+
     public WorkAssignment createWorkAssignment(WorkRequirement workRequirement, Party party, Long startTime, Long endTime, BasePK createdBy) {
         var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
         Integer workAssignmentSequence = workRequirementStatus.getWorkAssignmentSequence() + 1;
@@ -1311,12 +1341,12 @@ public class WorkRequirementControl
     }
 
     public WorkAssignment createWorkAssignment(WorkRequirement workRequirement, Integer workAssignmentSequence, Party party, Long startTime, Long endTime, BasePK createdBy) {
-        var workAssignment = WorkAssignmentFactory.getInstance().create();
-        var workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignment, workRequirement, workAssignmentSequence, party, startTime, endTime,
+        var workAssignment = workAssignmentFactory.create();
+        var workAssignmentDetail = workAssignmentDetailFactory.create(workAssignment, workRequirement, workAssignmentSequence, party, startTime, endTime,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workAssignment.getPrimaryKey());
+        workAssignment = workAssignmentFactory.getEntityFromPK(EntityPermission.READ_WRITE, workAssignment.getPrimaryKey());
         workAssignment.setActiveDetail(workAssignmentDetail);
         workAssignment.setLastDetail(workAssignmentDetail);
         workAssignment.store();
@@ -1330,7 +1360,7 @@ public class WorkRequirementControl
     public WorkAssignment getWorkAssignmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkAssignmentPK(entityInstance.getEntityUniqueId());
 
-        return WorkAssignmentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return workAssignmentFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WorkAssignment getWorkAssignmentByEntityInstance(EntityInstance entityInstance) {
@@ -1381,7 +1411,7 @@ public class WorkRequirementControl
     }
 
     private WorkAssignment getWorkAssignment(WorkRequirement workRequirement, Integer workAssignmentSequence, EntityPermission entityPermission) {
-        return WorkAssignmentFactory.getInstance().getEntityFromQuery(entityPermission, getWorkAssignmentQueries,
+        return workAssignmentFactory.getEntityFromQuery(entityPermission, getWorkAssignmentQueries,
                 workRequirement, workAssignmentSequence);
     }
 
@@ -1417,7 +1447,7 @@ public class WorkRequirementControl
     }
 
     private List<WorkAssignment> getWorkAssignmentsByWorkRequirement(WorkRequirement workRequirement, EntityPermission entityPermission) {
-        return WorkAssignmentFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkAssignmentsByWorkRequirementQueries,
+        return workAssignmentFactory.getEntitiesFromQuery(entityPermission, getWorkAssignmentsByWorkRequirementQueries,
                 workRequirement);
     }
 
@@ -1454,7 +1484,7 @@ public class WorkRequirementControl
     }
 
     private List<WorkAssignment> getWorkAssignmentsByParty(Party party, EntityPermission entityPermission) {
-        return WorkAssignmentFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkAssignmentsByPartyQueries,
+        return workAssignmentFactory.getEntitiesFromQuery(entityPermission, getWorkAssignmentsByPartyQueries,
                 party);
     }
 
@@ -1524,7 +1554,7 @@ public class WorkRequirementControl
 
     public void updateWorkAssignmentFromValue(WorkAssignmentDetailValue workAssignmentDetailValue, BasePK updatedBy) {
         if(workAssignmentDetailValue.hasBeenModified()) {
-            var workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workAssignment = workAssignmentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      workAssignmentDetailValue.getWorkAssignmentPK());
             var workAssignmentDetail = workAssignment.getActiveDetailForUpdate();
 
@@ -1538,7 +1568,7 @@ public class WorkRequirementControl
             var startTime = workAssignmentDetailValue.getStartTime();
             var endTime = workAssignmentDetailValue.getEndTime();
 
-            workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignmentPK, workRequirementPK, workAssignmentSequence, partyPK, startTime, endTime,
+            workAssignmentDetail = workAssignmentDetailFactory.create(workAssignmentPK, workRequirementPK, workAssignmentSequence, partyPK, startTime, endTime,
                     session.getStartTime(), Session.MAX_TIME);
 
             workAssignment.setActiveDetail(workAssignmentDetail);
@@ -1574,7 +1604,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Times
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkTimeFactory workTimeFactory;
+
+    @Inject
+    protected WorkTimeDetailFactory workTimeDetailFactory;
+
     public WorkTime createWorkTime(WorkRequirement workRequirement, Party party, Long startTime, Long endTime, BasePK createdBy) {
         var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
         Integer workTimeSequence = workRequirementStatus.getWorkTimeSequence() + 1;
@@ -1585,12 +1621,12 @@ public class WorkRequirementControl
     }
 
     public WorkTime createWorkTime(WorkRequirement workRequirement, Integer workTimeSequence, Party party, Long startTime, Long endTime, BasePK createdBy) {
-        var workTime = WorkTimeFactory.getInstance().create();
-        var workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTime, workRequirement, workTimeSequence, party, startTime, endTime,
+        var workTime = workTimeFactory.create();
+        var workTimeDetail = workTimeDetailFactory.create(workTime, workRequirement, workTimeSequence, party, startTime, endTime,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workTime.getPrimaryKey());
+        workTime = workTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE, workTime.getPrimaryKey());
         workTime.setActiveDetail(workTimeDetail);
         workTime.setLastDetail(workTimeDetail);
         workTime.store();
@@ -1604,7 +1640,7 @@ public class WorkRequirementControl
     public WorkTime getWorkTimeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkTimePK(entityInstance.getEntityUniqueId());
 
-        return WorkTimeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return workTimeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WorkTime getWorkTimeByEntityInstance(EntityInstance entityInstance) {
@@ -1655,7 +1691,7 @@ public class WorkRequirementControl
     }
 
     private WorkTime getWorkTime(WorkRequirement workRequirement, Integer workTimeSequence, EntityPermission entityPermission) {
-        return WorkTimeFactory.getInstance().getEntityFromQuery(entityPermission, getWorkTimeQueries,
+        return workTimeFactory.getEntityFromQuery(entityPermission, getWorkTimeQueries,
                 workRequirement, workTimeSequence);
     }
 
@@ -1699,7 +1735,7 @@ public class WorkRequirementControl
     }
 
     private List<WorkTime> getWorkTimesByWorkRequirement(WorkRequirement workRequirement, EntityPermission entityPermission) {
-        return WorkTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkTimesByWorkRequirementQueries,
+        return workTimeFactory.getEntitiesFromQuery(entityPermission, getWorkTimesByWorkRequirementQueries,
                 workRequirement);
     }
 
@@ -1734,7 +1770,7 @@ public class WorkRequirementControl
     }
 
     private List<WorkTime> getWorkTimesByParty(Party party, EntityPermission entityPermission) {
-        return WorkTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkTimesByPartyQueries,
+        return workTimeFactory.getEntitiesFromQuery(entityPermission, getWorkTimesByPartyQueries,
                 party);
     }
 
@@ -1800,7 +1836,7 @@ public class WorkRequirementControl
 
     public void updateWorkTimeFromValue(WorkTimeDetailValue workTimeDetailValue, BasePK updatedBy) {
         if(workTimeDetailValue.hasBeenModified()) {
-            var workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var workTime = workTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      workTimeDetailValue.getWorkTimePK());
             var workTimeDetail = workTime.getActiveDetailForUpdate();
 
@@ -1814,7 +1850,7 @@ public class WorkRequirementControl
             var startTime = workTimeDetailValue.getStartTime();
             var endTime = workTimeDetailValue.getEndTime();
 
-            workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTimePK, workRequirementPK, workTimeSequence, partyPK, startTime, endTime,
+            workTimeDetail = workTimeDetailFactory.create(workTimePK, workRequirementPK, workTimeSequence, partyPK, startTime, endTime,
                     session.getStartTime(), Session.MAX_TIME);
 
             workTime.setActiveDetail(workTimeDetail);
@@ -1852,9 +1888,12 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     //   Work Time User Visits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WorkTimeUserVisitFactory workTimeUserVisitFactory;
+
     public WorkTimeUserVisit createWorkTimeUserVisit(WorkTime workTime, UserVisit userVisit) {
-        return WorkTimeUserVisitFactory.getInstance().create(workTime, userVisit, session.getStartTime(), Session.MAX_TIME);
+        return workTimeUserVisitFactory.create(workTime, userVisit, session.getStartTime(), Session.MAX_TIME);
     }
     
     private static final Map<EntityPermission, String> getWorkTimeUserVisitQueries;
@@ -1877,7 +1916,7 @@ public class WorkRequirementControl
     }
 
     private WorkTimeUserVisit getWorkTimeUserVisit(WorkTime workTime, UserVisit userVisit, EntityPermission entityPermission) {
-        return WorkTimeUserVisitFactory.getInstance().getEntityFromQuery(entityPermission, getWorkTimeUserVisitQueries,
+        return workTimeUserVisitFactory.getEntityFromQuery(entityPermission, getWorkTimeUserVisitQueries,
                 workTime, userVisit, Session.MAX_TIME);
     }
     
@@ -1920,7 +1959,7 @@ public class WorkRequirementControl
     }
 
     private List<WorkTimeUserVisit> getWorkTimeUserVisitsByWorkTime(WorkTime workTime, EntityPermission entityPermission) {
-        return WorkTimeUserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkTimeUserVisitsByWorkTimeQueries,
+        return workTimeUserVisitFactory.getEntitiesFromQuery(entityPermission, getWorkTimeUserVisitsByWorkTimeQueries,
                 workTime, Session.MAX_TIME);
     }
     
@@ -1955,7 +1994,7 @@ public class WorkRequirementControl
     }
 
     private List<WorkTimeUserVisit> getWorkTimeUserVisitsByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return WorkTimeUserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkTimeUserVisitsByUserVisitQueries,
+        return workTimeUserVisitFactory.getEntitiesFromQuery(entityPermission, getWorkTimeUserVisitsByUserVisitQueries,
                 userVisit, Session.MAX_TIME);
     }
     

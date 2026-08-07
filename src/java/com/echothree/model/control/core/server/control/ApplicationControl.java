@@ -62,6 +62,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class ApplicationControl
@@ -76,6 +77,12 @@ public class ApplicationControl
     //   Applications
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ApplicationFactory applicationFactory;
+
+    @Inject
+    protected ApplicationDetailFactory applicationDetailFactory;
+
     public Application createApplication(String applicationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultApplication = getDefaultApplication();
         var defaultFound = defaultApplication != null;
@@ -89,12 +96,12 @@ public class ApplicationControl
             isDefault = true;
         }
 
-        var application = ApplicationFactory.getInstance().create();
-        var applicationDetail = ApplicationDetailFactory.getInstance().create(application, applicationName, isDefault, sortOrder, session.getStartTime(),
+        var application = applicationFactory.create();
+        var applicationDetail = applicationDetailFactory.create(application, applicationName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        application = ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, application.getPrimaryKey());
+        application = applicationFactory.getEntityFromPK(EntityPermission.READ_WRITE, application.getPrimaryKey());
         application.setActiveDetail(applicationDetail);
         application.setLastDetail(applicationDetail);
         application.store();
@@ -108,7 +115,7 @@ public class ApplicationControl
     public Application getApplicationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ApplicationPK(entityInstance.getEntityUniqueId());
 
-        return ApplicationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return applicationFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Application getApplicationByEntityInstance(EntityInstance entityInstance) {
@@ -149,7 +156,7 @@ public class ApplicationControl
     }
 
     private Application getApplicationByName(String applicationName, EntityPermission entityPermission) {
-        return ApplicationFactory.getInstance().getEntityFromQuery(entityPermission, getApplicationByNameQueries, applicationName);
+        return applicationFactory.getEntityFromQuery(entityPermission, getApplicationByNameQueries, applicationName);
     }
 
     public Application getApplicationByName(String applicationName) {
@@ -190,7 +197,7 @@ public class ApplicationControl
     }
 
     private Application getDefaultApplication(EntityPermission entityPermission) {
-        return ApplicationFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultApplicationQueries);
+        return applicationFactory.getEntityFromQuery(entityPermission, getDefaultApplicationQueries);
     }
 
     public Application getDefaultApplication() {
@@ -227,7 +234,7 @@ public class ApplicationControl
     }
 
     private List<Application> getApplications(EntityPermission entityPermission) {
-        return ApplicationFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationsQueries);
+        return applicationFactory.getEntitiesFromQuery(entityPermission, getApplicationsQueries);
     }
 
     public List<Application> getApplications() {
@@ -292,7 +299,7 @@ public class ApplicationControl
 
     private void updateApplicationFromValue(ApplicationDetailValue applicationDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(applicationDetailValue.hasBeenModified()) {
-            var application = ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var application = applicationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationDetailValue.getApplicationPK());
             var applicationDetail = application.getActiveDetailForUpdate();
 
@@ -320,7 +327,7 @@ public class ApplicationControl
                 }
             }
 
-            applicationDetail = ApplicationDetailFactory.getInstance().create(applicationPK, applicationName, isDefault, sortOrder, session.getStartTime(),
+            applicationDetail = applicationDetailFactory.create(applicationPK, applicationName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             application.setActiveDetail(applicationDetail);
@@ -384,8 +391,11 @@ public class ApplicationControl
     //   Application Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ApplicationDescriptionFactory applicationDescriptionFactory;
+
     public ApplicationDescription createApplicationDescription(Application application, Language language, String description, BasePK createdBy) {
-        var applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
+        var applicationDescription = applicationDescriptionFactory.create(application, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -413,7 +423,7 @@ public class ApplicationControl
     }
 
     private ApplicationDescription getApplicationDescription(Application application, Language language, EntityPermission entityPermission) {
-        return ApplicationDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getApplicationDescriptionQueries,
+        return applicationDescriptionFactory.getEntityFromQuery(entityPermission, getApplicationDescriptionQueries,
                 application, language, Session.MAX_TIME);
     }
 
@@ -455,7 +465,7 @@ public class ApplicationControl
     }
 
     private List<ApplicationDescription> getApplicationDescriptionsByApplication(Application application, EntityPermission entityPermission) {
-        return ApplicationDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationDescriptionsByApplicationQueries,
+        return applicationDescriptionFactory.getEntitiesFromQuery(entityPermission, getApplicationDescriptionsByApplicationQueries,
                 application, Session.MAX_TIME);
     }
 
@@ -501,7 +511,7 @@ public class ApplicationControl
 
     public void updateApplicationDescriptionFromValue(ApplicationDescriptionValue applicationDescriptionValue, BasePK updatedBy) {
         if(applicationDescriptionValue.hasBeenModified()) {
-            var applicationDescription = ApplicationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationDescription = applicationDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationDescriptionValue.getPrimaryKey());
 
             applicationDescription.setThruTime(session.getStartTime());
@@ -511,7 +521,7 @@ public class ApplicationControl
             var language = applicationDescription.getLanguage();
             var description = applicationDescriptionValue.getDescription();
 
-            applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
+            applicationDescription = applicationDescriptionFactory.create(application, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -537,6 +547,12 @@ public class ApplicationControl
     //   Application Editors
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ApplicationEditorFactory applicationEditorFactory;
+
+    @Inject
+    protected ApplicationEditorDetailFactory applicationEditorDetailFactory;
+
     public ApplicationEditor createApplicationEditor(Application application, Editor editor, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultApplicationEditor = getDefaultApplicationEditor(application);
         var defaultFound = defaultApplicationEditor != null;
@@ -550,12 +566,12 @@ public class ApplicationControl
             isDefault = true;
         }
 
-        var applicationEditor = ApplicationEditorFactory.getInstance().create();
-        var applicationEditorDetail = ApplicationEditorDetailFactory.getInstance().create(applicationEditor, application, editor, isDefault,
+        var applicationEditor = applicationEditorFactory.create();
+        var applicationEditorDetail = applicationEditorDetailFactory.create(applicationEditor, application, editor, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        applicationEditor = ApplicationEditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, applicationEditor.getPrimaryKey());
+        applicationEditor = applicationEditorFactory.getEntityFromPK(EntityPermission.READ_WRITE, applicationEditor.getPrimaryKey());
         applicationEditor.setActiveDetail(applicationEditorDetail);
         applicationEditor.setLastDetail(applicationEditorDetail);
         applicationEditor.store();
@@ -569,7 +585,7 @@ public class ApplicationControl
     public ApplicationEditor getApplicationEditorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ApplicationEditorPK(entityInstance.getEntityUniqueId());
 
-        return ApplicationEditorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return applicationEditorFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ApplicationEditor getApplicationEditorByEntityInstance(EntityInstance entityInstance) {
@@ -620,7 +636,7 @@ public class ApplicationControl
     }
 
     private ApplicationEditor getApplicationEditor(Application application, Editor editor, EntityPermission entityPermission) {
-        return ApplicationEditorFactory.getInstance().getEntityFromQuery(entityPermission, getApplicationEditorQueries,
+        return applicationEditorFactory.getEntityFromQuery(entityPermission, getApplicationEditorQueries,
                 application, editor);
     }
 
@@ -662,7 +678,7 @@ public class ApplicationControl
     }
 
     private ApplicationEditor getDefaultApplicationEditor(Application application, EntityPermission entityPermission) {
-        return ApplicationEditorFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultApplicationEditorQueries,
+        return applicationEditorFactory.getEntityFromQuery(entityPermission, getDefaultApplicationEditorQueries,
                 application);
     }
 
@@ -701,7 +717,7 @@ public class ApplicationControl
     }
 
     private List<ApplicationEditor> getApplicationEditorsByApplication(Application application, EntityPermission entityPermission) {
-        return ApplicationEditorFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationEditorsByApplicationQueries,
+        return applicationEditorFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorsByApplicationQueries,
                 application);
     }
 
@@ -736,7 +752,7 @@ public class ApplicationControl
     }
 
     private List<ApplicationEditor> getApplicationEditorsByEditor(Editor editor, EntityPermission entityPermission) {
-        return ApplicationEditorFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationEditorsByEditorQueries,
+        return applicationEditorFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorsByEditorQueries,
                 editor);
     }
 
@@ -809,7 +825,7 @@ public class ApplicationControl
 
     private void updateApplicationEditorFromValue(ApplicationEditorDetailValue applicationEditorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(applicationEditorDetailValue.hasBeenModified()) {
-            var applicationEditor = ApplicationEditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationEditor = applicationEditorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationEditorDetailValue.getApplicationEditorPK());
             var applicationEditorDetail = applicationEditor.getActiveDetailForUpdate();
 
@@ -839,7 +855,7 @@ public class ApplicationControl
                 }
             }
 
-            applicationEditorDetail = ApplicationEditorDetailFactory.getInstance().create(applicationEditorPK, applicationPK, editorPK, isDefault, sortOrder,
+            applicationEditorDetail = applicationEditorDetailFactory.create(applicationEditorPK, applicationPK, editorPK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             applicationEditor.setActiveDetail(applicationEditorDetail);
@@ -912,6 +928,12 @@ public class ApplicationControl
     //   Application Editor Uses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ApplicationEditorUseFactory applicationEditorUseFactory;
+
+    @Inject
+    protected ApplicationEditorUseDetailFactory applicationEditorUseDetailFactory;
+
     public ApplicationEditorUse createApplicationEditorUse(Application application, String applicationEditorUseName, ApplicationEditor defaultApplicationEditor,
             Integer defaultHeight, Integer defaultWidth, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultApplicationEditorUse = getDefaultApplicationEditorUse(application);
@@ -926,13 +948,13 @@ public class ApplicationControl
             isDefault = true;
         }
 
-        var applicationEditorUse = ApplicationEditorUseFactory.getInstance().create();
-        var applicationEditorUseDetail = ApplicationEditorUseDetailFactory.getInstance().create(applicationEditorUse, application,
+        var applicationEditorUse = applicationEditorUseFactory.create();
+        var applicationEditorUseDetail = applicationEditorUseDetailFactory.create(applicationEditorUse, application,
                 applicationEditorUseName, defaultApplicationEditor, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        applicationEditorUse = ApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, applicationEditorUse.getPrimaryKey());
+        applicationEditorUse = applicationEditorUseFactory.getEntityFromPK(EntityPermission.READ_WRITE, applicationEditorUse.getPrimaryKey());
         applicationEditorUse.setActiveDetail(applicationEditorUseDetail);
         applicationEditorUse.setLastDetail(applicationEditorUseDetail);
         applicationEditorUse.store();
@@ -946,7 +968,7 @@ public class ApplicationControl
     public ApplicationEditorUse getApplicationEditorUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ApplicationEditorUsePK(entityInstance.getEntityUniqueId());
 
-        return ApplicationEditorUseFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return applicationEditorUseFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ApplicationEditorUse getApplicationEditorUseByEntityInstance(EntityInstance entityInstance) {
@@ -997,7 +1019,7 @@ public class ApplicationControl
     }
 
     private ApplicationEditorUse getApplicationEditorUseByName(Application application, String applicationEditorUseName, EntityPermission entityPermission) {
-        return ApplicationEditorUseFactory.getInstance().getEntityFromQuery(entityPermission, getApplicationEditorUseByNameQueries,
+        return applicationEditorUseFactory.getEntityFromQuery(entityPermission, getApplicationEditorUseByNameQueries,
                 application, applicationEditorUseName);
     }
 
@@ -1039,7 +1061,7 @@ public class ApplicationControl
     }
 
     private ApplicationEditorUse getDefaultApplicationEditorUse(Application application, EntityPermission entityPermission) {
-        return ApplicationEditorUseFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultApplicationEditorUseQueries,
+        return applicationEditorUseFactory.getEntityFromQuery(entityPermission, getDefaultApplicationEditorUseQueries,
                 application);
     }
 
@@ -1077,7 +1099,7 @@ public class ApplicationControl
     }
 
     private List<ApplicationEditorUse> getApplicationEditorUsesByApplication(Application application, EntityPermission entityPermission) {
-        return ApplicationEditorUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationEditorUsesByApplicationQueries,
+        return applicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorUsesByApplicationQueries,
                 application);
     }
 
@@ -1113,7 +1135,7 @@ public class ApplicationControl
 
     private List<ApplicationEditorUse> getApplicationEditorUsesByDefaultApplicationEditor(ApplicationEditor defaultApplicationEditor,
             EntityPermission entityPermission) {
-        return ApplicationEditorUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationEditorUsesByDefaultApplicationEditorQueries,
+        return applicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorUsesByDefaultApplicationEditorQueries,
                 defaultApplicationEditor);
     }
 
@@ -1184,7 +1206,7 @@ public class ApplicationControl
 
     private void updateApplicationEditorUseFromValue(ApplicationEditorUseDetailValue applicationEditorUseDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(applicationEditorUseDetailValue.hasBeenModified()) {
-            var applicationEditorUse = ApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationEditorUse = applicationEditorUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationEditorUseDetailValue.getApplicationEditorUsePK());
             var applicationEditorUseDetail = applicationEditorUse.getActiveDetailForUpdate();
 
@@ -1217,7 +1239,7 @@ public class ApplicationControl
                 }
             }
 
-            applicationEditorUseDetail = ApplicationEditorUseDetailFactory.getInstance().create(applicationEditorUsePK, applicationPK, applicationEditorUseName,
+            applicationEditorUseDetail = applicationEditorUseDetailFactory.create(applicationEditorUsePK, applicationPK, applicationEditorUseName,
                     defaultApplicationEditorPK, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             applicationEditorUse.setActiveDetail(applicationEditorUseDetail);
@@ -1290,9 +1312,12 @@ public class ApplicationControl
     //   Application Editor Use Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ApplicationEditorUseDescriptionFactory applicationEditorUseDescriptionFactory;
+
     public ApplicationEditorUseDescription createApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language,
             String description, BasePK createdBy) {
-        var applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse,
+        var applicationEditorUseDescription = applicationEditorUseDescriptionFactory.create(applicationEditorUse,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1320,7 +1345,7 @@ public class ApplicationControl
     }
 
     private ApplicationEditorUseDescription getApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language, EntityPermission entityPermission) {
-        return ApplicationEditorUseDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getApplicationEditorUseDescriptionQueries,
+        return applicationEditorUseDescriptionFactory.getEntityFromQuery(entityPermission, getApplicationEditorUseDescriptionQueries,
                 applicationEditorUse, language, Session.MAX_TIME);
     }
 
@@ -1362,7 +1387,7 @@ public class ApplicationControl
     }
 
     private List<ApplicationEditorUseDescription> getApplicationEditorUseDescriptionsByApplicationEditorUse(ApplicationEditorUse applicationEditorUse, EntityPermission entityPermission) {
-        return ApplicationEditorUseDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getApplicationEditorUseDescriptionsByApplicationEditorUseQueries,
+        return applicationEditorUseDescriptionFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorUseDescriptionsByApplicationEditorUseQueries,
                 applicationEditorUse, Session.MAX_TIME);
     }
 
@@ -1408,7 +1433,7 @@ public class ApplicationControl
 
     public void updateApplicationEditorUseDescriptionFromValue(ApplicationEditorUseDescriptionValue applicationEditorUseDescriptionValue, BasePK updatedBy) {
         if(applicationEditorUseDescriptionValue.hasBeenModified()) {
-            var applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var applicationEditorUseDescription = applicationEditorUseDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationEditorUseDescriptionValue.getPrimaryKey());
 
             applicationEditorUseDescription.setThruTime(session.getStartTime());
@@ -1418,7 +1443,7 @@ public class ApplicationControl
             var language = applicationEditorUseDescription.getLanguage();
             var description = applicationEditorUseDescriptionValue.getDescription();
 
-            applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse, language, description,
+            applicationEditorUseDescription = applicationEditorUseDescriptionFactory.create(applicationEditorUse, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

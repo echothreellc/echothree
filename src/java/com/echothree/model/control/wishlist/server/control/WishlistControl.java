@@ -118,7 +118,13 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlist Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WishlistTypeFactory wishlistTypeFactory;
+
+    @Inject
+    protected WishlistTypeDetailFactory wishlistTypeDetailFactory;
+
     public WishlistType createWishlistType(String wishlistTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultWishlistType = getDefaultWishlistType();
         var defaultFound = defaultWishlistType != null;
@@ -132,12 +138,12 @@ public class WishlistControl
             isDefault = true;
         }
 
-        var wishlistType = WishlistTypeFactory.getInstance().create();
-        var wishlistTypeDetail = WishlistTypeDetailFactory.getInstance().create(wishlistType,
+        var wishlistType = wishlistTypeFactory.create();
+        var wishlistTypeDetail = wishlistTypeDetailFactory.create(wishlistType,
                 wishlistTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        wishlistType = WishlistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        wishlistType = wishlistTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 wishlistType.getPrimaryKey());
         wishlistType.setActiveDetail(wishlistTypeDetail);
         wishlistType.setLastDetail(wishlistTypeDetail);
@@ -153,7 +159,7 @@ public class WishlistControl
             final EntityPermission entityPermission) {
         var pk = new WishlistTypePK(entityInstance.getEntityUniqueId());
 
-        return WishlistTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return wishlistTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WishlistType getWishlistTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -165,7 +171,7 @@ public class WishlistControl
     }
 
     public WishlistType getWishlistTypeByPK(WishlistTypePK pk) {
-        return WishlistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return wishlistTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countWishlistTypes() {
@@ -196,9 +202,9 @@ public class WishlistControl
                     """;
         }
 
-        var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
+        var ps = wishlistTypeFactory.prepareStatement(query);
         
-        return WishlistTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return wishlistTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<WishlistType> getWishlistTypes() {
@@ -227,9 +233,9 @@ public class WishlistControl
                     """;
         }
 
-        var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
+        var ps = wishlistTypeFactory.prepareStatement(query);
         
-        return WishlistTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return wishlistTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public WishlistType getDefaultWishlistType() {
@@ -265,11 +271,11 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistTypeFactory.getInstance().prepareStatement(query);
+            var ps = wishlistTypeFactory.prepareStatement(query);
             
             ps.setString(1, wishlistTypeName);
             
-            wishlistType = WishlistTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistType = wishlistTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -348,7 +354,7 @@ public class WishlistControl
     private void updateWishlistTypeFromValue(WishlistTypeDetailValue wishlistTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(wishlistTypeDetailValue.hasBeenModified()) {
-            var wishlistType = WishlistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistType = wishlistTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistTypeDetailValue.getWishlistTypePK());
             var wishlistTypeDetail = wishlistType.getActiveDetailForUpdate();
             
@@ -376,7 +382,7 @@ public class WishlistControl
                 }
             }
             
-            wishlistTypeDetail = WishlistTypeDetailFactory.getInstance().create(wishlistTypePK, wishlistTypeName,
+            wishlistTypeDetail = wishlistTypeDetailFactory.create(wishlistTypePK, wishlistTypeName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             wishlistType.setActiveDetail(wishlistTypeDetail);
@@ -426,10 +432,13 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlist Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WishlistTypeDescriptionFactory wishlistTypeDescriptionFactory;
+
     public WishlistTypeDescription createWishlistTypeDescription(WishlistType wishlistType, Language language, String description,
             BasePK createdBy) {
-        var wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().create(wishlistType,
+        var wishlistTypeDescription = wishlistTypeDescriptionFactory.create(wishlistType,
                 language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -459,13 +468,13 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = wishlistTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistTypeDescription = wishlistTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -513,12 +522,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = wishlistTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlistTypeDescriptions = WishlistTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlistTypeDescriptions = wishlistTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -568,7 +577,7 @@ public class WishlistControl
     
     public void updateWishlistTypeDescriptionFromValue(WishlistTypeDescriptionValue wishlistTypeDescriptionValue, BasePK updatedBy) {
         if(wishlistTypeDescriptionValue.hasBeenModified()) {
-            var wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistTypeDescription = wishlistTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistTypeDescriptionValue.getPrimaryKey());
             
             wishlistTypeDescription.setThruTime(session.getStartTime());
@@ -578,7 +587,7 @@ public class WishlistControl
             var language = wishlistTypeDescription.getLanguage();
             var description = wishlistTypeDescriptionValue.getDescription();
             
-            wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().create(wishlistType, language,
+            wishlistTypeDescription = wishlistTypeDescriptionFactory.create(wishlistType, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(wishlistType.getPrimaryKey(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -602,7 +611,13 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlist Type Priorities
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WishlistPriorityFactory wishlistPriorityFactory;
+
+    @Inject
+    protected WishlistPriorityDetailFactory wishlistPriorityDetailFactory;
+
     public WishlistPriority createWishlistPriority(WishlistType wishlistType, String wishlistPriorityName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
@@ -617,13 +632,13 @@ public class WishlistControl
             isDefault = true;
         }
 
-        var wishlistPriority = WishlistPriorityFactory.getInstance().create();
-        var wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(
+        var wishlistPriority = wishlistPriorityFactory.create();
+        var wishlistPriorityDetail = wishlistPriorityDetailFactory.create(
                 wishlistPriority, wishlistType, wishlistPriorityName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        wishlistPriority = wishlistPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 wishlistPriority.getPrimaryKey());
         wishlistPriority.setActiveDetail(wishlistPriorityDetail);
         wishlistPriority.setLastDetail(wishlistPriorityDetail);
@@ -639,7 +654,7 @@ public class WishlistControl
             final EntityPermission entityPermission) {
         var pk = new WishlistPriorityPK(entityInstance.getEntityUniqueId());
 
-        return WishlistPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return wishlistPriorityFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public WishlistPriority getWishlistPriorityByEntityInstance(final EntityInstance entityInstance) {
@@ -682,11 +697,11 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
+            var ps = wishlistPriorityFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             
-            wishlistPriorities = WishlistPriorityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlistPriorities = wishlistPriorityFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -725,11 +740,11 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
+            var ps = wishlistPriorityFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             
-            wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistPriority = wishlistPriorityFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -772,12 +787,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
+            var ps = wishlistPriorityFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setString(2, wishlistPriorityName);
             
-            wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistPriority = wishlistPriorityFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -856,7 +871,7 @@ public class WishlistControl
     private void updateWishlistPriorityFromValue(WishlistPriorityDetailValue wishlistPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(wishlistPriorityDetailValue.hasBeenModified()) {
-            var wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistPriority = wishlistPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistPriorityDetailValue.getWishlistPriorityPK());
             var wishlistPriorityDetail = wishlistPriority.getActiveDetailForUpdate();
             
@@ -886,7 +901,7 @@ public class WishlistControl
                 }
             }
             
-            wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(wishlistPriorityPK,
+            wishlistPriorityDetail = wishlistPriorityDetailFactory.create(wishlistPriorityPK,
                     wishlistTypePK, wishlistPriorityName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             wishlistPriority.setActiveDetail(wishlistPriorityDetail);
@@ -941,10 +956,13 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlist Type Priority Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WishlistPriorityDescriptionFactory wishlistPriorityDescriptionFactory;
+
     public WishlistPriorityDescription createWishlistPriorityDescription(WishlistPriority wishlistPriority,
             Language language, String description, BasePK createdBy) {
-        var wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(
+        var wishlistPriorityDescription = wishlistPriorityDescriptionFactory.create(
                 wishlistPriority, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -973,13 +991,13 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = wishlistPriorityDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistPriorityDescription = wishlistPriorityDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1027,12 +1045,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = wishlistPriorityDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlistPriorityDescriptions = WishlistPriorityDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlistPriorityDescriptions = wishlistPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1082,7 +1100,7 @@ public class WishlistControl
     
     public void updateWishlistPriorityDescriptionFromValue(WishlistPriorityDescriptionValue wishlistPriorityDescriptionValue, BasePK updatedBy) {
         if(wishlistPriorityDescriptionValue.hasBeenModified()) {
-            var wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistPriorityDescription = wishlistPriorityDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      wishlistPriorityDescriptionValue.getPrimaryKey());
             
             wishlistPriorityDescription.setThruTime(session.getStartTime());
@@ -1092,7 +1110,7 @@ public class WishlistControl
             var language = wishlistPriorityDescription.getLanguage();
             var description = wishlistPriorityDescriptionValue.getDescription();
             
-            wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(wishlistPriority, language,
+            wishlistPriorityDescription = wishlistPriorityDescriptionFactory.create(wishlistPriority, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1116,9 +1134,12 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlists
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WishlistFactory wishlistFactory;
+
     public Wishlist createWishlist(Order order, OfferUse offerUse, WishlistType wishlistType, BasePK createdBy) {
-        var wishlist = WishlistFactory.getInstance().create(order, offerUse, wishlistType,
+        var wishlist = wishlistFactory.create(order, offerUse, wishlistType,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1163,12 +1184,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistFactory.getInstance().prepareStatement(query);
+            var ps = wishlistFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlist = WishlistFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlist = wishlistFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1216,12 +1237,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistFactory.getInstance().prepareStatement(query);
+            var ps = wishlistFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlists = WishlistFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlists = wishlistFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1239,7 +1260,7 @@ public class WishlistControl
     
     public void updateWishlistFromValue(WishlistValue wishlistValue, BasePK updatedBy) {
         if(wishlistValue.hasBeenModified()) {
-            var wishlist = WishlistFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlist = wishlistFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     wishlistValue.getPrimaryKey());
             
             wishlist.setThruTime(session.getStartTime());
@@ -1249,7 +1270,7 @@ public class WishlistControl
             var offerUsePK = wishlistValue.getOfferUsePK();
             var wishlistTypePK = wishlistValue.getWishlistTypePK();
             
-            wishlist = WishlistFactory.getInstance().create(orderPK, offerUsePK, wishlistTypePK,
+            wishlist = wishlistFactory.create(orderPK, offerUsePK, wishlistTypePK,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(orderPK, EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1269,10 +1290,13 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlist Lines
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected WishlistLineFactory wishlistLineFactory;
+
     public WishlistLine createWishlistLine(OrderLine orderLine, OfferUse offerUse, WishlistPriority wishlistPriority,
             AssociateReferral associateReferral, String comment, BasePK createdBy) {
-        var wishlistLine = WishlistLineFactory.getInstance().create(orderLine, offerUse,
+        var wishlistLine = wishlistLineFactory.create(orderLine, offerUse,
                 wishlistPriority, associateReferral, comment, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1330,12 +1354,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistLineFactory.getInstance().prepareStatement(query);
+            var ps = wishlistLineFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlistLines = WishlistLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlistLines = wishlistLineFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1372,12 +1396,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = WishlistLineFactory.getInstance().prepareStatement(query);
+            var ps = wishlistLineFactory.prepareStatement(query);
             
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlistLine = WishlistLineFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistLine = wishlistLineFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1403,7 +1427,7 @@ public class WishlistControl
     
     public void updateWishlistLineFromValue(WishlistLineValue wishlistLineValue, BasePK updatedBy) {
         if(wishlistLineValue.hasBeenModified()) {
-            var wishlistLine = WishlistLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var wishlistLine = wishlistLineFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     wishlistLineValue.getPrimaryKey());
             
             wishlistLine.setThruTime(session.getStartTime());
@@ -1415,7 +1439,7 @@ public class WishlistControl
             var associateReferralPK = wishlistLineValue.getAssociateReferralPK();
             var comment = wishlistLineValue.getComment();
             
-            wishlistLine = WishlistLineFactory.getInstance().create(orderLinePK, offerUsePK,
+            wishlistLine = wishlistLineFactory.create(orderLinePK, offerUsePK,
                     wishlistPriorityPK, associateReferralPK, comment, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(orderLinePK, EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1435,7 +1459,10 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlists
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderFactory orderFactory;
+
     private Order getWishlist(Party companyParty, Party party, WishlistType wishlistType, Currency currency,
             EntityPermission entityPermission) {
         Order order;
@@ -1474,7 +1501,7 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderFactory.getInstance().prepareStatement(query);
+            var ps = orderFactory.prepareStatement(query);
             
             ps.setString(1, OrderTypes.WISHLIST.name());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
@@ -1487,7 +1514,7 @@ public class WishlistControl
             ps.setString(9, OrderRoleTypes.BILL_TO.name());
             ps.setLong(10, Session.MAX_TIME);
             
-            order = OrderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            order = orderFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1542,7 +1569,7 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderFactory.getInstance().prepareStatement(query);
+            var ps = orderFactory.prepareStatement(query);
             
             ps.setString(1, OrderTypes.WISHLIST.name());
             ps.setLong(2, Session.MAX_TIME);
@@ -1553,7 +1580,7 @@ public class WishlistControl
             ps.setString(7, OrderRoleTypes.BILL_TO.name());
             ps.setLong(8, Session.MAX_TIME);
             
-            orders = OrderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orders = orderFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1596,12 +1623,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderFactory.getInstance().prepareStatement(query);
+            var ps = orderFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            orders = OrderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orders = orderFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1640,7 +1667,10 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     //   Wishlist Lines
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderLineFactory orderLineFactory;
+
     private OrderLine getWishlistLine(Order order, Integer orderLineSequence, EntityPermission entityPermission) {
         OrderLine orderLine;
         
@@ -1664,12 +1694,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setInt(2, orderLineSequence);
             
-            orderLine = OrderLineFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            orderLine = orderLineFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1711,14 +1741,14 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
             ps.setLong(3, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(4, unitOfMeasureType.getPrimaryKey().getEntityId());
             
-            orderLine = OrderLineFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            orderLine = orderLineFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1757,11 +1787,11 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             
-            orderLines = OrderLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1808,11 +1838,11 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             
-            orderLines = OrderLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1862,12 +1892,12 @@ public class WishlistControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            orderLines = OrderLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

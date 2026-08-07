@@ -45,6 +45,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class UseTypeControl
@@ -58,7 +59,13 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
     //   Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UseTypeFactory useTypeFactory;
+
+    @Inject
+    protected UseTypeDetailFactory useTypeDetailFactory;
+
     public UseType createUseType(String useTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultUseType = getDefaultUseType();
         var defaultFound = defaultUseType != null;
@@ -72,12 +79,12 @@ public class UseTypeControl
             isDefault = true;
         }
 
-        var useType = UseTypeFactory.getInstance().create();
-        var useTypeDetail = UseTypeDetailFactory.getInstance().create(useType, useTypeName, isDefault, sortOrder,
+        var useType = useTypeFactory.create();
+        var useTypeDetail = useTypeDetailFactory.create(useType, useTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, useType.getPrimaryKey());
+        useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, useType.getPrimaryKey());
         useType.setActiveDetail(useTypeDetail);
         useType.setLastDetail(useTypeDetail);
         useType.store();
@@ -90,7 +97,7 @@ public class UseTypeControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseType */
     public UseType getUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UseTypePK(entityInstance.getEntityUniqueId());
-        var useType = UseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var useType = useTypeFactory.getEntityFromPK(entityPermission, pk);
 
         return useType;
     }
@@ -131,9 +138,9 @@ public class UseTypeControl
                     """;
         }
 
-        var ps = UseTypeFactory.getInstance().prepareStatement(query);
+        var ps = useTypeFactory.prepareStatement(query);
         
-        return UseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return useTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<UseType> getUseTypes() {
@@ -165,11 +172,11 @@ public class UseTypeControl
                         """;
             }
 
-            var ps = UseTypeFactory.getInstance().prepareStatement(query);
+            var ps = useTypeFactory.prepareStatement(query);
             
             ps.setString(1, useTypeName);
             
-            useType = UseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useType = useTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -211,9 +218,9 @@ public class UseTypeControl
                     """;
         }
 
-        var ps = UseTypeFactory.getInstance().prepareStatement(query);
+        var ps = useTypeFactory.prepareStatement(query);
         
-        return UseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return useTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public UseType getDefaultUseType() {
@@ -283,7 +290,7 @@ public class UseTypeControl
     private void updateUseTypeFromValue(UseTypeDetailValue useTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(useTypeDetailValue.hasBeenModified()) {
-            var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDetailValue.getUseTypePK());
             var useTypeDetail = useType.getActiveDetailForUpdate();
             
@@ -311,7 +318,7 @@ public class UseTypeControl
                 }
             }
             
-            useTypeDetail = UseTypeDetailFactory.getInstance().create(useTypePK, useTypeName, isDefault, sortOrder,
+            useTypeDetail = useTypeDetailFactory.create(useTypePK, useTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
             useType.setActiveDetail(useTypeDetail);
@@ -359,9 +366,12 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
     //   Use Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected UseTypeDescriptionFactory useTypeDescriptionFactory;
+
     public UseTypeDescription createUseTypeDescription(UseType useType, Language language, String description, BasePK createdBy) {
-        var useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
+        var useTypeDescription = useTypeDescriptionFactory.create(useType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
@@ -391,13 +401,13 @@ public class UseTypeControl
                         """;
             }
 
-            var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useTypeDescription = useTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -443,12 +453,12 @@ public class UseTypeControl
                         """;
             }
 
-            var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            useTypeDescriptions = UseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            useTypeDescriptions = useTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -498,7 +508,7 @@ public class UseTypeControl
     
     public void updateUseTypeDescriptionFromValue(UseTypeDescriptionValue useTypeDescriptionValue, BasePK updatedBy) {
         if(useTypeDescriptionValue.hasBeenModified()) {
-            var useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useTypeDescription = useTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDescriptionValue.getPrimaryKey());
             
             useTypeDescription.setThruTime(session.getStartTime());
@@ -508,7 +518,7 @@ public class UseTypeControl
             var language = useTypeDescription.getLanguage();
             var description = useTypeDescriptionValue.getDescription();
             
-            useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language, description,
+            useTypeDescription = useTypeDescriptionFactory.create(useType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
@@ -536,6 +546,9 @@ public class UseTypeControl
     //   Use Type Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<UseTypeResultTransfer> getUseTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var useTypeResultTransfers = new ArrayList<UseTypeResultTransfer>();
@@ -548,7 +561,7 @@ public class UseTypeControl
 
         try {
             var useTypeControl = Session.getModelController(UseTypeControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -561,7 +574,7 @@ public class UseTypeControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
+                    var useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
                     var useTypeDetail = useType.getLastDetail();
 
                     useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),

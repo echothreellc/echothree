@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class SecurityRoleGroupControl
@@ -46,6 +47,12 @@ public class SecurityRoleGroupControl
     //   Security Role Group Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
+    @Inject
+    protected SecurityRoleGroupFactory securityRoleGroupFactory;
+
     public List<SecurityRoleGroupResultTransfer> getSecurityRoleGroupResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var securityRoleGroupResultTransfers = new ArrayList<SecurityRoleGroupResultTransfer>();
@@ -58,7 +65,7 @@ public class SecurityRoleGroupControl
 
         try {
             var securityControl = Session.getModelController(SecurityControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -71,7 +78,7 @@ public class SecurityRoleGroupControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(rs.getLong(1)));
+                    var securityRoleGroup = securityRoleGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(rs.getLong(1)));
 
                     securityRoleGroupResultTransfers.add(new SecurityRoleGroupResultTransfer(securityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
                             includeSecurityRoleGroup ? securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup) : null));

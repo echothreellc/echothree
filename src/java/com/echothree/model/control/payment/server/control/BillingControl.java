@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class BillingControl
@@ -62,13 +63,16 @@ public class BillingControl
     // --------------------------------------------------------------------------------
     //   Billing Account Role Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BillingAccountRoleTypeFactory billingAccountRoleTypeFactory;
+
     public BillingAccountRoleType createBillingAccountRoleType(String billingAccountRoleTypeName, Integer sortOrder) {
-        return BillingAccountRoleTypeFactory.getInstance().create(billingAccountRoleTypeName, sortOrder);
+        return billingAccountRoleTypeFactory.create(billingAccountRoleTypeName, sortOrder);
     }
     
     public List<BillingAccountRoleType> getBillingAccountRoleTypes() {
-        var ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
+        var ps = billingAccountRoleTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM billingaccountroletypes
@@ -76,14 +80,14 @@ public class BillingControl
                 _LIMIT_
                 """);
         
-        return BillingAccountRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return billingAccountRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public BillingAccountRoleType getBillingAccountRoleTypeByName(String billingAccountRoleTypeName) {
         BillingAccountRoleType billingAccountRoleType;
         
         try {
-            var ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
+            var ps = billingAccountRoleTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM billingaccountroletypes
@@ -93,7 +97,7 @@ public class BillingControl
             ps.setString(1, billingAccountRoleTypeName);
             
             
-            billingAccountRoleType = BillingAccountRoleTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            billingAccountRoleType = billingAccountRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -123,16 +127,19 @@ public class BillingControl
     // --------------------------------------------------------------------------------
     //   Billing Account Role Type Description
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BillingAccountRoleTypeDescriptionFactory billingAccountRoleTypeDescriptionFactory;
+
     public BillingAccountRoleTypeDescription createBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language, String description) {
-        return BillingAccountRoleTypeDescriptionFactory.getInstance().create(billingAccountRoleType, language, description);
+        return billingAccountRoleTypeDescriptionFactory.create(billingAccountRoleType, language, description);
     }
     
     public BillingAccountRoleTypeDescription getBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language) {
         BillingAccountRoleTypeDescription billingAccountRoleTypeDescription;
         
         try {
-            var ps = BillingAccountRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = billingAccountRoleTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM billingaccountroletypedescriptions
@@ -142,7 +149,7 @@ public class BillingControl
             ps.setLong(1, billingAccountRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            billingAccountRoleTypeDescription = BillingAccountRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            billingAccountRoleTypeDescription = billingAccountRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -170,7 +177,13 @@ public class BillingControl
     // --------------------------------------------------------------------------------
     //   Billing Accounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BillingAccountFactory billingAccountFactory;
+
+    @Inject
+    protected BillingAccountDetailFactory billingAccountDetailFactory;
+
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
@@ -180,12 +193,12 @@ public class BillingControl
     }
     
     public BillingAccount createBillingAccount(String billingAccountName, Currency currency, String reference, String description, BasePK createdBy) {
-        var billingAccount = BillingAccountFactory.getInstance().create();
-        var billingAccountDetail = BillingAccountDetailFactory.getInstance().create(billingAccount,
+        var billingAccount = billingAccountFactory.create();
+        var billingAccountDetail = billingAccountDetailFactory.create(billingAccount,
                 billingAccountName, currency, reference, description, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        billingAccount = BillingAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        billingAccount = billingAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 billingAccount.getPrimaryKey());
         billingAccount.setActiveDetail(billingAccountDetail);
         billingAccount.setLastDetail(billingAccountDetail);
@@ -229,7 +242,7 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountFactory.prepareStatement(query);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, billFrom.getPrimaryKey().getEntityId());
@@ -239,7 +252,7 @@ public class BillingControl
             ps.setString(6, BillingAccountRoleTypes.BILL_TO.name());
             ps.setLong(7, Session.MAX_TIME);
             
-            billingAccount = BillingAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            billingAccount = billingAccountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -285,7 +298,7 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountFactory.prepareStatement(query);
             
             ps.setLong(1, billFrom.getPrimaryKey().getEntityId());
             ps.setString(2, BillingAccountRoleTypes.BILL_FROM.name());
@@ -295,7 +308,7 @@ public class BillingControl
                 ps.setLong(5, Session.MAX_TIME);
             }
             
-            billingAccounts = BillingAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            billingAccounts = billingAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -341,7 +354,7 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountFactory.prepareStatement(query);
             
             ps.setLong(1, billTo.getPrimaryKey().getEntityId());
             ps.setString(2, BillingAccountRoleTypes.BILL_TO.name());
@@ -351,7 +364,7 @@ public class BillingControl
                 ps.setLong(5, Session.MAX_TIME);
             }
             
-            billingAccounts = BillingAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            billingAccounts = billingAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -388,11 +401,11 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountFactory.prepareStatement(query);
             
             ps.setString(1, billingAccountName);
             
-            billingAccount = BillingAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            billingAccount = billingAccountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -433,10 +446,13 @@ public class BillingControl
     // --------------------------------------------------------------------------------
     //   Billing Account Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BillingAccountStatusFactory billingAccountStatusFactory;
+
     public BillingAccountStatus createBillingAccountStatus(BillingAccount billingAccount, Long creditLimit,
             Long potentialCreditLimit) {
-        return BillingAccountStatusFactory.getInstance().create(billingAccount, creditLimit, potentialCreditLimit);
+        return billingAccountStatusFactory.create(billingAccount, creditLimit, potentialCreditLimit);
     }
     
     private BillingAccountStatus getBillingAccountStatus(BillingAccount billingAccount, EntityPermission entityPermission) {
@@ -460,11 +476,11 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountStatusFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountStatusFactory.prepareStatement(query);
             
             ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
             
-            billingAccountStatus = BillingAccountStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            billingAccountStatus = billingAccountStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -483,7 +499,10 @@ public class BillingControl
     // --------------------------------------------------------------------------------
     //   Billing Account Roles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BillingAccountRoleFactory billingAccountRoleFactory;
+
     public BillingAccountRole createBillingAccountRoleUsingNames(BillingAccount billingAccount, Party party, PartyContactMechanism partyContactMechanism,
             String billingAccountRoleTypeName, BasePK createdBy) {
         var billingAccountRoleType = getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
@@ -493,7 +512,7 @@ public class BillingControl
     
     public BillingAccountRole createBillingAccountRole(BillingAccount billingAccount, Party party, PartyContactMechanism partyContactMechanism,
             BillingAccountRoleType billingAccountRoleType, BasePK createdBy) {
-        var billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccount, party, partyContactMechanism,
+        var billingAccountRole = billingAccountRoleFactory.create(billingAccount, party, partyContactMechanism,
                 billingAccountRoleType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(billingAccount.getPrimaryKey(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -522,13 +541,13 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountRoleFactory.prepareStatement(query);
             
             ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, billingAccountRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            billingAccountRole = BillingAccountRoleFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            billingAccountRole = billingAccountRoleFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -583,12 +602,12 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountRoleFactory.prepareStatement(query);
             
             ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            billingAccountRoles = BillingAccountRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            billingAccountRoles = billingAccountRoleFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -629,12 +648,12 @@ public class BillingControl
                         """;
             }
 
-            var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
+            var ps = billingAccountRoleFactory.prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            billingAccountRoles = BillingAccountRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            billingAccountRoles = billingAccountRoleFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -670,7 +689,7 @@ public class BillingControl
     
     public void updateBillingAccountRoleFromValue(BillingAccountRoleValue billingAccountRoleValue, BasePK updatedBy) {
         if(billingAccountRoleValue.hasBeenModified()) {
-            var billingAccountRole = BillingAccountRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var billingAccountRole = billingAccountRoleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      billingAccountRoleValue.getPrimaryKey());
             
             billingAccountRole.setThruTime(session.getStartTime());
@@ -681,7 +700,7 @@ public class BillingControl
             var partyContactMechanismPK = billingAccountRoleValue.getPartyContactMechanismPK();
             var billingAccountRoleTypePK = billingAccountRole.getBillingAccountRoleTypePK(); // Not updated
             
-            billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccountPK, partyPK, partyContactMechanismPK, billingAccountRoleTypePK,
+            billingAccountRole = billingAccountRoleFactory.create(billingAccountPK, partyPK, partyContactMechanismPK, billingAccountRoleTypePK,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(billingAccountPK, EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

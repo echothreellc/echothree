@@ -120,7 +120,7 @@ public class EventControl
 
     @Inject
     protected EntityTimeFactory entityTimeFactory;
-    
+
     public EntityTime createEntityTime(EntityInstance entityInstance, Long createdTime, Long modifiedTime, Long deletedTime) {
         return entityTimeFactory.create(entityInstance, createdTime, modifiedTime, deletedTime);
 
@@ -445,7 +445,7 @@ public class EventControl
     public EventGroup getEventGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EventGroupPK(entityInstance.getEntityUniqueId());
 
-        return EventGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return eventGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EventGroup getEventGroupByEntityInstance(EntityInstance entityInstance) {
@@ -603,7 +603,7 @@ public class EventControl
 
     @Inject
     protected EventTypeFactory eventTypeFactory;
-    
+
     public EventType createEventType(String eventTypeName) {
         return eventTypeFactory.create(eventTypeName);
     }
@@ -735,7 +735,7 @@ public class EventControl
 
     @Inject
     protected EventTypeDescriptionFactory eventTypeDescriptionFactory;
-    
+
     public EventTypeDescription createEventTypeDescription(EventType eventType, Language language, String description) {
         var eventTypeDescription = eventTypeDescriptionFactory.create(eventType, language, description);
 
@@ -787,7 +787,7 @@ public class EventControl
 
     @Inject
     protected EventFactory eventFactory;
-    
+
     public Event createEvent(EventGroup eventGroup, Long eventTime, EntityInstance entityInstance, EventType eventType,
             EntityInstance relatedEntityInstance, EventType relatedEventType, EntityInstance createdBy) {
         var eventTimeSequence = session.getNextEventTimeSequence(entityInstance.getPrimaryKey());
@@ -977,7 +977,7 @@ public class EventControl
 
     @Inject
     protected QueuedEventFactory queuedEventFactory;
-    
+
     public QueuedEvent createQueuedEvent(Event event) {
         return queuedEventFactory.create(event);
     }
@@ -1003,7 +1003,7 @@ public class EventControl
 
     @Inject
     protected EntityVisitFactory entityVisitFactory;
-    
+
     public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
         return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.getStartTime());
     }
@@ -1048,10 +1048,10 @@ public class EventControl
 
     @Inject
     protected EventSubscriberFactory eventSubscriberFactory;
-    
+
     @Inject
     protected EventSubscriberDetailFactory eventSubscriberDetailFactory;
-    
+
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
@@ -1207,7 +1207,7 @@ public class EventControl
 
     @Inject
     protected QueuedSubscriberEventFactory queuedSubscriberEventFactory;
-    
+
     public QueuedSubscriberEvent createQueuedSubscriberEvent(EventSubscriber eventSubscriber, Event event) {
         return queuedSubscriberEventFactory.create(eventSubscriber, event);
     }
@@ -1274,7 +1274,7 @@ public class EventControl
 
     @Inject
     protected EventSubscriberEventTypeFactory eventSubscriberEventTypeFactory;
-    
+
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
         var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(
@@ -1335,7 +1335,7 @@ public class EventControl
 
     @Inject
     protected EventSubscriberEntityTypeFactory eventSubscriberEntityTypeFactory;
-    
+
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(
@@ -1398,7 +1398,7 @@ public class EventControl
 
     @Inject
     protected EventSubscriberEntityInstanceFactory eventSubscriberEntityInstanceFactory;
-    
+
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(

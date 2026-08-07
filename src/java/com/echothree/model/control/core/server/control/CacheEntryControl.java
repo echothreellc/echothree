@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.inject.Inject;
 
 @CommandScope
 public class CacheEntryControl
@@ -56,6 +57,9 @@ public class CacheEntryControl
     // --------------------------------------------------------------------------------
     //   Cache Entries
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CacheEntryFactory cacheEntryFactory;
 
     public CacheEntry createCacheEntry(String cacheEntryKey, MimeType mimeType, Long createdTime, Long validUntilTime, String clob, ByteArray blob,
             Set<String> entityRefs) {
@@ -76,7 +80,7 @@ public class CacheEntryControl
     }
 
     public CacheEntry createCacheEntry(String cacheEntryKey, MimeType mimeType, Long createdTime, Long validUntilTime) {
-        return CacheEntryFactory.getInstance().create(cacheEntryKey, mimeType, createdTime, validUntilTime);
+        return cacheEntryFactory.create(cacheEntryKey, mimeType, createdTime, validUntilTime);
     }
 
     public long countCacheEntries() {
@@ -106,7 +110,7 @@ public class CacheEntryControl
     }
 
     private CacheEntry getCacheEntryByCacheEntryKey(String cacheEntryKey, EntityPermission entityPermission) {
-        return CacheEntryFactory.getInstance().getEntityFromQuery(entityPermission, getCacheEntryByCacheEntryKeyQueries,
+        return cacheEntryFactory.getEntityFromQuery(entityPermission, getCacheEntryByCacheEntryKeyQueries,
                 cacheEntryKey);
     }
 
@@ -138,7 +142,7 @@ public class CacheEntryControl
     }
 
     private List<CacheEntry> getCacheEntries(EntityPermission entityPermission) {
-        return CacheEntryFactory.getInstance().getEntitiesFromQuery(entityPermission, getCacheEntriesByCacheEntryKeyQueries);
+        return cacheEntryFactory.getEntitiesFromQuery(entityPermission, getCacheEntriesByCacheEntryKeyQueries);
     }
 
     public List<CacheEntry> getCacheEntries() {
@@ -197,7 +201,7 @@ public class CacheEntryControl
     }
 
     private List<CacheEntryPK> getCacheEntryPKsByEntityInstance(final EntityInstance entityInstance) {
-        final var instance = CacheEntryFactory.getInstance();
+        final var instance = cacheEntryFactory;
 
         return instance.getPKsFromQueryAsList(
                 instance.prepareStatement("""
@@ -209,15 +213,18 @@ public class CacheEntryControl
     }
 
     public void removeCacheEntriesByEntityInstance(final EntityInstance entityInstance) {
-        CacheEntryFactory.getInstance().remove(getCacheEntryPKsByEntityInstance(entityInstance));
+        cacheEntryFactory.remove(getCacheEntryPKsByEntityInstance(entityInstance));
     }
 
     // --------------------------------------------------------------------------------
     //   Cache Clob Entries
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CacheClobEntryFactory cacheClobEntryFactory;
+
     public CacheClobEntry createCacheClobEntry(CacheEntry cacheEntry, String clob) {
-        return CacheClobEntryFactory.getInstance().create(cacheEntry, clob);
+        return cacheClobEntryFactory.create(cacheEntry, clob);
     }
 
     private static final Map<EntityPermission, String> getCacheClobEntryByCacheEntryQueries;
@@ -240,7 +247,7 @@ public class CacheEntryControl
     }
 
     private CacheClobEntry getCacheClobEntryByCacheEntry(CacheEntry cacheEntry, EntityPermission entityPermission) {
-        return CacheClobEntryFactory.getInstance().getEntityFromQuery(entityPermission, getCacheClobEntryByCacheEntryQueries,
+        return cacheClobEntryFactory.getEntityFromQuery(entityPermission, getCacheClobEntryByCacheEntryQueries,
                 cacheEntry);
     }
 
@@ -256,8 +263,11 @@ public class CacheEntryControl
     //   Cache Blob Entries
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CacheBlobEntryFactory cacheBlobEntryFactory;
+
     public CacheBlobEntry createCacheBlobEntry(CacheEntry cacheEntry, ByteArray blob) {
-        return CacheBlobEntryFactory.getInstance().create(cacheEntry, blob);
+        return cacheBlobEntryFactory.create(cacheEntry, blob);
     }
 
     private static final Map<EntityPermission, String> getCacheBlobEntryByCacheEntryQueries;
@@ -280,7 +290,7 @@ public class CacheEntryControl
     }
 
     private CacheBlobEntry getCacheBlobEntryByCacheEntry(CacheEntry cacheEntry, EntityPermission entityPermission) {
-        return CacheBlobEntryFactory.getInstance().getEntityFromQuery(entityPermission, getCacheBlobEntryByCacheEntryQueries,
+        return cacheBlobEntryFactory.getEntityFromQuery(entityPermission, getCacheBlobEntryByCacheEntryQueries,
                 cacheEntry);
     }
 
@@ -296,6 +306,9 @@ public class CacheEntryControl
     //   Cache Entry Dependencies
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CacheEntryDependencyFactory cacheEntryDependencyFactory;
+
     public void createCacheEntryDependencies(CacheEntry cacheEntry, Set<String> entityRefs) {
         List<CacheEntryDependencyValue> cacheEntryDependencyValues = new ArrayList<>(entityRefs.size());
 
@@ -308,7 +321,7 @@ public class CacheEntryControl
             }
         }
 
-        CacheEntryDependencyFactory.getInstance().create(cacheEntryDependencyValues);
+        cacheEntryDependencyFactory.create(cacheEntryDependencyValues);
     }
 
     public long countCacheEntryDependenciesByCacheEntry(final CacheEntry cacheEntry) {
@@ -328,7 +341,7 @@ public class CacheEntryControl
     }
 
     public CacheEntryDependency createCacheEntryDependency(CacheEntry cacheEntry, EntityInstance entityInstance) {
-        return CacheEntryDependencyFactory.getInstance().create(cacheEntry, entityInstance);
+        return cacheEntryDependencyFactory.create(cacheEntry, entityInstance);
     }
 
     private static final Map<EntityPermission, String> getCacheEntryDependenciesByEntityInstanceQueries;
@@ -353,7 +366,7 @@ public class CacheEntryControl
     }
 
     private List<CacheEntryDependency> getCacheEntryDependenciesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        return CacheEntryDependencyFactory.getInstance().getEntitiesFromQuery(entityPermission, getCacheEntryDependenciesByEntityInstanceQueries,
+        return cacheEntryDependencyFactory.getEntitiesFromQuery(entityPermission, getCacheEntryDependenciesByEntityInstanceQueries,
                 entityInstance);
     }
 
@@ -389,7 +402,7 @@ public class CacheEntryControl
     }
 
     private List<CacheEntryDependency> getCacheEntryDependenciesByCacheEntry(CacheEntry cacheEntry, EntityPermission entityPermission) {
-        return CacheEntryDependencyFactory.getInstance().getEntitiesFromQuery(entityPermission, getCacheEntryDependenciesByCacheEntryQueries,
+        return cacheEntryDependencyFactory.getEntitiesFromQuery(entityPermission, getCacheEntryDependenciesByCacheEntryQueries,
                 cacheEntry);
     }
 

@@ -61,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class AppearanceControl
@@ -74,6 +75,12 @@ public class AppearanceControl
     // --------------------------------------------------------------------------------
     //   Appearances
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected AppearanceFactory appearanceFactory;
+
+    @Inject
+    protected AppearanceDetailFactory appearanceDetailFactory;
 
     public Appearance createAppearance(String appearanceName, Color textColor, Color backgroundColor, FontStyle fontStyle, FontWeight fontWeight,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -89,12 +96,12 @@ public class AppearanceControl
             isDefault = true;
         }
 
-        var appearance = AppearanceFactory.getInstance().create();
-        var appearanceDetail = AppearanceDetailFactory.getInstance().create(appearance, appearanceName, textColor, backgroundColor, fontStyle,
+        var appearance = appearanceFactory.create();
+        var appearanceDetail = appearanceDetailFactory.create(appearance, appearanceName, textColor, backgroundColor, fontStyle,
                 fontWeight, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        appearance = AppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, appearance.getPrimaryKey());
+        appearance = appearanceFactory.getEntityFromPK(EntityPermission.READ_WRITE, appearance.getPrimaryKey());
         appearance.setActiveDetail(appearanceDetail);
         appearance.setLastDetail(appearanceDetail);
         appearance.store();
@@ -107,7 +114,7 @@ public class AppearanceControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Appearance */
     public Appearance getAppearanceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new AppearancePK(entityInstance.getEntityUniqueId());
-        var appearance = AppearanceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var appearance = appearanceFactory.getEntityFromPK(entityPermission, pk);
 
         return appearance;
     }
@@ -152,7 +159,7 @@ public class AppearanceControl
     }
 
     public Appearance getAppearanceByName(String appearanceName, EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntityFromQuery(entityPermission, getAppearanceByNameQueries, appearanceName);
+        return appearanceFactory.getEntityFromQuery(entityPermission, getAppearanceByNameQueries, appearanceName);
     }
 
     public Appearance getAppearanceByName(String appearanceName) {
@@ -195,7 +202,7 @@ public class AppearanceControl
     }
 
     private Appearance getDefaultAppearance(EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultAppearanceQueries);
+        return appearanceFactory.getEntityFromQuery(entityPermission, getDefaultAppearanceQueries);
     }
 
     public Appearance getDefaultAppearance() {
@@ -234,7 +241,7 @@ public class AppearanceControl
     }
 
     private List<Appearance> getAppearances(EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearancesQueries);
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesQueries);
     }
 
     public List<Appearance> getAppearances() {
@@ -269,7 +276,7 @@ public class AppearanceControl
     }
 
     private List<Appearance> getAppearancesByTextColor(Color textColor, EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearancesByTextColorQueries,
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByTextColorQueries,
                 textColor);
     }
 
@@ -305,7 +312,7 @@ public class AppearanceControl
     }
 
     private List<Appearance> getAppearancesByBackgroundColor(Color backgroundColor, EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearancesByBackgroundColorQueries,
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByBackgroundColorQueries,
                 backgroundColor);
     }
 
@@ -341,7 +348,7 @@ public class AppearanceControl
     }
 
     private List<Appearance> getAppearancesByFontStyle(FontStyle fontStyle, EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearancesByFontStyleQueries,
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByFontStyleQueries,
                 fontStyle);
     }
 
@@ -377,7 +384,7 @@ public class AppearanceControl
     }
 
     private List<Appearance> getAppearancesByFontWeight(FontWeight fontWeight, EntityPermission entityPermission) {
-        return AppearanceFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearancesByFontWeightQueries,
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByFontWeightQueries,
                 fontWeight);
     }
 
@@ -443,7 +450,7 @@ public class AppearanceControl
 
     private void updateAppearanceFromValue(AppearanceDetailValue appearanceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(appearanceDetailValue.hasBeenModified()) {
-            var appearance = AppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var appearance = appearanceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     appearanceDetailValue.getAppearancePK());
             var appearanceDetail = appearance.getActiveDetailForUpdate();
 
@@ -475,7 +482,7 @@ public class AppearanceControl
                 }
             }
 
-            appearanceDetail = AppearanceDetailFactory.getInstance().create(appearancePK, appearanceName, textColorPK, backgroundColorPK, fontStylePK,
+            appearanceDetail = appearanceDetailFactory.create(appearancePK, appearanceName, textColorPK, backgroundColorPK, fontStylePK,
                     fontWeightPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             appearance.setActiveDetail(appearanceDetail);
@@ -561,8 +568,11 @@ public class AppearanceControl
     //   Appearance Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected AppearanceDescriptionFactory appearanceDescriptionFactory;
+
     public AppearanceDescription createAppearanceDescription(Appearance appearance, Language language, String description, BasePK createdBy) {
-        var appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
+        var appearanceDescription = appearanceDescriptionFactory.create(appearance, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -592,7 +602,7 @@ public class AppearanceControl
     }
 
     private AppearanceDescription getAppearanceDescription(Appearance appearance, Language language, EntityPermission entityPermission) {
-        return AppearanceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getAppearanceDescriptionQueries,
+        return appearanceDescriptionFactory.getEntityFromQuery(entityPermission, getAppearanceDescriptionQueries,
                 appearance, language, Session.MAX_TIME);
     }
 
@@ -636,7 +646,7 @@ public class AppearanceControl
     }
 
     private List<AppearanceDescription> getAppearanceDescriptionsByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return AppearanceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearanceDescriptionsByAppearanceQueries,
+        return appearanceDescriptionFactory.getEntitiesFromQuery(entityPermission, getAppearanceDescriptionsByAppearanceQueries,
                 appearance, Session.MAX_TIME);
     }
 
@@ -682,7 +692,7 @@ public class AppearanceControl
 
     public void updateAppearanceDescriptionFromValue(AppearanceDescriptionValue appearanceDescriptionValue, BasePK updatedBy) {
         if(appearanceDescriptionValue.hasBeenModified()) {
-            var appearanceDescription = AppearanceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var appearanceDescription = appearanceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     appearanceDescriptionValue.getPrimaryKey());
 
             appearanceDescription.setThruTime(session.getStartTime());
@@ -692,7 +702,7 @@ public class AppearanceControl
             var language = appearanceDescription.getLanguage();
             var description = appearanceDescriptionValue.getDescription();
 
-            appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
+            appearanceDescription = appearanceDescriptionFactory.create(appearance, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -718,8 +728,11 @@ public class AppearanceControl
     //   Appearance Text Decorations
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected AppearanceTextDecorationFactory appearanceTextDecorationFactory;
+
     public AppearanceTextDecoration createAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, BasePK createdBy) {
-        var appearanceTextDecoration = AppearanceTextDecorationFactory.getInstance().create(appearance, textDecoration,
+        var appearanceTextDecoration = appearanceTextDecorationFactory.create(appearance, textDecoration,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -765,7 +778,7 @@ public class AppearanceControl
     }
 
     private AppearanceTextDecoration getAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, EntityPermission entityPermission) {
-        return AppearanceTextDecorationFactory.getInstance().getEntityFromQuery(entityPermission, getAppearanceTextDecorationQueries,
+        return appearanceTextDecorationFactory.getEntityFromQuery(entityPermission, getAppearanceTextDecorationQueries,
                 appearance, textDecoration, Session.MAX_TIME);
     }
 
@@ -810,7 +823,7 @@ public class AppearanceControl
     }
 
     private List<AppearanceTextDecoration> getAppearanceTextDecorationsByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return AppearanceTextDecorationFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearanceTextDecorationsByAppearanceQueries,
+        return appearanceTextDecorationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextDecorationsByAppearanceQueries,
                 appearance, Session.MAX_TIME);
     }
 
@@ -847,7 +860,7 @@ public class AppearanceControl
     }
 
     private List<AppearanceTextDecoration> getAppearanceTextDecorationsByTextDecoration(TextDecoration textDecoration, EntityPermission entityPermission) {
-        return AppearanceTextDecorationFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearanceTextDecorationsByTextDecorationQueries,
+        return appearanceTextDecorationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextDecorationsByTextDecorationQueries,
                 textDecoration, Session.MAX_TIME);
     }
 
@@ -905,8 +918,11 @@ public class AppearanceControl
     //   Appearance Text Transformations
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected AppearanceTextTransformationFactory appearanceTextTransformationFactory;
+
     public AppearanceTextTransformation createAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, BasePK createdBy) {
-        var appearanceTextTransformation = AppearanceTextTransformationFactory.getInstance().create(appearance, textTransformation,
+        var appearanceTextTransformation = appearanceTextTransformationFactory.create(appearance, textTransformation,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -952,7 +968,7 @@ public class AppearanceControl
     }
 
     private AppearanceTextTransformation getAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, EntityPermission entityPermission) {
-        return AppearanceTextTransformationFactory.getInstance().getEntityFromQuery(entityPermission, getAppearanceTextTransformationQueries,
+        return appearanceTextTransformationFactory.getEntityFromQuery(entityPermission, getAppearanceTextTransformationQueries,
                 appearance, textTransformation, Session.MAX_TIME);
     }
 
@@ -997,7 +1013,7 @@ public class AppearanceControl
     }
 
     private List<AppearanceTextTransformation> getAppearanceTextTransformationsByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return AppearanceTextTransformationFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearanceTextTransformationsByAppearanceQueries,
+        return appearanceTextTransformationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextTransformationsByAppearanceQueries,
                 appearance, Session.MAX_TIME);
     }
 
@@ -1034,7 +1050,7 @@ public class AppearanceControl
     }
 
     private List<AppearanceTextTransformation> getAppearanceTextTransformationsByTextTransformation(TextTransformation textTransformation, EntityPermission entityPermission) {
-        return AppearanceTextTransformationFactory.getInstance().getEntitiesFromQuery(entityPermission, getAppearanceTextTransformationsByTextTransformationQueries,
+        return appearanceTextTransformationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextTransformationsByTextTransformationQueries,
                 textTransformation, Session.MAX_TIME);
     }
 
@@ -1092,8 +1108,11 @@ public class AppearanceControl
     //   Entity Appearances
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityAppearanceFactory entityAppearanceFactory;
+
     public EntityAppearance createEntityAppearance(EntityInstance entityInstance, Appearance appearance, BasePK createdBy) {
-        var entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.getStartTime(),
+        var entityAppearance = entityAppearanceFactory.create(entityInstance, appearance, session.getStartTime(),
                 Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1139,7 +1158,7 @@ public class AppearanceControl
     }
 
     private EntityAppearance getEntityAppearance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        return EntityAppearanceFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAppearanceQueries,
+        return entityAppearanceFactory.getEntityFromQuery(entityPermission, getEntityAppearanceQueries,
                 entityInstance, Session.MAX_TIME);
     }
 
@@ -1165,7 +1184,7 @@ public class AppearanceControl
         List<EntityAppearance> entityAppearances;
 
         try {
-            var ps = EntityAppearanceFactory.getInstance().prepareStatement(
+            var ps = entityAppearanceFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM entityappearances
@@ -1176,7 +1195,7 @@ public class AppearanceControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityAppearances = EntityAppearanceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityAppearances = entityAppearanceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1209,7 +1228,7 @@ public class AppearanceControl
     }
 
     private List<EntityAppearance> getEntityAppearancesByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return EntityAppearanceFactory.getInstance().getEntitiesFromQuery(entityPermission, getEntityAppearancesByAppearanceQueries,
+        return entityAppearanceFactory.getEntitiesFromQuery(entityPermission, getEntityAppearancesByAppearanceQueries,
                 appearance, Session.MAX_TIME);
     }
 
@@ -1238,7 +1257,7 @@ public class AppearanceControl
 
     public void updateEntityAppearanceFromValue(EntityAppearanceValue entityAppearanceValue, BasePK updatedBy) {
         if(entityAppearanceValue.hasBeenModified()) {
-            var entityAppearance = EntityAppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAppearance = entityAppearanceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAppearanceValue.getPrimaryKey());
 
             entityAppearance.setThruTime(session.getStartTime());
@@ -1247,7 +1266,7 @@ public class AppearanceControl
             var entityInstance = entityAppearance.getEntityInstance(); // Not updated.
             var appearancePK = entityAppearanceValue.getAppearancePK();
 
-            entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.getStartTime(), Session.MAX_TIME);
+            entityAppearance = entityAppearanceFactory.create(entityInstance.getPrimaryKey(), appearancePK, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

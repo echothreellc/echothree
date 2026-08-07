@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class LeaveControl
@@ -46,6 +47,12 @@ public class LeaveControl
     //   Leave Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LeaveFactory leaveFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<LeaveResultTransfer> getLeaveResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var leaveResultTransfers = new ArrayList<LeaveResultTransfer>();
@@ -58,7 +65,7 @@ public class LeaveControl
 
         try {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -71,7 +78,7 @@ public class LeaveControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
+                    var leave = leaveFactory.getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
 
                     leaveResultTransfers.add(new LeaveResultTransfer(leave.getLastDetail().getLeaveName(),
                             includeLeave ? employeeControl.getLeaveTransfer(userVisit, leave) : null));

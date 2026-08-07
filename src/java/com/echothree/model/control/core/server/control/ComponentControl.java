@@ -74,10 +74,10 @@ public class ComponentControl
 
     @Inject
     protected ComponentVendorFactory componentVendorFactory;
-    
+
     @Inject
     protected ComponentVendorDetailFactory componentVendorDetailFactory;
-    
+
     public ComponentVendor createComponentVendor(String componentVendorName, String description, BasePK createdBy) {
         var componentVendor = componentVendorFactory.create();
         var componentVendorDetail = componentVendorDetailFactory.create(componentVendor,
@@ -258,14 +258,12 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchControl searchControl;
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
 
     @Inject
     protected SearchResultFactory searchResultFactory;
-    
     @Inject
-    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
-
+    protected SearchControl searchControl;
     public List<ComponentVendorResultTransfer> getComponentVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
@@ -365,10 +363,10 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
     //   Components
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected ComponentFactory componentFactory;
-    
+
     @Inject
     protected ComponentDetailFactory componentDetailFactory;
 
@@ -416,7 +414,7 @@ public class ComponentControl
 
     @Inject
     protected ComponentStageFactory componentStageFactory;
-    
+
     public ComponentStage createComponentStage(String componentStageName, String description, Integer relativeAge) {
         var componentStage = componentStageFactory.create(componentStageName, description, relativeAge);
 
@@ -450,7 +448,7 @@ public class ComponentControl
 
     @Inject
     protected ComponentVersionFactory componentVersionFactory;
-    
+
     public ComponentVersion createComponentVersion(Component component, Integer majorRevision, Integer minorRevision,
             ComponentStage componentStage, Integer buildNumber,
             BasePK createdBy) {

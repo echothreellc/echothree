@@ -194,6 +194,12 @@ public class ContactListControl
     //   Contact List Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListTypeFactory contactListTypeFactory;
+
+    @Inject
+    protected ContactListTypeDetailFactory contactListTypeDetailFactory;
+
     public ContactListType createContactListType(String contactListTypeName, Chain confirmationRequestChain, Chain subscribeChain, Chain unsubscribeChain,
             Boolean usedForSolicitation, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListType = getDefaultContactListType();
@@ -208,13 +214,13 @@ public class ContactListControl
             isDefault = true;
         }
 
-        var contactListType = ContactListTypeFactory.getInstance().create();
-        var contactListTypeDetail = ContactListTypeDetailFactory.getInstance().create(contactListType, contactListTypeName,
+        var contactListType = contactListTypeFactory.create();
+        var contactListTypeDetail = contactListTypeDetailFactory.create(contactListType, contactListTypeName,
                 confirmationRequestChain, subscribeChain, unsubscribeChain, usedForSolicitation, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        contactListType = ContactListTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        contactListType = contactListTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 contactListType.getPrimaryKey());
         contactListType.setActiveDetail(contactListTypeDetail);
         contactListType.setLastDetail(contactListTypeDetail);
@@ -229,7 +235,7 @@ public class ContactListControl
     public ContactListType getContactListTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContactListTypePK(entityInstance.getEntityUniqueId());
 
-        return ContactListTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contactListTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContactListType getContactListTypeByEntityInstance(EntityInstance entityInstance) {
@@ -270,7 +276,7 @@ public class ContactListControl
     }
 
     public ContactListType getContactListTypeByName(String contactListTypeName, EntityPermission entityPermission) {
-        return ContactListTypeFactory.getInstance().getEntityFromQuery(entityPermission, getContactListTypeByNameQueries,
+        return contactListTypeFactory.getEntityFromQuery(entityPermission, getContactListTypeByNameQueries,
                 contactListTypeName);
     }
 
@@ -312,7 +318,7 @@ public class ContactListControl
     }
 
     public ContactListType getDefaultContactListType(EntityPermission entityPermission) {
-        return ContactListTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListTypeQueries);
+        return contactListTypeFactory.getEntityFromQuery(entityPermission, getDefaultContactListTypeQueries);
     }
 
     public ContactListType getDefaultContactListType() {
@@ -351,7 +357,7 @@ public class ContactListControl
     }
 
     private List<ContactListType> getContactListTypes(EntityPermission entityPermission) {
-        return ContactListTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListTypesQueries);
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesQueries);
     }
 
     public List<ContactListType> getContactListTypes() {
@@ -386,7 +392,7 @@ public class ContactListControl
     }
 
     private List<ContactListType> getContactListTypesByConfirmationRequestChain(Chain confirmationRequestChain, EntityPermission entityPermission) {
-        return ContactListTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListTypesByConfirmationRequestChainQueries,
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesByConfirmationRequestChainQueries,
                 confirmationRequestChain);
     }
 
@@ -422,7 +428,7 @@ public class ContactListControl
     }
 
     private List<ContactListType> getContactListTypesBySubscribeChain(Chain subscribeChain, EntityPermission entityPermission) {
-        return ContactListTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListTypesBySubscribeChainQueries,
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesBySubscribeChainQueries,
                 subscribeChain);
     }
 
@@ -458,7 +464,7 @@ public class ContactListControl
     }
 
     private List<ContactListType> getContactListTypesByUnsubscribeChain(Chain unsubscribeChain, EntityPermission entityPermission) {
-        return ContactListTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListTypesByUnsubscribeChainQueries,
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesByUnsubscribeChainQueries,
                 unsubscribeChain);
     }
 
@@ -523,7 +529,7 @@ public class ContactListControl
     }
 
     private void updateContactListTypeFromValue(ContactListTypeDetailValue contactListTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactListType = ContactListTypeFactory.getInstance().getEntityFromPK(
+        var contactListType = contactListTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListTypeDetailValue.getContactListTypePK());
         var contactListTypeDetail = contactListType.getActiveDetailForUpdate();
 
@@ -555,7 +561,7 @@ public class ContactListControl
             }
         }
 
-        contactListTypeDetail = ContactListTypeDetailFactory.getInstance().create(contactListTypePK, contactListTypeName, confirmationRequestChainPK,
+        contactListTypeDetail = contactListTypeDetailFactory.create(contactListTypePK, contactListTypeName, confirmationRequestChainPK,
                 subscribeChainPK, unsubscribeChainPK, usedForSolicitation, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         contactListType.setActiveDetail(contactListTypeDetail);
@@ -626,9 +632,12 @@ public class ContactListControl
     //   Contact List Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListTypeDescriptionFactory contactListTypeDescriptionFactory;
+
     public ContactListTypeDescription createContactListTypeDescription(ContactListType contactListType, Language language, String description,
             BasePK createdBy) {
-        var contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().create(contactListType,
+        var contactListTypeDescription = contactListTypeDescriptionFactory.create(contactListType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactListType.getPrimaryKey(), EventTypes.MODIFY, contactListTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -658,7 +667,7 @@ public class ContactListControl
     }
 
     private ContactListTypeDescription getContactListTypeDescription(ContactListType contactListType, Language language, EntityPermission entityPermission) {
-        return ContactListTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getContactListTypeDescriptionQueries,
+        return contactListTypeDescriptionFactory.getEntityFromQuery(entityPermission, getContactListTypeDescriptionQueries,
                 contactListType, language, Session.MAX_TIME);
     }
 
@@ -702,7 +711,7 @@ public class ContactListControl
     }
 
     private List<ContactListTypeDescription> getContactListTypeDescriptionsByContactListType(ContactListType contactListType, EntityPermission entityPermission) {
-        return ContactListTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListTypeDescriptionsByContactListTypeQueries,
+        return contactListTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListTypeDescriptionsByContactListTypeQueries,
                 contactListType, Session.MAX_TIME);
     }
 
@@ -748,7 +757,7 @@ public class ContactListControl
 
     public void updateContactListTypeDescriptionFromValue(ContactListTypeDescriptionValue contactListTypeDescriptionValue, BasePK updatedBy) {
         if(contactListTypeDescriptionValue.hasBeenModified()) {
-            var contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListTypeDescription = contactListTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListTypeDescriptionValue.getPrimaryKey());
 
             contactListTypeDescription.setThruTime(session.getStartTime());
@@ -758,7 +767,7 @@ public class ContactListControl
             var language = contactListTypeDescription.getLanguage();
             var description = contactListTypeDescriptionValue.getDescription();
 
-            contactListTypeDescription = ContactListTypeDescriptionFactory.getInstance().create(contactListType, language, description,
+            contactListTypeDescription = contactListTypeDescriptionFactory.create(contactListType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contactListType.getPrimaryKey(), EventTypes.MODIFY, contactListTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -784,6 +793,12 @@ public class ContactListControl
     //   Contact List Groups
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListGroupFactory contactListGroupFactory;
+
+    @Inject
+    protected ContactListGroupDetailFactory contactListGroupDetailFactory;
+
     public ContactListGroup createContactListGroup(String contactListGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListGroup = getDefaultContactListGroup();
         var defaultFound = defaultContactListGroup != null;
@@ -797,12 +812,12 @@ public class ContactListControl
             isDefault = true;
         }
 
-        var contactListGroup = ContactListGroupFactory.getInstance().create();
-        var contactListGroupDetail = ContactListGroupDetailFactory.getInstance().create(contactListGroup, contactListGroupName, isDefault,
+        var contactListGroup = contactListGroupFactory.create();
+        var contactListGroupDetail = contactListGroupDetailFactory.create(contactListGroup, contactListGroupName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        contactListGroup = ContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        contactListGroup = contactListGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 contactListGroup.getPrimaryKey());
         contactListGroup.setActiveDetail(contactListGroupDetail);
         contactListGroup.setLastDetail(contactListGroupDetail);
@@ -817,7 +832,7 @@ public class ContactListControl
     public ContactListGroup getContactListGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContactListGroupPK(entityInstance.getEntityUniqueId());
 
-        return ContactListGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contactListGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContactListGroup getContactListGroupByEntityInstance(EntityInstance entityInstance) {
@@ -858,7 +873,7 @@ public class ContactListControl
     }
 
     public ContactListGroup getContactListGroupByName(String contactListGroupName, EntityPermission entityPermission) {
-        return ContactListGroupFactory.getInstance().getEntityFromQuery(entityPermission, getContactListGroupByNameQueries,
+        return contactListGroupFactory.getEntityFromQuery(entityPermission, getContactListGroupByNameQueries,
                 contactListGroupName);
     }
 
@@ -900,7 +915,7 @@ public class ContactListControl
     }
 
     public ContactListGroup getDefaultContactListGroup(EntityPermission entityPermission) {
-        return ContactListGroupFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListGroupQueries);
+        return contactListGroupFactory.getEntityFromQuery(entityPermission, getDefaultContactListGroupQueries);
     }
 
     public ContactListGroup getDefaultContactListGroup() {
@@ -939,7 +954,7 @@ public class ContactListControl
     }
 
     private List<ContactListGroup> getContactListGroups(EntityPermission entityPermission) {
-        return ContactListGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListGroupsQueries);
+        return contactListGroupFactory.getEntitiesFromQuery(entityPermission, getContactListGroupsQueries);
     }
 
     public List<ContactListGroup> getContactListGroups() {
@@ -1003,7 +1018,7 @@ public class ContactListControl
     }
 
     private void updateContactListGroupFromValue(ContactListGroupDetailValue contactListGroupDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactListGroup = ContactListGroupFactory.getInstance().getEntityFromPK(
+        var contactListGroup = contactListGroupFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListGroupDetailValue.getContactListGroupPK());
         var contactListGroupDetail = contactListGroup.getActiveDetailForUpdate();
 
@@ -1031,7 +1046,7 @@ public class ContactListControl
             }
         }
 
-        contactListGroupDetail = ContactListGroupDetailFactory.getInstance().create(contactListGroupPK, contactListGroupName, isDefault, sortOrder,
+        contactListGroupDetail = contactListGroupDetailFactory.create(contactListGroupPK, contactListGroupName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         contactListGroup.setActiveDetail(contactListGroupDetail);
@@ -1081,9 +1096,12 @@ public class ContactListControl
     //   Contact List Group Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListGroupDescriptionFactory contactListGroupDescriptionFactory;
+
     public ContactListGroupDescription createContactListGroupDescription(ContactListGroup contactListGroup, Language language, String description,
             BasePK createdBy) {
-        var contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().create(contactListGroup,
+        var contactListGroupDescription = contactListGroupDescriptionFactory.create(contactListGroup,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, contactListGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1113,7 +1131,7 @@ public class ContactListControl
     }
 
     private ContactListGroupDescription getContactListGroupDescription(ContactListGroup contactListGroup, Language language, EntityPermission entityPermission) {
-        return ContactListGroupDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getContactListGroupDescriptionQueries,
+        return contactListGroupDescriptionFactory.getEntityFromQuery(entityPermission, getContactListGroupDescriptionQueries,
                 contactListGroup, language, Session.MAX_TIME);
     }
 
@@ -1157,7 +1175,7 @@ public class ContactListControl
     }
 
     private List<ContactListGroupDescription> getContactListGroupDescriptionsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return ContactListGroupDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListGroupDescriptionsByContactListGroupQueries,
+        return contactListGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListGroupDescriptionsByContactListGroupQueries,
                 contactListGroup, Session.MAX_TIME);
     }
 
@@ -1203,7 +1221,7 @@ public class ContactListControl
 
     public void updateContactListGroupDescriptionFromValue(ContactListGroupDescriptionValue contactListGroupDescriptionValue, BasePK updatedBy) {
         if(contactListGroupDescriptionValue.hasBeenModified()) {
-            var contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListGroupDescription = contactListGroupDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListGroupDescriptionValue.getPrimaryKey());
 
             contactListGroupDescription.setThruTime(session.getStartTime());
@@ -1213,7 +1231,7 @@ public class ContactListControl
             var language = contactListGroupDescription.getLanguage();
             var description = contactListGroupDescriptionValue.getDescription();
 
-            contactListGroupDescription = ContactListGroupDescriptionFactory.getInstance().create(contactListGroup, language, description,
+            contactListGroupDescription = contactListGroupDescriptionFactory.create(contactListGroup, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, contactListGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1239,6 +1257,12 @@ public class ContactListControl
     //   Contact List Frequencies
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListFrequencyFactory contactListFrequencyFactory;
+
+    @Inject
+    protected ContactListFrequencyDetailFactory contactListFrequencyDetailFactory;
+
     public ContactListFrequency createContactListFrequency(String contactListFrequencyName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListFrequency = getDefaultContactListFrequency();
         var defaultFound = defaultContactListFrequency != null;
@@ -1252,12 +1276,12 @@ public class ContactListControl
             isDefault = true;
         }
 
-        var contactListFrequency = ContactListFrequencyFactory.getInstance().create();
-        var contactListFrequencyDetail = ContactListFrequencyDetailFactory.getInstance().create(contactListFrequency, contactListFrequencyName, isDefault,
+        var contactListFrequency = contactListFrequencyFactory.create();
+        var contactListFrequencyDetail = contactListFrequencyDetailFactory.create(contactListFrequency, contactListFrequencyName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        contactListFrequency = ContactListFrequencyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        contactListFrequency = contactListFrequencyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 contactListFrequency.getPrimaryKey());
         contactListFrequency.setActiveDetail(contactListFrequencyDetail);
         contactListFrequency.setLastDetail(contactListFrequencyDetail);
@@ -1272,7 +1296,7 @@ public class ContactListControl
     public ContactListFrequency getContactListFrequencyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContactListFrequencyPK(entityInstance.getEntityUniqueId());
 
-        return ContactListFrequencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contactListFrequencyFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContactListFrequency getContactListFrequencyByEntityInstance(EntityInstance entityInstance) {
@@ -1313,7 +1337,7 @@ public class ContactListControl
     }
 
     public ContactListFrequency getContactListFrequencyByName(String contactListFrequencyName, EntityPermission entityPermission) {
-        return ContactListFrequencyFactory.getInstance().getEntityFromQuery(entityPermission, getContactListFrequencyByNameQueries,
+        return contactListFrequencyFactory.getEntityFromQuery(entityPermission, getContactListFrequencyByNameQueries,
                 contactListFrequencyName);
     }
 
@@ -1355,7 +1379,7 @@ public class ContactListControl
     }
 
     public ContactListFrequency getDefaultContactListFrequency(EntityPermission entityPermission) {
-        return ContactListFrequencyFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListFrequencyQueries);
+        return contactListFrequencyFactory.getEntityFromQuery(entityPermission, getDefaultContactListFrequencyQueries);
     }
 
     public ContactListFrequency getDefaultContactListFrequency() {
@@ -1394,7 +1418,7 @@ public class ContactListControl
     }
 
     private List<ContactListFrequency> getContactListFrequencies(EntityPermission entityPermission) {
-        return ContactListFrequencyFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListFrequenciesQueries);
+        return contactListFrequencyFactory.getEntitiesFromQuery(entityPermission, getContactListFrequenciesQueries);
     }
 
     public List<ContactListFrequency> getContactListFrequencies() {
@@ -1458,7 +1482,7 @@ public class ContactListControl
     }
 
     private void updateContactListFrequencyFromValue(ContactListFrequencyDetailValue contactListFrequencyDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactListFrequency = ContactListFrequencyFactory.getInstance().getEntityFromPK(
+        var contactListFrequency = contactListFrequencyFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListFrequencyDetailValue.getContactListFrequencyPK());
         var contactListFrequencyDetail = contactListFrequency.getActiveDetailForUpdate();
 
@@ -1486,7 +1510,7 @@ public class ContactListControl
             }
         }
 
-        contactListFrequencyDetail = ContactListFrequencyDetailFactory.getInstance().create(contactListFrequencyPK, contactListFrequencyName, isDefault, sortOrder,
+        contactListFrequencyDetail = contactListFrequencyDetailFactory.create(contactListFrequencyPK, contactListFrequencyName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         contactListFrequency.setActiveDetail(contactListFrequencyDetail);
@@ -1533,9 +1557,12 @@ public class ContactListControl
     //   Contact List Frequency Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListFrequencyDescriptionFactory contactListFrequencyDescriptionFactory;
+
     public ContactListFrequencyDescription createContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language, String description,
             BasePK createdBy) {
-        var contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().create(contactListFrequency,
+        var contactListFrequencyDescription = contactListFrequencyDescriptionFactory.create(contactListFrequency,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactListFrequency.getPrimaryKey(), EventTypes.MODIFY, contactListFrequencyDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1565,7 +1592,7 @@ public class ContactListControl
     }
 
     private ContactListFrequencyDescription getContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language, EntityPermission entityPermission) {
-        return ContactListFrequencyDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getContactListFrequencyDescriptionQueries,
+        return contactListFrequencyDescriptionFactory.getEntityFromQuery(entityPermission, getContactListFrequencyDescriptionQueries,
                 contactListFrequency, language, Session.MAX_TIME);
     }
 
@@ -1609,7 +1636,7 @@ public class ContactListControl
     }
 
     private List<ContactListFrequencyDescription> getContactListFrequencyDescriptionsByContactListFrequency(ContactListFrequency contactListFrequency, EntityPermission entityPermission) {
-        return ContactListFrequencyDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListFrequencyDescriptionsByContactListFrequencyQueries,
+        return contactListFrequencyDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListFrequencyDescriptionsByContactListFrequencyQueries,
                 contactListFrequency, Session.MAX_TIME);
     }
 
@@ -1655,7 +1682,7 @@ public class ContactListControl
 
     public void updateContactListFrequencyDescriptionFromValue(ContactListFrequencyDescriptionValue contactListFrequencyDescriptionValue, BasePK updatedBy) {
         if(contactListFrequencyDescriptionValue.hasBeenModified()) {
-            var contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListFrequencyDescription = contactListFrequencyDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListFrequencyDescriptionValue.getPrimaryKey());
 
             contactListFrequencyDescription.setThruTime(session.getStartTime());
@@ -1665,7 +1692,7 @@ public class ContactListControl
             var language = contactListFrequencyDescription.getLanguage();
             var description = contactListFrequencyDescriptionValue.getDescription();
 
-            contactListFrequencyDescription = ContactListFrequencyDescriptionFactory.getInstance().create(contactListFrequency, language, description,
+            contactListFrequencyDescription = contactListFrequencyDescriptionFactory.create(contactListFrequency, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contactListFrequency.getPrimaryKey(), EventTypes.MODIFY, contactListFrequencyDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1691,6 +1718,12 @@ public class ContactListControl
     //   Contact Lists
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListFactory contactListFactory;
+
+    @Inject
+    protected ContactListDetailFactory contactListDetailFactory;
+
     public ContactList createContactList(String contactListName, ContactListGroup contactListGroup, ContactListType contactListType,
             ContactListFrequency contactListFrequency, WorkflowEntrance defaultPartyContactListStatus, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactList = getDefaultContactList();
@@ -1705,12 +1738,12 @@ public class ContactListControl
             isDefault = true;
         }
 
-        var contactList = ContactListFactory.getInstance().create();
-        var contactListDetail = ContactListDetailFactory.getInstance().create(contactList, contactListName, contactListGroup, contactListType,
+        var contactList = contactListFactory.create();
+        var contactListDetail = contactListDetailFactory.create(contactList, contactListName, contactListGroup, contactListType,
             contactListFrequency, defaultPartyContactListStatus, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        contactList = ContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        contactList = contactListFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 contactList.getPrimaryKey());
         contactList.setActiveDetail(contactListDetail);
         contactList.setLastDetail(contactListDetail);
@@ -1725,7 +1758,7 @@ public class ContactListControl
     public ContactList getContactListByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContactListPK(entityInstance.getEntityUniqueId());
 
-        return ContactListFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contactListFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContactList getContactListByEntityInstance(EntityInstance entityInstance) {
@@ -1802,7 +1835,7 @@ public class ContactListControl
     }
 
     public ContactList getContactListByName(String contactListName, EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntityFromQuery(entityPermission, getContactListByNameQueries,
+        return contactListFactory.getEntityFromQuery(entityPermission, getContactListByNameQueries,
                 contactListName);
     }
 
@@ -1844,7 +1877,7 @@ public class ContactListControl
     }
 
     public ContactList getDefaultContactList(EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListQueries);
+        return contactListFactory.getEntityFromQuery(entityPermission, getDefaultContactListQueries);
     }
 
     public ContactList getDefaultContactList() {
@@ -1883,7 +1916,7 @@ public class ContactListControl
     }
 
     private List<ContactList> getContactLists(EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListsQueries);
+        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsQueries);
     }
 
     public List<ContactList> getContactLists() {
@@ -1920,7 +1953,7 @@ public class ContactListControl
     }
 
     private List<ContactList> getContactListsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListsByContactListGroupQueries,
+        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByContactListGroupQueries,
                 contactListGroup);
     }
 
@@ -1958,7 +1991,7 @@ public class ContactListControl
     }
 
     private List<ContactList> getContactListsByContactListType(ContactListType contactListType, EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListsByContactListTypeQueries,
+        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByContactListTypeQueries,
                 contactListType);
     }
 
@@ -1996,7 +2029,7 @@ public class ContactListControl
     }
 
     private List<ContactList> getContactListsByContactListFrequency(ContactListFrequency contactListFrequency, EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListsByContactListFrequencyQueries,
+        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByContactListFrequencyQueries,
                 contactListFrequency);
     }
 
@@ -2034,7 +2067,7 @@ public class ContactListControl
     }
 
     private List<ContactList> getContactListsByWorkflowEntrance(WorkflowEntrance workflowEntrance, EntityPermission entityPermission) {
-        return ContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListsByWorkflowEntranceQueries,
+        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByWorkflowEntranceQueries,
                 workflowEntrance);
     }
 
@@ -2099,7 +2132,7 @@ public class ContactListControl
     }
 
     private void updateContactListFromValue(ContactListDetailValue contactListDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactList = ContactListFactory.getInstance().getEntityFromPK(
+        var contactList = contactListFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListDetailValue.getContactListPK());
         var contactListDetail = contactList.getActiveDetailForUpdate();
 
@@ -2131,7 +2164,7 @@ public class ContactListControl
             }
         }
 
-        contactListDetail = ContactListDetailFactory.getInstance().create(contactListPK, contactListName, contactListGroupPK, contactListTypePK,
+        contactListDetail = contactListDetailFactory.create(contactListPK, contactListName, contactListGroupPK, contactListTypePK,
                 contactListFrequencyPK, defaultPartyContactListStatusPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         contactList.setActiveDetail(contactListDetail);
@@ -2206,9 +2239,12 @@ public class ContactListControl
     //   Contact List Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListDescriptionFactory contactListDescriptionFactory;
+
     public ContactListDescription createContactListDescription(ContactList contactList, Language language, String description,
             BasePK createdBy) {
-        var contactListDescription = ContactListDescriptionFactory.getInstance().create(contactList,
+        var contactListDescription = contactListDescriptionFactory.create(contactList,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, contactListDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2238,7 +2274,7 @@ public class ContactListControl
     }
 
     private ContactListDescription getContactListDescription(ContactList contactList, Language language, EntityPermission entityPermission) {
-        return ContactListDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getContactListDescriptionQueries,
+        return contactListDescriptionFactory.getEntityFromQuery(entityPermission, getContactListDescriptionQueries,
                 contactList, language, Session.MAX_TIME);
     }
 
@@ -2282,7 +2318,7 @@ public class ContactListControl
     }
 
     private List<ContactListDescription> getContactListDescriptionsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return ContactListDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListDescriptionsByContactListQueries,
+        return contactListDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListDescriptionsByContactListQueries,
                 contactList, Session.MAX_TIME);
     }
 
@@ -2328,7 +2364,7 @@ public class ContactListControl
 
     public void updateContactListDescriptionFromValue(ContactListDescriptionValue contactListDescriptionValue, BasePK updatedBy) {
         if(contactListDescriptionValue.hasBeenModified()) {
-            var contactListDescription = ContactListDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListDescription = contactListDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListDescriptionValue.getPrimaryKey());
 
             contactListDescription.setThruTime(session.getStartTime());
@@ -2338,7 +2374,7 @@ public class ContactListControl
             var language = contactListDescription.getLanguage();
             var description = contactListDescriptionValue.getDescription();
 
-            contactListDescription = ContactListDescriptionFactory.getInstance().create(contactList, language, description,
+            contactListDescription = contactListDescriptionFactory.create(contactList, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, contactListDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2363,15 +2399,21 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
     //   Party Contact Lists
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyContactListFactory partyContactListFactory;
+
+    @Inject
+    protected PartyContactListDetailFactory partyContactListDetailFactory;
+
     public PartyContactList createPartyContactList(Party party, ContactList contactList, ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose,
             BasePK createdBy) {
-        var partyContactList = PartyContactListFactory.getInstance().create();
-        var partyContactListDetail = PartyContactListDetailFactory.getInstance().create( partyContactList, party, contactList,
+        var partyContactList = partyContactListFactory.create();
+        var partyContactListDetail = partyContactListDetailFactory.create( partyContactList, party, contactList,
                 preferredContactListContactMechanismPurpose, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        partyContactList = PartyContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyContactList.getPrimaryKey());
+        partyContactList = partyContactListFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyContactList.getPrimaryKey());
         partyContactList.setActiveDetail(partyContactListDetail);
         partyContactList.setLastDetail(partyContactListDetail);
         partyContactList.store();
@@ -2385,7 +2427,7 @@ public class ContactListControl
     public PartyContactList getPartyContactListByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyContactListPK(entityInstance.getEntityUniqueId());
 
-        return PartyContactListFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return partyContactListFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PartyContactList getPartyContactListByEntityInstance(EntityInstance entityInstance) {
@@ -2445,7 +2487,7 @@ public class ContactListControl
     }
 
     public PartyContactList getPartyContactList(Party party, ContactList contactList, EntityPermission entityPermission) {
-        return PartyContactListFactory.getInstance().getEntityFromQuery(entityPermission, getPartyContactListQueries,
+        return partyContactListFactory.getEntityFromQuery(entityPermission, getPartyContactListQueries,
                 party, contactList);
     }
     
@@ -2491,7 +2533,7 @@ public class ContactListControl
     }
 
     private List<PartyContactList> getPartyContactListsByParty(Party party, EntityPermission entityPermission) {
-        return PartyContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyContactListsByPartyQueries,
+        return partyContactListFactory.getEntitiesFromQuery(entityPermission, getPartyContactListsByPartyQueries,
                 party);
     }
 
@@ -2529,7 +2571,7 @@ public class ContactListControl
     }
 
     private List<PartyContactList> getPartyContactListsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return PartyContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyContactListsByContactListQueries,
+        return partyContactListFactory.getEntitiesFromQuery(entityPermission, getPartyContactListsByContactListQueries,
                 contactList);
     }
 
@@ -2564,7 +2606,7 @@ public class ContactListControl
 
     private List<PartyContactList> getPartyContactListsByPreferredContactListContactMechanismPurpose(ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose,
             EntityPermission entityPermission) {
-        return PartyContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyContactListsByPreferredContactListContactMechanismPurposeQueries,
+        return partyContactListFactory.getEntitiesFromQuery(entityPermission, getPartyContactListsByPreferredContactListContactMechanismPurposeQueries,
                 preferredContactListContactMechanismPurpose);
     }
 
@@ -2635,7 +2677,7 @@ public class ContactListControl
 
     public void updatePartyContactListFromValue(PartyContactListDetailValue partyContactListDetailValue, BasePK updatedBy) {
         if(partyContactListDetailValue.hasBeenModified()) {
-            var partyContactList = PartyContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyContactList = partyContactListFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyContactListDetailValue.getPartyContactListPK());
             var partyContactListDetail = partyContactList.getActiveDetailForUpdate();
             
@@ -2647,7 +2689,7 @@ public class ContactListControl
             var contactListPK = partyContactListDetail.getContactListPK(); // Not updated
             var preferredContactListContactMechanismPurposePK = partyContactListDetailValue.getPreferredContactListContactMechanismPurposePK();
             
-            partyContactListDetail = PartyContactListDetailFactory.getInstance().create(partyContactListPK, partyPK, contactListPK,
+            partyContactListDetail = partyContactListDetailFactory.create(partyContactListPK, partyPK, contactListPK,
                     preferredContactListContactMechanismPurposePK, session.getStartTime(), Session.MAX_TIME);
             
             partyContactList.setActiveDetail(partyContactListDetail);
@@ -2694,10 +2736,13 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
     //   Party Type Contact List Groups
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeContactListGroupFactory partyTypeContactListGroupFactory;
+
     public PartyTypeContactListGroup createPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
-        var partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(
+        var partyTypeContactListGroup = partyTypeContactListGroupFactory.create(
                 partyType, contactListGroup, addWhenCreated, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, partyTypeContactListGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2743,7 +2788,7 @@ public class ContactListControl
     }
 
     private PartyTypeContactListGroup getPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return PartyTypeContactListGroupFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTypeContactListGroupQueries,
+        return partyTypeContactListGroupFactory.getEntityFromQuery(entityPermission, getPartyTypeContactListGroupQueries,
                 partyType, contactListGroup, Session.MAX_TIME);
     }
 
@@ -2788,7 +2833,7 @@ public class ContactListControl
     }
 
     private List<PartyTypeContactListGroup> getPartyTypeContactListGroupsByPartyType(PartyType partyType, EntityPermission entityPermission) {
-        return PartyTypeContactListGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypeContactListGroupsByPartyTypeQueries,
+        return partyTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListGroupsByPartyTypeQueries,
                 partyType, Session.MAX_TIME);
     }
 
@@ -2825,7 +2870,7 @@ public class ContactListControl
     }
 
     private List<PartyTypeContactListGroup> getPartyTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return PartyTypeContactListGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypeContactListGroupsByContactListGroupQueries,
+        return partyTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListGroupsByContactListGroupQueries,
                 contactListGroup, Session.MAX_TIME);
     }
 
@@ -2861,7 +2906,7 @@ public class ContactListControl
     
     public void updatePartyTypeContactListGroupFromValue(PartyTypeContactListGroupValue partyTypeContactListGroupValue, BasePK updatedBy) {
         if(partyTypeContactListGroupValue.hasBeenModified()) {
-            var partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeContactListGroup = partyTypeContactListGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeContactListGroupValue.getPrimaryKey());
             
             partyTypeContactListGroup.setThruTime(session.getStartTime());
@@ -2871,7 +2916,7 @@ public class ContactListControl
             var contactListGroupPK = partyTypeContactListGroup.getContactListGroupPK(); // Not Updated
             var addWhenCreated = partyTypeContactListGroupValue.getAddWhenCreated();
             
-            partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(partyTypePK, contactListGroupPK, addWhenCreated,
+            partyTypeContactListGroup = partyTypeContactListGroupFactory.create(partyTypePK, contactListGroupPK, addWhenCreated,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactListGroupPK, EventTypes.MODIFY, partyTypeContactListGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2902,9 +2947,12 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
     //   Party Type Contact Lists
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyTypeContactListFactory partyTypeContactListFactory;
+
     public PartyTypeContactList createPartyTypeContactList(PartyType partyType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
-        var partyTypeContactList = PartyTypeContactListFactory.getInstance().create( partyType, contactList, addWhenCreated,
+        var partyTypeContactList = partyTypeContactListFactory.create( partyType, contactList, addWhenCreated,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, partyTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2950,7 +2998,7 @@ public class ContactListControl
     }
 
     private PartyTypeContactList getPartyTypeContactList(PartyType partyType, ContactList contactList, EntityPermission entityPermission) {
-        return PartyTypeContactListFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTypeContactListQueries,
+        return partyTypeContactListFactory.getEntityFromQuery(entityPermission, getPartyTypeContactListQueries,
                 partyType, contactList, Session.MAX_TIME);
     }
 
@@ -2995,7 +3043,7 @@ public class ContactListControl
     }
 
     private List<PartyTypeContactList> getPartyTypeContactListsByPartyType(PartyType partyType, EntityPermission entityPermission) {
-        return PartyTypeContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypeContactListsByPartyTypeQueries,
+        return partyTypeContactListFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListsByPartyTypeQueries,
                 partyType, Session.MAX_TIME);
     }
 
@@ -3032,7 +3080,7 @@ public class ContactListControl
     }
 
     private List<PartyTypeContactList> getPartyTypeContactListsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return PartyTypeContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypeContactListsByContactListQueries,
+        return partyTypeContactListFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListsByContactListQueries,
                 contactList, Session.MAX_TIME);
     }
 
@@ -3068,7 +3116,7 @@ public class ContactListControl
     
     public void updatePartyTypeContactListFromValue(PartyTypeContactListValue partyTypeContactListValue, BasePK updatedBy) {
         if(partyTypeContactListValue.hasBeenModified()) {
-            var partyTypeContactList = PartyTypeContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyTypeContactList = partyTypeContactListFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyTypeContactListValue.getPrimaryKey());
             
             partyTypeContactList.setThruTime(session.getStartTime());
@@ -3078,7 +3126,7 @@ public class ContactListControl
             var contactListPK = partyTypeContactList.getContactListPK(); // Not Updated
             var addWhenCreated = partyTypeContactListValue.getAddWhenCreated();
             
-            partyTypeContactList = PartyTypeContactListFactory.getInstance().create(partyTypePK, contactListPK, addWhenCreated, session.getStartTime(),
+            partyTypeContactList = partyTypeContactListFactory.create(partyTypePK, contactListPK, addWhenCreated, session.getStartTime(),
                     Session.MAX_TIME);
             
             sendEvent(contactListPK, EventTypes.MODIFY, partyTypeContactList.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3110,9 +3158,12 @@ public class ContactListControl
     //   Customer Type Contact List Groups
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CustomerTypeContactListGroupFactory customerTypeContactListGroupFactory;
+
     public CustomerTypeContactListGroup createCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
-        var customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(
+        var customerTypeContactListGroup = customerTypeContactListGroupFactory.create(
                 customerType, contactListGroup, addWhenCreated, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactListGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3158,7 +3209,7 @@ public class ContactListControl
     }
 
     private CustomerTypeContactListGroup getCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return CustomerTypeContactListGroupFactory.getInstance().getEntityFromQuery(entityPermission, getCustomerTypeContactListGroupQueries,
+        return customerTypeContactListGroupFactory.getEntityFromQuery(entityPermission, getCustomerTypeContactListGroupQueries,
                 customerType, contactListGroup, Session.MAX_TIME);
     }
 
@@ -3203,7 +3254,7 @@ public class ContactListControl
     }
 
     private List<CustomerTypeContactListGroup> getCustomerTypeContactListGroupsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        return CustomerTypeContactListGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getCustomerTypeContactListGroupsByCustomerTypeQueries,
+        return customerTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListGroupsByCustomerTypeQueries,
                 customerType, Session.MAX_TIME);
     }
 
@@ -3240,7 +3291,7 @@ public class ContactListControl
     }
 
     private List<CustomerTypeContactListGroup> getCustomerTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return CustomerTypeContactListGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, getCustomerTypeContactListGroupsByContactListGroupQueries,
+        return customerTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListGroupsByContactListGroupQueries,
                 contactListGroup, Session.MAX_TIME);
     }
 
@@ -3276,7 +3327,7 @@ public class ContactListControl
 
     public void updateCustomerTypeContactListGroupFromValue(CustomerTypeContactListGroupValue customerTypeContactListGroupValue, BasePK updatedBy) {
         if(customerTypeContactListGroupValue.hasBeenModified()) {
-            var customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeContactListGroup = customerTypeContactListGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeContactListGroupValue.getPrimaryKey());
 
             customerTypeContactListGroup.setThruTime(session.getStartTime());
@@ -3286,7 +3337,7 @@ public class ContactListControl
             var contactListGroupPK = customerTypeContactListGroup.getContactListGroupPK(); // Not Updated
             var addWhenCreated = customerTypeContactListGroupValue.getAddWhenCreated();
 
-            customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(customerTypePK, contactListGroupPK, addWhenCreated,
+            customerTypeContactListGroup = customerTypeContactListGroupFactory.create(customerTypePK, contactListGroupPK, addWhenCreated,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contactListGroupPK, EventTypes.MODIFY, customerTypeContactListGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3318,8 +3369,11 @@ public class ContactListControl
     //   Customer Type Contact Lists
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CustomerTypeContactListFactory customerTypeContactListFactory;
+
     public CustomerTypeContactList createCustomerTypeContactList(CustomerType customerType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
-        var customerTypeContactList = CustomerTypeContactListFactory.getInstance().create( customerType, contactList, addWhenCreated,
+        var customerTypeContactList = customerTypeContactListFactory.create( customerType, contactList, addWhenCreated,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3365,7 +3419,7 @@ public class ContactListControl
     }
 
     private CustomerTypeContactList getCustomerTypeContactList(CustomerType customerType, ContactList contactList, EntityPermission entityPermission) {
-        return CustomerTypeContactListFactory.getInstance().getEntityFromQuery(entityPermission, getCustomerTypeContactListQueries,
+        return customerTypeContactListFactory.getEntityFromQuery(entityPermission, getCustomerTypeContactListQueries,
                 customerType, contactList, Session.MAX_TIME);
     }
 
@@ -3410,7 +3464,7 @@ public class ContactListControl
     }
 
     private List<CustomerTypeContactList> getCustomerTypeContactListsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        return CustomerTypeContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getCustomerTypeContactListsByCustomerTypeQueries,
+        return customerTypeContactListFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListsByCustomerTypeQueries,
                 customerType, Session.MAX_TIME);
     }
 
@@ -3447,7 +3501,7 @@ public class ContactListControl
     }
 
     private List<CustomerTypeContactList> getCustomerTypeContactListsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return CustomerTypeContactListFactory.getInstance().getEntitiesFromQuery(entityPermission, getCustomerTypeContactListsByContactListQueries,
+        return customerTypeContactListFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListsByContactListQueries,
                 contactList, Session.MAX_TIME);
     }
 
@@ -3483,7 +3537,7 @@ public class ContactListControl
 
     public void updateCustomerTypeContactListFromValue(CustomerTypeContactListValue customerTypeContactListValue, BasePK updatedBy) {
         if(customerTypeContactListValue.hasBeenModified()) {
-            var customerTypeContactList = CustomerTypeContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var customerTypeContactList = customerTypeContactListFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeContactListValue.getPrimaryKey());
 
             customerTypeContactList.setThruTime(session.getStartTime());
@@ -3493,7 +3547,7 @@ public class ContactListControl
             var contactListPK = customerTypeContactList.getContactListPK(); // Not Updated
             var addWhenCreated = customerTypeContactListValue.getAddWhenCreated();
 
-            customerTypeContactList = CustomerTypeContactListFactory.getInstance().create(customerTypePK, contactListPK, addWhenCreated, session.getStartTime(),
+            customerTypeContactList = customerTypeContactListFactory.create(customerTypePK, contactListPK, addWhenCreated, session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(contactListPK, EventTypes.MODIFY, customerTypeContactList.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3525,6 +3579,12 @@ public class ContactListControl
     //   Contact List Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContactListContactMechanismPurposeFactory contactListContactMechanismPurposeFactory;
+
+    @Inject
+    protected ContactListContactMechanismPurposeDetailFactory contactListContactMechanismPurposeDetailFactory;
+
     public ContactListContactMechanismPurpose createContactListContactMechanismPurpose(ContactList contactList, ContactMechanismPurpose contactMechanismPurpose, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
         var defaultFound = defaultContactListContactMechanismPurpose != null;
@@ -3538,12 +3598,12 @@ public class ContactListControl
             isDefault = true;
         }
 
-        var contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().create();
-        var contactListContactMechanismPurposeDetail = ContactListContactMechanismPurposeDetailFactory.getInstance().create(contactListContactMechanismPurpose, contactList, contactMechanismPurpose, isDefault,
+        var contactListContactMechanismPurpose = contactListContactMechanismPurposeFactory.create();
+        var contactListContactMechanismPurposeDetail = contactListContactMechanismPurposeDetailFactory.create(contactListContactMechanismPurpose, contactList, contactMechanismPurpose, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contactListContactMechanismPurpose.getPrimaryKey());
+        contactListContactMechanismPurpose = contactListContactMechanismPurposeFactory.getEntityFromPK(EntityPermission.READ_WRITE, contactListContactMechanismPurpose.getPrimaryKey());
         contactListContactMechanismPurpose.setActiveDetail(contactListContactMechanismPurposeDetail);
         contactListContactMechanismPurpose.setLastDetail(contactListContactMechanismPurposeDetail);
         contactListContactMechanismPurpose.store();
@@ -3557,7 +3617,7 @@ public class ContactListControl
     public ContactListContactMechanismPurpose getContactListContactMechanismPurposeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContactListContactMechanismPurposePK(entityInstance.getEntityUniqueId());
 
-        return ContactListContactMechanismPurposeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contactListContactMechanismPurposeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContactListContactMechanismPurpose getContactListContactMechanismPurposeByEntityInstance(EntityInstance entityInstance) {
@@ -3610,7 +3670,7 @@ public class ContactListControl
     }
 
     private ContactListContactMechanismPurpose getContactListContactMechanismPurpose(ContactList contactList, ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        return ContactListContactMechanismPurposeFactory.getInstance().getEntityFromQuery(entityPermission, getContactListContactMechanismPurposeQueries,
+        return contactListContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, getContactListContactMechanismPurposeQueries,
                 contactList, contactMechanismPurpose);
     }
 
@@ -3654,7 +3714,7 @@ public class ContactListControl
     }
 
     private ContactListContactMechanismPurpose getDefaultContactListContactMechanismPurpose(ContactList contactList, EntityPermission entityPermission) {
-        return ContactListContactMechanismPurposeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListContactMechanismPurposeQueries,
+        return contactListContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, getDefaultContactListContactMechanismPurposeQueries,
                 contactList);
     }
 
@@ -3695,7 +3755,7 @@ public class ContactListControl
     }
 
     private List<ContactListContactMechanismPurpose> getContactListContactMechanismPurposesByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return ContactListContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListContactMechanismPurposesByContactListQueries,
+        return contactListContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, getContactListContactMechanismPurposesByContactListQueries,
                 contactList);
     }
 
@@ -3732,7 +3792,7 @@ public class ContactListControl
     }
 
     private List<ContactListContactMechanismPurpose> getContactListContactMechanismPurposesByContactMechanismPurpose(ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        return ContactListContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContactListContactMechanismPurposesByContactMechanismPurposeQueries,
+        return contactListContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, getContactListContactMechanismPurposesByContactMechanismPurposeQueries,
                 contactMechanismPurpose);
     }
 
@@ -3805,7 +3865,7 @@ public class ContactListControl
 
     private void updateContactListContactMechanismPurposeFromValue(ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contactListContactMechanismPurposeDetailValue.hasBeenModified()) {
-            var contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contactListContactMechanismPurpose = contactListContactMechanismPurposeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contactListContactMechanismPurposeDetailValue.getContactListContactMechanismPurposePK());
             var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getActiveDetailForUpdate();
 
@@ -3835,7 +3895,7 @@ public class ContactListControl
                 }
             }
 
-            contactListContactMechanismPurposeDetail = ContactListContactMechanismPurposeDetailFactory.getInstance().create(contactListContactMechanismPurposePK, contactListPK, contactMechanismPurposePK, isDefault, sortOrder,
+            contactListContactMechanismPurposeDetail = contactListContactMechanismPurposeDetailFactory.create(contactListContactMechanismPurposePK, contactListPK, contactMechanismPurposePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             contactListContactMechanismPurpose.setActiveDetail(contactListContactMechanismPurposeDetail);

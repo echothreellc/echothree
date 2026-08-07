@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderLineAdjustmentControl
@@ -63,6 +64,12 @@ public class OrderLineAdjustmentControl
     // --------------------------------------------------------------------------------
     //   Order Line Adjustment Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OrderLineAdjustmentTypeFactory orderLineAdjustmentTypeFactory;
+
+    @Inject
+    protected OrderLineAdjustmentTypeDetailFactory orderLineAdjustmentTypeDetailFactory;
 
     public OrderLineAdjustmentType createOrderLineAdjustmentType(OrderType orderType, String orderLineAdjustmentTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -78,12 +85,12 @@ public class OrderLineAdjustmentControl
             isDefault = true;
         }
 
-        var orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().create();
-        var orderLineAdjustmentTypeDetail = OrderLineAdjustmentTypeDetailFactory.getInstance().create(orderLineAdjustmentType,
+        var orderLineAdjustmentType = orderLineAdjustmentTypeFactory.create();
+        var orderLineAdjustmentTypeDetail = orderLineAdjustmentTypeDetailFactory.create(orderLineAdjustmentType,
                 orderType, orderLineAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderLineAdjustmentType = orderLineAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderLineAdjustmentType.getPrimaryKey());
         orderLineAdjustmentType.setActiveDetail(orderLineAdjustmentTypeDetail);
         orderLineAdjustmentType.setLastDetail(orderLineAdjustmentTypeDetail);
@@ -98,7 +105,7 @@ public class OrderLineAdjustmentControl
     public OrderLineAdjustmentType getOrderLineAdjustmentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderLineAdjustmentTypePK(entityInstance.getEntityUniqueId());
 
-        return OrderLineAdjustmentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderLineAdjustmentTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderLineAdjustmentType getOrderLineAdjustmentTypeByEntityInstance(EntityInstance entityInstance) {
@@ -142,7 +149,7 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentType getOrderLineAdjustmentTypeByName(OrderType orderType, String orderLineAdjustmentTypeName, EntityPermission entityPermission) {
-        return OrderLineAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderLineAdjustmentTypeByNameQueries,
+        return orderLineAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getOrderLineAdjustmentTypeByNameQueries,
                 orderType, orderLineAdjustmentTypeName);
     }
 
@@ -186,7 +193,7 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentType getDefaultOrderLineAdjustmentType(OrderType orderType, EntityPermission entityPermission) {
-        return OrderLineAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderLineAdjustmentTypeQueries,
+        return orderLineAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderLineAdjustmentTypeQueries,
                 orderType);
     }
 
@@ -228,7 +235,7 @@ public class OrderLineAdjustmentControl
     }
 
     private List<OrderLineAdjustmentType> getOrderLineAdjustmentTypes(OrderType orderType, EntityPermission entityPermission) {
-        return OrderLineAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderLineAdjustmentTypesQueries,
+        return orderLineAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, getOrderLineAdjustmentTypesQueries,
                 orderType);
     }
 
@@ -296,7 +303,7 @@ public class OrderLineAdjustmentControl
     private void updateOrderLineAdjustmentTypeFromValue(OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderLineAdjustmentTypeDetailValue.hasBeenModified()) {
-            var orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLineAdjustmentType = orderLineAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderLineAdjustmentTypeDetailValue.getOrderLineAdjustmentTypePK());
             var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getActiveDetailForUpdate();
 
@@ -326,7 +333,7 @@ public class OrderLineAdjustmentControl
                 }
             }
 
-            orderLineAdjustmentTypeDetail = OrderLineAdjustmentTypeDetailFactory.getInstance().create(orderLineAdjustmentTypePK, orderTypePK, orderLineAdjustmentTypeName, isDefault, sortOrder,
+            orderLineAdjustmentTypeDetail = orderLineAdjustmentTypeDetailFactory.create(orderLineAdjustmentTypePK, orderTypePK, orderLineAdjustmentTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             orderLineAdjustmentType.setActiveDetail(orderLineAdjustmentTypeDetail);
@@ -374,8 +381,11 @@ public class OrderLineAdjustmentControl
     //   Order Line Adjustment Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderLineAdjustmentTypeDescriptionFactory orderLineAdjustmentTypeDescriptionFactory;
+
     public OrderLineAdjustmentTypeDescription createOrderLineAdjustmentTypeDescription(OrderLineAdjustmentType orderLineAdjustmentType, Language language, String description, BasePK createdBy) {
-        var orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
+        var orderLineAdjustmentTypeDescription = orderLineAdjustmentTypeDescriptionFactory.create(orderLineAdjustmentType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -405,7 +415,7 @@ public class OrderLineAdjustmentControl
     }
 
     private OrderLineAdjustmentTypeDescription getOrderLineAdjustmentTypeDescription(OrderLineAdjustmentType orderLineAdjustmentType, Language language, EntityPermission entityPermission) {
-        return OrderLineAdjustmentTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderLineAdjustmentTypeDescriptionQueries,
+        return orderLineAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderLineAdjustmentTypeDescriptionQueries,
                 orderLineAdjustmentType, language, Session.MAX_TIME);
     }
 
@@ -449,7 +459,7 @@ public class OrderLineAdjustmentControl
     }
 
     private List<OrderLineAdjustmentTypeDescription> getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(OrderLineAdjustmentType orderLineAdjustmentType, EntityPermission entityPermission) {
-        return OrderLineAdjustmentTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentTypeQueries,
+        return orderLineAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentTypeQueries,
                 orderLineAdjustmentType, Session.MAX_TIME);
     }
 
@@ -495,7 +505,7 @@ public class OrderLineAdjustmentControl
 
     public void updateOrderLineAdjustmentTypeDescriptionFromValue(OrderLineAdjustmentTypeDescriptionValue orderLineAdjustmentTypeDescriptionValue, BasePK updatedBy) {
         if(orderLineAdjustmentTypeDescriptionValue.hasBeenModified()) {
-            var orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLineAdjustmentTypeDescription = orderLineAdjustmentTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineAdjustmentTypeDescriptionValue.getPrimaryKey());
 
             orderLineAdjustmentTypeDescription.setThruTime(session.getStartTime());
@@ -505,7 +515,7 @@ public class OrderLineAdjustmentControl
             var language = orderLineAdjustmentTypeDescription.getLanguage();
             var description = orderLineAdjustmentTypeDescriptionValue.getDescription();
 
-            orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
+            orderLineAdjustmentTypeDescription = orderLineAdjustmentTypeDescriptionFactory.create(orderLineAdjustmentType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -531,15 +541,21 @@ public class OrderLineAdjustmentControl
     //   Order Line Adjustments
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderLineAdjustmentFactory orderLineAdjustmentFactory;
+
+    @Inject
+    protected OrderLineAdjustmentDetailFactory orderLineAdjustmentDetailFactory;
+
     public OrderLineAdjustment createOrderLineAdjustment(OrderLine orderLine, Integer orderLineAdjustmentSequence,
             OrderLineAdjustmentType orderLineAdjustmentType, Long amount, BasePK createdBy) {
-        var orderLineAdjustment = OrderLineAdjustmentFactory.getInstance().create();
-        var orderLineAdjustmentDetail = OrderLineAdjustmentDetailFactory.getInstance().create(
+        var orderLineAdjustment = orderLineAdjustmentFactory.create();
+        var orderLineAdjustmentDetail = orderLineAdjustmentDetailFactory.create(
                 orderLineAdjustment, orderLine, orderLineAdjustmentSequence, orderLineAdjustmentType, amount,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderLineAdjustment = OrderLineAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderLineAdjustment = orderLineAdjustmentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderLineAdjustment.getPrimaryKey());
         orderLineAdjustment.setActiveDetail(orderLineAdjustmentDetail);
         orderLineAdjustment.setLastDetail(orderLineAdjustmentDetail);
@@ -554,7 +570,7 @@ public class OrderLineAdjustmentControl
     public OrderLineAdjustment getOrderLineAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderLineAdjustmentPK(entityInstance.getEntityUniqueId());
 
-        return OrderLineAdjustmentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderLineAdjustmentFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderLineAdjustment getOrderLineAdjustmentByEntityInstance(EntityInstance entityInstance) {
@@ -606,11 +622,11 @@ public class OrderLineAdjustmentControl
                         """;
             }
 
-            var ps = OrderLineAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = orderLineAdjustmentFactory.prepareStatement(query);
 
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
 
-            orderLineAdjustments = OrderLineAdjustmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderLineAdjustments = orderLineAdjustmentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

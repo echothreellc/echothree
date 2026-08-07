@@ -39,6 +39,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderLineControl
@@ -52,17 +53,23 @@ public class OrderLineControl
     // --------------------------------------------------------------------------------
     //   Order Lines
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderLineFactory orderLineFactory;
+
+    @Inject
+    protected OrderLineDetailFactory orderLineDetailFactory;
+
     public OrderLine createOrderLine(Order order, Integer orderLineSequence, OrderLine parentOrderLine, OrderShipmentGroup orderShipmentGroup, Item item,
             InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, Long quantity, Long unitAmount, String description,
             CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, BasePK createdBy) {
-        var orderLine = OrderLineFactory.getInstance().create();
-        var orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLine, order, orderLineSequence, parentOrderLine, orderShipmentGroup,
+        var orderLine = orderLineFactory.create();
+        var orderLineDetail = orderLineDetailFactory.create(orderLine, order, orderLineSequence, parentOrderLine, orderShipmentGroup,
                 item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        orderLine = OrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderLine = orderLineFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderLine.getPrimaryKey());
         orderLine.setActiveDetail(orderLineDetail);
         orderLine.setLastDetail(orderLineDetail);
@@ -166,12 +173,12 @@ public class OrderLineControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             ps.setInt(2, orderLineSequence);
             
-            orderLine = OrderLineFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            orderLine = orderLineFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -217,11 +224,11 @@ public class OrderLineControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             
-            orderLines = OrderLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -259,11 +266,11 @@ public class OrderLineControl
                         """;
             }
 
-            var ps = OrderLineFactory.getInstance().prepareStatement(query);
+            var ps = orderLineFactory.prepareStatement(query);
             
             ps.setLong(1, orderShipmentGroup.getPrimaryKey().getEntityId());
             
-            orderLines = OrderLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -281,7 +288,7 @@ public class OrderLineControl
     
     public void updateOrderLineFromValue(OrderLineDetailValue orderLineDetailValue, BasePK updatedBy) {
         if(orderLineDetailValue.hasBeenModified()) {
-            var orderLine = OrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderLine = orderLineFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineDetailValue.getOrderLinePK());
             var orderLineDetail = orderLine.getActiveDetailForUpdate();
             
@@ -303,7 +310,7 @@ public class OrderLineControl
             var returnPolicyPK = orderLineDetailValue.getReturnPolicyPK();
             var taxable = orderLineDetailValue.getTaxable();
             
-            orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLinePK, orderPK, orderLineSequence, parentOrderLinePK, orderShipmentGroupPK,
+            orderLineDetail = orderLineDetailFactory.create(orderLinePK, orderPK, orderLineSequence, parentOrderLinePK, orderShipmentGroupPK,
                     itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, unitAmount, description, cancellationPolicyPK, returnPolicyPK, taxable,
                     session.getStartTime(), Session.MAX_TIME);
             
@@ -354,9 +361,12 @@ public class OrderLineControl
     // --------------------------------------------------------------------------------
     //   Order Line Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderLineStatusFactory orderLineStatusFactory;
+
     public OrderLineStatus createOrderLineStatus(OrderLine orderLine) {
-        return OrderLineStatusFactory.getInstance().create(orderLine, 0);
+        return orderLineStatusFactory.create(orderLine, 0);
     }
     
     private OrderLineStatus getOrderLineStatus(OrderLine orderLine, EntityPermission entityPermission) {
@@ -380,11 +390,11 @@ public class OrderLineControl
                         """;
             }
 
-            var ps = OrderLineStatusFactory.getInstance().prepareStatement(query);
+            var ps = orderLineStatusFactory.prepareStatement(query);
             
             ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
             
-            orderLineStatus = OrderLineStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            orderLineStatus = orderLineStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

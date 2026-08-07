@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderPriorityControl
@@ -56,6 +57,12 @@ public class OrderPriorityControl
     // --------------------------------------------------------------------------------
     //   Order Priorities
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OrderPriorityFactory orderPriorityFactory;
+
+    @Inject
+    protected OrderPriorityDetailFactory orderPriorityDetailFactory;
 
     public OrderPriority createOrderPriority(OrderType orderType, String orderPriorityName, Integer priority, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -71,12 +78,12 @@ public class OrderPriorityControl
             isDefault = true;
         }
 
-        var orderPriority = OrderPriorityFactory.getInstance().create();
-        var orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriority, orderType, orderPriorityName, priority,
+        var orderPriority = orderPriorityFactory.create();
+        var orderPriorityDetail = orderPriorityDetailFactory.create(orderPriority, orderType, orderPriorityName, priority,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderPriority = orderPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderPriority.getPrimaryKey());
         orderPriority.setActiveDetail(orderPriorityDetail);
         orderPriority.setLastDetail(orderPriorityDetail);
@@ -92,7 +99,7 @@ public class OrderPriorityControl
             final EntityPermission entityPermission) {
         var pk = new OrderPriorityPK(entityInstance.getEntityUniqueId());
 
-        return OrderPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderPriorityFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderPriority getOrderPriorityByEntityInstance(final EntityInstance entityInstance) {
@@ -104,7 +111,7 @@ public class OrderPriorityControl
     }
 
     public OrderPriority getOrderPriorityByPK(OrderPriorityPK pk) {
-        return OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return orderPriorityFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countOrderPriorities(OrderType orderType) {
@@ -142,7 +149,7 @@ public class OrderPriorityControl
     }
 
     public OrderPriority getOrderPriorityByName(OrderType orderType, String orderPriorityName, EntityPermission entityPermission) {
-        return OrderPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getOrderPriorityByNameQueries,
+        return orderPriorityFactory.getEntityFromQuery(entityPermission, getOrderPriorityByNameQueries,
                 orderType, orderPriorityName);
     }
 
@@ -186,7 +193,7 @@ public class OrderPriorityControl
     }
 
     public OrderPriority getDefaultOrderPriority(OrderType orderType, EntityPermission entityPermission) {
-        return OrderPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderPriorityQueries,
+        return orderPriorityFactory.getEntityFromQuery(entityPermission, getDefaultOrderPriorityQueries,
                 orderType);
     }
 
@@ -227,7 +234,7 @@ public class OrderPriorityControl
     }
 
     private List<OrderPriority> getOrderPriorities(OrderType orderType, EntityPermission entityPermission) {
-        return OrderPriorityFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderPrioritiesQueries,
+        return orderPriorityFactory.getEntitiesFromQuery(entityPermission, getOrderPrioritiesQueries,
                 orderType);
     }
 
@@ -295,7 +302,7 @@ public class OrderPriorityControl
     private void updateOrderPriorityFromValue(OrderPriorityDetailValue orderPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderPriorityDetailValue.hasBeenModified()) {
-            var orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPriority = orderPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderPriorityDetailValue.getOrderPriorityPK());
             var orderPriorityDetail = orderPriority.getActiveDetailForUpdate();
 
@@ -326,7 +333,7 @@ public class OrderPriorityControl
                 }
             }
 
-            orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriorityPK, orderTypePK, orderPriorityName, priority, isDefault,
+            orderPriorityDetail = orderPriorityDetailFactory.create(orderPriorityPK, orderTypePK, orderPriorityName, priority, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderPriority.setActiveDetail(orderPriorityDetail);
@@ -373,8 +380,11 @@ public class OrderPriorityControl
     //   Order Priority Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderPriorityDescriptionFactory orderPriorityDescriptionFactory;
+
     public OrderPriorityDescription createOrderPriorityDescription(OrderPriority orderPriority, Language language, String description, BasePK createdBy) {
-        var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
+        var orderPriorityDescription = orderPriorityDescriptionFactory.create(orderPriority, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -404,7 +414,7 @@ public class OrderPriorityControl
     }
 
     private OrderPriorityDescription getOrderPriorityDescription(OrderPriority orderPriority, Language language, EntityPermission entityPermission) {
-        return OrderPriorityDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderPriorityDescriptionQueries,
+        return orderPriorityDescriptionFactory.getEntityFromQuery(entityPermission, getOrderPriorityDescriptionQueries,
                 orderPriority, language, Session.MAX_TIME);
     }
 
@@ -447,7 +457,7 @@ public class OrderPriorityControl
     }
 
     private List<OrderPriorityDescription> getOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority, EntityPermission entityPermission) {
-        return OrderPriorityDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderPriorityDescriptionsByOrderPriorityQueries,
+        return orderPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderPriorityDescriptionsByOrderPriorityQueries,
                 orderPriority, Session.MAX_TIME);
     }
 
@@ -493,7 +503,7 @@ public class OrderPriorityControl
 
     public void updateOrderPriorityDescriptionFromValue(OrderPriorityDescriptionValue orderPriorityDescriptionValue, BasePK updatedBy) {
         if(orderPriorityDescriptionValue.hasBeenModified()) {
-            var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPriorityDescription = orderPriorityDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderPriorityDescriptionValue.getPrimaryKey());
 
             orderPriorityDescription.setThruTime(session.getStartTime());
@@ -503,7 +513,7 @@ public class OrderPriorityControl
             var language = orderPriorityDescription.getLanguage();
             var description = orderPriorityDescriptionValue.getDescription();
 
-            orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
+            orderPriorityDescription = orderPriorityDescriptionFactory.create(orderPriority, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

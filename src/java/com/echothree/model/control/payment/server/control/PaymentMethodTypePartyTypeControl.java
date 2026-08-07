@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentMethodTypePartyTypeControl
@@ -53,6 +54,12 @@ public class PaymentMethodTypePartyTypeControl
     // --------------------------------------------------------------------------------
     //   Payment Method Type Party Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected PaymentMethodTypePartyTypeFactory paymentMethodTypePartyTypeFactory;
+
+    @Inject
+    protected PaymentMethodTypePartyTypeDetailFactory paymentMethodTypePartyTypeDetailFactory;
 
     public PaymentMethodTypePartyType createPaymentMethodTypePartyType(final PaymentMethodType paymentMethodType,
             final PartyType partyType, final Workflow partyPaymentMethodWorkflow, final Workflow partyContactMechanismWorkflow,
@@ -69,13 +76,13 @@ public class PaymentMethodTypePartyTypeControl
             isDefault = true;
         }
 
-        var paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().create();
-        var paymentMethodTypePartyTypeDetail = PaymentMethodTypePartyTypeDetailFactory.getInstance().create(
+        var paymentMethodTypePartyType = paymentMethodTypePartyTypeFactory.create();
+        var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyTypeDetailFactory.create(
                 paymentMethodTypePartyType, paymentMethodType, partyType, partyPaymentMethodWorkflow,
                 partyContactMechanismWorkflow, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentMethodTypePartyType.getPrimaryKey());
+        paymentMethodTypePartyType = paymentMethodTypePartyTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentMethodTypePartyType.getPrimaryKey());
         paymentMethodTypePartyType.setActiveDetail(paymentMethodTypePartyTypeDetail);
         paymentMethodTypePartyType.setLastDetail(paymentMethodTypePartyTypeDetail);
         paymentMethodTypePartyType.store();
@@ -90,7 +97,7 @@ public class PaymentMethodTypePartyTypeControl
             final EntityPermission entityPermission) {
         var pk = new PaymentMethodTypePartyTypePK(entityInstance.getEntityUniqueId());
 
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return paymentMethodTypePartyTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PaymentMethodTypePartyType getPaymentMethodTypePartyTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -120,7 +127,7 @@ public class PaymentMethodTypePartyTypeControl
 
     public PaymentMethodTypePartyType getPaymentMethodTypePartyType(final PaymentMethodType paymentMethodType,
             final PartyType partyType, final EntityPermission entityPermission) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentMethodTypePartyTypeQueries,
+        return paymentMethodTypePartyTypeFactory.getEntityFromQuery(entityPermission, getPaymentMethodTypePartyTypeQueries,
                 paymentMethodType, partyType);
     }
 
@@ -162,7 +169,7 @@ public class PaymentMethodTypePartyTypeControl
 
     public PaymentMethodTypePartyType getDefaultPaymentMethodTypePartyType(final PaymentMethodType paymentMethodType,
             final EntityPermission entityPermission) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentMethodTypePartyTypeQueries,
+        return paymentMethodTypePartyTypeFactory.getEntityFromQuery(entityPermission, getDefaultPaymentMethodTypePartyTypeQueries,
                 paymentMethodType);
     }
 
@@ -199,7 +206,7 @@ public class PaymentMethodTypePartyTypeControl
             """);
 
     private List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPaymentMethodType(final PaymentMethodType paymentMethodType, final EntityPermission entityPermission) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries,
+        return paymentMethodTypePartyTypeFactory.getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries,
                 paymentMethodType);
     }
 
@@ -232,7 +239,7 @@ public class PaymentMethodTypePartyTypeControl
             """);
 
     private List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPartyType(final PartyType partyType, final EntityPermission entityPermission) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPartyTypeQueries,
+        return paymentMethodTypePartyTypeFactory.getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPartyTypeQueries,
                 partyType);
     }
 
@@ -309,7 +316,7 @@ public class PaymentMethodTypePartyTypeControl
     private void updatePaymentMethodTypePartyTypeFromValue(final PaymentMethodTypePartyTypeDetailValue paymentMethodTypePartyTypeDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(paymentMethodTypePartyTypeDetailValue.hasBeenModified()) {
-            var paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentMethodTypePartyType = paymentMethodTypePartyTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     paymentMethodTypePartyTypeDetailValue.getPaymentMethodTypePartyTypePK());
             var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getActiveDetailForUpdate();
 
@@ -342,7 +349,7 @@ public class PaymentMethodTypePartyTypeControl
                 }
             }
 
-            paymentMethodTypePartyTypeDetail = PaymentMethodTypePartyTypeDetailFactory.getInstance().create(paymentMethodTypePartyTypePK,
+            paymentMethodTypePartyTypeDetail = paymentMethodTypePartyTypeDetailFactory.create(paymentMethodTypePartyTypePK,
                     paymentMethodTypePK, partyTypePK, partyPaymentMethodWorkflowPK, partyContactMechanismWorkflowPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 

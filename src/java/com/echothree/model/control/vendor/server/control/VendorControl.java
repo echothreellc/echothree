@@ -145,7 +145,13 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Vendor Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected VendorTypeFactory vendorTypeFactory;
+
+    @Inject
+    protected VendorTypeDetailFactory vendorTypeDetailFactory;
+
     public VendorType createVendorType(String vendorTypeName, Term defaultTerm, FreeOnBoard defaultFreeOnBoard,
             CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy,
             GlAccount defaultApGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders, Boolean defaultAllowSubstitutions,
@@ -163,15 +169,15 @@ public class VendorControl
             isDefault = true;
         }
 
-        var vendorType = VendorTypeFactory.getInstance().create();
-        var vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorType, vendorTypeName, defaultTerm,
+        var vendorType = vendorTypeFactory.create();
+        var vendorTypeDetail = vendorTypeDetailFactory.create(vendorType, vendorTypeName, defaultTerm,
                 defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount,
                 defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                 defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        vendorType = VendorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        vendorType = vendorTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 vendorType.getPrimaryKey());
         vendorType.setActiveDetail(vendorTypeDetail);
         vendorType.setLastDetail(vendorTypeDetail);
@@ -195,7 +201,7 @@ public class VendorControl
     public VendorType getVendorTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new VendorTypePK(entityInstance.getEntityUniqueId());
 
-        return VendorTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return vendorTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public VendorType getVendorTypeByEntityInstance(EntityInstance entityInstance) {
@@ -226,9 +232,9 @@ public class VendorControl
                     """;
         }
 
-        var ps = VendorTypeFactory.getInstance().prepareStatement(query);
+        var ps = vendorTypeFactory.prepareStatement(query);
         
-        return VendorTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return vendorTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<VendorType> getVendorTypes() {
@@ -257,9 +263,9 @@ public class VendorControl
                     """;
         }
 
-        var ps = VendorTypeFactory.getInstance().prepareStatement(query);
+        var ps = vendorTypeFactory.prepareStatement(query);
         
-        return VendorTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return vendorTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public VendorType getDefaultVendorType() {
@@ -295,11 +301,11 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorTypeFactory.getInstance().prepareStatement(query);
+            var ps = vendorTypeFactory.prepareStatement(query);
             
             ps.setString(1, vendorTypeName);
             
-            vendorType = VendorTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            vendorType = vendorTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -383,7 +389,7 @@ public class VendorControl
     private void updateVendorTypeFromValue(VendorTypeDetailValue vendorTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(vendorTypeDetailValue.hasBeenModified()) {
-            var vendorType = VendorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorType = vendorTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorTypeDetailValue.getVendorTypePK());
             var vendorTypeDetail = vendorType.getActiveDetailForUpdate();
             
@@ -423,7 +429,7 @@ public class VendorControl
                 }
             }
             
-            vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorTypePK, vendorTypeName, termPK,
+            vendorTypeDetail = vendorTypeDetailFactory.create(vendorTypePK, vendorTypeName, termPK,
                     defaultFreeOnBoardPK, defaultCancellationPolicyPK, defaultReturnPolicyPK, defaultApGlAccountPK,
                     defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
@@ -471,10 +477,13 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Vendor Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected VendorTypeDescriptionFactory vendorTypeDescriptionFactory;
+
     public VendorTypeDescription createVendorTypeDescription(VendorType vendorType, Language language, String description,
             BasePK createdBy) {
-        var vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType,
+        var vendorTypeDescription = vendorTypeDescriptionFactory.create(vendorType,
                 language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -505,13 +514,13 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = vendorTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, vendorType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            vendorTypeDescription = vendorTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -558,12 +567,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = vendorTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, vendorType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendorTypeDescriptions = VendorTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendorTypeDescriptions = vendorTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -618,7 +627,7 @@ public class VendorControl
     
     public void updateVendorTypeDescriptionFromValue(VendorTypeDescriptionValue vendorTypeDescriptionValue, BasePK updatedBy) {
         if(vendorTypeDescriptionValue.hasBeenModified()) {
-            var vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorTypeDescription = vendorTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorTypeDescriptionValue.getPrimaryKey());
             
             vendorTypeDescription.setThruTime(session.getStartTime());
@@ -628,7 +637,7 @@ public class VendorControl
             var language = vendorTypeDescription.getLanguage();
             var description = vendorTypeDescriptionValue.getDescription();
             
-            vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType, language,
+            vendorTypeDescription = vendorTypeDescriptionFactory.create(vendorType, language,
                     description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(vendorType.getPrimaryKey(), EventTypes.MODIFY, vendorTypeDescription.getPrimaryKey(),
@@ -654,14 +663,17 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Vendors
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected VendorFactory vendorFactory;
+
     public Vendor createVendor(Party party, String vendorName, VendorType vendorType, Integer minimumPurchaseOrderLines,
             Integer maximumPurchaseOrderLines, Long minimumPurchaseOrderAmount, Long maximumPurchaseOrderAmount,
             Boolean useItemPurchasingCategories, ItemAliasType defaultItemAliasType, CancellationPolicy cancellationPolicy,
             ReturnPolicy returnPolicy, GlAccount apGlAccount, Boolean holdUntilComplete, Boolean allowBackorders,
             Boolean allowSubstitutions, Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
             String referenceValidationPattern, Selector vendorItemSelector, Filter vendorItemCostFilter, BasePK createdBy) {
-        var vendor = VendorFactory.getInstance().create(party, vendorName, vendorType, minimumPurchaseOrderLines,
+        var vendor = vendorFactory.create(party, vendorName, vendorType, minimumPurchaseOrderLines,
                 maximumPurchaseOrderLines, minimumPurchaseOrderAmount, maximumPurchaseOrderAmount,
                 useItemPurchasingCategories, defaultItemAliasType, cancellationPolicy, returnPolicy,
                 apGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments,
@@ -716,11 +728,11 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorFactory.getInstance().prepareStatement(query);
+            var ps = vendorFactory.prepareStatement(query);
 
             ps.setLong(1, Session.MAX_TIME);
 
-            vendors = VendorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendors = vendorFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -757,12 +769,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorFactory.getInstance().prepareStatement(query);
+            var ps = vendorFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendor = VendorFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            vendor = vendorFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -799,12 +811,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorFactory.getInstance().prepareStatement(query);
+            var ps = vendorFactory.prepareStatement(query);
             
             ps.setString(1, vendorName);
             ps.setLong(2, Session.MAX_TIME);
             
-            vendor = VendorFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            vendor = vendorFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -842,12 +854,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorFactory.getInstance().prepareStatement(query);
+            var ps = vendorFactory.prepareStatement(query);
             
             ps.setLong(1, defaultItemAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendors = VendorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendors = vendorFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -929,7 +941,7 @@ public class VendorControl
 
     public void updateVendorFromValue(VendorValue vendorValue, BasePK updatedBy) {
         if(vendorValue.hasBeenModified()) {
-            var vendor = VendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, vendorValue.getPrimaryKey());
+            var vendor = vendorFactory.getEntityFromPK(EntityPermission.READ_WRITE, vendorValue.getPrimaryKey());
             
             vendor.setThruTime(session.getStartTime());
             vendor.store();
@@ -956,7 +968,7 @@ public class VendorControl
             var vendorItemSelectorPK = vendorValue.getVendorItemSelectorPK();
             var vendorItemCostFilterPK = vendorValue.getVendorItemCostFilterPK();
             
-            vendor = VendorFactory.getInstance().create(partyPK, vendorName, vendorTypePK, minimumPurchaseOrderLines, maximumPurchaseOrderLines,
+            vendor = vendorFactory.create(partyPK, vendorName, vendorTypePK, minimumPurchaseOrderLines, maximumPurchaseOrderLines,
                     minimumPurchaseOrderAmount, maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasTypePK, cancellationPolicyPK,
                     returnPolicyPK, apGlAccountPK, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference,
                     allowReferenceDuplicates, referenceValidationPattern, vendorItemSelectorPK, vendorItemCostFilterPK, session.getStartTime(),
@@ -969,16 +981,22 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Vendor Items
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected VendorItemFactory vendorItemFactory;
+
+    @Inject
+    protected VendorItemDetailFactory vendorItemDetailFactory;
+
     public VendorItem createVendorItem(Item item, Party vendorParty, String vendorItemName, String description, Integer priority,
             CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, BasePK createdBy) {
-        var vendorItem = VendorItemFactory.getInstance().create();
-        var vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItem, item, vendorParty,
+        var vendorItem = vendorItemFactory.create();
+        var vendorItemDetail = vendorItemDetailFactory.create(vendorItem, item, vendorParty,
                 vendorItemName, description, priority, cancellationPolicy, returnPolicy, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        vendorItem = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, vendorItem.getPrimaryKey());
+        vendorItem = vendorItemFactory.getEntityFromPK(EntityPermission.READ_WRITE, vendorItem.getPrimaryKey());
         vendorItem.setActiveDetail(vendorItemDetail);
         vendorItem.setLastDetail(vendorItemDetail);
         vendorItem.store();
@@ -1036,7 +1054,7 @@ public class VendorControl
     public VendorItem getVendorItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new VendorItemPK(entityInstance.getEntityUniqueId());
 
-        return VendorItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return vendorItemFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public VendorItem getVendorItemByEntityInstance(EntityInstance entityInstance) {
@@ -1070,12 +1088,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorItemFactory.getInstance().prepareStatement(query);
+            var ps = vendorItemFactory.prepareStatement(query);
             
             ps.setLong(1, vendorParty.getPrimaryKey().getEntityId());
             ps.setString(2, vendorItemName);
             
-            vendorItem = VendorItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            vendorItem = vendorItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1123,12 +1141,12 @@ public class VendorControl
                         FOR UPDATE
                         """;
             }
-            var ps = VendorItemFactory.getInstance().prepareStatement(query);
+            var ps = vendorItemFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendorItems = VendorItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendorItems = vendorItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1168,11 +1186,11 @@ public class VendorControl
                         FOR UPDATE
                         """;
             }
-            var ps = VendorItemFactory.getInstance().prepareStatement(query);
+            var ps = vendorItemFactory.prepareStatement(query);
             
             ps.setLong(1, vendorParty.getPrimaryKey().getEntityId());
             
-            vendorItems = VendorItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendorItems = vendorItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1214,14 +1232,14 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorItemFactory.getInstance().prepareStatement(query);
+            var ps = vendorItemFactory.prepareStatement(query);
             
             ps.setString(1, vendorItemName);
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 ps.setLong(2, Session.MAX_TIME);
             }
             
-            vendorItems = VendorItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendorItems = vendorItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1295,7 +1313,7 @@ public class VendorControl
     
     public void updateVendorItemFromValue(VendorItemDetailValue vendorItemDetailValue, BasePK updatedBy) {
         if(vendorItemDetailValue.hasBeenModified()) {
-            var vendorItem = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorItem = vendorItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorItemDetailValue.getVendorItemPK());
             var vendorItemDetail = vendorItem.getActiveDetailForUpdate();
             
@@ -1311,7 +1329,7 @@ public class VendorControl
             var cancellationPolicyPK = vendorItemDetailValue.getCancellationPolicyPK();
             var returnPolicyPK = vendorItemDetailValue.getReturnPolicyPK();
             
-            vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItemPK, itemPK, vendorPartyPK,
+            vendorItemDetail = vendorItemDetailFactory.create(vendorItemPK, itemPK, vendorPartyPK,
                     vendorItemName, description, priority, cancellationPolicyPK, returnPolicyPK, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -1350,10 +1368,13 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Vendor Item Costs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected VendorItemCostFactory vendorItemCostFactory;
+
     public VendorItemCost createVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Long unitCost, BasePK createdBy) {
-        var vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItem, inventoryCondition,
+        var vendorItemCost = vendorItemCostFactory.create(vendorItem, inventoryCondition,
                 unitOfMeasureType, unitCost, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(vendorItem.getPrimaryKey(), EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1395,7 +1416,7 @@ public class VendorControl
     public VendorItemCost getVendorItemCostByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new VendorItemCostPK(entityInstance.getEntityUniqueId());
 
-        return VendorItemCostFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return vendorItemCostFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public VendorItemCost getVendorItemCostByEntityInstance(EntityInstance entityInstance) {
@@ -1430,14 +1451,14 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorItemCostFactory.getInstance().prepareStatement(query);
+            var ps = vendorItemCostFactory.prepareStatement(query);
             
             ps.setLong(1, vendorItem.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            vendorItemCost = VendorItemCostFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            vendorItemCost = vendorItemCostFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1491,12 +1512,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = VendorItemCostFactory.getInstance().prepareStatement(query);
+            var ps = vendorItemCostFactory.prepareStatement(query);
             
             ps.setLong(1, vendorItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendorItemCosts = VendorItemCostFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1516,7 +1537,7 @@ public class VendorControl
         List<VendorItemCost> vendorItemCosts;
         
         try {
-            var ps = VendorItemCostFactory.getInstance().prepareStatement(
+            var ps = vendorItemCostFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM vendoritemcosts
@@ -1527,7 +1548,7 @@ public class VendorControl
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendorItemCosts = VendorItemCostFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1539,7 +1560,7 @@ public class VendorControl
         List<VendorItemCost> vendorItemCosts;
         
         try {
-            var ps = VendorItemCostFactory.getInstance().prepareStatement(
+            var ps = vendorItemCostFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM vendoritemcosts
@@ -1550,7 +1571,7 @@ public class VendorControl
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            vendorItemCosts = VendorItemCostFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1562,7 +1583,7 @@ public class VendorControl
         List<VendorItemCost> vendorItemCosts;
         
         try {
-            var ps = VendorItemCostFactory.getInstance().prepareStatement(
+            var ps = vendorItemCostFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM vendoritems, vendoritemdetails, vendoritemcosts
@@ -1575,7 +1596,7 @@ public class VendorControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            vendorItemCosts = VendorItemCostFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1603,7 +1624,7 @@ public class VendorControl
     
     public void updateVendorItemCostFromValue(VendorItemCostValue vendorItemCostValue, BasePK updatedBy) {
         if(vendorItemCostValue.hasBeenModified()) {
-            var vendorItemCost = VendorItemCostFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorItemCost = vendorItemCostFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorItemCostValue.getPrimaryKey());
             
             vendorItemCost.setThruTime(session.getStartTime());
@@ -1614,7 +1635,7 @@ public class VendorControl
             var unitOfMeasureTypePK = vendorItemCost.getUnitOfMeasureTypePK();
             var unitCost = vendorItemCostValue.getUnitCost();
             
-            vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItemPK, inventoryConditionPK,
+            vendorItemCost = vendorItemCostFactory.create(vendorItemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, unitCost, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(vendorItemPK, EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1652,7 +1673,13 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Item Purchasing Categories
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemPurchasingCategoryFactory itemPurchasingCategoryFactory;
+
+    @Inject
+    protected ItemPurchasingCategoryDetailFactory itemPurchasingCategoryDetailFactory;
+
     public ItemPurchasingCategory createItemPurchasingCategory(String itemPurchasingCategoryName,
             ItemPurchasingCategory parentItemPurchasingCategory, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultItemPurchasingCategory = getDefaultItemPurchasingCategory();
@@ -1667,13 +1694,13 @@ public class VendorControl
             isDefault = true;
         }
 
-        var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().create();
-        var itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(
+        var itemPurchasingCategory = itemPurchasingCategoryFactory.create();
+        var itemPurchasingCategoryDetail = itemPurchasingCategoryDetailFactory.create(
                 itemPurchasingCategory, itemPurchasingCategoryName, parentItemPurchasingCategory, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemPurchasingCategory = itemPurchasingCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemPurchasingCategory.getPrimaryKey());
         itemPurchasingCategory.setActiveDetail(itemPurchasingCategoryDetail);
         itemPurchasingCategory.setLastDetail(itemPurchasingCategoryDetail);
@@ -1697,7 +1724,7 @@ public class VendorControl
     public ItemPurchasingCategory getItemPurchasingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemPurchasingCategoryPK(entityInstance.getEntityUniqueId());
 
-        return ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemPurchasingCategoryFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemPurchasingCategory getItemPurchasingCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -1732,7 +1759,7 @@ public class VendorControl
     }
 
     public ItemPurchasingCategory getItemPurchasingCategoryByName(String itemPurchasingCategoryName, EntityPermission entityPermission) {
-        return ItemPurchasingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getItemPurchasingCategoryByNameQueries, itemPurchasingCategoryName);
+        return itemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, getItemPurchasingCategoryByNameQueries, itemPurchasingCategoryName);
     }
 
     public ItemPurchasingCategory getItemPurchasingCategoryByName(String itemPurchasingCategoryName) {
@@ -1775,7 +1802,7 @@ public class VendorControl
     }
 
     public ItemPurchasingCategory getDefaultItemPurchasingCategory(EntityPermission entityPermission) {
-        return ItemPurchasingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemPurchasingCategoryQueries);
+        return itemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, getDefaultItemPurchasingCategoryQueries);
     }
 
     public ItemPurchasingCategory getDefaultItemPurchasingCategory() {
@@ -1814,7 +1841,7 @@ public class VendorControl
     }
 
     private List<ItemPurchasingCategory> getItemPurchasingCategories(EntityPermission entityPermission) {
-        return ItemPurchasingCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemPurchasingCategoriesQueries);
+        return itemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemPurchasingCategoriesQueries);
     }
 
     public List<ItemPurchasingCategory> getItemPurchasingCategories() {
@@ -1850,7 +1877,7 @@ public class VendorControl
 
     private List<ItemPurchasingCategory> getItemPurchasingCategoriesByParentItemPurchasingCategory(ItemPurchasingCategory parentItemPurchasingCategory,
             EntityPermission entityPermission) {
-        return ItemPurchasingCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemPurchasingCategoriesByParentItemPurchasingCategoryQueries,
+        return itemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemPurchasingCategoriesByParentItemPurchasingCategoryQueries,
                 parentItemPurchasingCategory);
     }
 
@@ -1940,7 +1967,7 @@ public class VendorControl
     private void updateItemPurchasingCategoryFromValue(ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemPurchasingCategoryDetailValue.hasBeenModified()) {
-            var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemPurchasingCategory = itemPurchasingCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemPurchasingCategoryDetailValue.getItemPurchasingCategoryPK());
             var itemPurchasingCategoryDetail = itemPurchasingCategory.getActiveDetailForUpdate();
             
@@ -1969,7 +1996,7 @@ public class VendorControl
                 }
             }
             
-            itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(itemPurchasingCategoryPK,
+            itemPurchasingCategoryDetail = itemPurchasingCategoryDetailFactory.create(itemPurchasingCategoryPK,
                     itemPurchasingCategoryName, parentItemPurchasingCategoryPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -2036,9 +2063,12 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     //   Item Purchasing Category Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemPurchasingCategoryDescriptionFactory itemPurchasingCategoryDescriptionFactory;
+
     public ItemPurchasingCategoryDescription createItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, String description, BasePK createdBy) {
-        var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description, session.getStartTime(),
+        var itemPurchasingCategoryDescription = itemPurchasingCategoryDescriptionFactory.create(itemPurchasingCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2067,13 +2097,13 @@ public class VendorControl
                         """;
             }
 
-            var ps = ItemPurchasingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemPurchasingCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemPurchasingCategoryDescription = itemPurchasingCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2120,12 +2150,12 @@ public class VendorControl
                         """;
             }
 
-            var ps = ItemPurchasingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemPurchasingCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemPurchasingCategoryDescriptions = ItemPurchasingCategoryDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemPurchasingCategoryDescriptions = itemPurchasingCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2175,7 +2205,7 @@ public class VendorControl
     
     public void updateItemPurchasingCategoryDescriptionFromValue(ItemPurchasingCategoryDescriptionValue itemPurchasingCategoryDescriptionValue, BasePK updatedBy) {
         if(itemPurchasingCategoryDescriptionValue.hasBeenModified()) {
-            var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPurchasingCategoryDescriptionValue.getPrimaryKey());
+            var itemPurchasingCategoryDescription = itemPurchasingCategoryDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemPurchasingCategoryDescriptionValue.getPrimaryKey());
             
             itemPurchasingCategoryDescription.setThruTime(session.getStartTime());
             itemPurchasingCategoryDescription.store();
@@ -2184,7 +2214,7 @@ public class VendorControl
             var language = itemPurchasingCategoryDescription.getLanguage();
             var description = itemPurchasingCategoryDescriptionValue.getDescription();
             
-            itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description,
+            itemPurchasingCategoryDescription = itemPurchasingCategoryDescriptionFactory.create(itemPurchasingCategory, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

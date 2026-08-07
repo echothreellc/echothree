@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class MimeTypeControl
@@ -72,15 +73,18 @@ public class MimeTypeControl
     //   Mime Type Usage Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected MimeTypeUsageTypeFactory mimeTypeUsageTypeFactory;
+
     public MimeTypeUsageType createMimeTypeUsageType(String mimeTypeUsageTypeName, Boolean isDefault, Integer sortOrder) {
-        return MimeTypeUsageTypeFactory.getInstance().create(mimeTypeUsageTypeName, isDefault, sortOrder);
+        return mimeTypeUsageTypeFactory.create(mimeTypeUsageTypeName, isDefault, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.MimeTypeUsageType */
     public MimeTypeUsageType getMimeTypeUsageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new MimeTypeUsageTypePK(entityInstance.getEntityUniqueId());
 
-        return MimeTypeUsageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return mimeTypeUsageTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public MimeTypeUsageType getMimeTypeUsageTypeByEntityInstance(EntityInstance entityInstance) {
@@ -100,7 +104,7 @@ public class MimeTypeControl
     }
 
     public List<MimeTypeUsageType> getMimeTypeUsageTypes() {
-        var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
+        var ps = mimeTypeUsageTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM mimetypeusagetypes
@@ -108,14 +112,14 @@ public class MimeTypeControl
                 _LIMIT_
                 """);
 
-        return MimeTypeUsageTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return mimeTypeUsageTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public MimeTypeUsageType getMimeTypeUsageTypeByName(String mimeTypeUsageTypeName) {
         MimeTypeUsageType mimeTypeUsageType;
 
         try {
-            var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
+            var ps = mimeTypeUsageTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM mimetypeusagetypes
@@ -124,7 +128,7 @@ public class MimeTypeControl
 
             ps.setString(1, mimeTypeUsageTypeName);
 
-            mimeTypeUsageType = MimeTypeUsageTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            mimeTypeUsageType = mimeTypeUsageTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -187,15 +191,18 @@ public class MimeTypeControl
     //   Mime Type Usage Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected MimeTypeUsageTypeDescriptionFactory mimeTypeUsageTypeDescriptionFactory;
+
     public MimeTypeUsageTypeDescription createMimeTypeUsageTypeDescription(MimeTypeUsageType mimeTypeUsageType, Language language, String description) {
-        return MimeTypeUsageTypeDescriptionFactory.getInstance().create(mimeTypeUsageType, language, description);
+        return mimeTypeUsageTypeDescriptionFactory.create(mimeTypeUsageType, language, description);
     }
 
     public MimeTypeUsageTypeDescription getMimeTypeUsageTypeDescription(MimeTypeUsageType mimeTypeUsageType, Language language) {
         MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription;
 
         try {
-            var ps = MimeTypeUsageTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = mimeTypeUsageTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM mimetypeusagetypedescriptions
@@ -205,7 +212,7 @@ public class MimeTypeControl
             ps.setLong(1, mimeTypeUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
 
-            mimeTypeUsageTypeDescription = MimeTypeUsageTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            mimeTypeUsageTypeDescription = mimeTypeUsageTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -234,6 +241,12 @@ public class MimeTypeControl
     //   Mime Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected MimeTypeFactory mimeTypeFactory;
+
+    @Inject
+    protected MimeTypeDetailFactory mimeTypeDetailFactory;
+
     public MimeType createMimeType(String mimeTypeName, EntityAttributeType entityAttributeType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultMimeType = getDefaultMimeType();
         var defaultFound = defaultMimeType != null;
@@ -247,12 +260,12 @@ public class MimeTypeControl
             isDefault = true;
         }
 
-        var mimeType = MimeTypeFactory.getInstance().create();
-        var mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeType, mimeTypeName, entityAttributeType, isDefault, sortOrder,
+        var mimeType = mimeTypeFactory.create();
+        var mimeTypeDetail = mimeTypeDetailFactory.create(mimeType, mimeTypeName, entityAttributeType, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        mimeType = mimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 mimeType.getPrimaryKey());
         mimeType.setActiveDetail(mimeTypeDetail);
         mimeType.setLastDetail(mimeTypeDetail);
@@ -267,7 +280,7 @@ public class MimeTypeControl
     public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new MimeTypePK(entityInstance.getEntityUniqueId());
 
-        return MimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return mimeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -320,7 +333,7 @@ public class MimeTypeControl
     }
 
     private MimeType getMimeTypeByName(String mimeTypeName, EntityPermission entityPermission) {
-        return MimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getMimeTypeByNameQueries, mimeTypeName);
+        return mimeTypeFactory.getEntityFromQuery(entityPermission, getMimeTypeByNameQueries, mimeTypeName);
     }
 
     public MimeType getMimeTypeByName(String mimeTypeName) {
@@ -363,7 +376,7 @@ public class MimeTypeControl
     }
 
     private MimeType getDefaultMimeType(EntityPermission entityPermission) {
-        return MimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultMimeTypeQueries);
+        return mimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultMimeTypeQueries);
     }
 
     public MimeType getDefaultMimeType() {
@@ -402,7 +415,7 @@ public class MimeTypeControl
     }
 
     private List<MimeType> getMimeTypes(EntityPermission entityPermission) {
-        return MimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getMimeTypesQueries);
+        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, getMimeTypesQueries);
     }
 
     public List<MimeType> getMimeTypes() {
@@ -439,7 +452,7 @@ public class MimeTypeControl
     }
 
     private List<MimeType> getMimeTypesByEntityAttributeType(EntityAttributeType entityAttributeType, EntityPermission entityPermission) {
-        return MimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getMimeTypesByEntityAttributeTypeQueries,
+        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, getMimeTypesByEntityAttributeTypeQueries,
                 entityAttributeType);
     }
 
@@ -477,7 +490,7 @@ public class MimeTypeControl
     }
 
     private List<MimeType> getMimeTypesByMimeTypeUsageType(MimeTypeUsageType mimeTypeUsageType, EntityPermission entityPermission) {
-        return MimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getMimeTypesByMimeTypeUsageTypeQueries,
+        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, getMimeTypesByMimeTypeUsageTypeQueries,
                 mimeTypeUsageType);
     }
 
@@ -589,7 +602,7 @@ public class MimeTypeControl
     private void updateMimeTypeFromValue(MimeTypeDetailValue mimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(mimeTypeDetailValue.hasBeenModified()) {
-            var mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var mimeType = mimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     mimeTypeDetailValue.getMimeTypePK());
             var mimeTypeDetail = mimeType.getActiveDetailForUpdate();
 
@@ -618,7 +631,7 @@ public class MimeTypeControl
                 }
             }
 
-            mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeTypePK, mimeTypeName, entityAttributeTypePK, isDefault, sortOrder,
+            mimeTypeDetail = mimeTypeDetailFactory.create(mimeTypePK, mimeTypeName, entityAttributeTypePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             mimeType.setActiveDetail(mimeTypeDetail);
@@ -664,9 +677,12 @@ public class MimeTypeControl
     //   Mime Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected MimeTypeDescriptionFactory mimeTypeDescriptionFactory;
+
     public MimeTypeDescription createMimeTypeDescription(MimeType mimeType,
             Language language, String description, BasePK createdBy) {
-        var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType,
+        var mimeTypeDescription = mimeTypeDescriptionFactory.create(mimeType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -697,7 +713,7 @@ public class MimeTypeControl
 
     private MimeTypeDescription getMimeTypeDescription(MimeType mimeType,
             Language language, EntityPermission entityPermission) {
-        return MimeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getMimeTypeDescriptionQueries,
+        return mimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getMimeTypeDescriptionQueries,
                 mimeType, language, Session.MAX_TIME);
     }
 
@@ -742,7 +758,7 @@ public class MimeTypeControl
 
     private List<MimeTypeDescription> getMimeTypeDescriptionsByMimeType(MimeType mimeType,
             EntityPermission entityPermission) {
-        return MimeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getMimeTypeDescriptionsByMimeTypeQueries,
+        return mimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getMimeTypeDescriptionsByMimeTypeQueries,
                 mimeType, Session.MAX_TIME);
     }
 
@@ -788,7 +804,7 @@ public class MimeTypeControl
 
     public void updateMimeTypeDescriptionFromValue(MimeTypeDescriptionValue mimeTypeDescriptionValue, BasePK updatedBy) {
         if(mimeTypeDescriptionValue.hasBeenModified()) {
-            var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var mimeTypeDescription = mimeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     mimeTypeDescriptionValue.getPrimaryKey());
 
             mimeTypeDescription.setThruTime(session.getStartTime());
@@ -798,7 +814,7 @@ public class MimeTypeControl
             var language = mimeTypeDescription.getLanguage();
             var description = mimeTypeDescriptionValue.getDescription();
 
-            mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType, language, description,
+            mimeTypeDescription = mimeTypeDescriptionFactory.create(mimeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -824,8 +840,11 @@ public class MimeTypeControl
     //   Mime Type Usages
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected MimeTypeUsageFactory mimeTypeUsageFactory;
+
     public MimeTypeUsage createMimeTypeUsage(MimeType mimeType, MimeTypeUsageType mimeTypeUsageType) {
-        return MimeTypeUsageFactory.getInstance().create(mimeType, mimeTypeUsageType);
+        return mimeTypeUsageFactory.create(mimeType, mimeTypeUsageType);
     }
 
     public long countMimeTypeUsagesByMimeType(MimeType mimeType) {
@@ -840,7 +859,7 @@ public class MimeTypeControl
         MimeTypeUsage mimeTypeUsage;
 
         try {
-            var ps = MimeTypeUsageFactory.getInstance().prepareStatement(
+            var ps = mimeTypeUsageFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM mimetypeusages
@@ -850,7 +869,7 @@ public class MimeTypeControl
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
             ps.setLong(2, mimeTypeUsageType.getPrimaryKey().getEntityId());
 
-            mimeTypeUsage = MimeTypeUsageFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            mimeTypeUsage = mimeTypeUsageFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -862,7 +881,7 @@ public class MimeTypeControl
         List<MimeTypeUsage> mimeTypeUsages;
 
         try {
-            var ps = MimeTypeUsageFactory.getInstance().prepareStatement(
+            var ps = mimeTypeUsageFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM mimetypeusages, mimetypes, mimetypedetails
@@ -874,7 +893,7 @@ public class MimeTypeControl
 
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
 
-            mimeTypeUsages = MimeTypeUsageFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            mimeTypeUsages = mimeTypeUsageFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -904,8 +923,11 @@ public class MimeTypeControl
     //   Mime Type File Extensions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected MimeTypeFileExtensionFactory mimeTypeFileExtensionFactory;
+
     public MimeTypeFileExtension createMimeTypeFileExtension(MimeType mimeType, String fileExtension, Boolean isDefault) {
-        return MimeTypeFileExtensionFactory.getInstance().create(mimeType, fileExtension, isDefault);
+        return mimeTypeFileExtensionFactory.create(mimeType, fileExtension, isDefault);
     }
 
     public long countMimeTypeFileExtensions() {
@@ -927,7 +949,7 @@ public class MimeTypeControl
         MimeTypeFileExtension mimeTypeFileExtension;
 
         try {
-            var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+            var ps = mimeTypeFileExtensionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM mimetypefileextensions
@@ -936,7 +958,7 @@ public class MimeTypeControl
 
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
 
-            mimeTypeFileExtension = MimeTypeFileExtensionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            mimeTypeFileExtension = mimeTypeFileExtensionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -948,7 +970,7 @@ public class MimeTypeControl
         MimeTypeFileExtension mimeTypeFileExtension;
 
         try {
-            var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+            var ps = mimeTypeFileExtensionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM mimetypefileextensions
@@ -957,7 +979,7 @@ public class MimeTypeControl
 
             ps.setString(1, fileExtension);
 
-            mimeTypeFileExtension = MimeTypeFileExtensionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            mimeTypeFileExtension = mimeTypeFileExtensionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -966,7 +988,7 @@ public class MimeTypeControl
     }
 
     public List<MimeTypeFileExtension> getMimeTypeFileExtensions() {
-        var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+        var ps = mimeTypeFileExtensionFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM mimetypefileextensions
@@ -974,11 +996,11 @@ public class MimeTypeControl
                 _LIMIT_
                 """);
 
-        return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return mimeTypeFileExtensionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public List<MimeTypeFileExtension> getMimeTypeFileExtensionsByMimeType(MimeType mimeType) {
-        var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
+        var ps = mimeTypeFileExtensionFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM mimetypefileextensions
@@ -987,7 +1009,7 @@ public class MimeTypeControl
                 _LIMIT_
                 """);
 
-        return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
+        return mimeTypeFileExtensionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 mimeType);
     }
 

@@ -190,6 +190,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class AccountingControl
@@ -203,7 +204,10 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     // Currencies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CurrencyFactory currencyFactory;
+
     public Currency createCurrency(String currencyIsoName, String symbol, SymbolPosition symbolPosition, Boolean symbolOnListStart,
             Boolean symbolOnListMember, Boolean symbolOnSubtotal, Boolean symbolOnTotal, String groupingSeparator, Integer groupingSize,
             String fractionSeparator, Integer defaultFractionDigits, Integer priceUnitFractionDigits, Integer priceLineFractionDigits,
@@ -217,7 +221,7 @@ public class AccountingControl
             defaultCurrency.setIsDefault(false);
         }
 
-        var currency = CurrencyFactory.getInstance().create(currencyIsoName, symbol, symbolPosition, symbolOnListStart,
+        var currency = currencyFactory.create(currencyIsoName, symbol, symbolPosition, symbolOnListStart,
                 symbolOnListMember, symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator,
                 defaultFractionDigits, priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits,
                 costLineFractionDigits, minusSign, isDefault, sortOrder);
@@ -231,7 +235,7 @@ public class AccountingControl
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CurrencyPK(entityInstance.getEntityUniqueId());
 
-        return CurrencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return currencyFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance) {
@@ -251,7 +255,7 @@ public class AccountingControl
     }
 
     public List<Currency> getCurrencies() {
-        var ps = CurrencyFactory.getInstance().prepareStatement(
+        var ps = currencyFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM currencies
@@ -259,7 +263,7 @@ public class AccountingControl
                 _LIMIT_
                 """);
         
-        return CurrencyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return currencyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     private Currency getDefaultCurrency(EntityPermission entityPermission) {
@@ -280,9 +284,9 @@ public class AccountingControl
                     """;
         }
 
-        var ps = CurrencyFactory.getInstance().prepareStatement(query);
+        var ps = currencyFactory.prepareStatement(query);
         
-        return CurrencyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return currencyFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public Currency getDefaultCurrency() {
@@ -314,11 +318,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = CurrencyFactory.getInstance().prepareStatement(query);
+            var ps = currencyFactory.prepareStatement(query);
             
             ps.setString(1, currencyIsoName);
             
-            currency = CurrencyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            currency = currencyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -390,9 +394,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     // Currency Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CurrencyDescriptionFactory currencyDescriptionFactory;
+
     public CurrencyDescription createCurrencyDescription(Currency currency, Language language, String description, BasePK createdBy) {
-        var currencyDescription = CurrencyDescriptionFactory.getInstance().create(currency, language, description);
+        var currencyDescription = currencyDescriptionFactory.create(currency, language, description);
         
         sendEvent(currency.getPrimaryKey(), EventTypes.MODIFY, currencyDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -403,7 +410,7 @@ public class AccountingControl
         CurrencyDescription currencyDescription;
         
         try {
-            var ps = CurrencyDescriptionFactory.getInstance().prepareStatement(
+            var ps = currencyDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM currencydescriptions
@@ -413,7 +420,7 @@ public class AccountingControl
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            currencyDescription = CurrencyDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            currencyDescription = currencyDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -443,12 +450,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = CurrencyDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = currencyDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            currencyDescriptions = CurrencyDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            currencyDescriptions = currencyDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -495,7 +502,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Item Accounting Categories
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemAccountingCategoryFactory itemAccountingCategoryFactory;
+
+    @Inject
+    protected ItemAccountingCategoryDetailFactory itemAccountingCategoryDetailFactory;
+
     public ItemAccountingCategory createItemAccountingCategory(String itemAccountingCategoryName,
             ItemAccountingCategory parentItemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, Boolean isDefault,
@@ -512,14 +525,14 @@ public class AccountingControl
             isDefault = true;
         }
 
-        var itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().create();
-        var itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(
+        var itemAccountingCategory = itemAccountingCategoryFactory.create();
+        var itemAccountingCategoryDetail = itemAccountingCategoryDetailFactory.create(
                 itemAccountingCategory, itemAccountingCategoryName, parentItemAccountingCategory, inventoryGlAccount,
                 salesGlAccount, returnsGlAccount, cogsGlAccount, returnsCogsGlAccount, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemAccountingCategory = itemAccountingCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemAccountingCategory.getPrimaryKey());
         itemAccountingCategory.setActiveDetail(itemAccountingCategoryDetail);
         itemAccountingCategory.setLastDetail(itemAccountingCategoryDetail);
@@ -534,7 +547,7 @@ public class AccountingControl
     public ItemAccountingCategory getItemAccountingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemAccountingCategoryPK(entityInstance.getEntityUniqueId());
 
-        return ItemAccountingCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return itemAccountingCategoryFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ItemAccountingCategory getItemAccountingCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -577,7 +590,7 @@ public class AccountingControl
     }
 
     public ItemAccountingCategory getItemAccountingCategoryByName(String itemAccountingCategoryName, EntityPermission entityPermission) {
-        return ItemAccountingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getItemAccountingCategoryByNameQueries, itemAccountingCategoryName);
+        return itemAccountingCategoryFactory.getEntityFromQuery(entityPermission, getItemAccountingCategoryByNameQueries, itemAccountingCategoryName);
     }
 
     public ItemAccountingCategory getItemAccountingCategoryByName(String itemAccountingCategoryName) {
@@ -620,7 +633,7 @@ public class AccountingControl
     }
 
     public ItemAccountingCategory getDefaultItemAccountingCategory(EntityPermission entityPermission) {
-        return ItemAccountingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemAccountingCategoryQueries);
+        return itemAccountingCategoryFactory.getEntityFromQuery(entityPermission, getDefaultItemAccountingCategoryQueries);
     }
 
     public ItemAccountingCategory getDefaultItemAccountingCategory() {
@@ -659,7 +672,7 @@ public class AccountingControl
     }
 
     private List<ItemAccountingCategory> getItemAccountingCategories(EntityPermission entityPermission) {
-        return ItemAccountingCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemAccountingCategoriesQueries);
+        return itemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemAccountingCategoriesQueries);
     }
 
     public List<ItemAccountingCategory> getItemAccountingCategories() {
@@ -695,7 +708,7 @@ public class AccountingControl
 
     private List<ItemAccountingCategory> getItemAccountingCategoriesByParentItemAccountingCategory(ItemAccountingCategory parentItemAccountingCategory,
             EntityPermission entityPermission) {
-        return ItemAccountingCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemAccountingCategoriesByParentItemAccountingCategoryQueries,
+        return itemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemAccountingCategoriesByParentItemAccountingCategoryQueries,
                 parentItemAccountingCategory);
     }
 
@@ -785,7 +798,7 @@ public class AccountingControl
     private void updateItemAccountingCategoryFromValue(ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(itemAccountingCategoryDetailValue.hasBeenModified()) {
-            var itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemAccountingCategory = itemAccountingCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemAccountingCategoryDetailValue.getItemAccountingCategoryPK());
             var itemAccountingCategoryDetail = itemAccountingCategory.getActiveDetailForUpdate();
             
@@ -819,7 +832,7 @@ public class AccountingControl
                 }
             }
             
-            itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(itemAccountingCategoryPK,
+            itemAccountingCategoryDetail = itemAccountingCategoryDetailFactory.create(itemAccountingCategoryPK,
                     itemAccountingCategoryName, parentItemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK,
                     returnsGlAccountPK, cogsGlAccountPK, returnsCogsGlAccountPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
@@ -889,10 +902,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Item Accounting Category Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ItemAccountingCategoryDescriptionFactory itemAccountingCategoryDescriptionFactory;
+
     public ItemAccountingCategoryDescription createItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, String description, BasePK createdBy) {
-        var itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description, session.getStartTime(),
+        var itemAccountingCategoryDescription = itemAccountingCategoryDescriptionFactory.create(itemAccountingCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -922,13 +938,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemAccountingCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            itemAccountingCategoryDescription = itemAccountingCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -977,12 +993,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = itemAccountingCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            itemAccountingCategoryDescriptions = ItemAccountingCategoryDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            itemAccountingCategoryDescriptions = itemAccountingCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1035,7 +1051,7 @@ public class AccountingControl
     public void updateItemAccountingCategoryDescriptionFromValue(ItemAccountingCategoryDescriptionValue itemAccountingCategoryDescriptionValue,
             BasePK updatedBy) {
         if(itemAccountingCategoryDescriptionValue.hasBeenModified()) {
-            var itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemAccountingCategoryDescriptionValue.getPrimaryKey());
+            var itemAccountingCategoryDescription = itemAccountingCategoryDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, itemAccountingCategoryDescriptionValue.getPrimaryKey());
             
             itemAccountingCategoryDescription.setThruTime(session.getStartTime());
             itemAccountingCategoryDescription.store();
@@ -1044,7 +1060,7 @@ public class AccountingControl
             var language = itemAccountingCategoryDescription.getLanguage();
             var description = itemAccountingCategoryDescriptionValue.getDescription();
             
-            itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description,
+            itemAccountingCategoryDescription = itemAccountingCategoryDescriptionFactory.create(itemAccountingCategory, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1071,16 +1087,19 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountTypeFactory glAccountTypeFactory;
+
     public GlAccountType createGlAccountType(String glAccountTypeName, Boolean isDefault, Integer sortOrder) {
-        return GlAccountTypeFactory.getInstance().create(glAccountTypeName, isDefault, sortOrder);
+        return glAccountTypeFactory.create(glAccountTypeName, isDefault, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccountType */
     public GlAccountType getGlAccountTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GlAccountTypePK(entityInstance.getEntityUniqueId());
 
-        return GlAccountTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return glAccountTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GlAccountType getGlAccountTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1102,7 +1121,7 @@ public class AccountingControl
         GlAccountType glAccountType;
 
         try {
-            var ps = GlAccountTypeFactory.getInstance().prepareStatement(
+            var ps = glAccountTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM glaccounttypes
@@ -1111,7 +1130,7 @@ public class AccountingControl
 
             ps.setString(1, glAccountTypeName);
 
-            glAccountType = GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            glAccountType = glAccountTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1120,18 +1139,18 @@ public class AccountingControl
     }
 
     public GlAccountType getDefaultGlAccountType() {
-        var ps = GlAccountTypeFactory.getInstance().prepareStatement(
+        var ps = glAccountTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM glaccounttypes
                 WHERE glatyp_isdefault = 1
                 """);
 
-        return GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        return glAccountTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public List<GlAccountType> getGlAccountTypes() {
-        var ps = GlAccountTypeFactory.getInstance().prepareStatement(
+        var ps = glAccountTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM glaccounttypes
@@ -1139,7 +1158,7 @@ public class AccountingControl
                 _LIMIT_
                 """);
         
-        return GlAccountTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return glAccountTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public GlAccountTypeChoicesBean getGlAccountTypeChoices(String defaultGlAccountTypeChoice, Language language, boolean allowNullChoice) {
@@ -1194,16 +1213,19 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountTypeDescriptionFactory glAccountTypeDescriptionFactory;
+
     public GlAccountTypeDescription createGlAccountTypeDescription(GlAccountType glAccountType, Language language, String description) {
-        return GlAccountTypeDescriptionFactory.getInstance().create(glAccountType, language, description);
+        return glAccountTypeDescriptionFactory.create(glAccountType, language, description);
     }
     
     public GlAccountTypeDescription getGlAccountTypeDescription(GlAccountType glAccountType, Language language) {
         GlAccountTypeDescription glAccountTypeDescription;
         
         try {
-            var ps = GlAccountTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = glAccountTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM glaccounttypedescriptions
@@ -1213,7 +1235,7 @@ public class AccountingControl
             ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            glAccountTypeDescription = GlAccountTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            glAccountTypeDescription = glAccountTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1241,7 +1263,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Classes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountClassFactory glAccountClassFactory;
+
+    @Inject
+    protected GlAccountClassDetailFactory glAccountClassDetailFactory;
+
     public GlAccountClass createGlAccountClass(String glAccountClassName, GlAccountClass parentGlAccountClass, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGlAccountClass = getDefaultGlAccountClass();
@@ -1256,13 +1284,13 @@ public class AccountingControl
             isDefault = true;
         }
 
-        var glAccountClass = GlAccountClassFactory.getInstance().create();
-        var glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(
+        var glAccountClass = glAccountClassFactory.create();
+        var glAccountClassDetail = glAccountClassDetailFactory.create(
                 glAccountClass, glAccountClassName, parentGlAccountClass, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        glAccountClass = GlAccountClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountClass.getPrimaryKey());
+        glAccountClass = glAccountClassFactory.getEntityFromPK(EntityPermission.READ_WRITE, glAccountClass.getPrimaryKey());
         glAccountClass.setActiveDetail(glAccountClassDetail);
         glAccountClass.setLastDetail(glAccountClassDetail);
         glAccountClass.store();
@@ -1276,7 +1304,7 @@ public class AccountingControl
     public GlAccountClass getGlAccountClassByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GlAccountClassPK(entityInstance.getEntityUniqueId());
 
-        return GlAccountClassFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return glAccountClassFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GlAccountClass getGlAccountClassByEntityInstance(EntityInstance entityInstance) {
@@ -1319,7 +1347,7 @@ public class AccountingControl
     }
 
     public GlAccountClass getGlAccountClassByName(String glAccountClassName, EntityPermission entityPermission) {
-        return GlAccountClassFactory.getInstance().getEntityFromQuery(entityPermission, getGlAccountClassByNameQueries, glAccountClassName);
+        return glAccountClassFactory.getEntityFromQuery(entityPermission, getGlAccountClassByNameQueries, glAccountClassName);
     }
 
     public GlAccountClass getGlAccountClassByName(String glAccountClassName) {
@@ -1362,7 +1390,7 @@ public class AccountingControl
     }
 
     public GlAccountClass getDefaultGlAccountClass(EntityPermission entityPermission) {
-        return GlAccountClassFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGlAccountClassQueries);
+        return glAccountClassFactory.getEntityFromQuery(entityPermission, getDefaultGlAccountClassQueries);
     }
 
     public GlAccountClass getDefaultGlAccountClass() {
@@ -1401,7 +1429,7 @@ public class AccountingControl
     }
 
     private List<GlAccountClass> getGlAccountClasses(EntityPermission entityPermission) {
-        return GlAccountClassFactory.getInstance().getEntitiesFromQuery(entityPermission, getGlAccountClassesQueries);
+        return glAccountClassFactory.getEntitiesFromQuery(entityPermission, getGlAccountClassesQueries);
     }
 
     public List<GlAccountClass> getGlAccountClasses() {
@@ -1437,7 +1465,7 @@ public class AccountingControl
 
     private List<GlAccountClass> getGlAccountClassesByParentGlAccountClass(GlAccountClass parentGlAccountClass,
             EntityPermission entityPermission) {
-        return GlAccountClassFactory.getInstance().getEntitiesFromQuery(entityPermission, getGlAccountClassesByParentGlAccountClassQueries,
+        return glAccountClassFactory.getEntitiesFromQuery(entityPermission, getGlAccountClassesByParentGlAccountClassQueries,
                 parentGlAccountClass);
     }
 
@@ -1526,7 +1554,7 @@ public class AccountingControl
     private void updateGlAccountClassFromValue(GlAccountClassDetailValue glAccountClassDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glAccountClassDetailValue.hasBeenModified()) {
-            var glAccountClass = GlAccountClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glAccountClass = glAccountClassFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      glAccountClassDetailValue.getGlAccountClassPK());
             var glAccountClassDetail = glAccountClass.getActiveDetailForUpdate();
             
@@ -1555,7 +1583,7 @@ public class AccountingControl
                 }
             }
             
-            glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(glAccountClassPK,
+            glAccountClassDetail = glAccountClassDetailFactory.create(glAccountClassPK,
                     glAccountClassName, parentGlAccountClassPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             glAccountClass.setActiveDetail(glAccountClassDetail);
@@ -1622,9 +1650,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Class Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountClassDescriptionFactory glAccountClassDescriptionFactory;
+
     public GlAccountClassDescription createGlAccountClassDescription(GlAccountClass glAccountClass, Language language, String description, BasePK createdBy) {
-        var glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description, session.getStartTime(),
+        var glAccountClassDescription = glAccountClassDescriptionFactory.create(glAccountClass, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1653,13 +1684,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glAccountClassDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glAccountClassDescription = glAccountClassDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1705,12 +1736,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glAccountClassDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            glAccountClassDescriptions = GlAccountClassDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccountClassDescriptions = glAccountClassDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1760,7 +1791,7 @@ public class AccountingControl
     
     public void updateGlAccountClassDescriptionFromValue(GlAccountClassDescriptionValue glAccountClassDescriptionValue, BasePK updatedBy) {
         if(glAccountClassDescriptionValue.hasBeenModified()) {
-            var glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountClassDescriptionValue.getPrimaryKey());
+            var glAccountClassDescription = glAccountClassDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, glAccountClassDescriptionValue.getPrimaryKey());
             
             glAccountClassDescription.setThruTime(session.getStartTime());
             glAccountClassDescription.store();
@@ -1769,7 +1800,7 @@ public class AccountingControl
             var language = glAccountClassDescription.getLanguage();
             var description = glAccountClassDescriptionValue.getDescription();
             
-            glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description,
+            glAccountClassDescription = glAccountClassDescriptionFactory.create(glAccountClass, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1794,7 +1825,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Categories
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountCategoryFactory glAccountCategoryFactory;
+
+    @Inject
+    protected GlAccountCategoryDetailFactory glAccountCategoryDetailFactory;
+
     public GlAccountCategory createGlAccountCategory(String glAccountCategoryName, GlAccountCategory parentGlAccountCategory, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGlAccountCategory = getDefaultGlAccountCategory();
@@ -1809,13 +1846,13 @@ public class AccountingControl
             isDefault = true;
         }
 
-        var glAccountCategory = GlAccountCategoryFactory.getInstance().create();
-        var glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(
+        var glAccountCategory = glAccountCategoryFactory.create();
+        var glAccountCategoryDetail = glAccountCategoryDetailFactory.create(
                 glAccountCategory, glAccountCategoryName, parentGlAccountCategory, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        glAccountCategory = GlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        glAccountCategory = glAccountCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 glAccountCategory.getPrimaryKey());
         glAccountCategory.setActiveDetail(glAccountCategoryDetail);
         glAccountCategory.setLastDetail(glAccountCategoryDetail);
@@ -1830,7 +1867,7 @@ public class AccountingControl
     public GlAccountCategory getGlAccountCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GlAccountCategoryPK(entityInstance.getEntityUniqueId());
 
-        return GlAccountCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return glAccountCategoryFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GlAccountCategory getGlAccountCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -1873,7 +1910,7 @@ public class AccountingControl
     }
 
     public GlAccountCategory getGlAccountCategoryByName(String glAccountCategoryName, EntityPermission entityPermission) {
-        return GlAccountCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getGlAccountCategoryByNameQueries, glAccountCategoryName);
+        return glAccountCategoryFactory.getEntityFromQuery(entityPermission, getGlAccountCategoryByNameQueries, glAccountCategoryName);
     }
 
     public GlAccountCategory getGlAccountCategoryByName(String glAccountCategoryName) {
@@ -1916,7 +1953,7 @@ public class AccountingControl
     }
 
     public GlAccountCategory getDefaultGlAccountCategory(EntityPermission entityPermission) {
-        return GlAccountCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGlAccountCategoryQueries);
+        return glAccountCategoryFactory.getEntityFromQuery(entityPermission, getDefaultGlAccountCategoryQueries);
     }
 
     public GlAccountCategory getDefaultGlAccountCategory() {
@@ -1955,7 +1992,7 @@ public class AccountingControl
     }
 
     private List<GlAccountCategory> getGlAccountCategories(EntityPermission entityPermission) {
-        return GlAccountCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getGlAccountCategoriesQueries);
+        return glAccountCategoryFactory.getEntitiesFromQuery(entityPermission, getGlAccountCategoriesQueries);
     }
 
     public List<GlAccountCategory> getGlAccountCategories() {
@@ -1991,7 +2028,7 @@ public class AccountingControl
 
     private List<GlAccountCategory> getGlAccountCategoriesByParentGlAccountCategory(GlAccountCategory parentGlAccountCategory,
             EntityPermission entityPermission) {
-        return GlAccountCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getGlAccountCategoriesByParentGlAccountCategoryQueries,
+        return glAccountCategoryFactory.getEntitiesFromQuery(entityPermission, getGlAccountCategoriesByParentGlAccountCategoryQueries,
                 parentGlAccountCategory);
     }
 
@@ -2080,7 +2117,7 @@ public class AccountingControl
     private void updateGlAccountCategoryFromValue(GlAccountCategoryDetailValue glAccountCategoryDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glAccountCategoryDetailValue.hasBeenModified()) {
-            var glAccountCategory = GlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glAccountCategory = glAccountCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      glAccountCategoryDetailValue.getGlAccountCategoryPK());
             var glAccountCategoryDetail = glAccountCategory.getActiveDetailForUpdate();
             
@@ -2109,7 +2146,7 @@ public class AccountingControl
                 }
             }
             
-            glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(glAccountCategoryPK,
+            glAccountCategoryDetail = glAccountCategoryDetailFactory.create(glAccountCategoryPK,
                     glAccountCategoryName, parentGlAccountCategoryPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             glAccountCategory.setActiveDetail(glAccountCategoryDetail);
@@ -2177,9 +2214,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Category Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountCategoryDescriptionFactory glAccountCategoryDescriptionFactory;
+
     public GlAccountCategoryDescription createGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language, String description, BasePK createdBy) {
-        var glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description, session.getStartTime(),
+        var glAccountCategoryDescription = glAccountCategoryDescriptionFactory.create(glAccountCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2208,13 +2248,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glAccountCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glAccountCategoryDescription = glAccountCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2260,12 +2300,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glAccountCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            glAccountCategoryDescriptions = GlAccountCategoryDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccountCategoryDescriptions = glAccountCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2315,7 +2355,7 @@ public class AccountingControl
     
     public void updateGlAccountCategoryDescriptionFromValue(GlAccountCategoryDescriptionValue glAccountCategoryDescriptionValue, BasePK updatedBy) {
         if(glAccountCategoryDescriptionValue.hasBeenModified()) {
-            var glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountCategoryDescriptionValue.getPrimaryKey());
+            var glAccountCategoryDescription = glAccountCategoryDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, glAccountCategoryDescriptionValue.getPrimaryKey());
             
             glAccountCategoryDescription.setThruTime(session.getStartTime());
             glAccountCategoryDescription.store();
@@ -2324,7 +2364,7 @@ public class AccountingControl
             var language = glAccountCategoryDescription.getLanguage();
             var description = glAccountCategoryDescriptionValue.getDescription();
             
-            glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description,
+            glAccountCategoryDescription = glAccountCategoryDescriptionFactory.create(glAccountCategory, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2349,7 +2389,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Resource Type
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlResourceTypeFactory glResourceTypeFactory;
+
+    @Inject
+    protected GlResourceTypeDetailFactory glResourceTypeDetailFactory;
+
     public GlResourceType createGlResourceType(String glResourceTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGlResourceType = getDefaultGlResourceType();
         var defaultFound = defaultGlResourceType != null;
@@ -2363,12 +2409,12 @@ public class AccountingControl
             isDefault = true;
         }
 
-        var glResourceType = GlResourceTypeFactory.getInstance().create();
-        var glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(
+        var glResourceType = glResourceTypeFactory.create();
+        var glResourceTypeDetail = glResourceTypeDetailFactory.create(
                 glResourceType, glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        glResourceType = GlResourceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glResourceType.getPrimaryKey());
+        glResourceType = glResourceTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, glResourceType.getPrimaryKey());
         glResourceType.setActiveDetail(glResourceTypeDetail);
         glResourceType.setLastDetail(glResourceTypeDetail);
         glResourceType.store();
@@ -2382,7 +2428,7 @@ public class AccountingControl
     public GlResourceType getGlResourceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GlResourceTypePK(entityInstance.getEntityUniqueId());
 
-        return GlResourceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return glResourceTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GlResourceType getGlResourceTypeByEntityInstance(EntityInstance entityInstance) {
@@ -2422,12 +2468,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
+            var ps = glResourceTypeFactory.prepareStatement(query);
             
             ps.setString(1, glResourceTypeName);
             ps.setLong(2, Session.MAX_TIME);
             
-            glResourceType = GlResourceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glResourceType = glResourceTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2472,11 +2518,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
+            var ps = glResourceTypeFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            glResourceType = GlResourceTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glResourceType = glResourceTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2518,11 +2564,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
+            var ps = glResourceTypeFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            glResourceTypes = GlResourceTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glResourceTypes = glResourceTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2594,7 +2640,7 @@ public class AccountingControl
     private void updateGlResourceTypeFromValue(GlResourceTypeDetailValue glResourceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glResourceTypeDetailValue.hasBeenModified()) {
-            var glResourceType = GlResourceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glResourceType = glResourceTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      glResourceTypeDetailValue.getGlResourceTypePK());
             var glResourceTypeDetail = glResourceType.getActiveDetailForUpdate();
             
@@ -2622,7 +2668,7 @@ public class AccountingControl
                 }
             }
             
-            glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(glResourceTypePK,
+            glResourceTypeDetail = glResourceTypeDetailFactory.create(glResourceTypePK,
                     glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             glResourceType.setActiveDetail(glResourceTypeDetail);
@@ -2668,9 +2714,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Resource Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlResourceTypeDescriptionFactory glResourceTypeDescriptionFactory;
+
     public GlResourceTypeDescription createGlResourceTypeDescription(GlResourceType glResourceType, Language language, String description, BasePK createdBy) {
-        var glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description, session.getStartTime(),
+        var glResourceTypeDescription = glResourceTypeDescriptionFactory.create(glResourceType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2699,13 +2748,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glResourceTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glResourceTypeDescription = glResourceTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2751,12 +2800,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glResourceTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            glResourceTypeDescriptions = GlResourceTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glResourceTypeDescriptions = glResourceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2806,7 +2855,7 @@ public class AccountingControl
     
     public void updateGlResourceTypeDescriptionFromValue(GlResourceTypeDescriptionValue glResourceTypeDescriptionValue, BasePK updatedBy) {
         if(glResourceTypeDescriptionValue.hasBeenModified()) {
-            var glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glResourceTypeDescriptionValue.getPrimaryKey());
+            var glResourceTypeDescription = glResourceTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, glResourceTypeDescriptionValue.getPrimaryKey());
             
             glResourceTypeDescription.setThruTime(session.getStartTime());
             glResourceTypeDescription.store();
@@ -2815,7 +2864,7 @@ public class AccountingControl
             var language = glResourceTypeDescription.getLanguage();
             var description = glResourceTypeDescriptionValue.getDescription();
             
-            glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description,
+            glResourceTypeDescription = glResourceTypeDescriptionFactory.create(glResourceType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2840,7 +2889,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Accounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountFactory glAccountFactory;
+
+    @Inject
+    protected GlAccountDetailFactory glAccountDetailFactory;
+
     public GlAccount createGlAccount(String glAccountName, GlAccount parentGlAccount, GlAccountType glAccountType,
             GlAccountClass glAccountClass, GlAccountCategory glAccountCategory, GlResourceType glResourceType, Currency currency,
             Boolean isDefault, BasePK createdBy) {
@@ -2861,13 +2916,13 @@ public class AccountingControl
             isDefault = null;
         }
 
-        var glAccount = GlAccountFactory.getInstance().create();
-        var glAccountDetail = GlAccountDetailFactory.getInstance().create(glAccount, glAccountName,
+        var glAccount = glAccountFactory.create();
+        var glAccountDetail = glAccountDetailFactory.create(glAccount, glAccountName,
                 parentGlAccount, glAccountType, glAccountClass, glAccountCategory, glResourceType, currency, isDefault,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        glAccount = GlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccount.getPrimaryKey());
+        glAccount = glAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE, glAccount.getPrimaryKey());
         glAccount.setActiveDetail(glAccountDetail);
         glAccount.setLastDetail(glAccountDetail);
         glAccount.store();
@@ -2881,7 +2936,7 @@ public class AccountingControl
     public GlAccount getGlAccountByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new GlAccountPK(entityInstance.getEntityUniqueId());
 
-        return GlAccountFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return glAccountFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public GlAccount getGlAccountByEntityInstance(EntityInstance entityInstance) {
@@ -2953,11 +3008,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = glAccountFactory.prepareStatement(query);
             
             ps.setString(1, glAccountName);
             
-            glAccount = GlAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glAccount = glAccountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2998,11 +3053,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = glAccountFactory.prepareStatement(query);
             
             ps.setLong(1, glAccountCategoryPK.getEntityId());
             
-            glAccount = GlAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glAccount = glAccountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3062,9 +3117,9 @@ public class AccountingControl
                     """;
         }
 
-        var ps = GlAccountFactory.getInstance().prepareStatement(query);
+        var ps = glAccountFactory.prepareStatement(query);
         
-        return GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<GlAccount> getGlAccounts() {
@@ -3098,11 +3153,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = glAccountFactory.prepareStatement(query);
 
             ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
 
-            glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3141,11 +3196,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = glAccountFactory.prepareStatement(query);
 
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
 
-            glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3184,11 +3239,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = glAccountFactory.prepareStatement(query);
             
             ps.setLong(1, glAccountCategoryPK.getEntityId());
             
-            glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3239,11 +3294,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountFactory.getInstance().prepareStatement(query);
+            var ps = glAccountFactory.prepareStatement(query);
             
             ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
             
-            glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3284,7 +3339,7 @@ public class AccountingControl
 
     private List<GlAccount> getGlAccountsByParentGlAccount(GlAccount parentGlAccount,
             EntityPermission entityPermission) {
-        return GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, getGlAccountsByParentGlAccountQueries,
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, getGlAccountsByParentGlAccountQueries,
                 parentGlAccount);
     }
 
@@ -3438,7 +3493,7 @@ public class AccountingControl
     private void updateGlAccountFromValue(GlAccountDetailValue glAccountDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(glAccountDetailValue.hasBeenModified()) {
-            var glAccount = GlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var glAccount = glAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      glAccountDetailValue.getGlAccountPK());
             var glAccountDetail = glAccount.getActiveDetailForUpdate();
             
@@ -3481,7 +3536,7 @@ public class AccountingControl
                 }
             }
             
-            glAccountDetail = GlAccountDetailFactory.getInstance().create(glAccountPK, glAccountName,
+            glAccountDetail = glAccountDetailFactory.create(glAccountPK, glAccountName,
                     parentGlAccountPK, glAccountTypePK, glAccountClassPK, glAccountCategoryPK, glResourceTypePK, currencyPK,
                     isDefault, session.getStartTime(), Session.MAX_TIME);
             
@@ -3553,9 +3608,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountDescriptionFactory glAccountDescriptionFactory;
+
     public GlAccountDescription createGlAccountDescription(GlAccount glAccount, Language language, String description, BasePK createdBy) {
-        var glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description, session.getStartTime(),
+        var glAccountDescription = glAccountDescriptionFactory.create(glAccount, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3584,13 +3642,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glAccountDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            glAccountDescription = GlAccountDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glAccountDescription = glAccountDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3636,12 +3694,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = glAccountDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            glAccountDescriptions = GlAccountDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            glAccountDescriptions = glAccountDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3691,7 +3749,7 @@ public class AccountingControl
     
     public void updateGlAccountDescriptionFromValue(GlAccountDescriptionValue glAccountDescriptionValue, BasePK updatedBy) {
         if(glAccountDescriptionValue.hasBeenModified()) {
-            var glAccountDescription = GlAccountDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountDescriptionValue.getPrimaryKey());
+            var glAccountDescription = glAccountDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, glAccountDescriptionValue.getPrimaryKey());
             
             glAccountDescription.setThruTime(session.getStartTime());
             glAccountDescription.store();
@@ -3700,7 +3758,7 @@ public class AccountingControl
             var language = glAccountDescription.getLanguage();
             var description = glAccountDescriptionValue.getDescription();
             
-            glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description,
+            glAccountDescription = glAccountDescriptionFactory.create(glAccount, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3724,10 +3782,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Gl Account Summaries
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GlAccountSummaryFactory glAccountSummaryFactory;
+
     public GlAccountSummary createGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, Long debitTotal,
             Long creditTotal, Long balance) {
-        return GlAccountSummaryFactory.getInstance().create(glAccount, groupParty, period, debitTotal, creditTotal, balance);
+        return glAccountSummaryFactory.create(glAccount, groupParty, period, debitTotal, creditTotal, balance);
     }
     
     private GlAccountSummary getGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, EntityPermission entityPermission) {
@@ -3751,13 +3812,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = GlAccountSummaryFactory.getInstance().prepareStatement(query);
+            var ps = glAccountSummaryFactory.prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, groupParty.getPrimaryKey().getEntityId());
             ps.setLong(3, period.getPrimaryKey().getEntityId());
             
-            glAccountSummary = GlAccountSummaryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            glAccountSummary = glAccountSummaryFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3776,14 +3837,20 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionTypeFactory transactionTypeFactory;
+
+    @Inject
+    protected TransactionTypeDetailFactory transactionTypeDetailFactory;
+
     public TransactionType createTransactionType(String transactionTypeName, Integer sortOrder, BasePK createdBy) {
-        var transactionType = TransactionTypeFactory.getInstance().create();
-        var transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionType, transactionTypeName, sortOrder, session.getStartTime(),
+        var transactionType = transactionTypeFactory.create();
+        var transactionTypeDetail = transactionTypeDetailFactory.create(transactionType, transactionTypeName, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionType.getPrimaryKey());
+        transactionType = transactionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionType.getPrimaryKey());
         transactionType.setActiveDetail(transactionTypeDetail);
         transactionType.setLastDetail(transactionTypeDetail);
         transactionType.store();
@@ -3797,7 +3864,7 @@ public class AccountingControl
     public TransactionType getTransactionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TransactionTypePK(entityInstance.getEntityUniqueId());
 
-        return TransactionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return transactionTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TransactionType getTransactionTypeByEntityInstance(EntityInstance entityInstance) {
@@ -3837,11 +3904,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionTypeFactory.getInstance().prepareStatement(query);
+            var ps = transactionTypeFactory.prepareStatement(query);
             
             ps.setString(1, transactionTypeName);
             
-            transactionType = TransactionTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionType = transactionTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3885,9 +3952,9 @@ public class AccountingControl
                     """;
         }
 
-        var ps = TransactionTypeFactory.getInstance().prepareStatement(query);
+        var ps = transactionTypeFactory.prepareStatement(query);
         
-        return TransactionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return transactionTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<TransactionType> getTransactionTypes() {
@@ -3917,7 +3984,7 @@ public class AccountingControl
     }
     
     public void updateTransactionTypeFromValue(TransactionTypeDetailValue transactionTypeDetailValue, BasePK updatedBy) {
-        var transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(
+        var transactionType = transactionTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, transactionTypeDetailValue.getTransactionTypePK());
         var transactionTypeDetail = transactionType.getActiveDetailForUpdate();
 
@@ -3928,7 +3995,7 @@ public class AccountingControl
         var transactionTypeName = transactionTypeDetailValue.getTransactionTypeName();
         var sortOrder = transactionTypeDetailValue.getSortOrder();
 
-        transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionTypePK, transactionTypeName, sortOrder, session.getStartTime(), Session.MAX_TIME);
+        transactionTypeDetail = transactionTypeDetailFactory.create(transactionTypePK, transactionTypeName, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         transactionType.setActiveDetail(transactionTypeDetail);
         transactionType.setLastDetail(transactionTypeDetail);
@@ -3958,9 +4025,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionTypeDescriptionFactory transactionTypeDescriptionFactory;
+
     public TransactionTypeDescription createTransactionTypeDescription(TransactionType transactionType, Language language, String description, BasePK createdBy) {
-        var transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description, session.getStartTime(),
+        var transactionTypeDescription = transactionTypeDescriptionFactory.create(transactionType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3989,13 +4059,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = transactionTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionTypeDescription = transactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4041,12 +4111,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = transactionTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionTypeDescriptions = TransactionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionTypeDescriptions = transactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4096,7 +4166,7 @@ public class AccountingControl
     
     public void updateTransactionTypeDescriptionFromValue(TransactionTypeDescriptionValue transactionTypeDescriptionValue, BasePK updatedBy) {
         if(transactionTypeDescriptionValue.hasBeenModified()) {
-            var transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionTypeDescriptionValue.getPrimaryKey());
+            var transactionTypeDescription = transactionTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionTypeDescriptionValue.getPrimaryKey());
             
             transactionTypeDescription.setThruTime(session.getStartTime());
             transactionTypeDescription.store();
@@ -4105,7 +4175,7 @@ public class AccountingControl
             var language = transactionTypeDescription.getLanguage();
             var description = transactionTypeDescriptionValue.getDescription();
             
-            transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description,
+            transactionTypeDescription = transactionTypeDescriptionFactory.create(transactionType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4130,15 +4200,21 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Categories
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionGlAccountCategoryFactory transactionGlAccountCategoryFactory;
+
+    @Inject
+    protected TransactionGlAccountCategoryDetailFactory transactionGlAccountCategoryDetailFactory;
+
     public TransactionGlAccountCategory createTransactionGlAccountCategory(TransactionType transactionType, String transactionGlAccountCategoryName, GlAccountCategory glAccountCategory,
             Integer sortOrder, BasePK createdBy) {
-        var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().create();
-        var transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategory, transactionType,
+        var transactionGlAccountCategory = transactionGlAccountCategoryFactory.create();
+        var transactionGlAccountCategoryDetail = transactionGlAccountCategoryDetailFactory.create(transactionGlAccountCategory, transactionType,
                 transactionGlAccountCategoryName, glAccountCategory, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategory.getPrimaryKey());
+        transactionGlAccountCategory = transactionGlAccountCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategory.getPrimaryKey());
         transactionGlAccountCategory.setActiveDetail(transactionGlAccountCategoryDetail);
         transactionGlAccountCategory.setLastDetail(transactionGlAccountCategoryDetail);
         transactionGlAccountCategory.store();
@@ -4152,7 +4228,7 @@ public class AccountingControl
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TransactionGlAccountCategoryPK(entityInstance.getEntityUniqueId());
 
-        return TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return transactionGlAccountCategoryFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -4193,12 +4269,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
+            var ps = transactionGlAccountCategoryFactory.prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setString(2, transactionGlAccountCategoryName);
             
-            transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionGlAccountCategory = transactionGlAccountCategoryFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4244,11 +4320,11 @@ public class AccountingControl
                     """;
         }
 
-            var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
+            var ps = transactionGlAccountCategoryFactory.prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             
-            transactionGlAccountCategories = TransactionGlAccountCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionGlAccountCategories = transactionGlAccountCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4283,7 +4359,7 @@ public class AccountingControl
     }
     
     public void updateTransactionGlAccountCategoryFromValue(TransactionGlAccountCategoryDetailValue transactionGlAccountCategoryDetailValue, BasePK updatedBy) {
-        var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(
+        var transactionGlAccountCategory = transactionGlAccountCategoryFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, transactionGlAccountCategoryDetailValue.getTransactionGlAccountCategoryPK());
         var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getActiveDetailForUpdate();
 
@@ -4296,7 +4372,7 @@ public class AccountingControl
         var glAccountCategoryPK = transactionGlAccountCategoryDetailValue.getGlAccountCategoryPK();
         var sortOrder = transactionGlAccountCategoryDetailValue.getSortOrder();
 
-        transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategoryPK, transactionTypePK,
+        transactionGlAccountCategoryDetail = transactionGlAccountCategoryDetailFactory.create(transactionGlAccountCategoryPK, transactionTypePK,
                 transactionGlAccountCategoryName, glAccountCategoryPK, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         transactionGlAccountCategory.setActiveDetail(transactionGlAccountCategoryDetail);
@@ -4330,10 +4406,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Category Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionGlAccountCategoryDescriptionFactory transactionGlAccountCategoryDescriptionFactory;
+
      public TransactionGlAccountCategoryDescription createTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, String description,
              BasePK createdBy) {
-         var transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory,
+         var transactionGlAccountCategoryDescription = transactionGlAccountCategoryDescriptionFactory.create(transactionGlAccountCategory,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4362,13 +4441,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = transactionGlAccountCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionGlAccountCategoryDescription = transactionGlAccountCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4414,12 +4493,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = transactionGlAccountCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionGlAccountCategoryDescriptions = TransactionGlAccountCategoryDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionGlAccountCategoryDescriptions = transactionGlAccountCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4469,7 +4548,7 @@ public class AccountingControl
     
     public void updateTransactionGlAccountCategoryDescriptionFromValue(TransactionGlAccountCategoryDescriptionValue transactionGlAccountCategoryDescriptionValue, BasePK updatedBy) {
         if(transactionGlAccountCategoryDescriptionValue.hasBeenModified()) {
-            var transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategoryDescriptionValue.getPrimaryKey());
+            var transactionGlAccountCategoryDescription = transactionGlAccountCategoryDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategoryDescriptionValue.getPrimaryKey());
             
             transactionGlAccountCategoryDescription.setThruTime(session.getStartTime());
             transactionGlAccountCategoryDescription.store();
@@ -4478,7 +4557,7 @@ public class AccountingControl
             var language = transactionGlAccountCategoryDescription.getLanguage();
             var description = transactionGlAccountCategoryDescriptionValue.getDescription();
             
-            transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory, language, description,
+            transactionGlAccountCategoryDescription = transactionGlAccountCategoryDescriptionFactory.create(transactionGlAccountCategory, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4503,15 +4582,21 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Entity Role Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionEntityRoleTypeFactory transactionEntityRoleTypeFactory;
+
+    @Inject
+    protected TransactionEntityRoleTypeDetailFactory transactionEntityRoleTypeDetailFactory;
+
      public TransactionEntityRoleType createTransactionEntityRoleType(TransactionType transactionType, String transactionEntityRoleTypeName, EntityType entityType,
             Integer sortOrder, BasePK createdBy) {
-         var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().create();
-         var transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleType, transactionType,
+         var transactionEntityRoleType = transactionEntityRoleTypeFactory.create();
+         var transactionEntityRoleTypeDetail = transactionEntityRoleTypeDetailFactory.create(transactionEntityRoleType, transactionType,
                 transactionEntityRoleTypeName, entityType, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleType.getPrimaryKey());
+        transactionEntityRoleType = transactionEntityRoleTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleType.getPrimaryKey());
         transactionEntityRoleType.setActiveDetail(transactionEntityRoleTypeDetail);
         transactionEntityRoleType.setLastDetail(transactionEntityRoleTypeDetail);
         transactionEntityRoleType.store();
@@ -4525,7 +4610,7 @@ public class AccountingControl
     public TransactionEntityRoleType getTransactionEntityRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TransactionEntityRoleTypePK(entityInstance.getEntityUniqueId());
 
-        return TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return transactionEntityRoleTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TransactionEntityRoleType getTransactionEntityRoleTypeByEntityInstance(EntityInstance entityInstance) {
@@ -4566,12 +4651,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleTypeFactory.prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             ps.setString(2, transactionEntityRoleTypeName);
             
-            transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionEntityRoleType = transactionEntityRoleTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4618,11 +4703,11 @@ public class AccountingControl
                     """;
         }
 
-            var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleTypeFactory.prepareStatement(query);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             
-            transactionEntityRoleTypes = TransactionEntityRoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionEntityRoleTypes = transactionEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4661,11 +4746,11 @@ public class AccountingControl
                     """;
         }
 
-            var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
-            transactionEntityRoleTypes = TransactionEntityRoleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionEntityRoleTypes = transactionEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4704,7 +4789,7 @@ public class AccountingControl
     }
     
     public void updateTransactionEntityRoleTypeFromValue(TransactionEntityRoleTypeDetailValue transactionEntityRoleTypeDetailValue, BasePK updatedBy) {
-        var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(
+        var transactionEntityRoleType = transactionEntityRoleTypeFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, transactionEntityRoleTypeDetailValue.getTransactionEntityRoleTypePK());
         var transactionEntityRoleTypeDetail = transactionEntityRoleType.getActiveDetailForUpdate();
 
@@ -4717,7 +4802,7 @@ public class AccountingControl
         var entityTypePK = transactionEntityRoleTypeDetailValue.getEntityTypePK();
         var sortOrder = transactionEntityRoleTypeDetailValue.getSortOrder();
 
-        transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleTypePK, transactionTypePK,
+        transactionEntityRoleTypeDetail = transactionEntityRoleTypeDetailFactory.create(transactionEntityRoleTypePK, transactionTypePK,
                 transactionEntityRoleTypeName, entityTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         transactionEntityRoleType.setActiveDetail(transactionEntityRoleTypeDetail);
@@ -4754,9 +4839,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Entity Role Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionEntityRoleTypeDescriptionFactory transactionEntityRoleTypeDescriptionFactory;
+
     public TransactionEntityRoleTypeDescription createTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, String description, BasePK createdBy) {
-        var transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language,
+        var transactionEntityRoleTypeDescription = transactionEntityRoleTypeDescriptionFactory.create(transactionEntityRoleType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4785,13 +4873,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, transactionEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionEntityRoleTypeDescription = transactionEntityRoleTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4837,12 +4925,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, transactionEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionEntityRoleTypeDescriptions = TransactionEntityRoleTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionEntityRoleTypeDescriptions = transactionEntityRoleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4892,7 +4980,7 @@ public class AccountingControl
     
     public void updateTransactionEntityRoleTypeDescriptionFromValue(TransactionEntityRoleTypeDescriptionValue transactionEntityRoleTypeDescriptionValue, BasePK updatedBy) {
         if(transactionEntityRoleTypeDescriptionValue.hasBeenModified()) {
-            var transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleTypeDescriptionValue.getPrimaryKey());
+            var transactionEntityRoleTypeDescription = transactionEntityRoleTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleTypeDescriptionValue.getPrimaryKey());
             
             transactionEntityRoleTypeDescription.setThruTime(session.getStartTime());
             transactionEntityRoleTypeDescription.store();
@@ -4901,7 +4989,7 @@ public class AccountingControl
             var language = transactionEntityRoleTypeDescription.getLanguage();
             var description = transactionEntityRoleTypeDescriptionValue.getDescription();
             
-            transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language, description,
+            transactionEntityRoleTypeDescription = transactionEntityRoleTypeDescriptionFactory.create(transactionEntityRoleType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4926,9 +5014,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Gl Accounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionGlAccountFactory transactionGlAccountFactory;
+
      public TransactionGlAccount createTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, BasePK createdBy) {
-         var transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategory, glAccount, session.getStartTime(), Session.MAX_TIME);
+         var transactionGlAccount = transactionGlAccountFactory.create(transactionGlAccountCategory, glAccount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4959,12 +5050,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
+            var ps = transactionGlAccountFactory.prepareStatement(query);
             
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionGlAccounts = TransactionGlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            transactionGlAccounts = transactionGlAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5001,12 +5092,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
+            var ps = transactionGlAccountFactory.prepareStatement(query);
             
             ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionGlAccount = TransactionGlAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionGlAccount = transactionGlAccountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5036,7 +5127,7 @@ public class AccountingControl
     
     public void updateTransactionGlAccountFromValue(TransactionGlAccountValue transactionGlAccountValue, BasePK updatedBy) {
         if(transactionGlAccountValue.hasBeenModified()) {
-            var transactionGlAccount = TransactionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountValue.getPrimaryKey());
+            var transactionGlAccount = transactionGlAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountValue.getPrimaryKey());
             
             transactionGlAccount.setThruTime(session.getStartTime());
             transactionGlAccount.store();
@@ -5044,7 +5135,7 @@ public class AccountingControl
             var transactionGlAccountCategoryPK = transactionGlAccount.getTransactionGlAccountCategoryPK();
             var glAccountPK = transactionGlAccountValue.getGlAccountPK();
             
-            transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategoryPK, glAccountPK, session.getStartTime(), Session.MAX_TIME);
+            transactionGlAccount = transactionGlAccountFactory.create(transactionGlAccountCategoryPK, glAccountPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionGlAccountCategoryPK, EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -5077,7 +5168,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Groups
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionGroupFactory transactionGroupFactory;
+
+    @Inject
+    protected TransactionGroupDetailFactory transactionGroupDetailFactory;
+
     public TransactionGroup getActiveTransactionGroup(BasePK createdBy) {
         var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                 WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE);
@@ -5087,7 +5184,7 @@ public class AccountingControl
             List<TransactionGroup> transactionGroups;
             
             try {
-                var ps = TransactionGroupFactory.getInstance().prepareStatement(
+                var ps = transactionGroupFactory.prepareStatement(
                         """
                         SELECT _ALL_
                         FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
@@ -5108,7 +5205,7 @@ public class AccountingControl
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
                 
-                transactionGroups = TransactionGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                transactionGroups = transactionGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);
             }
@@ -5137,12 +5234,12 @@ public class AccountingControl
     }
     
     public TransactionGroup createTransactionGroup(String transactionGroupName, BasePK createdBy) {
-        var transactionGroup = TransactionGroupFactory.getInstance().create();
-        var transactionGroupDetail = TransactionGroupDetailFactory.getInstance().create(transactionGroup,
+        var transactionGroup = transactionGroupFactory.create();
+        var transactionGroupDetail = transactionGroupDetailFactory.create(transactionGroup,
                 transactionGroupName, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        transactionGroup = TransactionGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        transactionGroup = transactionGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 transactionGroup.getPrimaryKey());
         transactionGroup.setActiveDetail(transactionGroupDetail);
         transactionGroup.setLastDetail(transactionGroupDetail);
@@ -5157,7 +5254,7 @@ public class AccountingControl
     public TransactionGroup getTransactionGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TransactionGroupPK(entityInstance.getEntityUniqueId());
 
-        return TransactionGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return transactionGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TransactionGroup getTransactionGroupByEntityInstance(EntityInstance entityInstance) {
@@ -5201,11 +5298,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionGroupFactory.getInstance().prepareStatement(query);
+            var ps = transactionGroupFactory.prepareStatement(query);
             
             ps.setString(1, transactionGroupName);
             
-            transactionGroup = TransactionGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionGroup = transactionGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5245,9 +5342,9 @@ public class AccountingControl
                     """;
         }
 
-        var ps = TransactionGroupFactory.getInstance().prepareStatement(query);
+        var ps = transactionGroupFactory.prepareStatement(query);
         
-        return TransactionGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return transactionGroupFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<TransactionGroup> getTransactionGroups() {
@@ -5312,7 +5409,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transactions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionFactory transactionFactory;
+
+    @Inject
+    protected TransactionDetailFactory transactionDetailFactory;
+
     public Transaction createTransaction(Party groupParty, TransactionType transactionType, BasePK createdBy) {
         return createTransaction(groupParty, getActiveTransactionGroup(createdBy), transactionType, createdBy);
     }
@@ -5328,12 +5431,12 @@ public class AccountingControl
     
     public Transaction createTransaction(String transactionName, Party groupParty, TransactionGroup transactionGroup,
             TransactionType transactionType, BasePK createdBy) {
-        var transaction = TransactionFactory.getInstance().create();
-        var transactionDetail = TransactionDetailFactory.getInstance().create(transaction, transactionName,
+        var transaction = transactionFactory.create();
+        var transactionDetail = transactionDetailFactory.create(transaction, transactionName,
                 groupParty, transactionGroup, transactionType, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        transaction = TransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        transaction = transactionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 transaction.getPrimaryKey());
         transaction.setActiveDetail(transactionDetail);
         transaction.setLastDetail(transactionDetail);
@@ -5350,7 +5453,7 @@ public class AccountingControl
     public Transaction getTransactionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TransactionPK(entityInstance.getEntityUniqueId());
 
-        return TransactionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return transactionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Transaction getTransactionByEntityInstance(EntityInstance entityInstance) {
@@ -5421,11 +5524,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionFactory.getInstance().prepareStatement(query);
+            var ps = transactionFactory.prepareStatement(query);
 
             ps.setString(1, transactionName);
 
-            transaction = TransactionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transaction = transactionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5446,7 +5549,7 @@ public class AccountingControl
     }
 
     public List<Transaction> getTransactions() {
-        var ps = TransactionFactory.getInstance().prepareStatement("""
+        var ps = transactionFactory.prepareStatement("""
                         SELECT _ALL_
                         FROM transactions, transactiondetails
                         WHERE trx_activedetailid = trxdt_transactiondetailid
@@ -5454,14 +5557,14 @@ public class AccountingControl
                         _LIMIT_
                         """);
 
-        return TransactionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public List<Transaction> getTransactionsByTransactionGroup(TransactionGroup transactionGroup) {
         List<Transaction> transactions;
 
         try {
-            var ps = TransactionFactory.getInstance().prepareStatement("""
+            var ps = transactionFactory.prepareStatement("""
                             SELECT _ALL_
                             FROM transactions, transactiondetails
                             WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxgrp_transactiongroupid = ?
@@ -5471,7 +5574,7 @@ public class AccountingControl
 
             ps.setLong(1, transactionGroup.getPrimaryKey().getEntityId());
 
-            transactions = TransactionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            transactions = transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5483,7 +5586,7 @@ public class AccountingControl
         List<Transaction> transactions;
         
         try {
-            var ps = TransactionFactory.getInstance().prepareStatement(
+            var ps = transactionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM transactions, transactiondetails
@@ -5494,7 +5597,7 @@ public class AccountingControl
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             
-            transactions = TransactionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            transactions = transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5523,9 +5626,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionStatusFactory transactionStatusFactory;
+
     public TransactionStatus createTransactionStatus(Transaction transaction) {
-        return TransactionStatusFactory.getInstance().create(transaction, 0);
+        return transactionStatusFactory.create(transaction, 0);
     }
     
     private TransactionStatus getTransactionStatus(Transaction transaction, EntityPermission entityPermission) {
@@ -5549,11 +5655,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionStatusFactory.getInstance().prepareStatement(query);
+            var ps = transactionStatusFactory.prepareStatement(query);
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             
-            transactionStatus = TransactionStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            transactionStatus = transactionStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5580,12 +5686,15 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Gl Account Entries
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionGlEntryFactory transactionGlEntryFactory;
+
     public TransactionGlEntry createTransactionGlEntry(Transaction transaction, Integer transactionGlEntrySequence,
             Party groupParty, TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount,
             Currency originalCurrency, Long originalDebit, Long originalCredit, Long debit, Long credit,
             BasePK createdBy) {
-        var transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence,
+        var transactionGlEntry = transactionGlEntryFactory.create(transaction, transactionGlEntrySequence,
                 groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
                 originalCredit, debit, credit, session.getStartTime(), Session.MAX_TIME);
         
@@ -5614,7 +5723,7 @@ public class AccountingControl
         List<TransactionGlEntry> transactionGlEntries;
         
         try {
-            var ps = TransactionGlEntryFactory.getInstance().prepareStatement(
+            var ps = transactionGlEntryFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM transactionglentries
@@ -5626,7 +5735,7 @@ public class AccountingControl
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(
+            transactionGlEntries = transactionGlEntryFactory.getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5639,7 +5748,7 @@ public class AccountingControl
         List<TransactionGlEntry> transactionGlEntries;
         
         try {
-            var ps = TransactionGlEntryFactory.getInstance().prepareStatement("""
+            var ps = transactionGlEntryFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM transactionglentries
                     JOIN transactiontimes ON trxglent_trx_transactionid = txntim_trx_transactionid AND txntim_thrutime
@@ -5654,7 +5763,7 @@ public class AccountingControl
             ps.setLong(2, Session.MAX_TIME);
             ps.setString(3, TransactionTimeTypes.TRANSACTION_TIME.name());
 
-            transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(
+            transactionGlEntries = transactionGlEntryFactory.getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5684,9 +5793,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Transaction Entity Roles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TransactionEntityRoleFactory transactionEntityRoleFactory;
+
     public TransactionEntityRole createTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType, EntityInstance entityInstance, BasePK createdBy) {
-        var transactionEntityRole = TransactionEntityRoleFactory.getInstance().create(transaction, transactionEntityRoleType, entityInstance, session.getStartTime(),
+        var transactionEntityRole = transactionEntityRoleFactory.create(transaction, transactionEntityRoleType, entityInstance, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5706,7 +5818,7 @@ public class AccountingControl
         TransactionEntityRole transactionEntityRole;
         
         try {
-            var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(
+            var ps = transactionEntityRoleFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM transactionentityroles
@@ -5717,7 +5829,7 @@ public class AccountingControl
             ps.setLong(2, transactionEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            transactionEntityRole = TransactionEntityRoleFactory.getInstance().getEntityFromQuery(
+            transactionEntityRole = transactionEntityRoleFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5749,12 +5861,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleFactory.prepareStatement(query);
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionEntityRoles = TransactionEntityRoleFactory.getInstance().getEntitiesFromQuery( entityPermission, ps);
+            transactionEntityRoles = transactionEntityRoleFactory.getEntitiesFromQuery( entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5792,12 +5904,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
+            var ps = transactionEntityRoleFactory.prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionEntityRoles = TransactionEntityRoleFactory.getInstance().getEntitiesFromQuery(
+            transactionEntityRoles = transactionEntityRoleFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5855,7 +5967,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Symbol Position
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SymbolPositionFactory symbolPositionFactory;
+
+    @Inject
+    protected SymbolPositionDetailFactory symbolPositionDetailFactory;
+
     public SymbolPosition createSymbolPosition(String symbolPositionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSymbolPosition = getDefaultSymbolPosition();
         var defaultFound = defaultSymbolPosition != null;
@@ -5869,12 +5987,12 @@ public class AccountingControl
             isDefault = true;
         }
 
-        var symbolPosition = SymbolPositionFactory.getInstance().create();
-        var symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(
+        var symbolPosition = symbolPositionFactory.create();
+        var symbolPositionDetail = symbolPositionDetailFactory.create(
                 symbolPosition, symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, symbolPosition.getPrimaryKey());
+        symbolPosition = symbolPositionFactory.getEntityFromPK(EntityPermission.READ_WRITE, symbolPosition.getPrimaryKey());
         symbolPosition.setActiveDetail(symbolPositionDetail);
         symbolPosition.setLastDetail(symbolPositionDetail);
         symbolPosition.store();
@@ -5888,7 +6006,7 @@ public class AccountingControl
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SymbolPositionPK(entityInstance.getEntityUniqueId());
 
-        return SymbolPositionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return symbolPositionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance) {
@@ -5929,12 +6047,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
+            var ps = symbolPositionFactory.prepareStatement(query);
             
             ps.setString(1, symbolPositionName);
             ps.setLong(2, Session.MAX_TIME);
             
-            symbolPosition = SymbolPositionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            symbolPosition = symbolPositionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5979,11 +6097,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
+            var ps = symbolPositionFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            symbolPosition = SymbolPositionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            symbolPosition = symbolPositionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6026,11 +6144,11 @@ public class AccountingControl
                         """;
             }
 
-            var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
+            var ps = symbolPositionFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            symbolPositions = SymbolPositionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            symbolPositions = symbolPositionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6102,7 +6220,7 @@ public class AccountingControl
     private void updateSymbolPositionFromValue(SymbolPositionDetailValue symbolPositionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(symbolPositionDetailValue.hasBeenModified()) {
-            var symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var symbolPosition = symbolPositionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      symbolPositionDetailValue.getSymbolPositionPK());
             var symbolPositionDetail = symbolPosition.getActiveDetailForUpdate();
             
@@ -6130,7 +6248,7 @@ public class AccountingControl
                 }
             }
             
-            symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(symbolPositionPK,
+            symbolPositionDetail = symbolPositionDetailFactory.create(symbolPositionPK,
                     symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             symbolPosition.setActiveDetail(symbolPositionDetail);
@@ -6175,9 +6293,12 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     //   Symbol Position Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected SymbolPositionDescriptionFactory symbolPositionDescriptionFactory;
+
     public SymbolPositionDescription createSymbolPositionDescription(SymbolPosition symbolPosition, Language language, String description, BasePK createdBy) {
-        var symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description, session.getStartTime(),
+        var symbolPositionDescription = symbolPositionDescriptionFactory.create(symbolPosition, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6206,13 +6327,13 @@ public class AccountingControl
                         """;
             }
 
-            var ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = symbolPositionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, symbolPosition.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            symbolPositionDescription = symbolPositionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6258,12 +6379,12 @@ public class AccountingControl
                         """;
             }
 
-            var ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = symbolPositionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, symbolPosition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            symbolPositionDescriptions = SymbolPositionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            symbolPositionDescriptions = symbolPositionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6313,7 +6434,7 @@ public class AccountingControl
     
     public void updateSymbolPositionDescriptionFromValue(SymbolPositionDescriptionValue symbolPositionDescriptionValue, BasePK updatedBy) {
         if(symbolPositionDescriptionValue.hasBeenModified()) {
-            var symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, symbolPositionDescriptionValue.getPrimaryKey());
+            var symbolPositionDescription = symbolPositionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, symbolPositionDescriptionValue.getPrimaryKey());
             
             symbolPositionDescription.setThruTime(session.getStartTime());
             symbolPositionDescription.store();
@@ -6322,7 +6443,7 @@ public class AccountingControl
             var language = symbolPositionDescription.getLanguage();
             var description = symbolPositionDescriptionValue.getDescription();
             
-            symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description,
+            symbolPositionDescription = symbolPositionDescriptionFactory.create(symbolPosition, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

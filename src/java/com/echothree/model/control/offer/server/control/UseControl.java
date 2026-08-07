@@ -46,6 +46,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class UseControl
@@ -60,6 +61,12 @@ public class UseControl
     //   Uses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected UseFactory useFactory;
+
+    @Inject
+    protected UseDetailFactory useDetailFactory;
+
     public Use createUse(String useName, UseType useType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultUse = getDefaultUse();
         var defaultFound = defaultUse != null;
@@ -73,12 +80,12 @@ public class UseControl
             isDefault = true;
         }
 
-        var use = UseFactory.getInstance().create();
-        var useDetail = UseDetailFactory.getInstance().create(use, useName, useType, isDefault, sortOrder,
+        var use = useFactory.create();
+        var useDetail = useDetailFactory.create(use, useName, useType, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, use.getPrimaryKey());
+        use = useFactory.getEntityFromPK(EntityPermission.READ_WRITE, use.getPrimaryKey());
         use.setActiveDetail(useDetail);
         use.setLastDetail(useDetail);
         use.store();
@@ -110,7 +117,7 @@ public class UseControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Use */
     public Use getUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UsePK(entityInstance.getEntityUniqueId());
-        var use = UseFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        var use = useFactory.getEntityFromPK(entityPermission, pk);
 
         return use;
     }
@@ -143,9 +150,9 @@ public class UseControl
                     """;
         }
 
-        var ps = UseFactory.getInstance().prepareStatement(query);
+        var ps = useFactory.prepareStatement(query);
 
-        return UseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return useFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<Use> getUses() {
@@ -177,11 +184,11 @@ public class UseControl
                         """;
             }
 
-            var ps = UseFactory.getInstance().prepareStatement(query);
+            var ps = useFactory.prepareStatement(query);
 
             ps.setString(1, useName);
 
-            use = UseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            use = useFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -223,9 +230,9 @@ public class UseControl
                     """;
         }
 
-        var ps = UseFactory.getInstance().prepareStatement(query);
+        var ps = useFactory.prepareStatement(query);
 
-        return UseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return useFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public Use getDefaultUse() {
@@ -261,11 +268,11 @@ public class UseControl
                         """;
             }
 
-            var ps = UseFactory.getInstance().prepareStatement(query);
+            var ps = useFactory.prepareStatement(query);
 
             ps.setLong(1, useType.getPrimaryKey().getEntityId());
 
-            uses = UseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            uses = useFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -335,7 +342,7 @@ public class UseControl
 
     private void updateUseFromValue(UseDetailValue useDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(useDetailValue.hasBeenModified()) {
-            var use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var use = useFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     useDetailValue.getUsePK());
             var useDetail = use.getActiveDetailForUpdate();
 
@@ -364,7 +371,7 @@ public class UseControl
                 }
             }
 
-            useDetail = UseDetailFactory.getInstance().create(usePK, useName, useTypePK, isDefault, sortOrder,
+            useDetail = useDetailFactory.create(usePK, useName, useTypePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             use.setActiveDetail(useDetail);
@@ -424,8 +431,11 @@ public class UseControl
     //   Use Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected UseDescriptionFactory useDescriptionFactory;
+
     public UseDescription createUseDescription(Use use, Language language, String description, BasePK createdBy) {
-        var useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
+        var useDescription = useDescriptionFactory.create(use, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
@@ -455,13 +465,13 @@ public class UseControl
                         """;
             }
 
-            var ps = UseDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            useDescription = UseDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            useDescription = useDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -507,12 +517,12 @@ public class UseControl
                         """;
             }
 
-            var ps = UseDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = useDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            useDescriptions = UseDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            useDescriptions = useDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -562,7 +572,7 @@ public class UseControl
 
     public void updateUseDescriptionFromValue(UseDescriptionValue useDescriptionValue, BasePK updatedBy) {
         if(useDescriptionValue.hasBeenModified()) {
-            var useDescription = UseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var useDescription = useDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     useDescriptionValue.getPrimaryKey());
 
             useDescription.setThruTime(session.getStartTime());
@@ -572,7 +582,7 @@ public class UseControl
             var language = useDescription.getLanguage();
             var description = useDescriptionValue.getDescription();
 
-            useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.getStartTime(), Session.MAX_TIME);
+            useDescription = useDescriptionFactory.create(use, language, description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -598,6 +608,9 @@ public class UseControl
     //   Use Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<UseResultTransfer> getUseResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var useResultTransfers = new ArrayList<UseResultTransfer>();
@@ -610,7 +623,7 @@ public class UseControl
 
         try {
             var useControl = Session.getModelController(UseControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
@@ -623,7 +636,7 @@ public class UseControl
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(rs.getLong(1)));
+                    var use = useFactory.getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(rs.getLong(1)));
                     var useDetail = use.getLastDetail();
 
                     useResultTransfers.add(new UseResultTransfer(useDetail.getUseName(),

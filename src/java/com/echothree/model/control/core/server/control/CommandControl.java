@@ -26,7 +26,6 @@ import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransf
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
 import com.echothree.model.data.campaign.common.pk.CampaignPK;
 import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.factory.CampaignFactory;
 import com.echothree.model.data.core.common.pk.CommandMessagePK;
 import com.echothree.model.data.core.common.pk.CommandMessageTypePK;
 import com.echothree.model.data.core.common.pk.CommandPK;
@@ -82,10 +81,10 @@ public class CommandControl
 
     @Inject
     protected CommandFactory commandFactory;
-    
+
     @Inject
     protected CommandDetailFactory commandDetailFactory;
-    
+
     public Command createCommand(ComponentVendor componentVendor, String commandName, Integer sortOrder, BasePK createdBy) {
         var command = commandFactory.create();
         var commandDetail = commandDetailFactory.create(command, componentVendor,
@@ -106,7 +105,7 @@ public class CommandControl
     public Command getCommandByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommandPK(entityInstance.getEntityUniqueId());
 
-        return CommandFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return commandFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Command getCommandByEntityInstance(EntityInstance entityInstance) {
@@ -315,7 +314,7 @@ public class CommandControl
 
     @Inject
     protected CommandDescriptionFactory commandDescriptionFactory;
-    
+
     public CommandDescription createCommandDescription(Command command, Language language, String description,
             BasePK createdBy) {
         var commandDescription = commandDescriptionFactory.create(command,
@@ -495,10 +494,10 @@ public class CommandControl
 
     @Inject
     protected CommandMessageTypeFactory commandMessageTypeFactory;
-    
+
     @Inject
     protected CommandMessageTypeDetailFactory commandMessageTypeDetailFactory;
-    
+
     public CommandMessageType createCommandMessageType(String commandMessageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCommandMessageType = getDefaultCommandMessageType();
         var defaultFound = defaultCommandMessageType != null;
@@ -532,7 +531,7 @@ public class CommandControl
     public CommandMessageType getCommandMessageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommandMessageTypePK(entityInstance.getEntityUniqueId());
 
-        return CommandMessageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return commandMessageTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommandMessageType getCommandMessageTypeByEntityInstance(EntityInstance entityInstance) {
@@ -800,7 +799,7 @@ public class CommandControl
 
     @Inject
     protected CommandMessageTypeDescriptionFactory commandMessageTypeDescriptionFactory;
-    
+
     public CommandMessageTypeDescription createCommandMessageTypeDescription(CommandMessageType commandMessageType,
             Language language, String description, BasePK createdBy) {
         var commandMessageTypeDescription = commandMessageTypeDescriptionFactory.create(commandMessageType,
@@ -983,10 +982,10 @@ public class CommandControl
 
     @Inject
     protected CommandMessageFactory commandMessageFactory;
-    
+
     @Inject
     protected CommandMessageDetailFactory commandMessageDetailFactory;
-    
+
     public CommandMessage createCommandMessage(CommandMessageType commandMessageType, String commandMessageKey, BasePK createdBy) {
         var commandMessage = commandMessageFactory.create();
         var commandMessageDetail = commandMessageDetailFactory.create(commandMessage,
@@ -1008,7 +1007,7 @@ public class CommandControl
     public CommandMessage getCommandMessageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommandMessagePK(entityInstance.getEntityUniqueId());
 
-        return CommandMessageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return commandMessageFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommandMessage getCommandMessageByEntityInstance(EntityInstance entityInstance) {
@@ -1193,7 +1192,7 @@ public class CommandControl
 
     @Inject
     protected CommandMessageTranslationFactory commandMessageTranslationFactory;
-    
+
     public CommandMessageTranslation createCommandMessageTranslation(CommandMessage commandMessage, Language language, String translation, BasePK createdBy) {
         var commandMessageTranslation = commandMessageTranslationFactory.create(commandMessage, language, translation,
                 session.getStartTime(), Session.MAX_TIME);

@@ -191,13 +191,16 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Keys
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserKeyFactory userKeyFactory;
-    
+
+    @Inject
+    protected UserVisitFactory userVisitFactory;
+
     @Inject
     protected UserKeyDetailFactory userKeyDetailFactory;
-    
+
     protected static final String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-=";
     protected static final char []characterArray = characters.toCharArray();
     protected static final int characterCount = characters.length();
@@ -416,10 +419,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Key Statuses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserKeyStatusFactory userKeyStatusFactory;
-    
+
     public UserKeyStatus createUserKeyStatus(UserKey userKey, Long lastSeenTime) {
         return userKeyStatusFactory.create(userKey, lastSeenTime);
     }
@@ -452,7 +455,7 @@ public class UserControl
 
     @Inject
     protected UserVisitGroupFactory userVisitGroupFactory;
-    
+
     @Inject
     protected UserVisitGroupDetailFactory userVisitGroupDetailFactory;
 
@@ -696,10 +699,6 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visits
     // --------------------------------------------------------------------------------
-    
-    @Inject
-    protected UserVisitFactory userVisitFactory;
-    
     public UserVisit createUserVisit(UserKey userKey, Language preferredLanguage, Currency preferredCurrency, TimeZone preferredTimeZone,
             DateTimeFormat preferredDateTimeFormat, OfferUse offerUse, AssociateReferral associateReferral, Long retainUntilTime) {
         var userVisitGroup = getActiveUserVisitGroup();
@@ -1174,10 +1173,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visit Statuses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserVisitStatusFactory userVisitStatusFactory;
-    
+
     public UserVisitStatus createUserVisitStatus(UserVisit userVisit) {
         return userVisitStatusFactory.create(userVisit, 0, 0, 0, 0);
     }
@@ -1227,10 +1226,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visit Commands
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserVisitCommandFactory userVisitCommandFactory;
-    
+
     public UserVisitCommand createUserVisitCommand(UserVisit userVisit, Integer userVisitCommandSequence, Party party, Command command, Long startTime,
             Long endTime, Boolean hadSecurityErrors, Boolean hadValidationErrors, Boolean hadExecutionErrors) {
         return userVisitCommandFactory.create(userVisit, userVisitCommandSequence, party, command, startTime, endTime, hadSecurityErrors,
@@ -1240,10 +1239,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Sessions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserSessionFactory userSessionFactory;
-    
+
     /** Use associatePartyToUserVisit to associate a Party with a UserVisit, rather than using this
      * function directly.
      */
@@ -1397,13 +1396,13 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   Recovery Questions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected RecoveryQuestionFactory recoveryQuestionFactory;
-    
+
     @Inject
     protected RecoveryQuestionDetailFactory recoveryQuestionDetailFactory;
-    
+
     public RecoveryQuestion createRecoveryQuestion(String recoveryQuestionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultRecoveryQuestion = getDefaultRecoveryQuestion();
         var defaultFound = defaultRecoveryQuestion != null;
@@ -1702,10 +1701,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   Recovery Question Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected RecoveryQuestionDescriptionFactory recoveryQuestionDescriptionFactory;
-    
+
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
         var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(
@@ -1883,13 +1882,13 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   Recovery Answers
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected RecoveryAnswerFactory recoveryAnswerFactory;
-    
+
     @Inject
     protected RecoveryAnswerDetailFactory recoveryAnswerDetailFactory;
-    
+
     public RecoveryAnswer createRecoveryAnswer(Party party, RecoveryQuestion recoveryQuestion, String answer, BasePK createdBy) {
         var recoveryAnswer = recoveryAnswerFactory.create();
         var recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswer,
@@ -2063,10 +2062,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Encoder Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordEncoderTypeFactory userLoginPasswordEncoderTypeFactory;
-    
+
     public UserLoginPasswordEncoderType createUserLoginPasswordEncoderType(String sequenceEncoderTypeName) {
         return userLoginPasswordEncoderTypeFactory.create(sequenceEncoderTypeName);
     }
@@ -2110,10 +2109,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Encoder Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordEncoderTypeDescriptionFactory userLoginPasswordEncoderTypeDescriptionFactory;
-    
+
     public UserLoginPasswordEncoderTypeDescription createUserLoginPasswordEncoderTypeDescription(UserLoginPasswordEncoderType sequenceEncoderType,
             Language language, String description) {
         return userLoginPasswordEncoderTypeDescriptionFactory.create(sequenceEncoderType, language, description);
@@ -2165,10 +2164,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordTypeFactory userLoginPasswordTypeFactory;
-    
+
     public UserLoginPasswordType createUserLoginPasswordType(String userLoginPasswordTypeName,
             UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
         return userLoginPasswordTypeFactory.create(userLoginPasswordTypeName, userLoginPasswordEncoderType);
@@ -2202,10 +2201,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordTypeDescriptionFactory userLoginPasswordTypeDescriptionFactory;
-    
+
     public UserLoginPasswordTypeDescription createUserLoginPasswordTypeDescription(UserLoginPasswordType userLoginPasswordType, Language language, String description) {
         return userLoginPasswordTypeDescriptionFactory.create(userLoginPasswordType, language, description);
     }
@@ -2254,10 +2253,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Passwords
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordFactory userLoginPasswordFactory;
-    
+
     public UserLoginPassword createUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, BasePK createdBy) {
         var userLoginPassword = userLoginPasswordFactory.create(party, userLoginPasswordType,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2392,10 +2391,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Strings
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordStringFactory userLoginPasswordStringFactory;
-    
+
     public UserLoginPasswordString createUserLoginPasswordString(UserLoginPassword userLoginPassword, String password, Long changedTime, Boolean wasReset,
             BasePK createdBy) {
         var userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
@@ -2539,10 +2538,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Logins
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginFactory userLoginFactory;
-    
+
     public UserLogin createUserLogin(Party party, String username, BasePK createdBy) {
         var userLogin = userLoginFactory.create(party, username, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2697,10 +2696,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Statuses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginStatusFactory userLoginStatusFactory;
-    
+
     public UserLoginStatus createUserLoginStatus(Party party) {
         return userLoginStatusFactory.create(party, null, 0, null, null, 0, false);
     }

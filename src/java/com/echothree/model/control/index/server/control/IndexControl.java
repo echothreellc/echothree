@@ -112,6 +112,12 @@ public class IndexControl
     //   Index Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected IndexTypeFactory indexTypeFactory;
+
+    @Inject
+    protected IndexTypeDetailFactory indexTypeDetailFactory;
+
     public IndexType createIndexType(String indexTypeName, EntityType entityType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultIndexType = getDefaultIndexType();
         var defaultFound = defaultIndexType != null;
@@ -125,12 +131,12 @@ public class IndexControl
             isDefault = true;
         }
 
-        var indexType = IndexTypeFactory.getInstance().create();
-        var indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexType, indexTypeName, entityType, isDefault, sortOrder,
+        var indexType = indexTypeFactory.create();
+        var indexTypeDetail = indexTypeDetailFactory.create(indexType, indexTypeName, entityType, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, indexType.getPrimaryKey());
+        indexType = indexTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, indexType.getPrimaryKey());
         indexType.setActiveDetail(indexTypeDetail);
         indexType.setLastDetail(indexTypeDetail);
         indexType.store();
@@ -144,7 +150,7 @@ public class IndexControl
     public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
 
-        return IndexTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return indexTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
@@ -201,7 +207,7 @@ public class IndexControl
     }
 
     private IndexType getIndexTypeByName(String indexTypeName, EntityPermission entityPermission) {
-        return IndexTypeFactory.getInstance().getEntityFromQuery(entityPermission, getIndexTypeByNameQueries, indexTypeName);
+        return indexTypeFactory.getEntityFromQuery(entityPermission, getIndexTypeByNameQueries, indexTypeName);
     }
 
     public IndexType getIndexTypeByName(String indexTypeName) {
@@ -244,7 +250,7 @@ public class IndexControl
     }
 
     private IndexType getDefaultIndexType(EntityPermission entityPermission) {
-        return IndexTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultIndexTypeQueries);
+        return indexTypeFactory.getEntityFromQuery(entityPermission, getDefaultIndexTypeQueries);
     }
 
     public IndexType getDefaultIndexType() {
@@ -283,7 +289,7 @@ public class IndexControl
     }
 
     private List<IndexType> getIndexTypes(EntityPermission entityPermission) {
-        return IndexTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexTypesQueries);
+        return indexTypeFactory.getEntitiesFromQuery(entityPermission, getIndexTypesQueries);
     }
 
     public List<IndexType> getIndexTypes() {
@@ -318,7 +324,7 @@ public class IndexControl
     }
 
     private List<IndexType> getIndexTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        return IndexTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexTypesByEntityTypeQueries,
+        return indexTypeFactory.getEntitiesFromQuery(entityPermission, getIndexTypesByEntityTypeQueries,
                 entityType);
     }
 
@@ -388,7 +394,7 @@ public class IndexControl
 
     private void updateIndexTypeFromValue(IndexTypeDetailValue indexTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(indexTypeDetailValue.hasBeenModified()) {
-            var indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexType = indexTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      indexTypeDetailValue.getIndexTypePK());
             var indexTypeDetail = indexType.getActiveDetailForUpdate();
 
@@ -417,7 +423,7 @@ public class IndexControl
                 }
             }
 
-            indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexTypePK, indexTypeName, entityTypePK, isDefault, sortOrder,
+            indexTypeDetail = indexTypeDetailFactory.create(indexTypePK, indexTypeName, entityTypePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             indexType.setActiveDetail(indexTypeDetail);
@@ -485,8 +491,11 @@ public class IndexControl
     //   Index Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected IndexTypeDescriptionFactory indexTypeDescriptionFactory;
+
     public IndexTypeDescription createIndexTypeDescription(IndexType indexType, Language language, String description, BasePK createdBy) {
-        var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
+        var indexTypeDescription = indexTypeDescriptionFactory.create(indexType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -516,7 +525,7 @@ public class IndexControl
     }
 
     private IndexTypeDescription getIndexTypeDescription(IndexType indexType, Language language, EntityPermission entityPermission) {
-        return IndexTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getIndexTypeDescriptionQueries,
+        return indexTypeDescriptionFactory.getEntityFromQuery(entityPermission, getIndexTypeDescriptionQueries,
                 indexType, language, Session.MAX_TIME);
     }
 
@@ -559,7 +568,7 @@ public class IndexControl
     }
 
     private List<IndexTypeDescription> getIndexTypeDescriptionsByIndexType(IndexType indexType, EntityPermission entityPermission) {
-        return IndexTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexTypeDescriptionsByIndexTypeQueries,
+        return indexTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getIndexTypeDescriptionsByIndexTypeQueries,
                 indexType, Session.MAX_TIME);
     }
 
@@ -605,7 +614,7 @@ public class IndexControl
 
     public void updateIndexTypeDescriptionFromValue(IndexTypeDescriptionValue indexTypeDescriptionValue, BasePK updatedBy) {
         if(indexTypeDescriptionValue.hasBeenModified()) {
-            var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexTypeDescription = indexTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     indexTypeDescriptionValue.getPrimaryKey());
 
             indexTypeDescription.setThruTime(session.getStartTime());
@@ -615,7 +624,7 @@ public class IndexControl
             var language = indexTypeDescription.getLanguage();
             var description = indexTypeDescriptionValue.getDescription();
 
-            indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
+            indexTypeDescription = indexTypeDescriptionFactory.create(indexType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -641,6 +650,12 @@ public class IndexControl
     //   Index Fields
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected IndexFieldFactory indexFieldFactory;
+
+    @Inject
+    protected IndexFieldDetailFactory indexFieldDetailFactory;
+
     public IndexField createIndexField(IndexType indexType, String indexFieldName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultIndexField = getDefaultIndexField(indexType);
         var defaultFound = defaultIndexField != null;
@@ -654,12 +669,12 @@ public class IndexControl
             isDefault = true;
         }
 
-        var indexField = IndexFieldFactory.getInstance().create();
-        var indexFieldDetail = IndexFieldDetailFactory.getInstance().create( indexField, indexType, indexFieldName, isDefault, sortOrder,
+        var indexField = indexFieldFactory.create();
+        var indexFieldDetail = indexFieldDetailFactory.create( indexField, indexType, indexFieldName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        indexField = IndexFieldFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        indexField = indexFieldFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 indexField.getPrimaryKey());
         indexField.setActiveDetail(indexFieldDetail);
         indexField.setLastDetail(indexFieldDetail);
@@ -674,7 +689,7 @@ public class IndexControl
     public IndexField getIndexFieldByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new IndexFieldPK(entityInstance.getEntityUniqueId());
 
-        return IndexFieldFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return indexFieldFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public IndexField getIndexFieldByEntityInstance(EntityInstance entityInstance) {
@@ -717,7 +732,7 @@ public class IndexControl
     }
 
     private List<IndexField> getIndexFields(IndexType indexType, EntityPermission entityPermission) {
-        return IndexFieldFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexFieldsQueries,
+        return indexFieldFactory.getEntitiesFromQuery(entityPermission, getIndexFieldsQueries,
                 indexType);
     }
 
@@ -753,7 +768,7 @@ public class IndexControl
     }
 
     private IndexField getDefaultIndexField(IndexType indexType, EntityPermission entityPermission) {
-        return IndexFieldFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultIndexFieldQueries,
+        return indexFieldFactory.getEntityFromQuery(entityPermission, getDefaultIndexFieldQueries,
                 indexType);
     }
 
@@ -793,7 +808,7 @@ public class IndexControl
     }
 
     private IndexField getIndexFieldByName(IndexType indexType, String indexFieldName, EntityPermission entityPermission) {
-        return IndexFieldFactory.getInstance().getEntityFromQuery(entityPermission, getIndexFieldByNameQueries,
+        return indexFieldFactory.getEntityFromQuery(entityPermission, getIndexFieldByNameQueries,
                 indexType, indexFieldName);
     }
 
@@ -864,7 +879,7 @@ public class IndexControl
     private void updateIndexFieldFromValue(IndexFieldDetailValue indexFieldDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(indexFieldDetailValue.hasBeenModified()) {
-            var indexField = IndexFieldFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexField = indexFieldFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      indexFieldDetailValue.getIndexFieldPK());
             var indexFieldDetail = indexField.getActiveDetailForUpdate();
 
@@ -894,7 +909,7 @@ public class IndexControl
                 }
             }
 
-            indexFieldDetail = IndexFieldDetailFactory.getInstance().create(indexFieldPK, indexTypePK, indexFieldName, isDefault, sortOrder,
+            indexFieldDetail = indexFieldDetailFactory.create(indexFieldPK, indexTypePK, indexFieldName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             indexField.setActiveDetail(indexFieldDetail);
@@ -952,9 +967,12 @@ public class IndexControl
     //   Index Field Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected IndexFieldDescriptionFactory indexFieldDescriptionFactory;
+
     public IndexFieldDescription createIndexFieldDescription(IndexField indexField, Language language, String description,
             BasePK createdBy) {
-        var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField,
+        var indexFieldDescription = indexFieldDescriptionFactory.create(indexField,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -984,7 +1002,7 @@ public class IndexControl
     }
 
     private IndexFieldDescription getIndexFieldDescription(IndexField indexField, Language language, EntityPermission entityPermission) {
-        return IndexFieldDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getIndexFieldDescriptionQueries,
+        return indexFieldDescriptionFactory.getEntityFromQuery(entityPermission, getIndexFieldDescriptionQueries,
                 indexField, language, Session.MAX_TIME);
     }
 
@@ -1027,7 +1045,7 @@ public class IndexControl
     }
 
     private List<IndexFieldDescription> getIndexFieldDescriptionsByIndexField(IndexField indexField, EntityPermission entityPermission) {
-        return IndexFieldDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexFieldDescriptionsByIndexFieldQueries,
+        return indexFieldDescriptionFactory.getEntitiesFromQuery(entityPermission, getIndexFieldDescriptionsByIndexFieldQueries,
                 indexField, Session.MAX_TIME);
     }
 
@@ -1073,7 +1091,7 @@ public class IndexControl
 
     public void updateIndexFieldDescriptionFromValue(IndexFieldDescriptionValue indexFieldDescriptionValue, BasePK updatedBy) {
         if(indexFieldDescriptionValue.hasBeenModified()) {
-            var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexFieldDescription = indexFieldDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      indexFieldDescriptionValue.getPrimaryKey());
 
             indexFieldDescription.setThruTime(session.getStartTime());
@@ -1083,7 +1101,7 @@ public class IndexControl
             var language = indexFieldDescription.getLanguage();
             var description = indexFieldDescriptionValue.getDescription();
 
-            indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField, language, description,
+            indexFieldDescription = indexFieldDescriptionFactory.create(indexField, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1109,6 +1127,12 @@ public class IndexControl
     //   Indexes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected IndexFactory indexFactory;
+
+    @Inject
+    protected IndexDetailFactory indexDetailFactory;
+
     public Index createIndex(String indexName, IndexType indexType, Language language, String directory, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultIndex = getDefaultIndex();
         var defaultFound = defaultIndex != null;
@@ -1122,12 +1146,12 @@ public class IndexControl
             isDefault = true;
         }
 
-        var index = IndexFactory.getInstance().create();
-        var indexDetail = IndexDetailFactory.getInstance().create(index, indexName, indexType, language, directory, isDefault, sortOrder,
+        var index = indexFactory.create();
+        var indexDetail = indexDetailFactory.create(index, indexName, indexType, language, directory, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, index.getPrimaryKey());
+        index = indexFactory.getEntityFromPK(EntityPermission.READ_WRITE, index.getPrimaryKey());
         index.setActiveDetail(indexDetail);
         index.setLastDetail(indexDetail);
         index.store();
@@ -1143,7 +1167,7 @@ public class IndexControl
     public Index getIndexByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new IndexPK(entityInstance.getEntityUniqueId());
 
-        return IndexFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return indexFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Index getIndexByEntityInstance(EntityInstance entityInstance) {
@@ -1196,7 +1220,7 @@ public class IndexControl
     }
 
     private Index getIndex(IndexType indexType, Language language, EntityPermission entityPermission) {
-        return IndexFactory.getInstance().getEntityFromQuery(entityPermission, getIndexQueries, indexType, language);
+        return indexFactory.getEntityFromQuery(entityPermission, getIndexQueries, indexType, language);
     }
 
     public Index getIndex(IndexType indexType, Language language) {
@@ -1231,7 +1255,7 @@ public class IndexControl
     }
 
     private Index getIndexByName(String indexName, EntityPermission entityPermission) {
-        return IndexFactory.getInstance().getEntityFromQuery(entityPermission, getIndexByNameQueries, indexName);
+        return indexFactory.getEntityFromQuery(entityPermission, getIndexByNameQueries, indexName);
     }
 
     public Index getIndexByName(String indexName) {
@@ -1266,7 +1290,7 @@ public class IndexControl
     }
 
     private Index getIndexByDirectory(String directory, EntityPermission entityPermission) {
-        return IndexFactory.getInstance().getEntityFromQuery(entityPermission, getIndexByDirectoryQueries, directory);
+        return indexFactory.getEntityFromQuery(entityPermission, getIndexByDirectoryQueries, directory);
     }
 
     public Index getIndexByDirectory(String directory) {
@@ -1309,7 +1333,7 @@ public class IndexControl
     }
 
     private Index getDefaultIndex(EntityPermission entityPermission) {
-        return IndexFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultIndexQueries);
+        return indexFactory.getEntityFromQuery(entityPermission, getDefaultIndexQueries);
     }
 
     public Index getDefaultIndex() {
@@ -1348,7 +1372,7 @@ public class IndexControl
     }
 
     private List<Index> getIndexes(EntityPermission entityPermission) {
-        return IndexFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexesQueries);
+        return indexFactory.getEntitiesFromQuery(entityPermission, getIndexesQueries);
     }
 
     public List<Index> getIndexes() {
@@ -1385,7 +1409,7 @@ public class IndexControl
     }
 
     private List<Index> getIndexesByIndexType(IndexType indexType, EntityPermission entityPermission) {
-        return IndexFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexesByIndexTypeQueries,
+        return indexFactory.getEntitiesFromQuery(entityPermission, getIndexesByIndexTypeQueries,
                 indexType);
     }
 
@@ -1461,7 +1485,7 @@ public class IndexControl
 
     private void updateIndexFromValue(IndexDetailValue indexDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(indexDetailValue.hasBeenModified()) {
-            var index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var index = indexFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      indexDetailValue.getIndexPK());
             var indexDetail = index.getActiveDetailForUpdate();
 
@@ -1492,7 +1516,7 @@ public class IndexControl
                 }
             }
 
-            indexDetail = IndexDetailFactory.getInstance().create(indexPK, indexName, indexTypePK, languagePK, directory, isDefault, sortOrder,
+            indexDetail = indexDetailFactory.create(indexPK, indexName, indexTypePK, languagePK, directory, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             index.setActiveDetail(indexDetail);
@@ -1561,8 +1585,11 @@ public class IndexControl
     //   Index Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected IndexDescriptionFactory indexDescriptionFactory;
+
     public IndexDescription createIndexDescription(Index index, Language language, String description, BasePK createdBy) {
-        var indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
+        var indexDescription = indexDescriptionFactory.create(index, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1592,7 +1619,7 @@ public class IndexControl
     }
 
     private IndexDescription getIndexDescription(Index index, Language language, EntityPermission entityPermission) {
-        return IndexDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getIndexDescriptionQueries,
+        return indexDescriptionFactory.getEntityFromQuery(entityPermission, getIndexDescriptionQueries,
                 index, language, Session.MAX_TIME);
     }
 
@@ -1635,7 +1662,7 @@ public class IndexControl
     }
 
     private List<IndexDescription> getIndexDescriptionsByIndex(Index index, EntityPermission entityPermission) {
-        return IndexDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getIndexDescriptionsByIndexQueries,
+        return indexDescriptionFactory.getEntitiesFromQuery(entityPermission, getIndexDescriptionsByIndexQueries,
                 index, Session.MAX_TIME);
     }
 
@@ -1681,7 +1708,7 @@ public class IndexControl
 
     public void updateIndexDescriptionFromValue(IndexDescriptionValue indexDescriptionValue, BasePK updatedBy) {
         if(indexDescriptionValue.hasBeenModified()) {
-            var indexDescription = IndexDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var indexDescription = indexDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     indexDescriptionValue.getPrimaryKey());
 
             indexDescription.setThruTime(session.getStartTime());
@@ -1691,7 +1718,7 @@ public class IndexControl
             var language = indexDescription.getLanguage();
             var description = indexDescriptionValue.getDescription();
 
-            indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
+            indexDescription = indexDescriptionFactory.create(index, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1716,9 +1743,12 @@ public class IndexControl
     // --------------------------------------------------------------------------------
     //   Index Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected IndexStatusFactory indexStatusFactory;
+
     public IndexStatus createIndexStatus(Index index) {
-        return IndexStatusFactory.getInstance().create(index, null);
+        return indexStatusFactory.create(index, null);
     }
     
     private static final Map<EntityPermission, String> getIndexStatusQueries;
@@ -1743,7 +1773,7 @@ public class IndexControl
     }
 
     private IndexStatus getIndexStatus(Index index, EntityPermission entityPermission) {
-        return IndexStatusFactory.getInstance().getEntityFromQuery(entityPermission, getIndexStatusQueries,
+        return indexStatusFactory.getEntityFromQuery(entityPermission, getIndexStatusQueries,
                 index);
     }
 

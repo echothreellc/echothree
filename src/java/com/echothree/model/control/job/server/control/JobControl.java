@@ -75,14 +75,20 @@ public class JobControl
     // --------------------------------------------------------------------------------
     //   Jobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected JobFactory jobFactory;
+
+    @Inject
+    protected JobDetailFactory jobDetailFactory;
+
     public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
-        var job = JobFactory.getInstance().create();
-        var jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
+        var job = jobFactory.create();
+        var jobDetail = jobDetailFactory.create(job, jobName, runAsParty, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        job = JobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, job.getPrimaryKey());
+        job = jobFactory.getEntityFromPK(EntityPermission.READ_WRITE, job.getPrimaryKey());
         job.setActiveDetail(jobDetail);
         job.setLastDetail(jobDetail);
         job.store();
@@ -98,7 +104,7 @@ public class JobControl
     public Job getJobByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new JobPK(entityInstance.getEntityUniqueId());
 
-        return JobFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return jobFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Job getJobByEntityInstance(EntityInstance entityInstance) {
@@ -138,11 +144,11 @@ public class JobControl
                         """;
             }
 
-            var ps = JobFactory.getInstance().prepareStatement(query);
+            var ps = jobFactory.prepareStatement(query);
             
             ps.setString(1, jobName);
             
-            job = JobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            job = jobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -186,9 +192,9 @@ public class JobControl
                     """;
         }
 
-        var ps = JobFactory.getInstance().prepareStatement(query);
+        var ps = jobFactory.prepareStatement(query);
         
-        return JobFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return jobFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Job> getJobs() {
@@ -251,7 +257,7 @@ public class JobControl
     }
     
     public void updateJobFromValue(JobDetailValue jobDetailValue, BasePK updatedBy) {
-        var job = JobFactory.getInstance().getEntityFromPK(
+        var job = jobFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, jobDetailValue.getJobPK());
         var jobDetail = job.getActiveDetailForUpdate();
         
@@ -263,7 +269,7 @@ public class JobControl
         var runAsPartyPK = jobDetailValue.getRunAsPartyPK();
         var sortOrder = jobDetailValue.getSortOrder();
         
-        jobDetail = JobDetailFactory.getInstance().create(jobPK, jobName, runAsPartyPK, sortOrder,
+        jobDetail = jobDetailFactory.create(jobPK, jobName, runAsPartyPK, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         job.setActiveDetail(jobDetail);
@@ -289,10 +295,13 @@ public class JobControl
     // --------------------------------------------------------------------------------
     //   Job Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected JobDescriptionFactory jobDescriptionFactory;
+
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
-        var jobDescription = JobDescriptionFactory.getInstance().create(
+        var jobDescription = jobDescriptionFactory.create(
                 job, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -321,13 +330,13 @@ public class JobControl
                         """;
             }
 
-            var ps = JobDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = jobDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, job.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            jobDescription = JobDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            jobDescription = jobDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -373,12 +382,12 @@ public class JobControl
                         """;
             }
 
-            var ps = JobDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = jobDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, job.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            jobDescriptions = JobDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            jobDescriptions = jobDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -428,7 +437,7 @@ public class JobControl
     
     public void updateJobDescriptionFromValue(JobDescriptionValue jobDescriptionValue, BasePK updatedBy) {
         if(jobDescriptionValue.hasBeenModified()) {
-            var jobDescription = JobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var jobDescription = jobDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      jobDescriptionValue.getPrimaryKey());
             
             jobDescription.setThruTime(session.getStartTime());
@@ -438,7 +447,7 @@ public class JobControl
             var language = jobDescription.getLanguage();
             var description = jobDescriptionValue.getDescription();
             
-            jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
+            jobDescription = jobDescriptionFactory.create(job, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -463,9 +472,12 @@ public class JobControl
     // --------------------------------------------------------------------------------
     //   Job Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected JobStatusFactory jobStatusFactory;
+
     public JobStatus createJobStatus(Job job) {
-        return JobStatusFactory.getInstance().create(job, null, null);
+        return jobStatusFactory.create(job, null, null);
     }
     
     private JobStatus getJobStatus(Job job, EntityPermission entityPermission) {
@@ -489,11 +501,11 @@ public class JobControl
                         """;
             }
 
-            var ps = JobStatusFactory.getInstance().prepareStatement(query);
+            var ps = jobStatusFactory.prepareStatement(query);
             
             ps.setLong(1, job.getPrimaryKey().getEntityId());
             
-            jobStatus = JobStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            jobStatus = jobStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

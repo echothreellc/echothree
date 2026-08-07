@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OfferUseControl
@@ -49,13 +50,19 @@ public class OfferUseControl
     //   Offer Uses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferUseFactory offerUseFactory;
+
+    @Inject
+    protected OfferUseDetailFactory offerUseDetailFactory;
+
     public OfferUse createOfferUse(Offer offer, Use use, Sequence salesOrderSequence, BasePK createdBy) {
-        var offerUse = OfferUseFactory.getInstance().create();
-        var offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUse, offer, use, salesOrderSequence,
+        var offerUse = offerUseFactory.create();
+        var offerUseDetail = offerUseDetailFactory.create(offerUse, offer, use, salesOrderSequence,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerUse.getPrimaryKey());
+        offerUse = offerUseFactory.getEntityFromPK(EntityPermission.READ_WRITE, offerUse.getPrimaryKey());
         offerUse.setActiveDetail(offerUseDetail);
         offerUse.setLastDetail(offerUseDetail);
         offerUse.store();
@@ -116,9 +123,9 @@ public class OfferUseControl
                     """;
         }
 
-        var ps = OfferUseFactory.getInstance().prepareStatement(query);
+        var ps = offerUseFactory.prepareStatement(query);
 
-        return OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<OfferUse> getOfferUses() {
@@ -153,11 +160,11 @@ public class OfferUseControl
                         """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
 
-            offerUses = OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -197,11 +204,11 @@ public class OfferUseControl
                         """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
 
-            offerUses = OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -241,11 +248,11 @@ public class OfferUseControl
                         """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, salesOrderSequence.getPrimaryKey().getEntityId());
 
-            offerUses = OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -282,12 +289,12 @@ public class OfferUseControl
                         """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, use.getPrimaryKey().getEntityId());
 
-            offerUse = OfferUseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerUse = offerUseFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -331,7 +338,7 @@ public class OfferUseControl
 
     public void updateOfferUseFromValue(OfferUseDetailValue offerUseDetailValue, BasePK updatedBy) {
         if(offerUseDetailValue.hasBeenModified()) {
-            var offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerUse = offerUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     offerUseDetailValue.getOfferUsePK());
             var offerUseDetail = offerUse.getActiveDetailForUpdate();
 
@@ -343,7 +350,7 @@ public class OfferUseControl
             var usePK = offerUseDetail.getUsePK();
             var sequencePK = offerUseDetailValue.getSalesOrderSequencePK();
 
-            offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUsePK, offerPK, usePK, sequencePK,
+            offerUseDetail = offerUseDetailFactory.create(offerUsePK, offerPK, usePK, sequencePK,
                     session.getStartTime(), Session.MAX_TIME);
 
             offerUse.setActiveDetail(offerUseDetail);
