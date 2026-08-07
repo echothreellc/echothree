@@ -113,6 +113,12 @@ import javax.inject.Inject;
 public class WarehouseControl
         extends BaseWarehouseControl {
     
+    @Inject
+    protected InventoryControl inventoryControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
     /** Creates a new instance of WarehouseControl */
     protected WarehouseControl() {
         super();
@@ -908,7 +914,6 @@ public class WarehouseControl
     }
     
     public void deleteWarehouse(Warehouse warehouse, BasePK deletedBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var party = warehouse.getPartyForUpdate();
         
         deleteLocationsByWarehouseParty(party, deletedBy);
@@ -2760,7 +2765,6 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
 
     public List<WarehouseResultTransfer> getWarehouseResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var warehouseResultTransfers = new ArrayList<WarehouseResultTransfer>();
         var includeWarehouse = false;
 
@@ -2770,7 +2774,7 @@ public class WarehouseControl
         }
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var warehouseControl = this;
 
             while(rs.next()) {
                 var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -2786,7 +2790,6 @@ public class WarehouseControl
     }
 
     public List<WarehouseObject> getWarehouseObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var warehouseObjects = new ArrayList<WarehouseObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

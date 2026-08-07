@@ -51,6 +51,9 @@ import javax.inject.Inject;
 public class UseTypeControl
         extends BaseOfferControl {
 
+    @Inject
+    protected UseControl useControl;
+
     /** Creates a new instance of UseTypeControl */
     protected UseTypeControl() {
         super();
@@ -333,7 +336,6 @@ public class UseTypeControl
     }
     
     public void deleteUseType(UseType useType, BasePK deletedBy) {
-        var useControl = Session.getModelController(UseControl.class);
 
         deleteUseTypeDescriptionsByUseType(useType, deletedBy);
         useControl.deleteUsesByUseType(useType, deletedBy);
@@ -541,7 +543,6 @@ public class UseTypeControl
         );
     }
 
-
     // --------------------------------------------------------------------------------
     //   Use Type Searches
     // --------------------------------------------------------------------------------
@@ -560,7 +561,7 @@ public class UseTypeControl
         }
 
         try {
-            var useTypeControl = Session.getModelController(UseTypeControl.class);
+            var useTypeControl = this;
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

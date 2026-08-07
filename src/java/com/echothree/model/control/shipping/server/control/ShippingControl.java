@@ -55,6 +55,12 @@ import javax.inject.Inject;
 public class ShippingControl
         extends BaseShippingControl {
     
+    @Inject
+    protected ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    protected ShipmentControl shipmentControl;
+
     /** Creates a new instance of ShippingControl */
     protected ShippingControl() {
         super();
@@ -250,7 +256,6 @@ public class ShippingControl
     
     public ShippingMethodChoicesBean getShippingMethodChoices(String defaultShippingMethodChoice, Language language,
             boolean allowNullChoice, ShipmentType shipmentType) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentTypeShippingMethods = shipmentControl.getShipmentTypeShippingMethodsByShipmentType(shipmentType);
         var size = shipmentTypeShippingMethods.size();
         var labels = new ArrayList<String>(size);
@@ -332,8 +337,6 @@ public class ShippingControl
     }
 
     public void deleteShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         
         returnPolicyControl.deleteReturnTypeShippingMethodsByShippingMethod(shippingMethod, deletedBy);
         shipmentControl.deleteShipmentTypeShippingMethodsByShippingMethod(shippingMethod, deletedBy);

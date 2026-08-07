@@ -68,6 +68,12 @@ import javax.inject.Inject;
 public class ApplicationControl
         extends BaseCoreControl {
 
+    @Inject
+    protected EditorControl editorControl;
+
+    @Inject
+    protected PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
     /** Creates a new instance of ApplicationControl */
     protected ApplicationControl() {
         super();
@@ -788,7 +794,6 @@ public class ApplicationControl
 
     public ApplicationEditorChoicesBean getApplicationEditorChoices(String defaultApplicationEditorChoice, Language language, boolean allowNullChoice,
             Application application) {
-        var editorControl = Session.getModelController(EditorControl.class);
         var applicationEditors = getApplicationEditorsByApplication(application);
         var size = applicationEditors.size();
         var labels = new ArrayList<String>(size);
@@ -870,7 +875,6 @@ public class ApplicationControl
     }
 
     private void deleteApplicationEditor(ApplicationEditor applicationEditor, boolean checkDefault, BasePK deletedBy) {
-        var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
         var applicationEditorDetail = applicationEditor.getLastDetailForUpdate();
         var application = applicationEditorDetail.getApplication();
 
@@ -1254,7 +1258,6 @@ public class ApplicationControl
     }
 
     private void deleteApplicationEditorUse(ApplicationEditorUse applicationEditorUse, boolean checkDefault, BasePK deletedBy) {
-        var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
         var applicationEditorUseDetail = applicationEditorUse.getLastDetailForUpdate();
         var application = applicationEditorUseDetail.getApplication();
 

@@ -110,6 +110,12 @@ import javax.inject.Inject;
 public class CommunicationControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of CommunicationControl */
     protected CommunicationControl() {
         super();
@@ -896,9 +902,8 @@ public class CommunicationControl
             CommunicationSource communicationSource, CommunicationEventPurpose communicationEventPurpose,
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.COMMUNICATION_EVENT.name()));
-        var communicationEventName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var communicationEventName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCommunicationEvent(communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document, createdBy);

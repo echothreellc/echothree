@@ -88,6 +88,12 @@ import javax.inject.Inject;
 public class WishlistControl
         extends BaseModelControl {
     
+    @Inject
+    protected OrderControl orderControl;
+
+    @Inject
+    protected OrderLineControl orderLineControl;
+
     /** Creates a new instance of WishlistControl */
     protected WishlistControl() {
         super();
@@ -397,7 +403,6 @@ public class WishlistControl
     }
     
     public void deleteWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var orderControl = Session.getModelController(OrderControl.class);
         
         deleteWishlistTypeDescriptionsByWishlistType(wishlistType, deletedBy);
         deleteOrdersByWishlistType(wishlistType, deletedBy);
@@ -1656,7 +1661,6 @@ public class WishlistControl
     }
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var orderControl = Session.getModelController(OrderControl.class);
         var orders = getOrdersByWishlistTypeForUpdate(wishlistType);
         
         orders.forEach((order) -> {
@@ -1936,7 +1940,6 @@ public class WishlistControl
     }
     
     public void deleteOrderLinesByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
-        var orderLineControl = Session.getModelController(OrderLineControl.class);
         var orderLines = getOrderLinesByWishlistPriorityForUpdate(wishlistPriority);
         
         orderLines.forEach((orderLine) -> {

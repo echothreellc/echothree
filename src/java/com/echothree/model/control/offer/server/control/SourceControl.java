@@ -44,6 +44,12 @@ import javax.inject.Inject;
 public class SourceControl
         extends BaseOfferControl {
 
+    @Inject
+    protected OfferControl offerControl;
+
+    @Inject
+    protected UseControl useControl;
+
     /** Creates a new instance of UseControl */
     protected SourceControl() {
         super();
@@ -308,8 +314,6 @@ public class SourceControl
     }
 
     public String getBestSourceDescription(Source source, Language language) {
-        var offerControl = Session.getModelController(OfferControl.class);
-        var useControl = Session.getModelController(UseControl.class);
         var sourceDetail = source.getLastDetail();
         var sourceName = sourceDetail.getSourceName();
         var offerUseDetail = sourceDetail.getOfferUse().getLastDetail();

@@ -96,6 +96,12 @@ import javax.inject.Inject;
 public class UomControl
         extends BaseModelControl {
     
+    @Inject
+    protected ItemControl itemControl;
+
+    @Inject
+    protected VendorControl vendorControl;
+
     /** Creates a new instance of UomControl */
     protected UomControl() {
         super();
@@ -1021,8 +1027,6 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
         
         deleteUnitOfMeasureEquivalentsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         deleteUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
@@ -1531,7 +1535,6 @@ public class UomControl
         
         return unitOfMeasureEquivalent;
     }
-
 
     public long countUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
         return session.queryForLong("""

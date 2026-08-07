@@ -112,6 +112,9 @@ import javax.inject.Inject;
 public class VendorControl
         extends BaseModelControl {
     
+    @Inject
+    protected SearchControl searchControl;
+
     /** Creates a new instance of VendorControl */
     protected VendorControl() {
         super();
@@ -891,7 +894,6 @@ public class VendorControl
             workflowControl.getWorkflowEntranceChoices(vendorStatusChoicesBean, defaultVendorStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(VendorStatusConstants.Workflow_VENDOR_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
                     entityInstance);
@@ -1263,7 +1265,6 @@ public class VendorControl
             workflowControl.getWorkflowEntranceChoices(vendorItemStatusChoicesBean, defaultVendorItemStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                     entityInstance);
@@ -2241,7 +2242,6 @@ public class VendorControl
     // --------------------------------------------------------------------------------
 
     public List<VendorResultTransfer> getVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var vendorResultTransfers = new ArrayList<VendorResultTransfer>();
         var includeVendor = false;
 
@@ -2251,7 +2251,7 @@ public class VendorControl
         }
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var vendorControl = Session.getModelController(VendorControl.class);
+            var vendorControl = this;
 
             while(rs.next()) {
                 var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -2267,7 +2267,6 @@ public class VendorControl
     }
 
     public List<VendorObject> getVendorObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var vendorObjects = new ArrayList<VendorObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

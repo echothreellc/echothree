@@ -203,6 +203,9 @@ import javax.inject.Inject;
 public class ContentControl
         extends BaseModelControl {
     
+    @Inject
+    protected ContentLogic contentLogic;
+
     /** Creates a new instance of ContentControl */
     protected ContentControl() {
         super();
@@ -4613,7 +4616,7 @@ public class ContentControl
             sendEvent(contentCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
 
             if(contentCategoryDetailValue.getDefaultOfferUsePKHasBeenModified()) {
-                ContentLogic.getInstance().updateContentCatalogItemPricesByContentCategory(contentCategoryDetail.getContentCategory(), updatedBy);
+                contentLogic.updateContentCatalogItemPricesByContentCategory(contentCategoryDetail.getContentCategory(), updatedBy);
             }
         }
     }
@@ -5199,7 +5202,7 @@ public class ContentControl
     
     public void deleteContentCategoryItemsByContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
         getContentCategoryItemsByContentCategoryForUpdate(contentCategory).forEach((contentCategoryItem) -> {
-            ContentLogic.getInstance().deleteContentCategoryItem(contentCategoryItem, deletedBy);
+            contentLogic.deleteContentCategoryItem(contentCategoryItem, deletedBy);
         });
     }
 

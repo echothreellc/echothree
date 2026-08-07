@@ -38,6 +38,9 @@ import javax.inject.Inject;
 public class SecurityRoleControl
         extends BaseModelControl {
 
+    @Inject
+    protected SecurityControl securityControl;
+
     /** Creates a new instance of SecurityRoleControl */
     protected SecurityRoleControl() {
         super();
@@ -64,7 +67,6 @@ public class SecurityRoleControl
         }
 
         try {
-            var securityControl = Session.getModelController(SecurityControl.class);
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

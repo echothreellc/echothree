@@ -161,6 +161,16 @@ import javax.inject.Inject;
 public class TrainingControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+
+    @Inject
+    protected PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of TrainingControl */
     protected TrainingControl() {
         super();
@@ -504,7 +514,7 @@ public class TrainingControl
     public void deleteTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
         deleteTrainingClassTranslationsByTrainingClass(trainingClass, deletedBy);
         deletePartyTrainingClassesByTrainingClass(trainingClass, deletedBy);
-        PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClassesByTrainingClass(trainingClass, deletedBy);
+        partySecurityRoleTemplateLogic.deletePartySecurityRoleTemplateTrainingClassesByTrainingClass(trainingClass, deletedBy);
 
         var trainingClassDetail = trainingClass.getLastDetailForUpdate();
         trainingClassDetail.setThruTime(session.getStartTime());
@@ -2113,9 +2123,8 @@ public class TrainingControl
     protected PartyTrainingClassDetailFactory partyTrainingClassDetailFactory;
 
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.name());
-        var partyTrainingClassName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var partyTrainingClassName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createPartyTrainingClass(partyTrainingClassName, party, trainingClass, completedTime, validUntilTime, createdBy);
     }
@@ -2190,7 +2199,6 @@ public class TrainingControl
     }
 
     public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
         var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
 
@@ -2381,7 +2389,6 @@ public class TrainingControl
             workflowControl.getWorkflowEntranceChoices(partyTrainingClassStatusChoicesBean, defaultPartyTrainingClassStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                     entityInstance);

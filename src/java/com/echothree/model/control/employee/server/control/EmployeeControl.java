@@ -181,6 +181,15 @@ import javax.inject.Inject;
 public class EmployeeControl
         extends BaseModelControl {
     
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of EmployeeControl */
     protected EmployeeControl() {
         super();
@@ -2158,9 +2167,8 @@ public class EmployeeControl
 
     public Leave createLeave(Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime, Long totalTime,
             BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
-        var leaveName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var leaveName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createLeave(leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
     }
@@ -2440,7 +2448,6 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(leaveStatusChoicesBean, defaultLeaveStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(LeaveStatusConstants.Workflow_LEAVE_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                     entityInstance);
@@ -3521,9 +3528,8 @@ public class EmployeeControl
 
     public Employment createEmployment(Party party, Party companyParty, Long startTime, Long endTime, TerminationType terminationType,
             TerminationReason terminationReason, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
-        var employmentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var employmentName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createEmployment(employmentName, party, companyParty, startTime, endTime, terminationType, terminationReason, createdBy);
     }
@@ -4501,7 +4507,6 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultEmployeeStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                     entityInstance);
@@ -4535,7 +4540,6 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(employeeAvailabilityChoicesBean, defaultEmployeeAvailabilityChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                     entityInstance);
@@ -5064,7 +5068,6 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
 
     public List<EmployeeResultTransfer> getEmployeeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var employeeResultTransfers = new ArrayList<EmployeeResultTransfer>();
         var includeEmployee = false;
 
@@ -5074,7 +5077,7 @@ public class EmployeeControl
         }
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
+            var employeeControl = this;
 
             while(rs.next()) {
                 var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -5090,7 +5093,6 @@ public class EmployeeControl
     }
 
     public List<EmployeeObject> getEmployeeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var employeeObjects = new ArrayList<EmployeeObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

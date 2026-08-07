@@ -59,6 +59,9 @@ import javax.inject.Inject;
 public class FontControl
         extends BaseCoreControl {
 
+    @Inject
+    protected AppearanceControl appearanceControl;
+
     /** Creates a new instance of FontControl */
     protected FontControl() {
         super();
@@ -339,7 +342,6 @@ public class FontControl
     }
 
     private void deleteFontStyle(FontStyle fontStyle, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var fontStyleDetail = fontStyle.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearancesByFontStyle(fontStyle, deletedBy);
@@ -818,7 +820,6 @@ public class FontControl
     }
 
     private void deleteFontWeight(FontWeight fontWeight, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var fontWeightDetail = fontWeight.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearancesByFontWeight(fontWeight, deletedBy);

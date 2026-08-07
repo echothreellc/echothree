@@ -164,6 +164,15 @@ import javax.inject.Inject;
 public class WorkflowControl
         extends BaseModelControl {
     
+    @Inject
+    protected WorkRequirementControl workRequirementControl;
+
+    @Inject
+    protected WorkRequirementLogic workRequirementLogic;
+
+    @Inject
+    protected WorkflowSecurityLogic workflowSecurityLogic;
+
     /** Creates a new instance of WorkflowControl */
     protected WorkflowControl() {
         super();
@@ -1153,7 +1162,6 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowStep(WorkflowStep workflowStep, boolean checkDefault, BasePK deletedBy) {
-        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         
         workRequirementControl.deleteWorkRequirementTypesByWorkflowStep(workflowStep, deletedBy);
         deleteWorkflowEntityStatusesByWorkflowStep(workflowStep, deletedBy);
@@ -1780,7 +1788,6 @@ public class WorkflowControl
     
     public BaseWorkflowChoicesBean getWorkflowEntranceChoices(BaseWorkflowChoicesBean baseWorkflowChoicesBean, String defaultWorkflowEntranceChoice, Language language, boolean allowNullChoice,
             Workflow workflow, PartyPK partyPK) {
-        var workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
         var workflowEntrances = getWorkflowEntrancesByWorkflow(workflow);
         var size = workflowEntrances.size();
         var labels = new ArrayList<String>(size);
@@ -3066,7 +3073,6 @@ public class WorkflowControl
     
     public BaseWorkflowChoicesBean getWorkflowDestinationChoices(BaseWorkflowChoicesBean baseWorkflowChoicesBean, String defaultWorkflowDestinationChoice,
             Language language, boolean allowNullChoice, WorkflowStep workflowStep, PartyPK partyPK) {
-        var workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
         var workflowDestinations = getWorkflowDestinationsByWorkflowStep(workflowStep);
         var size = workflowDestinations.size();
         var labels = new ArrayList<String>(size);
@@ -3975,7 +3981,6 @@ public class WorkflowControl
                 workflowDestination, Session.MAX_TIME);
     }
 
-
     public long countWorkflowDestinationStepsByWorkflowStep(WorkflowStep workflowStep) {
         return session.queryForLong("""
                 SELECT COUNT(*)
@@ -4407,7 +4412,6 @@ public class WorkflowControl
                         AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ?
                         """, entityInstance, Session.MAX_TIME, workflow, Session.MAX_TIME);
     }
-
 
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope,
             EntityPermission entityPermission) {
@@ -4854,7 +4858,6 @@ public class WorkflowControl
 
     public void addEntityToWorkflow(final WorkflowEntrance workflowEntrance, final EntityInstance entityInstance, final WorkEffort workEffort,
             final Long triggerTime, final BasePK createdBy) {
-        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         var workflowEntranceSteps = getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
         var workEffortScope = workEffort == null ? null : workEffort.getLastDetail().getWorkEffortScope();
 
@@ -4865,7 +4868,7 @@ public class WorkflowControl
                 var workRequirementScopes = workRequirementControl.getWorkRequirementScopesByWorkRequirementType(workEffortScope,
                         workflowStep);
                 workRequirementScopes.forEach((workRequirementScope) -> {
-                    WorkRequirementLogic.getInstance().createWorkRequirement(session, workEffort, workRequirementScope, null, null, null, createdBy);
+                    workRequirementLogic.createWorkRequirement(session, workEffort, workRequirementScope, null, null, null, createdBy);
                 });
             }
 
@@ -4933,7 +4936,7 @@ public class WorkflowControl
 
     public void transitionEntityInWorkflow(final ExecutionErrorAccumulator eea, WorkflowEntityStatus workflowEntityStatus,
             final WorkflowDestination workflowDestination, final Long triggerTime, final PartyPK modifiedBy) {
-        if(eea == null || WorkflowSecurityLogic.getInstance().checkTransitionEntityInWorkflow(eea, workflowDestination, modifiedBy)) {
+        if(eea == null || workflowSecurityLogic.checkTransitionEntityInWorkflow(eea, workflowDestination, modifiedBy)) {
             deleteWorkflowEntityStatus(workflowEntityStatus, modifiedBy);
 
             if(workflowDestination != null) {

@@ -61,6 +61,9 @@ import javax.inject.Inject;
 public class IconControl
         extends BaseModelControl {
     
+    @Inject
+    protected DocumentControl documentControl;
+
     /** Creates a new instance of IconControl */
     protected IconControl() {
         super();
@@ -183,7 +186,6 @@ public class IconControl
     
     public IconChoicesBean getIconChoicesByIconUsageType(IconUsageType iconUsageType, String defaultIconChoice, Language language,
             boolean allowNullChoice) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var iconUsages = getIconUsagesByIconUsageType(iconUsageType);
         var icons = getIcons();
         var size = icons.size();

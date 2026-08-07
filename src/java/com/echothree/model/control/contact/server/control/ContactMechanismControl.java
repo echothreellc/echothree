@@ -38,6 +38,9 @@ import javax.inject.Inject;
 public class ContactMechanismControl
         extends BaseModelControl {
 
+    @Inject
+    protected ContactControl contactControl;
+
     /** Creates a new instance of ContactMechanismControl */
     protected ContactMechanismControl() {
         super();
@@ -64,7 +67,6 @@ public class ContactMechanismControl
         }
 
         try {
-            var contactControl = Session.getModelController(ContactControl.class);
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

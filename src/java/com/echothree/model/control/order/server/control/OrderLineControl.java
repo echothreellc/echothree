@@ -45,6 +45,12 @@ import javax.inject.Inject;
 public class OrderLineControl
         extends BaseOrderControl {
 
+    @Inject
+    protected OrderLineAdjustmentControl orderLineAdjustmentControl;
+
+    @Inject
+    protected WishlistControl wishlistControl;
+
     /** Creates a new instance of OrderControl */
     protected OrderLineControl() {
         super();
@@ -322,7 +328,6 @@ public class OrderLineControl
     }
     
     public void deleteOrderLine(OrderLine orderLine, BasePK deletedBy) {
-        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var orderLineDetail = orderLine.getLastDetailForUpdate();
 
         removeOrderLineStatusByOrderLine(orderLine);
@@ -350,7 +355,6 @@ public class OrderLineControl
     }
     
     public void deleteOrderLinesByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistLines = wishlistControl.getWishlistLinesByWishlistPriorityForUpdate(wishlistPriority);
         
         wishlistLines.forEach((wishlistLine) -> {

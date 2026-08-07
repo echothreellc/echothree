@@ -50,6 +50,7 @@ public class SalesOrderControl
         extends BaseSalesControl {
 
     /** Creates a new instance of SalesOrderControl */
+
     protected SalesOrderControl() {
         super();
     }
@@ -292,7 +293,6 @@ public class SalesOrderControl
         var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>();
 
         try {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var ps = searchResultFactory.prepareStatement("""
                             SELECT eni_entityuniqueid
                             FROM searchresults, entityinstances

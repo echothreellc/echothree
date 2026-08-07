@@ -104,6 +104,9 @@ import javax.inject.Inject;
 public class CarrierControl
         extends BaseModelControl {
     
+    @Inject
+    protected ShippingControl shippingControl;
+
     /** Creates a new instance of CarrierControl */
     protected CarrierControl() {
         super();
@@ -1347,7 +1350,6 @@ public class CarrierControl
     }
     
     private void deleteCarrierService(CarrierService carrierService, boolean checkDefault, BasePK deletedBy) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         
         deleteCarrierServiceDescriptionsByCarrierService(carrierService, deletedBy);
         deleteCarrierServiceOptionsByCarrierService(carrierService, deletedBy);

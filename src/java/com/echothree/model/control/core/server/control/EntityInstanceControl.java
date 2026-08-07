@@ -58,6 +58,54 @@ import javax.inject.Inject;
 public class EntityInstanceControl
         extends BaseCoreControl {
 
+    @Inject
+    protected AccountingControl accountingControl;
+
+    @Inject
+    protected AppearanceControl appearanceControl;
+
+    @Inject
+    protected AssociateControl associateControl;
+
+    @Inject
+    protected BatchControl batchControl;
+
+    @Inject
+    protected ChainControl chainControl;
+
+    @Inject
+    protected CommentControl commentControl;
+
+    @Inject
+    protected ComponentControl componentControl;
+
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected EntityTypeControl entityTypeControl;
+
+    @Inject
+    protected MessageControl messageControl;
+
+    @Inject
+    protected RatingControl ratingControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected SecurityControl securityControl;
+
+    @Inject
+    protected TagControl tagControl;
+
+    @Inject
+    protected WorkEffortControl workEffortControl;
+
     /** Creates a new instance of EntityInstanceControl */
     protected EntityInstanceControl() {
         super();
@@ -75,7 +123,6 @@ public class EntityInstanceControl
     }
 
     public EntityInstance createEntityAttributeDefaults(EntityInstance entityInstance, BasePK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributes = coreControl.getEntityAttributesByEntityType(entityInstance.getEntityType());
 
         entityAttributes.forEach(entityAttribute -> {
@@ -355,7 +402,6 @@ public class EntityInstanceControl
         }
 
         if(pk != null) {
-            var componentControl = Session.getModelController(ComponentControl.class);
             var componentVendorName = pk.getComponentVendorName();
             var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
 
@@ -364,7 +410,6 @@ public class EntityInstanceControl
             }
 
             if(componentVendor != null) {
-                var entityTypeControl = Session.getModelController(EntityTypeControl.class);
                 var entityTypeName = pk.getEntityTypeName();
                 var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
 
@@ -429,12 +474,10 @@ public class EntityInstanceControl
             var entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
 
             if(entityRefParts.length == 3) {
-                var componentControl = Session.getModelController(ComponentControl.class);
                 var componentVendorName = entityRefParts[0];
                 var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
 
                 if(componentVendor != null) {
-                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
                     var entityTypeName = entityRefParts[1];
                     var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
 
@@ -478,26 +521,20 @@ public class EntityInstanceControl
      * entities scattered through several components that depend on them.
      */
     public void deleteEntityInstanceDependencies(EntityInstance entityInstance, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
-        var chainControl = Session.getModelController(ChainControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
-        var securityControl = Session.getModelController(SecurityControl.class);
 
-        Session.getModelController(AccountingControl.class).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(AssociateControl.class).deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(BatchControl.class).deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(CommentControl.class).deleteCommentsByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(MessageControl.class).deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(RatingControl.class).deleteRatingsByEntityInstance(entityInstance, deletedBy);
+        accountingControl.deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
+        associateControl.deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
+        batchControl.deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
+        commentControl.deleteCommentsByEntityInstance(entityInstance, deletedBy);
+        messageControl.deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
+        ratingControl.deleteRatingsByEntityInstance(entityInstance, deletedBy);
         searchControl.removeSearchResultsByEntityInstance(entityInstance);
         searchControl.removeCachedExecutedSearchResultsByEntityInstance(entityInstance);
         searchControl.deleteSearchResultActionsByEntityInstance(entityInstance, deletedBy);
         securityControl.deletePartyEntitySecurityRolesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(TagControl.class).deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
+        tagControl.deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
         workflowControl.deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(WorkEffortControl.class).deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
+        workEffortControl.deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
 
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual
         // EntityInstance may be in more than one role, the list of ChainInstances needs to be deduplicated.

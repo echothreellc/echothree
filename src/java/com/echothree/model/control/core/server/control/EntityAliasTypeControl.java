@@ -60,6 +60,7 @@ public class EntityAliasTypeControl
 
     @Inject
     protected SearchResultFactory searchResultFactory;
+
     @Inject
     SearchControl searchControl;
 
@@ -149,7 +150,6 @@ public class EntityAliasTypeControl
     }
 
     public List<EntityAliasTypeObject> getEntityAliasTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var entityAliasTypeObjects = new ArrayList<EntityAliasTypeObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

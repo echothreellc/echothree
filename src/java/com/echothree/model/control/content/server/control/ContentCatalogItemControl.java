@@ -41,6 +41,12 @@ import javax.inject.Inject;
 public class ContentCatalogItemControl
         extends BaseModelControl {
 
+    @Inject
+    protected ContentControl contentControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
     /** Creates a new instance of ContentCatalogItemControl */
     protected ContentCatalogItemControl() {
         super();
@@ -67,7 +73,6 @@ public class ContentCatalogItemControl
         }
 
         try {
-            var contentControl = Session.getModelController(ContentControl.class);
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid
@@ -99,10 +104,7 @@ public class ContentCatalogItemControl
         return contentCatalogItemResultTransfers;
     }
 
-
     public List<ContentCatalogItemObject> getContentCatalogItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var contentCatalogItemObjects = new ArrayList<ContentCatalogItemObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

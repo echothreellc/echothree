@@ -128,6 +128,15 @@ import javax.inject.Inject;
 public class CampaignControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of CampaignControl */
     protected CampaignControl() {
         super();
@@ -181,9 +190,8 @@ public class CampaignControl
     protected CampaignDetailFactory campaignDetailFactory;
 
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
-        var campaignName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaign(campaignName, value, isDefault, sortOrder, createdBy);
     }
@@ -215,7 +223,6 @@ public class CampaignControl
         var campaignPK = campaign.getPrimaryKey();
         sendEvent(campaignPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 CampaignStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -407,7 +414,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                     entityInstance);
@@ -746,9 +752,8 @@ public class CampaignControl
     protected CampaignSourceDetailFactory campaignSourceDetailFactory;
 
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
-        var campaignSourceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignSourceName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignSource(campaignSourceName, value, isDefault, sortOrder, createdBy);
     }
@@ -780,7 +785,6 @@ public class CampaignControl
         var campaignSourcePK = campaignSource.getPrimaryKey();
         sendEvent(campaignSourcePK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSourcePK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 CampaignSourceStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -972,7 +976,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignSourceStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                     entityInstance);
@@ -1318,9 +1321,8 @@ public class CampaignControl
     protected CampaignMediumDetailFactory campaignMediumDetailFactory;
 
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
-        var campaignMediumName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignMediumName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignMedium(campaignMediumName, value, isDefault, sortOrder, createdBy);
     }
@@ -1352,7 +1354,6 @@ public class CampaignControl
         var campaignMediumPK = campaignMedium.getPrimaryKey();
         sendEvent(campaignMediumPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMediumPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 CampaignMediumStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -1544,7 +1545,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignMediumStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                     entityInstance);
@@ -1883,9 +1883,8 @@ public class CampaignControl
     protected CampaignTermDetailFactory campaignTermDetailFactory;
 
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
-        var campaignTermName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignTermName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignTerm(campaignTermName, value, isDefault, sortOrder, createdBy);
     }
@@ -1917,7 +1916,6 @@ public class CampaignControl
         var campaignTermPK = campaignTerm.getPrimaryKey();
         sendEvent(campaignTermPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTermPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 CampaignTermStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -2109,7 +2107,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignTermStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                     entityInstance);
@@ -2448,9 +2445,8 @@ public class CampaignControl
     protected CampaignContentDetailFactory campaignContentDetailFactory;
 
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
-        var campaignContentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var campaignContentName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createCampaignContent(campaignContentName, value, isDefault, sortOrder, createdBy);
     }
@@ -2482,7 +2478,6 @@ public class CampaignControl
         var campaignContentPK = campaignContent.getPrimaryKey();
         sendEvent(campaignContentPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContentPK);
         workflowControl.addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 CampaignContentStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -2674,7 +2669,6 @@ public class CampaignControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultCampaignContentStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                     entityInstance);
@@ -3011,7 +3005,6 @@ public class CampaignControl
 
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Long time, Campaign campaign, CampaignSource campaignSource,
             CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
-        var userControl = Session.getModelController(UserControl.class);
         var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitCampaignSequence = userVisitStatus.getUserVisitCampaignSequence()+ 1;
         

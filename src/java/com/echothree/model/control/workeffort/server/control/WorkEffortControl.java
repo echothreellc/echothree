@@ -72,6 +72,9 @@ import javax.inject.Inject;
 public class WorkEffortControl
         extends BaseModelControl {
     
+    @Inject
+    protected WorkRequirementControl workRequirementControl;
+
     /** Creates a new instance of WorkEffortControl */
     protected WorkEffortControl() {
         super();
@@ -295,7 +298,6 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
-        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         
         deleteWorkEffortScopesByWorkEffortType(workEffortType, deletedBy);
         workRequirementControl.deleteWorkRequirementTypesByWorkEffortType(workEffortType, deletedBy);
@@ -818,7 +820,6 @@ public class WorkEffortControl
     }
     
     private void deleteWorkEffortScope(WorkEffortScope workEffortScope, boolean checkDefault, BasePK deletedBy) {
-        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         
         deleteWorkEffortsByWorkEffortScope(workEffortScope, deletedBy);
         workRequirementControl.deleteWorkRequirementScopesByWorkEffortScope(workEffortScope, deletedBy);
@@ -1347,7 +1348,6 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffort(WorkEffort workEffort, BasePK deletedBy) {
-        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         
         workRequirementControl.deleteWorkRequirementsByWorkEffort(workEffort, deletedBy);
 

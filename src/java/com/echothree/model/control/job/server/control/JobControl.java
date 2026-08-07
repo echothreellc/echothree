@@ -58,6 +58,7 @@ public class JobControl
         extends BaseModelControl {
     
     /** Creates a new instance of JobControl */
+
     protected JobControl() {
         super();
     }
@@ -231,7 +232,6 @@ public class JobControl
             workflowControl.getWorkflowEntranceChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(JobStatusConstants.Workflow_JOB_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(job.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
                     entityInstance);

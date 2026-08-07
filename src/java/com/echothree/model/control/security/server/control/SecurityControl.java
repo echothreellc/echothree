@@ -108,6 +108,9 @@ import javax.inject.Inject;
 public class SecurityControl
         extends BaseModelControl {
     
+    @Inject
+    protected PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
+
     /** Creates a new instance of SecurityControl */
     protected SecurityControl() {
         super();
@@ -1057,7 +1060,7 @@ public class SecurityControl
     }
     
     public void deleteSecurityRole(SecurityRole securityRole, BasePK deletedBy) {
-        PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateRolesBySecurityRole(securityRole, deletedBy);
+        partySecurityRoleTemplateLogic.deletePartySecurityRoleTemplateRolesBySecurityRole(securityRole, deletedBy);
         deletePartySecurityRolesBySecurityRole(securityRole, deletedBy);
         deletePartyEntitySecurityRolesBySecurityRole(securityRole, deletedBy);
         deleteSecurityRolePartyTypesBySecurityRole(securityRole, deletedBy);
@@ -1774,8 +1777,8 @@ public class SecurityControl
     
     public void deletePartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK deletedBy) {
         deletePartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
-        PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateRoleByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
-        PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClassByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
+        partySecurityRoleTemplateLogic.deletePartySecurityRoleTemplateRoleByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
+        partySecurityRoleTemplateLogic.deletePartySecurityRoleTemplateTrainingClassByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
 
         var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetailForUpdate();
         partySecurityRoleTemplateDetail.setThruTime(session.getStartTime());

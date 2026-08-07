@@ -84,6 +84,7 @@ public class PeriodControl
         extends BaseModelControl {
     
     /** Creates a new instance of PeriodControl */
+
     protected PeriodControl() {
         super();
     }
@@ -1629,7 +1630,6 @@ public class PeriodControl
             workflowControl.getWorkflowEntranceChoices(fiscalPeriodStatusChoicesBean, defaultFiscalPeriodStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                     entityInstance);

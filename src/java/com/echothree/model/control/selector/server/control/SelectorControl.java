@@ -178,6 +178,9 @@ import javax.inject.Inject;
 public class SelectorControl
         extends BaseModelControl {
     
+    @Inject
+    protected SecurityControl securityControl;
+
     /** Creates a new instance of SelectorControl */
     protected SelectorControl() {
         super();
@@ -2210,7 +2213,6 @@ public class SelectorControl
     }
     
     public void deleteSelector(Selector selector, BasePK deletedBy) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         
         securityControl.deleteSecurityRolePartyTypesBySelector(selector, deletedBy);
         deleteSelectorNodesBySelector(selector, deletedBy);

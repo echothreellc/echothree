@@ -113,6 +113,7 @@ public class CancellationPolicyControl
         extends BaseModelControl {
     
     /** Creates a new instance of CancellationPolicyControl */
+
     protected CancellationPolicyControl() {
         super();
     }
@@ -323,7 +324,6 @@ public class CancellationPolicyControl
     }
 
     public void deletePartyCancellationPolicy(PartyCancellationPolicy partyCancellationPolicy, BasePK deletedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         partyCancellationPolicy.setThruTime(session.getStartTime());
 

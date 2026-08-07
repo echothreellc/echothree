@@ -55,6 +55,12 @@ import javax.inject.Inject;
 public class BillingControl
         extends BasePaymentControl {
 
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of BillingControl */
     protected BillingControl() {
         super();
@@ -185,9 +191,8 @@ public class BillingControl
     protected BillingAccountDetailFactory billingAccountDetailFactory;
 
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
-        var billingAccountName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var billingAccountName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
          return createBillingAccount(billingAccountName, currency, reference, description, createdBy);
     }

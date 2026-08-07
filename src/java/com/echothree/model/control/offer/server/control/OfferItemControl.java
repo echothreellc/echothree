@@ -57,6 +57,9 @@ import javax.inject.Inject;
 public class OfferItemControl
         extends BaseOfferControl {
 
+    @Inject
+    protected OfferItemLogic offerItemLogic;
+
     /** Creates a new instance of OfferItemControl */
     protected OfferItemControl() {
         super();
@@ -246,7 +249,7 @@ public class OfferItemControl
 
     /** Use the function in OfferItemLogic instead. */
     public void deleteOfferItem(OfferItem offerItem, BasePK deletedBy) {
-        OfferItemLogic.getInstance().deleteOfferItemPricesByOfferItem(offerItem, deletedBy);
+        offerItemLogic.deleteOfferItemPricesByOfferItem(offerItem, deletedBy);
 
         offerItem.setThruTime(session.getStartTime());
         offerItem.store();

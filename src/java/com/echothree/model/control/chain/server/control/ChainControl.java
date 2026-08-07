@@ -170,6 +170,15 @@ import javax.inject.Inject;
 public class ChainControl
         extends BaseModelControl {
     
+    @Inject
+    protected ContactListControl contactListControl;
+
+    @Inject
+    protected LetterControl letterControl;
+
+    @Inject
+    protected OfferControl offerControl;
+
     /** Creates a new instance of ChainControl */
     protected ChainControl() {
         super();
@@ -1918,8 +1927,6 @@ public class ChainControl
     }
 
     public void deleteChain(Chain chain, BasePK deletedBy) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        var offerControl = Session.getModelController(OfferControl.class);
         
         contactListControl.deleteContactListTypesByChain(chain, deletedBy);
         offerControl.deleteOfferChainTypesByChain(chain, deletedBy);
@@ -3875,7 +3882,6 @@ public class ChainControl
     }
 
     public boolean isChainInstanceUsed(ChainInstance chainInstance) {
-        var letterControl = Session.getModelController(LetterControl.class);
 
         return letterControl.isChainInstanceUsedByQueuedLetters(chainInstance);
     }
@@ -3991,7 +3997,6 @@ public class ChainControl
     }
     
     public void deleteChainInstance(ChainInstance chainInstance, BasePK deletedBy) {
-        var letterControl = Session.getModelController(LetterControl.class);
 
         removeChainInstanceStatusByChainInstance(chainInstance);
         letterControl.removedQueuedLettersByChainInstance(chainInstance);

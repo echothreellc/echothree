@@ -398,6 +398,18 @@ import javax.inject.Inject;
 public class ItemControl
         extends BaseModelControl {
     
+    @Inject
+    protected OfferItemControl offerItemControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected VendorControl vendorControl;
+
+    @Inject
+    protected OfferItemLogic offerItemLogic;
+
     /** Creates a new instance of ItemControl */
     protected ItemControl() {
         super();
@@ -2207,7 +2219,6 @@ public class ItemControl
         return itemFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
-
     public List<Item> getItems() {
         return getItems(EntityPermission.READ_ONLY);
     }
@@ -2250,7 +2261,6 @@ public class ItemControl
 
         return items;
     }
-
 
     public List<Item> getItemsByItemCategory(ItemCategory itemCategory) {
         return getItemsByItemCategory(EntityPermission.READ_ONLY, itemCategory);
@@ -2338,7 +2348,6 @@ public class ItemControl
         return items;
     }
 
-
     public List<Item> getItemsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory) {
         return getItemsByItemPurchasingCategory(EntityPermission.READ_ONLY, itemPurchasingCategory);
     }
@@ -2381,7 +2390,6 @@ public class ItemControl
 
         return items;
     }
-
 
     public List<Item> getItemsByCompanyParty(Party companyParty) {
         return getItemsByCompanyParty(EntityPermission.READ_ONLY, companyParty);
@@ -2531,7 +2539,6 @@ public class ItemControl
             workflowControl.getWorkflowEntranceChoices(itemStatusChoicesBean, defaultItemStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(ItemStatusConstants.Workflow_ITEM_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
                     entityInstance);
@@ -2914,7 +2921,6 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureType(ItemUnitOfMeasureType itemUnitOfMeasureType, BasePK deletedBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var item = itemUnitOfMeasureType.getItem();
         var unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
         
@@ -2927,7 +2933,7 @@ public class ItemControl
         deleteItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemVolumeByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemWeightByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
-        OfferItemLogic.getInstance().deleteOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
+        offerItemLogic.deleteOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         vendorControl.deleteVendorItemCostsByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         
         itemUnitOfMeasureType.setThruTime(session.getStartTime());
@@ -3720,7 +3726,6 @@ public class ItemControl
     }
     
     public void deleteItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
 
         var vendors = vendorControl.getVendorsByDefaultItemAliasTypeForUpdate(itemAliasType);
         vendors.stream().map((vendor) -> vendorControl.getVendorValue(vendor)).map((vendorValue) -> {
@@ -7190,7 +7195,6 @@ public class ItemControl
     }
     
     public void deleteItemPrice(ItemPrice itemPrice, BasePK deletedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var item = itemPrice.getItem();
         var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         
@@ -7213,7 +7217,7 @@ public class ItemControl
         
         sendEvent(itemPrice.getItemPK(), EventTypes.MODIFY, itemPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
-        OfferItemLogic.getInstance().deleteOfferItemPrices(offerItemControl.getOfferItemPricesForUpdate(item,
+        offerItemLogic.deleteOfferItemPrices(offerItemControl.getOfferItemPricesForUpdate(item,
                 itemPrice.getInventoryCondition(), itemPrice.getUnitOfMeasureType(), itemPrice.getCurrency()),
                 deletedBy);
     }
@@ -14695,7 +14699,6 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var itemResultTransfers = new ArrayList<ItemResultTransfer>(toIntExact(searchControl.countSearchResults(userVisitSearch)));;
         var includeItem = false;
 
@@ -14710,7 +14713,7 @@ public class ItemControl
         }
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var itemControl = Session.getModelController(ItemControl.class);
+            var itemControl = this;
 
             while(rs.next()) {
                 var item = itemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -14726,11 +14729,10 @@ public class ItemControl
     }
 
     public List<ItemObject> getItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var itemObjects = new ArrayList<ItemObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var itemControl = Session.getModelController(ItemControl.class);
+            var itemControl = this;
 
             while(rs.next()) {
                 var item = itemControl.getItemByPK(new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));

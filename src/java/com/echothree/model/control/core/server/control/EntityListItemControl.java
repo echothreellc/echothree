@@ -43,6 +43,12 @@ import javax.inject.Inject;
 public class EntityListItemControl
         extends BaseCoreControl {
 
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
     /** Creates a new instance of EntityListItemControl */
     protected EntityListItemControl() {
         super();
@@ -62,7 +68,6 @@ public class EntityListItemControl
     protected SearchResultFactory searchResultFactory;
 
     public List<EntityListItemResultTransfer> getEntityListItemResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
         List<EntityListItemResultTransfer> entityListItemResultTransfers;
@@ -77,7 +82,6 @@ public class EntityListItemControl
             entityListItemResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var coreControl = Session.getModelController(CoreControl.class);
                 var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
@@ -114,7 +118,6 @@ public class EntityListItemControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var coreControl = Session.getModelController(CoreControl.class);
                 var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
@@ -149,8 +152,6 @@ public class EntityListItemControl
     }
 
     public List<EntityListItemObject> getEntityListItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var entityListItemObjects = new ArrayList<EntityListItemObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

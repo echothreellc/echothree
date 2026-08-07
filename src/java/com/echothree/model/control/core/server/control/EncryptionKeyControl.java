@@ -55,6 +55,12 @@ import javax.inject.Inject;
 public class EncryptionKeyControl
         extends BaseCoreControl {
 
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of EncryptionKeyControl */
     protected EncryptionKeyControl() {
         super();
@@ -76,9 +82,8 @@ public class EncryptionKeyControl
         }
 
         if(!eea.hasExecutionErrors()) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
-            var baseEncryptionKeyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            var baseEncryptionKeyName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
             var sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
             baseEncryptionKey = createBaseEncryptionKey(baseEncryptionKeyName, sha1Hash, createdBy);
 
@@ -323,7 +328,6 @@ public class EncryptionKeyControl
             workflowControl.getWorkflowEntranceChoices(baseEncryptionKeyStatusChoicesBean, defaultBaseEncryptionKeyStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_BASE_ENCRYPTION_KEY_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                     entityInstance);

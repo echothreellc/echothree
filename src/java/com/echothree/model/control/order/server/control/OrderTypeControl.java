@@ -51,6 +51,9 @@ import javax.inject.Inject;
 public class OrderTypeControl
         extends BaseOrderControl {
 
+    @Inject
+    protected OrderAliasControl orderAliasControl;
+
     /** Creates a new instance of OrderControl */
     protected OrderTypeControl() {
         super();
@@ -339,7 +342,6 @@ public class OrderTypeControl
     }
 
     private void deleteOrderType(OrderType orderType, boolean checkDefault, BasePK deletedBy) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var orderTypeDetail = orderType.getLastDetailForUpdate();
 
         deleteOrderTypeDescriptionsByOrderType(orderType, deletedBy);

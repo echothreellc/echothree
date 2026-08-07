@@ -99,6 +99,22 @@ import javax.inject.Inject;
 public class CustomerControl
         extends BaseModelControl {
     
+    @Inject
+    protected ContactListControl contactListControl;
+
+
+    @Inject
+    protected ItemControl itemControl;
+
+    @Inject
+    protected OfferControl offerControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of CustomerControl */
     protected CustomerControl() {
         super();
@@ -446,9 +462,6 @@ public class CustomerControl
     }
     
     public void deleteCustomerType(CustomerType customerType, BasePK deletedBy) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        var itemControl = Session.getModelController(ItemControl.class);
-        var offerControl = Session.getModelController(OfferControl.class);
         
         contactListControl.deleteCustomerTypeContactListGroupsByCustomerType(customerType, deletedBy);
         contactListControl.deleteCustomerTypeContactListsByCustomerType(customerType, deletedBy);
@@ -677,7 +690,7 @@ public class CustomerControl
             Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
             Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
             String referenceValidationPattern, BasePK createdBy) {
-        var customerName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CUSTOMER.name());
+        var customerName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.CUSTOMER.name());
         var customer = customerFactory.create(party, customerName, customerType, initialOfferUse,
                 cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions,
                 allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
@@ -901,7 +914,6 @@ public class CustomerControl
             workflowControl.getWorkflowEntranceChoices(customerStatusChoicesBean, defaultCustomerStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(customerParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
                     entityInstance);
@@ -935,7 +947,6 @@ public class CustomerControl
             workflowControl.getWorkflowEntranceChoices(customerCreditStatusChoicesBean, defaultCustomerCreditStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(customerParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
                     entityInstance);
@@ -1606,7 +1617,6 @@ public class CustomerControl
     // --------------------------------------------------------------------------------
 
     public List<CustomerResultTransfer> getCustomerResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var customerResultTransfers = new ArrayList<CustomerResultTransfer>();
         var includeCustomer = false;
 
@@ -1616,7 +1626,7 @@ public class CustomerControl
         }
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var customerControl = Session.getModelController(CustomerControl.class);
+            var customerControl = this;
 
             while(rs.next()) {
                 var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -1632,7 +1642,6 @@ public class CustomerControl
     }
 
     public List<CustomerObject> getCustomerObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var customerObjects = new ArrayList<CustomerObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

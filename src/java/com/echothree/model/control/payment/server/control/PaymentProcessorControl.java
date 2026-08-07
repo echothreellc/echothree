@@ -48,6 +48,15 @@ import javax.inject.Inject;
 public class PaymentProcessorControl
         extends BasePaymentControl {
 
+    @Inject
+    protected PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    protected PaymentProcessorActionControl paymentProcessorActionControl;
+
+    @Inject
+    protected PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+
     /** Creates a new instance of PaymentProcessorControl */
     protected PaymentProcessorControl() {
         super();
@@ -382,9 +391,6 @@ public class PaymentProcessorControl
     }
     
     public void deletePaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-        var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
-        var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
 
         paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessor(paymentProcessor, deletedBy);
         paymentMethodControl.deletePaymentMethodsByPaymentProcessor(paymentProcessor, deletedBy);

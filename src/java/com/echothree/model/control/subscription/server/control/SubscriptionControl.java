@@ -87,6 +87,15 @@ import javax.inject.Inject;
 public class SubscriptionControl
         extends BaseModelControl {
     
+    @Inject
+    protected ClubControl clubControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of SubscriptionControl */
     protected SubscriptionControl() {
         super();
@@ -886,7 +895,6 @@ public class SubscriptionControl
         var subscriptionTypeDetail = subscriptionType.getLastDetailForUpdate();
         
         if(subscriptionTypeDetail.getSubscriptionKind().getLastDetail().getSubscriptionKindName().equals(SubscriptionConstants.SubscriptionKind_CLUB)) {
-            var clubControl = Session.getModelController(ClubControl.class);
             
             clubControl.deleteClubBySubscriptionType(subscriptionType, deletedBy);
         }
@@ -1357,7 +1365,6 @@ public class SubscriptionControl
     public Subscription createSubscription(SubscriptionType subscriptionType, Party party, Long startTime, Long endTime,
             BasePK createdBy) {
         var sequence = subscriptionType.getLastDetail().getSubscriptionSequence();
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         
         if(sequence == null) {
             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
@@ -1366,7 +1373,7 @@ public class SubscriptionControl
 
         var subscription = subscriptionFactory.create();
         var subscriptionDetail = subscriptionDetailFactory.create(subscription,
-                SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), subscriptionType, party, startTime, endTime,
+                sequenceGeneratorLogic.getNextSequenceValue(sequence), subscriptionType, party, startTime, endTime,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W

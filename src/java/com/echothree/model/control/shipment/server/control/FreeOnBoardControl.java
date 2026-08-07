@@ -46,6 +46,9 @@ import javax.inject.Inject;
 public class FreeOnBoardControl
         extends BaseShipmentControl {
 
+    @Inject
+    protected PartyFreeOnBoardControl partyFreeOnBoardControl;
+
     /** Creates a new instance of FreeOnBoardControl */
     protected FreeOnBoardControl() {
         super();
@@ -312,7 +315,6 @@ public class FreeOnBoardControl
     }
 
     public void deleteFreeOnBoard(final FreeOnBoard freeOnBoard, final BasePK deletedBy) {
-        var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
 
         partyFreeOnBoardControl.deletePartyFreeOnBoardsByFreeOnBoard(freeOnBoard, deletedBy);
         deleteFreeOnBoardDescriptionsByFreeOnBoard(freeOnBoard, deletedBy);

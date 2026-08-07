@@ -44,6 +44,9 @@ import javax.inject.Inject;
 public class OrderShipmentGroupControl
         extends BaseOrderControl {
 
+    @Inject
+    protected OrderLineControl orderLineControl;
+
     /** Creates a new instance of OrderControl */
     protected OrderShipmentGroupControl() {
         super();
@@ -317,7 +320,6 @@ public class OrderShipmentGroupControl
     }
 
     public void deleteOrderShipmentGroup(OrderShipmentGroup orderShipmentGroup, BasePK deletedBy) {
-        var orderLineControl = Session.getModelController(OrderLineControl.class);
 
         orderLineControl.deleteOrderLinesByOrderShipmentGroup(orderShipmentGroup, deletedBy);
 

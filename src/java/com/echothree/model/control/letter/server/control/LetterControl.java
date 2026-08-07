@@ -85,6 +85,9 @@ import javax.inject.Inject;
 public class LetterControl
         extends BaseModelControl {
     
+    @Inject
+    protected ChainControl chainControl;
+
     /** Creates a new instance of LetterControl */
     protected LetterControl() {
         super();
@@ -1661,7 +1664,6 @@ public class LetterControl
     protected QueuedLetterFactory queuedLetterFactory;
 
     public QueuedLetter createQueuedLetter(ChainInstance chainInstance, Letter letter) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainInstanceStatus = chainControl.getChainInstanceStatusForUpdate(chainInstance);
         Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence() + 1;
 
@@ -1885,7 +1887,6 @@ public class LetterControl
         queuedLetter.remove();
 
         if(checkChainInstance) {
-            var chainControl = Session.getModelController(ChainControl.class);
 
             chainControl.deleteChainInstanceIfUnused(queuedLetter.getChainInstanceForUpdate(), removedBy);
         }

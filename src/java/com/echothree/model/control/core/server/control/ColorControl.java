@@ -48,6 +48,9 @@ import javax.inject.Inject;
 public class ColorControl
         extends BaseCoreControl {
 
+    @Inject
+    protected AppearanceControl appearanceControl;
+
     /** Creates a new instance of ColorControl */
     protected ColorControl() {
         super();
@@ -331,7 +334,6 @@ public class ColorControl
     }
 
     private void deleteColor(Color color, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var colorDetail = color.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearancesByColor(color, deletedBy);

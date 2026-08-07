@@ -38,6 +38,9 @@ import javax.inject.Inject;
 public class LeaveControl
         extends BaseModelControl {
 
+    @Inject
+    protected EmployeeControl employeeControl;
+
     /** Creates a new instance of LeaveControl */
     protected LeaveControl() {
         super();
@@ -64,7 +67,6 @@ public class LeaveControl
         }
 
         try {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

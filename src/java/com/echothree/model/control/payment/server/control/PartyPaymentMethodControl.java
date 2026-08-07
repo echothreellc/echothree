@@ -67,6 +67,15 @@ import javax.inject.Inject;
 public class PartyPaymentMethodControl
         extends BasePaymentControl {
 
+    @Inject
+    protected OrderPaymentPreferenceControl orderPaymentPreferenceControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of PartyPaymentMethodControl */
     protected PartyPaymentMethodControl() {
         super();
@@ -84,10 +93,9 @@ public class PartyPaymentMethodControl
 
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
-        var partyPaymentMethodName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var partyPaymentMethodName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createPartyPaymentMethod(partyPaymentMethodName, party, description, paymentMethod, deleteWhenUnused, isDefault,
                 sortOrder, createdBy);
@@ -412,7 +420,6 @@ public class PartyPaymentMethodControl
     }
 
     public void deletePartyPaymentMethod(PartyPaymentMethod partyPaymentMethod, BasePK deletedBy) {
-        var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
 
         orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
         

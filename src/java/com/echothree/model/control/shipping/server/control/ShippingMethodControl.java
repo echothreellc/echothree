@@ -43,6 +43,12 @@ import javax.inject.Inject;
 public class ShippingMethodControl
         extends BaseShippingControl {
 
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected ShippingControl shippingControl;
+
     /** Creates a new instance of ShippingMethodControl */
     protected ShippingMethodControl() {
         super();
@@ -62,7 +68,6 @@ public class ShippingMethodControl
     protected ShippingMethodFactory shippingMethodFactory;
 
     public List<ShippingMethodResultTransfer> getShippingMethodResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
         List<ShippingMethodResultTransfer> shippingMethodResultTransfers;
@@ -77,7 +82,6 @@ public class ShippingMethodControl
             shippingMethodResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var shippingControl = Session.getModelController(ShippingControl.class);
                 var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
@@ -111,7 +115,6 @@ public class ShippingMethodControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var shippingControl = Session.getModelController(ShippingControl.class);
                 var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
@@ -143,8 +146,6 @@ public class ShippingMethodControl
     }
 
     public List<ShippingMethodObject> getShippingMethodObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var shippingMethodObjects = new ArrayList<ShippingMethodObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

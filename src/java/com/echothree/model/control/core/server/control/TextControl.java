@@ -59,6 +59,9 @@ import javax.inject.Inject;
 public class TextControl
         extends BaseCoreControl {
 
+    @Inject
+    protected AppearanceControl appearanceControl;
+
     /** Creates a new instance of TextControl */
     protected TextControl() {
         super();
@@ -339,7 +342,6 @@ public class TextControl
     }
 
     private void deleteTextDecoration(TextDecoration textDecoration, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var textDecorationDetail = textDecoration.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearanceTextDecorationsByTextDecoration(textDecoration, deletedBy);
@@ -818,7 +820,6 @@ public class TextControl
     }
 
     private void deleteTextTransformation(TextTransformation textTransformation, boolean checkDefault, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var textTransformationDetail = textTransformation.getLastDetailForUpdate();
 
         appearanceControl.deleteAppearanceTextTransformationsByTextTransformation(textTransformation, deletedBy);

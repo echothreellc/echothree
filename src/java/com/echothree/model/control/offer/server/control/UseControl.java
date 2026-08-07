@@ -52,6 +52,9 @@ import javax.inject.Inject;
 public class UseControl
         extends BaseOfferControl {
 
+    @Inject
+    protected OfferUseControl offerUseControl;
+
     /** Creates a new instance of UseControl */
     protected UseControl() {
         super();
@@ -386,8 +389,7 @@ public class UseControl
     }
 
     public void deleteUse(Use use, BasePK deletedBy) {
-        var useControl = Session.getModelController(UseControl.class);
-        var offerUseControl = Session.getModelController(OfferUseControl.class);
+        var useControl = this;
 
         useControl.deleteUseDescriptionsByUse(use, deletedBy);
         offerUseControl.deleteOfferUsesByUse(use, deletedBy);
@@ -622,7 +624,7 @@ public class UseControl
         }
 
         try {
-            var useControl = Session.getModelController(UseControl.class);
+            var useControl = this;
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

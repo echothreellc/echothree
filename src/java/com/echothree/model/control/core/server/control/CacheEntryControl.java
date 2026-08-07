@@ -50,6 +50,7 @@ public class CacheEntryControl
         extends BaseCoreControl {
 
     /** Creates a new instance of CacheEntryControl */
+
     protected CacheEntryControl() {
         super();
     }
@@ -313,7 +314,6 @@ public class CacheEntryControl
         List<CacheEntryDependencyValue> cacheEntryDependencyValues = new ArrayList<>(entityRefs.size());
 
         for(var entityRef : entityRefs) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
             if(entityInstance != null) {

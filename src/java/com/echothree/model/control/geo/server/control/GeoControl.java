@@ -144,6 +144,9 @@ import javax.inject.Inject;
 public class GeoControl
         extends BaseModelControl {
     
+    @Inject
+    protected ItemControl itemControl;
+
     /** Creates a new instance of GeoControl */
     protected GeoControl() {
         super();
@@ -2333,7 +2336,6 @@ public class GeoControl
         deleteGeoCodeDateTimeFormatsByGeoCode(geoCode, deletedBy);
 
         if(geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName().equals(GeoCodeTypes.COUNTRY.name())) {
-            var itemControl = Session.getModelController(ItemControl.class);
             
             itemControl.deleteHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);
             itemControl.deleteItemHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);
@@ -3005,7 +3007,6 @@ public class GeoControl
         deleteGeoCodeRelationshipsByFromGeoCode(geoCode, deletedBy);
         deleteGeoCodeRelationshipsByToGeoCode(geoCode, deletedBy);
     }
-
 
     // --------------------------------------------------------------------------------
     //   Geo Code Languages

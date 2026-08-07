@@ -44,6 +44,12 @@ import javax.inject.Inject;
 public class PaymentProcessorTypeActionControl
         extends BasePaymentControl {
 
+    @Inject
+    protected PaymentProcessorActionControl paymentProcessorActionControl;
+
+    @Inject
+    protected PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
+
     /** Creates a new instance of PaymentProcessorTypeActionControl */
     protected PaymentProcessorTypeActionControl() {
         super();
@@ -276,7 +282,6 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeActionChoicesBean getPaymentProcessorTypeActionChoices(final PaymentProcessorType paymentProcessorType,
             final String defaultPaymentProcessorTypeActionChoice, final Language language, final boolean allowNullChoice) {
-        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorTypeActions = getPaymentProcessorTypeActionsByPaymentProcessorType(paymentProcessorType);
         var size = paymentProcessorTypeActions.size();
         var labels = new ArrayList<String>(size);
@@ -360,7 +365,6 @@ public class PaymentProcessorTypeActionControl
     }
 
     public void deletePaymentProcessorTypeAction(final PaymentProcessorTypeAction paymentProcessorTypeAction, final BasePK deletedBy) {
-        var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
 
         paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessorTypeAction(paymentProcessorTypeAction, deletedBy);
         

@@ -222,6 +222,63 @@ import javax.inject.Inject;
 public class PartyControl
         extends BasePartyControl {
     
+    @Inject
+    protected AccountingControl accountingControl;
+
+    @Inject
+    protected CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    protected CarrierControl carrierControl;
+
+    @Inject
+    protected ContactListControl contactListControl;
+
+    @Inject
+    protected DocumentControl documentControl;
+
+    @Inject
+    protected EmployeeControl employeeControl;
+
+    @Inject
+    protected PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
+    @Inject
+    protected PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    protected PrinterControl printerControl;
+
+    @Inject
+    protected ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    protected ScaleControl scaleControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected SecurityControl securityControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected TermControl termControl;
+
+    @Inject
+    protected TrainingControl trainingControl;
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected WorkRequirementControl workRequirementControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of PartyControl */
     protected PartyControl() {
         super();
@@ -2091,13 +2148,12 @@ public class PartyControl
         }
         
         if(partyName == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.name());
             if(sequenceType != null) {
                 var sequence = sequenceControl.getDefaultSequence(sequenceType);
                 
                 if(sequence != null) {
-                    partyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+                    partyName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
                 }
             }
         }
@@ -2284,7 +2340,6 @@ public class PartyControl
         var currency = party.getLastDetail().getPreferredCurrency();
         
         if(currency == null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             
             currency = accountingControl.getDefaultCurrency();
         }
@@ -2376,15 +2431,6 @@ public class PartyControl
     }
     
     public void deleteParty(Party party, BasePK deletedBy) {
-        var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
-        var contactListControl = Session.getModelController(ContactListControl.class);
-        var documentControl = Session.getModelController(DocumentControl.class);
-        var printerControl = Session.getModelController(PrinterControl.class);
-        var scaleControl = Session.getModelController(ScaleControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
-        var securityControl = Session.getModelController(SecurityControl.class);
-        var termControl = Session.getModelController(TermControl.class);
-        var userControl = Session.getModelController(UserControl.class);
         var partyDetail = party.getLastDetailForUpdate();
         var partyType = partyDetail.getPartyType();
         var partyTypeName = partyType.getPartyTypeName();
@@ -2409,30 +2455,23 @@ public class PartyControl
         
         if(partyTypeName.equals(PartyTypes.COMPANY.name()) || partyTypeName.equals(PartyTypes.CUSTOMER.name())
                 || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
 
             carrierControl.deletePartyCarriersByParty(party, deletedBy);
             carrierControl.deletePartyCarrierAccountsByParty(party, deletedBy);
         }
 
         if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
             cancellationPolicyControl.deletePartyCancellationPoliciesByParty(party, deletedBy);
             returnPolicyControl.deletePartyReturnPoliciesByParty(party, deletedBy);
         }
 
         if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
 
             partyPaymentMethodControl.deletePartyPaymentMethodsByParty(party, deletedBy);
         }
         
         if(partyTypeName.equals(PartyTypes.EMPLOYEE.name())) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-            var trainingControl = Session.getModelController(TrainingControl.class);
-            var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
             employeeControl.deleteEmploymentsByParty(party, deletedBy);
             employeeControl.deleteLeavesByParty(party, deletedBy);

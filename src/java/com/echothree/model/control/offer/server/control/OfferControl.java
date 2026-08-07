@@ -71,6 +71,12 @@ import javax.inject.Inject;
 public class OfferControl
         extends BaseOfferControl {
     
+    @Inject
+    protected OfferUseControl offerUseControl;
+
+    @Inject
+    protected OfferItemLogic offerItemLogic;
+
     /** Creates a new instance of OfferControl */
     protected OfferControl() {
         super();
@@ -450,11 +456,10 @@ public class OfferControl
 
     /** Use the function in OfferLogic instead. */
     public void deleteOffer(Offer offer, BasePK deletedBy) {
-        var offerUseControl = Session.getModelController(OfferUseControl.class);
 
         deleteOfferCustomerTypesByOffer(offer, deletedBy);
         deleteOfferChainTypesByOffer(offer, deletedBy);
-        OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, deletedBy);
+        offerItemLogic.deleteOfferItemsByOffer(offer, deletedBy);
         offerUseControl.deleteOfferUsesByOffer(offer, deletedBy);
         deleteOfferDescriptionsByOffer(offer, deletedBy);
 
@@ -1349,7 +1354,7 @@ public class OfferControl
         }
 
         try {
-            var offerControl = Session.getModelController(OfferControl.class);
+            var offerControl = this;
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

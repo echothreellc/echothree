@@ -196,6 +196,18 @@ import javax.inject.Inject;
 public class AccountingControl
         extends BaseAccountingControl {
     
+    @Inject
+    protected FinancialControl financialControl;
+
+    @Inject
+    protected InventoryControl inventoryControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of AccountingControl */
     protected AccountingControl() {
         super();
@@ -849,7 +861,6 @@ public class AccountingControl
     }
     
     private void deleteItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, boolean checkDefault, BasePK deletedBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetailForUpdate();
         
         deleteItemAccountingCategoriesByParentItemAccountingCategory(itemAccountingCategory, deletedBy);
@@ -3552,8 +3563,6 @@ public class AccountingControl
     }
     
     private void deleteGlAccount(GlAccount glAccount, boolean checkDefault, BasePK deletedBy) {
-        var financialControl  = Session.getModelController(FinancialControl.class);
-        
         deleteGlAccountsByParentGlAccount(glAccount, deletedBy);
         deleteTransactionGlAccountByGlAccount(glAccount, deletedBy);
         // TODO: deleteTransactionGlAccountByGlAccount(glAccount, deletedBy);
@@ -5221,9 +5230,8 @@ public class AccountingControl
     }
     
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.name());
-        var transactionGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var transactionGroupName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         var transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
 
@@ -5381,7 +5389,6 @@ public class AccountingControl
             workflowControl.getWorkflowEntranceChoices(transactionGroupStatusChoicesBean, defaultTransactionGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_TRANSACTION_GROUP_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                     entityInstance);
@@ -5422,9 +5429,8 @@ public class AccountingControl
     
     public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType,
             BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
-        var transactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var transactionName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createTransaction(transactionName, groupParty, transactionGroup, transactionType, createdBy);
     }

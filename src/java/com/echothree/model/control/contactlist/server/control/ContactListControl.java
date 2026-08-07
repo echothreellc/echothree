@@ -139,6 +139,13 @@ import javax.inject.Inject;
 public class ContactListControl
         extends BaseModelControl {
     
+    @Inject
+    protected ContactControl contactControl;
+
+
+    @Inject
+    protected LetterControl letterControl;
+
     /** Creates a new instance of ContactListControl */
     protected ContactListControl() {
         super();
@@ -2179,7 +2186,6 @@ public class ContactListControl
     }
 
     public void deleteContactList(ContactList contactList, BasePK deletedBy) {
-        var letterControl = Session.getModelController(LetterControl.class);
         
         letterControl.deleteLettersByContactList(contactList, deletedBy);
         deletePartyContactListsByContactList(contactList, deletedBy);
@@ -2648,7 +2654,6 @@ public class ContactListControl
             workflowControl.getWorkflowEntranceChoices(partyContactListStatusChoicesBean, defaultPartyContactListStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
                     entityInstance);
@@ -3828,7 +3833,6 @@ public class ContactListControl
     
     public ContactListContactMechanismPurposeChoicesBean getContactListContactMechanismPurposeChoices(String defaultContactListContactMechanismPurposeChoice, Language language, boolean allowNullChoice,
             ContactList contactList) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactList(contactList);
         var size = contactListContactMechanismPurposes.size();
         var labels = new ArrayList<String>(size);

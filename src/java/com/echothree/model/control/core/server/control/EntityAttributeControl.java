@@ -43,6 +43,12 @@ import javax.inject.Inject;
 public class EntityAttributeControl
         extends BaseCoreControl {
 
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
     /** Creates a new instance of EntityAttributeControl */
     protected EntityAttributeControl() {
         super();
@@ -62,7 +68,6 @@ public class EntityAttributeControl
     protected SearchResultFactory searchResultFactory;
 
     public List<EntityAttributeResultTransfer> getEntityAttributeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
         List<EntityAttributeResultTransfer> entityAttributeResultTransfers;
@@ -77,7 +82,6 @@ public class EntityAttributeControl
             entityAttributeResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var coreControl = Session.getModelController(CoreControl.class);
                 var ps = searchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
@@ -113,7 +117,6 @@ public class EntityAttributeControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var coreControl = Session.getModelController(CoreControl.class);
                 var ps = cachedExecutedSearchResultFactory.prepareStatement(
                         """
                         SELECT eni_entityuniqueid
@@ -147,8 +150,6 @@ public class EntityAttributeControl
     }
 
     public List<EntityAttributeObject> getEntityAttributeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var entityAttributeObjects = new ArrayList<EntityAttributeObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

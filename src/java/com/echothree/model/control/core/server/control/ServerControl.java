@@ -75,6 +75,9 @@ import javax.inject.Inject;
 public class ServerControl
         extends BaseCoreControl {
 
+    @Inject
+    protected ScaleControl scaleControl;
+
     /** Creates a new instance of ServerControl */
     protected ServerControl() {
         super();
@@ -1726,7 +1729,6 @@ public class ServerControl
     }
 
     public void deleteServerService(ServerService serverService, BasePK deletedBy) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
 
         scaleControl.deleteScalesByServerService(serverService, deletedBy);
 

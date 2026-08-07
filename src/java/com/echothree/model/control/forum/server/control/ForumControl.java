@@ -194,6 +194,15 @@ import javax.inject.Inject;
 public class ForumControl
         extends BaseModelControl {
     
+    @Inject
+    protected MimeTypeControl mimeTypeControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of ForumControl */
     protected ForumControl() {
         super();
@@ -1917,7 +1926,6 @@ public class ForumControl
     
     public MimeTypeChoicesBean getForumMimeTypeChoices(Forum forum, String defaultMimeTypeChoice, Language language,
             boolean allowNullChoice) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var forumMimeTypes = getForumMimeTypesByForum(forum);
         var size = forumMimeTypes.size();
         var labels = new ArrayList<String>(size);
@@ -2976,14 +2984,13 @@ public class ForumControl
     protected ForumThreadDetailFactory forumThreadDetailFactory;
 
     public ForumThread createForumThread(Forum forum, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
         
         if(sequence == null) {
             sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_THREAD.name());
         }
         
-        return createForumThread(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), icon, postedTime, sortOrder, createdBy);
+        return createForumThread(sequenceGeneratorLogic.getNextSequenceValue(sequence), icon, postedTime, sortOrder, createdBy);
     }
     
     public ForumThread createForumThread(String forumThreadName, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
@@ -3243,7 +3250,6 @@ public class ForumControl
 
     public ForumMessage createForumMessage(ForumThread forumThread, ForumMessageType forumMessageType,
             ForumMessage parentForumMessage, Icon icon, Long postedTime, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var forumForumThread = getDefaultForumForumThread(forumThread);
         var forum = forumForumThread == null? null: forumForumThread.getForum();
         var sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
@@ -3252,7 +3258,7 @@ public class ForumControl
             sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_MESSAGE.name());
         }
         
-        return createForumMessage(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), forumThread, forumMessageType, parentForumMessage,
+        return createForumMessage(sequenceGeneratorLogic.getNextSequenceValue(sequence), forumThread, forumMessageType, parentForumMessage,
                 icon, postedTime, createdBy);
     }
     

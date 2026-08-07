@@ -81,6 +81,9 @@ import javax.inject.Inject;
 public class IndexControl
         extends BaseModelControl {
     
+    @Inject
+    protected SearchControl searchControl;
+
     /** Creates a new instance of IndexControl */
     protected IndexControl() {
         super();
@@ -924,7 +927,6 @@ public class IndexControl
     }
 
     public void deleteIndexField(IndexField indexField, BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         
         deleteIndexFieldDescriptionsByIndexField(indexField, deletedBy);
         searchControl.deleteCachedSearchIndexFieldsByIndexField(indexField, deletedBy);
@@ -1531,7 +1533,6 @@ public class IndexControl
     }
 
     private void deleteIndex(Index index, boolean checkDefault, BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var indexDetail = index.getLastDetailForUpdate();
 
         searchControl.deleteCachedSearchesByIndex(index, deletedBy);

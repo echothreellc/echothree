@@ -107,6 +107,16 @@ import javax.inject.Inject;
 public class PrinterControl
         extends BaseModelControl {
     
+    @Inject
+    protected DocumentControl documentControl;
+
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of PrinterControl */
     protected PrinterControl() {
         super();
@@ -1115,9 +1125,8 @@ public class PrinterControl
     protected PrinterGroupJobDetailFactory printerGroupJobDetailFactory;
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
-        var printerGroupJobName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var printerGroupJobName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createPrinterGroupJob(printerGroupJobName, printerGroup, document, copies, priority, createdBy);
     }
@@ -1469,7 +1478,6 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupJob(PrinterGroupJob printerGroupJob, BasePK deletedBy) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var printerGroupJobDetail = printerGroupJob.getLastDetailForUpdate();
 
         documentControl.deleteDocument(printerGroupJobDetail.getDocumentForUpdate(), deletedBy);
@@ -1492,8 +1500,6 @@ public class PrinterControl
     }
 
     public void removePrinterGroupJob(PrinterGroupJob printerGroupJob) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         // Cascades to the PrinterGroupJob, so a seprate remove isn't required.
         documentControl.removeDocument(printerGroupJob.getLastDetail().getDocumentForUpdate());

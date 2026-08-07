@@ -119,6 +119,7 @@ public class ReturnPolicyControl
         extends BaseModelControl {
     
     /** Creates a new instance of ReturnPolicyControl */
+
     protected ReturnPolicyControl() {
         super();
     }
@@ -331,7 +332,6 @@ public class ReturnPolicyControl
     }
 
     public void deletePartyReturnPolicy(PartyReturnPolicy partyReturnPolicy, BasePK deletedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         partyReturnPolicy.setThruTime(session.getStartTime());
 

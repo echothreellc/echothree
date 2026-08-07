@@ -77,6 +77,12 @@ import javax.inject.Inject;
 public class AssociateControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of AssociateControl */
     protected AssociateControl() {
         super();
@@ -1200,9 +1206,8 @@ public class AssociateControl
 
     public AssociateReferral createAssociateReferral(Associate associate, AssociatePartyContactMechanism associatePartyContactMechanism,
             EntityInstance targetEntityInstance, Long associateReferralTime, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ASSOCIATE_REFERRAL.name());
-        var associateReferralName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var associateReferralName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createAssociateReferral(associateReferralName, associate, associatePartyContactMechanism, targetEntityInstance, associateReferralTime,
                 createdBy);

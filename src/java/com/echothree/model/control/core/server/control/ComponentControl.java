@@ -262,8 +262,10 @@ public class ComponentControl
 
     @Inject
     protected SearchResultFactory searchResultFactory;
+
     @Inject
     protected SearchControl searchControl;
+
     public List<ComponentVendorResultTransfer> getComponentVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();

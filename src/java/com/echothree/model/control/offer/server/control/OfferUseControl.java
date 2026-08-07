@@ -41,6 +41,9 @@ import javax.inject.Inject;
 public class OfferUseControl
         extends BaseOfferControl {
 
+    @Inject
+    protected SourceControl sourceControl;
+
     /** Creates a new instance of OfferUseControl */
     protected OfferUseControl() {
         super();
@@ -361,7 +364,6 @@ public class OfferUseControl
     }
 
     public void deleteOfferUse(OfferUse offerUse, BasePK deletedBy) {
-        var sourceControl = Session.getModelController(SourceControl.class);
 
         sourceControl.deleteSourcesByOfferUse(offerUse, deletedBy);
 

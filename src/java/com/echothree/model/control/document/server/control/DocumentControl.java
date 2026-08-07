@@ -110,6 +110,12 @@ import javax.inject.Inject;
 public class DocumentControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of DocumentControl */
     protected DocumentControl() {
         super();
@@ -1457,9 +1463,8 @@ public class DocumentControl
     protected DocumentDetailFactory documentDetailFactory;
 
     public Document createDocument(DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.name()));
-        var documentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var documentName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createDocument(documentName, documentType, mimeType, pages, createdBy);
     }
@@ -1635,7 +1640,6 @@ public class DocumentControl
     }
 
     public void removeDocument(Document document) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         document.remove();
         entityInstanceControl.removeEntityInstanceByBasePK(document.getPrimaryKey());

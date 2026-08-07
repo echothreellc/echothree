@@ -81,6 +81,9 @@ import javax.inject.Inject;
 public class SequenceControl
         extends BaseModelControl {
     
+    @Inject
+    protected OfferUseControl offerUseControl;
+
     /** Creates a new instance of SequenceControl */
     protected SequenceControl() {
         super();
@@ -1309,7 +1312,6 @@ public class SequenceControl
         var sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
         
         if(SequenceTypes.SALES_ORDER.name().equals(sequenceTypeName)) {
-            var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             offerUseControl.deleteOfferUsesBySalesOrderSequence(sequence, deletedBy);
         }

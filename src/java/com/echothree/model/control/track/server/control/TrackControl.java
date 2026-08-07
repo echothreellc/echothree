@@ -68,6 +68,15 @@ import javax.inject.Inject;
 public class TrackControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of TrackControl */
     protected TrackControl() {
         super();
@@ -97,9 +106,8 @@ public class TrackControl
     protected TrackDetailFactory trackDetailFactory;
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
-        var trackName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var trackName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         
         return createTrack(trackName, value, isDefault, sortOrder, createdBy);
     }
@@ -131,7 +139,6 @@ public class TrackControl
         var trackPK = track.getPrimaryKey();
         sendEvent(trackPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(trackPK);
         workflowControl.addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
                 TrackStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
@@ -323,7 +330,6 @@ public class TrackControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultTrackStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(TrackStatusConstants.Workflow_TRACK_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(track.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                     entityInstance);
@@ -666,7 +672,6 @@ public class TrackControl
     protected UserVisitTrackFactory userVisitTrackFactory;
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Long time, Track track) {
-        var userControl = Session.getModelController(UserControl.class);
         var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitTrackSequence = userVisitStatus.getUserVisitTrackSequence()+ 1;
         

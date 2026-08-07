@@ -38,6 +38,9 @@ import javax.inject.Inject;
 public class ForumMessageControl
         extends BaseModelControl {
 
+    @Inject
+    protected ForumControl forumControl;
+
     /** Creates a new instance of ForumControl */
     protected ForumMessageControl() {
         super();
@@ -64,7 +67,6 @@ public class ForumMessageControl
         }
 
         try {
-            var forumControl = Session.getModelController(ForumControl.class);
             var ps = searchResultFactory.prepareStatement(
                     """
                     SELECT eni_entityuniqueid

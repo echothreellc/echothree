@@ -102,6 +102,7 @@ public class WorkRequirementControl
         extends BaseModelControl {
     
     /** Creates a new instance of WorkRequirementControl */
+
     protected WorkRequirementControl() {
         super();
     }
@@ -1166,7 +1167,6 @@ public class WorkRequirementControl
             workflowControl.getWorkflowEntranceChoices(workRequirementStatusChoicesBean, defaultWorkRequirementStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workRequirement.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
                     entityInstance);
@@ -1504,7 +1504,6 @@ public class WorkRequirementControl
             workflowControl.getWorkflowEntranceChoices(workAssignmentStatusChoicesBean, defaultWorkAssignmentStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
                     entityInstance);
@@ -1790,7 +1789,6 @@ public class WorkRequirementControl
             workflowControl.getWorkflowEntranceChoices(workTimeStatusChoicesBean, defaultWorkTimeStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
                     entityInstance);

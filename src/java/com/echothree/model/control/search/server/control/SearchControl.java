@@ -179,6 +179,7 @@ public class SearchControl
         extends BaseModelControl {
     
     /** Creates a new instance of SearchControl */
+
     protected SearchControl() {
         super();
     }
@@ -4258,7 +4259,6 @@ public class SearchControl
     }
     
     public void removeSearch(Search search) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         entityInstanceControl.removeEntityInstanceByBasePK(search.getPrimaryKey());
         search.remove();
@@ -5473,7 +5473,6 @@ public class SearchControl
         }
 
         try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
             while(rs.next()) {
                 var entityInstance = entityInstanceControl.getEntityInstanceByPK(new EntityInstancePK(rs.getLong(ENI_ENTITYINSTANCEID_COLUMN_INDEX)));

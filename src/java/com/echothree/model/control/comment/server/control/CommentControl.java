@@ -92,6 +92,7 @@ public class CommentControl
         extends BaseModelControl {
     
     /** Creates a new instance of CommentControl */
+
     protected CommentControl() {
         super();
     }
@@ -1226,7 +1227,6 @@ public class CommentControl
             if(comment == null) {
                 workflowControl.getWorkflowEntranceChoices(commentStatusChoicesBean, defaultCommentStatusChoice, language, allowNullChoice, workflow, partyPK);
             } else {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
                 var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
 

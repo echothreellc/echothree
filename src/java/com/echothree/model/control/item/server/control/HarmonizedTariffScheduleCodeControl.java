@@ -37,6 +37,9 @@ import javax.inject.Inject;
 public class HarmonizedTariffScheduleCodeControl
         extends BaseModelControl {
 
+    @Inject
+    protected ItemControl itemControl;
+
     /** Creates a new instance of HarmonizedTariffScheduleCodeControl */
     protected HarmonizedTariffScheduleCodeControl() {
         super();
@@ -63,7 +66,6 @@ public class HarmonizedTariffScheduleCodeControl
         }
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
             var ps = searchResultFactory.prepareStatement("""
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances

@@ -598,8 +598,10 @@ public class EntityTypeControl
 
     @Inject
     protected SearchResultFactory searchResultFactory;
+
     @Inject
     protected SearchControl searchControl;
+
     public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>();

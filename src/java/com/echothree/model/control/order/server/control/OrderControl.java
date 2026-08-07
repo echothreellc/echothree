@@ -66,6 +66,24 @@ import javax.inject.Inject;
 public class OrderControl
         extends BaseOrderControl {
     
+    @Inject
+    protected OrderAdjustmentControl orderAdjustmentControl;
+
+    @Inject
+    protected OrderLineControl orderLineControl;
+
+    @Inject
+    protected OrderRoleControl orderRoleControl;
+
+    @Inject
+    protected OrderTimeControl orderTimeControl;
+
+    @Inject
+    protected OrderTypeControl orderTypeControl;
+
+    @Inject
+    protected WishlistControl wishlistControl;
+
     /** Creates a new instance of OrderControl */
     protected OrderControl() {
         super();
@@ -182,7 +200,6 @@ public class OrderControl
     }
 
     private Order getOrderByNameUsingNames(String orderTypeName, String orderName, EntityPermission entityPermission) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
 
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
@@ -267,10 +284,6 @@ public class OrderControl
     }
     
     public void deleteOrder(Order order, BasePK deletedBy) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-        var orderLineControl = Session.getModelController(OrderLineControl.class);
 
         removeOrderStatusByOrder(order);
         deleteOrderContentCatalogsByOrder(order, deletedBy);
@@ -283,7 +296,6 @@ public class OrderControl
         var orderDetail = order.getLastDetailForUpdate();
         var orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         if(orderTypeName.equals(OrderTypes.WISHLIST.name())) {
-            var wishlistControl = Session.getModelController(WishlistControl.class);
             
             wishlistControl.deleteWishlistByOrder(order, deletedBy);
         }
@@ -302,7 +314,6 @@ public class OrderControl
     }
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
         
         wishlists.forEach((wishlist) -> {
@@ -556,6 +567,7 @@ public class OrderControl
 
     @Inject
     protected OrderContentCatalogFactory orderContentCatalogFactory;
+
     @Inject
     OrderContentCatalogTransferCache orderContentCatalogTransferCache;
 
