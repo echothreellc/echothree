@@ -120,14 +120,18 @@ public class EncryptionKeyControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM baseencryptionkeys " +
-                    "ORDER BY bek_baseencryptionkeyname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM baseencryptionkeys
+                    ORDER BY bek_baseencryptionkeyname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM baseencryptionkeys " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM baseencryptionkeys
+                    FOR UPDATE
+                    """;
         }
 
         var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
@@ -152,21 +156,27 @@ public class EncryptionKeyControl
             List<BaseEncryptionKey> baseEncryptionKeys;
 
             try {
-                var query = new StringBuilder("SELECT _ALL_ " +
-                        "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
-                        "baseencryptionkeys, workflowentitystatuses, entitytimes " +
-                        "WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                        "AND ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                        "AND entdt_entitytypename = ? " +
-                        "AND ent_entitytypeid = eni_ent_entitytypeid AND bek_baseencryptionkeyid = eni_entityuniqueid " +
-                        "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                        "AND eni_entityinstanceid = etim_eni_entityinstanceid ");
+                var query = new StringBuilder("""
+                                              SELECT _ALL_
+                                              FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
+                                              baseencryptionkeys, workflowentitystatuses, entitytimes
+                                              WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                                              AND ent_activedetailid = entdt_entitytypedetailid
+                                              AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                                              AND entdt_entitytypename = ?
+                                              AND ent_entitytypeid = eni_ent_entitytypeid AND bek_baseencryptionkeyid = eni_entityuniqueid
+                                              AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                                              AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                              """);
 
                 if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                    query.append("ORDER BY etim_createdtime DESC");
+                    query.append("""
+                            ORDER BY etim_createdtime DESC
+                            """);
                 } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                    query.append("FOR UPDATE");
+                    query.append("""
+                            FOR UPDATE
+                            """);
                 }
 
                 var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query.toString());
@@ -204,14 +214,18 @@ public class EncryptionKeyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM baseencryptionkeys " +
-                        "WHERE bek_baseencryptionkeyname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM baseencryptionkeys
+                        WHERE bek_baseencryptionkeyname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM baseencryptionkeys " +
-                        "WHERE bek_baseencryptionkeyname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM baseencryptionkeys
+                        WHERE bek_baseencryptionkeyname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
@@ -241,14 +255,18 @@ public class EncryptionKeyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM baseencryptionkeys " +
-                        "WHERE bek_sha1hash = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM baseencryptionkeys
+                        WHERE bek_sha1hash = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM baseencryptionkeys " +
-                        "WHERE bek_sha1hash = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM baseencryptionkeys
+                        WHERE bek_sha1hash = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query);
@@ -342,14 +360,18 @@ public class EncryptionKeyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityencryptionkeys " +
-                        "WHERE eek_entityencryptionkeyname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityencryptionkeys
+                        WHERE eek_entityencryptionkeyname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityencryptionkeys " +
-                        "WHERE eek_entityencryptionkeyname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityencryptionkeys
+                        WHERE eek_entityencryptionkeyname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(query);
@@ -374,17 +396,21 @@ public class EncryptionKeyControl
 
     public List<EntityEncryptionKey> getEntityEncryptionKeysForUpdate() {
         var ps = EntityEncryptionKeyFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM entityencryptionkeys " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM entityencryptionkeys
+                FOR UPDATE
+                """);
 
         return EntityEncryptionKeyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
     }
 
     public long countEntityEncryptionKeys() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityencryptionkeys");
+                """
+                SELECT COUNT(*)
+                FROM entityencryptionkeys
+                """);
     }
 
 }

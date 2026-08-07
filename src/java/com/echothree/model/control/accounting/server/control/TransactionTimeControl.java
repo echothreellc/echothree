@@ -124,16 +124,20 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypes, transactiontimetypedetails " +
-                "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "AND txntimtypdt_transactiontimetypename = ?");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypes, transactiontimetypedetails
+                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                AND txntimtypdt_transactiontimetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypes, transactiontimetypedetails " +
-                "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "AND txntimtypdt_transactiontimetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypes, transactiontimetypedetails
+                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                AND txntimtypdt_transactiontimetypename = ?
+                FOR UPDATE
+                """);
         getTransactionTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -164,16 +168,20 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypes, transactiontimetypedetails " +
-                "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "AND txntimtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypes, transactiontimetypedetails
+                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                AND txntimtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypes, transactiontimetypedetails " +
-                "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "AND txntimtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypes, transactiontimetypedetails
+                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                AND txntimtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultTransactionTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -199,16 +207,20 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypes, transactiontimetypedetails " +
-                "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypes, transactiontimetypedetails
+                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypes, transactiontimetypedetails " +
-                "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypes, transactiontimetypedetails
+                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                FOR UPDATE
+                """);
         getTransactionTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -369,14 +381,18 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypedescriptions " +
-                "WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_lang_languageid = ? AND txntimtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypedescriptions
+                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_lang_languageid = ? AND txntimtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypedescriptions " +
-                "WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_lang_languageid = ? AND txntimtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypedescriptions
+                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_lang_languageid = ? AND txntimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getTransactionTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -407,15 +423,19 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypedescriptions, languages " +
-                "WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_thrutime = ? AND txntimtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sorttransaction, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypedescriptions, languages
+                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_thrutime = ? AND txntimtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sorttransaction, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM transactiontimetypedescriptions " +
-                "WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimetypedescriptions
+                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getTransactionTimeTypeDescriptionsByTransactionTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -512,25 +532,31 @@ public class TransactionTimeControl
 
     public long countTransactionTimesByTransaction(Transaction transaction) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM transactiontimes
+                WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?
+                """,
                 transaction, Session.MAX_TIME);
     }
 
     public long countTransactionTimesByTransactionTimeType(TransactionTimeType transactionTimeType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM transactiontimes
+                WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
+                """,
                 transactionTimeType, Session.MAX_TIME);
     }
 
     public boolean transactionTimeExists(Transaction transaction, TransactionTimeType transactionTimeType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM transactiontimes
+                WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
+                """,
                 transaction, transactionTimeType, Session.MAX_TIME) == 1;
     }
 
@@ -540,14 +566,18 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM transactiontimes
+                WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimes
+                WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
+                FOR UPDATE
+                """);
         getTransactionTimeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -577,16 +607,20 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM transactiontimes, transactiontimetypes, transactiontimetypedetails " +
-                        "WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ? " +
-                        "AND txntim_txntimtyp_transactiontimetypeid = txntimtyp_transactiontimetypeid AND txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                        "ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename");
+                """
+                SELECT _ALL_
+                FROM transactiontimes, transactiontimetypes, transactiontimetypedetails
+                WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?
+                AND txntim_txntimtyp_transactiontimetypeid = txntimtyp_transactiontimetypeid AND txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
+                ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimes
+                WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?
+                FOR UPDATE
+                """);
         getTransactionTimesByTransactionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -608,16 +642,20 @@ public class TransactionTimeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM transactiontimes, transactions, transactiondetails " +
-                        "WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ? " +
-                        "AND txntim_trx_transactionid = txntim_trx_transactionid AND trx_transactionid = trxdt_transactiondetailid " +
-                        "ORDER BY trxdt_transactionname");
+                """
+                SELECT _ALL_
+                FROM transactiontimes, transactions, transactiondetails
+                WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
+                AND txntim_trx_transactionid = txntim_trx_transactionid AND trx_transactionid = trxdt_transactiondetailid
+                ORDER BY trxdt_transactionname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM transactiontimes " +
-                        "WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM transactiontimes
+                WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
+                FOR UPDATE
+                """);
         getTransactionTimesByTransactionTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

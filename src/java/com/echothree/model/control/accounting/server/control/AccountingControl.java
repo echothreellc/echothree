@@ -244,16 +244,20 @@ public class AccountingControl
 
     public long countCurrencies() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM currencies");
+                """
+                SELECT COUNT(*)
+                FROM currencies
+                """);
     }
 
     public List<Currency> getCurrencies() {
         var ps = CurrencyFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM currencies " +
-                "ORDER BY cur_sortorder, cur_currencyisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM currencies
+                ORDER BY cur_sortorder, cur_currencyisoname
+                _LIMIT_
+                """);
         
         return CurrencyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -262,14 +266,18 @@ public class AccountingControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM currencies " +
-                    "WHERE cur_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM currencies
+                    WHERE cur_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM currencies " +
-                    "WHERE cur_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM currencies
+                    WHERE cur_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = CurrencyFactory.getInstance().prepareStatement(query);
@@ -292,14 +300,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM currencies " +
-                        "WHERE cur_currencyisoname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM currencies
+                        WHERE cur_currencyisoname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM currencies " +
-                        "WHERE cur_currencyisoname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM currencies
+                        WHERE cur_currencyisoname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CurrencyFactory.getInstance().prepareStatement(query);
@@ -392,9 +404,11 @@ public class AccountingControl
         
         try {
             var ps = CurrencyDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM currencydescriptions " +
-                    "WHERE curd_cur_currencyid = ? AND curd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM currencydescriptions
+                    WHERE curd_cur_currencyid = ? AND curd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -414,15 +428,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM currencydescriptions, languages " +
-                        "WHERE curd_cur_currencyid = ? AND curd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM currencydescriptions, languages
+                        WHERE curd_cur_currencyid = ? AND curd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM currencydescriptions " +
-                        "WHERE curd_cur_currencyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM currencydescriptions
+                        WHERE curd_cur_currencyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CurrencyDescriptionFactory.getInstance().prepareStatement(query);
@@ -541,16 +559,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid " +
-                "AND iactgcdt_itemaccountingcategoryname = ?");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                AND iactgcdt_itemaccountingcategoryname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid " +
-                "AND iactgcdt_itemaccountingcategoryname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                AND iactgcdt_itemaccountingcategoryname = ?
+                FOR UPDATE
+                """);
         getItemAccountingCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -580,16 +602,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid " +
-                "AND iactgcdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                AND iactgcdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid " +
-                "AND iactgcdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                AND iactgcdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultItemAccountingCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -615,16 +641,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid " +
-                "ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                FOR UPDATE
+                """);
         getItemAccountingCategoriesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -646,16 +676,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid AND iactgcdt_parentitemaccountingcategoryid = ? " +
-                "ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid AND iactgcdt_parentitemaccountingcategoryid = ?
+                ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid AND iactgcdt_parentitemaccountingcategoryid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid AND iactgcdt_parentitemaccountingcategoryid = ?
+                FOR UPDATE
+                """);
         getItemAccountingCategoriesByParentItemAccountingCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -874,14 +908,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemaccountingcategorydescriptions " +
-                        "WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM itemaccountingcategorydescriptions
+                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemaccountingcategorydescriptions " +
-                        "WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM itemaccountingcategorydescriptions
+                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
@@ -924,15 +962,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemaccountingcategorydescriptions, languages " +
-                        "WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ? AND iactgcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM itemaccountingcategorydescriptions, languages
+                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ? AND iactgcd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemaccountingcategorydescriptions " +
-                        "WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM itemaccountingcategorydescriptions
+                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ItemAccountingCategoryDescriptionFactory.getInstance().prepareStatement(query);
@@ -1061,9 +1103,11 @@ public class AccountingControl
 
         try {
             var ps = GlAccountTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM glaccounttypes " +
-                    "WHERE glatyp_glaccounttypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM glaccounttypes
+                    WHERE glatyp_glaccounttypename = ?
+                    """);
 
             ps.setString(1, glAccountTypeName);
 
@@ -1077,19 +1121,23 @@ public class AccountingControl
 
     public GlAccountType getDefaultGlAccountType() {
         var ps = GlAccountTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM glaccounttypes " +
-                "WHERE glatyp_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM glaccounttypes
+                WHERE glatyp_isdefault = 1
+                """);
 
         return GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public List<GlAccountType> getGlAccountTypes() {
         var ps = GlAccountTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM glaccounttypes " +
-                "ORDER BY glatyp_sortorder, glatyp_glaccounttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM glaccounttypes
+                ORDER BY glatyp_sortorder, glatyp_glaccounttypename
+                _LIMIT_
+                """);
         
         return GlAccountTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1156,9 +1204,11 @@ public class AccountingControl
         
         try {
             var ps = GlAccountTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM glaccounttypedescriptions " +
-                    "WHERE glatypd_glatyp_glaccounttypeid = ? AND glatypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM glaccounttypedescriptions
+                    WHERE glatypd_glatyp_glaccounttypeid = ? AND glatypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1251,16 +1301,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid " +
-                "AND glaclsdt_glaccountclassname = ?");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                AND glaclsdt_glaccountclassname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid " +
-                "AND glaclsdt_glaccountclassname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                AND glaclsdt_glaccountclassname = ?
+                FOR UPDATE
+                """);
         getGlAccountClassByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1290,16 +1344,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid " +
-                "AND glaclsdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                AND glaclsdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid " +
-                "AND glaclsdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                AND glaclsdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultGlAccountClassQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1325,16 +1383,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid " +
-                "ORDER BY glaclsdt_sortorder, glaclsdt_glaccountclassname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                ORDER BY glaclsdt_sortorder, glaclsdt_glaccountclassname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                FOR UPDATE
+                """);
         getGlAccountClassesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1356,16 +1418,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid AND glaclsdt_parentglaccountclassid = ? " +
-                "ORDER BY glaclsdt_sortorder, glaclsdt_glaccountclassname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid AND glaclsdt_parentglaccountclassid = ?
+                ORDER BY glaclsdt_sortorder, glaclsdt_glaccountclassname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountclasses, glaccountclassdetails " +
-                "WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid AND glaclsdt_parentglaccountclassid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid AND glaclsdt_parentglaccountclassid = ?
+                FOR UPDATE
+                """);
         getGlAccountClassesByParentGlAccountClassQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1573,14 +1639,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountclassdescriptions " +
-                        "WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountclassdescriptions
+                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountclassdescriptions " +
-                        "WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountclassdescriptions
+                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
@@ -1620,15 +1690,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountclassdescriptions, languages " +
-                        "WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ? AND glaclsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountclassdescriptions, languages
+                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ? AND glaclsd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountclassdescriptions " +
-                        "WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountclassdescriptions
+                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountClassDescriptionFactory.getInstance().prepareStatement(query);
@@ -1781,16 +1855,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid " +
-                "AND glacdt_glaccountcategoryname = ?");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                AND glacdt_glaccountcategoryname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid " +
-                "AND glacdt_glaccountcategoryname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                AND glacdt_glaccountcategoryname = ?
+                FOR UPDATE
+                """);
         getGlAccountCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1820,16 +1898,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid " +
-                "AND glacdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                AND glacdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid " +
-                "AND glacdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                AND glacdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultGlAccountCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1855,16 +1937,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid " +
-                "ORDER BY glacdt_sortorder, glacdt_glaccountcategoryname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                ORDER BY glacdt_sortorder, glacdt_glaccountcategoryname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                FOR UPDATE
+                """);
         getGlAccountCategoriesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1886,16 +1972,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid AND glacdt_parentglaccountcategoryid = ? " +
-                "ORDER BY glacdt_sortorder, glacdt_glaccountcategoryname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid AND glacdt_parentglaccountcategoryid = ?
+                ORDER BY glacdt_sortorder, glacdt_glaccountcategoryname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccountcategories, glaccountcategorydetails " +
-                "WHERE glac_activedetailid = glacdt_glaccountcategorydetailid AND glacdt_parentglaccountcategoryid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid AND glacdt_parentglaccountcategoryid = ?
+                FOR UPDATE
+                """);
         getGlAccountCategoriesByParentGlAccountCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2104,14 +2194,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountcategorydescriptions " +
-                        "WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountcategorydescriptions
+                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountcategorydescriptions " +
-                        "WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountcategorydescriptions
+                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
@@ -2151,15 +2245,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountcategorydescriptions, languages " +
-                        "WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ? AND glacd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountcategorydescriptions, languages
+                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ? AND glacd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountcategorydescriptions " +
-                        "WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountcategorydescriptions
+                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
@@ -2310,14 +2408,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypes, glresourcetypedetails " +
-                        "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypes, glresourcetypedetails " +
-                        "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
@@ -2356,14 +2458,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypes, glresourcetypedetails " +
-                        "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypes, glresourcetypedetails " +
-                        "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
@@ -2397,15 +2503,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypes, glresourcetypedetails " +
-                        "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ? " +
-                        "ORDER BY glrtypdt_sortorder, glrtypdt_glresourcetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ?
+                        ORDER BY glrtypdt_sortorder, glrtypdt_glresourcetypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypes, glresourcetypedetails " +
-                        "WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlResourceTypeFactory.getInstance().prepareStatement(query);
@@ -2575,14 +2685,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypedescriptions " +
-                        "WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypedescriptions
+                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypedescriptions " +
-                        "WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypedescriptions
+                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -2622,15 +2736,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypedescriptions, languages " +
-                        "WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ? AND glrtypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypedescriptions, languages
+                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ? AND glrtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glresourcetypedescriptions " +
-                        "WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glresourcetypedescriptions
+                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlResourceTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -2821,14 +2939,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -2862,14 +2984,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -2920,16 +3046,20 @@ public class AccountingControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM glaccounts, glaccountdetails " +
-                    "WHERE gla_activedetailid = gladt_glaccountdetailid " +
-                    "ORDER BY gladt_glaccountname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM glaccounts, glaccountdetails
+                    WHERE gla_activedetailid = gladt_glaccountdetailid
+                    ORDER BY gladt_glaccountname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM glaccounts, glaccountdetails " +
-                    "WHERE gla_activedetailid = gladt_glaccountdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM glaccounts, glaccountdetails
+                    WHERE gla_activedetailid = gladt_glaccountdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -2952,16 +3082,20 @@ public class AccountingControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ? " +
-                        "ORDER BY gladt_glaccountname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
+                        ORDER BY gladt_glaccountname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -2991,16 +3125,20 @@ public class AccountingControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ? " +
-                        "ORDER BY gladt_glaccountname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
+                        ORDER BY gladt_glaccountname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -3030,16 +3168,20 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? " +
-                        "ORDER BY gladt_glaccountname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
+                        ORDER BY gladt_glaccountname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -3081,16 +3223,20 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ? " +
-                        "ORDER BY gladt_glaccountname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
+                        ORDER BY gladt_glaccountname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccounts, glaccountdetails " +
-                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccounts, glaccountdetails
+                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountFactory.getInstance().prepareStatement(query);
@@ -3119,16 +3265,20 @@ public class AccountingControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM glaccounts, glaccountdetails " +
-                "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_parentglaccountid = ? " +
-                "ORDER BY gladt_sortorder, gladt_glaccountname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_parentglaccountid = ?
+                ORDER BY gladt_sortorder, gladt_glaccountname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM glaccounts, glaccountdetails " +
-                "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_parentglaccountid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_parentglaccountid = ?
+                FOR UPDATE
+                """);
         getGlAccountsByParentGlAccountQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3420,14 +3570,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountdescriptions " +
-                        "WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountdescriptions
+                        WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountdescriptions " +
-                        "WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountdescriptions
+                        WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
@@ -3467,15 +3621,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountdescriptions, languages " +
-                        "WHERE glad_gla_glaccountid = ? AND glad_thrutime = ? AND glad_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountdescriptions, languages
+                        WHERE glad_gla_glaccountid = ? AND glad_thrutime = ? AND glad_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountdescriptions " +
-                        "WHERE glad_gla_glaccountid = ? AND glad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountdescriptions
+                        WHERE glad_gla_glaccountid = ? AND glad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountDescriptionFactory.getInstance().prepareStatement(query);
@@ -3579,14 +3737,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountsummaries " +
-                        "WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountsummaries
+                        WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM glaccountsummaries " +
-                        "WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM glaccountsummaries
+                        WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GlAccountSummaryFactory.getInstance().prepareStatement(query);
@@ -3661,14 +3823,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiontypes, transactiontypedetails " +
-                        "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiontypes, transactiontypedetails
+                        WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiontypes, transactiontypedetails " +
-                        "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiontypes, transactiontypedetails
+                        WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionTypeFactory.getInstance().prepareStatement(query);
@@ -3703,16 +3869,20 @@ public class AccountingControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactiontypes, transactiontypedetails " +
-                    "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid " +
-                    "ORDER BY trxtypdt_transactiontypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM transactiontypes, transactiontypedetails
+                    WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid
+                    ORDER BY trxtypdt_transactiontypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactiontypes, transactiontypedetails " +
-                    "WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM transactiontypes, transactiontypedetails
+                    WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TransactionTypeFactory.getInstance().prepareStatement(query);
@@ -3805,14 +3975,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiontypedescriptions " +
-                        "WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiontypedescriptions
+                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiontypedescriptions " +
-                        "WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiontypedescriptions
+                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -3852,15 +4026,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiontypedescriptions, languages " +
-                        "WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ? AND trxtypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiontypedescriptions, languages
+                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ? AND trxtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiontypedescriptions " +
-                        "WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiontypedescriptions
+                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -4001,14 +4179,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccountcategories, transactionglaccountcategorydetails " +
-                        "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccountcategories, transactionglaccountcategorydetails
+                        WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccountcategories, transactionglaccountcategorydetails " +
-                        "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccountcategories, transactionglaccountcategorydetails
+                        WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
@@ -4047,15 +4229,19 @@ public class AccountingControl
             String query = null;
             
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionglaccountcategories, transactionglaccountcategorydetails " +
-                    "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? " +
-                    "ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname";
+            query = """
+                    SELECT _ALL_
+                    FROM transactionglaccountcategories, transactionglaccountcategorydetails
+                    WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ?
+                    ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionglaccountcategories, transactionglaccountcategorydetails " +
-                    "WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM transactionglaccountcategories, transactionglaccountcategorydetails
+                    WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ?
+                    FOR UPDATE
+                    """;
         }
 
             var ps = TransactionGlAccountCategoryFactory.getInstance().prepareStatement(query);
@@ -4162,14 +4348,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccountcategorydescriptions " +
-                        "WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccountcategorydescriptions
+                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccountcategorydescriptions " +
-                        "WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccountcategorydescriptions
+                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
@@ -4209,15 +4399,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccountcategorydescriptions, languages " +
-                        "WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ? AND trxglacd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccountcategorydescriptions, languages
+                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ? AND trxglacd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccountcategorydescriptions " +
-                        "WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccountcategorydescriptions
+                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionGlAccountCategoryDescriptionFactory.getInstance().prepareStatement(query);
@@ -4358,14 +4552,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                        "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroletypes, transactionentityroletypedetails
+                        WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                        "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroletypes, transactionentityroletypedetails
+                        WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
@@ -4404,16 +4602,20 @@ public class AccountingControl
             String query = null;
             
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                    "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? " +
-                    "ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM transactionentityroletypes, transactionentityroletypedetails
+                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ?
+                    ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                    "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM transactionentityroletypes, transactionentityroletypedetails
+                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ?
+                    FOR UPDATE
+                    """;
         }
 
             var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
@@ -4443,16 +4645,20 @@ public class AccountingControl
             String query = null;
             
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionentityroletypes, transactionentityroletypedetails, transactions, transactiondetails " +
-                    "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_ent_entitytypeid = ? " +
-                    "AND trxertypdt_trxtyp_transactiontypeid = trx_transactionid AND trx_lastdetailid = trxdt_transactiondetailid " +
-                    "ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename, trxdt_transactionname";
+            query = """
+                    SELECT _ALL_
+                    FROM transactionentityroletypes, transactionentityroletypedetails, transactions, transactiondetails
+                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_ent_entitytypeid = ?
+                    AND trxertypdt_trxtyp_transactiontypeid = trx_transactionid AND trx_lastdetailid = trxdt_transactiondetailid
+                    ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename, trxdt_transactionname
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactionentityroletypes, transactionentityroletypedetails " +
-                    "WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM transactionentityroletypes, transactionentityroletypedetails
+                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ?
+                    FOR UPDATE
+                    """;
         }
 
             var ps = TransactionEntityRoleTypeFactory.getInstance().prepareStatement(query);
@@ -4565,14 +4771,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroletypedescriptions " +
-                        "WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroletypedescriptions
+                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroletypedescriptions " +
-                        "WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroletypedescriptions
+                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -4612,15 +4822,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroletypedescriptions, languages " +
-                        "WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ? AND trxertypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroletypedescriptions, languages
+                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ? AND trxertypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroletypedescriptions " +
-                        "WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroletypedescriptions
+                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionEntityRoleTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -4728,17 +4942,21 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccounts, transactionglaccountcategories, transactionglaccountcategorydetails, transactiontypes, transactiontypedetails " +
-                        "WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ? " +
-                        "AND trxgla_trxglac_transactionglaccountcategoryid = trxglac_transactionglaccountcategoryid AND trxglac_lastdetailid = trxglacdt_transactionglaccountcategorydetailid " +
-                        "AND trxglacdt_trxtyp_transactiontypeid = trxtyp_transactiontypeid AND trxtyp_lastdetailid = trxtypdt_transactiontypedetailid " +
-                        "ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname, trxtypdt_sortorder, trxtypdt_transactiontypename";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccounts, transactionglaccountcategories, transactionglaccountcategorydetails, transactiontypes, transactiontypedetails
+                        WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ?
+                        AND trxgla_trxglac_transactionglaccountcategoryid = trxglac_transactionglaccountcategoryid AND trxglac_lastdetailid = trxglacdt_transactionglaccountcategorydetailid
+                        AND trxglacdt_trxtyp_transactiontypeid = trxtyp_transactiontypeid AND trxtyp_lastdetailid = trxtypdt_transactiontypedetailid
+                        ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname, trxtypdt_sortorder, trxtypdt_transactiontypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccounts " +
-                        "WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccounts
+                        WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
@@ -4769,14 +4987,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccounts " +
-                        "WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccounts
+                        WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionglaccounts " +
-                        "WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionglaccounts
+                        WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionGlAccountFactory.getInstance().prepareStatement(query);
@@ -4866,18 +5088,20 @@ public class AccountingControl
             
             try {
                 var ps = TransactionGroupFactory.getInstance().prepareStatement(
-                        "SELECT _ALL_ " +
-                        "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
-                        "transactiongroups, transactiongroupdetails, workflowentitystatuses, entitytimes " +
-                        "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid " +
-                        "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                        "AND ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                        "AND entdt_entitytypename = ? " +
-                        "AND ent_entitytypeid = eni_ent_entitytypeid AND trxgrp_transactiongroupid = eni_entityuniqueid " +
-                        "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                        "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-                        "ORDER BY etim_createdtime DESC");
+                        """
+                        SELECT _ALL_
+                        FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
+                        transactiongroups, transactiongroupdetails, workflowentitystatuses, entitytimes
+                        WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
+                        AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                        AND ent_activedetailid = entdt_entitytypedetailid
+                        AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                        AND entdt_entitytypename = ?
+                        AND ent_entitytypeid = eni_ent_entitytypeid AND trxgrp_transactiongroupid = eni_entityuniqueid
+                        AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                        AND eni_entityinstanceid = etim_eni_entityinstanceid
+                        ORDER BY etim_createdtime DESC
+                        """);
                 
                 ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.TransactionGroup.name());
@@ -4963,14 +5187,18 @@ public class AccountingControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiongroups, transactiongroupdetails " +
-                        "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiongroups, transactiongroupdetails
+                        WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactiongroups, transactiongroupdetails " +
-                        "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactiongroups, transactiongroupdetails
+                        WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionGroupFactory.getInstance().prepareStatement(query);
@@ -5001,16 +5229,20 @@ public class AccountingControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactiongroups, transactiongroupdetails " +
-                    "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid " +
-                    "ORDER BY trxgrpdt_transactiongroupname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM transactiongroups, transactiongroupdetails
+                    WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
+                    ORDER BY trxgrpdt_transactiongroupname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM transactiongroups, transactiongroupdetails " +
-                    "WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM transactiongroups, transactiongroupdetails
+                    WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TransactionGroupFactory.getInstance().prepareStatement(query);
@@ -5175,14 +5407,18 @@ public class AccountingControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactions, transactiondetails " +
-                        "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactions, transactiondetails
+                        WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactions, transactiondetails " +
-                        "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactions, transactiondetails
+                        WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionFactory.getInstance().prepareStatement(query);
@@ -5248,11 +5484,13 @@ public class AccountingControl
         
         try {
             var ps = TransactionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM transactions, transactiondetails " +
-                    "WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxtyp_transactiontypeid = ? " +
-                    "ORDER BY trxdt_transactionname " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM transactions, transactiondetails
+                    WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxtyp_transactiontypeid = ?
+                    ORDER BY trxdt_transactionname
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
             
@@ -5297,14 +5535,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionstatuses " +
-                        "WHERE trxst_trx_transactionid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionstatuses
+                        WHERE trxst_trx_transactionid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionstatuses " +
-                        "WHERE trxst_trx_transactionid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionstatuses
+                        WHERE trxst_trx_transactionid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionStatusFactory.getInstance().prepareStatement(query);
@@ -5373,11 +5615,13 @@ public class AccountingControl
         
         try {
             var ps = TransactionGlEntryFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM transactionglentries " +
-                    "WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ? " +
-                    "ORDER BY trxglent_transactionglentrysequence " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM transactionglentries
+                    WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ?
+                    ORDER BY trxglent_transactionglentrysequence
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5463,9 +5707,11 @@ public class AccountingControl
         
         try {
             var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM transactionentityroles " +
-                    "WHERE trxer_trx_transactionid = ? AND trxer_trxertyp_transactionentityroletypeid = ? AND trxer_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM transactionentityroles
+                    WHERE trxer_trx_transactionid = ? AND trxer_trxertyp_transactionentityroletypeid = ? AND trxer_thrutime = ?
+                    """);
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, transactionEntityRoleType.getPrimaryKey().getEntityId());
@@ -5487,16 +5733,20 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroles, transactionentityroletypes, transactionentityroletypedetails " +
-                        "WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ? " +
-                        "AND trxer_trxertyp_transactionentityroletypeid = trxertyp_transactionentityroletypeid AND trxertyp_lastdetailid = trxertypdt_transactionentityroletypedetailid " +
-                        "ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroles, transactionentityroletypes, transactionentityroletypedetails
+                        WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
+                        AND trxer_trxertyp_transactionentityroletypeid = trxertyp_transactionentityroletypeid AND trxertyp_lastdetailid = trxertypdt_transactionentityroletypedetailid
+                        ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroles " +
-                        "WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroles
+                        WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
@@ -5527,15 +5777,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroles " +
-                        "WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ? " +
-                        "ORDER BY trxer_transactionentityroleid"; // TODO: this should probably be ordered by something else
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroles
+                        WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ?
+                        ORDER BY trxer_transactionentityroleid
+                        """; // TODO: this should probably be ordered by something else
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM transactionentityroles " +
-                        "WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM transactionentityroles
+                        WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TransactionEntityRoleFactory.getInstance().prepareStatement(query);
@@ -5647,9 +5901,11 @@ public class AccountingControl
 
     public long countSymbolPositions() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_activedetailid = symposdt_symbolpositiondetailid");
+                """
+                SELECT COUNT(*)
+                FROM symbolpositions, symbolpositiondetails
+                WHERE sympos_activedetailid = symposdt_symbolpositiondetailid
+                """);
     }
 
     private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
@@ -5659,14 +5915,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositions, symbolpositiondetails
+                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositions, symbolpositiondetails
+                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
@@ -5705,14 +5965,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositions, symbolpositiondetails
+                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositions, symbolpositiondetails
+                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
@@ -5746,16 +6010,20 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ? " +
-                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositions, symbolpositiondetails
+                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ?
+                        ORDER BY symposdt_sortorder, symposdt_symbolpositionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositions, symbolpositiondetails " +
-                        "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositions, symbolpositiondetails
+                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SymbolPositionFactory.getInstance().prepareStatement(query);
@@ -5924,14 +6192,18 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositiondescriptions " +
-                        "WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositiondescriptions
+                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositiondescriptions " +
-                        "WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositiondescriptions
+                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);
@@ -5971,15 +6243,19 @@ public class AccountingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositiondescriptions, languages " +
-                        "WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ? AND symposd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositiondescriptions, languages
+                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ? AND symposd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM symbolpositiondescriptions " +
-                        "WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM symbolpositiondescriptions
+                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SymbolPositionDescriptionFactory.getInstance().prepareStatement(query);

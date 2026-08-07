@@ -209,16 +209,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_documenttypename = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_documenttypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_documenttypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_documenttypename = ?
+                FOR UPDATE
+                """);
         getDocumentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -248,16 +252,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "AND dcmnttypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                AND dcmnttypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -283,16 +291,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid
+                FOR UPDATE
+                """);
         getDocumentTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -314,16 +326,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ? " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ?
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypes, documenttypedetails " +
-                "WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypes, documenttypedetails
+                WHERE dcmnttyp_activedetailid = dcmnttypdt_documenttypedetailid AND dcmnttypdt_parentdocumenttypeid = ?
+                FOR UPDATE
+                """);
         getDocumentTypesByParentDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -532,14 +548,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_lang_languageid = ? AND dcmnttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -570,16 +590,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions, languages " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ? AND dcmnttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions, languages
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ? AND dcmnttypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypedescriptions " +
-                "WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypedescriptions
+                WHERE dcmnttypd_dcmnttyp_documenttypeid = ? AND dcmnttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeDescriptionsByDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -701,16 +725,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_documenttypeusagetypename = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_documenttypeusagetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_documenttypeusagetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_documenttypeusagetypename = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -740,16 +768,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "AND dcmnttyputypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                AND dcmnttyputypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -775,16 +807,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttyputyp_activedetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -958,14 +994,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_lang_languageid = ? AND dcmnttyputypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -996,16 +1036,20 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions, languages " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ? AND dcmnttyputypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions, languages
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ? AND dcmnttyputypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusagetypedescriptions " +
-                "WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusagetypedescriptions
+                WHERE dcmnttyputypd_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttyputypd_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1120,14 +1164,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsageQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1158,14 +1206,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_isdefault = 1 AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultDocumentTypeUsageQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1192,17 +1244,21 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages, documenttypes, documenttypedetails " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ? " +
-                "AND dcmnttypu_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages, documenttypes, documenttypedetails
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ?
+                AND dcmnttypu_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = ? AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsagesByDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1225,17 +1281,21 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages, documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ? " +
-                "AND dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages, documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                AND dcmnttypu_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                ORDER BY dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documenttypeusages " +
-                "WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documenttypeusages
+                WHERE dcmnttypu_dcmnttyp_documenttypeid = ? AND dcmnttypu_thrutime = ?
+                FOR UPDATE
+                """);
         getDocumentTypeUsagesByDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1395,9 +1455,11 @@ public class DocumentControl
     
     public long countDocumentsByDocumentType(DocumentType documentType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM documents, documentdetails " +
-                "WHERE dcmntdt_dcmnttyp_documenttypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM documents, documentdetails
+                WHERE dcmntdt_dcmnttyp_documenttypeid = ?
+                """,
                 documentType);
     }
 
@@ -1408,14 +1470,18 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documents, documentdetails " +
-                        "WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documents, documentdetails
+                        WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documents, documentdetails " +
-                        "WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documents, documentdetails
+                        WHERE dcmnt_activedetailid = dcmntdt_documentdetailid AND dcmntdt_documentname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DocumentFactory.getInstance().prepareStatement(query);
@@ -1452,18 +1518,22 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM documents, documentdetails " +
-                "WHERE dcmnt_activedetailid = dcmnt_activedetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "ORDER BY dcmntdt_documentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM documents, documentdetails
+                WHERE dcmnt_activedetailid = dcmnt_activedetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                ORDER BY dcmntdt_documentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM documents, documentdetails " +
-                "WHERE dcmnt_activedetailid = dcmnt_activedetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM documents, documentdetails
+                WHERE dcmnt_activedetailid = dcmnt_activedetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                FOR UPDATE
+                """);
         getDocumentsByDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1577,14 +1647,18 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentblobs " +
-                        "WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documentblobs
+                        WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentblobs " +
-                        "WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentblobs
+                        WHERE dcmntb_dcmnt_documentid = ? AND dcmntb_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DocumentBlobFactory.getInstance().prepareStatement(query);
@@ -1670,14 +1744,18 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentclobs " +
-                        "WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documentclobs
+                        WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentclobs " +
-                        "WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentclobs
+                        WHERE dcmntc_dcmnt_documentid = ? AND dcmntc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DocumentClobFactory.getInstance().prepareStatement(query);
@@ -1761,14 +1839,18 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_lang_languageid = ? AND dcmntd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
@@ -1808,15 +1890,19 @@ public class DocumentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions, languages " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? AND dcmntd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions, languages
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? AND dcmntd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM documentdescriptions " +
-                        "WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM documentdescriptions
+                        WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DocumentDescriptionFactory.getInstance().prepareStatement(query);
@@ -1941,14 +2027,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1979,14 +2069,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_isdefault = 1 AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultPartyTypeDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2013,17 +2107,21 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes, documenttypeusagetypes, documenttypeusagetypedetails " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid " +
-                "ORDER BY ptypdcmnttyputyp_sortorder, dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes, documenttypeusagetypes, documenttypeusagetypedetails
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                AND ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = dcmnttyputyp_documenttypeusagetypeid AND dcmnttyputyp_lastdetailid = dcmnttyputypdt_documenttypeusagetypedetailid
+                ORDER BY ptypdcmnttyputyp_sortorder, dcmnttyputypdt_sortorder, dcmnttyputypdt_documenttypeusagetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_ptyp_partytypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeDocumentTypeUsageTypesByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2046,17 +2144,21 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes, partytypes " +
-                "WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "AND ptypdcmnttyputyp_ptyp_partytypeid = ptyp_partytypeid " +
-                "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes, partytypes
+                WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                AND ptypdcmnttyputyp_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_sortorder, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partytypedocumenttypeusagetypes " +
-                "WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypedocumenttypeusagetypes
+                WHERE ptypdcmnttyputyp_dcmnttyputyp_documenttypeusagetypeid = ? AND ptypdcmnttyputyp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeDocumentTypeUsageTypesByDocumentTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2212,11 +2314,13 @@ public class DocumentControl
 
     public long countPartyDocumentsByPartyAndDocumentType(Party party, DocumentType documentType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM partydocuments, documents, documentdetails "
-                + "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? "
-                + "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_activedetailid = dcmntdt_documentdetailid "
-                + "AND dcmntdt_dcmnttyp_documenttypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_activedetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                """,
                 party, Session.MAX_TIME, documentType);
     }
 
@@ -2226,14 +2330,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyDocumentQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2264,18 +2372,22 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ?");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_isdefault = 1 AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                FOR UPDATE
+                """);
         getDefaultPartyDocumentQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2302,18 +2414,22 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails, documenttypes, documenttypedetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid " +
-                "ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename, dcmntdt_documentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails, documenttypes, documenttypedetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = dcmnttyp_documenttypeid AND dcmnttyp_lastdetailid = dcmnttypdt_documenttypedetailid
+                ORDER BY dcmnttypdt_sortorder, dcmnttypdt_documenttypename, dcmntdt_documentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyDocumentsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2336,20 +2452,24 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "ORDER BY pardcmnt_sortorder, dcmntdt_documentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                ORDER BY pardcmnt_sortorder, dcmntdt_documentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, documents, documentdetails " +
-                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
-                "AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid " +
-                "AND dcmntdt_dcmnttyp_documenttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments, documents, documentdetails
+                WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ?
+                AND pardcmnt_dcmnt_documentid = dcmnt_documentid AND dcmnt_lastdetailid = dcmntdt_documentdetailid
+                AND dcmntdt_dcmnttyp_documenttypeid = ?
+                FOR UPDATE
+                """);
         getPartyDocumentsByPartyAndDocumentTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2372,14 +2492,18 @@ public class DocumentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partydocuments, partytypes " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partydocuments, partytypes
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partydocuments " +
-                "WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partydocuments
+                WHERE pardcmnt_dcmnt_documentid = ? AND pardcmnt_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyDocumentByDocumentQueries = Collections.unmodifiableMap(queryMap);
     }
 

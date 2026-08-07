@@ -113,16 +113,20 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_colorname = ?");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_colorname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_colorname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_colorname = ?
+                FOR UPDATE
+                """);
         getColorByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -152,16 +156,20 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "AND clrdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                AND clrdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultColorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -187,16 +195,20 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "ORDER BY clrdt_sortorder, clrdt_colorname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                ORDER BY clrdt_sortorder, clrdt_colorname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colors, colordetails " +
-                        "WHERE clr_activedetailid = clrdt_colordetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                FOR UPDATE
+                """);
         getColorsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -376,14 +388,18 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM colordescriptions
+                WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colordescriptions
+                WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?
+                FOR UPDATE
+                """);
         getColorDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -414,15 +430,19 @@ public class ColorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions, languages " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? AND clrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM colordescriptions, languages
+                WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? AND clrd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM colordescriptions " +
-                        "WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM colordescriptions
+                WHERE clrd_clr_colorid = ? AND clrd_thrutime = ?
+                FOR UPDATE
+                """);
         getColorDescriptionsByColorQueries = Collections.unmodifiableMap(queryMap);
     }
 

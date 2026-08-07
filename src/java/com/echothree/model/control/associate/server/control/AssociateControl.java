@@ -167,14 +167,18 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprograms, associateprogramdetails " +
-                        "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprograms, associateprogramdetails
+                        WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprograms, associateprogramdetails " +
-                        "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprograms, associateprogramdetails
+                        WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateProgramFactory.getInstance().prepareStatement(query);
@@ -209,14 +213,18 @@ public class AssociateControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = AssociateProgramFactory.getInstance().prepareStatement(query);
@@ -240,16 +248,20 @@ public class AssociateControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid " +
-                    "ORDER BY ascprgmdt_sortorder, ascprgmdt_associateprogramname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid
+                    ORDER BY ascprgmdt_sortorder, ascprgmdt_associateprogramname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = AssociateProgramFactory.getInstance().prepareStatement(query);
@@ -417,14 +429,18 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateProgramDescriptionFactory.getInstance().prepareStatement(query);
@@ -464,15 +480,19 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions, languages " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? AND ascprgmd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions, languages
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? AND ascprgmd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateProgramDescriptionFactory.getInstance().prepareStatement(query);
@@ -591,14 +611,18 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateFactory.getInstance().prepareStatement(query);
@@ -637,15 +661,19 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? " +
-                        "ORDER BY ascdt_associatename";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ?
+                        ORDER BY ascdt_associatename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateFactory.getInstance().prepareStatement(query);
@@ -811,16 +839,20 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
@@ -859,16 +891,20 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
@@ -902,17 +938,21 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? " +
-                        "ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ?
+                        ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
@@ -942,17 +982,21 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_pcm_partycontactmechanismid = ? " +
-                        "ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_pcm_partycontactmechanismid = ?
+                        ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_pcm_partycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_pcm_partycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
@@ -1164,16 +1208,20 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_associatereferralname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_associatereferralname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_associatereferralname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_associatereferralname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
@@ -1211,17 +1259,21 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_asc_associateid = ? " +
-                        "ORDER BY ascrfrdt_associatereferralname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_asc_associateid = ?
+                        ORDER BY ascrfrdt_associatereferralname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_asc_associateid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_asc_associateid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
@@ -1252,17 +1304,21 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ? " +
-                        "ORDER BY ascrfrdt_associatereferralname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ?
+                        ORDER BY ascrfrdt_associatereferralname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
@@ -1293,17 +1349,21 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_targetentityinstanceid = ? " +
-                        "ORDER BY ascrfrdt_associatereferralname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_targetentityinstanceid = ?
+                        ORDER BY ascrfrdt_associatereferralname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_targetentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_targetentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = AssociateReferralFactory.getInstance().prepareStatement(query);

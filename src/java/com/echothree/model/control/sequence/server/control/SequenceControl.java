@@ -171,16 +171,20 @@ public class SequenceControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sequencetypes, sequencetypedetails " +
-                    "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid " +
-                    "ORDER BY sqtypdt_sortorder, sqtypdt_sequencetypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM sequencetypes, sequencetypedetails
+                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid
+                    ORDER BY sqtypdt_sortorder, sqtypdt_sequencetypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sequencetypes, sequencetypedetails " +
-                    "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM sequencetypes, sequencetypedetails
+                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
@@ -200,14 +204,18 @@ public class SequenceControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sequencetypes, sequencetypedetails " +
-                    "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM sequencetypes, sequencetypedetails
+                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sequencetypes, sequencetypedetails " +
-                    "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM sequencetypes, sequencetypedetails
+                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
@@ -234,14 +242,18 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
@@ -271,14 +283,18 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
@@ -308,14 +324,18 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceTypeFactory.getInstance().prepareStatement(query);
@@ -496,15 +516,19 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypedescriptions, languages " +
-                        "WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ? AND sqtypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypedescriptions, languages
+                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ? AND sqtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypedescriptions " +
-                        "WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypedescriptions
+                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -535,14 +559,18 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypedescriptions " +
-                        "WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypedescriptions
+                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencetypedescriptions " +
-                        "WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencetypedescriptions
+                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -648,15 +676,19 @@ public class SequenceControl
     }
 
     public long countSequenceChecksumTypes() {
-        return session.queryForLong("SELECT COUNT(*) " +
-                "FROM sequencechecksumtypes");
+        return session.queryForLong("""
+                                    SELECT COUNT(*)
+                                    FROM sequencechecksumtypes
+                                    """);
     }
 
     public List<SequenceChecksumType> getSequenceChecksumTypes() {
         var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM sequencechecksumtypes " +
-                "ORDER BY sqct_sortorder, sqct_sequencechecksumtypename");
+                """
+                SELECT _ALL_
+                FROM sequencechecksumtypes
+                ORDER BY sqct_sortorder, sqct_sequencechecksumtypename
+                """);
         
         return SequenceChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -666,10 +698,12 @@ public class SequenceControl
         
         try {
             var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM sequencechecksumtypes " +
-                    "WHERE sqct_sequencechecksumtypename = ? " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM sequencechecksumtypes
+                    WHERE sqct_sequencechecksumtypename = ?
+                    _LIMIT_
+                    """);
             
             ps.setString(1, sequenceChecksumTypeName);
             
@@ -745,9 +779,11 @@ public class SequenceControl
         
         try {
             var ps = SequenceChecksumTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM sequencechecksumtypedescriptions " +
-                    "WHERE sqctd_sqct_sequencechecksumtypeid = ? AND sqctd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM sequencechecksumtypedescriptions
+                    WHERE sqctd_sqct_sequencechecksumtypeid = ? AND sqctd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, sequenceChecksumType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -786,16 +822,20 @@ public class SequenceControl
     }
 
     public long countSequenceEncoderTypes() {
-        return session.queryForLong("SELECT COUNT(*) " +
-                "FROM sequenceencodertypes");
+        return session.queryForLong("""
+                                    SELECT COUNT(*)
+                                    FROM sequenceencodertypes
+                                    """);
     }
 
     public List<SequenceEncoderType> getSequenceEncoderTypes() {
         var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM sequenceencodertypes " +
-                "ORDER BY sqet_sortorder, sqet_sequenceencodertypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM sequenceencodertypes
+                ORDER BY sqet_sortorder, sqet_sequenceencodertypename
+                _LIMIT_
+                """);
         
         return SequenceEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -805,9 +845,11 @@ public class SequenceControl
         
         try {
             var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM sequenceencodertypes " +
-                    "WHERE sqet_sequenceencodertypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM sequenceencodertypes
+                    WHERE sqet_sequenceencodertypename = ?
+                    """);
             
             ps.setString(1, sequenceEncoderTypeName);
             
@@ -882,9 +924,11 @@ public class SequenceControl
         
         try {
             var ps = SequenceEncoderTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM sequenceencodertypedescriptions " +
-                    "WHERE sqetd_sqet_sequenceencodertypeid = ? AND sqetd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM sequenceencodertypedescriptions
+                    WHERE sqetd_sqet_sequenceencodertypeid = ? AND sqetd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -949,16 +993,20 @@ public class SequenceControl
 
     public long countSequences() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM sequences, sequencedetails " +
-                "WHERE sq_activedetailid = sqdt_sequencedetailid");
+                """
+                SELECT COUNT(*)
+                FROM sequences, sequencedetails
+                WHERE sq_activedetailid = sqdt_sequencedetailid
+                """);
     }
 
     public long countSequencesBySequenceType(SequenceType sequenceType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM sequences, sequencedetails " +
-                "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM sequences, sequencedetails
+                WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
+                """,
                 sequenceType);
     }
 
@@ -985,16 +1033,20 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequences, sequencedetails " +
-                        "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? " +
-                        "ORDER BY sqdt_sortorder, sqdt_sequencename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM sequences, sequencedetails
+                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
+                        ORDER BY sqdt_sortorder, sqdt_sequencename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequences, sequencedetails " +
-                        "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequences, sequencedetails
+                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceFactory.getInstance().prepareStatement(query);
@@ -1024,14 +1076,18 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequences, sequencedetails " +
-                        "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM sequences, sequencedetails
+                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequences, sequencedetails " +
-                        "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequences, sequencedetails
+                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceFactory.getInstance().prepareStatement(query);
@@ -1076,16 +1132,20 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequences, sequencedetails " +
-                        "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? " +
-                        "AND sqdt_sequencename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sequences, sequencedetails
+                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
+                        AND sqdt_sequencename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequences, sequencedetails " +
-                        "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? " +
-                        "AND sqdt_sequencename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequences, sequencedetails
+                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
+                        AND sqdt_sequencename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceFactory.getInstance().prepareStatement(query);
@@ -1282,15 +1342,19 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencedescriptions, languages " +
-                        "WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ? AND sqd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencedescriptions, languages
+                        WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ? AND sqd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencedescriptions " +
-                        "WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencedescriptions
+                        WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1321,14 +1385,18 @@ public class SequenceControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencedescriptions " +
-                        "WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencedescriptions
+                        WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sequencedescriptions " +
-                        "WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sequencedescriptions
+                        WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SequenceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1437,9 +1505,11 @@ public class SequenceControl
         
         try {
             var ps = SequenceValueFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM sequencevalues " +
-                    "WHERE sqv_sq_sequenceid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM sequencevalues
+                    WHERE sqv_sq_sequenceid = ?
+                    """);
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             
@@ -1456,10 +1526,12 @@ public class SequenceControl
         
         try {
             var ps = session.prepareStatement(SequenceValueFactory.class,
-                    "SELECT _ALL_ " +
-                    "FROM sequencevalues " +
-                    "WHERE sqv_sq_sequenceid = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM sequencevalues
+                    WHERE sqv_sq_sequenceid = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             

@@ -162,16 +162,20 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "AND trkdt_trackname = ?");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                AND trkdt_trackname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "AND trkdt_trackname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                AND trkdt_trackname = ?
+                FOR UPDATE
+                """);
         getTrackByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -193,16 +197,20 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "AND trkdt_valuesha1hash = ?");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                AND trkdt_valuesha1hash = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "AND trkdt_valuesha1hash = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                AND trkdt_valuesha1hash = ?
+                FOR UPDATE
+                """);
         getTrackByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -233,16 +241,20 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "AND trkdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                AND trkdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "AND trkdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                AND trkdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultTrackQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -268,16 +280,20 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "ORDER BY trkdt_sortorder, trkdt_trackname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                ORDER BY trkdt_sortorder, trkdt_trackname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM tracks, trackdetails " +
-                "WHERE trk_activedetailid = trkdt_trackdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM tracks, trackdetails
+                WHERE trk_activedetailid = trkdt_trackdetailid
+                FOR UPDATE
+                """);
         getTracksQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -496,14 +512,18 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trackdescriptions " +
-                "WHERE trkd_trk_trackid = ? AND trkd_lang_languageid = ? AND trkd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM trackdescriptions
+                WHERE trkd_trk_trackid = ? AND trkd_lang_languageid = ? AND trkd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trackdescriptions " +
-                "WHERE trkd_trk_trackid = ? AND trkd_lang_languageid = ? AND trkd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM trackdescriptions
+                WHERE trkd_trk_trackid = ? AND trkd_lang_languageid = ? AND trkd_thrutime = ?
+                FOR UPDATE
+                """);
         getTrackDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -534,15 +554,19 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM trackdescriptions, languages " +
-                "WHERE trkd_trk_trackid = ? AND trkd_thrutime = ? AND trkd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM trackdescriptions, languages
+                WHERE trkd_trk_trackid = ? AND trkd_thrutime = ? AND trkd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM trackdescriptions " +
-                "WHERE trkd_trk_trackid = ? AND trkd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM trackdescriptions
+                WHERE trkd_trk_trackid = ? AND trkd_thrutime = ?
+                FOR UPDATE
+                """);
         getTrackDescriptionsByTrackQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -648,9 +672,11 @@ public class TrackControl
     
     public Integer getMinimumUserVisitTrackSequence(UserVisit userVisit) {
         return session.queryForInteger(
-                "SELECT MIN(uvistrk_uservisittracksequence) " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?",
+                """
+                SELECT MIN(uvistrk_uservisittracksequence)
+                FROM uservisittracks
+                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?
+                """,
                 userVisit, Session.MAX_TIME);
     }
 
@@ -660,14 +686,18 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_uservisittracksequence = ? AND uvistrk_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM uservisittracks
+                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_uservisittracksequence = ? AND uvistrk_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_uservisittracksequence = ? AND uvistrk_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisittracks
+                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_uservisittracksequence = ? AND uvistrk_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitTrackQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -690,15 +720,19 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ? " +
-                "ORDER BY uvistrk_uservisittracksequence");
+                """
+                SELECT _ALL_
+                FROM uservisittracks
+                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?
+                ORDER BY uvistrk_uservisittracksequence
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisittracks
+                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitTracksByUserVisitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -721,10 +755,12 @@ public class TrackControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_trk_trackid = ? AND uvistrk_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisittracks
+                WHERE uvistrk_trk_trackid = ? AND uvistrk_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitTracksByTrackQueries = Collections.unmodifiableMap(queryMap);
     }
 

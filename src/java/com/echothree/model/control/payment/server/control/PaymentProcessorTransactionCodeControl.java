@@ -74,14 +74,18 @@ public class PaymentProcessorTransactionCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions " +
-                    "WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions
+            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions " +
-                    "WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions
+            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
+            FOR UPDATE
+            """);
 
     public PaymentProcessorTransactionCode getPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final EntityPermission entityPermission) {
@@ -110,18 +114,22 @@ public class PaymentProcessorTransactionCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodesByPaymentProcessorTransactionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactioncodes, paymentprocessortypecodes, paymentprocessortypecodedetails, paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ? " +
-                    "AND pprctrxc_pproctypc_paymentprocessortypecodeid = pproctypc_paymentprocessortypecodeid AND pproctypc_lastdetailid = pproctypcdt_paymentprocessortypecodedetailid " +
-                    "AND pproctypcdt_pproctypctyp_paymentprocessortypecodetypeid = pproctypctyp_paymentprocessortypecodetypeid AND pproctypctyp_lastdetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
-                    "ORDER BY pproctypcdt_sortorder, pproctypcdt_paymentprocessortypecodename, pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactioncodes, paymentprocessortypecodes, paymentprocessortypecodedetails, paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ?
+            AND pprctrxc_pproctypc_paymentprocessortypecodeid = pproctypc_paymentprocessortypecodeid AND pproctypc_lastdetailid = pproctypcdt_paymentprocessortypecodedetailid
+            AND pproctypcdt_pproctypctyp_paymentprocessortypecodetypeid = pproctypctyp_paymentprocessortypecodetypeid AND pproctypctyp_lastdetailid = pproctypctypdt_paymentprocessortypecodetypedetailid
+            ORDER BY pproctypcdt_sortorder, pproctypcdt_paymentprocessortypecodename, pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactioncodes " +
-                    "WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactioncodes
+            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ?
+            FOR UPDATE
+            """);
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction,
             final EntityPermission entityPermission) {
@@ -140,17 +148,21 @@ public class PaymentProcessorTransactionCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodesByPaymentProcessorTypeCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactioncodes, paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ? " +
-                    "AND pprctrxc_pprctrx_paymentprocessortransactionid = pprctrx_paymentprocessortransactionid AND pprctrx_lastdetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactioncodes, paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
+            AND pprctrxc_pprctrx_paymentprocessortransactionid = pprctrx_paymentprocessortransactionid AND pprctrx_lastdetailid = pprctrxdt_paymentprocessortransactiondetailid
+            ORDER BY pprctrxdt_paymentprocessortransactionname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactioncodes " +
-                    "WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactioncodes
+            WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
+            FOR UPDATE
+            """);
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode,
             final EntityPermission entityPermission) {

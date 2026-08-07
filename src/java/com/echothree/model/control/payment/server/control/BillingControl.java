@@ -69,10 +69,12 @@ public class BillingControl
     
     public List<BillingAccountRoleType> getBillingAccountRoleTypes() {
         var ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM billingaccountroletypes " +
-                "ORDER BY bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM billingaccountroletypes
+                ORDER BY bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename
+                _LIMIT_
+                """);
         
         return BillingAccountRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -82,9 +84,11 @@ public class BillingControl
         
         try {
             var ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM billingaccountroletypes " +
-                    "WHERE bllactrtyp_billingaccountroletypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM billingaccountroletypes
+                    WHERE bllactrtyp_billingaccountroletypename = ?
+                    """);
             
             ps.setString(1, billingAccountRoleTypeName);
             
@@ -129,9 +133,11 @@ public class BillingControl
         
         try {
             var ps = BillingAccountRoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM billingaccountroletypedescriptions " +
-                    "WHERE bllactrtypd_bllactrtyp_billingaccountroletypeid = ? AND bllactrtypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM billingaccountroletypedescriptions
+                    WHERE bllactrtypd_bllactrtyp_billingaccountroletypeid = ? AND bllactrtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, billingAccountRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -199,24 +205,28 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactdt_cur_currencyid = ? " +
-                        "AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
-                        "AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND barb.bllactr_par_partyid = ? AND bartb.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
+                        AND bllactdt_cur_currencyid = ?
+                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
+                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
+                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND barb.bllactr_par_partyid = ? AND bartb.bllactrtyp_billingaccountroletypename = ?
+                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactdt_cur_currencyid = ? " +
-                        "AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
-                        "AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND barb.bllactr_par_partyid = ? AND bartb.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
+                        AND bllactdt_cur_currencyid = ?
+                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
+                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
+                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND barb.bllactr_par_partyid = ? AND bartb.bllactrtyp_billingaccountroletypename = ?
+                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountFactory.getInstance().prepareStatement(query);
@@ -252,23 +262,27 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb, currencies, parties, partydetails " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
-                        "AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND bartb.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ? " +
-                        "AND bllactdt_cur_currencyid = cur_currencyid AND barb.bllactr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb, currencies, parties, partydetails
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
+                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
+                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
+                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND bartb.bllactrtyp_billingaccountroletypename = ?
+                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
+                        AND bllactdt_cur_currencyid = cur_currencyid AND barb.bllactr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
+                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
+                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountFactory.getInstance().prepareStatement(query);
@@ -304,23 +318,27 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb, currencies, parties, partydetails " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
-                        "AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND bartb.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ? " +
-                        "AND bllactdt_cur_currencyid = cur_currencyid AND barb.bllactr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb, currencies, parties, partydetails
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
+                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
+                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
+                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND bartb.bllactrtyp_billingaccountroletypename = ?
+                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
+                        AND bllactdt_cur_currencyid = cur_currencyid AND barb.bllactr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ? " +
-                        "AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
+                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
+                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountFactory.getInstance().prepareStatement(query);
@@ -356,14 +374,18 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccounts, billingaccountdetails " +
-                        "WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccounts, billingaccountdetails
+                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountFactory.getInstance().prepareStatement(query);
@@ -424,14 +446,18 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountstatuses " +
-                        "WHERE bllactst_bllact_billingaccountid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountstatuses
+                        WHERE bllactst_bllact_billingaccountid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountstatuses " +
-                        "WHERE bllactst_bllact_billingaccountid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountstatuses
+                        WHERE bllactst_bllact_billingaccountid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountStatusFactory.getInstance().prepareStatement(query);
@@ -482,14 +508,18 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountroles " +
-                        "WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountroles
+                        WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountroles " +
-                        "WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountroles
+                        WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
@@ -535,18 +565,22 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountroles, billingaccountroletypes, parties, partydetails " +
-                        "WHERE bllactr_bllact_billingaccountid = ? AND bllactr_thrutime = ? " +
-                        "AND bllactr_bllactrtyp_billingaccountroletypeid = bllactrtyp_billingaccountroletypeid " +
-                        "AND bllactr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY bllactrtyp_sortorder, pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountroles, billingaccountroletypes, parties, partydetails
+                        WHERE bllactr_bllact_billingaccountid = ? AND bllactr_thrutime = ?
+                        AND bllactr_bllactrtyp_billingaccountroletypeid = bllactrtyp_billingaccountroletypeid
+                        AND bllactr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        ORDER BY bllactrtyp_sortorder, pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountroles " +
-                        "WHERE bllactr_bllact_billingAccountid = ? AND bllactr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountroles
+                        WHERE bllactr_bllact_billingAccountid = ? AND bllactr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);
@@ -577,18 +611,22 @@ public class BillingControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountroles, billingaccounts, billingaccountdetails, billingaccountroletypes " +
-                        "WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ? " +
-                        "AND bllactr_bllact_billingaccountid = bllact_billingaccountid AND bllact_lastdetailid = bllactdt_billingaccountdetailid " +
-                        "AND bllactr_bllactrtyp_billingaccountroletypeid = bllactrtyp_billingaccountroletypeid " +
-                        "ORDER BY bllactdt_billingaccountname, bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountroles, billingaccounts, billingaccountdetails, billingaccountroletypes
+                        WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ?
+                        AND bllactr_bllact_billingaccountid = bllact_billingaccountid AND bllact_lastdetailid = bllactdt_billingaccountdetailid
+                        AND bllactr_bllactrtyp_billingaccountroletypeid = bllactrtyp_billingaccountroletypeid
+                        ORDER BY bllactdt_billingaccountname, bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM billingaccountroles " +
-                        "WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM billingaccountroles
+                        WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BillingAccountRoleFactory.getInstance().prepareStatement(query);

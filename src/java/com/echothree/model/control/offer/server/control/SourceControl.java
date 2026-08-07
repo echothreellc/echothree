@@ -91,9 +91,11 @@ public class SourceControl
 
     public long countSourcesByOfferUse(OfferUse offerUse) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM sources, sourcedetails " +
-                        "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?",
+                """
+                SELECT COUNT(*)
+                FROM sources, sourcedetails
+                WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?
+                """,
                 offerUse);
     }
 
@@ -109,14 +111,18 @@ public class SourceControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sources, sourcedetails " +
-                    "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM sources, sourcedetails
+                    WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sources, sourcedetails " +
-                    "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM sources, sourcedetails
+                    WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = SourceFactory.getInstance().prepareStatement(query);
@@ -140,16 +146,20 @@ public class SourceControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sources, sourcedetails " +
-                    "WHERE src_activedetailid = srcdt_sourcedetailid " +
-                    "ORDER BY srcdt_sortorder, srcdt_sourcename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM sources, sourcedetails
+                    WHERE src_activedetailid = srcdt_sourcedetailid
+                    ORDER BY srcdt_sortorder, srcdt_sourcename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM sources, sourcedetails " +
-                    "WHERE src_activedetailid = srcdt_sourcedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM sources, sourcedetails
+                    WHERE src_activedetailid = srcdt_sourcedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = SourceFactory.getInstance().prepareStatement(query);
@@ -172,14 +182,18 @@ public class SourceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sources, sourcedetails " +
-                        "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_sourcename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM sources, sourcedetails
+                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_sourcename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sources, sourcedetails " +
-                        "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_sourcename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sources, sourcedetails
+                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_sourcename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SourceFactory.getInstance().prepareStatement(query);
@@ -217,15 +231,19 @@ public class SourceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sources, sourcedetails " +
-                        "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ? " +
-                        "ORDER BY srcdt_sortorder, srcdt_sourcename";
+                query = """
+                        SELECT _ALL_
+                        FROM sources, sourcedetails
+                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?
+                        ORDER BY srcdt_sortorder, srcdt_sourcename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM sources, sourcedetails " +
-                        "WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM sources, sourcedetails
+                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SourceFactory.getInstance().prepareStatement(query);

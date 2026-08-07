@@ -211,14 +211,18 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                        "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposes, communicationeventpurposedetails
+                        WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                        "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposes, communicationeventpurposedetails
+                        WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
@@ -253,14 +257,18 @@ public class CommunicationControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
@@ -284,16 +292,20 @@ public class CommunicationControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid " +
-                    "ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid
+                    ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationeventpurposes, communicationeventpurposedetails " +
-                    "WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationeventpurposes, communicationeventpurposedetails
+                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = CommunicationEventPurposeFactory.getInstance().prepareStatement(query);
@@ -457,14 +469,18 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
@@ -504,16 +520,20 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions, languages " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? AND cmmnevprd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions, languages
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? AND cmmnevprd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventpurposedescriptions " +
-                        "WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventpurposedescriptions
+                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventPurposeDescriptionFactory.getInstance().prepareStatement(query);
@@ -637,9 +657,11 @@ public class CommunicationControl
         
         try {
             var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventroletypes " +
-                    "WHERE cmmnevrtyp_communicationeventroletypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventroletypes
+                    WHERE cmmnevrtyp_communicationeventroletypename = ?
+                    """);
             
             ps.setString(1, communicationEventRoleTypeName);
             
@@ -654,10 +676,12 @@ public class CommunicationControl
     
     public List<CommunicationEventRoleType> getCommunicationEventRoleTypes() {
         var ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM communicationeventroletypes " +
-                "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM communicationeventroletypes
+                ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename
+                _LIMIT_
+                """);
         
         return CommunicationEventRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -682,9 +706,11 @@ public class CommunicationControl
         
         try {
             var ps = CommunicationEventRoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventroletypedescriptions " +
-                    "WHERE cmmnevrtypd_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevrtypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventroletypedescriptions
+                    WHERE cmmnevrtypd_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevrtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, communicationEventRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -751,9 +777,11 @@ public class CommunicationControl
         
         try {
             var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventtypes " +
-                    "WHERE cmmnevtyp_communicationeventtypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventtypes
+                    WHERE cmmnevtyp_communicationeventtypename = ?
+                    """);
             
             ps.setString(1, communicationEventTypeName);
             
@@ -768,10 +796,12 @@ public class CommunicationControl
     
     public List<CommunicationEventType> getCommunicationEventTypes() {
         var ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM communicationeventtypes " +
-                "ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM communicationeventtypes
+                ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename
+                _LIMIT_
+                """);
         
         return CommunicationEventTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -796,9 +826,11 @@ public class CommunicationControl
         
         try {
             var ps = CommunicationEventTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationeventtypedescriptions " +
-                    "WHERE cmmnevtypd_cmmnevtyp_communicationeventtypeid = ? AND cmmnevtypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM communicationeventtypedescriptions
+                    WHERE cmmnevtypd_cmmnevtyp_communicationeventtypeid = ? AND cmmnevtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, communicationEventType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -882,19 +914,23 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationevents, communicationeventdetails " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnev_activedetailid = cmmnevdt_communicationeventdetailid " +
-                        "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
-                        "ORDER BY cmmnevdt_communicationeventname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationevents, communicationeventdetails
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnev_activedetailid = cmmnevdt_communicationeventdetailid
+                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
+                        ORDER BY cmmnevdt_communicationeventname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationevents " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationevents
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventFactory.getInstance().prepareStatement(query);
@@ -920,9 +956,11 @@ public class CommunicationControl
     
     public long countCommunicationEventsByParty(Party party) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM communicationeventroles " +
-                "WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM communicationeventroles
+                WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
+                """,
                 party, Session.MAX_TIME);
     }
 
@@ -933,14 +971,18 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationevents, communicationeventdetails " +
-                        "WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationevents, communicationeventdetails
+                        WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationevents, communicationeventdetails " +
-                        "WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationevents, communicationeventdetails
+                        WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventFactory.getInstance().prepareStatement(query);
@@ -1016,16 +1058,20 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
@@ -1061,19 +1107,23 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationeventroletypes, parties, partydetails " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnevr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = cmmnevrtyp_communicationeventroletypeid " +
-                        "ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationeventroletypes, parties, partydetails
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnevr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = cmmnevrtyp_communicationeventroletypeid
+                        ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
@@ -1105,20 +1155,24 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles, communicationevents, communicationeventdetails " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid " +
-                        "AND cmmnev_lastdetailid = cmmnevdt_communicationeventdetailid " +
-                        "ORDER BY cmmnevdt_communicationeventname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles, communicationevents, communicationeventdetails
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
+                        AND cmmnev_lastdetailid = cmmnevdt_communicationeventdetailid
+                        ORDER BY cmmnevdt_communicationeventname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationeventroles " +
-                        "WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ? " +
-                        "AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationeventroles
+                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ?
+                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEventRoleFactory.getInstance().prepareStatement(query);
@@ -1195,9 +1249,11 @@ public class CommunicationControl
         
         try {
             var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationsourcetypes " +
-                    "WHERE cmmnsrctyp_communicationsourcetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM communicationsourcetypes
+                    WHERE cmmnsrctyp_communicationsourcetypename = ?
+                    """);
             
             ps.setString(1, communicationSourceTypeName);
             
@@ -1212,10 +1268,12 @@ public class CommunicationControl
     
     public List<CommunicationSourceType> getCommunicationSourceTypes() {
         var ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM communicationsourcetypes " +
-                "ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM communicationsourcetypes
+                ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename
+                _LIMIT_
+                """);
         
         return CommunicationSourceTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1240,9 +1298,11 @@ public class CommunicationControl
         
         try {
             var ps = CommunicationSourceTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM communicationsourcetypedescriptions " +
-                    "WHERE cmmnsrctypd_cmmnsrctyp_communicationsourcetypeid = ? AND cmmnsrctypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM communicationsourcetypedescriptions
+                    WHERE cmmnsrctypd_cmmnsrctyp_communicationsourcetypeid = ? AND cmmnsrctypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1334,14 +1394,18 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
@@ -1376,16 +1440,20 @@ public class CommunicationControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationsources, communicationsourcedetails " +
-                    "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid " +
-                    "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationsources, communicationsourcedetails
+                    WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid
+                    ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM communicationsources, communicationsourcedetails " +
-                    "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM communicationsources, communicationsourcedetails
+                    WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
@@ -1409,16 +1477,20 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ? " +
-                        "ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
+                        ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsources, communicationsourcedetails " +
-                        "WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsources, communicationsourcedetails
+                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationSourceFactory.getInstance().prepareStatement(query);
@@ -1522,14 +1594,18 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1569,16 +1645,20 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions, languages " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? AND cmmnsrcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions, languages
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? AND cmmnsrcd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationsourcedescriptions " +
-                        "WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationsourcedescriptions
+                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationSourceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1690,14 +1770,18 @@ public class CommunicationControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationemailsources " +
-                        "WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationemailsources
+                        WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM communicationemailsources " +
-                        "WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM communicationemailsources
+                        WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommunicationEmailSourceFactory.getInstance().prepareStatement(query);

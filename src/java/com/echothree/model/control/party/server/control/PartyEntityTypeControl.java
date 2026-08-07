@@ -77,14 +77,18 @@ public class PartyEntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes " +
-                        "WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes " +
-                        "WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
@@ -124,17 +128,21 @@ public class PartyEntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails " +
-                        "WHERE pent_par_partyid = ? AND pent_thrutime = ? " +
-                        "AND pent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
+                        AND pent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                        ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes " +
-                        "WHERE pent_par_partyid = ? AND pent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);

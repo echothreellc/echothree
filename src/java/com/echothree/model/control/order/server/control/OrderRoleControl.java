@@ -64,9 +64,11 @@ public class OrderRoleControl
         
         try {
             var ps = OrderRoleTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM orderroletypes " +
-                    "WHERE ordrtyp_orderroletypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM orderroletypes
+                    WHERE ordrtyp_orderroletypename = ?
+                    """);
             
             ps.setString(1, orderRoleTypeName);
             
@@ -96,9 +98,11 @@ public class OrderRoleControl
         
         try {
             var ps = OrderRoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM orderroletypedescriptions " +
-                    "WHERE ordrtyps_ordrtyp_orderroletypeid = ? AND ordrtyps_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM orderroletypedescriptions
+                    WHERE ordrtyps_ordrtyp_orderroletypeid = ? AND ordrtyps_lang_languageid = ?
+                    """);
             
             ps.setLong(1, orderRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -147,9 +151,11 @@ public class OrderRoleControl
 
     public long countOrderRolesByOrderAndOrderRoleType(Order order, OrderRoleType orderRoleType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderroles " +
-                        "WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderroles
+                WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?
+                """,
                 order, orderRoleType, Session.MAX_TIME);
     }
 
@@ -159,17 +165,21 @@ public class OrderRoleControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM orderroles, orderroletypes, parties, partydetails " +
-                        "WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ? " +
-                        "AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid " +
-                        "AND ordr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY ordrtyp_sortorder, pardt_partyname");
+                """
+                SELECT _ALL_
+                FROM orderroles, orderroletypes, parties, partydetails
+                WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?
+                AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid
+                AND ordr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                ORDER BY ordrtyp_sortorder, pardt_partyname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM orderroles " +
-                        "WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderroles
+                WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderRolesByOrderAndOrderRoleTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -228,17 +238,21 @@ public class OrderRoleControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM orderroles, orderroletypes, parties, partydetails " +
-                        "WHERE ordr_ord_orderid = ? AND ordr_thrutime = ? " +
-                        "AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid " +
-                        "AND ordr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY ordrtyp_sortorder, pardt_partyname");
+                """
+                SELECT _ALL_
+                FROM orderroles, orderroletypes, parties, partydetails
+                WHERE ordr_ord_orderid = ? AND ordr_thrutime = ?
+                AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid
+                AND ordr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                ORDER BY ordrtyp_sortorder, pardt_partyname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM orderroles " +
-                        "WHERE ordr_ord_orderid = ? AND ordr_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderroles
+                WHERE ordr_ord_orderid = ? AND ordr_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderRolesByOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 

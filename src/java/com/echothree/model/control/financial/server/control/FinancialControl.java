@@ -168,13 +168,17 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroletypes " +
-                "ORDER BY finatyp_sortorder, finatyp_financialaccountroletypename");
+                """
+                SELECT _ALL_
+                FROM financialaccountroletypes
+                ORDER BY finatyp_sortorder, finatyp_financialaccountroletypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroletypes " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountroletypes
+                FOR UPDATE
+                """);
         getFinancialAccountRoleTypesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -196,14 +200,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroletypes " +
-                "WHERE finatyp_financialaccountroletypename = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountroletypes
+                WHERE finatyp_financialaccountroletypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroletypes " +
-                "WHERE finatyp_financialaccountroletypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountroletypes
+                WHERE finatyp_financialaccountroletypename = ?
+                FOR UPDATE
+                """);
         getFinancialAccountRoleTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -253,14 +261,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroletypedescriptions " +
-                "WHERE finatypd_finatyp_financialaccountroletypeid = ? AND finatypd_lang_languageid = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountroletypedescriptions
+                WHERE finatypd_finatyp_financialaccountroletypeid = ? AND finatypd_lang_languageid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroletypedescriptions " +
-                "WHERE finatypd_finatyp_financialaccountroletypeid = ? AND finatypd_lang_languageid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountroletypedescriptions
+                WHERE finatypd_finatyp_financialaccountroletypeid = ? AND finatypd_lang_languageid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountRoleTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -336,16 +348,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid " +
-                "AND fnatypdt_financialaccounttypename = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
+                AND fnatypdt_financialaccounttypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid " +
-                "AND fnatypdt_financialaccounttypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
+                AND fnatypdt_financialaccounttypename = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -375,16 +391,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid " +
-                "AND fnatypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
+                AND fnatypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid " +
-                "AND fnatypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
+                AND fnatypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFinancialAccountTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -410,16 +430,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid " +
-                "ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
+                ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
+                FOR UPDATE
+                """);
         getFinancialAccountTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -441,16 +465,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid AND fnatypdt_parentfinancialaccounttypeid = ? " +
-                "ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid AND fnatypdt_parentfinancialaccounttypeid = ?
+                ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid AND fnatypdt_parentfinancialaccounttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypes, financialaccounttypedetails
+                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid AND fnatypdt_parentfinancialaccounttypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTypesByParentFinancialAccountTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -662,14 +690,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypedescriptions " +
-                "WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_lang_languageid = ? AND fnatypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypedescriptions
+                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_lang_languageid = ? AND fnatypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypedescriptions " +
-                "WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_lang_languageid = ? AND fnatypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypedescriptions
+                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_lang_languageid = ? AND fnatypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -700,15 +732,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypedescriptions, languages " +
-                "WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_thrutime = ? AND fnatypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypedescriptions, languages
+                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_thrutime = ? AND fnatypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttypedescriptions " +
-                "WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttypedescriptions
+                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTypeDescriptionsByFinancialAccountTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -833,16 +869,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid " +
-                "AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_financialaccounttransactiontypename = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
+                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_financialaccounttransactiontypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid " +
-                "AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_financialaccounttransactiontypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
+                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_financialaccounttransactiontypename = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -878,16 +918,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid " +
-                "AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
+                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid " +
-                "AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
+                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -915,17 +959,21 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHEREfnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid " +
-                "AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? " +
-                "ORDER BY fnatrxtypdt_sortorder, fnatrxtypdt_financialaccounttransactiontypename");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHEREfnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
+                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ?
+                ORDER BY fnatrxtypdt_sortorder, fnatrxtypdt_financialaccounttransactiontypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid " +
-                "AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
+                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionTypesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -949,16 +997,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid AND fnatrxtypdt_parentfinancialaccounttransactiontypeid = ? " +
-                "ORDER BY fnatrxtypdt_sortorder, fnatrxtypdt_financialaccounttransactiontypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid AND fnatrxtypdt_parentfinancialaccounttransactiontypeid = ?
+                ORDER BY fnatrxtypdt_sortorder, fnatrxtypdt_financialaccounttransactiontypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails " +
-                "WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid AND fnatrxtypdt_parentfinancialaccounttransactiontypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
+                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid AND fnatrxtypdt_parentfinancialaccounttransactiontypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionTypesByParentFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1172,14 +1224,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypedescriptions " +
-                "WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_lang_languageid = ? AND fnatrxtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypedescriptions
+                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_lang_languageid = ? AND fnatrxtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypedescriptions " +
-                "WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_lang_languageid = ? AND fnatrxtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypedescriptions
+                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_lang_languageid = ? AND fnatrxtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1214,15 +1270,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypedescriptions, languages " +
-                "WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_thrutime = ? AND fnatrxtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypedescriptions, languages
+                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_thrutime = ? AND fnatrxtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactiontypedescriptions " +
-                "WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactiontypedescriptions
+                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1348,16 +1408,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ? " +
-                "AND finaatdt_financialaccountaliastypename = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
+                AND finaatdt_financialaccountaliastypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ? " +
-                "AND finaatdt_financialaccountaliastypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
+                AND finaatdt_financialaccountaliastypename = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1390,16 +1454,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ? " +
-                "AND finaatdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
+                AND finaatdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ? " +
-                "AND finaatdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
+                AND finaatdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFinancialAccountAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1425,15 +1493,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ? " +
-                "ORDER BY finaatdt_sortorder, finaatdt_financialaccountaliastypename");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
+                ORDER BY finaatdt_sortorder, finaatdt_financialaccountaliastypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1608,14 +1680,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypedescriptions " +
-                "WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_lang_languageid = ? AND finaatd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypedescriptions
+                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_lang_languageid = ? AND finaatd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypedescriptions " +
-                "WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_lang_languageid = ? AND finaatd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypedescriptions
+                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_lang_languageid = ? AND finaatd_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1649,15 +1725,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypedescriptions, languages " +
-                "WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_thrutime = ? AND finaatd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypedescriptions, languages
+                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_thrutime = ? AND finaatd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliastypedescriptions " +
-                "WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliastypedescriptions
+                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1771,14 +1851,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroles " +
-                "WHERE fnar_fina_financialaccountid = ? AND fnar_finatyp_financialaccountroletypeid = ? AND fnar_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountroles
+                WHERE fnar_fina_financialaccountid = ? AND fnar_finatyp_financialaccountroletypeid = ? AND fnar_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroles " +
-                "WHERE fnar_fina_financialaccountid = ? AND fnar_finatyp_financialaccountroletypeid = ? AND fnar_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountroles
+                WHERE fnar_fina_financialaccountid = ? AND fnar_finatyp_financialaccountroletypeid = ? AND fnar_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountRoleQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1817,17 +1901,21 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroles, financialaccountroletypes, parties, partydetails " +
-                "WHERE fnar_fina_financialaccountid = ? AND fnar_thrutime = ? " +
-                "AND fnar_finatyp_financialaccountroletypeid = finatyp_financialaccountroletypeid " +
-                "AND fnar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                "ORDER BY finatyp_sortorder, finatyp_financialaccountroletypename, pardt_partyname");
+                """
+                SELECT _ALL_
+                FROM financialaccountroles, financialaccountroletypes, parties, partydetails
+                WHERE fnar_fina_financialaccountid = ? AND fnar_thrutime = ?
+                AND fnar_finatyp_financialaccountroletypeid = finatyp_financialaccountroletypeid
+                AND fnar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                ORDER BY finatyp_sortorder, finatyp_financialaccountroletypename, pardt_partyname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountroles " +
-                "WHERE fnar_fina_financialaccountid = ? AND fnar_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountroles
+                WHERE fnar_fina_financialaccountid = ? AND fnar_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountRolesByFinancialAccountQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1918,16 +2006,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounts, financialaccountdetails " +
-                "WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ? " +
-                "AND btchdt_financialAccountname = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccounts, financialaccountdetails
+                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
+                AND btchdt_financialAccountname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounts, financialaccountdetails " +
-                "WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ? " +
-                "AND btchdt_financialAccountname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounts, financialaccountdetails
+                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
+                AND btchdt_financialAccountname = ?
+                FOR UPDATE
+                """);
         getFinancialAccountByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1960,15 +2052,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounts, financialaccountdetails " +
-                "WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ? " +
-                "ORDER BY finadt_financialaccountname");
+                """
+                SELECT _ALL_
+                FROM financialaccounts, financialaccountdetails
+                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
+                ORDER BY finadt_financialaccountname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounts, financialaccountdetails " +
-                "WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounts, financialaccountdetails
+                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountsQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1991,16 +2087,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounts, financialaccountdetails, financialaccounttypes, financialaccounttypedetails " +
-                "WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_gla_glaccountid = ? " +
-                "finadt_fnatyp_financialaccounttypeid = fnatyp_financialaccounttypeid AND fnatyp_lastdetailid = fnatypdt_financialaccounttypedetailid " +
-                "ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename, finadt_financialaccountname");
+                """
+                SELECT _ALL_
+                FROM financialaccounts, financialaccountdetails, financialaccounttypes, financialaccounttypedetails
+                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_gla_glaccountid = ?
+                finadt_fnatyp_financialaccounttypeid = fnatyp_financialaccounttypeid AND fnatyp_lastdetailid = fnatypdt_financialaccounttypedetailid
+                ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename, finadt_financialaccountname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounts, financialaccountdetails " +
-                "WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_gla_glaccountid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounts, financialaccountdetails
+                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_gla_glaccountid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountsByGlAccountQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2102,14 +2202,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountstatuses " +
-                "WHERE finast_fina_financialaccountid = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountstatuses
+                WHERE finast_fina_financialaccountid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountstatuses " +
-                "WHERE finast_fina_financialaccountid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountstatuses
+                WHERE finast_fina_financialaccountid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountStatusQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2154,14 +2258,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliases " +
-                "WHERE finaal_finaa_financialAccountid = ? AND finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliases
+                WHERE finaal_finaa_financialAccountid = ? AND finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliases " +
-                "WHERE finaal_finaa_financialAccountid = ? AND finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliases
+                WHERE finaal_finaa_financialAccountid = ? AND finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2194,16 +2302,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliases, financialaccountaliastypes, financialaccountaliastypedetails " +
-                "WHERE finaal_finaa_financialAccountid = ? AND finaal_thrutime = ? " +
-                "AND finaal_finaat_financialaccountaliastypeid = finaat_financialaccountaliastypeid AND finaat_lastdetailid = finaatdt_financialaccountaliastypedetailid" +
-                "ORDER BY finaatdt_sortorder, finaatdt_financialaccountaliastypename");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliases, financialaccountaliastypes, financialaccountaliastypedetails
+                WHERE finaal_finaa_financialAccountid = ? AND finaal_thrutime = ?
+                AND finaal_finaat_financialaccountaliastypeid = finaat_financialaccountaliastypeid AND finaat_lastdetailid = finaatdt_financialaccountaliastypedetailid
+                ORDER BY finaatdt_sortorder, finaatdt_financialaccountaliastypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliases " +
-                "WHERE finaal_finaa_financialAccountid = ? AND finaal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliases
+                WHERE finaal_finaa_financialAccountid = ? AND finaal_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasesByFinancialAccountQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2226,16 +2338,20 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliases, financialaccounts, financialaccountdetails " +
-                "WHERE finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ? " +
-                "AND finaal_finaa_financialAccountid = finaa_financialAccountid AND finaa_lastdetailid = finaadt_financialAccountdetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliases, financialaccounts, financialaccountdetails
+                WHERE finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
+                AND finaal_finaa_financialAccountid = finaa_financialAccountid AND finaa_lastdetailid = finaadt_financialAccountdetailid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccountaliases " +
-                "WHERE finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccountaliases
+                WHERE finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
+                FOR UPDATE
+                """);
         getFinancialAccountAliasesByFinancialAccountAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2338,14 +2454,18 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactions, financialaccounttransactiondetails " +
-                "WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_financialaccounttransactionname = ?");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactions, financialaccounttransactiondetails
+                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_financialaccounttransactionname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactions, financialaccounttransactiondetails " +
-                "WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_financialaccounttransactionname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactions, financialaccounttransactiondetails
+                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_financialaccounttransactionname = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2376,15 +2496,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactions, financialaccounttransactiondetails " +
-                "WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ? " +
-                "ORDER BY finatrxdt_financialaccounttransactionname");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactions, financialaccounttransactiondetails
+                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
+                ORDER BY finatrxdt_financialaccounttransactionname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactions, financialaccounttransactiondetails " +
-                "WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactions, financialaccounttransactiondetails
+                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionsByFinancialAccountQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2407,15 +2531,19 @@ public class FinancialControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactions, financialaccounttransactiondetails " +
-                "WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ? " +
-                "ORDER BY finatrxdt_financialaccounttransactionname");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactions, financialaccounttransactiondetails
+                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
+                ORDER BY finatrxdt_financialaccounttransactionname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM financialaccounttransactions, financialaccounttransactiondetails " +
-                "WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM financialaccounttransactions, financialaccounttransactiondetails
+                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
+                FOR UPDATE
+                """);
         getFinancialAccountTransactionsByFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
     

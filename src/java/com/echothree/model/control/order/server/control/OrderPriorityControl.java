@@ -109,10 +109,12 @@ public class OrderPriorityControl
 
     public long countOrderPriorities(OrderType orderType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ?
+                """,
                 orderType);
     }
 
@@ -122,16 +124,20 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?
+                FOR UPDATE
+                """);
         getOrderPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -162,16 +168,20 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -198,17 +208,21 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? " +
-                "ORDER BY ordprdt_sortorder, ordprdt_orderpriorityname");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ?
+                ORDER BY ordprdt_sortorder, ordprdt_orderpriorityname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ?
+                FOR UPDATE
+                """);
         getOrderPrioritiesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -374,14 +388,18 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderPriorityDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -412,15 +430,19 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions, languages " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? AND ordprd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions, languages
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? AND ordprd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderPriorityDescriptionsByOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 

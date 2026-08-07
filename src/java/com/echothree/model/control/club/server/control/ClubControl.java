@@ -137,24 +137,30 @@ public class ClubControl
 
     public long countClubs() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM clubs, clubdetails " +
-                "WHERE clb_activedetailid = clbdt_clubdetailid");
+                """
+                SELECT COUNT(*)
+                FROM clubs, clubdetails
+                WHERE clb_activedetailid = clbdt_clubdetailid
+                """);
     }
 
     public long countClubsBySubscriptionType(SubscriptionType subscriptionType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM clubs, clubdetails " +
-                "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM clubs, clubdetails
+                WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ?
+                """,
                 subscriptionType);
     }
 
     public long countClubsByFilter(Filter filter) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM clubs, clubdetails " +
-                "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubpricefilterid = ?",
+                """
+                SELECT COUNT(*)
+                FROM clubs, clubdetails
+                WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubpricefilterid = ?
+                """,
                 filter);
     }
 
@@ -162,16 +168,20 @@ public class ClubControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM clubs, clubdetails " +
-                    "WHERE clb_activedetailid = clbdt_clubdetailid " +
-                    "ORDER BY clbdt_sortorder, clbdt_clubname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM clubs, clubdetails
+                    WHERE clb_activedetailid = clbdt_clubdetailid
+                    ORDER BY clbdt_sortorder, clbdt_clubname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM clubs, clubdetails " +
-                    "WHERE clb_activedetailid = clbdt_clubdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM clubs, clubdetails
+                    WHERE clb_activedetailid = clbdt_clubdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = ClubFactory.getInstance().prepareStatement(query);
@@ -191,14 +201,18 @@ public class ClubControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM clubs, clubdetails " +
-                    "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM clubs, clubdetails
+                    WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM clubs, clubdetails " +
-                    "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM clubs, clubdetails
+                    WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = ClubFactory.getInstance().prepareStatement(query);
@@ -225,14 +239,18 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubs, clubdetails " +
-                        "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM clubs, clubdetails
+                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubs, clubdetails " +
-                        "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubs, clubdetails
+                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubFactory.getInstance().prepareStatement(query);
@@ -270,14 +288,18 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubs, clubdetails " +
-                        "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM clubs, clubdetails
+                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubs, clubdetails " +
-                        "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubs, clubdetails
+                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubFactory.getInstance().prepareStatement(query);
@@ -424,14 +446,18 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubdescriptions " +
-                        "WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM clubdescriptions
+                        WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubdescriptions " +
-                        "WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubdescriptions
+                        WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubDescriptionFactory.getInstance().prepareStatement(query);
@@ -472,15 +498,19 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubdescriptions, languages " +
-                        "WHERE clbd_clb_clubid = ? AND clbd_thrutime = ? AND clbd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM clubdescriptions, languages
+                        WHERE clbd_clb_clubid = ? AND clbd_thrutime = ? AND clbd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubdescriptions " +
-                        "WHERE clbd_clb_clubid = ? AND clbd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubdescriptions
+                        WHERE clbd_clb_clubid = ? AND clbd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubDescriptionFactory.getInstance().prepareStatement(query);
@@ -582,9 +612,11 @@ public class ClubControl
     
     public List<ClubItemType> getClubItemTypes() {
         var ps = ClubItemTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM clubitemtypes " +
-                "ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename");
+                """
+                SELECT _ALL_
+                FROM clubitemtypes
+                ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename
+                """);
         
         return ClubItemTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -594,9 +626,11 @@ public class ClubControl
 
         try {
             var ps = ClubItemTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM clubitemtypes " +
-                    "WHERE clbitmtyp_clubitemtypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM clubitemtypes
+                    WHERE clbitmtyp_clubitemtypename = ?
+                    """);
             
             ps.setString(1, clubItemTypeName);
             
@@ -664,9 +698,11 @@ public class ClubControl
         
         try {
             var ps = ClubItemTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM clubitemtypedescriptions " +
-                    "WHERE clbitmtypd_clbitmtyp_clubitemtypeid = ? AND clbitmtypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM clubitemtypedescriptions
+                    WHERE clbitmtypd_clbitmtyp_clubitemtypeid = ? AND clbitmtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, clubItemType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -740,16 +776,20 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubitems " +
-                        "WHERE clbitm_clb_clubid = ? AND clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_itm_itemid = ? " +
-                        "AND clbitm_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM clubitems
+                        WHERE clbitm_clb_clubid = ? AND clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_itm_itemid = ?
+                        AND clbitm_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubitems " +
-                        "WHERE clbitm_clb_clubid = ? AND clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_itm_itemid = ? " +
-                        "AND clbitm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubitems
+                        WHERE clbitm_clb_clubid = ? AND clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_itm_itemid = ?
+                        AND clbitm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubItemFactory.getInstance().prepareStatement(query);
@@ -782,17 +822,21 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubitems, clubitemtypes, items, itemdetails " +
-                        "WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ? " +
-                        "AND clbitm_clbitmtyp_clubitemtypeid = clbitmtyp_clubitemtypeid " +
-                        "AND clbitm_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename, itmdt_itemname";
+                query = """
+                        SELECT _ALL_
+                        FROM clubitems, clubitemtypes, items, itemdetails
+                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
+                        AND clbitm_clbitmtyp_clubitemtypeid = clbitmtyp_clubitemtypeid
+                        AND clbitm_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                        ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename, itmdt_itemname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubitems " +
-                        "WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubitems
+                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubItemFactory.getInstance().prepareStatement(query);
@@ -823,17 +867,21 @@ public class ClubControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubitems, clubs, clubdetails, clubitemtypes " +
-                        "WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ? " +
-                        "AND clbitm_clb_clubid = clb_clubid AND clb_lastdetailid = clbdt_clubdetailid" +
-                        "AND clbitm_clbitmtyp_clubitemtypeid = clbitmtyp_clubitemtypeid " +
-                        "ORDER BY clbdt_sortorder, clbdt_clubname, clbitmtyp_sortorder, clbitmtyp_clubitemtypename";
+                query = """
+                        SELECT _ALL_
+                        FROM clubitems, clubs, clubdetails, clubitemtypes
+                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
+                        AND clbitm_clb_clubid = clb_clubid AND clb_lastdetailid = clbdt_clubdetailid
+                        AND clbitm_clbitmtyp_clubitemtypeid = clbitmtyp_clubitemtypeid
+                        ORDER BY clbdt_sortorder, clbdt_clubname, clbitmtyp_sortorder, clbitmtyp_clubitemtypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM clubitems " +
-                        "WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM clubitems
+                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ClubItemFactory.getInstance().prepareStatement(query);

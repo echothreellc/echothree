@@ -103,15 +103,20 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeCodeTypeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
-                    "AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_paymentprocessortypecodetypename = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid
+            AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_paymentprocessortypecodetypename = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
-                    "AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_paymentprocessortypecodetypename = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid
+            AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_paymentprocessortypecodetypename = ?
+            FOR UPDATE
+            """);
 
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByName(final PaymentProcessorType paymentProcessorType,
             final String paymentProcessorTypeCodeTypeName, final EntityPermission entityPermission) {
@@ -140,16 +145,20 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private static final Map<EntityPermission, String> getDefaultPaymentProcessorTypeCodeTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
-                    "AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_isdefault = 1",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid
+            AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_isdefault = 1
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
-                    "AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_isdefault = 1 " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid
+            AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_isdefault = 1
+            FOR UPDATE
+            """);
 
     public PaymentProcessorTypeCodeType getDefaultPaymentProcessorTypeCodeType(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
         return PaymentProcessorTypeCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentProcessorTypeCodeTypeQueries,
@@ -170,16 +179,20 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeCodeTypesQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? " +
-                    "ORDER BY pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_pprctyp_paymentprocessortypeid = ?
+            ORDER BY pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
+            WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_pprctyp_paymentprocessortypeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTypeCodeType> getPaymentProcessorTypeCodeTypes(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
         return PaymentProcessorTypeCodeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeCodeTypesQueries,
@@ -353,14 +366,18 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeCodeTypeDescriptionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypedescriptions " +
-                    "WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_lang_languageid = ? AND pproctypctypd_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypedescriptions
+            WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_lang_languageid = ? AND pproctypctypd_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypedescriptions " +
-                    "WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_lang_languageid = ? AND pproctypctypd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypedescriptions
+            WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_lang_languageid = ? AND pproctypctypd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private PaymentProcessorTypeCodeTypeDescription getPaymentProcessorTypeCodeTypeDescription(final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final Language language, final EntityPermission entityPermission) {
@@ -389,16 +406,20 @@ public class PaymentProcessorTypeCodeTypeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeCodeTypeDescriptionsByPaymentProcessorTypeCodeTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypedescriptions, languages " +
-                    "WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_thrutime = ? AND pproctypctypd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypedescriptions, languages
+            WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_thrutime = ? AND pproctypctypd_lang_languageid = lang_languageid
+            ORDER BY lang_sortorder, lang_languageisoname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypecodetypedescriptions " +
-                    "WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypecodetypedescriptions
+            WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTypeCodeTypeDescription> getPaymentProcessorTypeCodeTypeDescriptionsByPaymentProcessorTypeCodeType(final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final EntityPermission entityPermission) {

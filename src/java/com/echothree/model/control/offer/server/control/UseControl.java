@@ -90,16 +90,20 @@ public class UseControl
 
     public long countUses() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM uses, usedetails " +
-                "WHERE use_activedetailid = usedt_usedetailid");
+                """
+                SELECT COUNT(*)
+                FROM uses, usedetails
+                WHERE use_activedetailid = usedt_usedetailid
+                """);
     }
 
     public long countUsesByUseType(final UseType useType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM uses, usedetails " +
-                "WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM uses, usedetails
+                WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ?
+                """,
                 useType);
     }
 
@@ -123,16 +127,20 @@ public class UseControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ "
-                    + "FROM uses, usedetails "
-                    + "WHERE use_activedetailid = usedt_usedetailid "
-                    + "ORDER BY usedt_sortorder, usedt_usename "
-                    + "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM uses, usedetails
+                    WHERE use_activedetailid = usedt_usedetailid
+                    ORDER BY usedt_sortorder, usedt_usename
+                    _LIMIT_
+                    """;
         } else if (entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ "
-                    + "FROM uses, usedetails "
-                    + "WHERE use_activedetailid = usedt_usedetailid "
-                    + "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM uses, usedetails
+                    WHERE use_activedetailid = usedt_usedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = UseFactory.getInstance().prepareStatement(query);
@@ -155,14 +163,18 @@ public class UseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM uses, usedetails " +
-                        "WHERE use_activedetailid = usedt_usedetailid AND usedt_usename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM uses, usedetails
+                        WHERE use_activedetailid = usedt_usedetailid AND usedt_usename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM uses, usedetails " +
-                        "WHERE use_activedetailid = usedt_usedetailid AND usedt_usename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM uses, usedetails
+                        WHERE use_activedetailid = usedt_usedetailid AND usedt_usename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseFactory.getInstance().prepareStatement(query);
@@ -197,14 +209,18 @@ public class UseControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM uses, usedetails " +
-                    "WHERE use_activedetailid = usedt_usedetailid AND usedt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM uses, usedetails
+                    WHERE use_activedetailid = usedt_usedetailid AND usedt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM uses, usedetails " +
-                    "WHERE use_activedetailid = usedt_usedetailid AND usedt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM uses, usedetails
+                    WHERE use_activedetailid = usedt_usedetailid AND usedt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = UseFactory.getInstance().prepareStatement(query);
@@ -231,14 +247,18 @@ public class UseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM uses, usedetails " +
-                        "WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM uses, usedetails
+                        WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM uses, usedetails " +
-                        "WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM uses, usedetails
+                        WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseFactory.getInstance().prepareStatement(query);
@@ -421,14 +441,18 @@ public class UseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usedescriptions " +
-                        "WHERE used_use_useid = ? AND used_lang_languageid = ? AND used_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usedescriptions
+                        WHERE used_use_useid = ? AND used_lang_languageid = ? AND used_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usedescriptions " +
-                        "WHERE used_use_useid = ? AND used_lang_languageid = ? AND used_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usedescriptions
+                        WHERE used_use_useid = ? AND used_lang_languageid = ? AND used_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseDescriptionFactory.getInstance().prepareStatement(query);
@@ -468,15 +492,19 @@ public class UseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usedescriptions, languages " +
-                        "WHERE used_use_useid = ? AND used_thrutime = ? AND used_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM usedescriptions, languages
+                        WHERE used_use_useid = ? AND used_thrutime = ? AND used_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usedescriptions " +
-                        "WHERE used_use_useid = ? AND used_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usedescriptions
+                        WHERE used_use_useid = ? AND used_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseDescriptionFactory.getInstance().prepareStatement(query);
@@ -583,11 +611,13 @@ public class UseControl
         try {
             var useControl = Session.getModelController(UseControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 

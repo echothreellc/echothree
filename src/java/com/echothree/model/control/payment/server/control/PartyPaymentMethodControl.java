@@ -154,14 +154,18 @@ public class PartyPaymentMethodControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_partypaymentmethodname = ?");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_partypaymentmethodname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_partypaymentmethodname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_partypaymentmethodname = ?
+                FOR UPDATE
+                """);
         getPartyPaymentMethodByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -192,16 +196,20 @@ public class PartyPaymentMethodControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid " +
-                "AND parpmdt_par_partyid = ? AND parpmdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid
+                AND parpmdt_par_partyid = ? AND parpmdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid " +
-                "AND parpmdt_par_partyid = ? AND parpmdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid
+                AND parpmdt_par_partyid = ? AND parpmdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPartyPaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -228,16 +236,20 @@ public class PartyPaymentMethodControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ? " +
-                "ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ?
+                ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getPartyPaymentMethodsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -260,16 +272,20 @@ public class PartyPaymentMethodControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ? " +
-                "ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ?
+                ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partypaymentmethods, partypaymentmethoddetails " +
-                "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partypaymentmethods, partypaymentmethoddetails
+                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ?
+                FOR UPDATE
+                """);
         getPartyPaymentMethodsByPaymentMethodQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -466,33 +482,41 @@ public class PartyPaymentMethodControl
 
     public long countPartyPaymentMethodCreditCardsByPersonalTitle(PersonalTitle personalTitle) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM partypaymentmethodcreditcards "
-                + "WHERE parpmcc_pert_personaltitleid = ? AND parpmcc_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partypaymentmethodcreditcards
+                WHERE parpmcc_pert_personaltitleid = ? AND parpmcc_thrutime = ?
+                """,
                 personalTitle, Session.MAX_TIME);
     }
 
     public long countPartyPaymentMethodCreditCardsByNameSuffix(NameSuffix nameSuffix) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM partypaymentmethodcreditcards "
-                + "WHERE parpmcc_nsfx_namesuffixid = ? AND parpmcc_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partypaymentmethodcreditcards
+                WHERE parpmcc_nsfx_namesuffixid = ? AND parpmcc_thrutime = ?
+                """,
                 nameSuffix, Session.MAX_TIME);
     }
 
     public long countPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM partypaymentmethodcreditcards "
-                + "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partypaymentmethodcreditcards
+                WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?
+                """,
                 billingPartyContactMechanism, Session.MAX_TIME);
     }
 
     public long countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM partypaymentmethodcreditcards "
-                + "WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partypaymentmethodcreditcards
+                WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?
+                """,
                 issuerPartyContactMechanism, Session.MAX_TIME);
     }
 
@@ -504,14 +528,18 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcards " +
-                        "WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcards
+                        WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcards " +
-                        "WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcards
+                        WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
@@ -544,19 +572,23 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcards, partypaymentmethods, partypaymentmethoddetails, parties, partydetails, partytypes " +
-                        "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ? " +
-                        "AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid " +
-                        "AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcards, partypaymentmethods, partypaymentmethoddetails, parties, partydetails, partytypes
+                        WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?
+                        AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid
+                        AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                        ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcards " +
-                        "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcards
+                        WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
@@ -589,19 +621,23 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcards, partypaymentmethods, partypaymentmethoddetails, parties, partydetails, partytypes " +
-                        "WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ? " +
-                        "AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid " +
-                        "AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcards, partypaymentmethods, partypaymentmethoddetails, parties, partydetails, partytypes
+                        WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?
+                        AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid
+                        AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                        ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcards " +
-                        "WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcards
+                        WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodCreditCardFactory.getInstance().prepareStatement(query);
@@ -735,14 +771,18 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcardsecuritycodes " +
-                        "WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcardsecuritycodes
+                        WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcreditcardsecuritycodes " +
-                        "WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime= ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcreditcardsecuritycodes
+                        WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime= ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().prepareStatement(query);
@@ -845,16 +885,20 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcontactmechanisms " +
-                        "WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_pcmp_partycontactmechanismpurposeid = ? " +
-                        "AND parpmcmch_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcontactmechanisms
+                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_pcmp_partycontactmechanismpurposeid = ?
+                        AND parpmcmch_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcontactmechanisms " +
-                        "WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_pcmp_partycontactmechanismpurposeid = ? " +
-                        "AND parpmcmch_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcontactmechanisms
+                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_pcmp_partycontactmechanismpurposeid = ?
+                        AND parpmcmch_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
@@ -890,14 +934,18 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcontactmechanisms " +
-                        "WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ?"; // TODO: ORDER BY
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcontactmechanisms
+                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ?
+                        """; // TODO: ORDER BY
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcontactmechanisms " +
-                        "WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcontactmechanisms
+                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);
@@ -930,14 +978,18 @@ public class PartyPaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcontactmechanisms " +
-                        "WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ?"; // TODO: ORDER BY
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcontactmechanisms
+                        WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ?
+                        """; // TODO: ORDER BY
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partypaymentmethodcontactmechanisms " +
-                        "WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partypaymentmethodcontactmechanisms
+                        WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyPaymentMethodContactMechanismFactory.getInstance().prepareStatement(query);

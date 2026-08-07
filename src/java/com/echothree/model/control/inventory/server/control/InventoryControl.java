@@ -1498,10 +1498,12 @@ public class InventoryControl
 
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
         var ps = inventoryConditionUseTypeFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM inventoryconditionusetypes " +
-                "ORDER BY invconut_inventoryconditionusetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM inventoryconditionusetypes
+                ORDER BY invconut_inventoryconditionusetypename
+                _LIMIT_
+                """);
         
         return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1511,9 +1513,11 @@ public class InventoryControl
         
         try {
             var ps = inventoryConditionUseTypeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM inventoryconditionusetypes " +
-                    "WHERE invconut_inventoryconditionusetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM inventoryconditionusetypes
+                    WHERE invconut_inventoryconditionusetypename = ?
+                    """);
             
             ps.setString(1, inventoryConditionUseTypeName);
             

@@ -93,16 +93,20 @@ public class MimeTypeControl
 
     public long countMimeTypeUsageTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM mimetypeusagetypes");
+                """
+                SELECT COUNT(*)
+                FROM mimetypeusagetypes
+                """);
     }
 
     public List<MimeTypeUsageType> getMimeTypeUsageTypes() {
         var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM mimetypeusagetypes " +
-                        "ORDER BY mtyput_sortorder, mtyput_mimetypeusagetypename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypeusagetypes
+                ORDER BY mtyput_sortorder, mtyput_mimetypeusagetypename
+                _LIMIT_
+                """);
 
         return MimeTypeUsageTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -112,9 +116,11 @@ public class MimeTypeControl
 
         try {
             var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM mimetypeusagetypes " +
-                            "WHERE mtyput_mimetypeusagetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM mimetypeusagetypes
+                    WHERE mtyput_mimetypeusagetypename = ?
+                    """);
 
             ps.setString(1, mimeTypeUsageTypeName);
 
@@ -190,9 +196,11 @@ public class MimeTypeControl
 
         try {
             var ps = MimeTypeUsageTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM mimetypeusagetypedescriptions " +
-                            "WHERE mtyputd_mtyput_mimetypeusagetypeid = ? AND mtyputd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM mimetypeusagetypedescriptions
+                    WHERE mtyputd_mtyput_mimetypeusagetypeid = ? AND mtyputd_lang_languageid = ?
+                    """);
 
             ps.setLong(1, mimeTypeUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -294,16 +302,20 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM mimetypes, mimetypedetails " +
-                        "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid " +
-                        "AND mtypdt_mimetypename = ?");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtypdt_mimetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM mimetypes, mimetypedetails " +
-                        "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid " +
-                        "AND mtypdt_mimetypename = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtypdt_mimetypename = ?
+                FOR UPDATE
+                """);
         getMimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -333,16 +345,20 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "AND mtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "AND mtypdt_isdefault = 1 "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultMimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -368,16 +384,20 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "ORDER BY mtypdt_sortorder, mtypdt_mimetypename "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                ORDER BY mtypdt_sortorder, mtypdt_mimetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                FOR UPDATE
+                """);
         getMimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -399,18 +419,22 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "AND mtypdt_enat_entityattributetypeid = ? "
-                        + "ORDER BY mtypdt_sortorder, mtypdt_mimetypename "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtypdt_enat_entityattributetypeid = ?
+                ORDER BY mtypdt_sortorder, mtypdt_mimetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "AND mtypdt_enat_entityattributetypeid = ?"
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtypdt_enat_entityattributetypeid = ?
+                FOR UPDATE
+                """);
         getMimeTypesByEntityAttributeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -433,18 +457,22 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails, mimetypeusages "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "AND mtyp_mimetypeid = mtypu_mtyp_mimetypeid AND mtypu_mtyput_mimetypeusagetypeid = ? "
-                        + "ORDER BY mtypdt_sortorder, mtypdt_mimetypename "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails, mimetypeusages
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtyp_mimetypeid = mtypu_mtyp_mimetypeid AND mtypu_mtyput_mimetypeusagetypeid = ?
+                ORDER BY mtypdt_sortorder, mtypdt_mimetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM mimetypes, mimetypedetails, mimetypeusages "
-                        + "WHERE mtyp_activedetailid = mtypdt_mimetypedetailid "
-                        + "AND mtyp_mimetypeid = mtypu_mtyp_mimetypeid AND mtypu_mtyput_mimetypeusagetypeid = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypes, mimetypedetails, mimetypeusages
+                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
+                AND mtyp_mimetypeid = mtypu_mtyp_mimetypeid AND mtypu_mtyput_mimetypeusagetypeid = ?
+                FOR UPDATE
+                """);
         getMimeTypesByMimeTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -652,14 +680,18 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM mimetypedescriptions "
-                        + "WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_lang_languageid = ? AND mtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM mimetypedescriptions
+                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_lang_languageid = ? AND mtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM mimetypedescriptions "
-                        + "WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_lang_languageid = ? AND mtypd_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypedescriptions
+                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_lang_languageid = ? AND mtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getMimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -691,16 +723,20 @@ public class MimeTypeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM mimetypedescriptions, languages "
-                        + "WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_thrutime = ? AND mtypd_lang_languageid = lang_languageid "
-                        + "ORDER BY lang_sortorder, lang_languageisoname "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypedescriptions, languages
+                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_thrutime = ? AND mtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM mimetypedescriptions "
-                        + "WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM mimetypedescriptions
+                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getMimeTypeDescriptionsByMimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -805,9 +841,11 @@ public class MimeTypeControl
 
         try {
             var ps = MimeTypeUsageFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM mimetypeusages " +
-                            "WHERE mtypu_mtyp_mimetypeid = ? AND mtypu_mtyput_mimetypeusagetypeid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM mimetypeusages
+                    WHERE mtypu_mtyp_mimetypeid = ? AND mtypu_mtyput_mimetypeusagetypeid = ?
+                    """);
 
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
             ps.setLong(2, mimeTypeUsageType.getPrimaryKey().getEntityId());
@@ -825,12 +863,14 @@ public class MimeTypeControl
 
         try {
             var ps = MimeTypeUsageFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ "
-                            + "FROM mimetypeusages, mimetypes, mimetypedetails "
-                            + "WHERE mtypu_mtyp_mimetypeid = ? "
-                            + "AND mtypu_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid "
-                            + "ORDER BY mtypdt_sortorder, mtypdt_mimetypename "
-                            + "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM mimetypeusages, mimetypes, mimetypedetails
+                    WHERE mtypu_mtyp_mimetypeid = ?
+                    AND mtypu_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid
+                    ORDER BY mtypdt_sortorder, mtypdt_mimetypename
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
 
@@ -888,9 +928,11 @@ public class MimeTypeControl
 
         try {
             var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM mimetypefileextensions " +
-                            "WHERE mtypfe_mtyp_mimetypeid = ? AND mtypfe_isdefault = 1");
+                    """
+                    SELECT _ALL_
+                    FROM mimetypefileextensions
+                    WHERE mtypfe_mtyp_mimetypeid = ? AND mtypfe_isdefault = 1
+                    """);
 
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
 
@@ -907,9 +949,11 @@ public class MimeTypeControl
 
         try {
             var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM mimetypefileextensions " +
-                            "WHERE mtypfe_fileextension = ?");
+                    """
+                    SELECT _ALL_
+                    FROM mimetypefileextensions
+                    WHERE mtypfe_fileextension = ?
+                    """);
 
             ps.setString(1, fileExtension);
 
@@ -923,21 +967,25 @@ public class MimeTypeControl
 
     public List<MimeTypeFileExtension> getMimeTypeFileExtensions() {
         var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM mimetypefileextensions " +
-                        "ORDER BY mtypfe_fileextension " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypefileextensions
+                ORDER BY mtypfe_fileextension
+                _LIMIT_
+                """);
 
         return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public List<MimeTypeFileExtension> getMimeTypeFileExtensionsByMimeType(MimeType mimeType) {
         var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ "
-                        + "FROM mimetypefileextensions "
-                        + "WHERE mtypfe_mtyp_mimetypeid = ? "
-                        + "ORDER BY mtypfe_fileextension "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM mimetypefileextensions
+                WHERE mtypfe_mtyp_mimetypeid = ?
+                ORDER BY mtypfe_fileextension
+                _LIMIT_
+                """);
 
         return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 mimeType);

@@ -173,14 +173,18 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodKindFactory.getInstance().prepareStatement(query);
@@ -215,14 +219,18 @@ public class PeriodControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PeriodKindFactory.getInstance().prepareStatement(query);
@@ -246,16 +254,20 @@ public class PeriodControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid " +
-                    "ORDER BY prdkdt_sortorder, prdkdt_periodkindname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid
+                    ORDER BY prdkdt_sortorder, prdkdt_periodkindname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM periodkinds, periodkinddetails " +
-                    "WHERE prdk_activedetailid = prdkdt_periodkinddetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM periodkinds, periodkinddetails
+                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PeriodKindFactory.getInstance().prepareStatement(query);
@@ -416,14 +428,18 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
@@ -463,15 +479,19 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions, languages " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? AND prdkd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions, languages
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? AND prdkd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinddescriptions " +
-                        "WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinddescriptions
+                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodKindDescriptionFactory.getInstance().prepareStatement(query);
@@ -626,15 +646,19 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ? " +
-                        "ORDER BY prdtdt_sortorder, prdtdt_periodtypename";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ?
+                        ORDER BY prdtdt_sortorder, prdtdt_periodtypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
@@ -664,16 +688,20 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
@@ -707,16 +735,20 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypes, periodtypedetails " +
-                        "WHERE prdt_activedetailid = prdtdt_periodtypedetailid " +
-                        "AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypes, periodtypedetails
+                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
+                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodTypeFactory.getInstance().prepareStatement(query);
@@ -925,14 +957,18 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -972,15 +1008,19 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions, languages " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? AND prdtd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions, languages
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? AND prdtd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodtypedescriptions " +
-                        "WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodtypedescriptions
+                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -1097,19 +1137,23 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails, periods, perioddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
-                        "AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid " +
-                        "AND prddt_starttime <= ? AND prddt_endtime >= ? " +
-                        "ORDER BY prddt_periodname";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails, periods, perioddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid
+                        AND prddt_starttime <= ? AND prddt_endtime >= ?
+                        ORDER BY prddt_periodname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periodkinds, periodkinddetails, periods, perioddetails " +
-                        "WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ? " +
-                        "AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid " +
-                        "AND prddt_starttime <= ? AND prddt_endtime >= ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periodkinds, periodkinddetails, periods, perioddetails
+                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
+                        AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid
+                        AND prddt_starttime <= ? AND prddt_endtime >= ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodFactory.getInstance().prepareStatement(query);
@@ -1141,15 +1185,19 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ? " +
-                        "ORDER BY prddt_sortorder, prddt_periodname";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ?
+                        ORDER BY prddt_sortorder, prddt_periodname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodFactory.getInstance().prepareStatement(query);
@@ -1179,15 +1227,19 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ? " +
-                        "ORDER BY prddt_sortorder, prddt_periodname";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ?
+                        ORDER BY prddt_sortorder, prddt_periodname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodFactory.getInstance().prepareStatement(query);
@@ -1228,16 +1280,20 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid " +
-                        "AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid
+                        AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM periods, perioddetails " +
-                        "WHERE prd_activedetailid = prddt_perioddetailid " +
-                        "AND prddt_prdk_periodkindid = ? AND prddt_periodname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM periods, perioddetails
+                        WHERE prd_activedetailid = prddt_perioddetailid
+                        AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodFactory.getInstance().prepareStatement(query);
@@ -1382,14 +1438,18 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions
+                        WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions
+                        WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);
@@ -1429,15 +1489,19 @@ public class PeriodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions, languages " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? AND prdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions, languages
+                        WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? AND prdd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM perioddescriptions " +
-                        "WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM perioddescriptions
+                        WHERE prdd_prd_periodid = ? AND prdd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PeriodDescriptionFactory.getInstance().prepareStatement(query);

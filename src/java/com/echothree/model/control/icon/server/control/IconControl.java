@@ -106,15 +106,19 @@ public class IconControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM icons, icondetails " +
-                    "WHERE icn_activedetailid = icndt_icondetailid " +
-                    "ORDER BY icndt_sortorder, icndt_iconname";
+            query = """
+                    SELECT _ALL_
+                    FROM icons, icondetails
+                    WHERE icn_activedetailid = icndt_icondetailid
+                    ORDER BY icndt_sortorder, icndt_iconname
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM icons, icondetails " +
-                    "WHERE icn_activedetailid = icndt_icondetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM icons, icondetails
+                    WHERE icn_activedetailid = icndt_icondetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = IconFactory.getInstance().prepareStatement(query);
@@ -137,14 +141,18 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM icons, icondetails " +
-                        "WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM icons, icondetails
+                        WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM icons, icondetails " +
-                        "WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM icons, icondetails
+                        WHERE icn_activedetailid = icndt_icondetailid AND icndt_iconname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconFactory.getInstance().prepareStatement(query);
@@ -265,14 +273,18 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypes, iconusagetypedetails " +
-                        "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypes, iconusagetypedetails
+                        WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypes, iconusagetypedetails " +
-                        "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypes, iconusagetypedetails
+                        WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_iconusagetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
@@ -307,14 +319,18 @@ public class IconControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid AND icnutypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
@@ -338,15 +354,19 @@ public class IconControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid " +
-                    "ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid
+                    ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM iconusagetypes, iconusagetypedetails " +
-                    "WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM iconusagetypes, iconusagetypedetails
+                    WHERE icnutyp_activedetailid = icnutypdt_iconusagetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = IconUsageTypeFactory.getInstance().prepareStatement(query);
@@ -503,14 +523,18 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_lang_languageid = ? AND icnutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -550,15 +574,19 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions, languages " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? AND icnutypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions, languages
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? AND icnutypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusagetypedescriptions " +
-                        "WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusagetypedescriptions
+                        WHERE icnutypd_icnutyp_iconusagetypeid = ? AND icnutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -681,14 +709,18 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageFactory.getInstance().prepareStatement(query);
@@ -726,14 +758,18 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_isdefault = 1 AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageFactory.getInstance().prepareStatement(query);
@@ -770,16 +806,20 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages, icons, icondetails " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ? " +
-                        "AND icnu_icn_iconid = icn_iconid AND icn_lastdetailid = icndt_icondetailid " +
-                        "ORDER BY icndt_sortorder, icndt_iconname";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages, icons, icondetails
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ?
+                        AND icnu_icn_iconid = icn_iconid AND icn_lastdetailid = icndt_icondetailid
+                        ORDER BY icndt_sortorder, icndt_iconname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icnutyp_iconusagetypeid = ? AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageFactory.getInstance().prepareStatement(query);
@@ -810,17 +850,21 @@ public class IconControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages, iconusagetypes, iconusagetypedetails, returnkinds, returnkinddetails " +
-                        "WHERE icnu_icn_iconid = ? AND icnu_thrutime = ? " +
-                        "AND icnu_icnutyp_iconusagetypeid = icnutyp_iconusagetypeid AND icnutyp_lastdetailid = icnutypdt_iconusagetypedetailid " +
-                        "AND icnutypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid " +
-                        "ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename, rtnkdt_sortorder, rtnkdt_returnkindname";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages, iconusagetypes, iconusagetypedetails, returnkinds, returnkinddetails
+                        WHERE icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        AND icnu_icnutyp_iconusagetypeid = icnutyp_iconusagetypeid AND icnutyp_lastdetailid = icnutypdt_iconusagetypedetailid
+                        AND icnutypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid
+                        ORDER BY icnutypdt_sortorder, icnutypdt_iconusagetypename, rtnkdt_sortorder, rtnkdt_returnkindname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM iconusages " +
-                        "WHERE icnu_icn_iconid = ? AND icnu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM iconusages
+                        WHERE icnu_icn_iconid = ? AND icnu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = IconUsageFactory.getInstance().prepareStatement(query);

@@ -76,17 +76,21 @@ public class OfferItemControl
 
     public long countOfferItemsByOffer(Offer offer) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM offeritems "
-                        + "WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM offeritems
+                WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?
+                """,
                 offer, Session.MAX_TIME);
     }
 
     public long countOfferItemsByItem(Item item) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM offeritems "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM offeritems
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
+                """,
                 item, Session.MAX_TIME);
     }
 
@@ -112,14 +116,18 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritems "
-                        + "WHERE ofri_ofr_offerid = ? AND ofri_itm_itemid = ? AND ofri_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM offeritems
+                WHERE ofri_ofr_offerid = ? AND ofri_itm_itemid = ? AND ofri_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritems "
-                        + "WHERE ofri_ofr_offerid = ? AND ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritems
+                WHERE ofri_ofr_offerid = ? AND ofri_itm_itemid = ? AND ofri_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -142,17 +150,21 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritems, items, itemdetails "
-                        + "WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid "
-                        + "ORDER BY itmdt_itemname "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offeritems, items, itemdetails
+                WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?
+                AND ofri_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid
+                ORDER BY itmdt_itemname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritems "
-                        + "WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritems
+                WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemsByOfferQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -175,17 +187,21 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritems, offers, offerdetails "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid "
-                        + "ORDER BY ofrdt_sortorder, ofrdt_offername "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offeritems, offers, offerdetails
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
+                AND ofri_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
+                ORDER BY ofrdt_sortorder, ofrdt_offername
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritems "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritems
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemsByItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -251,10 +267,12 @@ public class OfferItemControl
 
     public long countOfferItemPricesByItem(Item item) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM offeritems, offeritemprices "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM offeritems, offeritemprices
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
+                AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_thrutime = ?
+                """,
                 item, Session.MAX_TIME, Session.MAX_TIME);
     }
 
@@ -296,15 +314,19 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ? " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemPricesByOfferItemQueries1 = Collections.unmodifiableMap(queryMap);
     }
 
@@ -327,17 +349,21 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritems, offeritemprices "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ? "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offeritems, offeritemprices
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
+                AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritems, offeritemprices "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritems, offeritemprices
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
+                AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemPricesByItemAndUnitOfMeasureTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -360,17 +386,21 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ? "
-                        + "AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ? "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
+                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ? "
-                        + "AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
+                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemPricesByOfferItemQueries2 = Collections.unmodifiableMap(queryMap);
     }
 
@@ -394,19 +424,23 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritems, offeritemprices "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid "
-                        + "AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ? "
-                        + "AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ? "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offeritems, offeritemprices
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid
+                AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ?
+                AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritems, offeritemprices "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid "
-                        + "AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ? "
-                        + "AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritems, offeritemprices
+                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid
+                AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ?
+                AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemPricesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -432,16 +466,20 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ? "
-                        + "AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
+                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ? "
-                        + "AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
+                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemPriceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -527,14 +565,18 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemfixedprices "
-                        + "WHERE ofritmfp_ofritmp_offeritempriceid = ? AND ofritmfp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM offeritemfixedprices
+                WHERE ofritmfp_ofritmp_offeritempriceid = ? AND ofritmfp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritemfixedprices "
-                        + "WHERE ofritmfp_ofritmp_offeritempriceid = ? AND ofritmfp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritemfixedprices
+                WHERE ofritmfp_ofritmp_offeritempriceid = ? AND ofritmfp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemFixedPriceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -563,10 +605,12 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemfixedprices "
-                        + "WHERE ofritmfp_ofritmp_offeritempriceid = ? "
-                        + "ORDER BY ofritmfp_thrutime");
+                """
+                SELECT _ALL_
+                FROM offeritemfixedprices
+                WHERE ofritmfp_ofritmp_offeritempriceid = ?
+                ORDER BY ofritmfp_thrutime
+                """);
         getOfferItemFixedPriceHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -629,14 +673,18 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemvariableprices "
-                        + "WHERE ofritmvp_ofritmp_offeritempriceid = ? AND ofritmvp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM offeritemvariableprices
+                WHERE ofritmvp_ofritmp_offeritempriceid = ? AND ofritmvp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM offeritemvariableprices "
-                        + "WHERE ofritmvp_ofritmp_offeritempriceid = ? AND ofritmvp_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM offeritemvariableprices
+                WHERE ofritmvp_ofritmp_offeritempriceid = ? AND ofritmvp_thrutime = ?
+                FOR UPDATE
+                """);
         getOfferItemVariablePriceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -665,10 +713,12 @@ public class OfferItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM offeritemvariableprices "
-                        + "WHERE ofritmvp_ofritmp_offeritempriceid = ? "
-                        + "ORDER BY ofritmvp_thrutime");
+                """
+                SELECT _ALL_
+                FROM offeritemvariableprices
+                WHERE ofritmvp_ofritmp_offeritempriceid = ?
+                ORDER BY ofritmvp_thrutime
+                """);
         getOfferItemVariablePriceHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 

@@ -77,57 +77,71 @@ public class OrderLineControl
     
     public long countOrderLinesByCancellationPolicy(CancellationPolicy cancellationPolicy) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_cnclplcy_cancellationpolicyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_cnclplcy_cancellationpolicyid = ?
+                """,
                 cancellationPolicy);
     }
 
     public long countOrderLinesByReturnPolicy(ReturnPolicy returnPolicy) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_rtnplcy_returnpolicyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_rtnplcy_returnpolicyid = ?
+                """,
                 returnPolicy);
     }
 
     public long countOrderLinesByInventoryCondition(InventoryCondition inventoryCondition) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_invcon_inventoryconditionid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_invcon_inventoryconditionid = ?
+                """,
                 inventoryCondition);
     }
 
     public long countOrderLinesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_uomt_unitofmeasuretypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_uomt_unitofmeasuretypeid = ?
+                """,
                 unitOfMeasureType);
     }
 
     public long countOrderLinesByOrderAndCancellationPolicy(Order order, CancellationPolicy cancellationPolicy) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_cnclplcy_cancellationpolicyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_cnclplcy_cancellationpolicyid = ?
+                """,
                 order, cancellationPolicy);
     }
 
     public long countOrderLinesByOrderAndReturnPolicy(Order order, ReturnPolicy returnPolicy) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_rtnplcy_returnpolicyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_rtnplcy_returnpolicyid = ?
+                """,
                 order, returnPolicy);
     }
 
     public long countOrderLinesByOrderAndShipmentGroup(Order order, OrderShipmentGroup orderShipmentGroup) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_ordshpgrp_ordershipmentgroupid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_ordshpgrp_ordershipmentgroupid = ?
+                """,
                 order, orderShipmentGroup);
     }
 
@@ -138,14 +152,18 @@ public class OrderLineControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -184,15 +202,19 @@ public class OrderLineControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "ORDER BY ordldt_orderlinesequence";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        ORDER BY ordldt_orderlinesequence
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -222,15 +244,19 @@ public class OrderLineControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ? " +
-                        "ORDER BY ordldt_orderlinesequence";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ?
+                        ORDER BY ordldt_orderlinesequence
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlines, orderlinedetails " +
-                        "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlines, orderlinedetails
+                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineFactory.getInstance().prepareStatement(query);
@@ -340,14 +366,18 @@ public class OrderLineControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlinestatuses " +
-                        "WHERE ordlst_ordl_orderlineid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlinestatuses
+                        WHERE ordlst_ordl_orderlineid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderlinestatuses " +
-                        "WHERE ordlst_ordl_orderlineid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderlinestatuses
+                        WHERE ordlst_ordl_orderlineid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderLineStatusFactory.getInstance().prepareStatement(query);

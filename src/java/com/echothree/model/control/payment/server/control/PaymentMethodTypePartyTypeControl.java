@@ -103,15 +103,20 @@ public class PaymentMethodTypePartyTypeControl
 
     private static final Map<EntityPermission, String> getPaymentMethodTypePartyTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_ptyp_partytypeid = ?",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_ptyp_partytypeid = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_ptyp_partytypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_ptyp_partytypeid = ?
+            FOR UPDATE
+            """);
 
     public PaymentMethodTypePartyType getPaymentMethodTypePartyType(final PaymentMethodType paymentMethodType,
             final PartyType partyType, final EntityPermission entityPermission) {
@@ -140,16 +145,20 @@ public class PaymentMethodTypePartyTypeControl
 
     private static final Map<EntityPermission, String> getDefaultPaymentMethodTypePartyTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_isdefault = 1",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_isdefault = 1
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_isdefault = 1 " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? AND pmtypptypdt_isdefault = 1
+            FOR UPDATE
+            """);
 
     public PaymentMethodTypePartyType getDefaultPaymentMethodTypePartyType(final PaymentMethodType paymentMethodType,
             final EntityPermission entityPermission) {
@@ -171,19 +180,23 @@ public class PaymentMethodTypePartyTypeControl
 
     private static final Map<EntityPermission, String> getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails, partytypes " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_ptyp_partytypeid = ptyp_partytypeid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? " +
-                    "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails, partytypes
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_ptyp_partytypeid = ptyp_partytypeid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = ?
+            ORDER BY ptyp_sortorder, ptyp_partytypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPaymentMethodType(final PaymentMethodType paymentMethodType, final EntityPermission entityPermission) {
         return PaymentMethodTypePartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries,
@@ -200,19 +213,23 @@ public class PaymentMethodTypePartyTypeControl
 
     private static final Map<EntityPermission, String> getPaymentMethodTypePartyTypesByPartyTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails, paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_pmtyp_paymentmethodtypeid = pmtyp_paymentmethodtypeid AND pmtyp_activedetailid = pmtypdt_paymentmethodtypedetailid " +
-                    "AND pmtypptypdt_ptyp_partytypeid = ? " +
-                    "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails, paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_pmtyp_paymentmethodtypeid = pmtyp_paymentmethodtypeid AND pmtyp_activedetailid = pmtypdt_paymentmethodtypedetailid
+            AND pmtypptypdt_ptyp_partytypeid = ?
+            ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
-                    "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
-                    "AND pmtypptypdt_ptyp_partytypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails
+            WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid
+            AND pmtypptypdt_ptyp_partytypeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPartyType(final PartyType partyType, final EntityPermission entityPermission) {
         return PaymentMethodTypePartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPartyTypeQueries,

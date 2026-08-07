@@ -61,14 +61,18 @@ public class PartyFreeOnBoardControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyfreeonboards " +
-                        "WHERE pfob_par_partyid = ? AND pfob_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyfreeonboards
+                        WHERE pfob_par_partyid = ? AND pfob_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyfreeonboards " +
-                        "WHERE pfob_par_partyid = ? AND pfob_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyfreeonboards
+                        WHERE pfob_par_partyid = ? AND pfob_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);
@@ -107,16 +111,20 @@ public class PartyFreeOnBoardControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyfreeonboards, freeOnBoards, freeOnBoarddetails " +
-                        "WHERE pfob_fob_freeOnBoardid = ? AND pfob_thrutime = ? " +
-                        "AND pfob_fob_freeOnBoardid = fob_freeOnBoardid AND fob_lastdetailid = fobdt_freeOnBoarddetailid " +
-                        "ORDER BY fobdt_sortorder, fobdt_freeOnBoardname";
+                query = """
+                        SELECT _ALL_
+                        FROM partyfreeonboards, freeOnBoards, freeOnBoarddetails
+                        WHERE pfob_fob_freeOnBoardid = ? AND pfob_thrutime = ?
+                        AND pfob_fob_freeOnBoardid = fob_freeOnBoardid AND fob_lastdetailid = fobdt_freeOnBoarddetailid
+                        ORDER BY fobdt_sortorder, fobdt_freeOnBoardname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyfreeonboards " +
-                        "WHERE pfob_fob_freeOnBoardid = ? AND pfob_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyfreeonboards
+                        WHERE pfob_fob_freeOnBoardid = ? AND pfob_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyFreeOnBoardFactory.getInstance().prepareStatement(query);

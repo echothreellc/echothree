@@ -309,14 +309,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM responsibilitytypes, responsibilitytypedetails " +
-                        "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_responsibilitytypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM responsibilitytypes, responsibilitytypedetails
+                        WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_responsibilitytypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM responsibilitytypes, responsibilitytypedetails " +
-                        "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_responsibilitytypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM responsibilitytypes, responsibilitytypedetails
+                        WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_responsibilitytypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
@@ -351,14 +355,18 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM responsibilitytypes, responsibilitytypedetails " +
-                    "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_sortorder = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM responsibilitytypes, responsibilitytypedetails
+                    WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_sortorder = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM responsibilitytypes, responsibilitytypedetails " +
-                    "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_sortorder = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM responsibilitytypes, responsibilitytypedetails
+                    WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid AND rsptypdt_sortorder = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
@@ -382,16 +390,20 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM responsibilitytypes, responsibilitytypedetails " +
-                    "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid " +
-                    "ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM responsibilitytypes, responsibilitytypedetails
+                    WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid
+                    ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM responsibilitytypes, responsibilitytypedetails " +
-                    "WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM responsibilitytypes, responsibilitytypedetails
+                    WHERE rsptyp_activedetailid = rsptypdt_responsibilitytypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = ResponsibilityTypeFactory.getInstance().prepareStatement(query);
@@ -556,14 +568,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM responsibilitytypedescriptions " +
-                        "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_lang_languageid = ? AND rsptypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM responsibilitytypedescriptions
+                        WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_lang_languageid = ? AND rsptypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM responsibilitytypedescriptions " +
-                        "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_lang_languageid = ? AND rsptypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM responsibilitytypedescriptions
+                        WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_lang_languageid = ? AND rsptypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ResponsibilityTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -603,16 +619,20 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM responsibilitytypedescriptions, languages " +
-                        "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_thrutime = ? AND rsptypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM responsibilitytypedescriptions, languages
+                        WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_thrutime = ? AND rsptypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM responsibilitytypedescriptions " +
-                        "WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM responsibilitytypedescriptions
+                        WHERE rsptypd_rsptyp_responsibilitytypeid = ? AND rsptypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ResponsibilityTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -763,14 +783,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM skilltypes, skilltypedetails " +
-                        "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_skilltypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM skilltypes, skilltypedetails
+                        WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_skilltypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM skilltypes, skilltypedetails " +
-                        "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_skilltypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM skilltypes, skilltypedetails
+                        WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_skilltypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SkillTypeFactory.getInstance().prepareStatement(query);
@@ -805,14 +829,18 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM skilltypes, skilltypedetails " +
-                    "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM skilltypes, skilltypedetails
+                    WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM skilltypes, skilltypedetails " +
-                    "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM skilltypes, skilltypedetails
+                    WHERE skltyp_activedetailid = skltypdt_skilltypedetailid AND skltypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = SkillTypeFactory.getInstance().prepareStatement(query);
@@ -836,16 +864,20 @@ public class EmployeeControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM skilltypes, skilltypedetails " +
-                    "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid " +
-                    "ORDER BY skltypdt_sortorder, skltypdt_skilltypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM skilltypes, skilltypedetails
+                    WHERE skltyp_activedetailid = skltypdt_skilltypedetailid
+                    ORDER BY skltypdt_sortorder, skltypdt_skilltypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM skilltypes, skilltypedetails " +
-                    "WHERE skltyp_activedetailid = skltypdt_skilltypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM skilltypes, skilltypedetails
+                    WHERE skltyp_activedetailid = skltypdt_skilltypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = SkillTypeFactory.getInstance().prepareStatement(query);
@@ -1009,14 +1041,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM skilltypedescriptions " +
-                        "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_lang_languageid = ? AND skltypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM skilltypedescriptions
+                        WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_lang_languageid = ? AND skltypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM skilltypedescriptions " +
-                        "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_lang_languageid = ? AND skltypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM skilltypedescriptions
+                        WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_lang_languageid = ? AND skltypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SkillTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -1056,16 +1092,20 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM skilltypedescriptions, languages " +
-                        "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_thrutime = ? AND skltypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM skilltypedescriptions, languages
+                        WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_thrutime = ? AND skltypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM skilltypedescriptions " +
-                        "WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM skilltypedescriptions
+                        WHERE skltypd_skltyp_skilltypeid = ? AND skltypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SkillTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -1216,16 +1256,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavetypes, leavetypedetails " +
-                "WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid " +
-                "AND lvtypdt_leavetypename = ?");
+                """
+                SELECT _ALL_
+                FROM leavetypes, leavetypedetails
+                WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid
+                AND lvtypdt_leavetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavetypes, leavetypedetails " +
-                "WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid " +
-                "AND lvtypdt_leavetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavetypes, leavetypedetails
+                WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid
+                AND lvtypdt_leavetypename = ?
+                FOR UPDATE
+                """);
         getLeaveTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1255,16 +1299,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavetypes, leavetypedetails " +
-                "WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid " +
-                "AND lvtypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM leavetypes, leavetypedetails
+                WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid
+                AND lvtypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavetypes, leavetypedetails " +
-                "WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid " +
-                "AND lvtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavetypes, leavetypedetails
+                WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid
+                AND lvtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultLeaveTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1290,16 +1338,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavetypes, leavetypedetails " +
-                "WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid " +
-                "ORDER BY lvtypdt_sortorder, lvtypdt_leavetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leavetypes, leavetypedetails
+                WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid
+                ORDER BY lvtypdt_sortorder, lvtypdt_leavetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavetypes, leavetypedetails " +
-                "WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavetypes, leavetypedetails
+                WHERE lvtyp_activedetailid = lvtypdt_leavetypedetailid
+                FOR UPDATE
+                """);
         getLeaveTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1460,14 +1512,18 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavetypedescriptions " +
-                "WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_lang_languageid = ? AND lvtypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM leavetypedescriptions
+                WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_lang_languageid = ? AND lvtypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavetypedescriptions " +
-                "WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_lang_languageid = ? AND lvtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavetypedescriptions
+                WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_lang_languageid = ? AND lvtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLeaveTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1499,16 +1555,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavetypedescriptions, languages " +
-                "WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_thrutime = ? AND lvtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leavetypedescriptions, languages
+                WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_thrutime = ? AND lvtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavetypedescriptions " +
-                "WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavetypedescriptions
+                WHERE lvtypd_lvtyp_leavetypeid = ? AND lvtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLeaveTypeDescriptionsByLeaveTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1654,16 +1714,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavereasons, leavereasondetails " +
-                "WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid " +
-                "AND lvrsndt_leavereasonname = ?");
+                """
+                SELECT _ALL_
+                FROM leavereasons, leavereasondetails
+                WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid
+                AND lvrsndt_leavereasonname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavereasons, leavereasondetails " +
-                "WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid " +
-                "AND lvrsndt_leavereasonname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavereasons, leavereasondetails
+                WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid
+                AND lvrsndt_leavereasonname = ?
+                FOR UPDATE
+                """);
         getLeaveReasonByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1693,16 +1757,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavereasons, leavereasondetails " +
-                "WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid " +
-                "AND lvrsndt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM leavereasons, leavereasondetails
+                WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid
+                AND lvrsndt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavereasons, leavereasondetails " +
-                "WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid " +
-                "AND lvrsndt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavereasons, leavereasondetails
+                WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid
+                AND lvrsndt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultLeaveReasonQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1728,16 +1796,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavereasons, leavereasondetails " +
-                "WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid " +
-                "ORDER BY lvrsndt_sortorder, lvrsndt_leavereasonname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leavereasons, leavereasondetails
+                WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid
+                ORDER BY lvrsndt_sortorder, lvrsndt_leavereasonname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavereasons, leavereasondetails " +
-                "WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavereasons, leavereasondetails
+                WHERE lvrsn_activedetailid = lvrsndt_leavereasondetailid
+                FOR UPDATE
+                """);
         getLeaveReasonsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1898,14 +1970,18 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavereasondescriptions " +
-                "WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_lang_languageid = ? AND lvrsnd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM leavereasondescriptions
+                WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_lang_languageid = ? AND lvrsnd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavereasondescriptions " +
-                "WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_lang_languageid = ? AND lvrsnd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavereasondescriptions
+                WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_lang_languageid = ? AND lvrsnd_thrutime = ?
+                FOR UPDATE
+                """);
         getLeaveReasonDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1937,16 +2013,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM leavereasondescriptions, languages " +
-                "WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_thrutime = ? AND lvrsnd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leavereasondescriptions, languages
+                WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_thrutime = ? AND lvrsnd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM leavereasondescriptions " +
-                "WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leavereasondescriptions
+                WHERE lvrsnd_lvrsn_leavereasonid = ? AND lvrsnd_thrutime = ?
+                FOR UPDATE
+                """);
         getLeaveReasonDescriptionsByLeaveReasonQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2079,37 +2159,45 @@ public class EmployeeControl
 
     public long countLeavesByParty(Party party) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid "
-                + "AND lvdt_par_partyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid
+                AND lvdt_par_partyid = ?
+                """,
                 party);
     }
 
     public long countLeavesByCompanyParty(Party companyParty) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid "
-                + "AND lvdt_companypartyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid
+                AND lvdt_companypartyid = ?
+                """,
                 companyParty);
     }
 
     public long countLeavesByLeaveType(LeaveType leaveType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid "
-                + "AND lvdt_lvtyp_leavetypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid
+                AND lvdt_lvtyp_leavetypeid = ?
+                """,
                 leaveType);
     }
 
     public long countLeavesByLeaveReason(LeaveReason leaveReason) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid "
-                + "AND lvdt_lvrsn_leavereasonid = ?",
+                """
+                SELECT COUNT(*)
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid
+                AND lvdt_lvrsn_leavereasonid = ?
+                """,
                 leaveReason);
     }
 
@@ -2119,14 +2207,18 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_leavename = ?");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_leavename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_leavename = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_leavename = ?
+                FOR UPDATE
+                """);
         getLeaveByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2157,16 +2249,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = ? "
-                + "ORDER BY lvdt_leavename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = ?
+                ORDER BY lvdt_leavename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getLeaveByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2189,17 +2285,21 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails, parties, partydetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND lvdt_companypartyid = ? "
-                + "ORDER BY lvdt_leavename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails, parties, partydetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND lvdt_companypartyid = ?
+                ORDER BY lvdt_leavename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_companypartyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_companypartyid = ?
+                FOR UPDATE
+                """);
         getLeaveByCompanyPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2222,17 +2322,21 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails, parties, partydetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND lvdt_lvtyp_leavetypeid = ? "
-                + "ORDER BY lvdt_leavename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails, parties, partydetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND lvdt_lvtyp_leavetypeid = ?
+                ORDER BY lvdt_leavename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_lvtyp_leavetypeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_lvtyp_leavetypeid = ?
+                FOR UPDATE
+                """);
         getLeaveByLeaveTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2255,17 +2359,21 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails, parties, partydetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND lvdt_lvrsn_leavereasonid = ? "
-                + "ORDER BY lvdt_leavename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails, parties, partydetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND lvdt_lvrsn_leavereasonid = ?
+                ORDER BY lvdt_leavename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM leaves, leavedetails "
-                + "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_lvrsn_leavereasonid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM leaves, leavedetails
+                WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_lvrsn_leavereasonid = ?
+                FOR UPDATE
+                """);
         getLeaveByLeaveReasonQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2455,14 +2563,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationreasons, terminationreasondetails " +
-                        "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_terminationreasonname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationreasons, terminationreasondetails
+                        WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_terminationreasonname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationreasons, terminationreasondetails " +
-                        "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_terminationreasonname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationreasons, terminationreasondetails
+                        WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_terminationreasonname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TerminationReasonFactory.getInstance().prepareStatement(query);
@@ -2497,14 +2609,18 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationreasons, terminationreasondetails " +
-                    "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationreasons, terminationreasondetails
+                    WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationreasons, terminationreasondetails " +
-                    "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationreasons, terminationreasondetails
+                    WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid AND trmnrsndt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TerminationReasonFactory.getInstance().prepareStatement(query);
@@ -2528,16 +2644,20 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationreasons, terminationreasondetails " +
-                    "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid " +
-                    "ORDER BY trmnrsndt_sortorder, trmnrsndt_terminationreasonname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationreasons, terminationreasondetails
+                    WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid
+                    ORDER BY trmnrsndt_sortorder, trmnrsndt_terminationreasonname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationreasons, terminationreasondetails " +
-                    "WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationreasons, terminationreasondetails
+                    WHERE trmnrsn_activedetailid = trmnrsndt_terminationreasondetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TerminationReasonFactory.getInstance().prepareStatement(query);
@@ -2702,14 +2822,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationreasondescriptions " +
-                        "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_lang_languageid = ? AND trmnrsnd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationreasondescriptions
+                        WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_lang_languageid = ? AND trmnrsnd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationreasondescriptions " +
-                        "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_lang_languageid = ? AND trmnrsnd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationreasondescriptions
+                        WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_lang_languageid = ? AND trmnrsnd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TerminationReasonDescriptionFactory.getInstance().prepareStatement(query);
@@ -2749,16 +2873,20 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationreasondescriptions, languages " +
-                        "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_thrutime = ? AND trmnrsnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationreasondescriptions, languages
+                        WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_thrutime = ? AND trmnrsnd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationreasondescriptions " +
-                        "WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationreasondescriptions
+                        WHERE trmnrsnd_trmnrsn_terminationreasonid = ? AND trmnrsnd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TerminationReasonDescriptionFactory.getInstance().prepareStatement(query);
@@ -2909,14 +3037,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationtypes, terminationtypedetails " +
-                        "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_terminationtypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationtypes, terminationtypedetails
+                        WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_terminationtypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationtypes, terminationtypedetails " +
-                        "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_terminationtypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationtypes, terminationtypedetails
+                        WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_terminationtypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TerminationTypeFactory.getInstance().prepareStatement(query);
@@ -2951,14 +3083,18 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationtypes, terminationtypedetails " +
-                    "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationtypes, terminationtypedetails
+                    WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationtypes, terminationtypedetails " +
-                    "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationtypes, terminationtypedetails
+                    WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid AND trmntypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TerminationTypeFactory.getInstance().prepareStatement(query);
@@ -2982,16 +3118,20 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationtypes, terminationtypedetails " +
-                    "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid " +
-                    "ORDER BY trmntypdt_sortorder, trmntypdt_terminationtypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationtypes, terminationtypedetails
+                    WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid
+                    ORDER BY trmntypdt_sortorder, trmntypdt_terminationtypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM terminationtypes, terminationtypedetails " +
-                    "WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM terminationtypes, terminationtypedetails
+                    WHERE trmntyp_activedetailid = trmntypdt_terminationtypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TerminationTypeFactory.getInstance().prepareStatement(query);
@@ -3156,14 +3296,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationtypedescriptions " +
-                        "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_lang_languageid = ? AND trmntypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationtypedescriptions
+                        WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_lang_languageid = ? AND trmntypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationtypedescriptions " +
-                        "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_lang_languageid = ? AND trmntypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationtypedescriptions
+                        WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_lang_languageid = ? AND trmntypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TerminationTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -3203,16 +3347,20 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationtypedescriptions, languages " +
-                        "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_thrutime = ? AND trmntypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationtypedescriptions, languages
+                        WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_thrutime = ? AND trmntypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM terminationtypedescriptions " +
-                        "WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM terminationtypedescriptions
+                        WHERE trmntypd_trmntyp_terminationtypeid = ? AND trmntypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TerminationTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -3350,37 +3498,45 @@ public class EmployeeControl
 
     public long countEmploymentsByParty(Party party) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid "
-                + "AND empmntdt_par_partyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid
+                AND empmntdt_par_partyid = ?
+                """,
                 party);
     }
 
     public long countEmploymentsByCompanyParty(Party companyParty) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid "
-                + "AND empmntdt_companypartyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid
+                AND empmntdt_companypartyid = ?
+                """,
                 companyParty);
     }
 
     public long countEmploymentsByTerminationType(TerminationType terminationType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid "
-                + "AND empmntdt_trmntyp_terminationtypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid
+                AND empmntdt_trmntyp_terminationtypeid = ?
+                """,
                 terminationType);
     }
 
     public long countEmploymentsByTerminationReason(TerminationReason terminationReason) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid "
-                + "AND empmntdt_trmnrsn_terminationreasonid = ?",
+                """
+                SELECT COUNT(*)
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid
+                AND empmntdt_trmnrsn_terminationreasonid = ?
+                """,
                 terminationReason);
     }
 
@@ -3390,14 +3546,18 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_employmentname = ?");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_employmentname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_employmentname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_employmentname = ?
+                FOR UPDATE
+                """);
         getEmploymentByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3428,16 +3588,20 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = ? "
-                + "ORDER BY empmntdt_employmentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = ?
+                ORDER BY empmntdt_employmentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getEmploymentByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3460,17 +3624,21 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails, parties, partydetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND empmntdt_companypartyid = ? "
-                + "ORDER BY empmntdt_employmentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails, parties, partydetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND empmntdt_companypartyid = ?
+                ORDER BY empmntdt_employmentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_companypartyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_companypartyid = ?
+                FOR UPDATE
+                """);
         getEmploymentByCompanyPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3493,17 +3661,21 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails, parties, partydetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND empmntdt_trmntyp_terminationtypeid = ? "
-                + "ORDER BY empmntdt_employmentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails, parties, partydetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND empmntdt_trmntyp_terminationtypeid = ?
+                ORDER BY empmntdt_employmentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_trmntyp_terminationtypeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_trmntyp_terminationtypeid = ?
+                FOR UPDATE
+                """);
         getEmploymentByTerminationTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3526,17 +3698,21 @@ public class EmployeeControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails, parties, partydetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND empmntdt_trmnrsn_terminationreasonid = ? "
-                + "ORDER BY empmntdt_employmentname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails, parties, partydetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND empmntdt_trmnrsn_terminationreasonid = ?
+                ORDER BY empmntdt_employmentname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM employments, employmentdetails "
-                + "WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_trmnrsn_terminationreasonid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM employments, employmentdetails
+                WHERE empmnt_activedetailid = empmntdt_employmentdetailid AND empmntdt_trmnrsn_terminationreasonid = ?
+                FOR UPDATE
+                """);
         getEmploymentByTerminationReasonQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3679,25 +3855,31 @@ public class EmployeeControl
 
     public long countEmployeeTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM employeetypes, employeetypedetails " +
-                        "WHERE empty_activedetailid = emptydt_employeetypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM employeetypes, employeetypedetails
+                WHERE empty_activedetailid = emptydt_employeetypedetailid
+                """);
     }
 
     private List<EmployeeType> getEmployeeTypes(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM employeetypes, employeetypedetails " +
-                    "WHERE empty_activedetailid = emptydt_employeetypedetailid " +
-                    "ORDER BY emptydt_sortorder, emptydt_employeetypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM employeetypes, employeetypedetails
+                    WHERE empty_activedetailid = emptydt_employeetypedetailid
+                    ORDER BY emptydt_sortorder, emptydt_employeetypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM employeetypes, employeetypedetails " +
-                    "WHERE empty_activedetailid = emptydt_employeetypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM employeetypes, employeetypedetails
+                    WHERE empty_activedetailid = emptydt_employeetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
@@ -3717,14 +3899,18 @@ public class EmployeeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM employeetypes, employeetypedetails " +
-                    "WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM employeetypes, employeetypedetails
+                    WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM employeetypes, employeetypedetails " +
-                    "WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM employeetypes, employeetypedetails
+                    WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
@@ -3751,14 +3937,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM employeetypes, employeetypedetails " +
-                        "WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_employeetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM employeetypes, employeetypedetails
+                        WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_employeetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM employeetypes, employeetypedetails " +
-                        "WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_employeetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM employeetypes, employeetypedetails
+                        WHERE empty_activedetailid = emptydt_employeetypedetailid AND emptydt_employeetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EmployeeTypeFactory.getInstance().prepareStatement(query);
@@ -3939,14 +4129,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM employeetypedescriptions " +
-                        "WHERE emptyd_empty_employeetypeid = ? AND emptyd_lang_languageid = ? AND emptyd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM employeetypedescriptions
+                        WHERE emptyd_empty_employeetypeid = ? AND emptyd_lang_languageid = ? AND emptyd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM employeetypedescriptions " +
-                        "WHERE emptyd_empty_employeetypeid = ? AND emptyd_lang_languageid = ? AND emptyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM employeetypedescriptions
+                        WHERE emptyd_empty_employeetypeid = ? AND emptyd_lang_languageid = ? AND emptyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EmployeeTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -3986,16 +4180,20 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM employeetypedescriptions, languages " +
-                        "WHERE emptyd_empty_employeetypeid = ? AND emptyd_thrutime = ? AND emptyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM employeetypedescriptions, languages
+                        WHERE emptyd_empty_employeetypeid = ? AND emptyd_thrutime = ? AND emptyd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM employeetypedescriptions " +
-                        "WHERE emptyd_empty_employeetypeid = ? AND emptyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM employeetypedescriptions
+                        WHERE emptyd_empty_employeetypeid = ? AND emptyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EmployeeTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -4106,9 +4304,11 @@ public class EmployeeControl
 
     public long countPartyEmployees() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyemployees " +
-                "WHERE pemp_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partyemployees
+                WHERE pemp_thrutime = ?
+                """,
                 Session.MAX_TIME);
     }
 
@@ -4117,11 +4317,13 @@ public class EmployeeControl
         
         try {
             var ps = PartyEmployeeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partyemployees " +
-                    "WHERE pemp_thrutime = ? " +
-                    "ORDER BY pemp_partyemployeename " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM partyemployees
+                    WHERE pemp_thrutime = ?
+                    ORDER BY pemp_partyemployeename
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -4140,14 +4342,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyemployees " +
-                        "WHERE pemp_par_partyid = ? AND pemp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyemployees
+                        WHERE pemp_par_partyid = ? AND pemp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyemployees " +
-                        "WHERE pemp_par_partyid = ? AND pemp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyemployees
+                        WHERE pemp_par_partyid = ? AND pemp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyEmployeeFactory.getInstance().prepareStatement(query);
@@ -4176,9 +4382,11 @@ public class EmployeeControl
         
         try {
             var ps = PartyEmployeeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partyemployees " +
-                    "WHERE pemp_partyemployeename = ? AND pemp_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partyemployees
+                    WHERE pemp_partyemployeename = ? AND pemp_thrutime = ?
+                    """);
             
             ps.setString(1, partyEmployeeName);
             ps.setLong(2, Session.MAX_TIME);
@@ -4363,14 +4571,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyresponsibilities " +
-                        "WHERE parrsp_par_partyid = ? AND parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyresponsibilities
+                        WHERE parrsp_par_partyid = ? AND parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyresponsibilities " +
-                        "WHERE parrsp_par_partyid = ? AND parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyresponsibilities
+                        WHERE parrsp_par_partyid = ? AND parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
@@ -4410,17 +4622,21 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyresponsibilities, responsibilitytypes, responsibilitytypedetails " +
-                        "WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ? " +
-                        "AND parrsp_rsptyp_responsibilitytypeid = rsptyp_responsibilitytypeid AND rsptyp_lastdetailid = rsptypdt_responsibilitytypedetailid " +
-                        "ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyresponsibilities, responsibilitytypes, responsibilitytypedetails
+                        WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ?
+                        AND parrsp_rsptyp_responsibilitytypeid = rsptyp_responsibilitytypeid AND rsptyp_lastdetailid = rsptypdt_responsibilitytypedetailid
+                        ORDER BY rsptypdt_sortorder, rsptypdt_responsibilitytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyresponsibilities " +
-                        "WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyresponsibilities
+                        WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
@@ -4451,17 +4667,21 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyresponsibilities, parties, partydetails " +
-                        "WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ? " +
-                        "AND parrsp_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyresponsibilities, parties, partydetails
+                        WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?
+                        AND parrsp_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyresponsibilities " +
-                        "WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyresponsibilities
+                        WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyResponsibilityFactory.getInstance().prepareStatement(query);
@@ -4571,14 +4791,18 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyskills " +
-                        "WHERE parskl_par_partyid = ? AND parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyskills
+                        WHERE parskl_par_partyid = ? AND parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyskills " +
-                        "WHERE parskl_par_partyid = ? AND parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyskills
+                        WHERE parskl_par_partyid = ? AND parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartySkillFactory.getInstance().prepareStatement(query);
@@ -4618,17 +4842,21 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyskills, skilltypes, skilltypedetails " +
-                        "WHERE parskl_par_partyid = ? AND parskl_thrutime = ? " +
-                        "AND parskl_skltyp_skilltypeid = skltyp_skilltypeid AND skltyp_lastdetailid = skltypdt_skilltypedetailid " +
-                        "ORDER BY skltypdt_sortorder, skltypdt_skilltypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyskills, skilltypes, skilltypedetails
+                        WHERE parskl_par_partyid = ? AND parskl_thrutime = ?
+                        AND parskl_skltyp_skilltypeid = skltyp_skilltypeid AND skltyp_lastdetailid = skltypdt_skilltypedetailid
+                        ORDER BY skltypdt_sortorder, skltypdt_skilltypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyskills " +
-                        "WHERE parskl_par_partyid = ? AND parskl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyskills
+                        WHERE parskl_par_partyid = ? AND parskl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartySkillFactory.getInstance().prepareStatement(query);
@@ -4659,17 +4887,21 @@ public class EmployeeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyskills, parties, partydetails " +
-                        "WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ? " +
-                        "AND parskl_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partyskills, parties, partydetails
+                        WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?
+                        AND parskl_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyskills " +
-                        "WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyskills
+                        WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartySkillFactory.getInstance().prepareStatement(query);

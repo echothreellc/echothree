@@ -127,16 +127,20 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_licensetypename = ?");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_licensetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_licensetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_licensetypename = ?
+                FOR UPDATE
+                """);
         getLicenseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -166,16 +170,20 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "AND lcnstypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                AND lcnstypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultLicenseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -201,16 +209,20 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "ORDER BY lcnstypdt_sortorder, lcnstypdt_licensetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                ORDER BY lcnstypdt_sortorder, lcnstypdt_licensetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypes, licensetypedetails " +
-                "WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypes, licensetypedetails
+                WHERE lcnstyp_activedetailid = lcnstypdt_licensetypedetailid
+                FOR UPDATE
+                """);
         getLicenseTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -385,14 +397,18 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_lang_languageid = ? AND lcnstypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLicenseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -423,15 +439,19 @@ public class LicenseControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions, languages " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ? AND lcnstypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions, languages
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ? AND lcnstypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM licensetypedescriptions " +
-                "WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM licensetypedescriptions
+                WHERE lcnstypd_lcnstyp_licensetypeid = ? AND lcnstypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLicenseTypeDescriptionsByLicenseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

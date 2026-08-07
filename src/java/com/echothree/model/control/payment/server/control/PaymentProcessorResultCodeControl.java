@@ -109,13 +109,18 @@ public class PaymentProcessorResultCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorResultCodeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
-                    "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_paymentprocessorresultcodename = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
+            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_paymentprocessorresultcodename = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
-                    "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_paymentprocessorresultcodename = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
+            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_paymentprocessorresultcodename = ?
+            FOR UPDATE
+            """);
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final String paymentProcessorResultCodeName, final EntityPermission entityPermission) {
         return PaymentProcessorResultCodeFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeByNameQueries,
@@ -140,14 +145,18 @@ public class PaymentProcessorResultCodeControl
 
     private static final Map<EntityPermission, String> getDefaultPaymentProcessorResultCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
-                    "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_isdefault = 1",
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
+            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_isdefault = 1
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
-                    "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_isdefault = 1 " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
+            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_isdefault = 1
+            FOR UPDATE
+            """);
 
     public PaymentProcessorResultCode getDefaultPaymentProcessorResultCode(final EntityPermission entityPermission) {
         return PaymentProcessorResultCodeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentProcessorResultCodeQueries);
@@ -167,14 +176,20 @@ public class PaymentProcessorResultCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorResultCodesQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " + "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
-                    "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid " +
-                    "ORDER BY pprcrcdt_sortorder, pprcrcdt_paymentprocessorresultcodename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
+            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid
+            ORDER BY pprcrcdt_sortorder, pprcrcdt_paymentprocessorresultcodename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails " +
-                    "WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
+            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorResultCode> getPaymentProcessorResultCodes(final EntityPermission entityPermission) {
         return PaymentProcessorResultCodeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorResultCodesQueries);
@@ -336,14 +351,18 @@ public class PaymentProcessorResultCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorResultCodeDescriptionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodedescriptions " +
-                    "WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_lang_languageid = ? AND pprcrcd_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodedescriptions
+            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_lang_languageid = ? AND pprcrcd_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodedescriptions " +
-                    "WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_lang_languageid = ? AND pprcrcd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodedescriptions
+            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_lang_languageid = ? AND pprcrcd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private PaymentProcessorResultCodeDescription getPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final EntityPermission entityPermission) {
@@ -372,16 +391,20 @@ public class PaymentProcessorResultCodeControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodedescriptions, languages " +
-                    "WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ? AND pprcrcd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodedescriptions, languages
+            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ? AND pprcrcd_lang_languageid = lang_languageid
+            ORDER BY lang_sortorder, lang_languageisoname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessorresultcodedescriptions " +
-                    "WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessorresultcodedescriptions
+            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorResultCodeDescription> getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode,
             final EntityPermission entityPermission) {

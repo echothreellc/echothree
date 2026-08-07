@@ -124,16 +124,20 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM textdecorations, textdecorationdetails " +
-                        "WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid " +
-                        "AND txtdcrtndt_textdecorationname = ?");
+                """
+                SELECT _ALL_
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                AND txtdcrtndt_textdecorationname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM textdecorations, textdecorationdetails " +
-                        "WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid " +
-                        "AND txtdcrtndt_textdecorationname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                AND txtdcrtndt_textdecorationname = ?
+                FOR UPDATE
+                """);
         getTextDecorationByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -163,16 +167,20 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM textdecorations, textdecorationdetails " +
-                        "WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid " +
-                        "AND txtdcrtndt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                AND txtdcrtndt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM textdecorations, textdecorationdetails " +
-                        "WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid " +
-                        "AND txtdcrtndt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                AND txtdcrtndt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultTextDecorationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -198,16 +206,20 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM textdecorations, textdecorationdetails " +
-                        "WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid " +
-                        "ORDER BY txtdcrtndt_sortorder, txtdcrtndt_textdecorationname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                ORDER BY txtdcrtndt_sortorder, txtdcrtndt_textdecorationname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM textdecorations, textdecorationdetails " +
-                        "WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                FOR UPDATE
+                """);
         getTextDecorationsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -384,14 +396,18 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM textdecorationdescriptions " +
-                        "WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_lang_languageid = ? AND txtdcrtnd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM textdecorationdescriptions
+                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_lang_languageid = ? AND txtdcrtnd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM textdecorationdescriptions " +
-                        "WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_lang_languageid = ? AND txtdcrtnd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM textdecorationdescriptions
+                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_lang_languageid = ? AND txtdcrtnd_thrutime = ?
+                FOR UPDATE
+                """);
         getTextDecorationDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -422,15 +438,19 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM textdecorationdescriptions, languages " +
-                        "WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_thrutime = ? AND txtdcrtnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM textdecorationdescriptions, languages
+                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_thrutime = ? AND txtdcrtnd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM textdecorationdescriptions " +
-                        "WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM textdecorationdescriptions
+                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_thrutime = ?
+                FOR UPDATE
+                """);
         getTextDecorationDescriptionsByTextDecorationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -574,16 +594,20 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM texttransformations, texttransformationdetails " +
-                        "WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid " +
-                        "AND txttrnsdt_texttransformationname = ?");
+                """
+                SELECT _ALL_
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                AND txttrnsdt_texttransformationname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM texttransformations, texttransformationdetails " +
-                        "WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid " +
-                        "AND txttrnsdt_texttransformationname = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                AND txttrnsdt_texttransformationname = ?
+                FOR UPDATE
+                """);
         getTextTransformationByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -613,16 +637,20 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM texttransformations, texttransformationdetails " +
-                        "WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid " +
-                        "AND txttrnsdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                AND txttrnsdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM texttransformations, texttransformationdetails " +
-                        "WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid " +
-                        "AND txttrnsdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                AND txttrnsdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultTextTransformationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -648,16 +676,20 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM texttransformations, texttransformationdetails " +
-                        "WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid " +
-                        "ORDER BY txttrnsdt_sortorder, txttrnsdt_texttransformationname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                ORDER BY txttrnsdt_sortorder, txttrnsdt_texttransformationname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM texttransformations, texttransformationdetails " +
-                        "WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                FOR UPDATE
+                """);
         getTextTransformationsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -834,14 +866,18 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM texttransformationdescriptions " +
-                        "WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_lang_languageid = ? AND txttrnsd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM texttransformationdescriptions
+                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_lang_languageid = ? AND txttrnsd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM texttransformationdescriptions " +
-                        "WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_lang_languageid = ? AND txttrnsd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM texttransformationdescriptions
+                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_lang_languageid = ? AND txttrnsd_thrutime = ?
+                FOR UPDATE
+                """);
         getTextTransformationDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -872,15 +908,19 @@ public class TextControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM texttransformationdescriptions, languages " +
-                        "WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_thrutime = ? AND txttrnsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM texttransformationdescriptions, languages
+                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_thrutime = ? AND txttrnsd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM texttransformationdescriptions " +
-                        "WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM texttransformationdescriptions
+                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_thrutime = ?
+                FOR UPDATE
+                """);
         getTextTransformationDescriptionsByTextTransformationQueries = Collections.unmodifiableMap(queryMap);
     }
 

@@ -69,25 +69,31 @@ public class OrderPaymentPreferenceControl
 
     public long countOrderPaymentPreferencesByOrder(Order order) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ?
+                """,
                 order);
     }
 
     public long countOrderPaymentPreferencesByPaymentMethod(PaymentMethod paymentMethod) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_pm_paymentmethodid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_pm_paymentmethodid = ?
+                """,
                 paymentMethod);
     }
 
     public long countOrderPaymentPreferencesByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_parpm_partypaymentmethodid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_parpm_partypaymentmethodid = ?
+                """,
                 partyPaymentMethod);
     }
 
@@ -98,14 +104,18 @@ public class OrderPaymentPreferenceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ? AND ordpymtprfdt_orderpaymentpreferencesequence = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ? AND ordpymtprfdt_orderpaymentpreferencesequence = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ? AND ordpymtprfdt_orderpaymentpreferencesequence = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ? AND ordpymtprfdt_orderpaymentpreferencesequence = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
@@ -144,16 +154,20 @@ public class OrderPaymentPreferenceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails, paymentmethods, paymentmethoddetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ? " +
-                        "AND ordpymtprfdt_pm_paymentmethodid = pm_paymentmethodid AND pm_lastdetailid = pmdt_paymentmethoddetailid " +
-                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname, ordpymtprfdt_sortorder";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails, paymentmethods, paymentmethoddetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ?
+                        AND ordpymtprfdt_pm_paymentmethodid = pm_paymentmethodid AND pm_lastdetailid = pmdt_paymentmethoddetailid
+                        ORDER BY pmdt_sortorder, pmdt_paymentmethodname, ordpymtprfdt_sortorder
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_ord_orderid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
@@ -183,15 +197,19 @@ public class OrderPaymentPreferenceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails, paymentmethods, paymentmethoddetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_pm_paymentmethodid = ? " +
-                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname, ordpymtprfdt_sortorder";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails, paymentmethods, paymentmethoddetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_pm_paymentmethodid = ?
+                        ORDER BY pmdt_sortorder, pmdt_paymentmethodname, ordpymtprfdt_sortorder
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_pm_paymentmethodid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_pm_paymentmethodid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);
@@ -221,15 +239,19 @@ public class OrderPaymentPreferenceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails, paymentmethods, paymentmethoddetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_parpm_partypaymentmethodid = ? " +
-                        "ORDER BY ordpymtprfdt_sortorder";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails, paymentmethods, paymentmethoddetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_parpm_partypaymentmethodid = ?
+                        ORDER BY ordpymtprfdt_sortorder
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM orderpaymentpreferences, orderpaymentpreferencedetails " +
-                        "WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_parpm_partypaymentmethodid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM orderpaymentpreferences, orderpaymentpreferencedetails
+                        WHERE ordpymtprf_activedetailid = ordpymtprfdt_orderpaymentpreferencedetailid AND ordpymtprfdt_parpm_partypaymentmethodid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OrderPaymentPreferenceFactory.getInstance().prepareStatement(query);

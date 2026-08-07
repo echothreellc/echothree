@@ -115,16 +115,20 @@ public class UseTypeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ "
-                    + "FROM usetypes, usetypedetails "
-                    + "WHERE usetyp_activedetailid = usetypdt_usetypedetailid "
-                    + "ORDER BY usetypdt_sortorder, usetypdt_usetypename "
-                    + "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid
+                    ORDER BY usetypdt_sortorder, usetypdt_usetypename
+                    _LIMIT_
+                    """;
         } else if (entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ "
-                    + "FROM usetypes, usetypedetails "
-                    + "WHERE usetyp_activedetailid = usetypdt_usetypedetailid "
-                    + "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = UseTypeFactory.getInstance().prepareStatement(query);
@@ -147,14 +151,18 @@ public class UseTypeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypes, usetypedetails " +
-                        "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypes, usetypedetails
+                        WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypes, usetypedetails " +
-                        "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypes, usetypedetails
+                        WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseTypeFactory.getInstance().prepareStatement(query);
@@ -189,14 +197,18 @@ public class UseTypeControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM usetypes, usetypedetails " +
-                    "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM usetypes, usetypedetails " +
-                    "WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM usetypes, usetypedetails
+                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = UseTypeFactory.getInstance().prepareStatement(query);
@@ -365,14 +377,18 @@ public class UseTypeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -412,15 +428,19 @@ public class UseTypeControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions, languages " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? AND usetypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions, languages
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? AND usetypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usetypedescriptions " +
-                        "WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usetypedescriptions
+                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -529,11 +549,13 @@ public class UseTypeControl
         try {
             var useTypeControl = Session.getModelController(UseTypeControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 

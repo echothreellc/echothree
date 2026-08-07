@@ -3072,7 +3072,10 @@ public class ForumControl
                         AND ent_activedetailid = entdt_entitytypedetailid AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND entdt_entitytypename = ?
                         AND ent_entitytypeid = eni_ent_entitytypeid AND frmthrd_forumthreadid = eni_entityuniqueid
                         AND eni_entityinstanceid = etim_eni_entityinstanceid
-                        """ + (includeFutureForumThreads? "": "AND frmthrddt_postedtime <= ? ") + """
+                        """ + (includeFutureForumThreads ? """
+                                """ : """
+                                AND frmthrddt_postedtime <= ?
+                                """) + """
                         ORDER BY frmthrddt_sortorder, frmthrddt_postedtime DESC, etim_createdtime DESC
                         _LIMIT_
                         """;

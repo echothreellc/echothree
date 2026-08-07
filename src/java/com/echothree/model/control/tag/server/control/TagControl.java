@@ -137,16 +137,20 @@ public class TagControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM tagscopes, tagscopedetails " +
-                    "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                    "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM tagscopes, tagscopedetails
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    ORDER BY tsdt_sortorder, tsdt_tagscopename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM tagscopes, tagscopedetails " +
-                    "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM tagscopes, tagscopedetails
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TagScopeFactory.getInstance().prepareStatement(query);
@@ -169,18 +173,22 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
-                        "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                        "AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopes, tagscopedetails, tagscopeentitytypes
+                        WHERE ts_activedetailid = tsdt_tagscopedetailid
+                        AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        ORDER BY tsdt_sortorder, tsdt_tagscopename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
-                        "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                        "AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopes, tagscopedetails, tagscopeentitytypes
+                        WHERE ts_activedetailid = tsdt_tagscopedetailid
+                        AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeFactory.getInstance().prepareStatement(query);
@@ -208,14 +216,18 @@ public class TagControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM tagscopes, tagscopedetails " +
-                    "WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM tagscopes, tagscopedetails
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM tagscopes, tagscopedetails " +
-                    "WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM tagscopes, tagscopedetails
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = TagScopeFactory.getInstance().prepareStatement(query);
@@ -242,14 +254,18 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopes, tagscopedetails " +
-                        "WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopes, tagscopedetails
+                        WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopes, tagscopedetails " +
-                        "WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopes, tagscopedetails
+                        WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeFactory.getInstance().prepareStatement(query);
@@ -431,14 +447,18 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopedescriptions " +
-                        "WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopedescriptions
+                        WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopedescriptions " +
-                        "WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopedescriptions
+                        WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
@@ -478,17 +498,21 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopedescriptions, languages " +
-                        "WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ? " +
-                        "AND tsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopedescriptions, languages
+                        WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ?
+                        AND tsd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopedescriptions " +
-                        "WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopedescriptions
+                        WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeDescriptionFactory.getInstance().prepareStatement(query);
@@ -629,14 +653,18 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopeentitytypes " +
-                        "WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopeentitytypes
+                        WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopeentitytypes " +
-                        "WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopeentitytypes
+                        WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
@@ -668,17 +696,21 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopeentitytypes, entitytypes, entitytypedetails " +
-                        "WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ? " +
-                        "AND tent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "ORDER BY entdt_sortorder, entdt_entitytypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopeentitytypes, entitytypes, entitytypedetails
+                        WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
+                        AND tent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                        ORDER BY entdt_sortorder, entdt_entitytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopeentitytypes " +
-                        "WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopeentitytypes
+                        WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
@@ -709,17 +741,21 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopeentitytypes, tagscopes, tagscopedetails " +
-                        "WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "AND tent_ts_tagscopeid = ts_tagscopeid AND ts_lastdetailid = tsdt_tagscopedetailid " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopeentitytypes, tagscopes, tagscopedetails
+                        WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        AND tent_ts_tagscopeid = ts_tagscopeid AND ts_lastdetailid = tsdt_tagscopedetailid
+                        ORDER BY tsdt_sortorder, tsdt_tagscopename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tagscopeentitytypes " +
-                        "WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tagscopeentitytypes
+                        WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagScopeEntityTypeFactory.getInstance().prepareStatement(query);
@@ -847,16 +883,20 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tags, tagdetails " +
-                        "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "ORDER BY tdt_tagname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM tags, tagdetails
+                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
+                        ORDER BY tdt_tagname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tags, tagdetails " +
-                        "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tags, tagdetails
+                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagFactory.getInstance().prepareStatement(query);
@@ -887,18 +927,22 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tags, tagdetails, entitytags " +
-                        "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "ORDER BY tdt_tagname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM tags, tagdetails, entitytags
+                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
+                        AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
+                        ORDER BY tdt_tagname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tags, tagdetails, entitytags " +
-                        "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tags, tagdetails, entitytags
+                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
+                        AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagFactory.getInstance().prepareStatement(query);
@@ -930,14 +974,18 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tags, tagdetails " +
-                        "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM tags, tagdetails
+                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM tags, tagdetails " +
-                        "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM tags, tagdetails
+                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TagFactory.getInstance().prepareStatement(query);
@@ -1079,17 +1127,21 @@ public class TagControl
 
     public long countEntityTagsByTag(final Tag tag) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entitytags " +
-                "WHERE et_t_tagid = ? AND et_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entitytags
+                WHERE et_t_tagid = ? AND et_thrutime = ?
+                """,
                 tag, Session.MAX_TIME);
     }
 
     public long countEntityTagsByTaggedEntityInstance(final EntityInstance taggedEntityInstance) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entitytags " +
-                        "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entitytags
+                WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?
+                """,
                 taggedEntityInstance, Session.MAX_TIME);
     }
 
@@ -1100,14 +1152,18 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytags " +
-                        "WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytags
+                        WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytags " +
-                        "WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytags
+                        WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityTagFactory.getInstance().prepareStatement(query);
@@ -1147,17 +1203,21 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytags, tags, tagdetails " +
-                        "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "AND et_t_tagid = t_tagid AND t_lastdetailid = tdt_tagdetailid " +
-                        "ORDER BY tdt_tagname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytags, tags, tagdetails
+                        WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?
+                        AND et_t_tagid = t_tagid AND t_lastdetailid = tdt_tagdetailid
+                        ORDER BY tdt_tagname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytags " +
-                        "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytags
+                        WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityTagFactory.getInstance().prepareStatement(query);
@@ -1188,19 +1248,23 @@ public class TagControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytags, entityinstances, componentvendors, componentvendordetails, entitytypes, entitytypedetails " +
-                        "WHERE et_t_tagid = ? AND et_thrutime = ? " +
-                        "AND et_taggedentityinstanceid = eni_entityinstanceid " +
-                        "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytags, entityinstances, componentvendors, componentvendordetails, entitytypes, entitytypedetails
+                        WHERE et_t_tagid = ? AND et_thrutime = ?
+                        AND et_taggedentityinstanceid = eni_entityinstanceid
+                        AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                        ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytags " +
-                        "WHERE et_t_tagid = ? AND et_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytags
+                        WHERE et_t_tagid = ? AND et_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityTagFactory.getInstance().prepareStatement(query);

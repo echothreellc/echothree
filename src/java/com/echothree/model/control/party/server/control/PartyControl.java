@@ -255,16 +255,20 @@ public class PartyControl
 
     public long countLanguages() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM languages");
+                """
+                SELECT COUNT(*)
+                FROM languages
+                """);
     }
 
     public Language getDefaultLanguage() {
         Language language;
         var ps = LanguageFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM languages " +
-                "WHERE lang_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM languages
+                WHERE lang_isdefault = 1
+                """);
         
         language = LanguageFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         
@@ -277,14 +281,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM languages " +
-                "WHERE lang_languageisoname = ?");
+                """
+                SELECT _ALL_
+                FROM languages
+                WHERE lang_languageisoname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM languages " +
-                "WHERE lang_languageisoname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM languages
+                WHERE lang_languageisoname = ?
+                FOR UPDATE
+                """);
         getLanguageByIsoNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -303,10 +311,12 @@ public class PartyControl
     public List<Language> getLanguages() {
         List<Language> languages;
         var ps = LanguageFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM languages " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM languages
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         
         languages = LanguageFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         
@@ -381,9 +391,11 @@ public class PartyControl
         
         try {
             var ps = LanguageDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM languagedescriptions " +
-                    "WHERE langd_lang_languageid = ? AND langd_descriptionlanguageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM languagedescriptions
+                    WHERE langd_lang_languageid = ? AND langd_descriptionlanguageid = ?
+                    """);
             
             ps.setLong(1, language.getPrimaryKey().getEntityId());
             ps.setLong(2, descriptionLanguage.getPrimaryKey().getEntityId());
@@ -441,8 +453,10 @@ public class PartyControl
 
     public long countPartyTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM partytypes");
+                """
+                SELECT COUNT(*)
+                FROM partytypes
+                """);
     }
 
     private static final Map<EntityPermission, String> getPartyTypeByNameQueries;
@@ -451,14 +465,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM partytypes " +
-                        "WHERE ptyp_partytypename = ?");
+                """
+                SELECT _ALL_
+                FROM partytypes
+                WHERE ptyp_partytypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM partytypes " +
-                        "WHERE ptyp_partytypename = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypes
+                WHERE ptyp_partytypename = ?
+                FOR UPDATE
+                """);
         getPartyTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -489,16 +507,20 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM partyaliastypes, partyaliastypedetails " +
-                        "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                        "AND patdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                AND patdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM partyaliastypes, partyaliastypedetails " +
-                        "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                        "AND patdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                AND patdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPartyTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -524,14 +546,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM partytypes " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypes
+                ORDER BY ptyp_sortorder, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM partytypes " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypes
+                FOR UPDATE
+                """);
         getPartyTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -606,9 +632,11 @@ public class PartyControl
         
         try {
             var ps = PartyTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partytypedescriptions " +
-                    "WHERE ptypd_ptyp_partytypeid = ? AND ptypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partytypedescriptions
+                    WHERE ptypd_ptyp_partytypeid = ? AND ptypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -651,9 +679,11 @@ public class PartyControl
         
         try {
             var ps = PartyTypeUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partytypeusetypes " +
-                    "WHERE ptyput_partytypeusetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partytypeusetypes
+                    WHERE ptyput_partytypeusetypename = ?
+                    """);
             
             ps.setString(1, partyTypeUseTypeName);
             
@@ -679,9 +709,11 @@ public class PartyControl
         
         try {
             var ps = PartyTypeUseTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partytypeusetypedescriptions " +
-                    "WHERE ptyputd_ptyput_partytypeusetypeid = ? AND ptyputd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partytypeusetypedescriptions
+                    WHERE ptyputd_ptyput_partytypeusetypeid = ? AND ptyputd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -725,9 +757,11 @@ public class PartyControl
         
         try {
             var ps = PartyTypeUseFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partytypeuses " +
-                    "WHERE ptypu_ptyput_partytypeusetypeid = ? AND ptypu_ptyp_partytypeid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partytypeuses
+                    WHERE ptypu_ptyput_partytypeusetypeid = ? AND ptypu_ptyp_partytypeid = ?
+                    """);
             
             ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, partyType.getPrimaryKey().getEntityId());
@@ -791,26 +825,32 @@ public class PartyControl
 
     public long countPersonalTitles() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM personaltitles, personaltitledetails " +
-                "WHERE pert_activedetailid = pertd_personaltitledetailid");
+                """
+                SELECT COUNT(*)
+                FROM personaltitles, personaltitledetails
+                WHERE pert_activedetailid = pertd_personaltitledetailid
+                """);
     }
 
     private List<PersonalTitle> getPersonalTitles(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM personaltitles, personaltitledetails " +
-                    "WHERE pert_activedetailid = pertd_personaltitledetailid " +
-                    "ORDER BY pertd_sortorder, pertd_description " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM personaltitles, personaltitledetails
+                    WHERE pert_activedetailid = pertd_personaltitledetailid
+                    ORDER BY pertd_sortorder, pertd_description
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM personaltitles, personaltitledetails " +
-                    "WHERE pert_activedetailid = pertd_personaltitledetailid " +
-                    "ORDER BY pertd_sortorder, pertd_description " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM personaltitles, personaltitledetails
+                    WHERE pert_activedetailid = pertd_personaltitledetailid
+                    ORDER BY pertd_sortorder, pertd_description
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PersonalTitleFactory.getInstance().prepareStatement(query);
@@ -828,10 +868,12 @@ public class PartyControl
     
     public List<PersonalTitleDetail> getPersonalTitleDetails() {
         var ps = PersonalTitleDetailFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM personaltitles, personaltitledetails " +
-                "WHERE pert_activedetailid = pertd_personaltitledetailid " +
-                "ORDER BY pertd_sortorder, pertd_description");
+                """
+                SELECT _ALL_
+                FROM personaltitles, personaltitledetails
+                WHERE pert_activedetailid = pertd_personaltitledetailid
+                ORDER BY pertd_sortorder, pertd_description
+                """);
         
         return PersonalTitleDetailFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -840,14 +882,18 @@ public class PartyControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM personaltitles, personaltitledetails " +
-                    "WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM personaltitles, personaltitledetails
+                    WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM personaltitles, personaltitledetails " +
-                    "WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM personaltitles, personaltitledetails
+                    WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PersonalTitleFactory.getInstance().prepareStatement(query);
@@ -1062,26 +1108,32 @@ public class PartyControl
 
     public long countNameSuffixes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM namesuffixes, namesuffixdetails " +
-                "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid");
+                """
+                SELECT COUNT(*)
+                FROM namesuffixes, namesuffixdetails
+                WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid
+                """);
     }
 
     private List<NameSuffix> getNameSuffixes(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM namesuffixes, namesuffixdetails " +
-                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
-                    "ORDER BY nsfxd_sortorder, nsfxd_description " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM namesuffixes, namesuffixdetails
+                    WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid
+                    ORDER BY nsfxd_sortorder, nsfxd_description
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM namesuffixes, namesuffixdetails " +
-                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
-                    "ORDER BY nsfxd_sortorder, nsfxd_description " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM namesuffixes, namesuffixdetails
+                    WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid
+                    ORDER BY nsfxd_sortorder, nsfxd_description
+                    FOR UPDATE
+                    """;
         }
 
         var ps = NameSuffixFactory.getInstance().prepareStatement(query);
@@ -1099,10 +1151,12 @@ public class PartyControl
     
     public List<NameSuffixDetail> getNameSuffixDetails() {
         var ps = NameSuffixDetailFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM namesuffixes, namesuffixdetails " +
-                "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
-                "ORDER BY nsfxd_sortorder, nsfxd_description");
+                """
+                SELECT _ALL_
+                FROM namesuffixes, namesuffixdetails
+                WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid
+                ORDER BY nsfxd_sortorder, nsfxd_description
+                """);
         
         return NameSuffixDetailFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1111,14 +1165,18 @@ public class PartyControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM namesuffixes, namesuffixdetails " +
-                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM namesuffixes, namesuffixdetails
+                    WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM namesuffixes, namesuffixdetails " +
-                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM namesuffixes, namesuffixdetails
+                    WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = NameSuffixFactory.getInstance().prepareStatement(query);
@@ -1321,9 +1379,11 @@ public class PartyControl
 
     public long countTimeZones() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM timezones, timezonedetails " +
-                "WHERE tz_activedetailid = tzdt_timezonedetailid");
+                """
+                SELECT COUNT(*)
+                FROM timezones, timezonedetails
+                WHERE tz_activedetailid = tzdt_timezonedetailid
+                """);
     }
 
     public List<TimeZone> getTimeZones() {
@@ -1331,11 +1391,13 @@ public class PartyControl
         
         try {
             var ps = TimeZoneFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM timezones, timezonedetails " +
-                    "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_thrutime = ? " +
-                    "ORDER BY tzdt_sortorder, tzdt_javatimezonename " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM timezones, timezonedetails
+                    WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_thrutime = ?
+                    ORDER BY tzdt_sortorder, tzdt_javatimezonename
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1352,9 +1414,11 @@ public class PartyControl
         
         try {
             var ps = TimeZoneFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM timezones, timezonedetails " +
-                    "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_isdefault = 1 AND tzdt_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM timezones, timezonedetails
+                    WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_isdefault = 1 AND tzdt_thrutime = ?
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1371,9 +1435,11 @@ public class PartyControl
         
         try {
             var ps = TimeZoneFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM timezones, timezonedetails " +
-                    "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_javatimezonename = ? AND tzdt_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM timezones, timezonedetails
+                    WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_javatimezonename = ? AND tzdt_thrutime = ?
+                    """);
             
             ps.setString(1, javaTimeZoneName);
             ps.setLong(2, Session.MAX_TIME);
@@ -1456,16 +1522,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM timezonedescriptions, languages " +
-                        "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? AND tzd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM timezonedescriptions, languages
+                        WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? AND tzd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM timezonedescriptions " +
-                        "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM timezonedescriptions
+                        WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
@@ -1496,14 +1566,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM timezonedescriptions " +
-                        "WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM timezonedescriptions
+                        WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM timezonedescriptions " +
-                        "WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM timezonedescriptions
+                        WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
@@ -1648,9 +1722,11 @@ public class PartyControl
 
     public long countDateTimeFormats() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM datetimeformats, datetimeformatdetails " +
-                "WHERE dtf_activedetailid = dtfdt_datetimeformatdetailid");
+                """
+                SELECT COUNT(*)
+                FROM datetimeformats, datetimeformatdetails
+                WHERE dtf_activedetailid = dtfdt_datetimeformatdetailid
+                """);
     }
 
     public List<DateTimeFormat> getDateTimeFormats() {
@@ -1658,11 +1734,13 @@ public class PartyControl
         
         try {
             var ps = DateTimeFormatFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM datetimeformats, datetimeformatdetails " +
-                    "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_thrutime = ? " +
-                    "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM datetimeformats, datetimeformatdetails
+                    WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_thrutime = ?
+                    ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1679,9 +1757,11 @@ public class PartyControl
         
         try {
             var ps = DateTimeFormatFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM datetimeformats, datetimeformatdetails " +
-                    "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_isdefault = 1 AND dtfdt_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM datetimeformats, datetimeformatdetails
+                    WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_isdefault = 1 AND dtfdt_thrutime = ?
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1698,9 +1778,11 @@ public class PartyControl
         
         try {
             var ps = DateTimeFormatFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM datetimeformats, datetimeformatdetails " +
-                    "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_datetimeformatname = ? AND dtfdt_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM datetimeformats, datetimeformatdetails
+                    WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_datetimeformatname = ? AND dtfdt_thrutime = ?
+                    """);
             
             ps.setString(1, dateTimeFormatName);
             ps.setLong(2, Session.MAX_TIME);
@@ -1784,16 +1866,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM datetimeformatdescriptions, languages " +
-                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? AND dtfd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM datetimeformatdescriptions, languages
+                        WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? AND dtfd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM datetimeformatdescriptions " +
-                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM datetimeformatdescriptions
+                        WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
@@ -1824,14 +1910,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM datetimeformatdescriptions " +
-                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM datetimeformatdescriptions
+                        WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM datetimeformatdescriptions " +
-                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM datetimeformatdescriptions
+                        WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
@@ -1974,25 +2064,31 @@ public class PartyControl
 
     public long countParties() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM parties, partydetails " +
-                "WHERE par_activedetailid = pardt_partydetailid");
+                """
+                SELECT COUNT(*)
+                FROM parties, partydetails
+                WHERE par_activedetailid = pardt_partydetailid
+                """);
     }
 
     public long countPartiesByPartyType(PartyType partyType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM parties, partydetails " +
-                        "WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM parties, partydetails
+                WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ?
+                """,
                 partyType);
     }
 
     public long countPartiesByPartyTypeUsingNames(String partyTypeName) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partytypes, parties, partydetails " +
-                "WHERE ptyp_partytypename = ? " +
-                "AND par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ptyp_partytypeid",
+                """
+                SELECT COUNT(*)
+                FROM partytypes, parties, partydetails
+                WHERE ptyp_partytypename = ?
+                AND par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                """,
                 partyTypeName);
     }
     
@@ -2002,14 +2098,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM parties, partydetails " +
-                "WHERE par_activedetailid = pardt_partydetailid AND pardt_partyname = ?");
+                """
+                SELECT _ALL_
+                FROM parties, partydetails
+                WHERE par_activedetailid = pardt_partydetailid AND pardt_partyname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM parties, partydetails " +
-                "WHERE par_activedetailid = pardt_partydetailid AND pardt_partyname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM parties, partydetails
+                WHERE par_activedetailid = pardt_partydetailid AND pardt_partyname = ?
+                FOR UPDATE
+                """);
         getPartyByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2046,18 +2146,22 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliases, parties, partydetails " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ? " +
-                "AND pal_par_partyid = par_partyid " +
-                "AND par_activedetailid = pardt_partydetailid");
+                """
+                SELECT _ALL_
+                FROM partyaliases, parties, partydetails
+                WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ?
+                AND pal_par_partyid = par_partyid
+                AND par_activedetailid = pardt_partydetailid
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliases, parties, partydetails " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ? " +
-                "AND pal_par_partyid = par_partyid " +
-                "AND par_activedetailid = pardt_partydetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliases, parties, partydetails
+                WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ?
+                AND pal_par_partyid = par_partyid
+                AND par_activedetailid = pardt_partydetailid
+                FOR UPDATE
+                """);
         getPartyByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2075,10 +2179,12 @@ public class PartyControl
 
     public List<Party> getParties() {
         var ps = PartyFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM parties, partydetails " +
-                "WHERE par_activedetailid = pardt_partydetailid " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM parties, partydetails
+                WHERE par_activedetailid = pardt_partydetailid
+                _LIMIT_
+                """);
 
         return PartyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -2088,10 +2194,12 @@ public class PartyControl
 
         try {
             var ps = PartyFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM parties, partydetails " +
-                    "WHERE par_partyid = pardt_par_partyid AND pardt_ptyp_partytypeid = ? AND pardt_thrutime = ? " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM parties, partydetails
+                    WHERE par_partyid = pardt_par_partyid AND pardt_ptyp_partytypeid = ? AND pardt_thrutime = ?
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2391,14 +2499,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partystatuses " +
-                "WHERE parst_par_partyid = ?");
+                """
+                SELECT _ALL_
+                FROM partystatuses
+                WHERE parst_par_partyid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partystatuses " +
-                "WHERE parst_par_partyid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partystatuses
+                WHERE parst_par_partyid = ?
+                FOR UPDATE
+                """);
         getPartyStatusQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2442,17 +2554,21 @@ public class PartyControl
 
     public long countPartyAliasesByParty(Party party) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyaliases " +
-                "WHERE pal_par_partyid = ? AND pal_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partyaliases
+                WHERE pal_par_partyid = ? AND pal_thrutime = ?
+                """,
                 party, Session.MAX_TIME);
     }
 
     public long countPartyAliasesByPartyAliasType(PartyAliasType partyAliasType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyaliases " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partyaliases
+                WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ?
+                """,
                 partyAliasType, Session.MAX_TIME);
     }
 
@@ -2462,14 +2578,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliases " +
-                "WHERE pal_par_partyid = ? AND pal_pat_partyaliastypeid = ? AND pal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partyaliases
+                WHERE pal_par_partyid = ? AND pal_pat_partyaliastypeid = ? AND pal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliases " +
-                "WHERE pal_par_partyid = ? AND pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliases
+                WHERE pal_par_partyid = ? AND pal_pat_partyaliastypeid = ? AND pal_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2500,14 +2620,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliases " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partyaliases
+                WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliases " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliases
+                WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2529,17 +2653,21 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliases, partyaliastypes, partyaliastypedetails " +
-                "WHERE pal_par_partyid = ? AND pal_thrutime = ? " +
-                "AND pal_pat_partyaliastypeid = pat_partyaliastypeid AND pat_lastdetailid = patdt_partyaliastypedetailid " +
-                "ORDER BY patdt_sortorder, patdt_partyaliastypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyaliases, partyaliastypes, partyaliastypedetails
+                WHERE pal_par_partyid = ? AND pal_thrutime = ?
+                AND pal_pat_partyaliastypeid = pat_partyaliastypeid AND pat_lastdetailid = patdt_partyaliastypedetailid
+                ORDER BY patdt_sortorder, patdt_partyaliastypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliases " +
-                "WHERE pal_par_partyid = ? AND pal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliases
+                WHERE pal_par_partyid = ? AND pal_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyAliasesByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2562,17 +2690,21 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliases, parties, partydetails " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
-                "AND pal_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_par_partyid " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyaliases, parties, partydetails
+                WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ?
+                AND pal_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                ORDER BY pardt_par_partyid
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliases " +
-                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliases
+                WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyAliasesByPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2660,9 +2792,11 @@ public class PartyControl
         
         try {
             var ps = PartyRelationshipTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partyrelationshiptypes " +
-                    "WHERE prt_partyrelationshiptypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partyrelationshiptypes
+                    WHERE prt_partyrelationshiptypename = ?
+                    """);
             
             ps.setString(1, partyRelationshipTypeName);
             
@@ -2689,9 +2823,11 @@ public class PartyControl
         
         try {
             var ps = PartyRelationshipTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partyrelationshiptypedescriptions " +
-                    "WHERE prtd_prt_partyrelationshiptypeid = ? AND prtd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM partyrelationshiptypedescriptions
+                    WHERE prtd_prt_partyrelationshiptypeid = ? AND prtd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, partyRelationshipType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2785,16 +2921,20 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "AND patdt_partyaliastypename = ?");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                AND patdt_partyaliastypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "AND patdt_partyaliastypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                AND patdt_partyaliastypename = ?
+                FOR UPDATE
+                """);
         getPartyAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2826,16 +2966,20 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "AND patdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                AND patdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "AND patdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                AND patdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2861,16 +3005,20 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "ORDER BY patdt_sortorder, patdt_partyaliastypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                ORDER BY patdt_sortorder, patdt_partyaliastypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliastypes, partyaliastypedetails
+                WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?
+                FOR UPDATE
+                """);
         getPartyAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3046,14 +3194,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypedescriptions " +
-                "WHERE patd_pat_partyaliastypeid = ? AND patd_lang_languageid = ? AND patd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partyaliastypedescriptions
+                WHERE patd_pat_partyaliastypeid = ? AND patd_lang_languageid = ? AND patd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypedescriptions " +
-                "WHERE patd_pat_partyaliastypeid = ? AND patd_lang_languageid = ? AND patd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliastypedescriptions
+                WHERE patd_pat_partyaliastypeid = ? AND patd_lang_languageid = ? AND patd_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3084,16 +3236,20 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypedescriptions, languages " +
-                "WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? AND patd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyaliastypedescriptions, languages
+                WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? AND patd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyaliastypedescriptions " +
-                "WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyaliastypedescriptions
+                WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyAliasTypeDescriptionsByPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3212,14 +3368,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM roletypes " +
-                        "WHERE rtyp_roletypename = ?");
+                """
+                SELECT _ALL_
+                FROM roletypes
+                WHERE rtyp_roletypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM roletypes " +
-                        "WHERE rtyp_roletypename = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM roletypes
+                WHERE rtyp_roletypename = ?
+                FOR UPDATE
+                """);
         getRoleTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3242,14 +3402,18 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM roletypes " +
-                        "ORDER BY rtyp_roletypename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM roletypes
+                ORDER BY rtyp_roletypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM roletypes " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM roletypes
+                FOR UPDATE
+                """);
         getRoleTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3296,9 +3460,11 @@ public class PartyControl
         
         try {
             var ps = RoleTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM roletypedescriptions " +
-                    "WHERE rtypd_rtyp_roletypeid = ? AND rtypd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM roletypedescriptions
+                    WHERE rtypd_rtyp_roletypeid = ? AND rtypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, roleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -3347,14 +3513,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partygroups " +
-                        "WHERE pgp_par_partyid = ? AND pgp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partygroups
+                        WHERE pgp_par_partyid = ? AND pgp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partygroups " +
-                        "WHERE pgp_par_partyid = ? AND pgp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partygroups
+                        WHERE pgp_par_partyid = ? AND pgp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyGroupFactory.getInstance().prepareStatement(query);
@@ -3450,9 +3620,11 @@ public class PartyControl
 
     public long countPartyCompanies() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM partycompanies " +
-                        "WHERE pcomp_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partycompanies
+                WHERE pcomp_thrutime = ?
+                """,
                 Session.MAX_TIME);
     }
 
@@ -3467,14 +3639,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies " +
-                        "WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies
+                        WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies " +
-                        "WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies
+                        WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
@@ -3509,16 +3685,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies, partydetails " +
-                        "WHERE pcomp_isdefault = 1 AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
-                        "AND pardt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies, partydetails
+                        WHERE pcomp_isdefault = 1 AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid
+                        AND pardt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies, partydetails " +
-                        "WHERE pcomp_isdefault = 1 AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
-                        "AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies, partydetails
+                        WHERE pcomp_isdefault = 1 AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid
+                        AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
@@ -3553,16 +3733,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies, partydetails " +
-                        "WHERE pcomp_partycompanyname = ? AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
-                        "AND pardt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies, partydetails
+                        WHERE pcomp_partycompanyname = ? AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid
+                        AND pardt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies, partydetails " +
-                        "WHERE pcomp_partycompanyname = ? AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
-                        "AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies, partydetails
+                        WHERE pcomp_partycompanyname = ? AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid
+                        AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
@@ -3598,16 +3782,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies, partydetails " +
-                        "WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "ORDER BY pcomp_sortorder, pcomp_partycompanyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies, partydetails
+                        WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        ORDER BY pcomp_sortorder, pcomp_partycompanyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycompanies, partydetails " +
-                        "WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycompanies, partydetails
+                        WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCompanyFactory.getInstance().prepareStatement(query);
@@ -3756,9 +3944,11 @@ public class PartyControl
 
     public long countPartyDivisions(Party companyParty) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partydivisions " +
-                "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partydivisions
+                WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ?
+                """,
                 companyParty, Session.MAX_TIME);
     }
 
@@ -3773,14 +3963,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions " +
-                        "WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions
+                        WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions " +
-                        "WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions
+                        WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
@@ -3815,16 +4009,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
-                        "WHERE pdiv_companypartyid = ? AND pdiv_isdefault = 1 AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, partydetails
+                        WHERE pdiv_companypartyid = ? AND pdiv_isdefault = 1 AND pdiv_thrutime = ?
+                        AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
-                        "WHERE pdiv_companypartyid = ? AND pdiv_isdefault = 1 AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, partydetails
+                        WHERE pdiv_companypartyid = ? AND pdiv_isdefault = 1 AND pdiv_thrutime = ?
+                        AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
@@ -3860,16 +4058,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
-                        "WHERE pdiv_companypartyid = ? AND pdiv_partydivisionname = ? " +
-                        "AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, partydetails
+                        WHERE pdiv_companypartyid = ? AND pdiv_partydivisionname = ?
+                        AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
-                        "WHERE pdiv_companypartyid = ? AND pdiv_partydivisionname = ? " +
-                        "AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, partydetails
+                        WHERE pdiv_companypartyid = ? AND pdiv_partydivisionname = ?
+                        AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
@@ -3906,18 +4108,22 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
-                        "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "ORDER BY pdiv_sortorder, pdiv_partydivisionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, partydetails
+                        WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ?
+                        AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        ORDER BY pdiv_sortorder, pdiv_partydivisionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
-                        "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, partydetails
+                        WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ?
+                        AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
@@ -3949,18 +4155,22 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, parties, partydetails " +
-                        "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, parties, partydetails
+                        WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ?
+                        AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydivisions, parties, partydetails " +
-                        "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydivisions, parties, partydetails
+                        WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ?
+                        AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDivisionFactory.getInstance().prepareStatement(query);
@@ -4110,9 +4320,11 @@ public class PartyControl
 
     public long countPartyDepartments(Party divisionParty) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partydepartments " +
-                "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM partydepartments
+                WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ?
+                """,
                 divisionParty, Session.MAX_TIME);
     }
 
@@ -4127,14 +4339,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments " +
-                        "WHERE pdept_par_partyid = ? AND pdept_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments
+                        WHERE pdept_par_partyid = ? AND pdept_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments " +
-                        "WHERE pdept_par_partyid = ? AND pdept_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments
+                        WHERE pdept_par_partyid = ? AND pdept_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
@@ -4169,16 +4385,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, partydetails " +
-                        "WHERE pdept_divisionpartyid = ? AND pdept_isdefault = 1 AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, partydetails
+                        WHERE pdept_divisionpartyid = ? AND pdept_isdefault = 1 AND pdept_thrutime = ?
+                        AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, partydetails " +
-                        "WHERE pdept_divisionpartyid = ? AND pdept_isdefault = 1 AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, partydetails
+                        WHERE pdept_divisionpartyid = ? AND pdept_isdefault = 1 AND pdept_thrutime = ?
+                        AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
@@ -4215,16 +4435,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, partydetails " +
-                        "WHERE pdept_divisionpartyid = ? AND pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, partydetails
+                        WHERE pdept_divisionpartyid = ? AND pdept_partydepartmentname = ? AND pdept_thrutime = ?
+                        AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, partydetails " +
-                        "WHERE pdept_divisionpartyid = ? AND pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, partydetails
+                        WHERE pdept_divisionpartyid = ? AND pdept_partydepartmentname = ? AND pdept_thrutime = ?
+                        AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
@@ -4261,18 +4485,22 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, partydetails " +
-                        "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "ORDER BY pdept_sortorder, pdept_partydepartmentname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, partydetails
+                        WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ?
+                        AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        ORDER BY pdept_sortorder, pdept_partydepartmentname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, partydetails " +
-                        "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, partydetails
+                        WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ?
+                        AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
@@ -4304,18 +4532,22 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, parties, partydetails " +
-                        "WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, parties, partydetails
+                        WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ?
+                        AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partydepartments, parties, partydetails " +
-                        "WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partydepartments, parties, partydetails
+                        WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ?
+                        AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
@@ -4453,17 +4685,21 @@ public class PartyControl
 
     public long countPeopleByPersonalTitle(PersonalTitle personalTitle) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM people " +
-                "WHERE peop_pert_personaltitleid = ? AND peop_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM people
+                WHERE peop_pert_personaltitleid = ? AND peop_thrutime = ?
+                """,
                 personalTitle, Session.MAX_TIME);
     }
 
     public long countPeopleByNameSuffix(NameSuffix nameSuffix) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM people " +
-                "WHERE peop_nsfx_namesuffixid = ? AND peop_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM people
+                WHERE peop_nsfx_namesuffixid = ? AND peop_thrutime = ?
+                """,
                 nameSuffix, Session.MAX_TIME);
     }
 
@@ -4474,14 +4710,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM people " +
-                        "WHERE peop_par_partyid = ? AND peop_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM people
+                        WHERE peop_par_partyid = ? AND peop_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM people " +
-                        "WHERE peop_par_partyid = ? AND peop_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM people
+                        WHERE peop_par_partyid = ? AND peop_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PersonFactory.getInstance().prepareStatement(query);
@@ -4606,16 +4846,20 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ?
+                AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ?
+                AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyRelationshipQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -4641,17 +4885,21 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_thrutime = ? " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ?
+                AND prel_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ?
+                AND prel_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyRelationshipsByFromRelationshipQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -4677,17 +4925,21 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? " +
-                "AND prel_thrutime = ? " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ?
+                AND prel_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? " +
-                "AND prel_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ?
+                AND prel_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyRelationshipsByToRelationshipQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -4713,15 +4965,19 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_frompartyid = ? AND prel_thrutime = ? " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_frompartyid = ? AND prel_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_frompartyid = ? AND prel_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_frompartyid = ? AND prel_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyRelationshipsByFromPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -4744,15 +5000,19 @@ public class PartyControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_topartyid = ? AND prel_thrutime = ? " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_topartyid = ? AND prel_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyrelationships " +
-                "WHERE prel_topartyid = ? AND prel_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyrelationships
+                WHERE prel_topartyid = ? AND prel_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyRelationshipsByToPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -4848,14 +5108,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partytypeauditpolicies, partytypeauditpolicydetails " +
-                        "WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partytypeauditpolicies, partytypeauditpolicydetails
+                        WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partytypeauditpolicies, partytypeauditpolicydetails " +
-                        "WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partytypeauditpolicies, partytypeauditpolicydetails
+                        WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyTypeAuditPolicyFactory.getInstance().prepareStatement(query);
@@ -4957,14 +5221,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partytypelockoutpolicies, partytypelockoutpolicydetails " +
-                        "WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partytypelockoutpolicies, partytypelockoutpolicydetails
+                        WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partytypelockoutpolicies, partytypelockoutpolicydetails " +
-                        "WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partytypelockoutpolicies, partytypelockoutpolicydetails
+                        WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyTypeLockoutPolicyFactory.getInstance().prepareStatement(query);
@@ -5074,14 +5342,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partytypepasswordstringpolicies, partytypepasswordstringpolicydetails " +
-                        "WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partytypepasswordstringpolicies, partytypepasswordstringpolicydetails
+                        WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partytypepasswordstringpolicies, partytypepasswordstringpolicydetails " +
-                        "WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partytypepasswordstringpolicies, partytypepasswordstringpolicydetails
+                        WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyTypePasswordStringPolicyFactory.getInstance().prepareStatement(query);
@@ -5232,14 +5504,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM genders, genderdetails " +
-                        "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM genders, genderdetails
+                        WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM genders, genderdetails " +
-                        "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM genders, genderdetails
+                        WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GenderFactory.getInstance().prepareStatement(query);
@@ -5274,14 +5550,18 @@ public class PartyControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM genders, genderdetails " +
-                    "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM genders, genderdetails
+                    WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM genders, genderdetails " +
-                    "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM genders, genderdetails
+                    WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = GenderFactory.getInstance().prepareStatement(query);
@@ -5305,16 +5585,20 @@ public class PartyControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM genders, genderdetails " +
-                    "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
-                    "ORDER BY gndrdt_sortorder, gndrdt_gendername " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM genders, genderdetails
+                    WHERE gndr_activedetailid = gndrdt_genderdetailid
+                    ORDER BY gndrdt_sortorder, gndrdt_gendername
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM genders, genderdetails " +
-                    "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM genders, genderdetails
+                    WHERE gndr_activedetailid = gndrdt_genderdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = GenderFactory.getInstance().prepareStatement(query);
@@ -5473,14 +5757,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM genderdescriptions " +
-                        "WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM genderdescriptions
+                        WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM genderdescriptions " +
-                        "WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM genderdescriptions
+                        WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
@@ -5520,16 +5808,20 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM genderdescriptions, languages " +
-                        "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? AND gndrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM genderdescriptions, languages
+                        WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? AND gndrd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM genderdescriptions " +
-                        "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM genderdescriptions
+                        WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
@@ -5679,16 +5971,20 @@ public class PartyControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM birthdayformats, birthdayformatdetails " +
-                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
-                    "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM birthdayformats, birthdayformatdetails
+                    WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid
+                    ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM birthdayformats, birthdayformatdetails " +
-                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM birthdayformats, birthdayformatdetails
+                    WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
@@ -5711,18 +6007,22 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
-                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
-                        "AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes
+                        WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid
+                        AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
-                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
-                        "AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes
+                        WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid
+                        AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
@@ -5750,14 +6050,18 @@ public class PartyControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM birthdayformats, birthdayformatdetails " +
-                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM birthdayformats, birthdayformatdetails
+                    WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM birthdayformats, birthdayformatdetails " +
-                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM birthdayformats, birthdayformatdetails
+                    WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
@@ -5784,14 +6088,18 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformats, birthdayformatdetails " +
-                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_birthdayformatname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformats, birthdayformatdetails
+                        WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_birthdayformatname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformats, birthdayformatdetails " +
-                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_birthdayformatname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformats, birthdayformatdetails
+                        WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_birthdayformatname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
@@ -5971,14 +6279,18 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformatdescriptions " +
-                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_lang_languageid = ? AND bdyfd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformatdescriptions
+                        WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_lang_languageid = ? AND bdyfd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformatdescriptions " +
-                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_lang_languageid = ? AND bdyfd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformatdescriptions
+                        WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_lang_languageid = ? AND bdyfd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
@@ -6018,17 +6330,21 @@ public class PartyControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformatdescriptions, languages " +
-                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ? " +
-                        "AND bdyfd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformatdescriptions, languages
+                        WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ?
+                        AND bdyfd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM birthdayformatdescriptions " +
-                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM birthdayformatdescriptions
+                        WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
@@ -6140,14 +6456,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM profiles " +
-                        "WHERE prfl_par_partyid = ? AND prfl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM profiles
+                        WHERE prfl_par_partyid = ? AND prfl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM profiles " +
-                        "WHERE prfl_par_partyid = ? AND prfl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM profiles
+                        WHERE prfl_par_partyid = ? AND prfl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ProfileFactory.getInstance().prepareStatement(query);
@@ -6186,14 +6506,18 @@ public class PartyControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM profiles " +
-                        "WHERE prfl_nickname = ? AND prfl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM profiles
+                        WHERE prfl_nickname = ? AND prfl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM profiles " +
-                        "WHERE prfl_nickname = ? AND prfl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM profiles
+                        WHERE prfl_nickname = ? AND prfl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = ProfileFactory.getInstance().prepareStatement(query);

@@ -101,20 +101,27 @@ public class PaymentMethodTypeControl
 
     public long countPaymentMethodTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                        "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid");
+                """
+                SELECT COUNT(*)
+                FROM paymentmethodtypes, paymentmethodtypedetails
+                WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid
+                """);
     }
 
     private static final Map<EntityPermission, String> getPaymentMethodTypeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_paymentmethodtypename = ? AND pmtypdt_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_paymentmethodtypename = ? AND pmtypdt_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_paymentmethodtypename = ? AND pmtypdt_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_paymentmethodtypename = ? AND pmtypdt_thrutime = ?
+            FOR UPDATE
+            """);
 
     public PaymentMethodType getPaymentMethodTypeByName(final String paymentMethodTypeName, final EntityPermission entityPermission) {
         return PaymentMethodTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentMethodTypeByNameQueries,
@@ -139,14 +146,18 @@ public class PaymentMethodTypeControl
 
     private static final Map<EntityPermission, String> getDefaultPaymentMethodTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_isdefault = 1 AND pmtypdt_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_isdefault = 1 AND pmtypdt_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_isdefault = 1 AND pmtypdt_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_isdefault = 1 AND pmtypdt_thrutime = ?
+            FOR UPDATE
+            """);
 
     public PaymentMethodType getDefaultPaymentMethodType(final EntityPermission entityPermission) {
         return PaymentMethodTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPaymentMethodTypeQueries,
@@ -167,14 +178,20 @@ public class PaymentMethodTypeControl
 
     private static final Map<EntityPermission, String> getPaymentMethodTypesQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " + "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_thrutime = ? " +
-                    "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_thrutime = ?
+            ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentmethodtypes, paymentmethodtypedetails " +
-                    "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypes, paymentmethodtypedetails
+            WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_thrutime = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentMethodType> getPaymentMethodTypes(final EntityPermission entityPermission) {
         return PaymentMethodTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypesQueries,
@@ -337,14 +354,18 @@ public class PaymentMethodTypeControl
 
     private static final Map<EntityPermission, String> getPaymentMethodTypeDescriptionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypedescriptions " +
-                    "WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_lang_languageid = ? AND pmtypd_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypedescriptions
+            WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_lang_languageid = ? AND pmtypd_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypedescriptions " +
-                    "WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_lang_languageid = ? AND pmtypd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypedescriptions
+            WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_lang_languageid = ? AND pmtypd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private PaymentMethodTypeDescription getPaymentMethodTypeDescription(final PaymentMethodType paymentMethodType,
             final Language language, final EntityPermission entityPermission) {
@@ -373,16 +394,20 @@ public class PaymentMethodTypeControl
 
     private static final Map<EntityPermission, String> getPaymentMethodTypeDescriptionsByPaymentMethodTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypedescriptions, languages " +
-                    "WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_thrutime = ? AND pmtypd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypedescriptions, languages
+            WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_thrutime = ? AND pmtypd_lang_languageid = lang_languageid
+            ORDER BY lang_sortorder, lang_languageisoname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentmethodtypedescriptions " +
-                    "WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentmethodtypedescriptions
+            WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentMethodTypeDescription> getPaymentMethodTypeDescriptionsByPaymentMethodType(final PaymentMethodType paymentMethodType,
             final EntityPermission entityPermission) {

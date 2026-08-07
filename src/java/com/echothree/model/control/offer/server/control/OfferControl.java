@@ -111,40 +111,50 @@ public class OfferControl
 
     public long countOffers() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid");
+                """
+                SELECT COUNT(*)
+                FROM offers, offerdetails
+                WHERE ofr_activedetailid = ofrdt_offerdetailid
+                """);
     }
 
     public long countOffersBySalesOrderSequence(Sequence sequence) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_salesordersequenceid = ?",
+                """
+                SELECT COUNT(*)
+                FROM offers, offerdetails
+                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_salesordersequenceid = ?
+                """,
                 sequence);
     }
 
     public long countOffersByDepartmentParty(Party departmentParty) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM offers, offerdetails
+                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?
+                """,
                 departmentParty);
     }
 
     public long countOffersBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM offers, offerdetails
+                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?
+                """,
                 selector);
     }
 
     public long countOffersByFilter(Filter filter) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritempricefilterid = ?",
+                """
+                SELECT COUNT(*)
+                FROM offers, offerdetails
+                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritempricefilterid = ?
+                """,
                 filter);
     }
 
@@ -168,14 +178,18 @@ public class OfferControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM offers, offerdetails " +
-                    "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM offers, offerdetails
+                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM offers, offerdetails " +
-                    "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM offers, offerdetails
+                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = OfferFactory.getInstance().prepareStatement(query);
@@ -202,14 +216,18 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offers, offerdetails " +
-                        "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offers, offerdetails
+                        WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offers, offerdetails " +
-                        "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offers, offerdetails
+                        WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferFactory.getInstance().prepareStatement(query);
@@ -245,11 +263,13 @@ public class OfferControl
 
         try {
             var ps = OfferFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM offers, offerdetails " +
-                    "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ? " +
-                    "ORDER BY ofrdt_sortorder, ofrdt_offername " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM offers, offerdetails
+                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?
+                    ORDER BY ofrdt_sortorder, ofrdt_offername
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, departmentParty.getPrimaryKey().getEntityId());
 
@@ -266,10 +286,12 @@ public class OfferControl
 
         try {
             var ps = OfferFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM offers, offerdetails " +
-                    "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ? " +
-                    "ORDER BY ofrdt_sortorder, ofrdt_offername");
+                    """
+                    SELECT _ALL_
+                    FROM offers, offerdetails
+                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?
+                    ORDER BY ofrdt_sortorder, ofrdt_offername
+                    """);
 
             ps.setLong(1, offerItemSelector.getPrimaryKey().getEntityId());
 
@@ -283,11 +305,13 @@ public class OfferControl
 
     private List<Offer> getOffers(EntityPermission entityPermission) {
         var ps = OfferFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ "
-                + "FROM offers, offerdetails "
-                + "WHERE ofr_activedetailid = ofrdt_offerdetailid "
-                + "ORDER BY ofrdt_sortorder, ofrdt_offername "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM offers, offerdetails
+                WHERE ofr_activedetailid = ofrdt_offerdetailid
+                ORDER BY ofrdt_sortorder, ofrdt_offername
+                _LIMIT_
+                """);
 
         return OfferFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
@@ -303,9 +327,11 @@ public class OfferControl
     /** Gets a List that contains all the Selectors used by Offers. */
     public List<Selector> getDistinctOfferItemSelectors() {
         var ps = SelectorFactory.getInstance().prepareStatement(
-                "SELECT DISTINCT _ALL_ " +
-                "FROM offers, offerdetails, selectors " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = sl_selectorid");
+                """
+                SELECT DISTINCT _ALL_
+                FROM offers, offerdetails, selectors
+                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = sl_selectorid
+                """);
         
         return SelectorFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -470,14 +496,18 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerdescriptions " +
-                        "WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offerdescriptions
+                        WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerdescriptions " +
-                        "WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offerdescriptions
+                        WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
@@ -517,15 +547,19 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerdescriptions, languages " +
-                        "WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ? AND ofrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM offerdescriptions, languages
+                        WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ? AND ofrd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerdescriptions " +
-                        "WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offerdescriptions
+                        WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferDescriptionFactory.getInstance().prepareStatement(query);
@@ -626,14 +660,18 @@ public class OfferControl
 
     private static final Map<EntityPermission, String> getOfferTimeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM offertimes " +
-                    "WHERE ofrtm_ofr_offerid = ?",
+            """
+            SELECT _ALL_
+            FROM offertimes
+            WHERE ofrtm_ofr_offerid = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM offertimes " +
-                    "WHERE ofrtm_ofr_offerid = ? " +
-                    "FOR UPDATE"
+            """
+            SELECT _ALL_
+            FROM offertimes
+            WHERE ofrtm_ofr_offerid = ?
+            FOR UPDATE
+            """
     );
 
     private OfferTime getOfferTime(Offer offer, EntityPermission entityPermission) {
@@ -705,14 +743,18 @@ public class OfferControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes " +
-                        "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes " +
-                        "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
@@ -750,14 +792,18 @@ public class OfferControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes " +
-                        "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_isdefault = 1 AND ofrcuty_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_isdefault = 1 AND ofrcuty_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes " +
-                        "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_isdefault = 1 AND ofrcuty_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_isdefault = 1 AND ofrcuty_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
@@ -794,17 +840,21 @@ public class OfferControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes, customertypes, customertypedetails " +
-                        "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ? " +
-                        "AND ofrcuty_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid " +
-                        "ORDER BY cutydt_sortorder, cutydt_customertypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes, customertypes, customertypedetails
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ?
+                        AND ofrcuty_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
+                        ORDER BY cutydt_sortorder, cutydt_customertypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes " +
-                        "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
@@ -835,17 +885,21 @@ public class OfferControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes, offers, offerdetails " +
-                        "WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ? " +
-                        "AND ofrcuty_ofr_offerid = ofr_offerid AND ofr_lastdetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes, offers, offerdetails
+                        WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
+                        AND ofrcuty_ofr_offerid = ofr_offerid AND ofr_lastdetailid = ofrdt_offerdetailid
+                        ORDER BY ofrdt_sortorder, ofrdt_offername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offercustomertypes " +
-                        "WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offercustomertypes
+                        WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferCustomerTypeFactory.getInstance().prepareStatement(query);
@@ -1008,14 +1062,18 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerchaintypes " +
-                        "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerchaintypes " +
-                        "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
@@ -1055,18 +1113,22 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM offerchaintypes, chaintypes, chaintypedetails, chainkinds, chainkinddetails "
-                        + "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ? "
-                        + "AND ofrchntyp_chntyp_chaintypeid = chntyp_chaintypeid AND chntyp_lastdetailid = chntypdt_chaintypedetailid "
-                        + "AND chntypdt_chnk_chainkindid = chnk_chainkindid AND chnk_lastdetailid = chnkdt_chainkinddetailid "
-                        + "ORDER BY chntypdt_sortorder, chntypdt_chaintypename, chnkdt_sortorder, chnkdt_chainkindname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes, chaintypes, chaintypedetails, chainkinds, chainkinddetails
+                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ?
+                        AND ofrchntyp_chntyp_chaintypeid = chntyp_chaintypeid AND chntyp_lastdetailid = chntypdt_chaintypedetailid
+                        AND chntypdt_chnk_chainkindid = chnk_chainkindid AND chnk_lastdetailid = chnkdt_chainkinddetailid
+                        ORDER BY chntypdt_sortorder, chntypdt_chaintypename, chnkdt_sortorder, chnkdt_chainkindname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM offerchaintypes "
-                        + "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
@@ -1097,17 +1159,21 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerchaintypes, offers, offerdetails " +
-                        "WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
-                        "AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes, offers, offerdetails
+                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
+                        AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
+                        ORDER BY ofrdt_sortorder, ofrdt_offername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerchaintypes " +
-                        "WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
@@ -1138,17 +1204,21 @@ public class OfferControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerchaintypes, offers, offerdetails " +
-                        "WHERE ofrchntyp_chn_chainid = ? AND ofrchntyp_thrutime = ? " +
-                        "AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes, offers, offerdetails
+                        WHERE ofrchntyp_chn_chainid = ? AND ofrchntyp_thrutime = ?
+                        AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
+                        ORDER BY ofrdt_sortorder, ofrdt_offername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offerchaintypes " +
-                        "WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferChainTypeFactory.getInstance().prepareStatement(query);
@@ -1256,11 +1326,13 @@ public class OfferControl
         try {
             var offerControl = Session.getModelController(OfferControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 

@@ -172,15 +172,19 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "ORDER BY cmnttypdt_sortorder, cmnttypdt_commenttypename";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        ORDER BY cmnttypdt_sortorder, cmnttypdt_commenttypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentTypeFactory.getInstance().prepareStatement(query);
@@ -210,16 +214,20 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "AND cmnttypdt_commenttypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        AND cmnttypdt_commenttypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "AND cmnttypdt_commenttypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        AND cmnttypdt_commenttypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentTypeFactory.getInstance().prepareStatement(query);
@@ -341,14 +349,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -388,15 +400,19 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions, languages " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? AND cmnttypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions, languages
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? AND cmnttypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -538,17 +554,21 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? " +
-                        "ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ?
+                        ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
@@ -579,16 +599,20 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
@@ -707,14 +731,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -755,15 +783,19 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions, languages " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? AND cmntutypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions, languages
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? AND cmntutypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -884,14 +916,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentFactory.getInstance().prepareStatement(query);
@@ -933,14 +969,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentFactory.getInstance().prepareStatement(query);
@@ -970,14 +1010,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentFactory.getInstance().prepareStatement(query);
@@ -1007,14 +1051,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentFactory.getInstance().prepareStatement(query);
@@ -1045,16 +1093,20 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid " +
-                        "AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid
+                        AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid " +
-                        "AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid
+                        AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentFactory.getInstance().prepareStatement(query);
@@ -1260,14 +1312,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentstrings " +
-                        "WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentstrings
+                        WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentstrings " +
-                        "WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentstrings
+                        WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentStringFactory.getInstance().prepareStatement(query);
@@ -1345,14 +1401,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentblobs " +
-                        "WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentblobs
+                        WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentblobs " +
-                        "WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentblobs
+                        WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentBlobFactory.getInstance().prepareStatement(query);
@@ -1431,14 +1491,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentclobs " +
-                        "WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentclobs
+                        WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentclobs " +
-                        "WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentclobs
+                        WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentClobFactory.getInstance().prepareStatement(query);
@@ -1517,14 +1581,18 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageFactory.getInstance().prepareStatement(query);
@@ -1556,17 +1624,21 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages, commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ? " +
-                        "AND cmntu_cmntutyp_commentusagetypeid = cmntutyp_commentusagetypeid " +
-                        "AND cmntutyp_lastdetailid = cmntutypdt_commentusagetypedetailid " +
-                        "ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages, commentusagetypes, commentusagetypedetails
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ?
+                        AND cmntu_cmntutyp_commentusagetypeid = cmntutyp_commentusagetypeid
+                        AND cmntutyp_lastdetailid = cmntutypdt_commentusagetypedetailid
+                        ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageFactory.getInstance().prepareStatement(query);
@@ -1597,17 +1669,21 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages, comments, commentdetails " +
-                        "WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
-                        "AND cmntu_cmnt_commentid = cmnt_commentid " +
-                        "AND cmnt_lastdetailid = cmntdt_commentdetailid " +
-                        "ORDER BY cmntdt_commentname";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages, comments, commentdetails
+                        WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        AND cmntu_cmnt_commentid = cmnt_commentid
+                        AND cmnt_lastdetailid = cmntdt_commentdetailid
+                        ORDER BY cmntdt_commentname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CommentUsageFactory.getInstance().prepareStatement(query);

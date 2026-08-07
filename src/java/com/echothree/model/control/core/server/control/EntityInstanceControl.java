@@ -164,15 +164,19 @@ public class EntityInstanceControl
 
     public long countEntityInstances() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityinstances");
+                """
+                SELECT COUNT(*)
+                FROM entityinstances
+                """);
     }
 
     public long countEntityInstancesByEntityType(EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityinstances
+                WHERE eni_ent_entitytypeid = ?
+                """,
                 entityType);
     }
 
@@ -181,11 +185,13 @@ public class EntityInstanceControl
 
         try {
             var ps = EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entityinstances " +
-                            "WHERE eni_ent_entitytypeid = ? " +
-                            "ORDER BY eni_entityuniqueid " +
-                            "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM entityinstances
+                    WHERE eni_ent_entitytypeid = ?
+                    ORDER BY eni_entityuniqueid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
 
@@ -204,14 +210,18 @@ public class EntityInstanceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
@@ -242,14 +252,18 @@ public class EntityInstanceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_uuid = UUID_TO_BIN(?)";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_uuid = UUID_TO_BIN(?)
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_uuid = UUID_TO_BIN(?) " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_uuid = UUID_TO_BIN(?)
+                        FOR UPDATE
+                        """;
             }
 
             var ps = EntityInstanceFactory.getInstance().prepareStatement(query);

@@ -74,9 +74,11 @@ public class OfferNameElementControl
 
     public long countOfferNameElements() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offernameelements, offernameelementdetails " +
-                "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid");
+                """
+                SELECT COUNT(*)
+                FROM offernameelements, offernameelementdetails
+                WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferNameElement */
@@ -102,14 +104,18 @@ public class OfferNameElementControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offernameelements, offernameelementdetails " +
-                        "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offernameelements, offernameelementdetails
+                        WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offernameelements, offernameelementdetails " +
-                        "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offernameelements, offernameelementdetails
+                        WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferNameElementFactory.getInstance().prepareStatement(query);
@@ -144,16 +150,20 @@ public class OfferNameElementControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM offernameelements, offernameelementdetails " +
-                    "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid " +
-                    "ORDER BY ofrnedt_offset " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM offernameelements, offernameelementdetails
+                    WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid
+                    ORDER BY ofrnedt_offset
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM offernameelements, offernameelementdetails " +
-                    "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM offernameelements, offernameelementdetails
+                    WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = OfferNameElementFactory.getInstance().prepareStatement(query);
@@ -246,14 +256,18 @@ public class OfferNameElementControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offernameelementdescriptions " +
-                        "WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offernameelementdescriptions
+                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offernameelementdescriptions " +
-                        "WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offernameelementdescriptions
+                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);
@@ -294,15 +308,19 @@ public class OfferNameElementControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offernameelementdescriptions, languages " +
-                        "WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ? AND ofrned_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM offernameelementdescriptions, languages
+                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ? AND ofrned_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offernameelementdescriptions " +
-                        "WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offernameelementdescriptions
+                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = OfferNameElementDescriptionFactory.getInstance().prepareStatement(query);

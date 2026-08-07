@@ -254,14 +254,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_contactlisttypename = ?");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_contactlisttypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_contactlisttypename = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_contactlisttypename = ?
+                FOR UPDATE
+                """);
         getContactListTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -292,14 +296,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultContactListTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -325,16 +333,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid
+                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid
+                FOR UPDATE
+                """);
         getContactListTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -356,16 +368,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ? "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ?
+                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ?
+                FOR UPDATE
+                """);
         getContactListTypesByConfirmationRequestChainQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -388,16 +404,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ? "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ?
+                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ?
+                FOR UPDATE
+                """);
         getContactListTypesBySubscribeChainQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -420,16 +440,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ? "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ?
+                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypes, contactlisttypedetails "
-                + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypes, contactlisttypedetails
+                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ?
+                FOR UPDATE
+                """);
         getContactListTypesByUnsubscribeChainQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -618,14 +642,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypedescriptions "
-                + "WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_lang_languageid = ? AND clsttypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM contactlisttypedescriptions
+                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_lang_languageid = ? AND clsttypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypedescriptions "
-                + "WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_lang_languageid = ? AND clsttypd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypedescriptions
+                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_lang_languageid = ? AND clsttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -656,16 +684,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypedescriptions, languages "
-                + "WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ? AND clsttypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlisttypedescriptions, languages
+                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ? AND clsttypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlisttypedescriptions "
-                + "WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlisttypedescriptions
+                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListTypeDescriptionsByContactListTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -810,14 +842,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroups, contactlistgroupdetails "
-                + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_contactlistgroupname = ?");
+                """
+                SELECT _ALL_
+                FROM contactlistgroups, contactlistgroupdetails
+                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_contactlistgroupname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroups, contactlistgroupdetails "
-                + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_contactlistgroupname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistgroups, contactlistgroupdetails
+                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_contactlistgroupname = ?
+                FOR UPDATE
+                """);
         getContactListGroupByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -848,14 +884,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroups, contactlistgroupdetails "
-                + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM contactlistgroups, contactlistgroupdetails
+                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroups, contactlistgroupdetails "
-                + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistgroups, contactlistgroupdetails
+                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -881,16 +921,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroups, contactlistgroupdetails "
-                + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid "
-                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistgroups, contactlistgroupdetails
+                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid
+                ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroups, contactlistgroupdetails "
-                + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistgroups, contactlistgroupdetails
+                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid
+                FOR UPDATE
+                """);
         getContactListGroupsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1053,14 +1097,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroupdescriptions "
-                + "WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_lang_languageid = ? AND clstgrpd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM contactlistgroupdescriptions
+                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_lang_languageid = ? AND clstgrpd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroupdescriptions "
-                + "WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_lang_languageid = ? AND clstgrpd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistgroupdescriptions
+                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_lang_languageid = ? AND clstgrpd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListGroupDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1091,16 +1139,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroupdescriptions, languages "
-                + "WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ? AND clstgrpd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistgroupdescriptions, languages
+                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ? AND clstgrpd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistgroupdescriptions "
-                + "WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistgroupdescriptions
+                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListGroupDescriptionsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1245,14 +1297,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencies, contactlistfrequencydetails "
-                + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_contactlistfrequencyname = ?");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencies, contactlistfrequencydetails
+                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_contactlistfrequencyname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencies, contactlistfrequencydetails "
-                + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_contactlistfrequencyname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencies, contactlistfrequencydetails
+                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_contactlistfrequencyname = ?
+                FOR UPDATE
+                """);
         getContactListFrequencyByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1283,14 +1339,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencies, contactlistfrequencydetails "
-                + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencies, contactlistfrequencydetails
+                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencies, contactlistfrequencydetails "
-                + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencies, contactlistfrequencydetails
+                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1316,16 +1376,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencies, contactlistfrequencydetails "
-                + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid "
-                + "ORDER BY clstfrqdt_sortorder, clstfrqdt_contactlistfrequencyname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencies, contactlistfrequencydetails
+                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid
+                ORDER BY clstfrqdt_sortorder, clstfrqdt_contactlistfrequencyname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencies, contactlistfrequencydetails "
-                + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencies, contactlistfrequencydetails
+                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid
+                FOR UPDATE
+                """);
         getContactListFrequenciesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1485,14 +1549,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencydescriptions "
-                + "WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_lang_languageid = ? AND clstfrqd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencydescriptions
+                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_lang_languageid = ? AND clstfrqd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencydescriptions "
-                + "WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_lang_languageid = ? AND clstfrqd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencydescriptions
+                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_lang_languageid = ? AND clstfrqd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListFrequencyDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1523,16 +1591,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencydescriptions, languages "
-                + "WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ? AND clstfrqd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencydescriptions, languages
+                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ? AND clstfrqd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistfrequencydescriptions "
-                + "WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistfrequencydescriptions
+                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListFrequencyDescriptionsByContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1714,14 +1786,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_contactlistname = ?");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_contactlistname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_contactlistname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_contactlistname = ?
+                FOR UPDATE
+                """);
         getContactListByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1752,14 +1828,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1785,16 +1865,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                FOR UPDATE
+                """);
         getContactListsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1816,18 +1900,22 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_clstgrp_contactlistgroupid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_clstgrp_contactlistgroupid = ?
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_clstgrp_contactlistgroupid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_clstgrp_contactlistgroupid = ?
+                FOR UPDATE
+                """);
         getContactListsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1850,18 +1938,22 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_clsttyp_contactlisttypeid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_clsttyp_contactlisttypeid = ?
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_clsttyp_contactlisttypeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_clsttyp_contactlisttypeid = ?
+                FOR UPDATE
+                """);
         getContactListsByContactListTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1884,18 +1976,22 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_clstfrq_contactlistfrequencyid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_clstfrq_contactlistfrequencyid = ?
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_clstfrq_contactlistfrequencyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_clstfrq_contactlistfrequencyid = ?
+                FOR UPDATE
+                """);
         getContactListsByContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1918,18 +2014,22 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_wkflen_workflowentranceid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_wkflen_workflowentranceid = ?
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlists, contactlistdetails "
-                + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "AND clstdt_wkflen_workflowentranceid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlists, contactlistdetails
+                WHERE clst_activedetailid = clstdt_contactlistdetailid
+                AND clstdt_wkflen_workflowentranceid = ?
+                FOR UPDATE
+                """);
         getContactListsByWorkflowEntranceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2122,14 +2222,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistdescriptions "
-                + "WHERE clstd_clst_contactlistid = ? AND clstd_lang_languageid = ? AND clstd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM contactlistdescriptions
+                WHERE clstd_clst_contactlistid = ? AND clstd_lang_languageid = ? AND clstd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistdescriptions "
-                + "WHERE clstd_clst_contactlistid = ? AND clstd_lang_languageid = ? AND clstd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistdescriptions
+                WHERE clstd_clst_contactlistid = ? AND clstd_lang_languageid = ? AND clstd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2160,16 +2264,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistdescriptions, languages "
-                + "WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ? AND clstd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistdescriptions, languages
+                WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ? AND clstd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistdescriptions "
-                + "WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistdescriptions
+                WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ?
+                FOR UPDATE
+                """);
         getContactListDescriptionsByContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2321,14 +2429,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? AND parclstdt_clst_contactlistid = ?");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? AND parclstdt_clst_contactlistid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? AND parclstdt_clst_contactlistid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? AND parclstdt_clst_contactlistid = ?
+                FOR UPDATE
+                """);
         getPartyContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2359,18 +2471,22 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails, contactlists, contactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? "
-                + "AND parclstdt_clst_contactlistid = clst_contactlistid "
-                + "AND clst_activedetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails, contactlists, contactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ?
+                AND parclstdt_clst_contactlistid = clst_contactlistid
+                AND clst_activedetailid = clstdt_contactlistdetailid
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getPartyContactListsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2393,18 +2509,22 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails, parties, partydetails, partytypes "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ? "
-                + "AND parclstdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails, parties, partydetails, partytypes
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ?
+                AND parclstdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY pardt_partyname, ptyp_sortorder, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ?
+                FOR UPDATE
+                """);
         getPartyContactListsByContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2427,14 +2547,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_preferredcontactlistcontactmechanismpurposeid = ?");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_preferredcontactlistcontactmechanismpurposeid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partycontactlists, partycontactlistdetails "
-                + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_preferredcontactlistcontactmechanismpurposeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partycontactlists, partycontactlistdetails
+                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_preferredcontactlistcontactmechanismpurposeid = ?
+                FOR UPDATE
+                """);
         getPartyContactListsByPreferredContactListContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2603,14 +2727,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlistgroups "
-                + "WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlistgroups
+                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlistgroups "
-                + "WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlistgroups
+                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2641,17 +2769,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlistgroups, contactlistgroups, contactlistgroupdetails "
-                + "WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ? "
-                + "AND ptypclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid "
-                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlistgroups, contactlistgroups, contactlistgroupdetails
+                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ?
+                AND ptypclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid
+                ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlistgroups "
-                + "WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlistgroups
+                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeContactListGroupsByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2674,17 +2806,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlistgroups, partytypes "
-                + "WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ? "
-                + "AND ptypclstgrp_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlistgroups, partytypes
+                WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
+                AND ptypclstgrp_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_sortorder, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlistgroups "
-                + "WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlistgroups
+                WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeContactListGroupsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2798,14 +2934,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlists "
-                + "WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlists
+                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlists "
-                + "WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlists
+                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2836,17 +2976,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlists, contactlists, contactlistdetails "
-                + "WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ? "
-                + "AND ptypclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlists, contactlists, contactlistdetails
+                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ?
+                AND ptypclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlists "
-                + "WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlists
+                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeContactListsByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2869,17 +3013,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlists, partytypes "
-                + "WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ? "
-                + "AND ptypclst_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlists, partytypes
+                WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
+                AND ptypclst_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_sortorder, ptyp_partytypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM partytypecontactlists "
-                + "WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partytypecontactlists
+                WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyTypeContactListsByContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2994,14 +3142,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlistgroups "
-                + "WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlistgroups
+                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlistgroups "
-                + "WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlistgroups
+                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3032,17 +3184,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlistgroups, contactlistgroups, contactlistgroupdetails "
-                + "WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ? "
-                + "AND cutyclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid "
-                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlistgroups, contactlistgroups, contactlistgroupdetails
+                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ?
+                AND cutyclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid
+                ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlistgroups "
-                + "WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlistgroups
+                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeContactListGroupsByCustomerTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3065,17 +3221,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlistgroups, customertypes, customertypedetails "
-                + "WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ? "
-                + "AND cutyclstgrp_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid "
-                + "ORDER BY cutydt_sortorder, cutydt_customertypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlistgroups, customertypes, customertypedetails
+                WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
+                AND cutyclstgrp_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
+                ORDER BY cutydt_sortorder, cutydt_customertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlistgroups "
-                + "WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlistgroups
+                WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeContactListGroupsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3189,14 +3349,18 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlists "
-                + "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlists
+                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlists "
-                + "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlists
+                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3227,17 +3391,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlists, contactlists, contactlistdetails "
-                + "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ? "
-                + "AND cutyclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlists, contactlists, contactlistdetails
+                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?
+                AND cutyclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlists "
-                + "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlists
+                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeContactListsByCustomerTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3260,17 +3428,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlists, customertypes, customertypedetails "
-                + "WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ? "
-                + "AND cutyclst_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid "
-                + "ORDER BY cutydt_sortorder, cutydt_customertypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlists, customertypes, customertypedetails
+                WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
+                AND cutyclst_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
+                ORDER BY cutydt_sortorder, cutydt_customertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM customertypecontactlists "
-                + "WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM customertypecontactlists
+                WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
+                FOR UPDATE
+                """);
         getCustomerTypeContactListsByContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3420,16 +3592,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid "
-                + "AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_cmpr_contactmechanismpurposeid = ?");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
+                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid "
-                + "AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_cmpr_contactmechanismpurposeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
+                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
+                FOR UPDATE
+                """);
         getContactListContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3460,16 +3636,20 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid "
-                + "AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
+                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid "
-                + "AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
+                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultContactListContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3496,17 +3676,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails, contactmechanismpurposes "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_clst_contactlistid = ? "
-                + "AND clstcmprdt_cmpr_contactmechanismpurposeid = cmpr_contactmechanismpurposeid "
-                + "ORDER BY cmpr_sortorder, cmpr_contactmechanismpurposename "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails, contactmechanismpurposes
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_clst_contactlistid = ?
+                AND clstcmprdt_cmpr_contactmechanismpurposeid = cmpr_contactmechanismpurposeid
+                ORDER BY cmpr_sortorder, cmpr_contactmechanismpurposename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_clst_contactlistid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_clst_contactlistid = ?
+                FOR UPDATE
+                """);
         getContactListContactMechanismPurposesByContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -3529,17 +3713,21 @@ public class ContactListControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails, contactLists, contactlistdetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_cmpr_contactmechanismpurposeid = ? "
-                + "AND clstcmprdt_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails, contactLists, contactlistdetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
+                AND clstcmprdt_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid
+                ORDER BY clstdt_sortorder, clstdt_contactlistname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails "
-                + "WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_cmpr_contactmechanismpurposeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
+                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
+                FOR UPDATE
+                """);
         getContactListContactMechanismPurposesByContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
     }
 

@@ -165,14 +165,18 @@ public class PaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethods, paymentmethoddetails " +
-                        "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethods, paymentmethoddetails
+                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethods, paymentmethoddetails " +
-                        "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethods, paymentmethoddetails
+                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
@@ -203,16 +207,20 @@ public class PaymentMethodControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentmethods, paymentmethoddetails " +
-                    "WHERE pm_activedetailid = pmdt_paymentmethoddetailid " +
-                    "ORDER BY pmdt_sortorder, pmdt_paymentmethodname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentmethods, paymentmethoddetails
+                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid
+                    ORDER BY pmdt_sortorder, pmdt_paymentmethodname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentmethods, paymentmethoddetails " +
-                    "WHERE pm_activedetailid = pmdt_paymentmethoddetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentmethods, paymentmethoddetails
+                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
@@ -235,16 +243,20 @@ public class PaymentMethodControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethods, paymentmethoddetails " +
-                        "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ? " +
-                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethods, paymentmethoddetails
+                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ?
+                        ORDER BY pmdt_sortorder, pmdt_paymentmethodname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethods, paymentmethoddetails " +
-                        "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethods, paymentmethoddetails
+                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
@@ -274,16 +286,20 @@ public class PaymentMethodControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethods, paymentmethoddetails " +
-                        "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ? " +
-                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethods, paymentmethoddetails
+                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ?
+                        ORDER BY pmdt_sortorder, pmdt_paymentmethodname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethods, paymentmethoddetails " +
-                        "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethods, paymentmethoddetails
+                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
@@ -310,14 +326,18 @@ public class PaymentMethodControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentmethods, paymentmethoddetails " +
-                    "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentmethods, paymentmethoddetails
+                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentmethods, paymentmethoddetails " +
-                    "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentmethods, paymentmethoddetails
+                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PaymentMethodFactory.getInstance().prepareStatement(query);
@@ -511,14 +531,18 @@ public class PaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethoddescriptions " +
-                        "WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethoddescriptions
+                        WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethoddescriptions " +
-                        "WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethoddescriptions
+                        WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodDescriptionFactory.getInstance().prepareStatement(query);
@@ -558,16 +582,20 @@ public class PaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethoddescriptions, languages " +
-                        "WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ? AND pmd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethoddescriptions, languages
+                        WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ? AND pmd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethoddescriptions " +
-                        "WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethoddescriptions
+                        WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodDescriptionFactory.getInstance().prepareStatement(query);
@@ -679,14 +707,18 @@ public class PaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethodchecks " +
-                        "WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethodchecks
+                        WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethodchecks " +
-                        "WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethodchecks
+                        WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodCheckFactory.getInstance().prepareStatement(query);
@@ -770,14 +802,18 @@ public class PaymentMethodControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethodcreditcards " +
-                        "WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethodcreditcards
+                        WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentmethodcreditcards " +
-                        "WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentmethodcreditcards
+                        WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentMethodCreditCardFactory.getInstance().prepareStatement(query);

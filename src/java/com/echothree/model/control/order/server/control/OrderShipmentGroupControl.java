@@ -88,16 +88,20 @@ public class OrderShipmentGroupControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_ordershipmentgroupsequence = ?");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_ordershipmentgroupsequence = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_ordershipmentgroupsequence = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_ordershipmentgroupsequence = ?
+                FOR UPDATE
+                """);
         getOrderShipmentGroupBySequenceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -128,16 +132,20 @@ public class OrderShipmentGroupControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? AND ordshpgrpdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? AND ordshpgrpdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? AND ordshpgrpdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? AND ordshpgrpdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultOrderShipmentGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -164,17 +172,21 @@ public class OrderShipmentGroupControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? " +
-                "ORDER BY ordshpgrpdt_ordershipmentgroupsequence");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ?
+                ORDER BY ordshpgrpdt_ordershipmentgroupsequence
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ?
+                FOR UPDATE
+                """);
         getOrderShipmentGroupsByOrderQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -197,17 +209,21 @@ public class OrderShipmentGroupControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? " +
-                "ORDER BY ordshpgrpdt_ordershipmentgroupsequence");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ?
+                ORDER BY ordshpgrpdt_ordershipmentgroupsequence
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordershipmentgroups, ordershipmentgroupdetails " +
-                "WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid " +
-                "AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM ordershipmentgroups, ordershipmentgroupdetails
+                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
+                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ?
+                FOR UPDATE
+                """);
         getOrderShipmentGroupsQueries = Collections.unmodifiableMap(queryMap);
     }
 

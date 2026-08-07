@@ -100,15 +100,20 @@ public class PaymentProcessorTypeActionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeActionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
+            FOR UPDATE
+            """);
 
     public PaymentProcessorTypeAction getPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final PaymentProcessorActionType paymentProcessorActionType, final EntityPermission entityPermission) {
@@ -137,16 +142,20 @@ public class PaymentProcessorTypeActionControl
 
     private static final Map<EntityPermission, String> getDefaultPaymentProcessorTypeActionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_isdefault = 1",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_isdefault = 1
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_isdefault = 1 " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_isdefault = 1
+            FOR UPDATE
+            """);
 
     public PaymentProcessorTypeAction getDefaultPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final EntityPermission entityPermission) {
@@ -168,19 +177,23 @@ public class PaymentProcessorTypeActionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeActionsByPaymentProcessorTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessoractiontypes, paymentprocessoractiontypedetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? " +
-                    "ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessoractiontypes, paymentprocessoractiontypedetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = ?
+            ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
         return PaymentProcessorTypeActionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorTypeQueries,
@@ -197,19 +210,23 @@ public class PaymentProcessorTypeActionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTypeActionsByPaymentProcessorActionTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessortypes, paymentprocessortypedetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = pprctyp_paymentprocessortypeid AND pprctyp_activedetailid = pprctypdt_paymentprocessortypedetailid " +
-                    "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessortypes, paymentprocessortypedetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprctyp_paymentprocessortypeid = pprctyp_paymentprocessortypeid AND pprctyp_activedetailid = pprctypdt_paymentprocessortypedetailid
+            AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
+            ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails " +
-                    "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
+            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
+            AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final EntityPermission entityPermission) {
         return PaymentProcessorTypeActionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorActionTypeQueries,

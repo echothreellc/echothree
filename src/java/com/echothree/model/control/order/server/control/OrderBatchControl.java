@@ -57,14 +57,18 @@ public class OrderBatchControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderbatches " +
-                "WHERE ordbtch_btch_batchid = ? AND ordbtch_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderbatches
+                WHERE ordbtch_btch_batchid = ? AND ordbtch_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderbatches " +
-                "WHERE ordbtch_btch_batchid = ? AND ordbtch_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderbatches
+                WHERE ordbtch_btch_batchid = ? AND ordbtch_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderBatchQueries = Collections.unmodifiableMap(queryMap);
     }
 

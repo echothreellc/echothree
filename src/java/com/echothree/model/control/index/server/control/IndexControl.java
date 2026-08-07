@@ -165,9 +165,11 @@ public class IndexControl
 
     public long countIndexTypesByEntityType(EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid AND idxtdt_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid AND idxtdt_ent_entitytypeid = ?
+                """,
                 entityType);
     }
 
@@ -181,16 +183,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid " +
-                "AND idxtdt_indextypename = ?");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid
+                AND idxtdt_indextypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid " +
-                "AND idxtdt_indextypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid
+                AND idxtdt_indextypename = ?
+                FOR UPDATE
+                """);
         getIndexTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -220,16 +226,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid " +
-                "AND idxtdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid
+                AND idxtdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid " +
-                "AND idxtdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid
+                AND idxtdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultIndexTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -255,16 +265,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid " +
-                "ORDER BY idxtdt_sortorder, idxtdt_indextypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid
+                ORDER BY idxtdt_sortorder, idxtdt_indextypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indextypes, indextypedetails " +
-                "WHERE idxt_activedetailid = idxtdt_indextypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid
+                FOR UPDATE
+                """);
         getIndexTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -286,16 +300,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indextypes, indextypedetails "
-                + "WHERE idxt_activedetailid = idxtdt_indextypedetailid AND idxtdt_ent_entitytypeid = ? "
-                + "ORDER BY idxtdt_sortorder, idxtdt_indextypename "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid AND idxtdt_ent_entitytypeid = ?
+                ORDER BY idxtdt_sortorder, idxtdt_indextypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indextypes, indextypedetails "
-                + "WHERE idxt_activedetailid = idxtdt_indextypedetailid AND idxtdt_ent_entitytypeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indextypes, indextypedetails
+                WHERE idxt_activedetailid = idxtdt_indextypedetailid AND idxtdt_ent_entitytypeid = ?
+                FOR UPDATE
+                """);
         getIndexTypesByEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -482,14 +500,18 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indextypedescriptions " +
-                "WHERE idxtd_idxt_indextypeid = ? AND idxtd_lang_languageid = ? AND idxtd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM indextypedescriptions
+                WHERE idxtd_idxt_indextypeid = ? AND idxtd_lang_languageid = ? AND idxtd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indextypedescriptions " +
-                "WHERE idxtd_idxt_indextypeid = ? AND idxtd_lang_languageid = ? AND idxtd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indextypedescriptions
+                WHERE idxtd_idxt_indextypeid = ? AND idxtd_lang_languageid = ? AND idxtd_thrutime = ?
+                FOR UPDATE
+                """);
         getIndexTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -520,15 +542,19 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indextypedescriptions, languages " +
-                "WHERE idxtd_idxt_indextypeid = ? AND idxtd_thrutime = ? AND idxtd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM indextypedescriptions, languages
+                WHERE idxtd_idxt_indextypeid = ? AND idxtd_thrutime = ? AND idxtd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indextypedescriptions " +
-                "WHERE idxtd_idxt_indextypeid = ? AND idxtd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indextypedescriptions
+                WHERE idxtd_idxt_indextypeid = ? AND idxtd_thrutime = ?
+                FOR UPDATE
+                """);
         getIndexTypeDescriptionsByIndexTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -674,15 +700,19 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexfields, indexfielddetails "
-                + "WHERE idxfld_activedetailid = idxflddt_indexfielddetailid AND idxflddt_idxt_indextypeid = ? "
-                + "ORDER BY idxflddt_sortorder, idxflddt_indexfieldname");
+                """
+                SELECT _ALL_
+                FROM indexfields, indexfielddetails
+                WHERE idxfld_activedetailid = idxflddt_indexfielddetailid AND idxflddt_idxt_indextypeid = ?
+                ORDER BY idxflddt_sortorder, idxflddt_indexfieldname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexfields, indexfielddetails "
-                + "WHERE idxfld_activedetailid = idxflddt_indexfielddetailid AND idxflddt_idxt_indextypeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexfields, indexfielddetails
+                WHERE idxfld_activedetailid = idxflddt_indexfielddetailid AND idxflddt_idxt_indextypeid = ?
+                FOR UPDATE
+                """);
         getIndexFieldsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -705,16 +735,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexfields, indexfielddetails "
-                + "WHERE idxfld_activedetailid = idxflddt_indexfielddetailid "
-                + "AND idxflddt_idxt_indextypeid = ? AND idxflddt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM indexfields, indexfielddetails
+                WHERE idxfld_activedetailid = idxflddt_indexfielddetailid
+                AND idxflddt_idxt_indextypeid = ? AND idxflddt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexfields, indexfielddetails "
-                + "WHERE idxfld_activedetailid = idxflddt_indexfielddetailid "
-                + "AND idxflddt_idxt_indextypeid = ? AND idxflddt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexfields, indexfielddetails
+                WHERE idxfld_activedetailid = idxflddt_indexfielddetailid
+                AND idxflddt_idxt_indextypeid = ? AND idxflddt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultIndexFieldQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -741,16 +775,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexfields, indexfielddetails "
-                + "WHERE idxfld_activedetailid = idxflddt_indexfielddetailid "
-                + "AND idxflddt_idxt_indextypeid = ? AND idxflddt_indexfieldname = ?");
+                """
+                SELECT _ALL_
+                FROM indexfields, indexfielddetails
+                WHERE idxfld_activedetailid = idxflddt_indexfielddetailid
+                AND idxflddt_idxt_indextypeid = ? AND idxflddt_indexfieldname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexfields, indexfielddetails "
-                + "WHERE idxfld_activedetailid = idxflddt_indexfielddetailid "
-                + "AND idxflddt_idxt_indextypeid = ? AND idxflddt_indexfieldname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexfields, indexfielddetails
+                WHERE idxfld_activedetailid = idxflddt_indexfielddetailid
+                AND idxflddt_idxt_indextypeid = ? AND idxflddt_indexfieldname = ?
+                FOR UPDATE
+                """);
         getIndexFieldByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -930,14 +968,18 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexfielddescriptions "
-                + "WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_lang_languageid = ? AND idxfldd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM indexfielddescriptions
+                WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_lang_languageid = ? AND idxfldd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexfielddescriptions "
-                + "WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_lang_languageid = ? AND idxfldd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexfielddescriptions
+                WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_lang_languageid = ? AND idxfldd_thrutime = ?
+                FOR UPDATE
+                """);
         getIndexFieldDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -968,15 +1010,19 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexfielddescriptions, languages "
-                + "WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_thrutime = ? AND idxfldd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM indexfielddescriptions, languages
+                WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_thrutime = ? AND idxfldd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexfielddescriptions "
-                + "WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexfielddescriptions
+                WHERE idxfldd_idxfld_indexfieldid = ? AND idxfldd_thrutime = ?
+                FOR UPDATE
+                """);
         getIndexFieldDescriptionsByIndexFieldQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1110,15 +1156,19 @@ public class IndexControl
 
     public long countIndexes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM indexes");
+                """
+                SELECT COUNT(*)
+                FROM indexes
+                """);
     }
 
     public long countIndexesByIndexType(IndexType indexType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid AND idxdt_idxt_indextypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid AND idxdt_idxt_indextypeid = ?
+                """,
                 indexType);
     }
 
@@ -1128,16 +1178,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_idxt_indextypeid = ? AND idxdt_lang_languageid = ?");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_idxt_indextypeid = ? AND idxdt_lang_languageid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_idxt_indextypeid = ? AND idxdt_lang_languageid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_idxt_indextypeid = ? AND idxdt_lang_languageid = ?
+                FOR UPDATE
+                """);
         getIndexQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1159,16 +1213,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_indexname = ?");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_indexname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_indexname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_indexname = ?
+                FOR UPDATE
+                """);
         getIndexByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1190,16 +1248,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_directory = ?");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_directory = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_directory = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_directory = ?
+                FOR UPDATE
+                """);
         getIndexByDirectoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1229,16 +1291,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "AND idxdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultIndexQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1264,16 +1330,20 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "ORDER BY idxdt_sortorder, idxdt_indexname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                ORDER BY idxdt_sortorder, idxdt_indexname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexes, indexdetails " +
-                "WHERE idx_activedetailid = idxdt_indexdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                FOR UPDATE
+                """);
         getIndexesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1295,18 +1365,22 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexes, indexdetails "
-                + "WHERE idx_activedetailid = idxdt_indexdetailid "
-                + "AND idxdt_idxt_indextypeid = ? "
-                + "ORDER BY idxdt_sortorder, idxdt_indexname "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_idxt_indextypeid = ?
+                ORDER BY idxdt_sortorder, idxdt_indexname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexes, indexdetails "
-                + "WHERE idx_activedetailid = idxdt_indexdetailid "
-                + "AND idxdt_idxt_indextypeid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexes, indexdetails
+                WHERE idx_activedetailid = idxdt_indexdetailid
+                AND idxdt_idxt_indextypeid = ?
+                FOR UPDATE
+                """);
         getIndexesByIndexTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1502,14 +1576,18 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexdescriptions " +
-                "WHERE idxd_idx_indexid = ? AND idxd_lang_languageid = ? AND idxd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM indexdescriptions
+                WHERE idxd_idx_indexid = ? AND idxd_lang_languageid = ? AND idxd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexdescriptions " +
-                "WHERE idxd_idx_indexid = ? AND idxd_lang_languageid = ? AND idxd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexdescriptions
+                WHERE idxd_idx_indexid = ? AND idxd_lang_languageid = ? AND idxd_thrutime = ?
+                FOR UPDATE
+                """);
         getIndexDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1540,15 +1618,19 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM indexdescriptions, languages " +
-                "WHERE idxd_idx_indexid = ? AND idxd_thrutime = ? AND idxd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM indexdescriptions, languages
+                WHERE idxd_idx_indexid = ? AND idxd_thrutime = ? AND idxd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM indexdescriptions " +
-                "WHERE idxd_idx_indexid = ? AND idxd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexdescriptions
+                WHERE idxd_idx_indexid = ? AND idxd_thrutime = ?
+                FOR UPDATE
+                """);
         getIndexDescriptionsByIndexQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1645,14 +1727,18 @@ public class IndexControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM indexstatuses "
-                + "WHERE idxst_idx_indexid = ?");
+                """
+                SELECT _ALL_
+                FROM indexstatuses
+                WHERE idxst_idx_indexid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM indexstatuses "
-                + "WHERE idxst_idx_indexid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM indexstatuses
+                WHERE idxst_idx_indexid = ?
+                FOR UPDATE
+                """);
         getIndexStatusQueries = Collections.unmodifiableMap(queryMap);
     }
 

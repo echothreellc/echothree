@@ -1779,9 +1779,11 @@ public class WishlistControl
     
     public long countWishlistLinesByOrder(Order order) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
+                """,
                 order);
     }
 
@@ -1828,9 +1830,11 @@ public class WishlistControl
     
     public long countWishlistLinesByItem(Item item) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderlines, orderlinedetails " +
-                "WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderlines, orderlinedetails
+                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?
+                """,
                 item);
     }
 

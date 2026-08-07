@@ -121,9 +121,11 @@ public class EntityAliasControl
 
     public long countEntityAliasTypesByEntityType(EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid AND eniatdt_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityaliastypes, entityaliastypedetails
+                WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid AND eniatdt_ent_entitytypeid = ?
+                """,
                 entityType);
     }
 
@@ -134,16 +136,20 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "AND eniatdt_ent_entitytypeid = ? AND eniatdt_entityaliastypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypes, entityaliastypedetails
+                        WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid
+                        AND eniatdt_ent_entitytypeid = ? AND eniatdt_entityaliastypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "AND eniatdt_ent_entitytypeid = ? AND eniatdt_entityaliastypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypes, entityaliastypedetails
+                        WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid
+                        AND eniatdt_ent_entitytypeid = ? AND eniatdt_entityaliastypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasTypeFactory.prepareStatement(query);
@@ -181,18 +187,22 @@ public class EntityAliasControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "AND eniatdt_ent_entitytypeid = ? " +
-                        "AND eniatdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM entityaliastypes, entityaliastypedetails
+                WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid
+                AND eniatdt_ent_entitytypeid = ?
+                AND eniatdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "AND eniatdt_ent_entitytypeid = ? " +
-                        "AND eniatdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM entityaliastypes, entityaliastypedetails
+                WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid
+                AND eniatdt_ent_entitytypeid = ?
+                AND eniatdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultEntityAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -220,18 +230,22 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "AND eniatdt_ent_entitytypeid = ? " +
-                        "ORDER BY eniatdt_sortorder, eniatdt_entityaliastypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypes, entityaliastypedetails
+                        WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid
+                        AND eniatdt_ent_entitytypeid = ?
+                        ORDER BY eniatdt_sortorder, eniatdt_entityaliastypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypes, entityaliastypedetails " +
-                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "AND eniatdt_ent_entitytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypes, entityaliastypedetails
+                        WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid
+                        AND eniatdt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasTypeFactory.prepareStatement(query);
@@ -261,22 +275,26 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypes " +
-                        "JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "JOIN entitytypes ON eniatdt_ent_entitytypeid = ent_entitytypeid " +
-                        "JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid " +
-                        "JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
-                        "JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "WHERE eniatdt_entityaliastypename = ? " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eniatdt_sortorder, eniatdt_entityaliastypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypes
+                        JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid
+                        JOIN entitytypes ON eniatdt_ent_entitytypeid = ent_entitytypeid
+                        JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid
+                        JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid
+                        JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid
+                        WHERE eniatdt_entityaliastypename = ?
+                        ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eniatdt_sortorder, eniatdt_entityaliastypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypes " +
-                        "JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "WHERE eniatdt_entityaliastypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypes
+                        JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid
+                        WHERE eniatdt_entityaliastypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasTypeFactory.prepareStatement(query);
@@ -469,14 +487,18 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypedescriptions " +
-                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_lang_languageid = ? AND eniatd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypedescriptions
+                        WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_lang_languageid = ? AND eniatd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypedescriptions " +
-                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_lang_languageid = ? AND eniatd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypedescriptions
+                        WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_lang_languageid = ? AND eniatd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasTypeDescriptionFactory.prepareStatement(query);
@@ -517,15 +539,19 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypedescriptions, languages " +
-                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_thrutime = ? AND eniatd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypedescriptions, languages
+                        WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_thrutime = ? AND eniatd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliastypedescriptions " +
-                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliastypedescriptions
+                        WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasTypeDescriptionFactory.prepareStatement(query);
@@ -634,17 +660,21 @@ public class EntityAliasControl
 
     public long countEntityAliasesByEntityInstance(EntityInstance entityInstance) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityaliases
+                WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?
+                """,
                 entityInstance, Session.MAX_TIME);
     }
 
     public long countEntityAliasesByEntityAliasType(EntityAliasType entityAliasType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityaliases
+                WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?
+                """,
                 entityAliasType, Session.MAX_TIME);
     }
 
@@ -683,14 +713,18 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliases
+                        WHERE enial_eni_entityinstanceid = ? AND enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliases
+                        WHERE enial_eni_entityinstanceid = ? AND enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasFactory.prepareStatement(query);
@@ -730,16 +764,20 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                        "ORDER BY enial_alias " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliases
+                        WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?
+                        ORDER BY enial_alias
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliases
+                        WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasFactory.prepareStatement(query);
@@ -770,15 +808,19 @@ public class EntityAliasControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ? " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliases
+                        WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityaliases
+                        WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAliasFactory.prepareStatement(query);
@@ -863,9 +905,11 @@ public class EntityAliasControl
 
         try {
             var ps = entityAliasFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entityaliases " +
-                            "WHERE enial_eniat_entityaliastypeid = ? AND enial_alias = ? AND enial_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM entityaliases
+                    WHERE enial_eniat_entityaliastypeid = ? AND enial_alias = ? AND enial_thrutime = ?
+                    """);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setString(2, alias);

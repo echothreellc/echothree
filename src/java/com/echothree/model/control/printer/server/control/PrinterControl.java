@@ -202,16 +202,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "AND prngrpdt_printergroupname = ?");
+                """
+                SELECT _ALL_
+                FROM printergroups, printergroupdetails
+                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
+                AND prngrpdt_printergroupname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "AND prngrpdt_printergroupname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroups, printergroupdetails
+                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
+                AND prngrpdt_printergroupname = ?
+                FOR UPDATE
+                """);
         getPrinterGroupByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -241,16 +245,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "AND prngrpdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM printergroups, printergroupdetails
+                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
+                AND prngrpdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "AND prngrpdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroups, printergroupdetails
+                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
+                AND prngrpdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -276,16 +284,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "ORDER BY prngrpdt_sortorder, prngrpdt_printergroupname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printergroups, printergroupdetails
+                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
+                ORDER BY prngrpdt_sortorder, prngrpdt_printergroupname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroups, printergroupdetails
+                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
+                FOR UPDATE
+                """);
         getPrinterGroupsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -477,14 +489,18 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupdescriptions " +
-                "WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_lang_languageid = ? AND prngrpd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM printergroupdescriptions
+                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_lang_languageid = ? AND prngrpd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupdescriptions " +
-                "WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_lang_languageid = ? AND prngrpd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupdescriptions
+                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_lang_languageid = ? AND prngrpd_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterGroupDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -516,16 +532,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupdescriptions, languages " +
-                "WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_thrutime = ? AND prngrpd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printergroupdescriptions, languages
+                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_thrutime = ? AND prngrpd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupdescriptions " +
-                "WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupdescriptions
+                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterGroupDescriptionsByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -668,16 +688,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "AND prndt_printername = ?");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                AND prndt_printername = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "AND prndt_printername = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                AND prndt_printername = ?
+                FOR UPDATE
+                """);
         getPrinterByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -707,16 +731,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "AND prndt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                AND prndt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "AND prndt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                AND prndt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPrinterQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -742,16 +770,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "ORDER BY prndt_priority, prndt_printername " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                ORDER BY prndt_priority, prndt_printername
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                FOR UPDATE
+                """);
         getPrintersQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -773,18 +805,22 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "AND prndt_prngrp_printergroupid = ? " +
-                "ORDER BY prndt_priority, prndt_printername " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                AND prndt_prngrp_printergroupid = ?
+                ORDER BY prndt_priority, prndt_printername
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printers, printerdetails " +
-                "WHERE prn_activedetailid = prndt_printerdetailid " +
-                "AND prndt_prngrp_printergroupid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printers, printerdetails
+                WHERE prn_activedetailid = prndt_printerdetailid
+                AND prndt_prngrp_printergroupid = ?
+                FOR UPDATE
+                """);
         getPrintersByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -911,14 +947,18 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printerdescriptions " +
-                "WHERE prnd_prn_printerid = ? AND prnd_lang_languageid = ? AND prnd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM printerdescriptions
+                WHERE prnd_prn_printerid = ? AND prnd_lang_languageid = ? AND prnd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printerdescriptions " +
-                "WHERE prnd_prn_printerid = ? AND prnd_lang_languageid = ? AND prnd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printerdescriptions
+                WHERE prnd_prn_printerid = ? AND prnd_lang_languageid = ? AND prnd_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -950,16 +990,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printerdescriptions, languages " +
-                "WHERE prnd_prn_printerid = ? AND prnd_thrutime = ? AND prnd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printerdescriptions, languages
+                WHERE prnd_prn_printerid = ? AND prnd_thrutime = ? AND prnd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printerdescriptions " +
-                "WHERE prnd_prn_printerid = ? AND prnd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printerdescriptions
+                WHERE prnd_prn_printerid = ? AND prnd_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterDescriptionsByPrinterQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1110,16 +1154,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_printergroupjobname = ?");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND prngrpjdt_printergroupjobname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_printergroupjobname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND prngrpjdt_printergroupjobname = ?
+                FOR UPDATE
+                """);
         getPrinterGroupJobByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1149,16 +1197,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND prngrpjdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND prngrpjdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPrinterGroupJobQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1184,16 +1236,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "ORDER BY prngrpjdt_sortorder, prngrpjdt_printergroupjobname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                ORDER BY prngrpjdt_sortorder, prngrpjdt_printergroupjobname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                FOR UPDATE
+                """);
         getPrinterGroupJobsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1215,18 +1271,22 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_prngrp_printergroupid = ? " +
-                "ORDER BY prngrpjdt_priority DESC, prngrpjdt_printergroupjobname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND prngrpjdt_prngrp_printergroupid = ?
+                ORDER BY prngrpjdt_priority DESC, prngrpjdt_printergroupjobname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_prngrp_printergroupid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupjobs, printergroupjobdetails
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND prngrpjdt_prngrp_printergroupid = ?
+                FOR UPDATE
+                """);
         getPrinterGroupJobsByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1248,28 +1308,32 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, printergroupjobs, printergroupjobdetails, workflowentitystatuses " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND ent_activedetailid = entdt_entitytypedetailid " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                "AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND prngrpj_printergroupjobid = eni_entityuniqueid " +
-                "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                "ORDER BY prngrpjdt_priority DESC, prngrpjdt_printergroupjobname" +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, printergroupjobs, printergroupjobdetails, workflowentitystatuses
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                AND ent_activedetailid = entdt_entitytypedetailid
+                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                AND entdt_entitytypename = ?
+                AND ent_entitytypeid = eni_ent_entitytypeid AND prngrpj_printergroupjobid = eni_entityuniqueid
+                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                ORDER BY prngrpjdt_priority DESC, prngrpjdt_printergroupjobname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, printergroupjobs, printergroupjobdetails, workflowentitystatuses " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND ent_activedetailid = entdt_entitytypedetailid " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                "AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND prngrpj_printergroupjobid = eni_entityuniqueid " +
-                "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, printergroupjobs, printergroupjobdetails, workflowentitystatuses
+                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
+                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                AND ent_activedetailid = entdt_entitytypedetailid
+                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                AND entdt_entitytypename = ?
+                AND ent_entitytypeid = eni_ent_entitytypeid AND prngrpj_printergroupjobid = eni_entityuniqueid
+                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterGroupJobsByPrinterGroupJobStatusQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1485,16 +1549,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypes, printergroupusetypedetails " +
-                "WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "AND prngrpusetypdt_printergroupusetypename = ?");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypes, printergroupusetypedetails
+                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
+                AND prngrpusetypdt_printergroupusetypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypes, printergroupusetypedetails " +
-                "WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "AND prngrpusetypdt_printergroupusetypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypes, printergroupusetypedetails
+                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
+                AND prngrpusetypdt_printergroupusetypename = ?
+                FOR UPDATE
+                """);
         getPrinterGroupUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1524,16 +1592,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypes, printergroupusetypedetails " +
-                "WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "AND prngrpusetypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypes, printergroupusetypedetails
+                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
+                AND prngrpusetypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypes, printergroupusetypedetails " +
-                "WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "AND prngrpusetypdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypes, printergroupusetypedetails
+                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
+                AND prngrpusetypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultPrinterGroupUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1559,16 +1631,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypes, printergroupusetypedetails " +
-                "WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "ORDER BY prngrpusetypdt_sortorder, prngrpusetypdt_printergroupusetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypes, printergroupusetypedetails
+                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
+                ORDER BY prngrpusetypdt_sortorder, prngrpusetypdt_printergroupusetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypes, printergroupusetypedetails " +
-                "WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypes, printergroupusetypedetails
+                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
+                FOR UPDATE
+                """);
         getPrinterGroupUseTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1730,14 +1806,18 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypedescriptions " +
-                "WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_lang_languageid = ? AND prngrpusetypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypedescriptions
+                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_lang_languageid = ? AND prngrpusetypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypedescriptions " +
-                "WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_lang_languageid = ? AND prngrpusetypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypedescriptions
+                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_lang_languageid = ? AND prngrpusetypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterGroupUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1769,16 +1849,20 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypedescriptions, languages " +
-                "WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_thrutime = ? AND prngrpusetypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypedescriptions, languages
+                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_thrutime = ? AND prngrpusetypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM printergroupusetypedescriptions " +
-                "WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM printergroupusetypedescriptions
+                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_thrutime = ?
+                FOR UPDATE
+                """);
         getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1905,17 +1989,21 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses " +
-                "WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_prngrpusetyp_printergroupusetypeid = ? " +
-                "AND parprngrpuse_thrutime = ?" +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses
+                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_prngrpusetyp_printergroupusetypeid = ?
+                AND parprngrpuse_thrutime = ?
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses " +
-                "WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_prngrpusetyp_printergroupusetypeid = ? " +
-                "AND parprngrpuse_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses
+                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_prngrpusetyp_printergroupusetypeid = ?
+                AND parprngrpuse_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyPrinterGroupUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1949,17 +2037,21 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses, printergroupusetypes, printergroupusetypedetails " +
-                "WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ? " +
-                "AND parprngrpuse_prngrpusetyp_printergroupusetypeid = prngrpusetyp_printergroupusetypeid AND prngrpusetyp_lastdetailid = prngrpusetypdt_printergroupusetypedetailid " +
-                "ORDER BY prngrpusetypdt_sortorder, prngrpusetypdt_printergroupusetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses, printergroupusetypes, printergroupusetypedetails
+                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
+                AND parprngrpuse_prngrpusetyp_printergroupusetypeid = prngrpusetyp_printergroupusetypeid AND prngrpusetyp_lastdetailid = prngrpusetypdt_printergroupusetypedetailid
+                ORDER BY prngrpusetypdt_sortorder, prngrpusetypdt_printergroupusetypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses " +
-                "WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses
+                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyPrinterGroupUsesByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1982,17 +2074,21 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses, parties, partydetails " +
-                "WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ? " +
-                "AND parprngrpuse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses, parties, partydetails
+                WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
+                AND parprngrpuse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                ORDER BY pardt_partyname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses " +
-                "WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses
+                WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyPrinterGroupUsesByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2015,17 +2111,21 @@ public class PrinterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses, parties, partydetails " +
-                "WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ? " +
-                "AND parprngrpuse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses, parties, partydetails
+                WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
+                AND parprngrpuse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                ORDER BY pardt_partyname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partyprintergroupuses " +
-                "WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM partyprintergroupuses
+                WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
+                FOR UPDATE
+                """);
         getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

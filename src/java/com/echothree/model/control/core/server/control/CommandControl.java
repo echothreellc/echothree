@@ -141,16 +141,20 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commands, commanddetails " +
-                        "WHERE cmd_activedetailid = cmddt_commanddetailid " +
-                        "AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commands, commanddetails
+                        WHERE cmd_activedetailid = cmddt_commanddetailid
+                        AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commands, commanddetails " +
-                        "WHERE cmd_activedetailid = cmddt_commanddetailid " +
-                        "AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commands, commanddetails
+                        WHERE cmd_activedetailid = cmddt_commanddetailid
+                        AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandFactory.prepareStatement(query);
@@ -189,18 +193,22 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commands, commanddetails " +
-                        "WHERE cmd_activedetailid = cmddt_commanddetailid " +
-                        "AND cmddt_cvnd_componentvendorid = ? " +
-                        "ORDER BY cmddt_sortorder, cmddt_commandname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM commands, commanddetails
+                        WHERE cmd_activedetailid = cmddt_commanddetailid
+                        AND cmddt_cvnd_componentvendorid = ?
+                        ORDER BY cmddt_sortorder, cmddt_commandname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commands, commanddetails " +
-                        "WHERE cmd_activedetailid = cmddt_commanddetailid " +
-                        "AND cmddt_cvnd_componentvendorid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commands, commanddetails
+                        WHERE cmd_activedetailid = cmddt_commanddetailid
+                        AND cmddt_cvnd_componentvendorid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandFactory.prepareStatement(query);
@@ -225,11 +233,13 @@ public class CommandControl
 
     public List<Command> getCommands() {
         var ps = commandFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM commands, commanddetails " +
-                        "WHERE cmd_activedetailid = cmddt_commanddetailid " +
-                        "ORDER BY cmddt_sortorder, cmddt_commandname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM commands, commanddetails
+                WHERE cmd_activedetailid = cmddt_commanddetailid
+                ORDER BY cmddt_sortorder, cmddt_commandname
+                _LIMIT_
+                """);
 
         return commandFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -324,14 +334,18 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commanddescriptions " +
-                        "WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commanddescriptions
+                        WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commanddescriptions " +
-                        "WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commanddescriptions
+                        WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandDescriptionFactory.prepareStatement(query);
@@ -372,16 +386,20 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commanddescriptions, languages " +
-                        "WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ? AND cmdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM commanddescriptions, languages
+                        WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ? AND cmdd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commanddescriptions " +
-                        "WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commanddescriptions
+                        WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandDescriptionFactory.prepareStatement(query);
@@ -537,16 +555,20 @@ public class CommandControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM commandmessagetypes, commandmessagetypedetails " +
-                    "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid " +
-                    "ORDER BY cmdmssgtydt_sortorder, cmdmssgtydt_commandmessagetypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM commandmessagetypes, commandmessagetypedetails
+                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid
+                    ORDER BY cmdmssgtydt_sortorder, cmdmssgtydt_commandmessagetypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM commandmessagetypes, commandmessagetypedetails " +
-                    "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM commandmessagetypes, commandmessagetypedetails
+                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = commandMessageTypeFactory.prepareStatement(query);
@@ -566,14 +588,18 @@ public class CommandControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM commandmessagetypes, commandmessagetypedetails " +
-                    "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM commandmessagetypes, commandmessagetypedetails
+                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM commandmessagetypes, commandmessagetypedetails " +
-                    "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM commandmessagetypes, commandmessagetypedetails
+                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = commandMessageTypeFactory.prepareStatement(query);
@@ -600,14 +626,18 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetypes, commandmessagetypedetails " +
-                        "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetypes, commandmessagetypedetails
+                        WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetypes, commandmessagetypedetails " +
-                        "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetypes, commandmessagetypedetails
+                        WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageTypeFactory.prepareStatement(query);
@@ -791,14 +821,18 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetypedescriptions " +
-                        "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetypedescriptions
+                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetypedescriptions " +
-                        "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetypedescriptions
+                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageTypeDescriptionFactory.prepareStatement(query);
@@ -839,16 +873,20 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetypedescriptions, languages " +
-                        "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ? AND cmdmssgtyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetypedescriptions, languages
+                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ? AND cmdmssgtyd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetypedescriptions " +
-                        "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetypedescriptions
+                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageTypeDescriptionFactory.prepareStatement(query);
@@ -997,16 +1035,20 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessages, commandmessagedetails " +
-                        "WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid " +
-                        "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessages, commandmessagedetails
+                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
+                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessages, commandmessagedetails " +
-                        "WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid " +
-                        "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessages, commandmessagedetails
+                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
+                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageFactory.prepareStatement(query);
@@ -1045,18 +1087,22 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessages, commandmessagedetails " +
-                        "WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid " +
-                        "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? " +
-                        "ORDER BY cmdmssgdt_commandmessagekey " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessages, commandmessagedetails
+                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
+                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ?
+                        ORDER BY cmdmssgdt_commandmessagekey
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessages, commandmessagedetails " +
-                        "WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid " +
-                        "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessages, commandmessagedetails
+                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
+                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageFactory.prepareStatement(query);
@@ -1164,17 +1210,21 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetranslations, languages " +
-                        "WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ? " +
-                        "AND cmdmssgtr_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetranslations, languages
+                        WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ?
+                        AND cmdmssgtr_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetranslations " +
-                        "WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetranslations
+                        WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageTranslationFactory.prepareStatement(query);
@@ -1215,14 +1265,18 @@ public class CommandControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetranslations " +
-                        "WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetranslations
+                        WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commandmessagetranslations " +
-                        "WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commandmessagetranslations
+                        WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = commandMessageTranslationFactory.prepareStatement(query);

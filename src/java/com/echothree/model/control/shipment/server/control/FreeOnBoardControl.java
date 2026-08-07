@@ -101,20 +101,27 @@ public class FreeOnBoardControl
 
     public long countFreeOnBoards() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM freeonboards, freeonboarddetails " +
-                        "WHERE fob_activedetailid = fobdt_freeonboarddetailid");
+                """
+                SELECT COUNT(*)
+                FROM freeonboards, freeonboarddetails
+                WHERE fob_activedetailid = fobdt_freeonboarddetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getFreeOnBoardByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM freeonboards, freeonboarddetails " +
-                    "WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_freeonboardname = ?",
+            """
+            SELECT _ALL_
+            FROM freeonboards, freeonboarddetails
+            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_freeonboardname = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM freeonboards, freeonboarddetails " +
-                    "WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_freeonboardname = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM freeonboards, freeonboarddetails
+            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_freeonboardname = ?
+            FOR UPDATE
+            """);
 
     public FreeOnBoard getFreeOnBoardByName(final String freeOnBoardName, final EntityPermission entityPermission) {
         return FreeOnBoardFactory.getInstance().getEntityFromQuery(entityPermission, getFreeOnBoardByNameQueries,
@@ -139,14 +146,18 @@ public class FreeOnBoardControl
 
     private static final Map<EntityPermission, String> getDefaultFreeOnBoardQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM freeonboards, freeonboarddetails " +
-                    "WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_isdefault = 1",
+            """
+            SELECT _ALL_
+            FROM freeonboards, freeonboarddetails
+            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_isdefault = 1
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM freeonboards, freeonboarddetails " +
-                    "WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_isdefault = 1 " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM freeonboards, freeonboarddetails
+            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_isdefault = 1
+            FOR UPDATE
+            """);
 
     public FreeOnBoard getDefaultFreeOnBoard(final EntityPermission entityPermission) {
         return FreeOnBoardFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFreeOnBoardQueries);
@@ -166,15 +177,19 @@ public class FreeOnBoardControl
 
     private static final Map<EntityPermission, String> getFreeOnBoardsQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM freeonboards, freeonboarddetails " +
-                    "WHERE fob_activedetailid = fobdt_freeonboarddetailid " +
-                    "ORDER BY fobdt_sortorder, fobdt_freeonboardname",
+            """
+            SELECT _ALL_
+            FROM freeonboards, freeonboarddetails
+            WHERE fob_activedetailid = fobdt_freeonboarddetailid
+            ORDER BY fobdt_sortorder, fobdt_freeonboardname
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM freeonboards, freeonboarddetails " +
-                    "WHERE fob_activedetailid = fobdt_freeonboarddetailid " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM freeonboards, freeonboarddetails
+            WHERE fob_activedetailid = fobdt_freeonboarddetailid
+            FOR UPDATE
+            """);
 
     private List<FreeOnBoard> getFreeOnBoards(final EntityPermission entityPermission) {
         return FreeOnBoardFactory.getInstance().getEntitiesFromQuery(entityPermission, getFreeOnBoardsQueries);
@@ -336,14 +351,18 @@ public class FreeOnBoardControl
 
     private static final Map<EntityPermission, String> getFreeOnBoardDescriptionQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM freeonboarddescriptions " +
-                    "WHERE fobd_fob_freeonboardid = ? AND fobd_lang_languageid = ? AND fobd_thrutime = ?",
+            """
+            SELECT _ALL_
+            FROM freeonboarddescriptions
+            WHERE fobd_fob_freeonboardid = ? AND fobd_lang_languageid = ? AND fobd_thrutime = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM freeonboarddescriptions " +
-                    "WHERE fobd_fob_freeonboardid = ? AND fobd_lang_languageid = ? AND fobd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM freeonboarddescriptions
+            WHERE fobd_fob_freeonboardid = ? AND fobd_lang_languageid = ? AND fobd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private FreeOnBoardDescription getFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final EntityPermission entityPermission) {
@@ -372,15 +391,19 @@ public class FreeOnBoardControl
 
     private static final Map<EntityPermission, String> getFreeOnBoardDescriptionsByFreeOnBoardQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM freeonboarddescriptions, languages " +
-                    "WHERE fobd_fob_freeonboardid = ? AND fobd_thrutime = ? AND fobd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+            """
+            SELECT _ALL_
+            FROM freeonboarddescriptions, languages
+            WHERE fobd_fob_freeonboardid = ? AND fobd_thrutime = ? AND fobd_lang_languageid = lang_languageid
+            ORDER BY lang_sortorder, lang_languageisoname
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM freeonboarddescriptions " +
-                    "WHERE fobd_fob_freeonboardid = ? AND fobd_thrutime = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM freeonboarddescriptions
+            WHERE fobd_fob_freeonboardid = ? AND fobd_thrutime = ?
+            FOR UPDATE
+            """);
 
     private List<FreeOnBoardDescription> getFreeOnBoardDescriptionsByFreeOnBoard(final FreeOnBoard freeOnBoard,
             final EntityPermission entityPermission) {

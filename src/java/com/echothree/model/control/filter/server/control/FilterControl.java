@@ -258,9 +258,11 @@ public class FilterControl
     
     public long countFilterKinds() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterkinds, filterkinddetails " +
-                "WHERE fltk_activedetailid = fltkdt_filterkinddetailid");
+                """
+                SELECT COUNT(*)
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterKind */
@@ -284,14 +286,18 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?
+                FOR UPDATE
+                """);
         getFilterKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -322,14 +328,18 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFilterKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -355,16 +365,20 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid "
-                + "ORDER BY fltkdt_sortorder, fltkdt_filterkindname "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
+                ORDER BY fltkdt_sortorder, fltkdt_filterkindname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
+                FOR UPDATE
+                """);
         getFilterKindsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -524,14 +538,18 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -562,15 +580,19 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions, languages "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? AND fltkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions, languages
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? AND fltkd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterKindDescriptionsByFilterKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -688,9 +710,11 @@ public class FilterControl
 
     public long countFilterTypesByFilterKind(FilterKind filterKind) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?
+                """,
                 filterKind);
     }
 
@@ -715,16 +739,20 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ? "
-                + "ORDER BY flttypdt_sortorder, flttypdt_filtertypename "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?
+                ORDER BY flttypdt_sortorder, flttypdt_filtertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?
+                FOR UPDATE
+                """);
         getFilterTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -747,16 +775,20 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFilterTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -783,16 +815,20 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ?");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ?
+                FOR UPDATE
+                """);
         getFilterTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -974,14 +1010,18 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1012,15 +1052,19 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions, languages "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ? AND flttypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions, languages
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ? AND flttypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterTypeDescriptionsByFilterTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1115,16 +1159,20 @@ public class FilterControl
 
     public long countFilterAdjustmentSources() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filteradjustmentsources");
+                """
+                SELECT COUNT(*)
+                FROM filteradjustmentsources
+                """);
     }
 
     public List<FilterAdjustmentSource> getFilterAdjustmentSources() {
         var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM filteradjustmentsources " +
-                "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM filteradjustmentsources
+                ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename
+                _LIMIT_
+                """);
         
         return FilterAdjustmentSourceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1134,9 +1182,11 @@ public class FilterControl
         
         try {
             var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmentsources " +
-                    "WHERE fltas_filteradjustmentsourcename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmentsources
+                    WHERE fltas_filteradjustmentsourcename = ?
+                    """);
             
             ps.setString(1, filterAdjustmentSourceName);
             
@@ -1206,9 +1256,11 @@ public class FilterControl
         
         try {
             var ps = FilterAdjustmentSourceDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmentsourcedescriptions " +
-                    "WHERE fltasd_fltas_filteradjustmentsourceid = ? AND fltasd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmentsourcedescriptions
+                    WHERE fltasd_fltas_filteradjustmentsourceid = ? AND fltasd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, filterAdjustmentSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1251,16 +1303,20 @@ public class FilterControl
 
     public long countFilterAdjustmentTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filteradjustmenttypes");
+                """
+                SELECT COUNT(*)
+                FROM filteradjustmenttypes
+                """);
     }
 
     public List<FilterAdjustmentType> getFilterAdjustmentTypes() {
         var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM filteradjustmenttypes " +
-                "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM filteradjustmenttypes
+                ORDER BY fltat_sortorder, fltat_filteradjustmenttypename
+                _LIMIT_
+                """);
         
         return FilterAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1270,9 +1326,11 @@ public class FilterControl
         
         try {
             var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmenttypes " +
-                    "WHERE fltat_filteradjustmenttypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmenttypes
+                    WHERE fltat_filteradjustmenttypename = ?
+                    """);
             
             ps.setString(1, filterAdjustmentTypeName);
             
@@ -1344,9 +1402,11 @@ public class FilterControl
         
         try {
             var ps = FilterAdjustmentTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmenttypedescriptions " +
-                    "WHERE fltatd_fltat_filteradjustmenttypeid = ? AND fltatd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmenttypedescriptions
+                    WHERE fltatd_fltat_filteradjustmenttypeid = ? AND fltatd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, filterAdjustmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1439,11 +1499,13 @@ public class FilterControl
 
     public List<FilterAdjustment> getFilterAdjustments() {
         var ps = FilterAdjustmentFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM filteradjustments, filteradjustmentdetails, filterkinds " +
-                "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid " +
-                "AND fltadt_fltk_filterkindid = fltk_filterkindid " +
-                "ORDER BY fltk_sortorder, fltk_filterkindname, fltadt_filteradjustmentname");
+                """
+                SELECT _ALL_
+                FROM filteradjustments, filteradjustmentdetails, filterkinds
+                WHERE flta_activedetailid = fltadt_filteradjustmentdetailid
+                AND fltadt_fltk_filterkindid = fltk_filterkindid
+                ORDER BY fltk_sortorder, fltk_filterkindname, fltadt_filteradjustmentname
+                """);
         
         return FilterAdjustmentFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1455,16 +1517,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "ORDER BY fltadt_filteradjustmentname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        ORDER BY fltadt_filteradjustmentname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
@@ -1494,16 +1560,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
@@ -1538,16 +1608,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_filteradjustmentname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_filteradjustmentname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_filteradjustmentname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_filteradjustmentname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
@@ -1739,19 +1813,23 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ? " +
-                        "AND fltaa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "AND fltaa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ?
+                        AND fltaa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        AND fltaa_cur_currencyid = cur_currencyid
+                        ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
@@ -1787,16 +1865,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ? " +
-                        "AND fltaa_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ?
+                        AND fltaa_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ? " +
-                        "AND fltaa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ?
+                        AND fltaa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
@@ -1921,19 +2003,23 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ? " +
-                        "AND fltafa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "AND fltafa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ?
+                        AND fltafa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        AND fltafa_cur_currencyid = cur_currencyid
+                        ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
@@ -1970,16 +2056,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ? " +
-                        "AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ?
+                        AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ? " +
-                        "AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ?
+                        AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
@@ -2107,19 +2197,23 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ? " +
-                        "AND fltap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "AND fltap_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ?
+                        AND fltap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        AND fltap_cur_currencyid = cur_currencyid
+                        ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
@@ -2156,16 +2250,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ? " +
-                        "AND fltap_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ?
+                        AND fltap_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ? " +
-                        "AND fltap_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ?
+                        AND fltap_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
@@ -2284,14 +2382,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
@@ -2338,15 +2440,19 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions, languages " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? AND fltad_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions, languages
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? AND fltad_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
@@ -2475,25 +2581,31 @@ public class FilterControl
 
     public long countFiltersByFilterType(FilterType filterType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filters, filterdetails " +
-                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filters, filterdetails
+                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
+                """,
                 filterType);
     }
 
     public long countFiltersBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filters, filterdetails " +
-                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_filteritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filters, filterdetails
+                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_filteritemselectorid = ?
+                """,
                 selector);
     }
 
     public long countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filters, filterdetails " +
-                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_initialfilteradjustmentid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filters, filterdetails
+                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_initialfilteradjustmentid = ?
+                """,
                 filterAdjustment);
     }
 
@@ -2519,16 +2631,20 @@ public class FilterControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
-                        "ORDER BY fltdt_sortorder, fltdt_filtername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
+                        ORDER BY fltdt_sortorder, fltdt_filtername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterFactory.getInstance().prepareStatement(query);
@@ -2598,14 +2714,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterFactory.getInstance().prepareStatement(query);
@@ -2639,14 +2759,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterFactory.getInstance().prepareStatement(query);
@@ -2836,14 +2960,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions
+                        WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions
+                        WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
@@ -2885,15 +3013,19 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions, languages " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? AND fltd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions, languages
+                        WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? AND fltd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions
+                        WHERE fltd_flt_filterid = ? AND fltd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
@@ -3003,17 +3135,21 @@ public class FilterControl
 
     public long countFilterStepsByFilter(Filter filter) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filtersteps, filterstepdetails " +
-                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filtersteps, filterstepdetails
+                WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                """,
                 filter);
     }
 
     public long countFilterStepsBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filtersteps, filterstepdetails " +
-                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_filteritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filtersteps, filterstepdetails
+                WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_filteritemselectorid = ?
+                """,
                 selector);
     }
 
@@ -3039,16 +3175,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "AND fltstpdt_filterstepname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        AND fltstpdt_filterstepname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "AND fltstpdt_filterstepname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        AND fltstpdt_filterstepname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepFactory.getInstance().prepareStatement(query);
@@ -3087,16 +3227,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepFactory.getInstance().prepareStatement(query);
@@ -3240,14 +3384,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
@@ -3289,15 +3437,19 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions, languages " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? AND fltstpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions, languages
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? AND fltstpd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
@@ -3404,17 +3556,21 @@ public class FilterControl
 
     public long countFilterEntranceStepsByFilter(Filter filter) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterentrancesteps
+                WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?
+                """,
                 filter, Session.MAX_TIME);
     }
 
     public long countFilterEntranceStepsByFilterStep(FilterStep filterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterentrancesteps
+                WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                """,
                 filterStep, Session.MAX_TIME);
     }
 
@@ -3426,14 +3582,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
@@ -3465,17 +3625,21 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps, filterstepdetails " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
-                        "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps, filterstepdetails
+                        WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?
+                        AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
@@ -3509,17 +3673,21 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps, filterstepdetails" +
-                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
-                        "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps, filterstepdetails
+                        WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
@@ -3595,17 +3763,21 @@ public class FilterControl
 
     public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepdestinations
+                WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?
+                """,
                 fromFilterStep, Session.MAX_TIME);
     }
 
     public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepdestinations
+                WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                """,
                 toFilterStep, Session.MAX_TIME);
     }
 
@@ -3617,14 +3789,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
@@ -3656,17 +3832,21 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations, filterstepdetails " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations, filterstepdetails
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?
+                        AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
@@ -3700,17 +3880,21 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations, filterstepdetails " +
-                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations, filterstepdetails
+                        WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
@@ -3813,25 +3997,31 @@ public class FilterControl
 
     public long countFilterStepElementsByFilterStep(FilterStep filterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepelements, filterstepelementdetails
+                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
+                """,
                 filterStep);
     }
 
     public long countFilterStepElementsBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepelements, filterstepelementdetails
+                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?
+                """,
                 selector);
     }
 
     public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepelements, filterstepelementdetails
+                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?
+                """,
                 filterAdjustment);
     }
 
@@ -3858,16 +4048,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid " +
-                        "AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid
+                        AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid " +
-                        "AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid
+                        AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepElementFactory.getInstance().prepareStatement(query);
@@ -3905,16 +4099,20 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "ORDER BY fltstpedt_filterstepelementname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
+                        ORDER BY fltstpedt_filterstepelementname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepElementFactory.getInstance().prepareStatement(query);
@@ -4067,14 +4265,18 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
@@ -4116,15 +4318,19 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions, languages " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? AND fltstped_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions, languages
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? AND fltstped_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);

@@ -74,9 +74,11 @@ public class UseNameElementControl
 
     public long countUseNameElements() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM usenameelements, usenameelementdetails " +
-                "WHERE usene_activedetailid = usenedt_usenameelementdetailid");
+                """
+                SELECT COUNT(*)
+                FROM usenameelements, usenameelementdetails
+                WHERE usene_activedetailid = usenedt_usenameelementdetailid
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseNameElement */
@@ -102,14 +104,18 @@ public class UseNameElementControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usenameelements, usenameelementdetails " +
-                        "WHERE usene_activedetailid = usenedt_usenameelementdetailid AND usenedt_usenameelementname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usenameelements, usenameelementdetails
+                        WHERE usene_activedetailid = usenedt_usenameelementdetailid AND usenedt_usenameelementname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usenameelements, usenameelementdetails " +
-                        "WHERE usene_activedetailid = usenedt_usenameelementdetailid AND usenedt_usenameelementname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usenameelements, usenameelementdetails
+                        WHERE usene_activedetailid = usenedt_usenameelementdetailid AND usenedt_usenameelementname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseNameElementFactory.getInstance().prepareStatement(query);
@@ -144,16 +150,20 @@ public class UseNameElementControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM usenameelements, usenameelementdetails " +
-                    "WHERE usene_activedetailid = usenedt_usenameelementdetailid " +
-                    "ORDER BY usenedt_offset " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM usenameelements, usenameelementdetails
+                    WHERE usene_activedetailid = usenedt_usenameelementdetailid
+                    ORDER BY usenedt_offset
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM usenameelements, usenameelementdetails " +
-                    "WHERE usene_activedetailid = usenedt_usenameelementdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM usenameelements, usenameelementdetails
+                    WHERE usene_activedetailid = usenedt_usenameelementdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = UseNameElementFactory.getInstance().prepareStatement(query);
@@ -246,14 +256,18 @@ public class UseNameElementControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usenameelementdescriptions " +
-                        "WHERE usened_usene_usenameelementid = ? AND usened_lang_languageid = ? AND usened_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM usenameelementdescriptions
+                        WHERE usened_usene_usenameelementid = ? AND usened_lang_languageid = ? AND usened_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usenameelementdescriptions " +
-                        "WHERE usened_usene_usenameelementid = ? AND usened_lang_languageid = ? AND usened_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usenameelementdescriptions
+                        WHERE usened_usene_usenameelementid = ? AND usened_lang_languageid = ? AND usened_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);
@@ -293,15 +307,19 @@ public class UseNameElementControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usenameelementdescriptions, languages " +
-                        "WHERE usened_usene_usenameelementid = ? AND usened_thrutime = ? AND usened_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM usenameelementdescriptions, languages
+                        WHERE usened_usene_usenameelementid = ? AND usened_thrutime = ? AND usened_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM usenameelementdescriptions " +
-                        "WHERE usened_usene_usenameelementid = ? AND usened_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM usenameelementdescriptions
+                        WHERE usened_usene_usenameelementid = ? AND usened_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = UseNameElementDescriptionFactory.getInstance().prepareStatement(query);

@@ -9276,11 +9276,13 @@ public class ItemControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 // TODO: ORDER BY
-                "SELECT _ALL_ " +
-                "FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions " +
-                "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid " +
-                "AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ? " +
-                "AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1");
+                """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
+                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
+                AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
@@ -9800,9 +9802,11 @@ public class ItemControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 // TODO: ORDER BY
-                "SELECT _ALL_ " +
-                "FROM itemimagedescriptions " +
-                "WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM itemimagedescriptions
+                WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
                 FROM itemimagedescriptions
