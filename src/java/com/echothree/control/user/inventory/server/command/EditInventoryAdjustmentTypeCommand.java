@@ -34,18 +34,18 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditInventoryAdjustmentTypeCommand
         extends BaseAbstractEditCommand<InventoryAdjustmentTypeUniversalSpec, InventoryAdjustmentTypeEdit, EditInventoryAdjustmentTypeResult, InventoryAdjustmentType, InventoryAdjustmentType> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -53,13 +53,13 @@ public class EditInventoryAdjustmentTypeCommand
                     new SecurityRoleDefinition(SecurityRoleGroups.InventoryAdjustmentType.name(), SecurityRoles.Edit.name())
                     ))
                 ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -67,7 +67,13 @@ public class EditInventoryAdjustmentTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
+    @Inject
+    InventoryAdjustmentTypeLogic inventoryAdjustmentTypeLogic;
+
     /** Creates a new instance of EditInventoryAdjustmentTypeCommand */
     public EditInventoryAdjustmentTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,9 +91,8 @@ public class EditInventoryAdjustmentTypeCommand
 
     @Override
     public InventoryAdjustmentType getEntity(EditInventoryAdjustmentTypeResult result) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentTypeName = spec.getInventoryAdjustmentTypeName();
-        var inventoryAdjustmentType = InventoryAdjustmentTypeLogic.getInstance().getInventoryAdjustmentTypeByUniversalSpec(this, spec, false,
+        var inventoryAdjustmentType = inventoryAdjustmentTypeLogic.getInventoryAdjustmentTypeByUniversalSpec(this, spec, false,
                 editModeToEntityPermission(editMode));
 
         if(inventoryAdjustmentType != null) {
@@ -106,14 +111,11 @@ public class EditInventoryAdjustmentTypeCommand
 
     @Override
     public void fillInResult(EditInventoryAdjustmentTypeResult result, InventoryAdjustmentType inventoryAdjustmentType) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
         result.setInventoryAdjustmentType(inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeTransfer(getUserVisit(), inventoryAdjustmentType));
     }
 
     @Override
     public void doLock(InventoryAdjustmentTypeEdit edit, InventoryAdjustmentType inventoryAdjustmentType) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentTypeDescription = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getPreferredLanguage());
         var inventoryAdjustmentTypeDetail = inventoryAdjustmentType.getLastDetail();
 
@@ -128,7 +130,6 @@ public class EditInventoryAdjustmentTypeCommand
 
     @Override
     public void canUpdate(InventoryAdjustmentType inventoryAdjustmentType) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentTypeName = edit.getInventoryAdjustmentTypeName();
         var duplicateInventoryAdjustmentType = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeByName(inventoryAdjustmentTypeName);
 
@@ -139,7 +140,6 @@ public class EditInventoryAdjustmentTypeCommand
 
     @Override
     public void doUpdate(InventoryAdjustmentType inventoryAdjustmentType) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var partyPK = getPartyPK();
         var inventoryAdjustmentTypeDetailValue = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDetailValueForUpdate(inventoryAdjustmentType);
         var inventoryAdjustmentTypeDescription = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDescriptionForUpdate(inventoryAdjustmentType, getPreferredLanguage());
@@ -149,7 +149,7 @@ public class EditInventoryAdjustmentTypeCommand
         inventoryAdjustmentTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         inventoryAdjustmentTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        InventoryAdjustmentTypeLogic.getInstance().updateInventoryAdjustmentTypeFromValue(inventoryAdjustmentTypeDetailValue, partyPK);
+        inventoryAdjustmentTypeLogic.updateInventoryAdjustmentTypeFromValue(inventoryAdjustmentTypeDetailValue, partyPK);
 
         if(inventoryAdjustmentTypeDescription == null && description != null) {
             inventoryAdjustmentTypeControl.createInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getPreferredLanguage(), description, partyPK);

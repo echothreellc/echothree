@@ -43,11 +43,11 @@ import javax.inject.Inject;
 @Dependent
 public class EditInventoryConditionDescriptionCommand
         extends BaseAbstractEditCommand<InventoryConditionDescriptionSpec, InventoryConditionDescriptionEdit, EditInventoryConditionDescriptionResult, InventoryConditionDescription, InventoryCondition> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,28 +55,27 @@ public class EditInventoryConditionDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditInventoryConditionDescriptionCommand */
-    public EditInventoryConditionDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
-    
+
     @Inject
     InventoryControl inventoryControl;
 
     @Inject
     PartyControl partyControl;
 
+    /** Creates a new instance of EditInventoryConditionDescriptionCommand */
+    public EditInventoryConditionDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
     @Override
     public EditInventoryConditionDescriptionResult getResult() {
         return InventoryResultFactory.getEditInventoryConditionDescriptionResult();
@@ -140,5 +139,5 @@ public class EditInventoryConditionDescriptionCommand
 
         inventoryControl.updateInventoryConditionDescriptionFromValue(inventoryConditionDescriptionValue, getPartyPK());
     }
-    
+
 }

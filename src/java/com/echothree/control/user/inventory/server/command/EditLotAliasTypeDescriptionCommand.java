@@ -38,8 +38,8 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -68,6 +68,12 @@ public class EditLotAliasTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditLotAliasTypeDescriptionCommand */
     public EditLotAliasTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public LotAliasTypeDescription getEntity(EditLotAliasTypeDescriptionResult result) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = null;
         var lotAliasTypeName = spec.getLotAliasTypeName();
         var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeDescriptionResult result, LotAliasTypeDescription lotAliasTypeDescription) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
-
         result.setLotAliasTypeDescription(lotAliasControl.getLotAliasTypeDescriptionTransfer(getUserVisit(), lotAliasTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(LotAliasTypeDescription lotAliasTypeDescription) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
 
         lotAliasTypeDescriptionValue.setDescription(edit.getDescription());

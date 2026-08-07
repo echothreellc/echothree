@@ -31,17 +31,17 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetLotTimeTypeDescriptionsCommand
         extends BaseSimpleCommand<GetLotTimeTypeDescriptionsForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -49,20 +49,22 @@ public class GetLotTimeTypeDescriptionsCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.LotTimeType.name(), SecurityRoles.Description.name())
                         ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
+    @Inject
+    LotTimeControl lotTimeControl;
+
     /** Creates a new instance of GetLotTimeTypeDescriptionsCommand */
     public GetLotTimeTypeDescriptionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var result = InventoryResultFactory.getGetLotTimeTypeDescriptionsResult();
         var lotTimeTypeName = form.getLotTimeTypeName();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
@@ -76,5 +78,5 @@ public class GetLotTimeTypeDescriptionsCommand
 
         return result;
     }
-    
+
 }

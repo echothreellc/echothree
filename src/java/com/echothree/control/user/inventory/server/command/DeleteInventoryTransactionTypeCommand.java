@@ -30,15 +30,16 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class DeleteInventoryTransactionTypeCommand
         extends BaseSimpleCommand<DeleteInventoryTransactionTypeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -46,28 +47,31 @@ public class DeleteInventoryTransactionTypeCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionType.name(), SecurityRoles.Delete.name())
                         ))
                 ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
-    
+
+    @Inject
+    InventoryTransactionTypeLogic inventoryTransactionTypeLogic;
+
     /** Creates a new instance of DeleteInventoryTransactionTypeCommand */
     public DeleteInventoryTransactionTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionType = InventoryTransactionTypeLogic.getInstance().getInventoryTransactionTypeByUniversalSpecForUpdate(this, form, false);
-        
+        var inventoryTransactionType = inventoryTransactionTypeLogic.getInventoryTransactionTypeByUniversalSpecForUpdate(this, form, false);
+
         if(!hasExecutionErrors()) {
-            InventoryTransactionTypeLogic.getInstance().deleteInventoryTransactionType(this, inventoryTransactionType, getPartyPK());
+            inventoryTransactionTypeLogic.deleteInventoryTransactionType(this, inventoryTransactionType, getPartyPK());
         }
-        
+
         return null;
     }
-    
+
 }

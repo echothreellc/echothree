@@ -41,7 +41,7 @@ public class DeletePartyInventoryLevelCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -64,7 +64,6 @@ public class DeletePartyInventoryLevelCommand
 
     @Inject
     ItemControl itemControl;
-
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
@@ -72,22 +71,22 @@ public class DeletePartyInventoryLevelCommand
     public DeletePartyInventoryLevelCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var party = partyInventoryLevelUtil.getParty(this, form);
-        
+
         if(party != null) {
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
-            
+
             if(item != null) {
                 var inventoryConditionName = form.getInventoryConditionName();
                 var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-                
+
                 if(inventoryCondition != null) {
                     var partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
-                    
+
                     if(partyInventoryLevel != null) {
                         inventoryControl.deletePartyInventoryLevel(partyInventoryLevel, getPartyPK());
                     } else {
@@ -100,8 +99,8 @@ public class DeletePartyInventoryLevelCommand
                 addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
         }
-        
+
         return null;
     }
-    
+
 }

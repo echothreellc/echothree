@@ -33,9 +33,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class AllocationPriorityLogic
@@ -49,10 +49,15 @@ public class AllocationPriorityLogic
         return CDI.current().select(AllocationPriorityLogic.class).get();
     }
 
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     public AllocationPriority createAllocationPriority(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority == null) {
@@ -70,7 +75,6 @@ public class AllocationPriorityLogic
 
     public AllocationPriority getAllocationPriorityByName(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
             final EntityPermission entityPermission) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName, entityPermission);
 
         if(allocationPriority == null) {
@@ -91,9 +95,8 @@ public class AllocationPriorityLogic
     public AllocationPriority getAllocationPriorityByUniversalSpec(final ExecutionErrorAccumulator eea,
             final AllocationPriorityUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         AllocationPriority allocationPriority = null;
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriorityName = universalSpec.getAllocationPriorityName();
-        var parameterCount = (allocationPriorityName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (allocationPriorityName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class AllocationPriorityLogic
             }
             case 1 -> {
                 if(allocationPriorityName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.AllocationPriority.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -138,15 +141,11 @@ public class AllocationPriorityLogic
 
     public void updateAllocationPriorityFromValue(final AllocationPriorityDetailValue allocationPriorityDetailValue,
             final BasePK updatedBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-
         inventoryControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, updatedBy);
     }
     
     public void deleteAllocationPriority(final ExecutionErrorAccumulator eea, final AllocationPriority allocationPriority,
             final BasePK deletedBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-
         inventoryControl.deleteAllocationPriority(allocationPriority, deletedBy);
     }
 

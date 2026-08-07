@@ -30,18 +30,18 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetInventoryAdjustmentTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<InventoryAdjustmentType, GetInventoryAdjustmentTypesForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -52,7 +52,10 @@ public class GetInventoryAdjustmentTypesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
     /** Creates a new instance of GetInventoryAdjustmentTypesCommand */
     public GetInventoryAdjustmentTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetInventoryAdjustmentTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
         return inventoryAdjustmentTypeControl.countInventoryAdjustmentTypes();
     }
 
     @Override
     protected Collection<InventoryAdjustmentType> getEntities() {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
         return inventoryAdjustmentTypeControl.getInventoryAdjustmentTypes();
     }
 
@@ -82,8 +81,6 @@ public class GetInventoryAdjustmentTypesCommand
         var result = InventoryResultFactory.getGetInventoryAdjustmentTypesResult();
 
         if(entities != null) {
-            var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
             if(session.hasLimit(InventoryAdjustmentTypeFactory.class)) {
                 result.setInventoryAdjustmentTypeCount(getTotalEntities());
             }
@@ -93,5 +90,5 @@ public class GetInventoryAdjustmentTypesCommand
 
         return result;
     }
-    
+
 }

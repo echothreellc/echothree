@@ -47,7 +47,7 @@ public class GetPartyInventoryLevelCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -82,7 +82,6 @@ public class GetPartyInventoryLevelCommand
 
     @Inject
     ItemLogic itemLogic;
-
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
@@ -127,5 +126,5 @@ public class GetPartyInventoryLevelCommand
 
         return result;
     }
-    
+
 }

@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -64,7 +64,22 @@ public class GetLotsCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    LotControl lotControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     /** Creates a new instance of GetLotsCommand */
     public GetLotsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -76,31 +91,25 @@ public class GetLotsCommand
     protected void handleForm() {
         var itemName = form.getItemName();
 
-        item = ItemLogic.getInstance().getItemByName(this, itemName);
+        item = itemLogic.getItemByName(this, itemName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var lotControl = Session.getModelController(LotControl.class);
-
         return hasExecutionErrors() ? null :
                 lotControl.countLotsByItem(item);
     }
 
     @Override
     protected Collection<Lot> getEntities() {
-        var lotControl = Session.getModelController(LotControl.class);
-        
         return lotControl.getLotsByItem(item);
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<Lot> entities) {
         var result = InventoryResultFactory.getGetLotsResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var lotControl = Session.getModelController(LotControl.class);
             var userVisit = getUserVisit();
 
             result.setItem(itemControl.getItemTransfer(userVisit, item));
@@ -108,5 +117,5 @@ public class GetLotsCommand
         }
         return result;
     }
-    
+
 }
