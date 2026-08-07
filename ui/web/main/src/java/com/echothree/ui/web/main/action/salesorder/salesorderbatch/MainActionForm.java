@@ -25,7 +25,7 @@ import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesR
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.common.choice.BatchAliasTypeChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
@@ -116,7 +116,7 @@ public class MainActionForm
         if(batchAliasTypeChoices == null) {
             var form = BatchUtil.getHome().getGetBatchAliasTypeChoicesForm();
 
-            form.setBatchTypeName(BatchConstants.BatchType_SALES_ORDER);
+            form.setBatchTypeName(BatchTypes.SALES_ORDER.name());
             form.setDefaultBatchAliasTypeChoice(batchAliasTypeChoice);
             form.setAllowNullChoice(String.valueOf(true));
 

@@ -19,19 +19,18 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.SearchSalesOrderBatchesForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.server.search.SalesOrderBatchSearchEvaluator;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
@@ -90,7 +89,7 @@ public class SearchSalesOrderBatchesCommand
 
                         if(salesOrderBatchStatusChoice == null || salesOrderBatchStatusChoice != null) {
                             var batchLogic = BatchLogic.getInstance();
-                            var batchType = batchLogic.getBatchTypeByName(this, BatchConstants.BatchType_SALES_ORDER);
+                            var batchType = batchLogic.getBatchTypeByName(this, BatchTypes.SALES_ORDER.name());
 
                             if(!hasExecutionErrors()) {
                                 var batchAliasTypeName = form.getBatchAliasTypeName();

@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.sales.common.form;
+package com.echothree.model.control.batch.common;
 
-import com.echothree.control.user.sales.common.spec.SalesOrderBatchUniversalSpec;
+public enum BatchTypes {
 
-public interface GetSalesOrderBatchForm
-        extends SalesOrderBatchUniversalSpec {
-    
-    // Nothing additional beyond SalesOrderBatchSpec
+    ORDER,
+    SALES_ORDER
     
 }

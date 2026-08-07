@@ -40,6 +40,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -193,8 +194,9 @@ public class BatchLogic
         return batchAliasType;
     }
 
-    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final BatchType batchType, final String batchName) {
-        var batch = batchControl.getBatchByName(batchType, batchName);
+    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final BatchType batchType, final String batchName,
+            final EntityPermission entityPermission) {
+        var batch = batchControl.getBatchByName(batchType, batchName, entityPermission);
 
         if(batch == null) {
             handleExecutionError(UnknownBatchNameException.class, eea, ExecutionErrors.UnknownBatchName.name(),
@@ -204,31 +206,28 @@ public class BatchLogic
         return batch;
     }
 
-    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
+    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final BatchType batchType, final String batchName) {
+        return getBatchByName(eea, batchType, batchName, EntityPermission.READ_ONLY);
+    }
+
+    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName,
+            final EntityPermission entityPermission) {
         var batchType = getBatchTypeByName(eea, batchTypeName);
         Batch batch = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            batch = getBatchByName(eea, batchType, batchName);
+            batch = getBatchByName(eea, batchType, batchName, entityPermission);
         }
 
         return batch;
     }
 
+    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
+        return getBatchByName(eea, batchTypeName, batchName, EntityPermission.READ_ONLY);
+    }
+
     public Batch getBatchByNameForUpdate(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
-        var batchType = getBatchTypeByName(eea, batchTypeName);
-        Batch batch = null;
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            batch = batchControl.getBatchByNameForUpdate(batchType, batchName);
-
-            if(batch == null) {
-                handleExecutionError(UnknownBatchNameException.class, eea, ExecutionErrors.UnknownBatchName.name(),
-                        batchType.getLastDetail().getBatchTypeName(), batchName);
-            }
-        }
-
-        return batch;
+        return getBatchByName(eea, batchTypeName, batchName, EntityPermission.READ_WRITE);
     }
 
     public BatchEntity createBatchEntity(final ExecutionErrorAccumulator eea, final BaseEntity baseEntity, final Batch batch, final BasePK createdBy) {
