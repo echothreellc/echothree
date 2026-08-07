@@ -49,8 +49,8 @@ public class CreateTrainingClassSectionTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassSection.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -61,7 +61,7 @@ public class CreateTrainingClassSectionTranslationCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null),
                 new FieldDefinition("IntroductionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

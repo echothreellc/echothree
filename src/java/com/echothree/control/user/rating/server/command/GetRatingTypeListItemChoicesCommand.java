@@ -46,7 +46,7 @@ public class GetRatingTypeListItemChoicesCommand
                 new FieldDefinition("RatingName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultRatingTypeListItemChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -40,7 +40,7 @@ public class GetUnitOfMeasureKindChoicesCommand
                 new FieldDefinition("DefaultUnitOfMeasureKindChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -42,7 +42,7 @@ public class DeleteCommentUsageTypeDescriptionCommand
                 new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

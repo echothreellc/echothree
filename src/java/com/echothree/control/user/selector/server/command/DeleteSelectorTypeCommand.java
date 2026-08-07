@@ -44,14 +44,14 @@ public class DeleteSelectorTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Delete.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

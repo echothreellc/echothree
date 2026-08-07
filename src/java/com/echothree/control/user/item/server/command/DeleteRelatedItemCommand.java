@@ -53,7 +53,7 @@ public class DeleteRelatedItemCommand
                 new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FromItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ToItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -65,8 +65,8 @@ public class CreatePartyPaymentMethodCommand
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -88,7 +88,7 @@ public class CreatePartyPaymentMethodCommand
                 new FieldDefinition("BillingContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IssuerName", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("IssuerContactMechanismName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

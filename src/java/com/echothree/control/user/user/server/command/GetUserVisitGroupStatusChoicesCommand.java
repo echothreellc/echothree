@@ -36,9 +36,9 @@ public class GetUserVisitGroupStatusChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("UserVisitGroupName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultUserVisitGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("UserVisitGroupName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultUserVisitGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
 

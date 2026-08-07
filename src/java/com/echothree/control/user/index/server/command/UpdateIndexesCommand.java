@@ -79,8 +79,8 @@ public class UpdateIndexesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
-        );
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
     }
 
     @Inject

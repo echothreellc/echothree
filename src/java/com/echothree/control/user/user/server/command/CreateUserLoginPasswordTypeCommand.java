@@ -36,7 +36,7 @@ public class CreateUserLoginPasswordTypeCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UserLoginPasswordTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UserLoginPasswordEncoderTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     

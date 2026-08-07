@@ -47,8 +47,8 @@ public class CreateCurrencyCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Currency.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, 3L),
@@ -69,7 +69,7 @@ public class CreateCurrencyCommand
                 new FieldDefinition("MinusSign", FieldType.STRING, true, 1L, 1L),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

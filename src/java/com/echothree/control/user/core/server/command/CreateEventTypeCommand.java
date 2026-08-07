@@ -36,7 +36,7 @@ public class CreateEventTypeCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EventTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     

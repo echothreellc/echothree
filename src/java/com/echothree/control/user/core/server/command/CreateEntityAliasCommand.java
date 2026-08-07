@@ -55,7 +55,7 @@ public class CreateEntityAliasCommand
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAliasTypeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

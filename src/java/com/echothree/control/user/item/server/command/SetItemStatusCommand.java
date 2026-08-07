@@ -45,13 +45,13 @@ public class SetItemStatusCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemStatus.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

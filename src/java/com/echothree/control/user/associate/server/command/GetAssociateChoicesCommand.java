@@ -40,7 +40,7 @@ public class GetAssociateChoicesCommand
                 new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultAssociateChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

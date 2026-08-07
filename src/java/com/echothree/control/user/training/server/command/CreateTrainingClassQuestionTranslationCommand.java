@@ -49,8 +49,8 @@ public class CreateTrainingClassQuestionTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassQuestion.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,7 +59,7 @@ public class CreateTrainingClassQuestionTranslationCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("QuestionMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Question", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

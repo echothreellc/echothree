@@ -51,7 +51,7 @@ public class CreateEntityIntegerDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IntegerAttribute", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

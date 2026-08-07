@@ -52,7 +52,7 @@ public class CreateEntityMultipleListItemAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
 
     @Inject

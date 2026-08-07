@@ -43,7 +43,7 @@ public class CreateUnitOfMeasureTypeDescriptionCommand
                 new FieldDefinition("SingularDescription", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PluralDescription", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("Symbol", FieldType.STRING, true, 1L, 20L)
-                );
+        );
     }
 
     @Inject

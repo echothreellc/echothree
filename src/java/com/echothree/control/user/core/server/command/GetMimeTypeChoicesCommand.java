@@ -53,7 +53,7 @@ public class GetMimeTypeChoicesCommand
                 new FieldDefinition("CommentName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

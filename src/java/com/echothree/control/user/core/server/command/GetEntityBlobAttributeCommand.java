@@ -43,7 +43,7 @@ public class GetEntityBlobAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Referrer", FieldType.URL, false, null, null)
-                );
+        );
     }
 
     @Inject

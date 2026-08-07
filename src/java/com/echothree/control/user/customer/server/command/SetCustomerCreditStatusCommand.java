@@ -39,7 +39,7 @@ public class SetCustomerCreditStatusCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

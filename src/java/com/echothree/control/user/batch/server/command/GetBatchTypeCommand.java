@@ -48,11 +48,11 @@ public class GetBatchTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

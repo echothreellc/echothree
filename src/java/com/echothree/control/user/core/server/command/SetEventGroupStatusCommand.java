@@ -35,8 +35,8 @@ public class SetEventGroupStatusCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EventGroupName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EventGroupStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EventGroupName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EventGroupStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

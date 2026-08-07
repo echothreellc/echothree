@@ -51,7 +51,7 @@ public class GetFilterAdjustmentSourceChoicesCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultFilterAdjustmentSourceChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

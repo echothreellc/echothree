@@ -50,7 +50,7 @@ public class GetEventsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Event.name(), SecurityRoles.List.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.Event.name(), SecurityRoles.List.name())
                 ))
         ));
         

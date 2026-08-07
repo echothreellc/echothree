@@ -46,7 +46,7 @@ public class CreatePartyTypeLockoutPolicyCommand
                 new FieldDefinition("ManualLockoutReset", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("LockoutInactiveTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("LockoutInactiveTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

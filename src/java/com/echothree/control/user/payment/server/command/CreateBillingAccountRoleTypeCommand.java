@@ -41,12 +41,12 @@ public class CreateBillingAccountRoleTypeCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BillingAccountRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -44,7 +44,7 @@ public class CreatePostalAddressLineElementCommand
                 new FieldDefinition("AlwaysIncludePrefix", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Suffix", FieldType.STRING, false, 1L, 10L),
                 new FieldDefinition("AlwaysIncludeSuffix", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

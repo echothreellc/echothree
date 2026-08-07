@@ -39,7 +39,7 @@ public class CreatePartyTypeUseCommand
                 new FieldDefinition("PartyTypeUseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

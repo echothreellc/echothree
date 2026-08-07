@@ -42,7 +42,7 @@ public class GetContactMechanismChoicesCommand
                 new FieldDefinition("ContactMechanismTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultContactMechanismChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

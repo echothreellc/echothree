@@ -44,14 +44,14 @@ public class SetDefaultIndexFieldCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IndexFieldName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -47,7 +47,7 @@ public class CreateUserVisitCampaignCommand
                 new FieldDefinition("CampaignMediumValue", FieldType.STRING, false, null, null),
                 new FieldDefinition("CampaignTermValue", FieldType.STRING, false, null, null),
                 new FieldDefinition("CampaignContentValue", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

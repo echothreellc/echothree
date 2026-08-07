@@ -50,7 +50,7 @@ public class CreateBlogCommentCommand
                 new FieldDefinition("Title", FieldType.STRING, true, 1L, 512L),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

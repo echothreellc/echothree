@@ -38,7 +38,7 @@ public class CreateItemSearchResultActionCommand
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

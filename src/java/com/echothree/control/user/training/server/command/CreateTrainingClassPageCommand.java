@@ -48,8 +48,8 @@ public class CreateTrainingClassPageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassPage.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -61,7 +61,7 @@ public class CreateTrainingClassPageCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PageMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Page", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

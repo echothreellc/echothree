@@ -39,7 +39,7 @@ public class DeleteScaleDescriptionCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ScaleName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

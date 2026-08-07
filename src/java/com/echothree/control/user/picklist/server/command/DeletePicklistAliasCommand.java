@@ -45,7 +45,7 @@ public class DeletePicklistAliasCommand
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

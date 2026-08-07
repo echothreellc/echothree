@@ -39,7 +39,7 @@ public class SetDefaultDepartmentCommand
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DepartmentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

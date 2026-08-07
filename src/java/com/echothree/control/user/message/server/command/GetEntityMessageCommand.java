@@ -39,11 +39,11 @@ public class GetEntityMessageCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("MessageName", FieldType.TAG, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("MessageName", FieldType.TAG, true, null, null)
         );
     }
 

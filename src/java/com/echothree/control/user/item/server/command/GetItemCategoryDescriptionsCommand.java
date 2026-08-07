@@ -47,11 +47,11 @@ public class GetItemCategoryDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemCategory.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemCategoryName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemCategoryName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

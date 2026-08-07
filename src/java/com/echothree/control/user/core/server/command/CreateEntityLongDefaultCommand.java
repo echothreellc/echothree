@@ -51,7 +51,7 @@ public class CreateEntityLongDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -56,7 +56,7 @@ public class CreateLocationCapacityCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Capacity", FieldType.UNSIGNED_LONG, true, null, null)
-                );
+        );
     }
 
     @Inject

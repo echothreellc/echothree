@@ -54,8 +54,8 @@ public class GetContentCatalogItemsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCatalogItem.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentWebAddressName", FieldType.HOST_NAME, false, null, null),
@@ -64,7 +64,7 @@ public class GetContentCatalogItemsCommand
                 new FieldDefinition("AssociateProgramName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociateName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

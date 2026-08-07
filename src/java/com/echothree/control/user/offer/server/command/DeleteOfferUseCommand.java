@@ -45,13 +45,13 @@ public class DeleteOfferUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferUse.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

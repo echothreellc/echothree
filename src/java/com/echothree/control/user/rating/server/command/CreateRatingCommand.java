@@ -43,10 +43,10 @@ public class CreateRatingCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RatedByUsername", FieldType.STRING, false, 1L, 80L),
-            new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-            new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RatedByUsername", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
+                new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

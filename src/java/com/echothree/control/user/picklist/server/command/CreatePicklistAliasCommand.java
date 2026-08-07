@@ -48,7 +48,7 @@ public class CreatePicklistAliasCommand
                 new FieldDefinition("PicklistName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

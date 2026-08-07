@@ -37,9 +37,9 @@ public class CreateItemCountryOfOriginCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Percent", FieldType.FRACTIONAL_PERCENT, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Percent", FieldType.FRACTIONAL_PERCENT, true, null, null)
         );
     }
 

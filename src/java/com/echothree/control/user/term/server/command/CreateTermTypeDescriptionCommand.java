@@ -37,10 +37,10 @@ public class CreateTermTypeDescriptionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-        new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+                new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+        );
     }
 
     @Inject

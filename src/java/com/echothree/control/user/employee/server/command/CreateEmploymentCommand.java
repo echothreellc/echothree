@@ -43,7 +43,7 @@ public class CreateEmploymentCommand
                 new FieldDefinition("EndTime", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

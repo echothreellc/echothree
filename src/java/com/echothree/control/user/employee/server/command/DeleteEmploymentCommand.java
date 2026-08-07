@@ -37,7 +37,7 @@ public class DeleteEmploymentCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmploymentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -39,7 +39,7 @@ public class GetPrinterGroupStatusChoicesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultPrinterGroupStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

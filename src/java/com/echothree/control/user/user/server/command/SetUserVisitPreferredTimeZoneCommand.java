@@ -36,7 +36,7 @@ public class SetUserVisitPreferredTimeZoneCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("JavaTimeZoneName", FieldType.TIME_ZONE_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

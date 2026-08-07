@@ -51,7 +51,7 @@ public class CreateEntityIntegerAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("IntegerAttribute", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -40,7 +40,8 @@ public class GetEmailAddressStatusChoicesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultEmailAddressStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null));
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+        );
     }
 
     @Inject

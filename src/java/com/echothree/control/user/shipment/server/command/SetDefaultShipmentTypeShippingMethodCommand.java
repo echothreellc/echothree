@@ -38,7 +38,7 @@ public class SetDefaultShipmentTypeShippingMethodCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -36,7 +36,7 @@ public class CreatePartyRelationshipTypeCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyRelationshipTypeName", FieldType.STRING, true, null, 40L)
-                );
+        );
     }
 
     @Inject

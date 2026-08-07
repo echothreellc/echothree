@@ -53,8 +53,8 @@ public class EditGeoCodeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCode.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         
         SPEC_FIELD_DEFINITIONS = List.of(

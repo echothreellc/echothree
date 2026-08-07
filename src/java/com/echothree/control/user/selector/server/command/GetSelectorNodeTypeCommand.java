@@ -37,7 +37,7 @@ public class GetSelectorNodeTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("SelectorNodeType", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("SelectorNodeType", FieldType.ENTITY_NAME, false, null, null)
         );
     }
 

@@ -48,7 +48,7 @@ public class GetContentCatalogsCommand
                 new FieldDefinition("AssociateProgramName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociateName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

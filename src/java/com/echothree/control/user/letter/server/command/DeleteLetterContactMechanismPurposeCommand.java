@@ -47,15 +47,15 @@ public class DeleteLetterContactMechanismPurposeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LetterContactMechanismPurpose.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Priority", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

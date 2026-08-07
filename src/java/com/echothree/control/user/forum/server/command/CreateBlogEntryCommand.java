@@ -56,7 +56,7 @@ public class CreateBlogEntryCommand
                 new FieldDefinition("Summary", FieldType.STRING, false, null, null),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

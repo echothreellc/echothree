@@ -39,7 +39,7 @@ public class SetDefaultAssociatePartyContactMechanismCommand
                 new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

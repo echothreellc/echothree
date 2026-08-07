@@ -37,9 +37,9 @@ public class GetIconChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("IconUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("DefaultIconChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("IconUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("DefaultIconChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
 

@@ -43,7 +43,7 @@ public class CreatePostalAddressLineCommand
                 new FieldDefinition("Suffix", FieldType.STRING, false, 1L, 10L),
                 new FieldDefinition("AlwaysIncludeSuffix", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("CollapseIfEmpty", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

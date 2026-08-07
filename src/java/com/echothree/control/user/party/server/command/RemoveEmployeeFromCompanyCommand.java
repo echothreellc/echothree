@@ -40,7 +40,7 @@ public class RemoveEmployeeFromCompanyCommand
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

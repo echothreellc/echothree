@@ -56,7 +56,7 @@ public class GetRecoveryQuestionCommand
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

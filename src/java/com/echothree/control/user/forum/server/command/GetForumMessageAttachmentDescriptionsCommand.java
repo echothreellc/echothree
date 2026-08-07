@@ -40,7 +40,7 @@ public class GetForumMessageAttachmentDescriptionsCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForumMessageAttachmentSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

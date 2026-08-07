@@ -48,13 +48,13 @@ public class DeleteQueuedLetterCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.QueuedLetter.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainInstanceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("QueuedLetterSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

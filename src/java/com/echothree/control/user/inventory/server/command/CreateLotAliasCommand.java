@@ -56,7 +56,7 @@ public class CreateLotAliasCommand
                 new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

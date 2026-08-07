@@ -50,9 +50,9 @@ public class DeleteClubItemCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ClubItemTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ClubItemTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

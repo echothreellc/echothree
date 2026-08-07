@@ -49,7 +49,7 @@ public class SetDefaultWishlistTypeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

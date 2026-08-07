@@ -61,7 +61,7 @@ public class CreateLocationVolumeCommand
                 new FieldDefinition("Width", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DepthUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
-                );
+        );
     }
 
     @Inject

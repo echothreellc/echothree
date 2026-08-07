@@ -55,14 +55,14 @@ public class CreateOfferUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferUse.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SalesOrderSequenceName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

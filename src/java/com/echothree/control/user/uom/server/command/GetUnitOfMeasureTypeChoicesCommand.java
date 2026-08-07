@@ -47,7 +47,7 @@ public class GetUnitOfMeasureTypeChoicesCommand
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

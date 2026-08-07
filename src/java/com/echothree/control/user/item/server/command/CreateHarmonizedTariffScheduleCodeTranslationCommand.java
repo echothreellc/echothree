@@ -50,8 +50,8 @@ public class CreateHarmonizedTariffScheduleCodeTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCode.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,7 +60,7 @@ public class CreateHarmonizedTariffScheduleCodeTranslationCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("OverviewMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -59,7 +59,7 @@ public class CreateLocationNameElementCommand
                 new FieldDefinition("Length", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

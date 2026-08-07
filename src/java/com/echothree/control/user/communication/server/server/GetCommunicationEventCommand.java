@@ -38,7 +38,7 @@ public class GetCommunicationEventCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommunicationEventName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommunicationEventName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

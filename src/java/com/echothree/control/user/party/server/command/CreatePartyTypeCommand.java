@@ -38,13 +38,13 @@ public class CreatePartyTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ParentPartyTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("BillingAccountSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowUserLogins", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("AllowPartyAliases", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ParentPartyTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("BillingAccountSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowUserLogins", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("AllowPartyAliases", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
 

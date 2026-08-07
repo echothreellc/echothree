@@ -38,7 +38,7 @@ public class GetAssociatesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

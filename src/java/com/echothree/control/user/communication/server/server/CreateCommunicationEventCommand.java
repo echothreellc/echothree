@@ -66,7 +66,7 @@ public class CreateCommunicationEventCommand
                 new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommunicationEventTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ClobDocument", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

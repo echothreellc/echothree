@@ -41,7 +41,7 @@ public class GetAssociatePartyContactMechanismChoicesCommand
                 new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultAssociatePartyContactMechanismChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -54,8 +54,8 @@ public class CreateLeaveCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Leave.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,7 +67,7 @@ public class CreateLeaveCommand
                 new FieldDefinition("TotalTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("TotalTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LeaveStatus", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

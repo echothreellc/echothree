@@ -49,7 +49,7 @@ public class DeleteEntityBlobAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

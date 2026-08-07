@@ -40,8 +40,8 @@ public class CreateComponentVersionCommand
                 new FieldDefinition("MajorRevision", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("MinorRevision", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("ComponentStageName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("BuildNumber", FieldType.SIGNED_INTEGER,  true, null, null)
-                );
+                new FieldDefinition("BuildNumber", FieldType.SIGNED_INTEGER, true, null, null)
+        );
     }
 
     

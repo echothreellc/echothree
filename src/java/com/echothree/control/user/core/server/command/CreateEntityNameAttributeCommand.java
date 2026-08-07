@@ -51,7 +51,7 @@ public class CreateEntityNameAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("NameAttribute", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

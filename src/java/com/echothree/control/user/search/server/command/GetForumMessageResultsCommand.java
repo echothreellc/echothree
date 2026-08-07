@@ -41,7 +41,7 @@ public class GetForumMessageResultsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -65,8 +65,8 @@ public class CreateEmployeeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmployeeTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -85,7 +85,7 @@ public class CreateEmployeeCommand
                 new FieldDefinition("Password1", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("Password2", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

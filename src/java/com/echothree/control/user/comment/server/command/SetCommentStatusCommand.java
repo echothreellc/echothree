@@ -36,8 +36,8 @@ public class SetCommentStatusCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommentName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("CommentStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommentName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CommentStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

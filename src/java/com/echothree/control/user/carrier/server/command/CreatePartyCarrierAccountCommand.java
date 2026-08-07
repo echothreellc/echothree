@@ -48,15 +48,15 @@ public class CreatePartyCarrierAccountCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyCarrierAccount.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Account", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AlwaysUseThirdPartyBilling", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -43,10 +43,10 @@ public class CreateLocationUseTypeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("LocationUseTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AllowMultiple", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("LocationUseTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AllowMultiple", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
 

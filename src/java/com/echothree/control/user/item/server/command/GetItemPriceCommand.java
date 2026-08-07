@@ -49,7 +49,7 @@ public class GetItemPriceCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IncludeHistory", FieldType.BOOLEAN, false, null, null)
-                );
+        );
     }
 
     @Inject

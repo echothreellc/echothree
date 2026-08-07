@@ -43,7 +43,7 @@ public class CreateForumMessageAttachmentCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("String", FieldType.STRING, false, 1L, 512L)
-                );
+        );
     }
 
     @Inject

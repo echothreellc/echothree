@@ -47,7 +47,7 @@ public class GetTimeZoneCommand
                 new FieldDefinition("JavaTimeZoneName", FieldType.TIME_ZONE_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
 
     @Inject

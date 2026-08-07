@@ -42,12 +42,12 @@ public class CreateChainActionTypeUseCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ChainActionTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ChainActionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
         );
     }
 

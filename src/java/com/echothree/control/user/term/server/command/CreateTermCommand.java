@@ -46,7 +46,7 @@ public class CreateTermCommand
                 new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
         
         standardFieldDefinitions = List.of(
                 new FieldDefinition("NetDueDays", FieldType.UNSIGNED_INTEGER, true, null, null),

@@ -37,7 +37,7 @@ public class GetAssociateReferralCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("AssociateReferralName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("AssociateReferralName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

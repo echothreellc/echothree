@@ -38,7 +38,8 @@ public class SetEmailAddressStatusCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EmailAddressStatusChoice", FieldType.ENTITY_NAME, true, null, null));
+                new FieldDefinition("EmailAddressStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
 
     @Inject

@@ -36,7 +36,7 @@ public class DeleteNameSuffixCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("NameSuffixId", FieldType.ID, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -44,7 +44,7 @@ public class DeleteBatchAliasCommand
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

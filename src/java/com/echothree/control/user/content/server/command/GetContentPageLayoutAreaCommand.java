@@ -43,7 +43,7 @@ public class GetContentPageLayoutAreaCommand
                 new FieldDefinition("ContentSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -47,7 +47,7 @@ public class EmployeeLoginCommand
                 new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, false, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

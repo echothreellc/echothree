@@ -41,11 +41,11 @@ public class StartJobCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("JobName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

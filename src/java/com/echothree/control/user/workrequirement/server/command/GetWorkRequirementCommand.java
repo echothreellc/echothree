@@ -38,7 +38,7 @@ public class GetWorkRequirementCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkRequirementName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WorkRequirementName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

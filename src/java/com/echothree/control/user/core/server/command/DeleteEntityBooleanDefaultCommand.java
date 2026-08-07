@@ -50,7 +50,7 @@ public class DeleteEntityBooleanDefaultCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

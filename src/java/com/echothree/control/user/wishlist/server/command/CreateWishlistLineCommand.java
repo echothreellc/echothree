@@ -46,16 +46,16 @@ public class CreateWishlistLineCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("SourceName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("Quantity", FieldType.UNSIGNED_LONG, false, null, null),
-            new FieldDefinition("Comment", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SourceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Quantity", FieldType.UNSIGNED_LONG, false, null, null),
+                new FieldDefinition("Comment", FieldType.STRING, false, 1L, 80L)
         );
     }
 

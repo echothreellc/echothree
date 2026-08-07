@@ -50,12 +50,12 @@ public class SetSequenceValueCommand
        ));
 
          FORM_FIELD_DEFINITIONS = List.of(
-                 new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
-                 new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
-                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
-                 new FieldDefinition("Value", FieldType.STRING, true, 1L, 40L)
-         );
+                new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
+                new FieldDefinition("Value", FieldType.STRING, true, 1L, 40L)
+        );
     }
 
     @Inject

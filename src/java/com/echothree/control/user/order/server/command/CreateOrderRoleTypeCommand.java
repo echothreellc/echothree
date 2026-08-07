@@ -36,8 +36,8 @@ public class CreateOrderRoleTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("OrderRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("OrderRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
 

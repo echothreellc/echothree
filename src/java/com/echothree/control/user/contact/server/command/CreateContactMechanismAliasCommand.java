@@ -40,7 +40,7 @@ public class CreateContactMechanismAliasCommand
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactMechanismAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

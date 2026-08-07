@@ -61,8 +61,8 @@ public class CreateItemDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemDescription.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,7 +72,7 @@ public class CreateItemDescriptionCommand
                 new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ClobDescription", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("StringDescription", FieldType.STRING, false, 1L, 512L)
-                );
+        );
     }
 
     @Inject

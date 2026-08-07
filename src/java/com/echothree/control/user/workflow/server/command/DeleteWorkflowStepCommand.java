@@ -42,12 +42,12 @@ public class DeleteWorkflowStepCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(
-                List.of(new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                        new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                                new SecurityRoleDefinition(SecurityRoleGroups.WorkflowStep.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowStep.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),

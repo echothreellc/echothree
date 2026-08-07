@@ -38,7 +38,7 @@ public class GetMimeTypeFileExtensionCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FileExtension", FieldType.STRING, true, 1L, 10L)
-                );
+        );
     }
 
     

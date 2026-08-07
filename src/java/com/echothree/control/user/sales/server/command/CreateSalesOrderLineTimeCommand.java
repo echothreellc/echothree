@@ -39,7 +39,7 @@ public class CreateSalesOrderLineTimeCommand
                 new FieldDefinition("OrderLineSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Time", FieldType.DATE_TIME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -53,7 +53,11 @@ public class GetWorkflowDestinationPartyTypesCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null), new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null), new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
 
     @Inject

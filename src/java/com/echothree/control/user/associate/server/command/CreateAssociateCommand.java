@@ -37,12 +37,12 @@ public class CreateAssociateCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
-            new FieldDefinition("SummaryMimeTypeName", FieldType.MIME_TYPE, true, null, null),
-            new FieldDefinition("Summary", FieldType.STRING, true, null, null)
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
+                new FieldDefinition("SummaryMimeTypeName", FieldType.MIME_TYPE, true, null, null),
+                new FieldDefinition("Summary", FieldType.STRING, true, null, null)
         );
     }
 

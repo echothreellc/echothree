@@ -44,7 +44,7 @@ public class VendorLoginCommand
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
                 new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, false, null, null)
-                );
+        );
     }
 
     @Inject

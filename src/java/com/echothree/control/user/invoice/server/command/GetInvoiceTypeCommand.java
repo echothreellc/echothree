@@ -48,11 +48,11 @@ public class GetInvoiceTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InvoiceType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

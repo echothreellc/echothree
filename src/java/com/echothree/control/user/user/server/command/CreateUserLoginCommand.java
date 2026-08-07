@@ -55,8 +55,8 @@ public class CreateUserLoginCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.UserLogin.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -67,7 +67,7 @@ public class CreateUserLoginCommand
                 new FieldDefinition("Password2", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Answer", FieldType.STRING, false, 1L, 40L)
-                );
+        );
     }
 
     @Inject

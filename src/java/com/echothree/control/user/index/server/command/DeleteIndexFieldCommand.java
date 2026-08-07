@@ -45,14 +45,14 @@ public class DeleteIndexFieldCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Delete.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IndexFieldName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -39,7 +39,7 @@ public class GetMimeTypeCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
 
     

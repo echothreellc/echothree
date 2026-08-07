@@ -38,9 +38,9 @@ public class DeletePartyCreditLimitCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-        new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
 
     @Inject

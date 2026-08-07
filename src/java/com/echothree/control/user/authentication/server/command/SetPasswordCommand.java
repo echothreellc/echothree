@@ -48,7 +48,7 @@ public class SetPasswordCommand
                 new FieldDefinition("OldPassword", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("NewPassword1", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("NewPassword2", FieldType.STRING, true, 1L, 40L)
-                );
+        );
     }
 
     @Inject

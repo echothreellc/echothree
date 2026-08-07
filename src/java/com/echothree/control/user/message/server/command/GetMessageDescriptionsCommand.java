@@ -37,10 +37,10 @@ public class GetMessageDescriptionsCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

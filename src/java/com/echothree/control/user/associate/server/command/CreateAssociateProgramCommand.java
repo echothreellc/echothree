@@ -39,15 +39,15 @@ public class CreateAssociateProgramCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AssociateSequenceName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AssociatePartyContactMechanismSequenceName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AssociateReferralSequenceName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("ItemIndirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
-            new FieldDefinition("ItemDirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociateSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AssociatePartyContactMechanismSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AssociateReferralSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ItemIndirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
+                new FieldDefinition("ItemDirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
 

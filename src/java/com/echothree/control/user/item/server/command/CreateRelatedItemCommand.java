@@ -51,10 +51,10 @@ public class CreateRelatedItemCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("FromItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ToItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("FromItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ToItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
 

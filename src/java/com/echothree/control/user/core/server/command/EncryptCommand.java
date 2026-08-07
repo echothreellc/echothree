@@ -37,7 +37,7 @@ public class EncryptCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ExternalEntityTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Value", FieldType.STRING, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of EncryptCommand */

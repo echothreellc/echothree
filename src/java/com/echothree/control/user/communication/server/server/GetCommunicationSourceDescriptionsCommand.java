@@ -37,7 +37,7 @@ public class GetCommunicationSourceDescriptionsCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

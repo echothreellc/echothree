@@ -37,7 +37,7 @@ public class DeleteForumMessageCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

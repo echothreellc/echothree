@@ -37,10 +37,10 @@ public class GetCommentUsageTypeDescriptionsCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

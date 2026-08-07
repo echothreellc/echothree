@@ -36,7 +36,7 @@ public class DeleteCommunicationEventPurposeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommunicationEventPurposeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommunicationEventPurposeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

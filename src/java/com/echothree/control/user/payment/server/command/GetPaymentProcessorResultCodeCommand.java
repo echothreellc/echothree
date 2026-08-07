@@ -43,7 +43,7 @@ public class GetPaymentProcessorResultCodeCommand
                 new FieldDefinition("PaymentProcessorResultCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
 
     @Inject

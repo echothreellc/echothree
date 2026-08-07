@@ -51,7 +51,7 @@ public class CreateEntityDateAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("DateAttribute", FieldType.DATE, true, null, null)
-                );
+        );
     }
 
     @Inject

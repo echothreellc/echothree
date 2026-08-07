@@ -47,13 +47,13 @@ public class DeletePartyCarrierCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyCarrier.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.HOST_NAME, true, null, null),
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

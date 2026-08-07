@@ -54,14 +54,14 @@ public class GetStateCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.State.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("StateName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Postal2Letter", FieldType.UPPER_LETTER_2, false, null, null)
-                );
+        );
     }
 
     @Inject

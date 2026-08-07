@@ -54,7 +54,7 @@ public class CreateEntityStringAttributeCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("StringAttribute", FieldType.STRING, true, 1L, 512L)
-                );
+        );
     }
 
     @Inject

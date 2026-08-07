@@ -38,7 +38,7 @@ public class CreateMimeTypeFileExtensionCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("FileExtension", FieldType.STRING, true, 1L, 10L),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     

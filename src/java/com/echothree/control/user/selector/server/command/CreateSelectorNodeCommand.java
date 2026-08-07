@@ -85,7 +85,7 @@ public class CreateSelectorNodeCommand
                 new FieldDefinition("SelectorNodeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Negate", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         booleanFormFieldDefinitions = List.of(
                 new FieldDefinition("SelectorBooleanTypeName", FieldType.ENTITY_NAME, true, null, null),

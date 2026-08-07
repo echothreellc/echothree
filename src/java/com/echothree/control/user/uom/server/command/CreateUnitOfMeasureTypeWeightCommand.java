@@ -42,7 +42,7 @@ public class CreateUnitOfMeasureTypeWeightCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WeightUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Weight", FieldType.UNSIGNED_LONG, true, null, null)
-                );
+        );
     }
 
     @Inject

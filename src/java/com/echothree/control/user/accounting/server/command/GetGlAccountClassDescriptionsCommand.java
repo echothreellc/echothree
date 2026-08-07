@@ -47,12 +47,12 @@ public class GetGlAccountClassDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccountClass.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountClassName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -35,8 +35,8 @@ public class SetUserVisitGroupStatusCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("UserVisitGroupName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("UserVisitGroupStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("UserVisitGroupName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("UserVisitGroupStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

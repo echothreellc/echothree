@@ -50,7 +50,7 @@ public class SetDefaultWarehouseCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

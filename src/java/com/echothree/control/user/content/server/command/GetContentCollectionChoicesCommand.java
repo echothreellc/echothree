@@ -46,12 +46,12 @@ public class GetContentCollectionChoicesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCollection.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultContentCollectionChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

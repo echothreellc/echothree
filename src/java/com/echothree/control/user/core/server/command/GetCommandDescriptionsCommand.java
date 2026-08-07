@@ -38,7 +38,7 @@ public class GetCommandDescriptionsCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommandName", FieldType.COMMAND_NAME, true, null, null)
-                );
+        );
     }
 
     

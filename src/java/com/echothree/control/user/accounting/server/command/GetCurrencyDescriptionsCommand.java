@@ -47,12 +47,12 @@ public class GetCurrencyDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Currency.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, 3L)
-                );
+        );
     }
 
     @Inject

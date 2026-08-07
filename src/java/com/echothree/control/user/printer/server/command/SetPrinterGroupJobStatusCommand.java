@@ -38,7 +38,7 @@ public class SetPrinterGroupJobStatusCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterGroupJobName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PrinterGroupJobStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -43,7 +43,7 @@ public class CreatePartyTypeAuditPolicyCommand
                 new FieldDefinition("AuditCommands", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RetainUserVisitsTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("RetainUserVisitsTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

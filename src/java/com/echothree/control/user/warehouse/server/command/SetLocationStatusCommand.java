@@ -53,7 +53,7 @@ public class SetLocationStatusCommand
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

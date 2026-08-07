@@ -38,7 +38,7 @@ public class SetPrinterStatusCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PrinterStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

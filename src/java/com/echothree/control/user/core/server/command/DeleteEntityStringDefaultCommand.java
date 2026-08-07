@@ -55,7 +55,7 @@ public class DeleteEntityStringDefaultCommand
                 new FieldDefinition("EntityDefaultName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

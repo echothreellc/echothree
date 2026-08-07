@@ -39,7 +39,7 @@ public class DeleteGeoCodeTaxCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TaxName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -71,8 +71,8 @@ public class CreateVendorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
@@ -98,7 +98,7 @@ public class CreateVendorCommand
                 new FieldDefinition("PreferredDateTimeFormatName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, false, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

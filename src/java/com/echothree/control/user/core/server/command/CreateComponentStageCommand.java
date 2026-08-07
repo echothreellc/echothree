@@ -38,7 +38,7 @@ public class CreateComponentStageCommand
                 new FieldDefinition("ComponentStageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("RelativeAge", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     

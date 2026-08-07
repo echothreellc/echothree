@@ -50,7 +50,7 @@ public class GetCommandMessageTypeCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

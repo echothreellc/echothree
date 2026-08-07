@@ -51,7 +51,7 @@ public class CreateEntityLongAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null)
-                );
+        );
     }
 
     @Inject

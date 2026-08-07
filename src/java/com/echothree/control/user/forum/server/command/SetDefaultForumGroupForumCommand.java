@@ -38,7 +38,7 @@ public class SetDefaultForumGroupForumCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

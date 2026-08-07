@@ -44,7 +44,7 @@ public class GetContactMechanismPurposeChoicesCommand
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultContactMechanismPurposeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

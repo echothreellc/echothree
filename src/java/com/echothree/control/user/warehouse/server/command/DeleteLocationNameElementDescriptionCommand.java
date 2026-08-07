@@ -55,7 +55,7 @@ public class DeleteLocationNameElementDescriptionCommand
                 new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

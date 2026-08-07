@@ -40,7 +40,7 @@ public class CreateUnitOfMeasureEquivalentCommand
                 new FieldDefinition("FromUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ToUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ToQuantity", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

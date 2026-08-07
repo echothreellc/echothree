@@ -38,7 +38,7 @@ public class DeletePostalAddressLineCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PostalAddressLineSortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

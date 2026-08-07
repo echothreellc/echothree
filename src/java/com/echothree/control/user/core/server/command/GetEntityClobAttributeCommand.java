@@ -41,7 +41,7 @@ public class GetEntityClobAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

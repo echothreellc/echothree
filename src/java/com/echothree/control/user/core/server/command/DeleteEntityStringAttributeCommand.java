@@ -53,7 +53,7 @@ public class DeleteEntityStringAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

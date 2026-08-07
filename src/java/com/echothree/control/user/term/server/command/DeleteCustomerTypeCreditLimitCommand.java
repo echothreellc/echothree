@@ -38,9 +38,9 @@ public class DeleteCustomerTypeCreditLimitCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-        new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
 
     @Inject

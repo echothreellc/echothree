@@ -56,7 +56,7 @@ public class CreateEntityClobAttributeCommand
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("ClobAttribute", FieldType.STRING, true, 1L, null),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
 
     @Inject

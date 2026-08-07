@@ -50,8 +50,7 @@ public class GetItemPriceTypesCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     @Inject

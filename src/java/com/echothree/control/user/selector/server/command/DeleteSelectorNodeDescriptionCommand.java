@@ -37,11 +37,11 @@ public class DeleteSelectorNodeDescriptionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorNodeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorNodeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

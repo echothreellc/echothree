@@ -44,7 +44,7 @@ public class RecoverPasswordCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Username", FieldType.STRING, false, 1L, 80L),
                 new FieldDefinition("Answer", FieldType.STRING, false, 1L, 40L)
-                );
+        );
     }
 
     @Inject

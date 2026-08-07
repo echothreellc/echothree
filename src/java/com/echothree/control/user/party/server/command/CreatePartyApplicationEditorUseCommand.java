@@ -49,8 +49,8 @@ public class CreatePartyApplicationEditorUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyApplicationEditorUse.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,7 +59,7 @@ public class CreatePartyApplicationEditorUseCommand
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PreferredHeight", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("PreferredWidth", FieldType.UNSIGNED_INTEGER, false, null, null)
-                );
+        );
     }
 
     @Inject

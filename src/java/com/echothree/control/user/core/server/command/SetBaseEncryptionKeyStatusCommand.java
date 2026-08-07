@@ -42,11 +42,11 @@ public class SetBaseEncryptionKeyStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("BaseEncryptionKeyName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("BaseEncryptionKeyStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("BaseEncryptionKeyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("BaseEncryptionKeyStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

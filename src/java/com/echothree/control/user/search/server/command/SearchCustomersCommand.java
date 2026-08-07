@@ -61,8 +61,8 @@ public class SearchCustomersCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -86,7 +86,7 @@ public class SearchCustomersCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
 
         formAliasFieldDefinitions = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)

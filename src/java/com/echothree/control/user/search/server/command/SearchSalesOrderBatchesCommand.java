@@ -55,7 +55,7 @@ public class SearchSalesOrderBatchesCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

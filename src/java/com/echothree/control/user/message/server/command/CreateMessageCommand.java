@@ -42,17 +42,17 @@ public class CreateMessageCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, false, null, null),
-            new FieldDefinition("ClobMessage", FieldType.STRING, false, 1L, null),
-            new FieldDefinition("StringMessage", FieldType.STRING, false, 1L, 512L),
-            // BlobMessage is not validated
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, false, null, null),
+                new FieldDefinition("ClobMessage", FieldType.STRING, false, 1L, null),
+                new FieldDefinition("StringMessage", FieldType.STRING, false, 1L, 512L),
+                // BlobMessage is not validated
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
 

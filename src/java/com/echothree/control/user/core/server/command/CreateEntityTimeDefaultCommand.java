@@ -51,7 +51,7 @@ public class CreateEntityTimeDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TimeAttribute", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

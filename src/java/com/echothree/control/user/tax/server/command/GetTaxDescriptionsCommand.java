@@ -38,7 +38,7 @@ public class GetTaxDescriptionsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TaxName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

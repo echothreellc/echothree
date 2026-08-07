@@ -48,8 +48,8 @@ public class CreateVendorItemCostCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorItemCost.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -57,7 +57,7 @@ public class CreateVendorItemCostCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitCost:VendorName,VendorName", FieldType.UNSIGNED_COST_UNIT, true, null, null)
-                );
+        );
     }
 
     @Inject

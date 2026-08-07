@@ -55,8 +55,8 @@ public class GetCountryCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Country.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
@@ -65,7 +65,7 @@ public class GetCountryCommand
                 new FieldDefinition("Iso3Letter", FieldType.UPPER_LETTER_3, false, null, null),
                 new FieldDefinition("Iso2Letter", FieldType.UPPER_LETTER_2, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -46,14 +46,14 @@ public class DeleteWorkflowSelectorKindCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.SelectorKind.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.SelectorKind.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

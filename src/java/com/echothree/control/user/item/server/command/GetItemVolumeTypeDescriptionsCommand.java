@@ -47,11 +47,11 @@ public class GetItemVolumeTypeDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemVolumeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

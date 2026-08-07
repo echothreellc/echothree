@@ -58,9 +58,8 @@ public class CreateCommentCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ClobComment", FieldType.STRING, false, 1L, null),
-                new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L)
-                // BlobComment is not validated
-                );
+                new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L) // BlobComment is not validated
+        );
     }
 
     @Inject

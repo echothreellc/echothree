@@ -36,9 +36,9 @@ public class DeleteAssociatePartyContactMechanismCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AssociatePartyContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociatePartyContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

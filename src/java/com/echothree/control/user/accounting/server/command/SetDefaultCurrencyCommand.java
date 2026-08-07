@@ -37,7 +37,7 @@ public class SetDefaultCurrencyCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, 3L)
-                );
+        );
     }
 
     @Inject

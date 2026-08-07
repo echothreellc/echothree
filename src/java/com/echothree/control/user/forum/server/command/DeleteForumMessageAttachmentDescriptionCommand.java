@@ -40,7 +40,7 @@ public class DeleteForumMessageAttachmentDescriptionCommand
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForumMessageAttachmentSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

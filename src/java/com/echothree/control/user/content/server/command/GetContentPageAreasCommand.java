@@ -45,7 +45,7 @@ public class GetContentPageAreasCommand
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

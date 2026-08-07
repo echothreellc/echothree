@@ -51,14 +51,14 @@ public class GetWorkflowDestinationSelectorsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.Selector.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -44,7 +44,7 @@ public class GetEntityListItemCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

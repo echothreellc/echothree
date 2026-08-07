@@ -37,7 +37,7 @@ public class RemoveCacheEntryCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CacheEntryKey", FieldType.STRING, false, 1L, 200L)
-                );
+        );
     }
 
     @Inject

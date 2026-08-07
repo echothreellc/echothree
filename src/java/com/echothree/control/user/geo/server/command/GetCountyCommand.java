@@ -53,14 +53,14 @@ public class GetCountyCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.County.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("StateGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountyNumber", FieldType.NUMBER_3, false, null, null)
-                );
+        );
     }
 
     @Inject

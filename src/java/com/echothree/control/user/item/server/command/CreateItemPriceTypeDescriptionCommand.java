@@ -54,7 +54,7 @@ public class CreateItemPriceTypeDescriptionCommand
                 new FieldDefinition("ItemPriceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
 
     @Inject

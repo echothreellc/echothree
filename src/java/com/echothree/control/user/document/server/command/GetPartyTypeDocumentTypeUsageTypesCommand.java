@@ -48,13 +48,13 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTypeDocumentTypeUsageType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

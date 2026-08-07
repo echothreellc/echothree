@@ -41,7 +41,7 @@ public class CreateItemPackCheckRequirementCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.PERCENT, true, null, null),
                 new FieldDefinition("MinimumQuantity", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("MaximumQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
 
     @Inject

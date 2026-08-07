@@ -40,7 +40,7 @@ public class DeleteRatingTypeListItemCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -38,7 +38,7 @@ public class CheckSecurityRolesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SecurityRoles", FieldType.STRING, true, 1L, null)
-                );
+        );
     }
 
     

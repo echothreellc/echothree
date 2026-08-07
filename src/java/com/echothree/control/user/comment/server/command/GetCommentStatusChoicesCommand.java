@@ -46,7 +46,7 @@ public class GetCommentStatusChoicesCommand
                 new FieldDefinition("CommentName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultCommentStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

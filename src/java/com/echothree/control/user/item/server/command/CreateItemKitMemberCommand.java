@@ -45,7 +45,7 @@ public class CreateItemKitMemberCommand
                 new FieldDefinition("MemberInventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("MemberUnitOfMeasureTypeName", FieldType.PERCENT, true, null, null),
                 new FieldDefinition("Quantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -51,7 +51,7 @@ public class CreateEntityBooleanDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

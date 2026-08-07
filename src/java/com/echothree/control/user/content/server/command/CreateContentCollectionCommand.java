@@ -53,8 +53,8 @@ public class CreateContentCollectionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCollection.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,7 +62,7 @@ public class CreateContentCollectionCommand
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

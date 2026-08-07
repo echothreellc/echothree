@@ -59,7 +59,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
                 new FieldDefinition("RequiredLowerCaseCount", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumRepeated", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MinimumCharacterTypes", FieldType.UNSIGNED_INTEGER, false, null, null)
-                );
+        );
     }
 
     @Inject

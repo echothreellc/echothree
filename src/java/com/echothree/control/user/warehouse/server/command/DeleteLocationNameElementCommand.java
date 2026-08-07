@@ -53,7 +53,7 @@ public class DeleteLocationNameElementCommand
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

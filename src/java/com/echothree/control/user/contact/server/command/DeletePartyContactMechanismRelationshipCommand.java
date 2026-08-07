@@ -40,7 +40,7 @@ public class DeletePartyContactMechanismRelationshipCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FromContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ToContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

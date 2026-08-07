@@ -40,7 +40,7 @@ public class CreatePartyContactMechanismPurposeCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactMechanismPurposeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

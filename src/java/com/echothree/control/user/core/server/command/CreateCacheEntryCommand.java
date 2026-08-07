@@ -45,7 +45,7 @@ public class CreateCacheEntryCommand
                 new FieldDefinition("ValidForTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("ValidForTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
-                );
+        );
     }
 
     @Inject

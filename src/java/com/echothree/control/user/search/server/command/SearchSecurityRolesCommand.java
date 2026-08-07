@@ -52,7 +52,7 @@ public class SearchSecurityRolesCommand
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null),
                 new FieldDefinition("RememberPreferences", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("SearchUseTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

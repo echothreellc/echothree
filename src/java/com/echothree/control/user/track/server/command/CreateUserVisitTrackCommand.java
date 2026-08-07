@@ -39,7 +39,7 @@ public class CreateUserVisitTrackCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrackValue", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

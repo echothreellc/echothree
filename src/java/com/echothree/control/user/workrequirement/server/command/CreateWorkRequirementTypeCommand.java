@@ -45,18 +45,18 @@ public class CreateWorkRequirementTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkRequirementSequenceName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("EstimatedTimeAllowedUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("EstimatedTimeAllowed", FieldType.UNSIGNED_INTEGER, false, null, null),
-            new FieldDefinition("MaximumTimeAllowedUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("MaximumTimeAllowed", FieldType.UNSIGNED_INTEGER, false, null, null),
-            new FieldDefinition("AllowReassignment", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkRequirementSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EstimatedTimeAllowedUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EstimatedTimeAllowed", FieldType.UNSIGNED_INTEGER, false, null, null),
+                new FieldDefinition("MaximumTimeAllowedUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("MaximumTimeAllowed", FieldType.UNSIGNED_INTEGER, false, null, null),
+                new FieldDefinition("AllowReassignment", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
 

@@ -36,7 +36,7 @@ public class GetInventoryConditionUseTypeChoicesCommand
 
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("DefaultInventoryConditionUseTypeChoice", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("DefaultInventoryConditionUseTypeChoice", FieldType.ENTITY_NAME, false, null, null)
         );
     }
 

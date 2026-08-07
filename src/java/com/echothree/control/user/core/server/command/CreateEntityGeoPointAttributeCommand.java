@@ -59,7 +59,7 @@ public class CreateEntityGeoPointAttributeCommand
                 new FieldDefinition("ElevationUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Altitude", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

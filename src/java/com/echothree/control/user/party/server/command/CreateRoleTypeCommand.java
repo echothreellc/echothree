@@ -38,7 +38,7 @@ public class CreateRoleTypeCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("RoleTypeName", FieldType.STRING, true, null, 40L),
                 new FieldDefinition("ParentRoleTypeName", FieldType.STRING, false, null, 40L)
-                );
+        );
     }
 
     @Inject
