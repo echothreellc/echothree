@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class InventoryAdjustmentTypeControl
@@ -53,8 +54,14 @@ public class InventoryAdjustmentTypeControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Inventory Transaction Types
+    //   Inventory Adjustment Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryAdjustmentTypeFactory inventoryAdjustmentTypeFactory;
+
+    @Inject
+    protected InventoryAdjustmentTypeDetailFactory inventoryAdjustmentTypeDetailFactory;
 
     public InventoryAdjustmentType createInventoryAdjustmentType(String inventoryAdjustmentTypeName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -70,12 +77,12 @@ public class InventoryAdjustmentTypeControl
             isDefault = true;
         }
 
-        var inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().create();
-        var inventoryAdjustmentTypeDetail = InventoryAdjustmentTypeDetailFactory.getInstance().create(inventoryAdjustmentType,
+        var inventoryAdjustmentType = inventoryAdjustmentTypeFactory.create();
+        var inventoryAdjustmentTypeDetail = inventoryAdjustmentTypeDetailFactory.create(inventoryAdjustmentType,
                 inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        inventoryAdjustmentType = inventoryAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 inventoryAdjustmentType.getPrimaryKey());
         inventoryAdjustmentType.setActiveDetail(inventoryAdjustmentTypeDetail);
         inventoryAdjustmentType.setLastDetail(inventoryAdjustmentTypeDetail);
@@ -91,7 +98,7 @@ public class InventoryAdjustmentTypeControl
             final EntityPermission entityPermission) {
         var pk = new InventoryAdjustmentTypePK(entityInstance.getEntityUniqueId());
 
-        return InventoryAdjustmentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return inventoryAdjustmentTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -103,7 +110,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByPK(InventoryAdjustmentTypePK pk) {
-        return InventoryAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return inventoryAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countInventoryAdjustmentTypes() {
@@ -136,7 +143,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByName(String inventoryAdjustmentTypeName, EntityPermission entityPermission) {
-        return InventoryAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryAdjustmentTypeByNameQueries, inventoryAdjustmentTypeName);
+        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getInventoryAdjustmentTypeByNameQueries, inventoryAdjustmentTypeName);
     }
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByName(String inventoryAdjustmentTypeName) {
@@ -177,7 +184,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentType getDefaultInventoryAdjustmentType(EntityPermission entityPermission) {
-        return InventoryAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInventoryAdjustmentTypeQueries);
+        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultInventoryAdjustmentTypeQueries);
     }
 
     public InventoryAdjustmentType getDefaultInventoryAdjustmentType() {
@@ -214,7 +221,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     private List<InventoryAdjustmentType> getInventoryAdjustmentTypes(EntityPermission entityPermission) {
-        return InventoryAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryAdjustmentTypesQueries);
+        return inventoryAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, getInventoryAdjustmentTypesQueries);
     }
 
     public List<InventoryAdjustmentType> getInventoryAdjustmentTypes() {
@@ -281,7 +288,7 @@ public class InventoryAdjustmentTypeControl
     private void updateInventoryAdjustmentTypeFromValue(InventoryAdjustmentTypeDetailValue inventoryAdjustmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(inventoryAdjustmentTypeDetailValue.hasBeenModified()) {
-            var inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryAdjustmentType = inventoryAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryAdjustmentTypeDetailValue.getInventoryAdjustmentTypePK());
             var inventoryAdjustmentTypeDetail = inventoryAdjustmentType.getActiveDetailForUpdate();
 
@@ -309,7 +316,7 @@ public class InventoryAdjustmentTypeControl
                 }
             }
 
-            inventoryAdjustmentTypeDetail = InventoryAdjustmentTypeDetailFactory.getInstance().create(inventoryAdjustmentTypePK,
+            inventoryAdjustmentTypeDetail = inventoryAdjustmentTypeDetailFactory.create(inventoryAdjustmentTypePK,
                     inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryAdjustmentType.setActiveDetail(inventoryAdjustmentTypeDetail);
@@ -368,11 +375,14 @@ public class InventoryAdjustmentTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Transaction Type Descriptions
+    //   Inventory Adjustment Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected InventoryAdjustmentTypeDescriptionFactory inventoryAdjustmentTypeDescriptionFactory;
+
     public InventoryAdjustmentTypeDescription createInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language, String description, BasePK createdBy) {
-        var inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().create(inventoryAdjustmentType, language, description,
+        var inventoryAdjustmentTypeDescription = inventoryAdjustmentTypeDescriptionFactory.create(inventoryAdjustmentType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -400,7 +410,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     private InventoryAdjustmentTypeDescription getInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language, EntityPermission entityPermission) {
-        return InventoryAdjustmentTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryAdjustmentTypeDescriptionQueries,
+        return inventoryAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryAdjustmentTypeDescriptionQueries,
                 inventoryAdjustmentType, language, Session.MAX_TIME);
     }
 
@@ -442,7 +452,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     private List<InventoryAdjustmentTypeDescription> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(InventoryAdjustmentType inventoryAdjustmentType, EntityPermission entityPermission) {
-        return InventoryAdjustmentTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeQueries,
+        return inventoryAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeQueries,
                 inventoryAdjustmentType, Session.MAX_TIME);
     }
 
@@ -488,7 +498,7 @@ public class InventoryAdjustmentTypeControl
 
     public void updateInventoryAdjustmentTypeDescriptionFromValue(InventoryAdjustmentTypeDescriptionValue inventoryAdjustmentTypeDescriptionValue, BasePK updatedBy) {
         if(inventoryAdjustmentTypeDescriptionValue.hasBeenModified()) {
-            var inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryAdjustmentTypeDescription = inventoryAdjustmentTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     inventoryAdjustmentTypeDescriptionValue.getPrimaryKey());
 
             inventoryAdjustmentTypeDescription.setThruTime(session.getStartTime());
@@ -498,7 +508,7 @@ public class InventoryAdjustmentTypeControl
             var language = inventoryAdjustmentTypeDescription.getLanguage();
             var description = inventoryAdjustmentTypeDescriptionValue.getDescription();
 
-            inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().create(inventoryAdjustmentType, language, description,
+            inventoryAdjustmentTypeDescription = inventoryAdjustmentTypeDescriptionFactory.create(inventoryAdjustmentType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

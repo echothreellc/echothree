@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class LotControl
@@ -48,14 +49,20 @@ public class LotControl
     //   Lots
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected LotFactory lotFactory;
+
+    @Inject
+    protected LotDetailFactory lotDetailFactory;
+
     public Lot createLot(final Item item, final String lotIdentifier, final BasePK createdBy) {
 
-        var lot = LotFactory.getInstance().create();
-        var lotDetail = LotDetailFactory.getInstance().create( lot, item, lotIdentifier, session.getStartTime(),
+        var lot = lotFactory.create();
+        var lotDetail = lotDetailFactory.create( lot, item, lotIdentifier, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        lot = LotFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lot.getPrimaryKey());
+        lot = lotFactory.getEntityFromPK(EntityPermission.READ_WRITE, lot.getPrimaryKey());
         lot.setActiveDetail(lotDetail);
         lot.setLastDetail(lotDetail);
         lot.store();
@@ -70,7 +77,7 @@ public class LotControl
             final EntityPermission entityPermission) {
         var pk = new LotPK(entityInstance.getEntityUniqueId());
 
-        return LotFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return lotFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Lot getLotByEntityInstance(final EntityInstance entityInstance) {
@@ -114,7 +121,7 @@ public class LotControl
                     """);
 
     public Lot getLotByIdentifier(final Item item, final String lotIdentifier, final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntityFromQuery(entityPermission, getLotByIdentifierQueries,
+        return lotFactory.getEntityFromQuery(entityPermission, getLotByIdentifierQueries,
                 item, lotIdentifier);
     }
 
@@ -153,7 +160,7 @@ public class LotControl
 
     private List<Lot> getLotsByItem(final Item item,
             final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsByItemQueries,
+        return lotFactory.getEntitiesFromQuery(entityPermission, getLotsByItemQueries,
                 item);
     }
 
@@ -187,7 +194,7 @@ public class LotControl
     public void updateLotFromValue(final LotDetailValue lotDetailValue,
             final BasePK updatedBy) {
         if(lotDetailValue.hasBeenModified()) {
-            var lot = LotFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var lot = lotFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     lotDetailValue.getLotPK());
             var lotDetail = lot.getActiveDetailForUpdate();
 
@@ -198,7 +205,7 @@ public class LotControl
             var itemPK = lotDetailValue.getItemPK(); // R/O
             var lotIdentifier = lotDetailValue.getLotIdentifier(); // R/W
 
-            lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.getStartTime(),
+            lotDetail = lotDetailFactory.create(lotPK, itemPK, lotIdentifier, session.getStartTime(),
                     Session.MAX_TIME);
 
             lot.setActiveDetail(lotDetail);

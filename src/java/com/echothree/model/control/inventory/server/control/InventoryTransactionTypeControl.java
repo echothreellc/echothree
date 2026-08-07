@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class InventoryTransactionTypeControl
@@ -58,6 +59,12 @@ public class InventoryTransactionTypeControl
     // --------------------------------------------------------------------------------
     //   Inventory Transaction Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryTransactionTypeFactory inventoryTransactionTypeFactory;
+
+    @Inject
+    protected InventoryTransactionTypeDetailFactory inventoryTransactionTypeDetailFactory;
 
     public InventoryTransactionType createInventoryTransactionType(String inventoryTransactionTypeName, SequenceType inventoryTransactionSequenceType, Workflow inventoryTransactionWorkflow,
             WorkflowEntrance inventoryTransactionWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -73,13 +80,13 @@ public class InventoryTransactionTypeControl
             isDefault = true;
         }
 
-        var inventoryTransactionType = InventoryTransactionTypeFactory.getInstance().create();
-        var inventoryTransactionTypeDetail = InventoryTransactionTypeDetailFactory.getInstance().create(inventoryTransactionType, inventoryTransactionTypeName, inventoryTransactionSequenceType,
+        var inventoryTransactionType = inventoryTransactionTypeFactory.create();
+        var inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionType, inventoryTransactionTypeName, inventoryTransactionSequenceType,
                 inventoryTransactionWorkflow, inventoryTransactionWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        inventoryTransactionType = InventoryTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        inventoryTransactionType = inventoryTransactionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 inventoryTransactionType.getPrimaryKey());
         inventoryTransactionType.setActiveDetail(inventoryTransactionTypeDetail);
         inventoryTransactionType.setLastDetail(inventoryTransactionTypeDetail);
@@ -95,7 +102,7 @@ public class InventoryTransactionTypeControl
             final EntityPermission entityPermission) {
         var pk = new InventoryTransactionTypePK(entityInstance.getEntityUniqueId());
 
-        return InventoryTransactionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return inventoryTransactionTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InventoryTransactionType getInventoryTransactionTypeByEntityInstance(final EntityInstance entityInstance) {
@@ -107,7 +114,7 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionType getInventoryTransactionTypeByPK(InventoryTransactionTypePK pk) {
-        return InventoryTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return inventoryTransactionTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countInventoryTransactionTypes() {
@@ -140,7 +147,7 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionType getInventoryTransactionTypeByName(String inventoryTransactionTypeName, EntityPermission entityPermission) {
-        return InventoryTransactionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryTransactionTypeByNameQueries, inventoryTransactionTypeName);
+        return inventoryTransactionTypeFactory.getEntityFromQuery(entityPermission, getInventoryTransactionTypeByNameQueries, inventoryTransactionTypeName);
     }
 
     public InventoryTransactionType getInventoryTransactionTypeByName(String inventoryTransactionTypeName) {
@@ -181,7 +188,7 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionType getDefaultInventoryTransactionType(EntityPermission entityPermission) {
-        return InventoryTransactionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInventoryTransactionTypeQueries);
+        return inventoryTransactionTypeFactory.getEntityFromQuery(entityPermission, getDefaultInventoryTransactionTypeQueries);
     }
 
     public InventoryTransactionType getDefaultInventoryTransactionType() {
@@ -218,7 +225,7 @@ public class InventoryTransactionTypeControl
     }
 
     private List<InventoryTransactionType> getInventoryTransactionTypes(EntityPermission entityPermission) {
-        return InventoryTransactionTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryTransactionTypesQueries);
+        return inventoryTransactionTypeFactory.getEntitiesFromQuery(entityPermission, getInventoryTransactionTypesQueries);
     }
 
     public List<InventoryTransactionType> getInventoryTransactionTypes() {
@@ -285,7 +292,7 @@ public class InventoryTransactionTypeControl
     private void updateInventoryTransactionTypeFromValue(InventoryTransactionTypeDetailValue inventoryTransactionTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(inventoryTransactionTypeDetailValue.hasBeenModified()) {
-            var inventoryTransactionType = InventoryTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryTransactionType = inventoryTransactionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryTransactionTypeDetailValue.getInventoryTransactionTypePK());
             var inventoryTransactionTypeDetail = inventoryTransactionType.getActiveDetailForUpdate();
 
@@ -316,7 +323,7 @@ public class InventoryTransactionTypeControl
                 }
             }
 
-            inventoryTransactionTypeDetail = InventoryTransactionTypeDetailFactory.getInstance().create(inventoryTransactionTypePK, inventoryTransactionTypeName, inventoryTransactionSequenceTypePK,
+            inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionTypePK, inventoryTransactionTypeName, inventoryTransactionSequenceTypePK,
                     inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryTransactionType.setActiveDetail(inventoryTransactionTypeDetail);
@@ -378,8 +385,11 @@ public class InventoryTransactionTypeControl
     //   Inventory Transaction Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected InventoryTransactionTypeDescriptionFactory inventoryTransactionTypeDescriptionFactory;
+
     public InventoryTransactionTypeDescription createInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language, String description, BasePK createdBy) {
-        var inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().create(inventoryTransactionType, language, description,
+        var inventoryTransactionTypeDescription = inventoryTransactionTypeDescriptionFactory.create(inventoryTransactionType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(inventoryTransactionType.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -407,7 +417,7 @@ public class InventoryTransactionTypeControl
     }
 
     private InventoryTransactionTypeDescription getInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language, EntityPermission entityPermission) {
-        return InventoryTransactionTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryTransactionTypeDescriptionQueries,
+        return inventoryTransactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryTransactionTypeDescriptionQueries,
                 inventoryTransactionType, language, Session.MAX_TIME);
     }
 
@@ -449,7 +459,7 @@ public class InventoryTransactionTypeControl
     }
 
     private List<InventoryTransactionTypeDescription> getInventoryTransactionTypeDescriptionsByInventoryTransactionType(InventoryTransactionType inventoryTransactionType, EntityPermission entityPermission) {
-        return InventoryTransactionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries,
+        return inventoryTransactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries,
                 inventoryTransactionType, Session.MAX_TIME);
     }
 
@@ -495,7 +505,7 @@ public class InventoryTransactionTypeControl
 
     public void updateInventoryTransactionTypeDescriptionFromValue(InventoryTransactionTypeDescriptionValue inventoryTransactionTypeDescriptionValue, BasePK updatedBy) {
         if(inventoryTransactionTypeDescriptionValue.hasBeenModified()) {
-            var inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryTransactionTypeDescription = inventoryTransactionTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     inventoryTransactionTypeDescriptionValue.getPrimaryKey());
 
             inventoryTransactionTypeDescription.setThruTime(session.getStartTime());
@@ -505,7 +515,7 @@ public class InventoryTransactionTypeControl
             var language = inventoryTransactionTypeDescription.getLanguage();
             var description = inventoryTransactionTypeDescriptionValue.getDescription();
 
-            inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().create(inventoryTransactionType, language, description,
+            inventoryTransactionTypeDescription = inventoryTransactionTypeDescriptionFactory.create(inventoryTransactionType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(inventoryTransactionType.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
