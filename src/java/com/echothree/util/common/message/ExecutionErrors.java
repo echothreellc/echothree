@@ -2393,5 +2393,6 @@ public enum ExecutionErrors {
     CannotDeleteChainInUse,
     CannotDeleteTrainingClassInUse,
     UnknownWorkRequirementScope,
+    InvalidBatchType,
 
 }

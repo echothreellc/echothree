@@ -14,11 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.batch.common;
+package com.echothree.model.control.batch.common.exception;
 
-public interface BatchConstants {
+import com.echothree.util.common.message.Message;
 
-    String BatchType_ORDER = "ORDER";
-    String BatchType_SALES_ORDER = "SALES_ORDER";
+public class InvalidBatchTypeException
+        extends BaseBatchException {
     
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException() {
+        super();
+    }
+    
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of InvalidBatchTypeException */
+    public InvalidBatchTypeException(Message message) {
+        super(message);
+    }
+
 }

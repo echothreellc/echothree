@@ -1369,7 +1369,7 @@ public class BatchControl
         getBatchByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private Batch getBatchByName(BatchType batchType, String batchName, EntityPermission entityPermission) {
+    public Batch getBatchByName(BatchType batchType, String batchName, EntityPermission entityPermission) {
         return BatchFactory.getInstance().getEntityFromQuery(entityPermission, getBatchByNameQueries,
                 batchType, batchName);
     }
